@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!
+{% endblock %}
+{% block body %}
+
+	<div class="flex h-screen justify-center items-center ">
+		<div class="xl:w-4/12 mx-auto md:w-4/12 ">
+			<div class="mx-auto my-0 ">
+
+				<img src="{{ data_uri_thumbnail('images/camion.jpg', 40, 30) }}" {{ stimulus_controller('symfony/ux-lazy-image/lazy-image', { src: asset('images/camion.jpg') } ) }} alt="A blurhash image that is replaced by the real image on load" width="400">
+
+				<div data-controller="datepicker">
+					<input data-datepicker-target="input" type="text" name="foobar" value="2022-03-23"/>
+					<span data-datepicker-target="toggle">calendar</span>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -14,13 +14,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class UserController extends AbstractController
 {
     #[Route('/user/{username}', name: 'app_user')]
-    public function index(UserRepository $userRepo, Request $request, UserInterface $logUser = null, EntityManagerInterface $em, $username = "me"): Response
+    public function index(UserRepository $userRepo, $username = "me"): Response
     {
         /// Conditions d'affichage
         // Si le username n'est pas renseigné et que l'utilisateur est connecté, alors on affiche la page du membre connecté
         if ($username == "me" && $this->getUser())
         {
-            $userInfo = $userRepo->findOneBy(["email" => $logUser->getEmail()]);
+            $userInfo = $userRepo->findOneBy(["email" => $this->getUser()->getEmail()]);
         }
         // Si le username n'est pas renseigné et que l'utilisateur n'est pas connecté, alors on le redirige
         elseif ($username == "me" && !$this->getUser())
@@ -37,23 +37,22 @@ class UserController extends AbstractController
         ]);
     }
     #[Route('user/edit/{id}', name: 'app_user_edit')]
-    public function edit(Request $request, UserRepository $userRepo, UserInterface $logUser = null, $id, EntityManagerInterface $em): Response
+    public function edit(Request $request, UserRepository $userRepo, $id, EntityManagerInterface $em): Response
     {
         if (!$this->getUser())
         {
             return $this->redirectToRoute("app_home");
         }
         /// Création du formulaire
-        $form = $this->createForm(UserInfoType::class, $logUser); // $user = utilisateur loggué (UserInterface)
+        $form = $this->createForm(UserInfoType::class, $this->getUser()); // $user = utilisateur loggué (UserInterface)
         $form->handleRequest($request);
-        $pp = $logUser->getProfilPicture();
     if ($form->isSubmitted() && $form->isValid())
         {
-            $userUp = $userRepo->find($logUser->getId());
+            $userUp = $userRepo->find($this->getUser());
             $uploadedFile = $form['profil_picture']->getData();
             if ($uploadedFile) {
-                $destination = $this->getParameter('kernel.project_dir').'/public/images/uploads/profil_pictures/'.$logUser->getId();
-                $newFilename = $logUser->getId().'.'.$uploadedFile->guessExtension();
+                $destination = $this->getParameter('kernel.project_dir').'/public/images/uploads/profil_pictures/'.$this->getUser()->getId();
+                $newFilename = $this->getUser()->getId().'.'.$uploadedFile->guessExtension();
                 $uploadedFile->move(
                     $destination,
                     $newFilename
@@ -67,7 +66,7 @@ class UserController extends AbstractController
             $this->addFlash('successTitle', 'Modification enregistrées !');
             $this->addFlash('successMessage', 'Les modifications apportées sur votre page de profil sont désormais visibles de tous.');
             // return
-            return $this->redirectToRoute("app_user", ["username" => $logUser->getUsername()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute("app_user", ["username" => $this->getUser()->getUsername()], Response::HTTP_SEE_OTHER);
         }
         return $this->renderForm('user/edit.html.twig', [
             'editUserForm' => $form

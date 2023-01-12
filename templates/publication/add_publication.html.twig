@@ -8,9 +8,14 @@
 	<div class="flex h-screen justify-center items-center ">
 		<div class="xl:w-4/12 md:w-4/12 ">
 			<div class="mx-auto my-0 ">
-				<h1>Publier un texte</h1>
+				<h1>Publier une nouvelle histoire</h1>
 				{{ form_start(form) }}
-
+				{{ form_row(form.title) }}
+				{{ form_row(form.summary) }}
+				{{ form_row(form.cover) }}
+				{{ form_row(form.mature) }}
+				{{ form_row(form.category) }}
+				<button type="submit">Suivant</button>
 				{{ form_end(form) }}
 			</div>
 		</div>

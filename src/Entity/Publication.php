@@ -40,6 +40,9 @@ class Publication
     #[ORM\Column]
     private ?bool $mature = null;
 
+    #[ORM\ManyToOne(inversedBy: 'publications')]
+    private ?PublicationCategory $category = null;
+
     public function __construct()
     {
         $this->publicationChapters = new ArrayCollection();
@@ -161,6 +164,18 @@ class Publication
     public function setMature(bool $mature): self
     {
         $this->mature = $mature;
+
+        return $this;
+    }
+
+    public function getCategory(): ?PublicationCategory
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?PublicationCategory $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

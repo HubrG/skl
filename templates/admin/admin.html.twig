@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AdminController!
+{% endblock %}
+
+{% block body %}
+	<div class="flex h-screen justify-center items-center ">
+		<div class="xl:w-4/12 mx-auto md:w-4/12 ">
+			<div class="mx-auto my-0 ">
+				<a href="{{ path("app_admin_category") }}">Gérer les catégories</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}

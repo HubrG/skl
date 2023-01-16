@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -37,7 +38,7 @@ class UserController extends AbstractController
         ]);
     }
     #[Route('user/edit/{id}', name: 'app_user_edit')]
-    public function edit(Request $request, UserRepository $userRepo, $id, EntityManagerInterface $em): Response
+    public function edit(Request $request, UserRepository $userRepo, $id = null, EntityManagerInterface $em): Response
     {
         if (!$this->getUser())
         {

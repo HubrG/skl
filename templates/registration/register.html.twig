@@ -8,51 +8,46 @@
 		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
 	{% endfor %}
 
-	<div class="flex h-screen justify-center items-center ">
-		<div class="xl:w-4/12 mx-auto md:w-4/12 ">
-			<div class="mx-auto my-0 ">
-				<div class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow-md sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-					<h1 class="text-center">Rejoignez-nous !</h1>
-					{{ form_start(registrationForm, {attr: {'novalidate': 'novalidate'}}) }}
-					{{ form_label(registrationForm.username) }}
-					{{ form_errors(registrationForm.username) }}
-					<div class="flex">
-						<span class="form-icon">
-							<i class="fa-solid fa-at"></i>
-						</span>
-						{{ form_widget(registrationForm.username, { attr: {'class':'icon-desc'}}) }}
-					</div>
-					{{ form_help(registrationForm.username) }}
-
-					{{ form_label(registrationForm.email) }}
-					{{ form_errors(registrationForm.email) }}
-					<div class="flex">
-						<span class="form-icon">
-							<i class="fa-regular fa-envelope"></i>
-						</span>
-						{{ form_widget(registrationForm.email, { attr: {'class':'icon-desc'}}) }}
-					</div>
-					{{ form_label(registrationForm.plainPassword) }}
-					{{ form_errors(registrationForm.plainPassword) }}
-					<div class="flex">
-						<span class="form-icon">
-							<i class="fa-solid fa-unlock-keyhole"></i>
-						</span>
-						{{ form_widget(registrationForm.plainPassword, { attr: {'class':'icon-desc'}}) }}
-					</div>
-
-					<label for="registration_form_agreeTerms">
-						<span class="ml-30 cursor-pointer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;J'accepte les CGU</span>
-					</label>
-					<div class="-mt-8">{{ form_widget(registrationForm.agreeTerms) }}</div>
-					<ul class="-mt-5">
-						<li class="form-error">{{ form_errors(registrationForm.agreeTerms) }}</li>
-					</ul>
-					<button type=" submit" class=" btn">C'est parti !</button>
-					{{ form_end(registrationForm) }}
-				</div>
-			</div>
+	<div class="w-8/12 p-4 bg-white border border-gray-200 rounded-lg shadow-md sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+		<h1 class="text-center">Rejoignez-nous !</h1>
+		{{ form_start(registrationForm, {attr: {'novalidate': 'novalidate'}}) }}
+		{{ form_label(registrationForm.username) }}
+		{{ form_errors(registrationForm.username) }}
+		<div class="flex">
+			<span class="form-icon">
+				<i class="fa-solid fa-at"></i>
+			</span>
+			{{ form_widget(registrationForm.username, { attr: {'class':'icon-desc'}}) }}
 		</div>
+		{{ form_help(registrationForm.username) }}
+
+		{{ form_label(registrationForm.email) }}
+		{{ form_errors(registrationForm.email) }}
+		<div class="flex">
+			<span class="form-icon">
+				<i class="fa-regular fa-envelope"></i>
+			</span>
+			{{ form_widget(registrationForm.email, { attr: {'class':'icon-desc'}}) }}
+		</div>
+		{{ form_label(registrationForm.plainPassword) }}
+		{{ form_errors(registrationForm.plainPassword) }}
+		<div class="flex">
+			<span class="form-icon">
+				<i class="fa-solid fa-unlock-keyhole"></i>
+			</span>
+			{{ form_widget(registrationForm.plainPassword, { attr: {'class':'icon-desc'}}) }}
+		</div>
+
+		<label for="registration_form_agreeTerms">
+			<span class="ml-30 cursor-pointer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;J'accepte les CGU</span>
+		</label>
+		<div class="-mt-8">{{ form_widget(registrationForm.agreeTerms) }}</div>
+		<ul class="-mt-5">
+			<li class="form-error">{{ form_errors(registrationForm.agreeTerms) }}</li>
+		</ul>
+		<button type=" submit" class=" btn">C'est parti !</button>
+		{{ form_end(registrationForm) }}
 	</div>
+
 
 {% endblock %}

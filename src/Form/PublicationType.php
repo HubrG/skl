@@ -19,13 +19,19 @@ class PublicationType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'required' => false
+                'required' => false,
+                'label' => "Quel est le titre de votre récit ?",
+                // 'attr' => array(
+                //     'placeholder' => 'Quel est le titre de cette histoire ?'
+                // )
             ])
             ->add('summary', TextareaType::class, [
-                'required' => false
+                'required' => false,
+                'label' => "Pourriez-vous le résumer en quelques lignes ?",
             ])
             ->add('cover', FileType::class, [
-                'required' => false
+                'required' => false,
+
             ])
             ->add('mature', CheckboxType::class, [
                 'required' => false
@@ -33,16 +39,16 @@ class PublicationType extends AbstractType
             ->add('category', EntityType::class, [
                 'placeholder' => "Choisir une catégorie",
                 "class" => PublicationCategory::class,
+                'label' => "Dans quelle catégorie rangeriez-vous ce récit ?",
                 'choice_label' => 'name',
                 "required" => false
-                
-                ])
-        ;
+
+            ]);
     }
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Publication::class
-            ]);
+        ]);
     }
 }

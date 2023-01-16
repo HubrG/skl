@@ -1,5 +1,5 @@
 <div class="sticky top-0 z-100" style="z-index:9000">
-	<nav class="bg-white border-gray-200 px-2 md:px-4 py-2.5 dark:bg-gray-900">
+	<nav>
 		<div class="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto">
 			<a href="{{ path("app_home")}}" class="flex items-center ">
 				<span class="logo self-center text-3xl font-semibold whitespace-nowrap dark:text-white">
@@ -22,22 +22,23 @@
 								<a href="{{ path("app_user", { username : app.user.username}) }}" class=" hover:bg-gray-100 text-gray-900 block px-4 py-2 text-sm">Mon profil</a>
 								<a href="#" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm">Mes histoires</a>
 								<hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
-								<a href="{{ path("app_logout")}}" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm">Déconnexion</a>
 								{% if is_granted('ROLE_ADMIN') %}
 									<a href="{{ path("app_admin") }}" class="font-medium hover:bg-gray-100 text-gray-900 block px-4 py-2 text-sm">Admin</a>
 								{% endif %}
+								<hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
+								<a href="{{ path("app_logout")}}" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm">Déconnexion</a>
 							</div>
 						</div>
 					</div>
 				{% else %}
 					{# MODAL BOX LOGIN
-																																																																																																																																																																		<div data-controller="modal">
-																																																																																																																																																																			<button data-action="modal#open" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
-																																																																																																																																																																				Connexion
-																																																																																																																																																																			</button>
-																																																																																																																																																																			{% include "_modals.html.twig" with {"modal" : "reset"} %}
-																																																																																																																																																																		</div>
-																																																																																																																																																																		#}
+																																																																																																																																																																																																																																																																											<div data-controller="modal">
+																																																																																																																																																																																																																																																																												<button data-action="modal#open" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+																																																																																																																																																																																																																																																																													Connexion
+																																																																																																																																																																																																																																																																												</button>
+																																																																																																																																																																																																																																																																												{% include "_modals.html.twig" with {"modal" : "reset"} %}
+																																																																																																																																																																																																																																																																											</div>
+																																																																																																																																																																																																																																																																											#}
 					<a href="{{ path("app_login")}}" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
 						Connexion
 					</a>

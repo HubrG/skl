@@ -4,21 +4,56 @@
 {% endblock %}
 
 {% block body %}
-
-	<div class="flex h-screen justify-center items-center ">
-		<div class="xl:w-4/12 md:w-4/12 ">
-			<div class="mx-auto my-0 ">
-				<h1>Publier une nouvelle histoire</h1>
-				{{ form_start(form) }}
-				{{ form_row(form.title) }}
-				{{ form_row(form.summary) }}
-				{{ form_row(form.cover) }}
-				{{ form_row(form.mature) }}
-				{{ form_row(form.category) }}
-				<button type="submit">Suivant</button>
-				{{ form_end(form) }}
+	{{ form_start(form) }}
+	<section class=" grid-cols-1  pr-10">{{ form_widget(form.cover, {attr:{"class":"axios"}})}}</section>
+	<section class=" grid-cols-1 ">
+		<h1>Publier un nouveau récit</h1>
+		<input type="hidden" value="{{ pub.id }}" id="hideId"/>
+		{{ form_label(form.title) }}
+		<div class="relative mb-6">
+			<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
+				<i class="fa-solid fa-book"></i>
 			</div>
+			{{ form_widget(form.title, {attr:{"class":"axios"}}) }}
 		</div>
-	</div>
+		{{ form_label(form.summary) }}
+		<div class="relative mb-6">
+			<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
+				<i class="fa-solid fa-receipt"></i>
+			</div>
+			{{ form_widget(form.summary, {attr:{"class":"axios"}}) }}
+		</div>
+		<div class="relative mb-6">
+			<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
+				<i class="fa-solid fa-receipt"></i>
+			</div>
+			{{ form_widget(form.category, {attr:{"class":"axios"}}) }}
+		</div>
+		<label>En quelques mots, quelles sont les grandes thématiques de votre récit ?</label>
+		<div class="relative z-0 w-full mb-6 group">
+			<input type="text" value="" id="keyValue"/>
+		</div>
+		<turbo-frame id="keyroute">
+			<div id="keyList">
+				{% for k in pub.publicationKeywords %}
+					<div id="keyw_{{ k.keyword|upper }}">{{ k.keyword }}
 
+						&nbsp;<a href="{{path("app_publication_del_keyword", {value:k.keyword, pub:pub.id})}}">
+							<i class="fa-solid fa-delete-left hover:text-red-400"></i>
+						</a>
+					</div>
+				{% endfor %}
+			</div>
+		</turbo-frame>
+		<hr class=" -mt-5">
+		<label class="relative inline-flex items-center cursor-pointer">
+			{{ form_widget(form.mature, {attr:{"class":"sr-only peer axios"}}) }}
+			<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+			<span class="ml-3 -mt-6 text-sm font-medium text-gray-900 dark:text-gray-300">Votre histoire contient-elle du contenu pour adulte ?</span>
+		</label>
+		<div>
+			<button type="submit">Suivant</button>
+		</div>
+	</section>
+	{{ form_end(form) }}
 {% endblock %}

@@ -20,3 +20,5 @@ const application = Application.start()
 application.register('dropdown', Dropdown)
 application.register('notification', Notification)
 application.register('datepicker', Datepicker)
+
+

@@ -6,18 +6,22 @@
     
 }
 body {
-    background-color: rgb(243, 243, 243);
+  @apply bg-white;
+
     transition: opacity 1000ms;
 }
 body.turbo-loading {
-    opacity: .7
+    opacity: .7;
 }
 /*[data-turbo-preview] body {
     opacity: .9
 }
 */
-#main {
-    margin: -60px 0vh 0px 0vh;
+nav {
+ @apply  bg-white shadow-sm border-b border-b-slate-300 px-2 md:px-4 py-2.5 dark:bg-gray-900
+}
+main {
+  @apply h-screen flex flex-wrap justify-center mx-auto bg-white w-9/12 p-10 pt-14;
 }
 h1 {
     font-family: 'Merriweather';
@@ -35,20 +39,36 @@ label.required:after {
 .alert, .alert-danger {
     @apply text-rose-500 text-sm -mt-2 mb-2;
 }
-#main form label+ul>li, .form-error {
+#keyList div {
+  @apply bg-slate-700 mr-3 text-white h-auto text-sm font-medium w-auto items-center p-2 rounded dark:bg-gray-700 dark:text-gray-300;
+}
+
+#keyList {
+  @apply flex flex-wrap ;
+}
+form label+ul>li, .form-error {
     @apply text-rose-500 text-sm -mt-2 mb-2;
 }
-#main form div {
+form div {
     @apply mb-6;
 }
-#main form label {
-    @apply block mb-2 text-base font-semibold text-gray-900 dark:text-white;
+hr {
+  @apply h-px my-8 bg-gray-200 border-0 dark:bg-gray-700
 }
-#main form input[type=checkbox] {
-    @apply w-4 h-4 text-green-600 cursor-pointer rounded focus:ring-green-500 dark:focus:ring-green-600 text-green-500 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600
- }
-form input    {
-    @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
+form label {
+    @apply block mb-2 text-sm font-medium text-gray-600 dark:text-white  text-base;
+}
+form input[type=checkbox] {
+  @apply w-4 h-4 text-green-600 cursor-pointer rounded focus:ring-green-500 dark:focus:ring-green-600 text-green-500 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600
+}
+form input[type=text]    {
+    @apply bg-slate-50 rounded-md  border-0 border-b-2 border-b-slate-300  text-gray-500 italic text-base h-14   focus:border-b-slate-500  block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white  ;
+}
+form textarea {
+  @apply bg-slate-50  rounded-md  border-0 border-b-2 border-b-slate-300 h-60  text-gray-500 italic text-base  focus:border-b-slate-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white ;
+}
+select {
+  @apply bg-slate-50  rounded-md border-0 border-b-2 border-b-slate-300   text-gray-500 italic text-base h-14  focus:border-b-slate-500 focus:border-none block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white ;
 }
 input.icon-desc {
     @apply rounded-none rounded-r-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
@@ -56,10 +76,10 @@ input.icon-desc {
 span.form-icon {
     @apply inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600;
 }
-#main form button {
+form button[type=submit] {
     @apply text-white mt-5  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800;
 }
-#main form button:disabled {
+form button:disabled {
     background-color: dimgrey;
     color: linen;
     opacity: 1;
@@ -321,3 +341,10 @@ span.form-icon {
   .sdp-days button[aria-disabled].sdp-next-month {
     color: var(--sdp-disabled);
   }
+  .confetti {
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+  position: absolute;
+}

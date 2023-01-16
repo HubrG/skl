@@ -7,66 +7,63 @@
 	{% for message in app.flashes('success') %}
 		{{message}}
 	{% endfor %}
-	<turbo-frame id="profil_up">
-		{{ form_start(editUserForm, { attr: {'action':path("app_user_edit", {"id" : app.user.id})}}) }}
+	<section class="></section>
+	<section>
+		<turbo-frame id="profil_up">
+			{{ form_start(editUserForm, { attr: {'action':path("app_user_edit", {"id" : app.user.id})}}) }}
+			<div class="grid grid-cols-1 md:grid-cols-3">
+				<div class="grid grid-cols-3 text-center order-last md:order-first mt-20 md:mt-0">
+					<div>
+						<p class="font-bold text-gray-700 text-xl">22</p>
+						<p class="text-gray-400">Friends</p>
+					</div>
+					<div>
+						<p class="font-bold text-gray-700 text-xl">10</p>
+						<p class="text-gray-400">Photos</p>
+					</div>
+					<div>
+						<p class="font-bold text-gray-700 text-xl">89</p>
+						<p class="text-gray-400">Comments</p>
+					</div>
+				</div>
+				<div class="relative">
+					<div class="w-48 h-48 bg-indigo-100 mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
+						<img class="w-40 h-40 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500" src="{{ asset('images/uploads/profil_pictures/' ~ app.user.id ~ '/' ~ app.user.profilPicture )}}">
+					</div>
+				</div>
 
-		<div class="grid grid-cols-1 md:grid-cols-3">
-			<div class="grid grid-cols-3 text-center order-last md:order-first mt-20 md:mt-0">
-				<div>
-					<p class="font-bold text-gray-700 text-xl">22</p>
-					<p class="text-gray-400">Friends</p>
-				</div>
-				<div>
-					<p class="font-bold text-gray-700 text-xl">10</p>
-					<p class="text-gray-400">Photos</p>
-				</div>
-				<div>
-					<p class="font-bold text-gray-700 text-xl">89</p>
-					<p class="text-gray-400">Comments</p>
+				<div class="space-x-8 flex justify-between mt-32 md:mt-0 md:justify-center">
+					<button class="text-whitepy-2px-4uppercaseroundedbg-blue-400hover:bg-blue-500shadowhover:shadow-lgfont-mediumtransitiontransformhover:-translate-y-0.5" type="submit">
+						Enregistrer
+					</button>
+					<a href="{{ path("app_user", {"id" : app.user.id}) }}" data-turbo-frame="profil_up" class="text-white py-2 px-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
+						Annuler
+					</a>
 				</div>
 			</div>
-			<div class="relative">
-				<div class="w-48 h-48 bg-indigo-100 mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
-					<img class="w-40 h-40 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500" src="{{ asset('images/uploads/profil_pictures/' ~ app.user.id ~ '/' ~ app.user.profilPicture )}}">
-				</div>
+
+			<div class="mt-20 text-center border-b pb-12">
+				<h1 class="text-4xl font-medium text-gray-700">
+					{{ form_errors(editUserForm.nickname) }}
+					{{ form_widget(editUserForm.nickname, {attr: {'novalidate': 'novalidate'}})}}
+
+					{% set startDate = app.user.birth|date() %}
+					{% set difference = date( 'now' | date() ).diff(date(startDate)) %}
+					<span class="font-light text-gray-500">{{ difference|date("%y ans") }}</span>
+				</h1>
+				{{ form_widget(editUserForm.city, {attr: {'novalidate': 'novalidate'}})}}
+
+				<p class="mt-8 text-gray-500">Solution Manager - Creative Tim Officer</p>
+				<p class="mt-2 text-gray-500">University of Computer Science</p>
+			</div>
+			<div class="mt-12 flex flex-col justify-center">
+				{{ form_widget(editUserForm.about, {attr: {'novalidate': 'novalidate'}})}}
+				{{ form_widget(editUserForm.profil_picture, {attr: {'novalidate': 'novalidate'}})}}
 			</div>
 
-			<div class="space-x-8 flex justify-between mt-32 md:mt-0 md:justify-center">
-				<button class="text-whitepy-2px-4uppercaseroundedbg-blue-400hover:bg-blue-500shadowhover:shadow-lgfont-mediumtransitiontransformhover:-translate-y-0.5" type="submit">
-					Enregistrer
-				</button>
-				<a href="{{ path("app_user", {"id" : app.user.id}) }}" data-turbo-frame="profil_up" class="text-white py-2 px-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
-					Annuler
-				</a>
-			</div>
-		</div>
+			{{ form_end(editUserForm) }}
+		</turbo-frame>
+	</section>
 
-		<div class="mt-20 text-center border-b pb-12">
-			<h1 class="text-4xl font-medium text-gray-700">
-				{{ form_errors(editUserForm.nickname) }}
-				{{ form_widget(editUserForm.nickname, {attr: {'novalidate': 'novalidate'}})}}
-
-				{% set startDate = app.user.birth|date() %}
-				{% set difference = date( 'now' | date() ).diff(date(startDate)) %}
-				<span class="font-light text-gray-500">{{ difference|date("%y ans") }}</span>
-			</h1>
-			{{ form_widget(editUserForm.city, {attr: {'novalidate': 'novalidate'}})}}
-
-			<p class="mt-8 text-gray-500">Solution Manager - Creative Tim Officer</p>
-			<p class="mt-2 text-gray-500">University of Computer Science</p>
-		</div>
-		<div class="mt-12 flex flex-col justify-center">
-			{{ form_widget(editUserForm.about, {attr: {'novalidate': 'novalidate'}})}}
-			{{ form_widget(editUserForm.profil_picture, {attr: {'novalidate': 'novalidate'}})}}
-		</div>
-
-		{{ form_end(editUserForm) }}
-	</turbo-frame>
-
-	{% block javascript %}
-		<script>
-			location.hash = "ttt";
-		</script>
-	{% endblock %}
 
 {% endblock %}

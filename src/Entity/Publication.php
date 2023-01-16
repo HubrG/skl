@@ -43,9 +43,13 @@ class Publication
     #[ORM\ManyToOne(inversedBy: 'publications')]
     private ?PublicationCategory $category = null;
 
+    #[ORM\ManyToMany(targetEntity: PublicationKeyword::class, mappedBy: 'publication')]
+    private Collection $publicationKeywords;
+
     public function __construct()
     {
         $this->publicationChapters = new ArrayCollection();
+        $this->publicationKeywords = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -176,6 +180,33 @@ class Publication
     public function setCategory(?PublicationCategory $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationKeyword>
+     */
+    public function getPublicationKeywords(): Collection
+    {
+        return $this->publicationKeywords;
+    }
+
+    public function addPublicationKeyword(PublicationKeyword $publicationKeyword): self
+    {
+        if (!$this->publicationKeywords->contains($publicationKeyword)) {
+            $this->publicationKeywords->add($publicationKeyword);
+            $publicationKeyword->addPublication($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationKeyword(PublicationKeyword $publicationKeyword): self
+    {
+        if ($this->publicationKeywords->removeElement($publicationKeyword)) {
+            $publicationKeyword->removePublication($this);
+        }
 
         return $this;
     }

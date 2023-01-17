@@ -16,6 +16,11 @@
 		{% endblock %}
 	</head>
 	<body>
+		{% for message in app.session.flashBag.get('successMessage') %}
+			{% for title in app.session.flashBag.get('successTitle') %}
+				{% include '_partials/_notif.html.twig'  with {'notifMessage': message, 'notifTitle' : title} %}
+			{% endfor %}
+		{% endfor %}
 		{% include "_partials/_navbar.html.twig" %}
 
 		<div id="bmain">

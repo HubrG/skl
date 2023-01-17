@@ -73,7 +73,7 @@ form input[type=checkbox] {
 .peer:checked  {
   @apply bg-slate-600
 }
-form input[type=text]    {
+form input[type=text],input[type=email],input[type=password]    {
     @apply bg-slate-50 rounded-md  border-0 border-b-2 border-b-slate-400  text-gray-600 italic text-base h-14   focus:border-b-slate-500  block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white  ;
 }
 form textarea {

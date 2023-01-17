@@ -6,11 +6,7 @@
 	<!-- TODO: créer un extends de User dans Edit (au cas ou on voudrait arriver directement sur la page de modification) -->
 	<section class="col-span-12 pt-14">
 		<turbo-frame id="profil_up">
-			{% for message in app.flashes('successMessage') %}
-				{% for title in app.flashes('successTitle') %}
-					{% include './_partials/_notif.html.twig'  with {'notifMessage': message, 'notifTitle' : title} %}
-				{% endfor %}
-			{% endfor %}
+
 			<div class="grid grid-cols-1 md:grid-cols-3">
 				<div class="grid grid-cols-3 text-center order-last md:order-first mt-20 md:mt-0">
 					<div>

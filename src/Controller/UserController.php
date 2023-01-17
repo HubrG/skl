@@ -58,7 +58,6 @@ class UserController extends AbstractController
             $em->persist($userUp);
             $em->flush();
             // flash
-            $this->addFlash('success', '');
             $this->addFlash('successTitle', 'Modification enregistrées !');
             $this->addFlash('successMessage', 'Les modifications apportées sur votre page de profil sont désormais visibles de tous.');
             // return

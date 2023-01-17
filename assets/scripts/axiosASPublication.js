@@ -1,10 +1,15 @@
 // autosave pour l'édition d'un récit
 // TODO: À reproduire pour tous les autres autosave, modifier : le "pubMature" (checkbox) et le lien (url)
 export function axiosSave(value, name, file, url) {
+  let filename =
+    document.getElementById("hideId").value + Math.floor(Math.random() * 9999);
+  let path =
+    "/images/uploads/story/" + document.getElementById("hideId").value + "/";
   let data = new FormData();
   data.append("name", name);
   data.append("value", value);
   data.append("file", file);
+  data.append("filename", filename);
   axios
     .post(url, data, {
       headers: {
@@ -12,6 +17,9 @@ export function axiosSave(value, name, file, url) {
       },
     })
     .then(function (response) {
+      if (file) {
+        document.getElementById("cover").src = path + filename + ".jpg";
+      }
       //
     });
 }
@@ -19,7 +27,6 @@ export function axiosEvent() {
   document.querySelectorAll(".axios").forEach(function (row) {
     let timeout;
     const url = "/story/as/" + document.getElementById("hideId").value;
-
     row.addEventListener("change", () => {
       let file;
       if (row.files) {

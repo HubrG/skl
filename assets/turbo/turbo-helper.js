@@ -1,12 +1,27 @@
 import { addKeyword } from "../scripts/addKeyword";
 import axios from "axios";
 import { axiosSave, axiosEvent } from "../scripts/axiosASPublication";
+import { darkMode, ok } from "../scripts/darkmode";
+(function (c, a, n) {
+  var w = c.createElement(a),
+    s = c.getElementsByTagName(a)[0];
+  w.src = n;
+  s.parentNode.insertBefore(w, s);
+})(document, "script", "https://sdk.canva.com/designbutton/v2/api.js");
 const TurboHelper = class {
   constructor() {
     document.addEventListener("turbo:before-cache", () => {});
     document.addEventListener("turbo:render", () => {
       addKeyword();
       axiosEvent();
+      darkMode();
+      // canva
+      (function (c, a, n) {
+        var w = c.createElement(a),
+          s = c.getElementsByTagName(a)[0];
+        w.src = n;
+        s.parentNode.insertBefore(w, s);
+      })(document, "script", "https://sdk.canva.com/designbutton/v2/api.js");
     });
     document.addEventListener("turbo:visit", () => {
       // fade out the old body

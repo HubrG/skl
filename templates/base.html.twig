@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="" id="html">
 	<head>
 		<meta charset="UTF-8">
 		<title>
@@ -18,10 +18,14 @@
 	<body>
 		{% include "_partials/_navbar.html.twig" %}
 
-		<main>
-			{% block body %}{% endblock %}
+		<div id="bmain">
+			<main>
 
-		</main>
+				{% block body %}{% endblock %}
+
+
+			</main>
+		</div>
 		{% include "_partials/_footer.html.twig" %}
 		<script></script>
 	</body>

@@ -2,12 +2,31 @@
 
 {% block title %}Hello PublicationController!
 {% endblock %}
-
+{# TODO: sur l'affichage des textes, faire un module de surlignage, mise en favoris, commentaire etc sur la selection #}
 {% block body %}
-	{{ form_start(form) }}
-	<section class=" grid-cols-1  pr-10">{{ form_widget(form.cover, {attr:{"class":"axios"}})}}</section>
-	<section class=" grid-cols-1 ">
+	<div class="col-span-12 text-center mb-10">
 		<h1>Publier un nouveau récit</h1>
+		{% if pub.updated %}
+			<p class="text-xs text-slate-400 -mt-7 mb-5">
+				<span class="font-medium">
+					Reprise de votre dernière ébauche&nbsp;&nbsp;<i data-tooltip-target="tooltip-ebauche" data-tooltip-placement="bottom" class="fa-solid fa-circle-info cursor-help"></i>
+				</span>
+			</p>
+			<div id="tooltip-ebauche" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-xs font-normal text-white bg-slate-700 rounded-lg opacity-0 tooltip dark:bg-gray-700">
+				Dernière modification : il y a{% include "./_partials/_dates.html.twig" with {'date': pub.updated} %}
+				<div class="tooltip-arrow" data-popper-arrow></div>
+			</div>
+		{% endif %}
+	</div>
+	<section class="col-span-7 col-start-4 justify-items-end pr-10  mb-14 sm:col-start-3 sm:col-span-3">
+		<label for="publication_cover" class="cursor-pointer"><img data-tooltip-target="tooltip-left" data-tooltip-placement="bottom" id="cover" {% if pub.cover != "" %} src=" {{ asset('images/uploads/story/'~ pub.id ~'/'~ pub.cover)}} " class="shadow-md shadow-slate-300 dark:shadow-slate-900 rounded-lg" {% else %} src="{{ asset('images/uploads/story/cover.gif')}}" {% endif %}/></label>
+		<div id="tooltip-left" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-normal text-white bg-slate-700 rounded-lg opacity-0 tooltip dark:bg-gray-700">
+			Cliquez ici pour importer une photo<br/>de couverture
+			<div class="tooltip-arrow" data-popper-arrow></div>
+		</div>
+		{{ form_widget(form.cover, {attr:{"class":"axios hidden"}})}}</section>
+	<section class="col-span-12 md:col-span-6">
+		{{ form_start(form) }}
 		<input type="hidden" value="{{ pub.id }}" id="hideId"/>
 		{{ form_label(form.title) }}
 		<div class="relative mb-6">
@@ -18,23 +37,24 @@
 		</div>
 		{{ form_label(form.summary) }}
 		<div class="relative mb-6">
-			<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
-				<i class="fa-solid fa-receipt"></i>
-			</div>
 			{{ form_widget(form.summary, {attr:{"class":"axios"}}) }}
 		</div>
+		{{ form_label(form.category) }}
 		<div class="relative mb-6">
 			<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
-				<i class="fa-solid fa-receipt"></i>
+				<i class="fa-solid fa-list"></i>
 			</div>
 			{{ form_widget(form.category, {attr:{"class":"axios"}}) }}
 		</div>
 		<label>En quelques mots, quelles sont les grandes thématiques de votre récit ?</label>
-		<div class="relative z-0 w-full mb-6 group">
+		<div class="relative mb-6">
+			<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
+				<i class="fa-solid fa-tag"></i>
+			</div>
 			<input type="text" value="" id="keyValue"/>
 		</div>
 		<turbo-frame id="keyroute">
-			<div id="keyList">
+			<div id="keyList" class="items-center">
 				{% for k in pub.publicationKeywords %}
 					<div id="keyw_{{ k.keyword|upper }}">{{ k.keyword }}
 
@@ -52,8 +72,9 @@
 			<span class="ml-3 -mt-6 text-sm font-medium text-gray-900 dark:text-gray-300">Votre histoire contient-elle du contenu pour adulte ?</span>
 		</label>
 		<div>
-			<button type="submit">Suivant</button>
+			<button type="submit" class="w-full">Suivant &nbsp;&nbsp;&nbsp;<i class="fa-solid fa-angle-right"></i>
+			</button>
 		</div>
+		{{ form_end(form) }}
 	</section>
-	{{ form_end(form) }}
 {% endblock %}

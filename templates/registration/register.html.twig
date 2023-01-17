@@ -7,8 +7,7 @@
 	{% for flash_error in app.flashes('verify_email_error') %}
 		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
 	{% endfor %}
-
-	<div class="w-8/12 p-4 bg-white border border-gray-200 rounded-lg shadow-md sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+	<section class="col-span-6  col-start-4">
 		<h1 class="text-center">Rejoignez-nous !</h1>
 		{{ form_start(registrationForm, {attr: {'novalidate': 'novalidate'}}) }}
 		{{ form_label(registrationForm.username) }}
@@ -47,7 +46,6 @@
 		</ul>
 		<button type=" submit" class=" btn">C'est parti !</button>
 		{{ form_end(registrationForm) }}
-	</div>
-
+	</section>
 
 {% endblock %}

@@ -46,6 +46,12 @@ class Publication
     #[ORM\ManyToMany(targetEntity: PublicationKeyword::class, mappedBy: 'publication')]
     private Collection $publicationKeywords;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $updated = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $created = null;
+
     public function __construct()
     {
         $this->publicationChapters = new ArrayCollection();
@@ -207,6 +213,30 @@ class Publication
         if ($this->publicationKeywords->removeElement($publicationKeyword)) {
             $publicationKeyword->removePublication($this);
         }
+
+        return $this;
+    }
+
+    public function getUpdated(): ?\DateTimeInterface
+    {
+        return $this->updated;
+    }
+
+    public function setUpdated(?\DateTimeInterface $updated): self
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    public function getCreated(): ?\DateTimeInterface
+    {
+        return $this->created;
+    }
+
+    public function setCreated(?\DateTimeInterface $created): self
+    {
+        $this->created = $created;
 
         return $this;
     }

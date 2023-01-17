@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\Publication;
 use App\Form\PublicationType;
 use App\Entity\PublicationKeyword;
@@ -12,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationKeywordRepository;
 use App\Repository\PublicationCategoryRepository;
+use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PublicationController extends AbstractController
@@ -46,8 +48,9 @@ class PublicationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // on modifie le statut du post => (1) ce n'est plus un brouillon
             $status = $pubRepo->findOneBy(["user" => $this->getUser(), "status" => 0]);
-            $status->setStatus(1);
-            // on persiste et on envoi
+            $status->setStatus(1)
+                ->setUpdated(new \DateTime('now'))
+                ->setCreated(new \DateTime('now'));
             $em->persist($form->getData());
             $em->persist($status);
             $em->flush();
@@ -160,6 +163,7 @@ class PublicationController extends AbstractController
     {
         $dataName = $request->get("name");
         $dataValue = $request->get("value");
+        $dataFileName = $request->get("filename");
         $dataFile = $request->files->get("file");
         //
         $publication = $pubRepo->find($pub);
@@ -168,13 +172,17 @@ class PublicationController extends AbstractController
             $publication->setTitle($dataValue);
         }
         if ($dataName === "publication[cover]") {
-            $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $pub;
-            $newFilename = $pub . '.jpg';
-            $dataFile->move(
-                $destination,
-                $newFilename
-            );
-            $publication->setCover($newFilename);
+            // Si le fichier est bien une image, on execute
+            if (exif_imagetype($dataFile)) {
+                $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $pub;
+                \unlink($destination . "/" . $publication->getCover());
+                $newFilename = $dataFileName . '.jpg';
+                $dataFile->move(
+                    $destination,
+                    $newFilename
+                );
+                $publication->setCover($newFilename);
+            }
         }
         if ($dataName === "publication[summary]") {
             $publication->setSummary($dataValue);
@@ -186,6 +194,7 @@ class PublicationController extends AbstractController
         if ($dataName === "publication[mature]") {
             $publication->setMature($dataValue);
         }
+        $publication->setUpdated(new \DateTime('now'));
         $em->persist($publication);
         $em->flush();
         //

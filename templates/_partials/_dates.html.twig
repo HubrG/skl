@@ -1,0 +1,27 @@
+{% set startDate = date|date() %}
+{% set difference = date( 'now' | date() ).diff(date(startDate)) %}
+{% if difference|date("%y") > 0 %}
+	{% if difference|date("%y") > 1 %}
+		{{ difference|date("%y ans") }}
+	{% else %}
+		{{ difference|date("%y an") }}
+	{% endif %}
+{% elseif difference|date("%M") > 0 %}
+	{{ difference|date("%m mois") }}
+{% elseif difference|date("%d") > 0 %}
+	{% if difference|date("%d") > 1 %}
+		{{ difference|date("%d jours") }}
+	{% else %}
+		{{ difference|date("%d jour") }}
+	{% endif %}
+{% elseif difference|date("%h") > 0 %}
+	{% if difference|date("%h") > 1 %}
+		{{ difference|date("%h heures") }}
+	{% else %}
+		{{ difference|date("%h heure") }}
+	{% endif %}
+{% elseif difference|date("%i") < 5 %}
+	{{ difference|date("quelques instants") }}
+{% else %}
+	{{ difference|date("%i minutes") }}
+{% endif %}

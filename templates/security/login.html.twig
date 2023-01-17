@@ -4,54 +4,48 @@
 {% endblock %}
 
 {% block body %}
-	<div class="flex h-screen justify-center items-center ">
-		<div class="xl:w-4/12 mx-auto md:w-4/12 ">
-			<div class="mx-auto my-0 ">
-				<div class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow-md sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-					<h1 class="text-center">Connexion</h1>
-					<form method="post">
-						{% if error %}
-							<div class="flex justify-center items-center font-bold">
+	<section class="col-span-6 col-start-4">
+		<h1 class="text-center">Connexion</h1>
+		<form method="post">
+			{% if error %}
+				<div class="flex justify-center items-center font-bold">
 
-								<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+					<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 
-							</div>
-						{% endif %}
-						<div class="mb-3">
-							{% if app.user %}
-								Vous êtes connecté(e) en tant que
-								{{ app.user.userIdentifier }},
-								<a href="{{ path('app_logout') }}">Déconnexion</a>
-							</div>
-						{% else %}
-							<label for="inputEmail">Adresse email</label>
-							<div class="flex">
-								<span class="form-icon">
-									<i class="fa-regular fa-envelope"></i>
-								</span>
-								<input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control icon-desc" autocomplete="email" autofocus>
-							</div>
-							<label for="inputPassword">Mot de passe</label>
-							<div class="flex">
-								<span class="form-icon">
-									<i class="fa-solid fa-unlock-keyhole"></i>
-								</span>
-								<input type="password" name="password" id="inputPassword" class="form-control icon-desc" autocomplete="current-password">
-							</div>
-							<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-							<div class="checkbox mb-3">
-								<label>
-									<input type="checkbox" name="_remember_me">
-									&nbsp;Se souvenir de moi
-								</label>
-							</div>
-							<button class="btn btn-lg btn-primary " type="submit">
-								Me connecter
-							</button>
-						{% endif %}
-					</form>
 				</div>
-			</div>
-		</div>
-	</div>
+			{% endif %}
+			<div class="mb-3">
+				{% if app.user %}
+					Vous êtes connecté(e) en tant que
+					{{ app.user.userIdentifier }},
+					<a href="{{ path('app_logout') }}">Déconnexion</a>
+				</div>
+			{% else %}
+				<label for="inputEmail">Adresse email</label>
+				<div class="flex">
+					<span class="form-icon">
+						<i class="fa-regular fa-envelope"></i>
+					</span>
+					<input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control icon-desc" autocomplete="email" autofocus>
+				</div>
+				<label for="inputPassword">Mot de passe</label>
+				<div class="flex">
+					<span class="form-icon">
+						<i class="fa-solid fa-unlock-keyhole"></i>
+					</span>
+					<input type="password" name="password" id="inputPassword" class="form-control icon-desc" autocomplete="current-password">
+				</div>
+				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+				<div class="checkbox mb-3">
+					<label>
+						<input type="checkbox" name="_remember_me">
+						&nbsp;Se souvenir de moi
+					</label>
+				</div>
+				<button class="btn btn-lg btn-primary " type="submit">
+					Me connecter
+				</button>
+			{% endif %}
+		</form>
+	</section>
 {% endblock %}

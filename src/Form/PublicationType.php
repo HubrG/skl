@@ -7,6 +7,7 @@ use App\Entity\PublicationCategory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -30,8 +31,13 @@ class PublicationType extends AbstractType
                 'label' => "Pourriez-vous le résumer en quelques lignes ?",
             ])
             ->add('cover', FileType::class, [
+                'mapped' => false,
                 'required' => false,
-
+                'constraints' => [
+                    new Image([
+                        'maxSize' => '5k'
+                    ])
+                ]
             ])
             ->add('mature', CheckboxType::class, [
                 'required' => false

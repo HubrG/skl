@@ -19,18 +19,15 @@ class UserController extends AbstractController
     {
         /// Conditions d'affichage
         // Si le username n'est pas renseigné et que l'utilisateur est connecté, alors on affiche la page du membre connecté
-        if ($username == "me" && $this->getUser())
-        {
+        if ($username == "me" && $this->getUser()) {
             $userInfo = $userRepo->findOneBy(["email" => $this->getUser()->getEmail()]);
         }
         // Si le username n'est pas renseigné et que l'utilisateur n'est pas connecté, alors on le redirige
-        elseif ($username == "me" && !$this->getUser())
-        {
+        elseif ($username == "me" && !$this->getUser()) {
             return $this->redirectToRoute("app_home");
         }
         // Si le username est renseigné alors on affiche la page du membre du username
-        else
-        {
+        else {
             $userInfo = $userRepo->findOneBy(["username" => $username]);
         }
         return $this->renderForm('user/user.html.twig', [
@@ -38,22 +35,20 @@ class UserController extends AbstractController
         ]);
     }
     #[Route('user/edit/{id}', name: 'app_user_edit')]
-    public function edit(Request $request, UserRepository $userRepo, $id = null, EntityManagerInterface $em): Response
+    public function edit(Request $request, UserRepository $userRepo, EntityManagerInterface $em,  $id = null): Response
     {
-        if (!$this->getUser())
-        {
+        if (!$this->getUser()) {
             return $this->redirectToRoute("app_home");
         }
         /// Création du formulaire
         $form = $this->createForm(UserInfoType::class, $this->getUser()); // $user = utilisateur loggué (UserInterface)
         $form->handleRequest($request);
-    if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $userUp = $userRepo->find($this->getUser());
             $uploadedFile = $form['profil_picture']->getData();
             if ($uploadedFile) {
-                $destination = $this->getParameter('kernel.project_dir').'/public/images/uploads/profil_pictures/'.$this->getUser()->getId();
-                $newFilename = $this->getUser()->getId().'.'.$uploadedFile->guessExtension();
+                $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/profil_pictures/' . $this->getUser()->getId();
+                $newFilename = $this->getUser()->getId() . '.' . $uploadedFile->guessExtension();
                 $uploadedFile->move(
                     $destination,
                     $newFilename

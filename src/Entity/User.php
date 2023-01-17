@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
+use Serializable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
-use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -16,7 +16,6 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'Cette adresse email est déjà enregistrée')]
 #[UniqueEntity(fields: ['username'], message: 'Cet nom d\'utilisateur existe déjà')]
-#[ApiResource]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -25,8 +24,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Assert\NotBlank(message:"Vous devez renseigner votre adresse email")]
-    #[Assert\Email(message:"Cette adresse email semble incorrecte")]
+    #[Assert\NotBlank(message: "Vous devez renseigner votre adresse email")]
+    #[Assert\Email(message: "Cette adresse email semble incorrecte")]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -42,7 +41,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $isVerified = false;
 
     #[ORM\Column(length: 255, nullable: true, unique: true)]
-    #[Assert\NotBlank(message:"Vous devez renseigner un nom d'utilisateur")]
+    #[Assert\NotBlank(message: "Vous devez renseigner un nom d'utilisateur")]
     private ?string $username = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -69,10 +68,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $birth = null;
 
-    #[ORM\Column(length: 255, nullable : true)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $profil_background = null;
 
-    #[ORM\Column(length: 255, nullable : true)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $country = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Publication::class)]
@@ -151,7 +150,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        $this->plainPassword = null;
+        //$this->plainPassword = null;
     }
 
     public function isVerified(): bool
@@ -327,6 +326,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
-
 }

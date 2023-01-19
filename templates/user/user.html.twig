@@ -41,7 +41,7 @@
 			<div class="mt-20 text-center border-b pb-12">
 				<h1 class="text-4xl font-medium text-gray-700">{{ userInfo.nickname }},
 
-					<span class="font-light text-gray-500">{% include "./_partials/_dates.html.twig" with {'date': userInfo.birth} %}</span>
+					<span class="font-light text-gray-500">{{ userInfo.birth|since }}</span>
 
 				</h1>
 				<p class="font-light text-gray-600 mt-3">{{ userInfo.city }}</p>

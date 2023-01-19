@@ -33,7 +33,6 @@ class RegistrationController extends AbstractController
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             $user->setPassword(
@@ -43,9 +42,9 @@ class RegistrationController extends AbstractController
                 )
             );
             $user->setNickname($form->get("username")->getData());
+            $user->setJoinDate(new \DateTime('now'));
             $entityManager->persist($user);
             $entityManager->flush();
-
             // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation(
                 'app_verify_email',
@@ -70,12 +69,10 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form,
         ]);
     }
-
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, TranslatorInterface $translator): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
         // validate email confirmation link, sets User::isVerified=true and persists
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
@@ -84,10 +81,8 @@ class RegistrationController extends AbstractController
 
             return $this->redirectToRoute('app_register');
         }
-
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Your email address has been verified.');
-
         return $this->redirectToRoute('app_register');
     }
 }

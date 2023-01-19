@@ -7,26 +7,38 @@
 	<div class="col-span-12 text-center mb-10">
 		<h1>Publier un nouveau récit</h1>
 		{% if pub.updated %}
-			<p class="text-xs text-slate-400 -mt-7 mb-5">
-				<span class="font-medium">
-					Reprise de votre dernière ébauche&nbsp;&nbsp;<i data-tooltip-target="tooltip-ebauche" data-tooltip-placement="bottom" class="fa-solid fa-circle-info cursor-help"></i>
+			<p class="text-xs text-slate-500 -mt-7 mb-5">
+				<span class="font-light">
+					Reprise de votre dernière ébauche |
+					<span class="font-normal">modifiée il y a
+						{{pub.updated|since }}</span>
+					|
+					<a href="#">recommencer</a>
 				</span>
 			</p>
-			<div id="tooltip-ebauche" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-xs font-normal text-white bg-slate-700 rounded-lg opacity-0 tooltip dark:bg-gray-700">
-				Dernière modification : il y a{% include "./_partials/_dates.html.twig" with {'date': pub.updated} %}
-				<div class="tooltip-arrow" data-popper-arrow></div>
-			</div>
 		{% endif %}
 	</div>
-	<section class="col-span-7 col-start-4 justify-items-end pr-10  mb-14 sm:col-start-3 sm:col-span-3">
-		<label for="publication_cover" class="cursor-pointer"><img data-tooltip-target="tooltip-left" data-tooltip-placement="bottom" id="cover" {% if pub.cover != "" %} src=" {{ asset('images/uploads/story/'~ pub.id ~'/'~ pub.cover)}} " class="shadow-md shadow-slate-300 dark:shadow-slate-900 rounded-lg" {% else %} src="{{ asset('images/uploads/story/cover.gif')}}" {% endif %}/></label>
-		<div id="tooltip-left" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-normal text-white bg-slate-700 rounded-lg opacity-0 tooltip dark:bg-gray-700">
+	<aside class="col-span-7 col-start-4 justify-items-end pr-10  mb-14 sm:col-start-2 sm:col-span-3">
+		{% if pub.cover == "" %}
+			<div id="hideNoCover" class="shadow-md p-10 text-2xl flex h-80 bg-slate-100 rounded-md dark:bg-slate-500" for="publication_cover" data-tooltip-placement="bottom" data-tooltip-target="tooltip-cover">
+				<label for="publication_cover" class="cursor-pointer justify-center h-80">
+					<h2 class="m-auto text-center font-light shadow-slate-300 text-slate-600 dark:shadow-slate-900 mt-10 rounded-lg">
+						<i class="fa-regular fa-images text-5xl"></i><br/><br/>Ajouter une couverture
+					</h2>
+				</label>
+			</div>
+			<label for="publication_cover" id="showNewCover" class="cursor-pointer hidden"><img id="cover" src="" data-tooltip-target="tooltip-cover" data-tooltip-placement="bottom" class="shadow-md shadow-slate-300 dark:shadow-slate-900 rounded-lg"/></label>
+		{% else %}
+			<label for="publication_cover" class="cursor-pointer"><img data-tooltip-target="tooltip-cover" data-tooltip-placement="bottom" id="cover" class="shadow-md shadow-slate-300 dark:shadow-slate-900 rounded-lg" src="{{ asset('images/uploads/story/'~ pub.id ~'/'~ pub.cover)}} "/></label>
+		{% endif %}
+		<div id="tooltip-cover" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-normal text-white bg-slate-700 rounded-lg opacity-0 tooltip dark:bg-gray-700">
 			Cliquez ici pour importer une photo<br/>de couverture
 			<div class="tooltip-arrow" data-popper-arrow></div>
 		</div>
-		{{ form_widget(form.cover, {attr:{"class":"axios hidden"}})}}</section>
+	</aside>
 	<section class="col-span-12 md:col-span-6">
 		{{ form_start(form) }}
+		{{ form_widget(form.cover, {attr:{"class":"axios hidden"}})}}
 		<input type="hidden" value="{{ pub.id }}" id="hideId"/>
 		{{ form_label(form.title) }}
 		<div class="relative mb-6">
@@ -58,7 +70,7 @@
 				{% for k in pub.publicationKeywords %}
 					<div id="keyw_{{ k.keyword|upper }}">{{ k.keyword }}
 
-						&nbsp;<a href="{{path("app_publication_del_keyword", {value:k.keyword, pub:pub.id})}}">
+						&nbsp;<a href="{{path("app_publication_del_keyword", {value:k.keyword, pub:pub.id, mode:"add"})}}">
 							<i class="fa-solid fa-delete-left hover:text-red-400"></i>
 						</a>
 					</div>
@@ -69,7 +81,7 @@
 		<label class="relative inline-flex items-center cursor-pointer">
 			{{ form_widget(form.mature, {attr:{"class":"sr-only peer axios"}}) }}
 			<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-			<span class="ml-3 -mt-6 text-sm font-medium text-gray-900 dark:text-gray-300">Votre histoire contient-elle du contenu pour adulte ?</span>
+			<span class="ml-3 -mt-6 text-sm font-medium text-gray-900 dark:text-gray-300">Votre récit contient-il du contenu pour adulte ?</span>
 		</label>
 		<div>
 			<button type="submit" class="w-full">Suivant &nbsp;&nbsp;&nbsp;<i class="fa-solid fa-angle-right"></i>

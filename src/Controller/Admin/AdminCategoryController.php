@@ -20,8 +20,7 @@ class AdminCategoryController extends AbstractController
         // création du formulaire d'édition
         $form = $this->createForm(PublicationCategoryType::class);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($form->getData());
             $em->flush();
             return $this->redirectToRoute("app_admin_category", [], Response::HTTP_SEE_OTHER);

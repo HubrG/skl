@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Publication;
+use Doctrine\ORM\EntityRepository;
 use App\Entity\PublicationCategory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -45,10 +46,13 @@ class PublicationType extends AbstractType
             ->add('category', EntityType::class, [
                 'placeholder' => "Choisir une catégorie",
                 "class" => PublicationCategory::class,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')
+                        ->orderBy('u.name', 'ASC');
+                },
                 'label' => "Dans quelle catégorie rangeriez-vous ce récit ?",
                 'choice_label' => 'name',
                 "required" => false
-
             ]);
     }
     public function configureOptions(OptionsResolver $resolver): void

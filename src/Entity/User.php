@@ -77,6 +77,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Publication::class)]
     private Collection $publications;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $join_date = null;
+
     public function __construct()
     {
         $this->publications = new ArrayCollection();
@@ -323,6 +326,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $publication->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getJoinDate(): ?\DateTimeInterface
+    {
+        return $this->join_date;
+    }
+
+    public function setJoinDate(\DateTimeInterface $join_date): self
+    {
+        $this->join_date = $join_date;
 
         return $this;
     }

@@ -12,8 +12,15 @@ export function addKeyword() {
         event.code === "Comma"
       ) {
         if (!document.getElementById("keyw_" + inputKey.value.toUpperCase())) {
-          const url = "add_key/" + inputPost.value + "/" + inputKey.value;
+          const url =
+            "/story/add_key/" + inputPost.value + "/" + inputKey.value;
           axios.post(url).then(function (response) {
+            let page;
+            if (document.getElementById("editPage")) {
+              page = "edit";
+            } else {
+              page = "add";
+            }
             let result = response.data["value"];
             let newKey = document.createElement("div");
             newKey.setAttribute("id", "keyw_" + result.toUpperCase());
@@ -22,7 +29,9 @@ export function addKeyword() {
             document.getElementById("keyList").appendChild(newKey);
             document.getElementById("keyw_" + result.toUpperCase()).innerHTML =
               result +
-              " &nbsp;<a href='/story/del_key/" +
+              " &nbsp;<a href='/story/" +
+              page +
+              "/del_key/" +
               inputPost.value +
               "/" +
               result +

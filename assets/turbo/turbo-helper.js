@@ -1,7 +1,8 @@
 import { addKeyword } from "../scripts/addKeyword";
-import axios from "axios";
 import { axiosSave, axiosEvent } from "../scripts/axiosASPublication";
 import { darkMode, ok } from "../scripts/darkmode";
+import { PublicationPublishButton } from "../scripts/PublicationPublish";
+
 (function (c, a, n) {
   var w = c.createElement(a),
     s = c.getElementsByTagName(a)[0];
@@ -15,6 +16,7 @@ const TurboHelper = class {
       addKeyword();
       axiosEvent();
       darkMode();
+      PublicationPublishButton();
       // canva
       (function (c, a, n) {
         var w = c.createElement(a),

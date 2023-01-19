@@ -1,13 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import '~animate.css/animate.css';
+@import "~noty/lib/noty.css";
+@import "~noty/lib/themes/semanticui.css";
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+JP:wght@100;300;400;500;700&display=swap');@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+JP:wght@100;300;400;500;700&display=swap');
 * {
-    
+  font-family: "Noto Sans JP";
 }
 body {
   @apply bg-white dark:bg-slate-800;
-font-family: "Noto Sans JP";
+
     transition: opacity 1000ms;
     /* background-color: #ffffff;
 background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25'%3E%3Cdefs%3E%3ClinearGradient id='a' gradientUnits='userSpaceOnUse' x1='0' x2='0' y1='0' y2='100%25' gradientTransform='rotate(240)'%3E%3Cstop offset='0' stop-color='%23ffffff'/%3E%3Cstop offset='1' stop-color='%23FFFFFF'/%3E%3C/linearGradient%3E%3Cpattern patternUnits='userSpaceOnUse' id='b' width='478' height='398.3' x='0' y='0' viewBox='0 0 1080 900'%3E%3Cg fill-opacity='0.02'%3E%3Cpolygon fill='%23444' points='90 150 0 300 180 300'/%3E%3Cpolygon points='90 150 180 0 0 0'/%3E%3Cpolygon fill='%23AAA' points='270 150 360 0 180 0'/%3E%3Cpolygon fill='%23DDD' points='450 150 360 300 540 300'/%3E%3Cpolygon fill='%23999' points='450 150 540 0 360 0'/%3E%3Cpolygon points='630 150 540 300 720 300'/%3E%3Cpolygon fill='%23DDD' points='630 150 720 0 540 0'/%3E%3Cpolygon fill='%23444' points='810 150 720 300 900 300'/%3E%3Cpolygon fill='%23FFF' points='810 150 900 0 720 0'/%3E%3Cpolygon fill='%23DDD' points='990 150 900 300 1080 300'/%3E%3Cpolygon fill='%23444' points='990 150 1080 0 900 0'/%3E%3Cpolygon fill='%23DDD' points='90 450 0 600 180 600'/%3E%3Cpolygon points='90 450 180 300 0 300'/%3E%3Cpolygon fill='%23666' points='270 450 180 600 360 600'/%3E%3Cpolygon fill='%23AAA' points='270 450 360 300 180 300'/%3E%3Cpolygon fill='%23DDD' points='450 450 360 600 540 600'/%3E%3Cpolygon fill='%23999' points='450 450 540 300 360 300'/%3E%3Cpolygon fill='%23999' points='630 450 540 600 720 600'/%3E%3Cpolygon fill='%23FFF' points='630 450 720 300 540 300'/%3E%3Cpolygon points='810 450 720 600 900 600'/%3E%3Cpolygon fill='%23DDD' points='810 450 900 300 720 300'/%3E%3Cpolygon fill='%23AAA' points='990 450 900 600 1080 600'/%3E%3Cpolygon fill='%23444' points='990 450 1080 300 900 300'/%3E%3Cpolygon fill='%23222' points='90 750 0 900 180 900'/%3E%3Cpolygon points='270 750 180 900 360 900'/%3E%3Cpolygon fill='%23DDD' points='270 750 360 600 180 600'/%3E%3Cpolygon points='450 750 540 600 360 600'/%3E%3Cpolygon points='630 750 540 900 720 900'/%3E%3Cpolygon fill='%23444' points='630 750 720 600 540 600'/%3E%3Cpolygon fill='%23AAA' points='810 750 720 900 900 900'/%3E%3Cpolygon fill='%23666' points='810 750 900 600 720 600'/%3E%3Cpolygon fill='%23999' points='990 750 900 900 1080 900'/%3E%3Cpolygon fill='%23999' points='180 0 90 150 270 150'/%3E%3Cpolygon fill='%23444' points='360 0 270 150 450 150'/%3E%3Cpolygon fill='%23FFF' points='540 0 450 150 630 150'/%3E%3Cpolygon points='900 0 810 150 990 150'/%3E%3Cpolygon fill='%23222' points='0 300 -90 450 90 450'/%3E%3Cpolygon fill='%23FFF' points='0 300 90 150 -90 150'/%3E%3Cpolygon fill='%23FFF' points='180 300 90 450 270 450'/%3E%3Cpolygon fill='%23666' points='180 300 270 150 90 150'/%3E%3Cpolygon fill='%23222' points='360 300 270 450 450 450'/%3E%3Cpolygon fill='%23FFF' points='360 300 450 150 270 150'/%3E%3Cpolygon fill='%23444' points='540 300 450 450 630 450'/%3E%3Cpolygon fill='%23222' points='540 300 630 150 450 150'/%3E%3Cpolygon fill='%23AAA' points='720 300 630 450 810 450'/%3E%3Cpolygon fill='%23666' points='720 300 810 150 630 150'/%3E%3Cpolygon fill='%23FFF' points='900 300 810 450 990 450'/%3E%3Cpolygon fill='%23999' points='900 300 990 150 810 150'/%3E%3Cpolygon points='0 600 -90 750 90 750'/%3E%3Cpolygon fill='%23666' points='0 600 90 450 -90 450'/%3E%3Cpolygon fill='%23AAA' points='180 600 90 750 270 750'/%3E%3Cpolygon fill='%23444' points='180 600 270 450 90 450'/%3E%3Cpolygon fill='%23444' points='360 600 270 750 450 750'/%3E%3Cpolygon fill='%23999' points='360 600 450 450 270 450'/%3E%3Cpolygon fill='%23666' points='540 600 630 450 450 450'/%3E%3Cpolygon fill='%23222' points='720 600 630 750 810 750'/%3E%3Cpolygon fill='%23FFF' points='900 600 810 750 990 750'/%3E%3Cpolygon fill='%23222' points='900 600 990 450 810 450'/%3E%3Cpolygon fill='%23DDD' points='0 900 90 750 -90 750'/%3E%3Cpolygon fill='%23444' points='180 900 270 750 90 750'/%3E%3Cpolygon fill='%23FFF' points='360 900 450 750 270 750'/%3E%3Cpolygon fill='%23AAA' points='540 900 630 750 450 750'/%3E%3Cpolygon fill='%23FFF' points='720 900 810 750 630 750'/%3E%3Cpolygon fill='%23222' points='900 900 990 750 810 750'/%3E%3Cpolygon fill='%23222' points='1080 300 990 450 1170 450'/%3E%3Cpolygon fill='%23FFF' points='1080 300 1170 150 990 150'/%3E%3Cpolygon points='1080 600 990 750 1170 750'/%3E%3Cpolygon fill='%23666' points='1080 600 1170 450 990 450'/%3E%3Cpolygon fill='%23DDD' points='1080 900 1170 750 990 750'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect x='0' y='0' fill='url(%23a)' width='100%25' height='100%25'/%3E%3Crect x='0' y='0' fill='url(%23b)' width='100%25' height='100%25'/%3E%3C/svg%3E");
@@ -29,7 +32,7 @@ nav {
  @apply  bg-white shadow-sm border-b border-b-slate-300 px-2 md:px-4 py-2.5 dark:bg-slate-900 dark:border-b-slate-700
 }
 main {
-  @apply min-h-screen w-full grid grid-cols-12 mx-auto  p-10 pt-14 md:w-9/12 ;
+  @apply min-h-screen w-full grid grid-cols-12 mx-auto p-10 pt-14 md:w-9/12 ;
   
 }
 h1 {
@@ -37,16 +40,18 @@ h1 {
     font-weight: normal;
     @apply  text-5xl text-slate-700 mb-10 dark:text-slate-100;
 }
-label.required:after {
-    content: " *";
-    @apply text-pink-500
+main a {
+  @apply text-blue-700;
+}
+main a:hover {
+  @apply text-blue-500;
 }
 .logo {
-    font-family: 'Merriweather';
-    font-weight:normal;
+  font-family: 'Merriweather';
+  font-weight:normal;
 }
 .alert, .alert-danger {
-    @apply text-rose-500 text-sm -mt-2 mb-2;
+  @apply text-rose-500 text-sm -mt-2 mb-2;
 }
 #keyList div {
   @apply bg-slate-700 mr-3 text-white h-auto text-sm font-medium w-auto items-center p-2 rounded dark:bg-gray-700 dark:text-gray-300;
@@ -54,6 +59,13 @@ label.required:after {
 
 #keyList {
   @apply flex flex-wrap ;
+}
+#keyList a {
+  @apply text-red-300;
+}
+form label.required:after {
+    content: " *";
+    @apply text-pink-500
 }
 form label+ul>li, .form-error {
     @apply text-rose-500 text-sm -mt-2 mb-2;
@@ -79,10 +91,10 @@ form input[type=text],input[type=email],input[type=password]    {
 form textarea {
   @apply bg-slate-50 rounded-md  border-0 border-b-2 border-b-slate-400 h-60  text-gray-600 italic text-base  focus:border-b-slate-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white ;
 }
-select {
+form select {
   @apply bg-slate-50  rounded-md border-0 border-b-2 border-b-slate-400   text-gray-600 italic text-base h-14  focus:border-b-slate-500 focus:border-none block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white ;
 }
-input.icon-desc {
+form input.icon-desc {
     @apply rounded-none rounded-r-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
 }
 span.form-icon {
@@ -96,7 +108,6 @@ form button:disabled {
     color: linen;
     opacity: 1;
 }
-
 .help-text {
     margin: -20px 0 10px 0;
     @apply text-xs text-gray-500 italic;
@@ -118,245 +129,16 @@ form button:disabled {
       text-shadow: none;
     }
   }
-
-
-
-
-
-
-
-
-/* date picker */
-
-:root {
-    --sdp-selected: #005fcc;
-    --sdp-selected-invert: #ffffff;
-    --sdp-prev-month: #888888;
-    --sdp-next-month: #888888;
-    --sdp-disabled: #1010104d;
-    --sdp-disabled-invert: #ffffff;
-    --sdp-background: #ffffff;
-    --sdp-border: #dddddd;
-    --sdp-shadow: 0deg 0% 50%;
-    --sdp-icon: #4a4a4acc;
-    --sdp-nav-button-background: #f5f5f5;
-    --sdp-nav-button-background-hover: #eeeeee;
-    --sdp-days-of-week: #4a4a4a;
-  }
-  
-  @keyframes fadeIn {
-    from {
-      transform: translateY(-40px) scale(0.75);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0) scale(1);
-      opacity: 1;
-    }
-  }
-  @keyframes fadeOut {
-    from {
-      transform: translateY(0) scale(1);
-      opacity: 1;
-    }
-    to {
-      transform: translateY(-40px) scale(0.75);
-      opacity: 0;
-    }
-  }
-  
-  [data-controller="datepicker"] {
-    position: relative;
-  }
-  .sdp-cal {
-    z-index: 1;
-    position: absolute;
-    margin-top: 5px;
-    box-sizing: border-box;
-    width: fit-content;
-    border: 1px solid var(--sdp-border);
-    border-radius: 5px;
-    padding: 15px;
-    background: var(--sdp-background);
-    box-shadow: 0 1.25em 1.25em -0.9375em hsl(var(--sdp-shadow) / 0.3);
-  }
-  .sdp-cal.fade-in {
-    animation: fadeIn 0.1s ease-out;
-  }
-  .sdp-cal.fade-out {
-    animation: fadeOut 0.1s ease-out;
-  }
-  @media (prefers-reduced-motion) {
-    .sdp-cal.fade-in, .sdp-cal.fade-out {
-      animation: none
-    }
-  }
-  .sdp-cal button {
-    border: none;
-    background: none;
-    padding: 0;
-  }
-  
-  .sdp-nav {
-    margin-bottom: 1.2em;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .sdp-nav-dropdowns, .sdp-nav-buttons {
-    display: flex;
-  }
-  .sdp-nav-dropdowns select {
-    -moz-appearance: none;
-    -webkit-appearance: none;
-    background: var(--sdp-background);
-    color: currentColor;
-    padding: 1px 12px 1px 1px;
-    border: 1px solid transparent;
-    font-size: 1.1em;
-    font-weight: 500;
-    cursor: pointer;
-  }
-  .sdp-nav-dropdowns > div {
-    display: flex;
-    align-items: center;
-  }
-  .sdp-nav-dropdowns > div::after {
-    content: " ";
-    border: 2px solid var(--sdp-icon);
-    border-top: 0;
-    border-right: 0;
-    width: 0.3em;
-    height: 0.3em;
-    transform: translateY(-1px) rotate(-45deg);
-    right: 10px;
-    position: relative;
-  }
-  .sdp-nav-buttons button {
-    display: flex;
-    place-content: center;
-    place-items: center;
-    border-radius: 50%;
-    width: 1.5em;
-    height: 1.5em;
-    color: var(--sdp-icon);
-    background-color: var(--sdp-nav-button-background);
-    cursor: pointer;
-  }
-  .sdp-nav-buttons button:hover {
-    background-color: var(--sdp-nav-button-background-hover);
-  }
-  .sdp-nav-buttons svg {
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2;
-    width: 0.75em;
-    height: 0.75em;
-  }
-  .sdp-goto-today {
-    margin-left: 0.3em;
-    margin-right: 0.3em;
-  }
-  
-  .sdp-days-of-week, .sdp-days {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    place-items: center;
-    gap: 0.3em;
-  }
-  .sdp-days-of-week {
-    margin-bottom: 0.7em;
-  }
-  .sdp-days-of-week div {
-    text-transform: uppercase;
-    font-size: 0.8em;
-    color: var(--sdp-days-of-week);
-    font-weight: 600;
-  }
-  
-  .sdp-days button {
-    width: 4.5ch;
-    height: 4.5ch;
-    border-radius: 50%;
-    background-color: transparent;
-  }
-  .sdp-days button:not([aria-disabled]) {
-    color: currentColor;
-    cursor: pointer;
-  }
-  .sdp-days button[aria-disabled] {
-    color: var(--sdp-disabled);
-  }
-  
-  .sdp-days button:not([aria-disabled]).sdp-selected {
-    background-color: var(--sdp-selected);
-    color: var(--sdp-selected-invert);
-  }
-  .sdp-days button[aria-disabled].sdp-selected {
-    background-color: var(--sdp-disabled);
-    color: var(--sdp-disabled-invert);
-  }
-  
-  .sdp-days button:not([aria-disabled]).sdp-today {
-    border: 1px solid var(--sdp-selected);
-  }
-  .sdp-days button[aria-disabled].sdp-today {
-    border: 1px solid var(--sdp-disabled);
-  }
-  
-  /* Ideally we would use outline and outline-offset for the :hover and :focus
-   * styles.  But Safari's outline doesn't follow the border-radius; it is square.
-   * https://bugs.webkit.org/show_bug.cgi?id=231433
-   * https://bugs.webkit.org/show_bug.cgi?id=20807
-   */
-  .sdp-days button:hover,
-  .sdp-days button:focus {
-    outline: none;
-  }
-  
-  .sdp-days button:not([aria-disabled]):hover,
-  .sdp-days button:not([aria-disabled]):focus {
-    border: 2px solid var(--sdp-selected);
-  }
-  .sdp-days button[aria-disabled]:hover,
-  .sdp-days button[aria-disabled]:focus {
-    border: 2px solid var(--sdp-disabled);
-  }
-  
-  .sdp-days button:not([aria-disabled]).sdp-selected:hover,
-  .sdp-days button:not([aria-disabled]).sdp-selected:focus {
-    border: 2px solid var(--sdp-selected-invert);
-    box-shadow: 0 0 0 2px var(--sdp-selected);
-  }
-  .sdp-days button[aria-disabled].sdp-selected:hover,
-  .sdp-days button[aria-disabled].sdp-selected:focus {
-    border: 2px solid var(--sdp-disabled-invert);
-    box-shadow: 0 0 0 2px var(--sdp-disabled);
-  }
-  
-  .sdp-days button:not([aria-disabled]).sdp-today:hover,
-  .sdp-days button:not([aria-disabled]).sdp-today:focus {
-    border: 2px solid var(--sdp-selected);
-  }
-  .sdp-days button[aria-disabled].sdp-today:hover,
-  .sdp-days button[aria-disabled].sdp-today:focus {
-    border: 2px solid var(--sdp-disabled);
-  }
-  
-  .sdp-days button:not([aria-disabled]).sdp-prev-month {
-    color: var(--sdp-prev-month);
-  }
-  .sdp-days button:not([aria-disabled]).sdp-next-month {
-    color: var(--sdp-next-month);
-  }
-  .sdp-days button[aria-disabled].sdp-prev-month,
-  .sdp-days button[aria-disabled].sdp-next-month {
-    color: var(--sdp-disabled);
-  }
-  .confetti {
-  width: 10px;
-  height: 10px;
-  background-color: red;
-  border-radius: 50%;
-  position: absolute;
+.noty_close_button {
+  @apply bg-transparent text-white rounded-full
 }
+
+.noty_theme__semanticui.noty_type__success {
+  @apply   bg-emerald-400 text-green-50 shadow-lg text-base rounded-lg font-medium border-2 border-green-50;
+ 
+}
+  .noty_theme__semanticui.noty_bar {
+    font-family: "Noto Sans JP";
+      @apply rounded-lg
+     
+  }

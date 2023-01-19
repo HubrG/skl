@@ -1,0 +1,172 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PublicationController!
+{% endblock %}
+
+{% block body %}
+	<h1 class="col-span-12 -mt-10 mb-14 text-center">
+		<span class="text-xs">Édition du récit</span><br/>
+		<span id="pubTitle">
+			{{ infoPub.title|capitalize }}
+		</span>
+	</h1>
+	<aside class="col-span-8 col-start-3 pr-10  mb-14 sm:col-span-3 mt-9">
+		{% if infoPub.cover == "" %}
+			<div id="hideNoCover" class="shadow-md p-10 text-2xl flex h-80 bg-slate-100 rounded-md dark:bg-slate-500" for="publication_cover" data-tooltip-placement="bottom" data-tooltip-target="tooltip-cover">
+				<label for="publication_cover" class="cursor-pointer justify-center h-80">
+					<h2 class="m-auto text-center font-light shadow-slate-300 text-slate-600 dark:shadow-slate-900 mt-10 rounded-lg">
+						<i class="fa-regular fa-images text-5xl"></i><br/><br/>Ajouter une couverture
+					</h2>
+				</label>
+			</div>
+			<label for="publication_cover" id="showNewCover" class="cursor-pointer hidden"><img id="cover" src="" data-tooltip-target="tooltip-cover" data-tooltip-placement="bottom" class="shadow-md shadow-slate-300 dark:shadow-slate-900 rounded-lg"/></label>
+		{% else %}
+			<label for="publication_cover" class="cursor-pointer"><img data-tooltip-target="tooltip-cover" data-tooltip-placement="bottom" id="cover" class="shadow-md shadow-slate-300 dark:shadow-slate-900 rounded-lg" src="{{ asset('images/uploads/story/'~ infoPub.id ~'/'~ infoPub.cover)}} "/></label>
+		{% endif %}
+		<div id="tooltip-cover" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-normal text-white bg-slate-700 rounded-lg opacity-0 tooltip dark:bg-gray-700">
+			Cliquez ici pour importer une photo<br/>de couverture
+			<div class="tooltip-arrow" data-popper-arrow></div>
+		</div>
+	</aside>
+	<section class="col-span-12 md:col-span-6">
+		<div class="mb-4 -mt-6 border-b border-gray-200 dark:border-gray-700">
+			<ul class="flex justify-center -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
+				<li class="mr-2" role="presentation">
+					<button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
+						<i class="fa-solid fa-circle-info"></i>
+						Informations</button>
+				</li>
+				<li class="mr-2" role="presentation">
+					<button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">
+						<i class="fa-solid fa-list"></i>
+						Chapitres</button>
+				</li>
+				<li class="mr-2" role="presentation">
+					<button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">
+						<i class="fa-solid fa-sliders"></i>
+						Paramètres</button>
+				</li>
+			</ul>
+		</div>
+		<div id="myTabContent">
+			<div class="hidden p-4 rounded-lg  dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+				{{ form_start(formPub) }}
+				{{ form_widget(formPub.cover, {attr:{"class":"axios hidden"}})}}
+				<input type="hidden" value="{{ infoPub.id }}" id="hideId"/>
+				{{ form_label(formPub.title) }}
+				<div class="relative mb-6">
+					<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
+						<i class="fa-solid fa-book"></i>
+					</div>
+					{{ form_widget(formPub.title, {attr:{"class":"axios", "onkeydown":"if(this.value == '' && event.keyCode==32) return false;", "onkeyup":"if(this.value.charAt(0) == ' ') { this.value = this.value.trim() } if (!this.value) { document.getElementById('pubTitle').innerHTML='Récit sans titre' } else { document.getElementById('pubTitle').innerHTML=this.value.charAt(0).toUpperCase() + this.value.substring(1).toLowerCase()}"}}) }}
+				</div>
+				{{ form_label(formPub.summary) }}
+				<div class="relative mb-6">
+					{{ form_widget(formPub.summary, {attr:{"class":"axios"}}) }}
+				</div>
+				{{ form_label(formPub.category) }}
+				<div class="relative mb-6">
+					<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
+						<i class="fa-solid fa-list"></i>
+					</div>
+					{{ form_widget(formPub.category, {attr:{"class":"axios"}}) }}
+				</div>
+				<label>En quelques mots, quelles sont les grandes thématiques de votre récit ?</label>
+				<div class="relative mb-6">
+					<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
+						<i class="fa-solid fa-tag"></i>
+					</div>
+					<input type="text" value="" id="keyValue"/>
+				</div>
+				<div class="hidden" id="editPage"></div>
+				<turbo-frame id="keyroute">
+					<div id="keyList" class="items-center">
+						{% for k in infoPub.publicationKeywords %}
+							<div id="keyw_{{ k.keyword|upper }}">{{ k.keyword }}
+								&nbsp;<a href="{{path("app_publication_del_keyword", {value:k.keyword, pub:infoPub.id, mode:"edit"})}}">
+									<i class="fa-solid fa-delete-left hover:text-red-400"></i>
+								</a>
+							</div>
+						{% endfor %}
+					</div>
+				</turbo-frame>
+				<hr class=" -mt-5">
+				<label class="relative inline-flex items-center cursor-pointer">
+					{{ form_widget(formPub.mature, {attr:{"class":"sr-only peer axios"}}) }}
+					<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+					<span class="ml-3 -mt-6 text-sm font-medium text-gray-900 dark:text-gray-300">Votre récit contient-il du contenu pour adulte ?</span>
+				</label>
+				{{ form_end(formPub) }}
+			</div>
+			<div class="hidden p-4 rounded-lg min-h-screen" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+				<p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the
+					<strong class="font-medium text-gray-800 dark:text-white">Dashboard tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
+			</div>
+			<div class="hidden p-4 rounded-lg  min-h-screen" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+				<p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the
+					<strong class="font-medium text-gray-800 dark:text-white">Settings tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
+			</div>
+
+		</div>
+	</section>
+	<aside class="col-span-12 pr-10  mb-14 sm:col-span-3 ml-5 mt-11">
+		<div id="publishDiv" class="p-4 rounded-lg  w-full dark:bg-gray-800 mb-4 -mt-4 border-2">
+			<label class="relative inline-flex items-center mr-5 cursor-pointer" data-modal-target="popup-modal" data-modal-toggle="popup-modal">
+				<input type="checkbox" id="publishButton" class="disabled sr-only peer" disabled {% if infoPub.status == 2 %} checked {% endif %}>
+				<div id="publishToggle" class="w-11 h-6 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-green-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 "></div>
+				<span class="ml-3 text-xs font-medium dark:text-gray-300" id="publishText">
+					{% if infoPub.status == 2 %}Dépublier le récit{% else %}Publier le récit
+					{% endif %}
+				</span>
+			</label>
+		</div>
+		<div class="p-4 rounded-lg bg-slate-50 w-full dark:bg-gray-800 mb-4">
+			<label class="relative inline-flex items-center cursor-pointer">
+				<input type="checkbox" value="" class="sr-only peer" checked>
+				<div class="w-11 h-6 bg-blue-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-blue-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+				<span class="ml-3 text-xs font-medium text-blue-900 dark:text-gray-300">Sauvegarde automatique</span>
+			</label>
+		</div>
+		<div class="p-4 rounded-lg bg-slate-50 w-full dark:bg-gray-800 mb-4 text-slate-800 dark:text-slate-400">
+			<p class="text-xs mb-1">
+				<i class="fa-regular fa-clock"></i>
+				&nbsp;Crée il y a
+				<span class="font-medium">{{ infoPub.created|since }}</span>
+			</p>
+			<p class="text-xs mb-1">
+				<i class="fa-regular fa-clock"></i>
+				&nbsp;Modifié il y a
+				<span class="font-medium">{{ infoPub.updated|since }}</span>
+			</p>
+
+			<p id="publishDateText" class="text-xs mb-1">
+				<i class="fa-regular fa-clock"></i>
+				&nbsp;Publié il y a
+				<span class="font-medium" id="publishDateTextSpan">{{ infoPub.publishedDate|since }}</span>
+			</p>
+		</div>
+	</aside>
+	<div id="popup-modal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
+		<div class="relative w-full h-full max-w-md md:h-auto">
+			<div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+				<button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="popup-modal">
+					<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+					</svg>
+					<span class="sr-only">Close modal</span>
+				</button>
+				<div class="p-6 text-center">
+					<svg aria-hidden="true" class="mx-auto mb-4 text-gray-400 w-14 h-14 dark:text-gray-200" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+					</svg>
+					<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400" id="PublicationPublishModalText">Êtes-vous certain(e) de vouloir publier votre récit ?</h3>
+					{# TODO: modifier le "certaine" en fonction du genre de l'utilisateur #}
+					<button data-modal-hide="popup-modal" id="PublicationPublishButton" type="button" class="text-white focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+						Oui, je suis certain(e)
+					</button>
+					<button data-modal-hide="popup-modal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">No, cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -4,9 +4,9 @@ export function darkMode() {
     let html2 = document.getElementById("html");
     let dm = document.getElementById("darkMode");
     if (html2.classList.contains("dark")) {
-      dm.innerHTML = "Mode clair";
+      dm.innerHTML = "clair";
     } else {
-      dm.innerHTML = "Mode sombre";
+      dm.innerHTML = "sombre";
     }
   }
 }
@@ -16,9 +16,9 @@ export function ok() {
   html.classList.toggle("dark");
   let dm = document.getElementById("darkMode");
   if (html2.classList.contains("dark")) {
-    dm.innerHTML = "Mode clair";
+    dm.innerHTML = "clair";
   } else {
-    dm.innerHTML = "Mode sombre";
+    dm.innerHTML = "sombre";
   }
 }
 darkMode();

@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PublicationRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: PublicationRepository::class)]
 class Publication
@@ -52,6 +52,9 @@ class Publication
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $created = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $published_date = null;
+
     public function __construct()
     {
         $this->publicationChapters = new ArrayCollection();
@@ -75,7 +78,7 @@ class Publication
         return $this;
     }
 
-    
+
     public function getUser(): ?User
     {
         return $this->user;
@@ -237,6 +240,18 @@ class Publication
     public function setCreated(?\DateTimeInterface $created): self
     {
         $this->created = $created;
+
+        return $this;
+    }
+
+    public function getPublishedDate(): ?\DateTimeInterface
+    {
+        return $this->published_date;
+    }
+
+    public function setPublishedDate(\DateTimeInterface $published_date): self
+    {
+        $this->published_date = $published_date;
 
         return $this;
     }

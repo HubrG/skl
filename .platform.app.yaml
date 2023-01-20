@@ -39,9 +39,10 @@ hooks:
       set -e
 
 web:
-  locations:
-    /:
-      root: "public"
-      index: ["index.php", "index.html"]
-  passthru:
-    "index.php"
+    locations:
+        "/":
+            # The public directory of the app, relative to its root.
+            root: "public"
+            # The front-controller script to send non-static requests to.
+            passthru: "/index.php"
+            

@@ -138,16 +138,19 @@
 				&nbsp;Modifié il y a
 				<span class="font-medium">{{ infoPub.updated|since }}</span>
 			</p>
-
 			<p id="publishDateText" class="text-xs mb-1">
 				<i class="fa-regular fa-clock"></i>
 				&nbsp;Publié il y a
-				<span class="font-medium" id="publishDateTextSpan">{{ infoPub.publishedDate|since }}</span>
+				<span class="font-medium" id="publishDateTextSpan">
+					{% if infoPub.publishedDate %}
+						{{ infoPub.publishedDate|since }}
+					{% endif %}
+				</span>
 			</p>
 		</div>
 	</aside>
-	<div id="popup-modal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
-		<div class="relative w-full h-full max-w-md md:h-auto">
+	<div id="popup-modal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0  h-modal md:h-full">
+		<div class="relative w-full h-full max-w-md md:h-auto shadow-2xl">
 			<div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
 				<button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="popup-modal">
 					<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">

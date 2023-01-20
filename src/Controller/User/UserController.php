@@ -3,8 +3,10 @@
 namespace App\Controller\User;
 
 use App\Form\UserInfoType;
+use Doctrine\ORM\EntityManager;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\PublicationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class UserController extends AbstractController
 {
-    #[Route('/user/{username}', name: 'app_user')]
+    #[Route('user/{username}', requirements: ["username" => "[^/]+"], name: 'app_user')]
     public function index(UserRepository $userRepo, $username = "me"): Response
     {
         /// Conditions d'affichage
@@ -21,10 +23,12 @@ class UserController extends AbstractController
             $userInfo = $userRepo->findOneBy(["email" => $this->getUser()]);
         }
         // Si le username n'est pas renseigné et que l'utilisateur n'est pas connecté, alors on le redirige
+
         elseif ($username == "me" && !$this->getUser()) {
             return $this->redirectToRoute("app_home");
         }
         // Si le username est renseigné alors on affiche la page du membre du username
+
         else {
             $userInfo = $userRepo->findOneBy(["username" => $username]);
         }
@@ -33,7 +37,7 @@ class UserController extends AbstractController
         ]);
     }
     #[Route('user/edit/{id}', name: 'app_user_edit')]
-    public function edit(Request $request, UserRepository $userRepo, EntityManagerInterface $em,  $id = null): Response
+    public function edit(Request $request, UserRepository $userRepo, EntityManagerInterface $em, $id = null): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute("app_home");
@@ -63,6 +67,15 @@ class UserController extends AbstractController
         }
         return $this->renderForm('user/edit.html.twig', [
             'editUserForm' => $form
+        ]);
+    }
+    #[Route('user/publications/show', name: 'app_user_show_publications')]
+    public function showpublication(Request $request, PublicationRepository $pubRepo, EntityManagerInterface $em): Response
+    {
+
+        $publications = $pubRepo->createQueryBuilder("u")->where("u.status > 0")->getQuery()->getResult();
+        return $this->renderForm('user/show_publication.html.twig', [
+            'publication' => $publications
         ]);
     }
 }

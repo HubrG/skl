@@ -134,7 +134,7 @@ form button:disabled {
 }
 
 .noty_theme__semanticui.noty_type__success {
-  @apply   bg-emerald-400 text-green-50 shadow-lg text-base rounded-lg font-medium border-2 border-green-50;
+  @apply   bg-emerald-400 text-green-50 shadow-lg text-base rounded-lg font-medium border-2 border-green-50 border-opacity-20;
  
 }
   .noty_theme__semanticui.noty_bar {

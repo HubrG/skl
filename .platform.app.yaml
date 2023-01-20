@@ -34,9 +34,9 @@ relationships:
 
 hooks:
     build: |
-        set -x -e
+        set -e
     deploy: |
-        set -x -e
+        set -e
 
 
 web:

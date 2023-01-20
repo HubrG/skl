@@ -3,47 +3,49 @@
 {% block title %}Hello UserController!
 {% endblock %}
 {% block body %}
-<!-- TODO: créer un extends de User dans Edit (au cas ou on voudrait arriver directement sur la page de modification) -->
-<section class="col-span-12 pt-14">
-	<turbo-frame id="profil_up">
+	<!-- TODO: créer un extends de User dans Edit (au cas ou on voudrait arriver directement sur la page de modification) -->
+	<section class="col-span-12 pt-14">
+		<turbo-frame id="profil_up">
 
-		<div class="grid grid-cols-1 md:grid-cols-3">
-			<div class="grid grid-cols-3 text-center order-last md:order-first mt-20 md:mt-0">
-				<div>
-					<p class="font-bold text-gray-700 text-xl">22</p>
-					<p class="text-gray-400">Friends</p>
+			<div class="grid grid-cols-1 md:grid-cols-3">
+				<div class="grid grid-cols-3 text-center order-last md:order-first mt-20 md:mt-0">
+					<div>
+						<p class="font-bold text-gray-700 text-xl">22</p>
+						<p class="text-gray-400">Friends</p>
+					</div>
+					<div>
+						<p class="font-bold text-gray-700 text-xl">10</p>
+						<p class="text-gray-400">Photos</p>
+					</div>
+					<div>
+						<p class="font-bold text-gray-700 text-xl">89</p>
+						<p class="text-gray-400">Comments</p>
+					</div>
 				</div>
-				<div>
-					<p class="font-bold text-gray-700 text-xl">10</p>
-					<p class="text-gray-400">Photos</p>
+				<div class="relative">
+					<div class="w-48 h-48 mx-auto rounded-full absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
+						<img class="w-40 h-40 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500" src="{{ asset('images/uploads/profil_pictures/' ~ userInfo.id ~ '/' ~ userInfo.profilPicture )}}">
+					</div>
 				</div>
-				<div>
-					<p class="font-bold text-gray-700 text-xl">89</p>
-					<p class="text-gray-400">Comments</p>
-				</div>
+				{% if app.user %}
+					<div class="space-x-8 flex mt-32 md:mt-0 md:justify-center">
+						<a href="{{ path("app_user_edit", {"id" : app.user.id}) }}" class="text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
+							Modifier mon profil
+						</a>
+
+					</div>
+				{% endif %}
 			</div>
-			<div class="relative">
-				<div class="w-48 h-48 mx-auto rounded-full absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
-					<img class="w-40 h-40 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500" src="{{ asset('images/uploads/profil_pictures/' ~ userInfo.id ~ '/' ~ userInfo.profilPicture )}}">
-				</div>
-			</div>
-			{% if app.user %}
-				<div class="space-x-8 flex mt-32 md:mt-0 md:justify-center">
-					<a href="{{ path("app_user_edit", {"id" : app.user.id}) }}" class="text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
-						Modifier mon profil
-					</a>
-
-				</div>
-			{% endif %}
-		</div>
 
 
-		<div class="mt-20 text-center border-b pb-12">
-			<h1 class="text-4xl font-medium text-gray-700">{{ userInfo.nickname }},
+			<div class="mt-20 text-center border-b pb-12">
+				<h1 class="text-4xl font-medium text-gray-700">{{ userInfo.nickname }},
 
-				<span class="font-light text-gray-500">
-					{% if userInfo.birth is defined %}
-						{{{ userInfo.birth}|since }}{% endif %}</span>
+					<span class="font-light text-gray-500">
+						{% if userInfo.birth is defined %}
+							{{ userInfo.birth}|since }}
+						{% endif %}
+					</span>
 
 				</h1>
 				<p class="font-light text-gray-600 mt-3">{{ userInfo.city }}</p>

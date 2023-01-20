@@ -37,9 +37,6 @@ hooks:
       set -e
       rm public/index.php
       rm -rf var/cache/*
-      php bin/console --env=prod --no-debug --ansi cache:clear --no-warmup
-      php bin/console --env=prod --no-debug --ansi cache:warmup
-      php bin/console --env=prod --no-debug --ansi assets:install
     deploy: |
       set -e
       rm -rf var/cache/*

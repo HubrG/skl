@@ -42,7 +42,7 @@
 				<h1 class="text-4xl font-medium text-gray-700">{{ userInfo.nickname }},
 
 					<span class="font-light text-gray-500">
-						{% if userInfo.birth is defined %}
+						{% if userInfo.birth is not null %}
 							{{ userInfo.birth|since }}
 						{% endif %}
 					</span>

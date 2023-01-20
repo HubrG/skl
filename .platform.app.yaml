@@ -36,7 +36,7 @@ hooks:
     build: |
         set -x -e
         php bin/console cache:warmup
-        chmod -R 777 var/log/
+        chmod -R 777 app/var/log/ app/var/cache
     deploy: |
         set -x -e
 

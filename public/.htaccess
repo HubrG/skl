@@ -13,9 +13,7 @@ DirectoryIndex index.php
 
 # Disabling MultiViews prevents unwanted negotiation, e.g. "/index" should not resolve
 # to the front controller "/index.dphp" but be rewritten to "/index.php/index".
-<IfModule mod_negotiation.c>
-    Options -MultiViews
-</IfModule>
+
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
@@ -27,12 +25,12 @@ DirectoryIndex index.php
     # work in environments without path prefix as well, providing a safe, one-size
     # fits all solution. But as you do not need it in this case, you can comment
     # the following 2 lines to eliminate the overhead.
-    RewriteCond %{REQUEST_URI}::$0 ^(/.+)/(.*)::\2$
-    RewriteRule .* - [E=BASE:%1]
+    RewriteCond %{REQUEST_URI} !^public
+    RewriteRule ^(.*)$ public/$1 [L]
 
     # Sets the HTTP_AUTHORIZATION header removed by Apache
-    RewriteCond %{HTTP:Authorization} .+
-    RewriteRule ^ - [E=HTTP_AUTHORIZATION:%0]
+    #RewriteCond %{HTTP:Authorization} .+
+    #RewriteRule ^ - [E=HTTP_AUTHORIZATION:%0]
 
     # Redirect to URI without front controller to prevent duplicate content
     # (with and without `/index.php`). Only do this redirect on the initial
@@ -45,22 +43,10 @@ DirectoryIndex index.php
     # - disable this feature by commenting the following 2 lines or
     # - use Apache >= 2.3.9 and replace all L flags by END flags and remove the
     #   following RewriteCond (best solution)
-    RewriteCond %{ENV:REDIRECT_STATUS} =""
-    RewriteRule ^index\.php(?:/(.*)|$) %{ENV:BASE}/$1 [R=301,L]
 
     # If the requested filename exists, simply serve it.
     # We only want to let Apache serve files and not directories.
     # Rewrite all other queries to the front controller.
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ %{ENV:BASE}/index.php [L]
-</IfModule>
-
-<IfModule !mod_rewrite.c>
-    <IfModule mod_alias.c>
-        # When mod_rewrite is not available, we instruct a temporary redirect of
-        # the start page to the front controller explicitly so that the website
-        # and the generated links can still be used.
-        RedirectMatch 307 ^/$ /index.php/
-        # RedirectTemp cannot be used instead
-    </IfModule>
 </IfModule>

@@ -30,7 +30,7 @@ const TurboHelper = class {
       document.body.classList.add("turbo-loading");
     });
     document.addEventListener("turbo:before-render", (event) => {
-      // when we are *about* to render, start us faded out
+      // when we are *about* to render, start us fadeddd out
       event.detail.newBody.classList.add("turbo-loading");
     });
     document.addEventListener("turbo:render", () => {

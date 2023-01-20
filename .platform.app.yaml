@@ -35,7 +35,7 @@ relationships:
 hooks:
     build: |
         set -x -e
-        chmod -R 777 app/var/log/ app/var/cache
+        chmod -R 777 ./var/log ./var/cache
     deploy: |
         set -x -e
 

@@ -43,7 +43,6 @@ hooks:
     deploy: |
       set -e
       rm -rf var/cache/*
-      php bin/console --env=prod doctrine:migrations:migrate --no-interaction
 
 web:
     locations:

@@ -35,11 +35,8 @@ relationships:
 hooks:
     build: |
       set -e
-      rm public/index.php
-      rm -rf var/cache/*
     deploy: |
       set -e
-      rm -rf var/cache/*
 
 web:
     locations:

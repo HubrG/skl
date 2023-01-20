@@ -34,7 +34,6 @@ relationships:
 
 hooks:
     build: |
-      rm public/index.php
       rm -rf var/cache/*
     deploy: |
       rm -rf var/cache/*

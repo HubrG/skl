@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
-    #[Route('/', name: 'app_home')]
+    #[Route('/{age<\d+>?0}', name: 'app_home')]
     public function index($age, Request $request, LoggerInterface $logger): Response
     {
         return $this->render('home/home.html.twig', [

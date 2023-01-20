@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use cebe\markdown\Markdown;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

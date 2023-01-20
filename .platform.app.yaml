@@ -35,11 +35,11 @@ relationships:
 hooks:
     build: |
       chmod -R 755 ./var
-      mkdir ./var/dev/profiler
+      mkdir ./var/cache/dev/profiler
       set -e
     deploy: |
       chmod -R 755 ./var
-      mkdir ./var/dev/profiler
+      mkdir ./var/cache/dev/profiler
       set -e
 
 web:

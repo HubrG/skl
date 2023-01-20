@@ -35,7 +35,6 @@ relationships:
 hooks:
     build: |
         set -x -e
-        curl -s https://get.symfony.com/cloud/configurator | bash
     deploy: |
         set -x -e
 

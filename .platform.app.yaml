@@ -34,9 +34,9 @@ relationships:
 
 hooks:
     build: |
-      rm -rf var/cache/*
+      sudo chmod -R 777 var/cache/*
     deploy: |
-      rm -rf var/cache/*
+      sudo chmod -R 777 var/cache/*
 
 web:
     locations:

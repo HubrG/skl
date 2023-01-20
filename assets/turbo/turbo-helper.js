@@ -35,7 +35,7 @@ const TurboHelper = class {
     });
     document.addEventListener("turbo:render", () => {
       // after rendering, we first allow the turbo-loading class to set the low opacity
-      // THEN, one frame later, we remove the turbo-loading class, which allows the fade in
+      // THEN, one frame later, we remove the turbo-loading class, which adllows the fade in
       requestAnimationFrame(() => {
         document.body.classList.remove("turbo-loading");
       });

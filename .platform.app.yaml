@@ -34,13 +34,11 @@ relationships:
 
 hooks:
     build: |
+      chmod -R 755 ./var
       set -e
-      chmod -R 777 ./var/cache
-      chmod -R 777 ./var/log
     deploy: |
+      chmod -R 755 ./var
       set -e
-      chmod -R 777 ./var/cache
-      chmod -R 777 ./var/log
 
 web:
     locations:

@@ -25,12 +25,6 @@
                 "enabled": true,
                 "fetch": "eager"
             }
-        },
-        "@symfony/ux-turbo-mercure": {
-            "turbo-stream": {
-                "enabled": true,
-                "fetch": "eager"
-            }
         }
     },
     "entrypoints": []

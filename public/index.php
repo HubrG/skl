@@ -1,5 +1,4 @@
 <?php
-umask(0000);
 
 use App\Kernel;
 

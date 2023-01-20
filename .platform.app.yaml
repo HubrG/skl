@@ -20,7 +20,7 @@ mounts:
     source_path: uploads
 
 # The size of the persistent disk of the application (in MB).
-disk: 512
+disk: 256
 
 # The relationships of the application with services or other applications.
 #
@@ -28,7 +28,7 @@ disk: 512
 # to the application in the PLATFORM_RELATIONSHIPS variable. The right-hand
 # side is in the form '<service name>:<endpoint name>'.
 relationships:
-    kafkaqueue: 'queuekafka:kafka'
+    database: 'db:mysql'
 
 
 hooks:
@@ -41,4 +41,3 @@ web:
   locations: 
     '/': 
       root: "web"
-      passthru: "/index.php"

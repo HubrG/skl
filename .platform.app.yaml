@@ -44,4 +44,4 @@ web:
       root: "public"
       index: ["index.php", "index.html"]
   passthru:
-    - "index.php"
+    "index.php"

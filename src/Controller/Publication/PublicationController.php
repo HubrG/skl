@@ -199,7 +199,9 @@ class PublicationController extends AbstractController
             $publication->setTitle(trim(ucfirst($dataValue)));
         }
         if ($dataName === "publication[cover]") {
-            if (\exif_imagetype($dataFile)) {
+
+            if (getimagesize($dataFile) > 0) {
+
                 $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $pub;
                 // si une cover a déjà été envoyée, alors on la supprime pour la remplacer par la nouvelle
                 if ($publication->getCover()) {
@@ -213,10 +215,11 @@ class PublicationController extends AbstractController
                 $publication->setCover($newFilename);
             } else {
                 return $this->json([
-                    "code" => "400"
+                    "code" => 400
                 ]);
             }
         }
+
         if ($dataName === "publication[summary]") {
             $publication->setSummary(trim(ucfirst($dataValue)));
         }
@@ -232,7 +235,7 @@ class PublicationController extends AbstractController
         $em->flush();
         //
         return $this->json([
-            "code" => "200"
+            "code" => 200
         ]);
     }
     #[Route('/story/publish', methods: 'POST', name: 'app_publication_publish')]

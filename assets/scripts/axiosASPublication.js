@@ -17,15 +17,18 @@ export function axiosSave(value, name, file, url) {
       },
     })
     .then(function (response) {
-      if (file) {
-        console.log(path + filename + ".jpg");
-        document.getElementById("cover").src = path + filename + ".jpg";
-        if (document.getElementById("hideNoCover")) {
-          let hideNoCover = document.getElementById("hideNoCover");
-          let showNewCover = document.getElementById("showNewCover");
-          if (showNewCover.classList.contains("hidden")) {
-            hideNoCover.classList.add("hidden");
-            showNewCover.classList.remove("hidden");
+      console.log(response.data.code);
+      if (response.data.code == 200) {
+        if (file) {
+          console.log(path + filename + ".jpg");
+          document.getElementById("cover").src = path + filename + ".jpg";
+          if (document.getElementById("hideNoCover")) {
+            let hideNoCover = document.getElementById("hideNoCover");
+            let showNewCover = document.getElementById("showNewCover");
+            if (showNewCover.classList.contains("hidden")) {
+              hideNoCover.classList.add("hidden");
+              showNewCover.classList.remove("hidden");
+            }
           }
         }
       }

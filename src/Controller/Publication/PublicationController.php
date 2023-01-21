@@ -198,35 +198,39 @@ class PublicationController extends AbstractController
         }
         if ($dataName === "publication[cover]") {
             // Si le fichier est bien une image, on execute
-
-            $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $pub;
-            // si une cover a déjà été envoyée, alors on la supprime pour la remplacer par la nouvelle
-            if ($publication->getCover()) {
-                \unlink($destination . "/" . $publication->getCover());
+            if (getimagesize($dataFile)) {
+                $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $pub;
+                // si une cover a déjà été envoyée, alors on la supprime pour la remplacer par la nouvelle
+                if ($publication->getCover()) {
+                    \unlink($destination . "/" . $publication->getCover());
+                }
+                $newFilename = $dataFileName . '.jpg';
+                $dataFile->move(
+                    $destination,
+                    $newFilename
+                );
+                $publication->setCover($newFilename);
             }
-            $newFilename = $dataFileName . '.jpg';
-            $dataFile->move(
-                $destination,
-                $newFilename
-            );
-            $publication->setCover($newFilename);
+            if ($dataName === "publication[summary]") {
+                $publication->setSummary(trim(ucfirst($dataValue)));
+            }
+            if ($dataName === "publication[category]") {
+                $catR = $catRepo->find($dataValue);
+                $publication->setCategory($catR);
+            }
+            if ($dataName === "publication[mature]") {
+                $publication->setMature($dataValue);
+            }
+            $publication->setUpdated(new \DateTime('now'));
+            $em->persist($publication);
+            $em->flush();
+            return $this->json([
+                "code" => "200"
+            ]);
         }
-        if ($dataName === "publication[summary]") {
-            $publication->setSummary(trim(ucfirst($dataValue)));
-        }
-        if ($dataName === "publication[category]") {
-            $catR = $catRepo->find($dataValue);
-            $publication->setCategory($catR);
-        }
-        if ($dataName === "publication[mature]") {
-            $publication->setMature($dataValue);
-        }
-        $publication->setUpdated(new \DateTime('now'));
-        $em->persist($publication);
-        $em->flush();
         //
         return $this->json([
-            "code" => "200"
+            "code" => "500"
         ]);
     }
     #[Route('/story/publish', methods: 'POST', name: 'app_publication_publish')]

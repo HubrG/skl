@@ -24,7 +24,7 @@
     },
     "license": "UNLICENSED",
     "private": true,
-    "scripts": {
+    "scripts" : {
         "dev-server": "encore dev-server",
         "dev": "encore dev",
         "build": "webpack -p --config ./resources/webpack/webpack.config.js --display-error-details",

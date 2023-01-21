@@ -198,19 +198,17 @@ class PublicationController extends AbstractController
         }
         if ($dataName === "publication[cover]") {
             // Si le fichier est bien une image, on execute
-            if (exif_imagetype($dataFile)) {
-                $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $pub;
-                // si une cover a déjà été envoyée, alors on la supprime pour la remplacer par la nouvelle
-                if ($publication->getCover()) {
-                    \unlink($destination . "/" . $publication->getCover());
-                }
-                $newFilename = $dataFileName . '.jpg';
-                $dataFile->move(
-                    $destination,
-                    $newFilename
-                );
-                $publication->setCover($newFilename);
+            $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $pub;
+            // si une cover a déjà été envoyée, alors on la supprime pour la remplacer par la nouvelle
+            if ($publication->getCover()) {
+                \unlink($destination . "/" . $publication->getCover());
             }
+            $newFilename = $dataFileName . '.jpg';
+            $dataFile->move(
+                $destination,
+                $newFilename
+            );
+            $publication->setCover($newFilename);
         }
         if ($dataName === "publication[summary]") {
             $publication->setSummary(trim(ucfirst($dataValue)));

@@ -1,7 +1,7 @@
 {
-  "build/app.css": "/build/app.62f3a2bd.css",
-  "build/app.js": "/build/app.0c21495d.js",
-  "build/runtime.js": "/build/runtime.9a71ee5d.js",
-  "build/552.892f8370.css": "/build/552.892f8370.css",
-  "build/552.1d33112e.js": "/build/552.1d33112e.js"
+  "build/app.css": "http://localhost:8080/build/app.css",
+  "build/app.js": "http://localhost:8080/build/app.js",
+  "build/runtime.js": "http://localhost:8080/build/runtime.js",
+  "build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_symfony_ux-autocomple-abac7c.css": "http://localhost:8080/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_symfony_ux-autocomple-abac7c.css",
+  "build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_symfony_ux-autocomple-abac7c.js": "http://localhost:8080/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_symfony_ux-autocomple-abac7c.js"
 }

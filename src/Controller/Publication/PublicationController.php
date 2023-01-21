@@ -16,6 +16,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PublicationController extends AbstractController
 {
+
+
     #[Route('/story/add', name: 'app_publication_add')]
     public function index(Request $request, PublicationRepository $pubRepo, EntityManagerInterface $em): Response
     {
@@ -197,18 +199,23 @@ class PublicationController extends AbstractController
             $publication->setTitle(trim(ucfirst($dataValue)));
         }
         if ($dataName === "publication[cover]") {
-            // Si le fichier est bien une image, on execute
-            $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $pub;
-            // si une cover a déjà été envoyée, alors on la supprime pour la remplacer par la nouvelle
-            if ($publication->getCover()) {
-                \unlink($destination . "/" . $publication->getCover());
+            if (\exif_imagetype($dataFile)) {
+                $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $pub;
+                // si une cover a déjà été envoyée, alors on la supprime pour la remplacer par la nouvelle
+                if ($publication->getCover()) {
+                    \unlink($destination . "/" . $publication->getCover());
+                }
+                $newFilename = $dataFileName . '.jpg';
+                $dataFile->move(
+                    $destination,
+                    $newFilename
+                );
+                $publication->setCover($newFilename);
+            } else {
+                return $this->json([
+                    "code" => "400"
+                ]);
             }
-            $newFilename = $dataFileName . '.jpg';
-            $dataFile->move(
-                $destination,
-                $newFilename
-            );
-            $publication->setCover($newFilename);
         }
         if ($dataName === "publication[summary]") {
             $publication->setSummary(trim(ucfirst($dataValue)));

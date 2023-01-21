@@ -12,6 +12,8 @@
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache
+/package-lock.json
+/yarn.lock
 ###< phpunit/phpunit ###
 
 ###> symfony/phpunit-bridge ###

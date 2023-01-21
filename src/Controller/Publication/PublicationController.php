@@ -18,7 +18,7 @@ class PublicationController extends AbstractController
 {
 
 
-    #[Route('/story/add', name: 'app_publication_add')]
+    #[Route('/story/add', name: 'app_publication_add')] // ANCHOR Add Story
     public function index(Request $request, PublicationRepository $pubRepo, EntityManagerInterface $em): Response
     {
         // Si l'utilisateur est connecté...
@@ -71,7 +71,7 @@ class PublicationController extends AbstractController
             'pub' => $brouillon
         ]);
     }
-    #[Route('/story/edit/{id}', name: 'app_publication_edit')]
+    #[Route('/story/edit/{id}', name: 'app_publication_edit')] // ANCHOR Edit Story
     public function editPubChapter(PublicationRepository $pubRepo, $id = null): Response
     {
         if ($this->getUser()) {
@@ -96,7 +96,7 @@ class PublicationController extends AbstractController
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////
-    #[Route('story/add_key/{pub<\d+>?0}/{value}', methods: 'POST', name: 'app_publication_add_keyword')]
+    #[Route('story/add_key/{pub<\d+>?0}/{value}', methods: 'POST', name: 'app_publication_add_keyword')] // ANCHOR Add Keyword
     public function addkey(PublicationKeywordRepository $keyRepo, PublicationRepository $pubRepo, EntityManagerInterface $em, $pub = null, $value = null): Response
     {
         // Si value est set et que l'utilisateur est connecté...
@@ -120,7 +120,6 @@ class PublicationController extends AbstractController
                         return $this->json(["code" => "200", "value" => $value]);
                     }
                     // sinon, on cré le nouveau mot et on l'ajoute au ManyToMany de l'article...
-
                     else {
                         $keykey = new PublicationKeyword();
                         $key = $keykey->setKeyword($value)
@@ -140,7 +139,7 @@ class PublicationController extends AbstractController
             return $this->redirectToRoute("app_home");
         }
     }
-    #[Route('story/{mode}/del_key/{pub<\d+>?0}/{value}', name: 'app_publication_del_keyword')]
+    #[Route('story/{mode}/del_key/{pub<\d+>?0}/{value}', name: 'app_publication_del_keyword')] // ANCHOR Del keyword
     public function delkey(PublicationKeywordRepository $keyRepo, PublicationRepository $pubRepo, EntityManagerInterface $em, $pub = null, $value = null, $mode = null): Response
     {
         // Si value est set et que l'utilisateur est connecté...
@@ -182,7 +181,7 @@ class PublicationController extends AbstractController
             return $this->redirectToRoute("app_home");
         }
     }
-    #[Route('/story/as/{pub}', methods: 'POST', name: 'app_publication_autosave')]
+    #[Route('/story/as/{pub}', methods: 'POST', name: 'app_publication_autosave')] // ANCHOR Autosave
     public function aspost(Request $request, PublicationCategoryRepository $catRepo, PublicationRepository $pubRepo, EntityManagerInterface $em, $pub = null): Response
     {
         $dataName = $request->get("name");
@@ -199,9 +198,8 @@ class PublicationController extends AbstractController
             $publication->setTitle(trim(ucfirst($dataValue)));
         }
         if ($dataName === "publication[cover]") {
-
+            // On vérifie que le fichier est une image
             if (getimagesize($dataFile) > 0) {
-
                 $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $pub;
                 // si une cover a déjà été envoyée, alors on la supprime pour la remplacer par la nouvelle
                 if ($publication->getCover()) {
@@ -219,7 +217,6 @@ class PublicationController extends AbstractController
                 ]);
             }
         }
-
         if ($dataName === "publication[summary]") {
             $publication->setSummary(trim(ucfirst($dataValue)));
         }
@@ -238,7 +235,7 @@ class PublicationController extends AbstractController
             "code" => 200
         ]);
     }
-    #[Route('/story/publish', methods: 'POST', name: 'app_publication_publish')]
+    #[Route('/story/publish', methods: 'POST', name: 'app_publication_publish')] // ANCHOR Publish
     public function publish(Request $request, PublicationRepository $pubRepo, EntityManagerInterface $em): Response
     {
         $dataPub = $request->get("pub");
@@ -266,6 +263,5 @@ class PublicationController extends AbstractController
             ]);
         }
         //
-
     }
 }

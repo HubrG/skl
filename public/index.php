@@ -1,4 +1,6 @@
 <?php
+ini_set("extension", "php_mbstring.dll");
+ini_set("extension", "php_exif.dll");
 
 use App\Kernel;
 

@@ -27,9 +27,10 @@
     "scripts" : {
         "dev-server": "encore dev-server",
         "dev": "encore dev",
-        "build": "webpack --config ./resources/webpack/webpack.config.js --display-error-details",
-        "watch": "webpack --watch --config ./resources/webpack/webpack.config.js --display-error-details",
-        "heroku-postbuild": "webpack --config ./resources/webpack/webpack.config.js"
+        "watch": "encore dev --watch",
+        "build": "encore production --progress",
+        "heroku-postbuild": "npm run build",
+        "start": "node index.js"
     },
     "dependencies": {
         "@headlessui/react": "^1.7.7",

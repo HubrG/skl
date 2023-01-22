@@ -16,20 +16,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PublicationController extends AbstractController
 {
-
-
     #[Route('/story/add', name: 'app_publication_add')] // ANCHOR Add Story
     public function index(Request $request, PublicationRepository $pubRepo, EntityManagerInterface $em): Response
     {
-        // Si l'utilisateur est connecté...
+        // If user is connected
         if ($this->getUser()) {
             // GESTION DU BROUILLON
             // On récupère son dernier brouillon, s'il existe
             $brouillon = $pubRepo->findOneBy(["user" => $this->getUser(), "status" => 0]);
-            if ($brouillon) {
-                $form = $this->createForm(PublicationType::class, $brouillon);
-            } else // Sinon, on crée une nouvelle ligne de brouillon
-
+            if (!$brouillon)
             {
                 $publication = new Publication();
                 $publication->setUser($this->getUser());
@@ -39,8 +34,8 @@ class PublicationController extends AbstractController
                 $em->persist($publication);
                 $em->flush();
                 $brouillon = $pubRepo->findOneBy(["user" => $this->getUser(), "status" => 0]);
-                $form = $this->createForm(PublicationType::class, $brouillon);
             }
+                $form = $this->createForm(PublicationType::class, $brouillon);
         } else {
             return $this->redirectToRoute("app_home");
         }
@@ -96,7 +91,7 @@ class PublicationController extends AbstractController
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////
-    #[Route('story/add_key/{pub<\d+>?0}/{value}', methods: 'POST', name: 'app_publication_add_keyword')] // ANCHOR Add Keyword
+    #[Route('story/add_key/{pub<\d+>?0}/{value}', name: 'app_publication_add_keyword', methods: 'POST', )] // ANCHOR Add Keyword
     public function addkey(PublicationKeywordRepository $keyRepo, PublicationRepository $pubRepo, EntityManagerInterface $em, $pub = null, $value = null): Response
     {
         // Si value est set et que l'utilisateur est connecté...
@@ -151,7 +146,7 @@ class PublicationController extends AbstractController
                 // Si le mot existe alors...
                 if ($delKey) {
                     // On verifie que le post existe et que ce keyword est bien lié au post
-                    if ($publication && $delKey->getPublication()) {
+                    if ($delKey->getPublication()) {
                         // On décrémente le keyword dissocié
                         $countKey = $delKey->getCount() - 1;
                         $delKey->removePublication($publication)
@@ -181,7 +176,7 @@ class PublicationController extends AbstractController
             return $this->redirectToRoute("app_home");
         }
     }
-    #[Route('/story/as/{pub}', methods: 'POST', name: 'app_publication_autosave')] // ANCHOR Autosave
+    #[Route('/story/as/{pub}', name: 'app_publication_autosave', methods: 'POST')] // ANCHOR Autosave
     public function aspost(Request $request, PublicationCategoryRepository $catRepo, PublicationRepository $pubRepo, EntityManagerInterface $em, $pub = null): Response
     {
         $dataName = $request->get("name");
@@ -235,7 +230,7 @@ class PublicationController extends AbstractController
             "code" => 200
         ]);
     }
-    #[Route('/story/publish', methods: 'POST', name: 'app_publication_publish')] // ANCHOR Publish
+    #[Route('/story/publish', name: 'app_publication_publish', methods: 'POST')] // ANCHOR Publish
     public function publish(Request $request, PublicationRepository $pubRepo, EntityManagerInterface $em): Response
     {
         $dataPub = $request->get("pub");
@@ -262,6 +257,5 @@ class PublicationController extends AbstractController
                 "code" => "500", "value" => null
             ]);
         }
-        //
     }
 }

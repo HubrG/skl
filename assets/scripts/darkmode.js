@@ -12,10 +12,9 @@ export function darkMode() {
 }
 export function ok() {
   let html = document.getElementById("html");
-  let html2 = document.getElementById("html");
   html.classList.toggle("dark");
   let dm = document.getElementById("darkMode");
-  if (html2.classList.contains("dark")) {
+  if (html.classList.contains("dark")) {
     dm.innerHTML = "clair";
   } else {
     dm.innerHTML = "sombre";

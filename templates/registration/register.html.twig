@@ -7,44 +7,44 @@
 	{% for flash_error in app.flashes('verify_email_error') %}
 		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
 	{% endfor %}
-	<section class="col-span-6  col-start-4">
+	<section class="col-span-12  lg:col-start-4 lg:col-span-6">
 		<h1 class="text-center">Rejoignez-nous !</h1>
-		{{ form_start(registrationForm, {attr: {'novalidate': 'novalidate'}}) }}
+		{{ form_start(registrationForm, {attr: {'novalidate': 'novalidate', 'class':'mt-20'}}) }}
 		{{ form_label(registrationForm.username) }}
 		{{ form_errors(registrationForm.username) }}
-		<div class="flex">
-			<span class="form-icon">
-				<i class="fa-solid fa-at"></i>
-			</span>
-			{{ form_widget(registrationForm.username, { attr: {'class':'icon-desc'}}) }}
+		<div class="relative mb-6">
+			<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
+				<i class="fa-solid fa-book"></i>
+			</div>
+			{{ form_widget(registrationForm.username) }}
 		</div>
 		{{ form_help(registrationForm.username) }}
 
 		{{ form_label(registrationForm.email) }}
 		{{ form_errors(registrationForm.email) }}
-		<div class="flex">
-			<span class="form-icon">
-				<i class="fa-regular fa-envelope"></i>
-			</span>
-			{{ form_widget(registrationForm.email, { attr: {'class':'icon-desc'}}) }}
+		<div class="relative mb-6">
+			<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
+				<i class="fa-solid fa-book"></i>
+			</div>
+			{{ form_widget(registrationForm.email) }}
 		</div>
 		{{ form_label(registrationForm.plainPassword) }}
 		{{ form_errors(registrationForm.plainPassword) }}
-		<div class="flex">
-			<span class="form-icon">
-				<i class="fa-solid fa-unlock-keyhole"></i>
-			</span>
-			{{ form_widget(registrationForm.plainPassword, { attr: {'class':'icon-desc'}}) }}
+		<div class="relative mb-6">
+			<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
+				<i class="fa-solid fa-book"></i>
+			</div>
+			{{ form_widget(registrationForm.plainPassword) }}
 		</div>
-
-		<label for="registration_form_agreeTerms">
-			<span class="ml-30 cursor-pointer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;J'accepte les CGU</span>
+		<label class="relative inline-flex items-center cursor-pointer">
+			{{ form_widget(registrationForm.agreeTerms, {attr:{"class":"sr-only peer"}}) }}
+			<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+			<span class="ml-3 text-sm font-medium -mt-6 text-gray-900 dark:text-gray-300">J'accepte les conditions générales d'utilisation</span>
 		</label>
-		<div class="-mt-8">{{ form_widget(registrationForm.agreeTerms) }}</div>
 		<ul class="-mt-5">
 			<li class="form-error">{{ form_errors(registrationForm.agreeTerms) }}</li>
 		</ul>
-		<button type=" submit" class=" btn">C'est parti !</button>
+		<button type="submit">C'est parti !</button>
 		{{ form_end(registrationForm) }}
 	</section>
 

@@ -16,13 +16,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PublicationController extends AbstractController
 {
-    #[Route('/story/add', name: 'app_publication_add')] // ANCHOR Add Story
-    public function index(Request $request, PublicationRepository $pubRepo, EntityManagerInterface $em): Response
+    #[Route('/story/add', name: 'app_publication_add')]
+    public function Draft(Request $request, PublicationRepository $pubRepo, EntityManagerInterface $em): Response
     {
-        // If user is connected
+        // * If user is connected
         if ($this->getUser()) {
-            // GESTION DU BROUILLON
-            // On récupère son dernier brouillon, s'il existe
+            // * We get our last draft, if it exists
             $brouillon = $pubRepo->findOneBy(["user" => $this->getUser(), "status" => 0]);
             if (!$brouillon)
             {
@@ -39,21 +38,20 @@ class PublicationController extends AbstractController
         } else {
             return $this->redirectToRoute("app_home");
         }
-        // GESTION DU NEXT STEP
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // on modifie le statut du post => (1) ce n'est plus un brouillon
+            // * we modify the status of the post => (1) it is no longer a draft
             $status = $pubRepo->findOneBy(["user" => $this->getUser(), "status" => 0]);
             $status->setStatus(1)
                 ->setUpdated(new \DateTime('now'))
                 ->setCreated(new \DateTime('now'));
-            //si le titre est vide...
+            // * if the title is empty...
             if ($form->get("title")->getViewData() === "") {
                 $status->setTitle("Récit sans titre");
             } else {
                 $status->setTitle(trim(ucfirst($form->get("title")->getViewData())));
             }
-            // On formate le summary
+            // * We format the summary
             $status->setSummary(trim(ucfirst($form->get("summary")->getViewData())));
             $em->persist($form->getData());
             $em->persist($status);
@@ -66,8 +64,8 @@ class PublicationController extends AbstractController
             'pub' => $brouillon
         ]);
     }
-    #[Route('/story/edit/{id}', name: 'app_publication_edit')] // ANCHOR Edit Story
-    public function editPubChapter(PublicationRepository $pubRepo, $id = null): Response
+    #[Route('/story/edit/{id}', name: 'app_publication_edit')]
+    public function EditPublication(PublicationRepository $pubRepo, $id = null): Response
     {
         if ($this->getUser()) {
             $infoPublication = $pubRepo->findOneBy(["user" => $this->getUser(), "id" => $id]);
@@ -84,24 +82,24 @@ class PublicationController extends AbstractController
             return $this->redirectToRoute("app_home");
         }
     }
-    //////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////
-    // ROUTES PERMETTANT LA GESTION DE DONÉES EN BACKGROUND (ADD KEYWORD / DEL KEYWORD / AUTOSAVE)
-    //////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////
-    #[Route('story/add_key/{pub<\d+>?0}/{value}', name: 'app_publication_add_keyword', methods: 'POST', )] // ANCHOR Add Keyword
-    public function addkey(PublicationKeywordRepository $keyRepo, PublicationRepository $pubRepo, EntityManagerInterface $em, $pub = null, $value = null): Response
+    // * //////////////////////////////////////////////////////////////////////////////////////////////////////
+    // * //////////////////////////////////////////////////////////////////////////////////////////////////////
+    // * //////////////////////////////////////////////////////////////////////////////////////////////////////
+    // * ROUTES PERMETTANT LA GESTION DE DONÉES EN BACKGROUND (ADD KEYWORD / DEL KEYWORD / AUTOSAVE)
+    // * //////////////////////////////////////////////////////////////////////////////////////////////////////
+    // * //////////////////////////////////////////////////////////////////////////////////////////////////////
+    // * //////////////////////////////////////////////////////////////////////////////////////////////////////
+    #[Route('story/add_key/{pub<\d+>?0}/{value}', name: 'app_publication_add_keyword', methods: 'POST', )]
+    public function Axios_AddKey(PublicationKeywordRepository $keyRepo, PublicationRepository $pubRepo, EntityManagerInterface $em, $pub = null, $value = null): Response
     {
-        // Si value est set et que l'utilisateur est connecté...
+        // * If value is set and the user is logged in...
         if ($value && $this->getUser()) {
             $value = trim(ucfirst($value));
             $keyExists = $keyRepo->findOneBy(["keyword" => $value]);
             $publication = $pubRepo->find($pub);
-            // Si le post existe
+            // * If the post exists
             if ($publication) {
-                // Si l'utilisateur connecté est bien l'auteur du post, on poursuit...
+                // * If the connected user is the author of the post, we continue...
                 if ($this->getUser() === $publication->getUser()) {
                     // Si le mot clé existe déjà...
                     if ($keyExists) {
@@ -110,9 +108,6 @@ class PublicationController extends AbstractController
                         $key = $keyExists->setCount($countKey)
                             // on ajoute le mot au ManyToMany de l'article correspondant
                             ->addPublication($publication);
-                        $em->persist($key);
-                        $em->flush();
-                        return $this->json(["code" => "200", "value" => $value]);
                     }
                     // sinon, on cré le nouveau mot et on l'ajoute au ManyToMany de l'article...
                     else {
@@ -120,10 +115,10 @@ class PublicationController extends AbstractController
                         $key = $keykey->setKeyword($value)
                             ->setCount(1)
                             ->addPublication($publication);
-                        $em->persist($key);
-                        $em->flush();
-                        return $this->json(["code" => "200", "value" => $value]);
                     }
+                    $em->persist($key);
+                    $em->flush();
+                    return $this->json(["code" => "200", "value" => $value]);
                 } else {
                     return $this->redirectToRoute("app_home");
                 }
@@ -134,26 +129,26 @@ class PublicationController extends AbstractController
             return $this->redirectToRoute("app_home");
         }
     }
-    #[Route('story/{mode}/del_key/{pub<\d+>?0}/{value}', name: 'app_publication_del_keyword')] // ANCHOR Del keyword
-    public function delkey(PublicationKeywordRepository $keyRepo, PublicationRepository $pubRepo, EntityManagerInterface $em, $pub = null, $value = null, $mode = null): Response
+    #[Route('story/{mode}/del_key/{pub<\d+>?0}/{value}', name: 'app_publication_del_keyword')]
+    public function Axios_DelKey(PublicationKeywordRepository $keyRepo, PublicationRepository $pubRepo, EntityManagerInterface $em, $pub = null, $value = null, $mode = null): Response
     {
-        // Si value est set et que l'utilisateur est connecté...
+        // * Si value est set et que l'utilisateur est connecté...
         if ($value && $this->getUser()) {
             $delKey = $keyRepo->findOneBy(["keyword" => $value]);
             $publication = $pubRepo->find($pub);
-            // Si l'user authentitifé est bien l'auteur du post...
+            // * Si l'user authentitifé est bien l'auteur du post...
             if ($publication->getUser() === $this->getUser()) {
-                // Si le mot existe alors...
+                // * Si le mot existe alors...
                 if ($delKey) {
-                    // On verifie que le post existe et que ce keyword est bien lié au post
+                    // * On verifie que le post existe et que ce keyword est bien lié au post
                     if ($delKey->getPublication()) {
-                        // On décrémente le keyword dissocié
+                        // * On décrémente le keyword dissocié
                         $countKey = $delKey->getCount() - 1;
                         $delKey->removePublication($publication)
                             ->setCount($countKey);
                         $em->persist($delKey);
                         $em->flush();
-                        // le cas échéant, on le supprime s'il est à 0
+                        // * le cas échéant, on le supprime s'il est à 0
                         if ($countKey === 0) {
                             $em->remove($delKey);
                             $em->flush();
@@ -176,8 +171,8 @@ class PublicationController extends AbstractController
             return $this->redirectToRoute("app_home");
         }
     }
-    #[Route('/story/as/{pub}', name: 'app_publication_autosave', methods: 'POST')] // ANCHOR Autosave
-    public function aspost(Request $request, PublicationCategoryRepository $catRepo, PublicationRepository $pubRepo, EntityManagerInterface $em, $pub = null): Response
+    #[Route('/story/as/{pub}', name: 'app_publication_autosave', methods: 'POST')]
+    public function Axios_AutoSave(Request $request, PublicationCategoryRepository $catRepo, PublicationRepository $pubRepo, EntityManagerInterface $em, $pub = null): Response
     {
         $dataName = $request->get("name");
         $dataValue = $request->get("value");
@@ -193,10 +188,10 @@ class PublicationController extends AbstractController
             $publication->setTitle(trim(ucfirst($dataValue)));
         }
         if ($dataName === "publication[cover]") {
-            // On vérifie que le fichier est une image
+            // * On vérifie que le fichier est une image
             if (getimagesize($dataFile) > 0) {
                 $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $pub;
-                // si une cover a déjà été envoyée, alors on la supprime pour la remplacer par la nouvelle
+                // * si une cover a déjà été envoyée, alors on la supprime pour la remplacer par la nouvelle
                 if ($publication->getCover()) {
                     \unlink($destination . "/" . $publication->getCover());
                 }
@@ -230,8 +225,8 @@ class PublicationController extends AbstractController
             "code" => 200
         ]);
     }
-    #[Route('/story/publish', name: 'app_publication_publish', methods: 'POST')] // ANCHOR Publish
-    public function publish(Request $request, PublicationRepository $pubRepo, EntityManagerInterface $em): Response
+    #[Route('/story/publish', name: 'app_publication_publish', methods: 'POST')]
+    public function Axios_Publish(Request $request, PublicationRepository $pubRepo, EntityManagerInterface $em): Response
     {
         $dataPub = $request->get("pub");
         $dataPublish  = json_decode($request->get("publish"));

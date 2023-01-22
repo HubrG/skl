@@ -10,7 +10,7 @@
 			{{ infoPub.title|capitalize }}
 		</span>
 	</h1>
-	<aside class="col-span-8 col-start-3 pr-10  mb-14 sm:col-span-3 mt-9">
+	<aside class="col-span-7 col-start-4 pr-10  mb-14 lg:col-span-3 md:mt-9">
 		{% if infoPub.cover == "" %}
 			<div id="hideNoCover" class="shadow-md p-10 text-2xl flex h-80 bg-slate-100 rounded-md dark:bg-slate-500" for="publication_cover" data-tooltip-placement="bottom" data-tooltip-target="tooltip-cover">
 				<label for="publication_cover" class="cursor-pointer justify-center h-80">
@@ -28,7 +28,7 @@
 			<div class="tooltip-arrow" data-popper-arrow></div>
 		</div>
 	</aside>
-	<section class="col-span-12 md:col-span-6">
+	<section class="col-span-12 lg:col-span-6">
 		<div class="mb-4 -mt-6 border-b border-gray-200 dark:border-gray-700">
 			<ul class="flex justify-center -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
 				<li class="mr-2" role="presentation">
@@ -37,12 +37,12 @@
 						Informations</button>
 				</li>
 				<li class="mr-2" role="presentation">
-					<button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">
+					<button class="inline-block p-4 border-b-2 rounded-t-lg" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">
 						<i class="fa-solid fa-list"></i>
 						Chapitres</button>
 				</li>
 				<li class="mr-2" role="presentation">
-					<button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">
+					<button class="inline-block p-4 border-b-2 rounded-t-lg" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">
 						<i class="fa-solid fa-sliders"></i>
 						Paramètres</button>
 				</li>
@@ -109,7 +109,8 @@
 
 		</div>
 	</section>
-	<aside class="col-span-12 pr-10  mb-14 sm:col-span-3 ml-5 mt-11">
+	<hr class="w-full col-span-12 lg:hidden">
+	<aside class="col-span-12 lg:pr-10 mb-14 lg:col-span-3 lg:ml-5 mt-11">
 		<div id="publishDiv" class="p-4 rounded-lg  w-full dark:bg-gray-800 mb-4 -mt-4 border-2">
 			<label class="relative inline-flex items-center mr-5 cursor-pointer" data-modal-target="popup-modal" data-modal-toggle="popup-modal">
 				<input type="checkbox" id="publishButton" class="disabled sr-only peer" disabled {% if infoPub.status == 2 %} checked {% endif %}>
@@ -150,7 +151,7 @@
 		</div>
 	</aside>
 	<div id="popup-modal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0  h-modal md:h-full">
-		<div class="relative w-full h-full max-w-md md:h-auto shadow-2xl">
+		<div class="relative w-full h-full max-w-md md:h-auto shadow-2xl dark:shadow-2xl">
 			<div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
 				<button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="popup-modal">
 					<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">

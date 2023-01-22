@@ -88,9 +88,9 @@ function action() {
     .then(function (response) {
       typeAlert = "success";
       if (response.data.value == 1) {
-        textAlert = "Votre récit a bien été dépublié !";
+        textAlert = '<i class="fa-regular fa-circle-check text-green-500 font-medium" style="font-color:green"></i> &nbsp;&nbsp;Votre récit a bien été <strong>dépublié</strong> !';
       } else {
-        textAlert = "Votre récit a bien été publié !";
+        textAlert = '<i class="fa-regular fa-circle-check text-green-500 font-medium" style="font-color:green"></i> &nbsp;&nbsp;Votre récit a bien été <strong>publié</strong> !';
       }
     })
     .catch(function (error) {

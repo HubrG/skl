@@ -25,6 +25,7 @@ body.turbo-loading {
     opacity: .9
 }
 */
+
 footer {
   @apply shadow-2xl  border-slate-600
 }
@@ -33,7 +34,11 @@ nav {
 }
 main {
   @apply min-h-screen w-full grid grid-cols-12 mx-auto p-10 pt-14 md:w-9/12 ;
+  transition-duration: 0.5s;
   
+}
+dialog {
+  @apply bg-slate-400 bg-opacity-25
 }
 h1 {
 
@@ -86,13 +91,13 @@ form input[type=checkbox] {
   @apply bg-slate-600
 }
 form input[type=text],input[type=email],input[type=password]    {
-    @apply mt-5 bg-white rounded-md shadow   border-0 border-r-[1px] border-slate-300 border-b-[4px]  border-b-slate-300 text-slate-500  text-base h-14 focus:ring-0   focus:border-slate-300  block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:text-slate-300  ;
+    @apply mt-5 bg-white rounded-md shadow z-0  border-0 border-r-[1px] border-slate-300 border-b-[4px]  border-b-slate-300 text-slate-500  text-base h-14 focus:ring-0   focus:border-slate-300  block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:text-slate-300  ;
 }
 form textarea {
-  @apply mt-5 bg-white rounded-md shadow text-justify    border-0  border-r-[1px]  border-slate-300 border-b-[4px]  border-b-slate-300  h-72  text-slate-500 focus:ring-0   text-base    focus:border-slate-300 block w-full p-2.5 pb-5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:text-slate-300;
+  @apply mt-5 bg-white rounded-md shadow   z-0 text-justify    border-0  border-r-[1px]  border-slate-300 border-b-[4px]  border-b-slate-300  h-72  text-slate-500 focus:ring-0   text-base    focus:border-slate-300 block w-full p-2.5 pb-5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:text-slate-300;
 }
 form select {
-  @apply mt-5 bg-white  rounded-md  shadow  border-0 border-r-[1px] border-slate-300 border-b-[2px]  border-b-slate-300 font-medium  text-slate-500  text-base h-14 focus:ring-0  focus:border-slate-300 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:text-slate-300 ;
+  @apply mt-5 bg-white  rounded-md  shadow z-0   border-0 border-r-[1px] border-slate-300 border-b-[2px]  border-b-slate-300 font-medium  text-slate-500  text-base h-14 focus:ring-0  focus:border-slate-300 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:text-slate-300 ;
 }
 form input.icon-desc {
     @apply rounded-none rounded-r-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
@@ -136,8 +141,12 @@ form button:disabled {
 .noty_theme__semanticui.noty_type__success {
   @apply bg-green-200 text-green-600 shadow-lg text-sm rounded-lg flex font-medium h-16 justify-center items-center;
 }
+.noty_theme__semanticui.noty_type__error {
+  @apply bg-red-200 text-red-600 shadow-lg text-sm rounded-lg flex font-medium text-center h-16 justify-center items-center;
+}
   .noty_theme__semanticui.noty_bar {
     font-family: "Noto Sans JP";
       @apply rounded-lg
      
   }
+ 

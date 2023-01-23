@@ -4,46 +4,56 @@
 {% endblock %}
 
 {% block body %}
-	<h1 class="col-span-12 -mt-10 mb-14 text-center">
-		<span class="text-xs">Édition du récit</span><br/>
-		<span id="pubTitle">
-			{{ infoPub.title|capitalize }}
-		</span>
-	</h1>
-	<aside class="col-span-7 col-start-4 pr-10  mb-14 lg:col-span-3 md:mt-9">
-		{% if infoPub.cover == "" %}
-			<div id="hideNoCover" class="shadow-md p-10 text-2xl flex h-80 bg-slate-100 rounded-md dark:bg-slate-500" for="publication_cover" data-tooltip-placement="bottom" data-tooltip-target="tooltip-cover">
-				<label for="publication_cover" class="cursor-pointer justify-center h-80">
-					<h2 class="m-auto text-center font-light shadow-slate-300 text-slate-600 dark:shadow-slate-900 mt-10 rounded-lg">
-						<i class="fa-regular fa-images text-5xl"></i><br/><br/>Ajouter une couverture
-					</h2>
-				</label>
+	<div class=" col-span-12">
+
+		<h1 class=" -mt-10 mb-10 text-center ">
+			<span class="text-xs">Édition du récit</span><br/>
+			<span id="pubTitle" class="text-4xl">
+				{{ infoPub.title|capitalize }}
+			</span>
+		</h1>
+	</div>
+	<aside class="relative col-span-7 col-start-4 pr-10 mb-14 lg:col-span-3 lg:mt-4">
+		<div class="sticky top-20">
+			{% if infoPub.cover == "" %}
+				<div id="hideNoCover" class="shadow-md p-10 text-2xl flex h-80 bg-slate-100 rounded-md dark:bg-slate-500" for="publication_cover" data-tooltip-placement="bottom" data-tooltip-target="tooltip-cover">
+					<label for="publication_cover" class="cursor-pointer justify-center h-80">
+						<h2 class="m-auto text-center font-light shadow-slate-300 text-slate-600 dark:shadow-slate-900 mt-10 rounded-lg">
+							<i class="fa-regular fa-images text-5xl"></i><br/><br/>Ajouter une couverture
+						</h2>
+					</label>
+				</div>
+				<label for="publication_cover" id="showNewCover" class="cursor-pointer hidden"><img id="cover" src="" data-tooltip-target="tooltip-cover" data-tooltip-placement="bottom" class="shadow-md shadow-slate-300 dark:shadow-slate-900 rounded-lg"/></label>
+			{% else %}
+				<label for="publication_cover" class="cursor-pointer"><img data-tooltip-target="tooltip-cover" data-tooltip-placement="bottom" id="cover" class="shadow-md shadow-slate-300 dark:shadow-slate-900 rounded-lg" src="{{ asset('images/uploads/story/'~ infoPub.id ~'/'~ infoPub.cover)}} "/></label>
+			{% endif %}
+			<div id="tooltip-cover" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-normal text-white bg-slate-700 rounded-lg opacity-0 tooltip dark:bg-gray-700">
+				Cliquez ici pour importer une photo<br/>de couverture
+				<div class="tooltip-arrow" data-popper-arrow></div>
 			</div>
-			<label for="publication_cover" id="showNewCover" class="cursor-pointer hidden"><img id="cover" src="" data-tooltip-target="tooltip-cover" data-tooltip-placement="bottom" class="shadow-md shadow-slate-300 dark:shadow-slate-900 rounded-lg"/></label>
-		{% else %}
-			<label for="publication_cover" class="cursor-pointer"><img data-tooltip-target="tooltip-cover" data-tooltip-placement="bottom" id="cover" class="shadow-md shadow-slate-300 dark:shadow-slate-900 rounded-lg" src="{{ asset('images/uploads/story/'~ infoPub.id ~'/'~ infoPub.cover)}} "/></label>
-		{% endif %}
-		<div id="tooltip-cover" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-normal text-white bg-slate-700 rounded-lg opacity-0 tooltip dark:bg-gray-700">
-			Cliquez ici pour importer une photo<br/>de couverture
-			<div class="tooltip-arrow" data-popper-arrow></div>
 		</div>
 	</aside>
-	<section class="col-span-12 lg:col-span-6">
-		<div class="mb-4 -mt-6 border-b border-gray-200 dark:border-gray-700">
+	<section class="col-span-12 -col-start-0 lg:col-span-6  ">
+		<div class="mb-4   dark:border-gray-700  bg-white dark:bg-slate-800 pt-5 sticky pb-[1px] top-14 border-b-[4px] border-gray-200 z-50">
 			<ul class="flex justify-center -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
-				<li class="mr-2" role="presentation">
-					<button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
+				<li class="mr-2 text-xs lg:text-sm" role="presentation">
+					<button class="inline-block p-4 border-b-4  dark:bg-slate-900 bg-slate-100  text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
 						<i class="fa-solid fa-circle-info"></i>
 						Informations</button>
 				</li>
-				<li class="mr-2" role="presentation">
-					<button class="inline-block p-4 border-b-2 rounded-t-lg" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">
+				<li class="mr-2 text-xs lg:text-sm" role="presentation">
+					<button class="inline-block p-4 border-b-4 dark:bg-slate-900  bg-slate-100 focus-visible:text-red-300 text-slate-500 hover:text-slate-900 rounded-t-lg" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">
 						<i class="fa-solid fa-list"></i>
 						Chapitres</button>
 				</li>
-				<li class="mr-2" role="presentation">
-					<button class="inline-block p-4 border-b-2 rounded-t-lg" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">
-						<i class="fa-solid fa-sliders"></i>
+				<li class="mr-2  text-xs lg:text-sm" role="presentation">
+					<button class="inline-block p-4 border-b-4 dark:bg-slate-900  bg-amber-50 text-amber-900 hover:text-amber-900 focus:text-amber-900 rounded-t-lg" id="imagination-tab" data-tabs-target="#imagination" type="button" role="tab" aria-controls="imagination" aria-selected="false">
+						<i class="fa-solid fa-meteor"></i>
+						Imagination</button>
+				</li>
+				<li class="mr-2 text-xs lg:text-sm" role="presentation">
+					<button class="inline-block p-4 border-b-4 dark:bg-slate-900 bg-gray-50 text-slate-500 hover:text-slate-900 focus:text-slate-900 rounded-t-lg" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">
+						<i class="fa-solid fa-gear"></i>
 						Paramètres</button>
 				</li>
 			</ul>
@@ -94,65 +104,71 @@
 				<label class="relative inline-flex items-center cursor-pointer">
 					{{ form_widget(formPub.mature, {attr:{"class":"sr-only peer axios"}}) }}
 					<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-					<span class="ml-3 -mt-6 text-sm font-medium text-gray-900 dark:text-gray-300">Votre récit contient-il du contenu pour adulte ?</span>
+					<span class="ml-3 -mt-6 text-sm font-medium text-slate-900 dark:text-slate-300">Votre récit contient-il du contenu pour adulte ?</span>
 				</label>
 				{{ form_end(formPub) }}
 			</div>
-			<div class="hidden p-4 rounded-lg min-h-screen" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+			<div class="hidden p-4 rounded-lg relative min-h-screen" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+				<button class="bg-slate-200 text-slate-700 border-b-4 border-b-slate-500 rounded-lg sticky top-44 lg:top-40 text-sm font-medium  w-full p-3">
+					<i class="fa-solid fa-circle-plus"></i>
+					&nbsp;&nbsp;Ajouter un chapitre</button>
+			</div>
+			<div class="hidden p-4 rounded-lg  min-h-screen" id="imagination" role="tabpanel" aria-labelledby="settings-tab">
 				<p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the
-					<strong class="font-medium text-gray-800 dark:text-white">Dashboard tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
+					<strong class="font-medium text-gray-800 dark:text-white">Settings tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
 			</div>
 			<div class="hidden p-4 rounded-lg  min-h-screen" id="settings" role="tabpanel" aria-labelledby="settings-tab">
 				<p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the
 					<strong class="font-medium text-gray-800 dark:text-white">Settings tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
 			</div>
-
 		</div>
 	</section>
 	<hr class="w-full col-span-12 lg:hidden">
 	<aside class="col-span-12 lg:pr-10 mb-14 lg:col-span-3 lg:ml-5 mt-11">
-		<div id="publishDiv" class="p-4 rounded-lg  w-full dark:bg-gray-800 mb-4 -mt-4 border-2">
-			<label class="relative inline-flex items-center mr-5 cursor-pointer" data-modal-target="popup-modal" data-modal-toggle="popup-modal">
-				<input type="checkbox" id="publishButton" class="disabled sr-only peer" disabled {% if infoPub.status == 2 %} checked {% endif %}>
-				<div id="publishToggle" class="w-11 h-6 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-green-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 "></div>
-				<span class="ml-3 text-xs font-medium dark:text-gray-300" id="publishText">
-					{% if infoPub.status == 2 %}Dépublier le récit{% else %}Publier le récit
-					{% endif %}
-				</span>
-			</label>
-		</div>
-		<div class="p-4 rounded-lg bg-slate-50 w-full dark:bg-gray-800 mb-4">
-			<label class="relative inline-flex items-center cursor-pointer">
-				<input type="checkbox" value="" class="sr-only peer" checked>
-				<div class="w-11 h-6 bg-blue-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-blue-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-				<span class="ml-3 text-xs font-medium text-blue-900 dark:text-gray-300">Sauvegarde automatique</span>
-			</label>
-		</div>
-		<div class="p-4 rounded-lg bg-slate-50 w-full dark:bg-gray-800 mb-4 text-slate-800 dark:text-slate-400">
-			<p class="text-xs mb-1">
-				<i class="fa-regular fa-clock"></i>
-				&nbsp;Crée il y a
-				<span class="font-medium">{{ infoPub.created|since }}</span>
-			</p>
-			<p class="text-xs mb-1">
-				<i class="fa-regular fa-clock"></i>
-				&nbsp;Modifié il y a
-				<span class="font-medium">{{ infoPub.updated|since }}</span>
-			</p>
-			<p id="publishDateText" class="text-xs mb-1">
-				<i class="fa-regular fa-clock"></i>
-				&nbsp;Publié il y a
-				<span class="font-medium" id="publishDateTextSpan">
-					{% if infoPub.publishedDate %}
-						{{ infoPub.publishedDate|since }}
-					{% endif %}
-				</span>
-			</p>
+		<div class="sticky top-20">
+			<div id="publishDiv" class="p-4 rounded-lg  w-full dark:bg-gray-800 mb-4 -mt-4 border-2">
+				<label class="relative inline-flex items-center mr-5 cursor-pointer" data-modal-target="popup-modal" data-modal-toggle="popup-modal">
+					<input type="checkbox" id="publishButton" class="disabled sr-only peer" disabled {% if infoPub.status == 2 %} checked {% endif %}>
+					<div id="publishToggle" class="w-11 h-6 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-green-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 "></div>
+					<span class="ml-3 text-xs font-medium dark:text-gray-300" id="publishText">
+						{% if infoPub.status == 2 %}Dépublier le récit{% else %}Publier le récit
+						{% endif %}
+					</span>
+				</label>
+			</div>
+			<div class="p-4 rounded-lg bg-slate-50 w-full dark:bg-gray-800 mb-4">
+				<label class="relative inline-flex items-center cursor-pointer">
+					<input type="checkbox" value="" class="sr-only peer" checked>
+					<div class="w-11 h-6 bg-blue-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-blue-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+					<span class="ml-3 text-xs font-medium text-blue-900 dark:text-gray-300">Sauvegarde automatique</span>
+				</label>
+			</div>
+			<div class="p-4 rounded-lg bg-slate-50 w-full dark:bg-gray-800 mb-4 text-slate-800 dark:text-slate-400">
+				<p class="text-xs mb-1">
+					<i class="fa-regular fa-clock"></i>
+					&nbsp;Crée il y a
+					<span class="font-medium">{{ infoPub.created|since }}</span>
+				</p>
+				<p class="text-xs mb-1">
+					<i class="fa-regular fa-clock"></i>
+					&nbsp;Modifié il y a
+					<span class="font-medium">{{ infoPub.updated|since }}</span>
+				</p>
+				<p id="publishDateText" class="text-xs mb-1">
+					<i class="fa-regular fa-clock"></i>
+					&nbsp;Publié il y a
+					<span class="font-medium" id="publishDateTextSpan">
+						{% if infoPub.publishedDate %}
+							{{ infoPub.publishedDate|since }}
+						{% endif %}
+					</span>
+				</p>
+			</div>
 		</div>
 	</aside>
-	<div id="popup-modal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0  h-modal md:h-full">
-		<div class="relative w-full h-full max-w-md md:h-auto shadow-2xl dark:shadow-2xl">
-			<div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+	<dialog id="popup-modal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0  w-full z-100  h-modal md:h-full">
+		<div class="relative w-full h-full max-w-md md:h-auto shadow-2xl dark:shadow-2xl ">
+			<div class="relative bg-white rounded-lg shadow dark:bg-gray-700 top-1/3">
 				<button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="popup-modal">
 					<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 						<path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
@@ -168,9 +184,9 @@
 					<button data-modal-hide="popup-modal" id="PublicationPublishButton" type="button" class="text-white focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
 						Oui, je suis certain(e)
 					</button>
-					<button data-modal-hide="popup-modal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">No, cancel</button>
+					<button data-modal-hide="popup-modal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Non, j'annule</button>
 				</div>
 			</div>
 		</div>
-	</div>
+	</dialog>
 {% endblock %}

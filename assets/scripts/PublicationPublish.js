@@ -88,9 +88,11 @@ function action() {
     .then(function (response) {
       typeAlert = "success";
       if (response.data.value == 1) {
-        textAlert = '<i class="fa-regular fa-circle-check text-green-500 font-medium" style="font-color:green"></i> &nbsp;&nbsp;Votre récit a bien été <strong>dépublié</strong> !';
+        textAlert =
+          '<i class="fa-regular fa-circle-check text-green-500 font-medium" style="font-color:green"></i> &nbsp;&nbsp;Votre récit a bien été <strong>dépublié</strong> !';
       } else {
-        textAlert = '<i class="fa-regular fa-circle-check text-green-500 font-medium" style="font-color:green"></i> &nbsp;&nbsp;Votre récit a bien été <strong>publié</strong> !';
+        textAlert =
+          '<i class="fa-regular fa-circle-check text-green-500 font-medium" style="font-color:green"></i> &nbsp;&nbsp;Votre récit a bien été <strong>publié</strong> !';
       }
     })
     .catch(function (error) {
@@ -105,7 +107,7 @@ function action() {
         text: textAlert,
         theme: "semanticui",
         progressBar: true,
-        timeout: 2500,
+        timeout: 4500,
         layout: "bottomCenter",
         type: typeAlert,
         closeWith: ["click", "button"],

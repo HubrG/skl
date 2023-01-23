@@ -20,7 +20,6 @@ export function axiosSave(value, name, file, url) {
       console.log(response.data.code);
       if (response.data.code == 200) {
         if (file) {
-          console.log(path + filename + ".jpg");
           document.getElementById("cover").src = path + filename + ".jpg";
           if (document.getElementById("hideNoCover")) {
             let hideNoCover = document.getElementById("hideNoCover");
@@ -31,6 +30,20 @@ export function axiosSave(value, name, file, url) {
             }
           }
         }
+      } else {
+        new Noty({
+          text: "<i class='fa-solid fa-triangle-exclamation'></i> &nbsp;Une erreur est survenue, avez-vous bien essayé de charger une image ?",
+          theme: "semanticui",
+          progressBar: true,
+          timeout: 5500,
+          layout: "bottomCenter",
+          type: "error",
+          closeWith: ["click", "button"],
+          animation: {
+            open: "animate__animated animate__fadeInUp", // Animate.css class names
+            close: "animate__animated animate__fadeOutDown", // Animate.css class names
+          },
+        }).show();
       }
       //
     });

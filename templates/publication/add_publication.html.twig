@@ -30,9 +30,9 @@
 			<label for="publication_cover" id="showNewCover" class="cursor-pointer hidden"><img id="cover" src="" data-tooltip-target="tooltip-cover" data-tooltip-placement="bottom" class="shadow-md shadow-slate-300 dark:shadow-slate-900 rounded-lg"/></label>
 		{% else %}
 			<div class="w-48 h-[140px] mx-auto rounded-full flex items-center justify-center text-indigo-500">
-			<label for="publication_cover" class="cursor-pointer"><img data-tooltip-target="tooltip-cover" data-tooltip-placement="bottom" id="cover" class="shadow-md shadow-slate-300 dark:shadow-slate-900 rounded-lg" src="{{ asset('images/uploads/story/'~ pub.id ~'/'~ pub.cover)}} "/></label>
+				<label for="publication_cover" class="cursor-pointer"><img data-tooltip-target="tooltip-cover" data-tooltip-placement="bottom" id="cover" class="shadow-md shadow-slate-300 dark:shadow-slate-900 rounded-lg" src="{{ asset('images/uploads/story/'~ pub.id ~'/'~ pub.cover)}} "/></label>
 			</div>
-				{% endif %}
+		{% endif %}
 		<div id="tooltip-cover" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-normal text-white bg-slate-700 rounded-lg opacity-0 tooltip dark:bg-gray-700">
 			Cliquez ici pour importer une photo<br/>de couverture
 			<div class="tooltip-arrow" data-popper-arrow></div>
@@ -86,7 +86,7 @@
 			<span class="ml-3 -mt-6 text-sm font-medium text-gray-900 dark:text-gray-300">Votre récit contient-il du contenu pour adulte ?</span>
 		</label>
 		<div>
-			<button type="submit" class="w-full">Suivant &nbsp;&nbsp;&nbsp;<i class="fa-solid fa-angle-right"></i>
+			<button type="submit" class="w-full">Passer à l'étape suivante &nbsp;&nbsp;&nbsp;<i class="fa-solid fa-angle-right"></i>
 			</button>
 		</div>
 		{{ form_end(form) }}

@@ -13,7 +13,6 @@ import "./turbo/turbo-helper";
 import "/node_modules/flowbite/dist/flowbite.turbo.js";
 import { addKeyword } from "./scripts/addKeyword";
 import "form-data";
-
 if (document.getElementById("keyValue")) {
   addKeyword();
 }

@@ -34,25 +34,25 @@
 		</div>
 	</aside>
 	<section class="col-span-12 -col-start-0 lg:col-span-6  ">
-		<div class="mb-4   dark:border-gray-700  bg-white dark:bg-slate-800 pt-5 sticky pb-[1px] top-14 border-b-[4px] border-gray-200 z-50">
+		<div class="mb-4   dark:border-gray-700  bg-white dark:bg-slate-800 pt-5 sticky pb-[1px] top-14 border-b-[3px] border-gray-100 z-50">
 			<ul class="flex justify-center -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
 				<li class="mr-2 text-xs lg:text-sm" role="presentation">
-					<button class="inline-block p-4 border-b-4  dark:bg-slate-900 bg-slate-100  text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
+					<button class="inline-block p-4 border-b-4  dark:bg-slate-900 bg-gray-50  text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
 						<i class="fa-solid fa-circle-info"></i>
 						Informations</button>
 				</li>
 				<li class="mr-2 text-xs lg:text-sm" role="presentation">
-					<button class="inline-block p-4 border-b-4 dark:bg-slate-900  bg-slate-100 focus-visible:text-red-300 text-slate-500 hover:text-slate-900 rounded-t-lg" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">
+					<button class="inline-block p-4 border-b-4  dark:bg-slate-900 bg-gray-50  text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="profile-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">
 						<i class="fa-solid fa-list"></i>
 						Chapitres</button>
 				</li>
 				<li class="mr-2  text-xs lg:text-sm" role="presentation">
-					<button class="inline-block p-4 border-b-4 dark:bg-slate-900  bg-amber-50 text-amber-900 hover:text-amber-900 focus:text-amber-900 rounded-t-lg" id="imagination-tab" data-tabs-target="#imagination" type="button" role="tab" aria-controls="imagination" aria-selected="false">
+					<button class="inline-block p-4 border-b-4  dark:bg-slate-900 bg-gray-50  text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="profile-tab" data-tabs-target="#imagination" type="button" role="tab" aria-controls="imagination" aria-selected="false">
 						<i class="fa-solid fa-meteor"></i>
 						Imagination</button>
 				</li>
 				<li class="mr-2 text-xs lg:text-sm" role="presentation">
-					<button class="inline-block p-4 border-b-4 dark:bg-slate-900 bg-gray-50 text-slate-500 hover:text-slate-900 focus:text-slate-900 rounded-t-lg" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">
+					<button class="inline-block p-4 border-b-4  dark:bg-slate-900 bg-gray-50  text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="profile-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">
 						<i class="fa-solid fa-gear"></i>
 						Paramètres</button>
 				</li>
@@ -109,7 +109,7 @@
 				{{ form_end(formPub) }}
 			</div>
 			<div class="hidden p-4 rounded-lg relative min-h-screen" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-				<button class="bg-slate-200 text-slate-700 border-b-4 border-b-slate-500 rounded-lg sticky top-44 lg:top-40 text-sm font-medium  w-full p-3">
+				<button onclick="window.location.href='{{path('app_publication_edit_chapters', {'idPub' : infoPub.id})}}'" class="bg-slate-200 hover:bg-slate-300 target:bg-slate-400 text-slate-700 border-b-4 border-b-slate-400 rounded-lg sticky top-44 lg:top-40 text-sm font-medium  w-full p-3 active:translate-y-[2px] active:border-b-2">
 					<i class="fa-solid fa-circle-plus"></i>
 					&nbsp;&nbsp;Ajouter un chapitre</button>
 			</div>

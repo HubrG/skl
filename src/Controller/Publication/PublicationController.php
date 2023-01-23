@@ -2,6 +2,7 @@
 
 namespace App\Controller\Publication;
 
+use DirectoryIterator;
 use App\Entity\Publication;
 use App\Form\PublicationType;
 use App\Entity\PublicationKeyword;
@@ -23,8 +24,7 @@ class PublicationController extends AbstractController
         if ($this->getUser()) {
             // * We get our last draft, if it exists
             $brouillon = $pubRepo->findOneBy(["user" => $this->getUser(), "status" => 0]);
-            if (!$brouillon)
-            {
+            if (!$brouillon) {
                 $publication = new Publication();
                 $publication->setUser($this->getUser());
                 $publication->setStatus(0);
@@ -34,7 +34,7 @@ class PublicationController extends AbstractController
                 $em->flush();
                 $brouillon = $pubRepo->findOneBy(["user" => $this->getUser(), "status" => 0]);
             }
-                $form = $this->createForm(PublicationType::class, $brouillon);
+            $form = $this->createForm(PublicationType::class, $brouillon);
         } else {
             return $this->redirectToRoute("app_home");
         }
@@ -89,7 +89,7 @@ class PublicationController extends AbstractController
     // * //////////////////////////////////////////////////////////////////////////////////////////////////////
     // * //////////////////////////////////////////////////////////////////////////////////////////////////////
     // * //////////////////////////////////////////////////////////////////////////////////////////////////////
-    #[Route('story/add_key/{pub<\d+>?0}/{value}', name: 'app_publication_add_keyword', methods: 'POST', )]
+    #[Route('story/add_key/{pub<\d+>?0}/{value}', name: 'app_publication_add_keyword', methods: 'POST',)]
     public function Axios_AddKey(PublicationKeywordRepository $keyRepo, PublicationRepository $pubRepo, EntityManagerInterface $em, $pub = null, $value = null): Response
     {
         // * If value is set and the user is logged in...
@@ -110,6 +110,7 @@ class PublicationController extends AbstractController
                             ->addPublication($publication);
                     }
                     // sinon, on cré le nouveau mot et on l'ajoute au ManyToMany de l'article...
+
                     else {
                         $keykey = new PublicationKeyword();
                         $key = $keykey->setKeyword($value)
@@ -229,7 +230,7 @@ class PublicationController extends AbstractController
     public function Axios_Publish(Request $request, PublicationRepository $pubRepo, EntityManagerInterface $em): Response
     {
         $dataPub = $request->get("pub");
-        $dataPublish  = json_decode($request->get("publish"));
+        $dataPublish = json_decode($request->get("publish"));
         //
         $publication = $pubRepo->find($dataPub);
         //
@@ -252,5 +253,36 @@ class PublicationController extends AbstractController
                 "code" => "500", "value" => null
             ]);
         }
+    }
+    #[Route('/story/delete/{id}', name: 'app_publication_delete')]
+    public function DeletePublication(Request $request, PublicationRepository $pubRepo, EntityManagerInterface $em, $id = null): Response
+    {
+        $publication = $pubRepo->find($id);
+        $keyw = $publication->getPublicationKeywords();
+        // ! Gestion du keyword
+        // * On décrémente le count des mots clés liés à la publication, et si le count tombe à zéro, on le supprime purement et simplement
+        foreach ($keyw as $key) {
+            $countKey = $key->getCount() - 1;
+            $setCountKey = $key->setCount($countKey);
+            if ($countKey === 0) {
+                $em->remove($key);
+            } else {
+                $em->persist($setCountKey);
+            }
+        }
+        // ! Suppression du dossier $id avec tous les fichiers
+        if ($publication->getCover()) {
+            $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $id;
+            foreach (new DirectoryIterator($destination) as $item) :
+                if ($item->isFile()) {
+                    \unlink($item->getPathname());
+                }
+            endforeach;
+            \rmdir($destination);
+        }
+        // * On supprime la publication
+        $em->remove($publication);
+        $em->flush();
+        return $this->redirectToRoute("app_user_show_publications");
     }
 }

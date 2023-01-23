@@ -11,6 +11,8 @@
 			<p>{{ item.title }}
 				|
 				<a href="{{ path("app_publication_edit", {id:item.id}) }}">éditer</a>
+				|
+				<a href="{{ path("app_publication_delete", {id:item.id}) }}">supprimer</a>
 			</p>
 		{% endfor %}
 	</section>

@@ -8,14 +8,11 @@
 			{% endblock %}
 		</title>
 		<link rel="icon" href="images/favicon.png">
-		{% block stylesheets %}
-			{{ encore_entry_link_tags('app') }}
-
-		{% endblock %}
-		{% block javascripts %}
-			{{ encore_entry_script_tags('app') }}
-			<script src="https://kit.fontawesome.com/8a11333aa0.js" crossorigin="anonymous"></script>
-		{% endblock %}
+		{{ encore_entry_link_tags('app') }}
+		{% block stylesheets %}{% endblock %}
+		{{ encore_entry_script_tags('app') }}
+		<script src="https://kit.fontawesome.com/8a11333aa0.js" crossorigin="anonymous"></script>
+		{% block javascripts %}{% endblock %}
 	</head>
 	<body>
 		{% for message in app.session.flashBag.get('successMessage') %}

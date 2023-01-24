@@ -11,6 +11,7 @@ use App\Repository\PublicationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\PublicationChapterRepository;
 use App\Repository\PublicationKeywordRepository;
 use App\Repository\PublicationCategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -110,7 +111,6 @@ class PublicationController extends AbstractController
                             ->addPublication($publication);
                     }
                     // sinon, on cré le nouveau mot et on l'ajoute au ManyToMany de l'article...
-
                     else {
                         $keykey = new PublicationKeyword();
                         $key = $keykey->setKeyword($value)
@@ -193,7 +193,7 @@ class PublicationController extends AbstractController
             if (getimagesize($dataFile) > 0) {
                 $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $pub;
                 // * si une cover a déjà été envoyée, alors on la supprime pour la remplacer par la nouvelle
-                if ($publication->getCover()) {
+                if ($publication->getCover() && \file_exists($destination . "/" . $publication->getCover())) {
                     \unlink($destination . "/" . $publication->getCover());
                 }
                 $newFilename = $dataFileName . '.jpg';
@@ -255,7 +255,7 @@ class PublicationController extends AbstractController
         }
     }
     #[Route('/story/delete/{id}', name: 'app_publication_delete')]
-    public function DeletePublication(Request $request, PublicationRepository $pubRepo, EntityManagerInterface $em, $id = null): Response
+    public function DeletePublication(Request $request, PublicationRepository $pubRepo, PublicationChapterRepository $pcRepo, EntityManagerInterface $em, $id = null): Response
     {
         $publication = $pubRepo->find($id);
         $keyw = $publication->getPublicationKeywords();
@@ -273,14 +273,15 @@ class PublicationController extends AbstractController
         // ! Suppression du dossier $id avec tous les fichiers
         if ($publication->getCover()) {
             $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $id;
-            foreach (new DirectoryIterator($destination) as $item) :
-                if ($item->isFile()) {
-                    \unlink($item->getPathname());
-                }
-            endforeach;
-            \rmdir($destination);
+            if (\file_exists($destination)) {
+                foreach (new DirectoryIterator($destination) as $item) :
+                    if ($item->isFile()) {
+                        \unlink($item->getPathname());
+                    }
+                endforeach;
+                \rmdir($destination);
+            }
         }
-        // * On supprime la publication
         $em->remove($publication);
         $em->flush();
         return $this->redirectToRoute("app_user_show_publications");

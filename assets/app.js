@@ -11,8 +11,9 @@ window.axios = require("axios");
 import "./bootstrap";
 import "./turbo/turbo-helper";
 import "/node_modules/flowbite/dist/flowbite.turbo.js";
-import { addKeyword } from "./scripts/addKeyword";
+import { addKeyword } from "./scripts/Publication/AddKeyword";
 import "form-data";
+import Quill from "quill";
 if (document.getElementById("keyValue")) {
   addKeyword();
 }

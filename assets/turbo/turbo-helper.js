@@ -1,7 +1,13 @@
-import { addKeyword } from "../scripts/addKeyword";
-import { axiosSave, axiosEvent } from "../scripts/axiosASPublication";
-import { darkMode, ok } from "../scripts/darkmode";
-import { PublicationPublishButton } from "../scripts/PublicationPublish";
+import { addKeyword } from "../scripts/Publication/AddKeyword";
+import {
+  axiosSave,
+  axiosEvent,
+} from "../scripts/Publication/AxiosASPublication";
+import { AxiosSaveChapter } from "../scripts/Publication/AxiosASChapter";
+import { darkMode, ok } from "../scripts/Publication/Darkmode";
+import { PublicationPublishButton } from "../scripts/Publication/PublicationPublish";
+import { ReadTime } from "../scripts/Publication/ChapterStats";
+import { quillEditor } from "../scripts/Quill.js";
 
 (function (c, a, n) {
   var w = c.createElement(a),
@@ -16,14 +22,10 @@ const TurboHelper = class {
       addKeyword();
       axiosEvent();
       darkMode();
+      AxiosSaveChapter();
       PublicationPublishButton();
-      // canva
-      (function (c, a, n) {
-        var w = c.createElement(a),
-          s = c.getElementsByTagName(a)[0];
-        w.src = n;
-        s.parentNode.insertBefore(w, s);
-      })(document, "script", "https://sdk.canva.com/designbutton/v2/api.js");
+      quillEditor();
+      ReadTime();
     });
     document.addEventListener("turbo:visit", () => {
       // fade out the old body

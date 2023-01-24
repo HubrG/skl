@@ -8,8 +8,91 @@
 {% block javascripts %}{% endblock %}
 
 {% block body %}
-	<div id="editor" class="col-span-12 border-2 border-slate-100"></div>
-	{# <h1>Hello
-				{{ est }}! ✅</h1> #}
+	<div class=" col-span-12">
+		<h1 class=" -mt-10 mb-10 text-center ">
+			<span class="text-xs">Édition du récit</span><br/>
+			<span id="pubTitle" class="text-4xl">
+				{{ infoPub.title|capitalize }}
+			</span>
+		</h1>
+	</div>
+	<div class="col-span-12 flex">
+		<div>
+			<a href="{{path("app_publication_edit", {id:infoPub.id})}}">Retour</a>
+		</div>
+		|
+		<button type="button" class="button h-10" id="saveChapter">Enregistrer</button>
+		<div class="flex -mt-8">
+			<div class="relative">
+				<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mt-5">
+					<i class="fa-solid fa-clock-rotate-left"></i>
+				</div>
+				<select name="status" class="select" id="selectChapVersion">
+					{% for items in infoChap.publicationChapterVersionings|sort((a, b) => b.created <=> a.created) %}
+						<option value="{{ items.id }}">Version du
+							{{ items.created|date('d/m/Y H:i:s', "Europe/Paris") }}
+							({{ items.created|since }})</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div class="relative">
+				<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mt-5">
+					<i class="fa-solid fa-toggle-off"></i>
+				</div>
+				<select name="status" class="select">
+					<option value="draft">Brouillon</option>
+					<option value="published">Publié</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<section
+		class="col-span-12 h-screen">
+		{# <button type="button" id="boldButton">dfdf</button> #}
+		<div id="editor" name="content" class="w-full border-2 border-slate-100 axiosChapter"></div>
+		<script>
+			var htmlToInsert = "{{ infoChap.content|raw }}"
+var editor = document.getElementById('editor')
+editor.innerHTML = htmlToInsert
+		</script>
+		<div class="mt-3">
+			<p class="text-slate-500 text-sm">
+				<i class="fa-solid fa-stopwatch-20 text-lg"></i>
+				<span id="readTime">
+					{{ infoChap.content|readInfo("ri_mn_ft") }}
+					et
+					{{ infoChap.content|readInfo("ri_sc_ft") }}
+					de lecture
 
+				</span>
+				&nbsp;&nbsp;&nbsp;
+				<i class="fa-solid fa-spell-check"></i>
+				<span id="wordCount">
+					{% set ri_wc = infoChap.content|readInfo("ri_wc") %}
+					{{ ri_wc }}
+					{% if ri_wc > 1 %}mots{% else %}mot
+					{% endif %}
+				</span>
+				&nbsp;&nbsp;&nbsp;
+				<i class="fa-solid fa-i-cursor"></i>
+				<span id="signCount">
+					{% set ri_cc = infoChap.content|readInfo("ri_cc") %}
+					{{ ri_cc }}
+					{% if ri_cc > 1 %}signes{% else %}signe
+					{% endif %}
+				</span>
+				&nbsp;&nbsp;&nbsp;
+				<i class="fa-solid fa-paragraph"></i>
+				<span id="paragraphCount">
+					{% set ri_pc = infoChap.content|readInfo("ri_pc") %}
+					{{ ri_pc }}
+					{% if ri_pc > 1 %}paragraphes{% else %}paragraphe
+					{% endif %}
+				</span>
+			</p>
+		</div>
+	</section>
+	<input type="hidden" value="{{ infoPub.id }}" id="hideIdPub"/>
+	{% if infoChap.id is defined %}<input type="hidden" id="hideIdChap" value="{{ infoChap.id }}" id="hideId"/>
+	{% endif %}
 {% endblock %}

@@ -49,7 +49,7 @@ export function axiosSave(value, name, file, url) {
     });
 }
 export function axiosEvent() {
-  document.querySelectorAll(".axios").forEach(function (row) {
+  document.querySelectorAll(".axiosPublication").forEach(function (row) {
     let timeout;
     const url = "/story/as/" + document.getElementById("hideId").value;
     row.addEventListener("change", () => {

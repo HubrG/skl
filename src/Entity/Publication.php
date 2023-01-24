@@ -28,7 +28,7 @@ class Publication
     #[ORM\Column]
     private ?int $status = null;
 
-    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationChapter::class)]
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationChapter::class, cascade: ['remove'])]
     private Collection $publicationChapters;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

@@ -32,12 +32,18 @@ class ChapterController extends AbstractController
                     $pcExists = $pcRepo->findOneBy(['publication' => $idPub, "status" => 0]);
                     // * si le chapitre n'existe pas en brouillon, on le crée
                     if (!$pcExists) {
+                        // ! on l'ajoute aux chapitres
                         $pc = new PublicationChapter;
                         $publicationChapter = $pc->setCreated(new \DateTime('now'))
                             ->setStatus(0) // 0 = brouillon / 1 = en cours de rédaction
                             ->setTitle("Chapitre sans titre")
                             ->setPublication($infoPublication);
                         $em->persist($publicationChapter);
+                        // ! on l'ajoute au versioning
+                        $pcv = new PublicationChapterVersioning;
+                        $publicationChapterVersioning = $pcv->setCreated(new \DateTime('now'))
+                            ->setChapter($publicationChapter);
+                        $em->persist($publicationChapterVersioning);
                         $em->flush();
                     }
                     // * On récupère le chapitre qui vient d'être crée

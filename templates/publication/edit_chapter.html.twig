@@ -16,26 +16,29 @@
 			</span>
 		</h1>
 	</div>
-	<div class="col-span-12 flex">
-		<div>
-			<a href="{{path("app_publication_edit", {id:infoPub.id})}}">Retour</a>
-		</div>
-		|
-		<button type="button" class="button h-10" id="saveChapter">Enregistrer</button>
-		<div class="flex -mt-8">
-			<div class="relative">
+	<aside class="col-span-10 col-start-2 inline-flex items-baseline justify-between -mt-5">
+
+		<button onclick='window.location.href="{{path("app_publication_edit", {id:infoPub.id})}}"' class="button">Retour</button>
+		<div class=" justify-end items-baseline flex">
+			<div class="relative mr-2">
 				<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mt-5">
 					<i class="fa-solid fa-clock-rotate-left"></i>
 				</div>
-				<select name="status" class="select" id="selectChapVersion">
+				<select name="status" class=" select" id="selectChapVersion">
+					{% set myVal = 0 %}
 					{% for items in infoChap.publicationChapterVersionings|sort((a, b) => b.created <=> a.created) %}
-						<option value="{{ items.id }}">Version du
-							{{ items.created|date('d/m/Y H:i:s', "Europe/Paris") }}
-							({{ items.created|since }})</option>
+						{% set myVal = myVal + 1 %}
+						<option value="{{ items.id }}">
+							{% if myVal == 1 %}Version actuelle —
+							{% else %}
+								Version du
+							{% endif %}
+							{{ items.created|date('d/m/y - H:i:s', "Europe/Paris") }}
+						</option>
 					{% endfor %}
 				</select>
 			</div>
-			<div class="relative">
+			<div class="relative  mr-2">
 				<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mt-5">
 					<i class="fa-solid fa-toggle-off"></i>
 				</div>
@@ -44,11 +47,10 @@
 					<option value="published">Publié</option>
 				</select>
 			</div>
+			<button type="button" class="button h-[54px]" id="saveChapter">Enregistrer</button>
 		</div>
-	</div>
-	<section
-		class="col-span-12 h-screen">
-		{# <button type="button" id="boldButton">dfdf</button> #}
+	</aside>
+	<section class="col-span-10  col-start-2 h-screen -mt-3">
 		<div id="editor" name="content" class="w-full border-2 border-slate-100 axiosChapter"></div>
 		<script>
 			var htmlToInsert = "{{ infoChap.content|raw }}"

@@ -155,14 +155,19 @@ form button:disabled {
 }
 
 .noty_theme__semanticui.noty_type__success {
-  @apply bg-green-200 text-green-600 shadow-lg text-sm rounded-lg flex font-medium h-auto text-center justify-center items-center;
+  @apply bg-green-200 text-green-600 shadow-lg text-sm rounded-lg flex font-normal h-auto text-center justify-center items-center;
 }
 .noty_theme__semanticui.noty_type__error {
-  @apply bg-red-200 text-red-600 shadow-lg text-sm rounded-lg flex font-medium text-center h-16 justify-center items-center;
+  @apply bg-red-200 text-red-600 shadow-lg text-sm rounded-lg flex font-normal text-center h-auto justify-center items-center;
 }
-  .noty_theme__semanticui.noty_bar {
+.noty_theme__semanticui.noty_type__info,
+.noty_theme__semanticui.noty_type__information {
+  @apply bg-slate-200 text-slate-700 shadow-lg text-sm rounded-lg flex font-normal text-center h-auto justify-center items-center;
+
+}  
+.noty_theme__semanticui.noty_bar {
     font-family: "Noto Sans JP";
-      @apply rounded-lg
+      @apply rounded-lg mb-3
      
   }
   *, ::before, ::after {

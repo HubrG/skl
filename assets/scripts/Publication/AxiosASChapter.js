@@ -1,4 +1,6 @@
 import Quill from "quill";
+import { ReadTimeFunction } from "./ChapterStats";
+// TODO : Mettre Noty dans une fonction à part entière
 export function AxiosSaveChapter() {
   document.querySelectorAll(".axiosChapter").forEach(function (row) {
     let timeout;
@@ -52,7 +54,7 @@ function AxiosChapter(row) {
     .then(function (response) {
       console.log(response.data.code);
       new Noty({
-        text: "Publication enregistrée !",
+        text: "<span class='text-base font-medium'>Chapitre enregistré</span><br />Cette version compose désormais votre chapitre",
         theme: "semanticui",
         progressBar: true,
         timeout: 4500,
@@ -82,18 +84,19 @@ function AxiosGetVersion(version) {
     .then(function (response) {
       quill.root.innerHTML = response.data.content;
       new Noty({
-        text: "Version chargée ! Vous pouvez toujours revenir à la version précédente en selectionnant la version la plus récente dans la liste déroulante.",
+        text: "<span class='text-base font-medium'>Version chargée !</span><br />Elle ne vous convient pas ? Vous pouvez revenir sur une version précédente à tout moment.",
         theme: "semanticui",
         progressBar: true,
         timeout: 10000,
         layout: "bottomCenter",
-        type: "success",
+        type: "info",
         closeWith: ["click", "button"],
         animation: {
           open: "animate__animated animate__fadeInUp", // Animate.css class names
           close: "animate__animated animate__fadeOutDown", // Animate.css class names
         },
       }).show();
+      ReadTimeFunction(document.getElementById("editor"));
     });
 }
 AxiosSaveChapter();

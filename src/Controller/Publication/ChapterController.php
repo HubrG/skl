@@ -126,23 +126,15 @@ class ChapterController extends AbstractController
         $idPub = $request->get("idPub");
         $idChap = $request->get("idChap");
         //
-        $dataName = $request->get("name");
-        $dataValue = $request->get("value");
-        $dataValueQuill = $request->get("valueQuill");
+        $dtQuill = $request->get("quill");
+        $dtTitle = $request->get("title");
         //  
         $publication = $pRepo->find($idPub);
         $chapter = $pcRepo->find($idChap);
         if ($publication->getId() == $chapter->getPublication()->getId() && $this->getUser() == $publication->getUser()) {
             $pcv = new PublicationChapterVersioning;
-            if ($dataName == "title") {
-                $chapter->setTitle($dataValue);
-            } elseif ($dataName == "editor") {
-                $chapter->setContent($dataValueQuill);
-            } else {
-                return $this->json([
-                    "code" => 500
-                ]);
-            }
+            $chapter->setTitle($dtTitle);
+            $chapter->setContent($dtQuill);
             $em->persist($chapter);
             $em->flush();
             //!SECTION
@@ -160,7 +152,24 @@ class ChapterController extends AbstractController
             ]);
         }
         return $this->json([
-            "code" => 200
+            "code" => 200 // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
+        ]);
+    }
+    #[Route('/story/chapter/publish', name: 'app_chapter_publish', methods: "POST")]
+    public function Axios_Publish(Request $request, EntityManagerInterface $em, PublicationChapterRepository $pcRepo): response
+    {
+        $idPub = $request->get("idChap");
+        $dataPublish = $request->get("publish");
+        $publication = $pcRepo->find($idPub);
+        if ($dataPublish == "true") {
+            $publication->setStatus(2);
+        } else {
+            $publication->setStatus(1);
+        }
+        $em->persist($publication);
+        $em->flush();
+        return $this->json([
+            "code" => $dataPublish
         ]);
     }
     #[Route('/story/chapter/getversion', name: 'app_chapter_getversion', methods: "POST")]

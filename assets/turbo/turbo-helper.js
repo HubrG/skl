@@ -3,7 +3,7 @@ import {
   axiosSave,
   axiosEvent,
 } from "../scripts/Publication/AxiosASPublication";
-import { AxiosSaveChapter } from "../scripts/Publication/AxiosASChapter";
+import { AxiosSaveChapter } from "../scripts/Publication/Chapter";
 import { darkMode, ok } from "../scripts/Publication/Darkmode";
 import { PublicationPublishButton } from "../scripts/Publication/PublicationPublish";
 import { ReadTime } from "../scripts/Publication/ChapterStats";

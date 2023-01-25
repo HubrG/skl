@@ -6,7 +6,6 @@
 	<link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
 {% endblock %}
 {% block javascripts %}{% endblock %}
-
 {% block body %}
 	<div class=" col-span-12">
 		<h1 class=" -mt-10 mb-10 text-center ">
@@ -16,15 +15,28 @@
 			</span>
 		</h1>
 	</div>
-	<aside class="col-span-10 col-start-2 inline-flex items-baseline justify-between -mt-5">
-
+	<aside class="col-span-12 col-start-1 inline-flex items-baseline justify-between -mt-5">
 		<button onclick='window.location.href="{{path("app_publication_edit", {id:infoPub.id})}}"' class="button">Retour</button>
+		<label class="relative inline-flex items-center cursor-pointer" id="asTip" {% if (infoPub.status and infoChap.status > 1) %} data-tooltip-target="tooltip-default" {% endif %} data-tooltip-placement="bottom">
+			{% if (infoPub.status < 2 or infoChap.status < 2) %}
+				{% set checked_or_disable = "checked" %}
+			{% else %}
+				{% set checked_or_disable = "disabled" %}
+			{% endif %}
+			<input id="toggleAS" type="checkbox" class="sr-only peer" {{ checked_or_disable }}/>
+			<div class="w-11 h-6 bg-gray-200 disabled:bg-red-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+			<span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300 ">Enregistrement auto</span>
+		</label>
+		<div id="tooltip-default" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+			Votre récit et votre chapitre sont publiés, l'enregistrement automatique est désactivé.<br/>Afin de publier vos modifications, cliquez sur le boutton « Enregistrer »
+			<div class="tooltip-arrow" data-popper-arrow></div>
+		</div>
 		<div class=" justify-end items-baseline flex">
 			<div class="relative mr-2" id="selectChapVersionContainer">
 				<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mt-5">
 					<i class="fa-solid fa-clock-rotate-left"></i>
 				</div>
-				<select name="status" class=" select" id="selectChapVersion">
+				<select name="status" class="select" id="selectChapVersion">
 					{% set myVal = 0 %}
 					{% for items in infoChap.publicationChapterVersionings|sort((a, b) => b.created <=> a.created) %}
 						{% set myVal = myVal + 1 %}
@@ -38,20 +50,25 @@
 					{% endfor %}
 				</select>
 			</div>
-			<div class="relative  mr-2">
-				<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mt-5">
-					<i class="fa-solid fa-toggle-off"></i>
-				</div>
-				<select name="status" class="select">
-					<option value="draft">Brouillon</option>
-					<option value="published">Publié</option>
-				</select>
-			</div>
-			<button type="button" class="button h-[54px]" id="saveChapter">Enregistrer</button>
+			<label class="relative inline-flex items-center cursor-pointer">
+				<input id="togglePublish" type="checkbox" class="sr-only peer" class="sr-only peer" {% if infoChap.status > 1 %} checked {% endif %}/>
+				<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+				<span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+					{% if infoChap.status > 1 %}Dépublier le chapitre
+						{% else %}Publier le chapitre
+					{% endif %}
+				</span>
+			</label>
+
+			<button type="button" class="button h-[54px]" id="saveChapter">
+				{% if (infoPub.status < 2 or infoChap.status < 2) %}Enregistrer{% else %}Publier les modifications
+				{% endif %}
+			</button>
 		</div>
 	</aside>
-	<section class="col-span-10  col-start-2 h-screen -mt-3">
-		<div id="editor" name="content" class="w-full border-2 border-slate-100 axiosChapter"></div>
+	<section class="col-span-12  col-start-1 h-screen -mt-3">
+		<input type="text" id="title" name="title" class="w-full border-2 border-slate-100 {% if (infoPub.status < 2 or infoChap.status < 2) %}axiosChapterAS{% endif %} axiosSpy" value="{{ infoChap.title }}" placeholder="Titre du chapitre">
+		<div id="editor" name="content" class="w-full border-2 border-slate-100 {% if (infoPub.status < 2 or infoChap.status < 2) %}axiosChapterAS{% endif %} axiosSpy"></div>
 		<script>
 			var htmlToInsert = "{{ infoChap.content|raw }}"
 var editor = document.getElementById('editor')
@@ -95,6 +112,8 @@ editor.innerHTML = htmlToInsert
 		</div>
 	</section>
 	<input type="hidden" value="{{ infoPub.id }}" id="hideIdPub"/>
-	{% if infoChap.id is defined %}<input type="hidden" id="hideIdChap" value="{{ infoChap.id }}" id="hideId"/>
-	{% endif %}
+	<input type="hidden" id="hideIdChap" value="{{ infoChap.id }}" id="hideId"/>
+	<input type="hidden" id="hidePubStatus" value="{{ infoPub.status }}" id="hideId"/>
+	<input type="hidden" id="hideChapStatus" value="{{ infoChap.status }}" id="hideId"/>
+
 {% endblock %}

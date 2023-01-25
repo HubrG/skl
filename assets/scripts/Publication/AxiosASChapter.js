@@ -84,10 +84,10 @@ function AxiosGetVersion(version) {
     .then(function (response) {
       quill.root.innerHTML = response.data.content;
       new Noty({
-        text: "<span class='text-base font-medium'>Version chargée !</span><br />Elle ne vous convient pas ? Vous pouvez revenir sur une version précédente à tout moment.",
+        text: "<span class='text-base font-medium'>Version chargée !</span><br />Elle ne vous convient pas ? Vous pouvez revenir à tout moment sur une version précédente.",
         theme: "semanticui",
         progressBar: true,
-        timeout: 10000,
+        timeout: 5000,
         layout: "bottomCenter",
         type: "info",
         closeWith: ["click", "button"],
@@ -96,7 +96,19 @@ function AxiosGetVersion(version) {
           close: "animate__animated animate__fadeOutDown", // Animate.css class names
         },
       }).show();
+      setTimeout(() => {
+        document
+          .getElementById("selectChapVersionContainer")
+          .classList.add("animate__animated", "animate__shakeY");
+      }, 2000);
       ReadTimeFunction(document.getElementById("editor"));
+    })
+    .then(function (response) {
+      setTimeout(() => {
+        document
+          .getElementById("selectChapVersionContainer")
+          .classList.remove("animate__animated", "animate__shakeY");
+      }, 4000);
     });
 }
 AxiosSaveChapter();

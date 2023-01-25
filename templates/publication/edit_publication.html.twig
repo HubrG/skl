@@ -111,12 +111,12 @@
 				<button onclick="window.location.href='{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}'" class="bg-slate-200 hover:bg-slate-300 target:bg-slate-400 text-slate-700 border-b-4 border-b-slate-400 rounded-lg sticky top-44 lg:top-40 text-sm font-medium  w-full p-3 active:translate-y-[2px] active:border-b-2">
 					<i class="fa-solid fa-circle-plus"></i>
 					&nbsp;&nbsp;Ajouter un chapitre</button>
-				<div class="mt-4">
+				<div class="mt-4 list-group" id="itemsChap">
 					{% for items in infoPub.publicationChapters|sort((a, b) => a.orderDisplay <=> b.orderDisplay) %}
 						{% if items.status > 0 %}
 							{% set random = random(0, 9999900)  %}
-							<turbo-frame id="ChapterList{{ random }}">
-								<div class="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-5">
+							<turbo-frame>
+								<div class="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-5 list-group-item">
 									<div id="defaultTabContent{{ random }}">
 										<div class="hidden p-4 pt-3 bg-white rounded-lg md:p-8 md:pt-3 dark:bg-gray-800" id="about{{ random }}" role="tabpanel" aria-labelledby="about-tab{{ random }}">
 											<h2 class="mb-3 text-xl font-extrabold tracking-tight text-slate-700 dark:text-white">

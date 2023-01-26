@@ -20,9 +20,9 @@ class TwigReadInfo extends AbstractExtension
         $m = floor($word / 200);
         $s = floor($word % 202 / (202 / 60));
         if ($type == "ri_mn") { // compteur de minutes
-            return $m;
+            return ($m < 10 ? "0" . $m : $m);
         } elseif ($type == "ri_sc") { // compteur de secondes
-            return $s;
+            return ($s < 10 ? "0" . $s : $s);
         } elseif ($type == "ri_wc") { // compteur de mots
             return $word;
         } elseif ($type == "ri_cc") { // compteur de caractères

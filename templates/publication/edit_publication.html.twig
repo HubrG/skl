@@ -136,7 +136,7 @@
 						{% if items.status > 0 %}
 							{% set random = items.id  %}
 							<turbo-frame id="{{ random }}">
-								<div class="w-full bg-white border border-gray-200 rounded-lg shadow-none dark:bg-gray-800 dark:border-gray-700 mt-5 list-group-item">
+								<div class="w-full bg-white border border-gray-200 rounded-lg shadow-none dark:bg-gray-800 dark:border-gray-700 mt-5 list-group-item" chap="{{ random }}" id="{{ items.orderDisplay }}">
 									<div id="defaultTabContent{{ random }}">
 										<div class="hidden p-4 pt-3 bg-white rounded-lg md:p-8 md:pt-3 dark:bg-gray-800" id="about{{ random }}" role="tabpanel" aria-labelledby="about-tab{{ random }}">
 											<h2 class="mb-3 text-xl font-extrabold tracking-tight text-slate-700 dark:text-white">
@@ -271,7 +271,7 @@
 					<div class="w-11 h-6 bg-blue-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-blue-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
 					<span class="ml-3 text-xs font-medium text-blue-900 dark:text-gray-300">Sauvegarde automatique</span>
 				</label>
-				<p id="AStext" class="text-xs text-slate-500 leading-normal text-opacity-70 text-center">
+				<p id="AStext" class="text-xs text-slate-500 leading-normal text-opacity-70 text-center border-t-[1px] border-t-slate-200 pt-2 mt-2">
 					<i class="fa-solid fa-circle-info"></i>
 					&nbsp;La sauvegarde automatique est désactivée car votre récit est publié.</p>
 			</div>

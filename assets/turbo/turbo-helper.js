@@ -1,37 +1,15 @@
 import "../../node_modules/flowbite/dist/flowbite.turbo.js";
 import { addKeyword } from "../scripts/Publication/AddKeyword";
-import {
-  axiosSave,
-  axiosEvent,
-} from "../scripts/Publication/AxiosASPublication";
 import { AxiosSaveChapter } from "../scripts/Publication/Chapter";
 import { AxiosSavePublication } from "../scripts/Publication/Publication";
-import { darkMode, ok } from "../scripts/Publication/Darkmode";
+import { darkMode } from "../scripts/Darkmode";
 import { ReadTime } from "../scripts/Publication/ChapterStats";
 import { quillEditor } from "../scripts/Quill.js";
-import Sortable from "sortablejs";
 import Quill from "quill";
 window.Noty = require("noty");
 window.axios = require("axios");
+import { Sortables } from "../scripts/Publication/Sortable";
 
-// Default SortableJS
-if (document.getElementById("itemsChap")) {
-  // List with handle
-  Sortable.create(document.getElementById("itemsChap"), {
-    animation: 150, // ms, animation speed moving items when sorting, `0` — without animation
-    easing: "cubic-bezier(1, 0, 0, 1)",
-    onChange: function (/**Event*/ evt) {
-      console.log(evt.newIndex); // most likely why this event is used is to get the dragging element's current index
-      // same properties as onEnd
-    },
-  });
-}
-(function (c, a, n) {
-  var w = c.createElement(a),
-    s = c.getElementsByTagName(a)[0];
-  w.src = n;
-  s.parentNode.insertBefore(w, s);
-})(document, "script", "https://sdk.canva.com/designbutton/v2/api.js");
 const TurboHelper = class {
   constructor() {
     document.addEventListener("turbo:before-cache", () => {});
@@ -42,7 +20,7 @@ const TurboHelper = class {
       AxiosSavePublication();
       ReadTime();
       quillEditor();
-      // axiosEvent();
+      Sortables();
     });
     document.addEventListener("turbo:visit", () => {
       // fade out the old body

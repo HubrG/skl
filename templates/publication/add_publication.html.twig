@@ -20,18 +20,25 @@
 	</div>
 	<aside class="col-span-7 col-start-4 justify-items-end pr-10  mb-14 sm:col-start-2 sm:col-span-3">
 		{% if pub.cover == "" %}
-			<div id="hideNoCover" class=" border-slate-300 shadow-md p-10 text-2xl flex h-80 bg-slate-100 rounded-md dark:bg-slate-200" for="publication_cover" data-tooltip-placement="bottom" data-tooltip-target="tooltip-cover">
+			<div id="hideNoCover" class="shadow-md p-10 text-2xl flex h-80 bg-slate-100 rounded-md dark:bg-slate-500" for="publication_cover" data-tooltip-placement="bottom" data-tooltip-target="tooltip-cover">
 				<label for="publication_cover" class="cursor-pointer justify-center h-80">
 					<h2 class="m-auto text-center font-light shadow-slate-300 text-slate-600 dark:shadow-slate-900 mt-10 rounded-lg">
 						<i class="fa-regular fa-images text-5xl"></i><br/><br/>Ajouter une couverture
 					</h2>
+					<div role="status" id="spinCover" class="hidden absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2">
+						<svg aria-hidden="true" class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewbox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/><path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/></svg>
+						<span class="sr-only">Loading...</span>
+					</div>
 				</label>
 			</div>
 			<label for="publication_cover" id="showNewCover" class="cursor-pointer hidden"><img id="cover" src="" data-tooltip-target="tooltip-cover" data-tooltip-placement="bottom" class="shadow-md shadow-slate-300 dark:shadow-slate-900 rounded-lg"/></label>
 		{% else %}
-			<div class="w-48 h-[140px] mx-auto rounded-full flex items-center justify-center text-indigo-500">
-				<label for="publication_cover" class="cursor-pointer"><img data-tooltip-target="tooltip-cover" data-tooltip-placement="bottom" id="cover" class="shadow-md shadow-slate-300 dark:shadow-slate-900 rounded-lg" src="{{ asset('images/uploads/story/'~ pub.id ~'/'~ pub.cover)}} "/></label>
-			</div>
+			<label for="publication_cover" class="cursor-pointer">
+				<div role="status" id="spinCover" class="hidden absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2">
+					<svg aria-hidden="true" class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewbox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/><path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/></svg>
+					<span class="sr-only">Loading...</span>
+				</div>
+				<img data-tooltip-target="tooltip-cover" data-tooltip-placement="bottom" id="cover" class="shadow-md shadow-slate-300 dark:shadow-slate-900 rounded-lg" src="{{ asset('images/uploads/story/'~ pub.id ~'/'~ pub.cover)}} "/></label>
 		{% endif %}
 		<div id="tooltip-cover" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-normal text-white bg-slate-700 rounded-lg opacity-0 tooltip dark:bg-gray-700">
 			Cliquez ici pour importer une photo<br/>de couverture
@@ -40,25 +47,24 @@
 	</aside>
 	<section class="col-span-12 md:col-span-6">
 		{{ form_start(form) }}
-		{{ form_widget(form.cover, {attr:{"class":"axios hidden"}})}}
-		<input type="hidden" value="{{ pub.id }}" id="hideIdPub"/>
+		{{ form_widget(form.cover, {attr:{"class":"axiosPubAS hidden"}})}}
 		{{ form_label(form.title) }}
 		<div class="relative mb-6">
 			<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
 				<i class="fa-solid fa-book"></i>
 			</div>
-			{{ form_widget(form.title, {attr:{"class":"axios"}}) }}
+			{{ form_widget(form.title, {attr:{"class":"axiosPubAS"}}) }}
 		</div>
 		{{ form_label(form.summary) }}
 		<div class="relative mb-6">
-			{{ form_widget(form.summary, {attr:{"class":"axios"}}) }}
+			{{ form_widget(form.summary, {attr:{"class":"axiosPubAS"}}) }}
 		</div>
 		{{ form_label(form.category) }}
 		<div class="relative mb-6">
 			<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
 				<i class="fa-solid fa-list"></i>
 			</div>
-			{{ form_widget(form.category, {attr:{"class":"axios"}}) }}
+			{{ form_widget(form.category, {attr:{"class":"axiosPubAS"}}) }}
 		</div>
 		<label>En quelques mots, quelles sont les grandes thématiques de votre récit ?</label>
 		<div class="relative mb-6">
@@ -81,7 +87,7 @@
 		</turbo-frame>
 		<hr class=" -mt-5">
 		<label class="relative inline-flex items-center cursor-pointer">
-			{{ form_widget(form.mature, {attr:{"class":"sr-only peer axios"}}) }}
+			{{ form_widget(form.mature, {attr:{"class":"sr-only peer axiosPubAS"}}) }}
 			<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
 			<span class="ml-3 -mt-6 text-sm font-medium text-gray-900 dark:text-gray-300">Votre récit contient-il du contenu pour adulte ?</span>
 		</label>
@@ -91,4 +97,8 @@
 		</div>
 		{{ form_end(form) }}
 	</section>
+	<input type="checkbox" value="" class="hidden sr-only peer" id="togglePubAS" checked/>
+	<input type="hidden" value="{{ pub.id }}" id="hideId"/>
+	<input type="hidden" value="{{ pub.id }}" id="hideIdPub"/>
+
 {% endblock %}

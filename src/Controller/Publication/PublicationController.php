@@ -83,13 +83,13 @@ class PublicationController extends AbstractController
             return $this->redirectToRoute("app_home");
         }
     }
-    // * //////////////////////////////////////////////////////////////////////////////////////////////////////
-    // * //////////////////////////////////////////////////////////////////////////////////////////////////////
-    // * //////////////////////////////////////////////////////////////////////////////////////////////////////
+    // ! //////////////////////////////////////////////////////////////////////////////////////////////////////
+    // ! //////////////////////////////////////////////////////////////////////////////////////////////////////
+    // ! //////////////////////////////////////////////////////////////////////////////////////////////////////
     // * ROUTES PERMETTANT LA GESTION DE DONÉES EN BACKGROUND (ADD KEYWORD / DEL KEYWORD / AUTOSAVE)
-    // * //////////////////////////////////////////////////////////////////////////////////////////////////////
-    // * //////////////////////////////////////////////////////////////////////////////////////////////////////
-    // * //////////////////////////////////////////////////////////////////////////////////////////////////////
+    // ! //////////////////////////////////////////////////////////////////////////////////////////////////////
+    // ! //////////////////////////////////////////////////////////////////////////////////////////////////////
+    // ! //////////////////////////////////////////////////////////////////////////////////////////////////////
     #[Route('story/add_key/{pub<\d+>?0}/{value}', name: 'app_publication_add_keyword', methods: 'POST',)]
     public function Axios_AddKey(PublicationKeywordRepository $keyRepo, PublicationRepository $pubRepo, EntityManagerInterface $em, $pub = null, $value = null): Response
     {
@@ -171,60 +171,6 @@ class PublicationController extends AbstractController
         } else {
             return $this->redirectToRoute("app_home");
         }
-    }
-    #[Route('/story/as/{pub}', name: 'app_publication_autosav', methods: 'POST')]
-    public function Axios_AutoSavee(Request $request, PublicationCategoryRepository $catRepo, PublicationRepository $pubRepo, EntityManagerInterface $em, $pub = null): Response
-    {
-        $dataName = $request->get("name");
-        $dataValue = $request->get("value");
-        $dataFileName = $request->get("filename");
-        $dataFile = $request->files->get("file");
-        //
-        $publication = $pubRepo->find($pub);
-        //
-        if ($dataName === "publication[title]") {
-            if ($dataValue === "") {
-                $dataValue = "Récit sans titre";
-            }
-            $publication->setTitle(trim(ucfirst($dataValue)));
-        }
-        if ($dataName === "publication[cover]") {
-            // * On vérifie que le fichier est une image
-            if (getimagesize($dataFile) > 0) {
-                $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $pub;
-                // * si une cover a déjà été envoyée, alors on la supprime pour la remplacer par la nouvelle
-                if ($publication->getCover() && \file_exists($destination . "/" . $publication->getCover())) {
-                    \unlink($destination . "/" . $publication->getCover());
-                }
-                $newFilename = $dataFileName . '.jpg';
-                $dataFile->move(
-                    $destination,
-                    $newFilename
-                );
-                $publication->setCover($newFilename);
-            } else {
-                return $this->json([
-                    "code" => 400
-                ]);
-            }
-        }
-        if ($dataName === "publication[summary]") {
-            $publication->setSummary(trim(ucfirst($dataValue)));
-        }
-        if ($dataName === "publication[category]") {
-            $catR = $catRepo->find($dataValue);
-            $publication->setCategory($catR);
-        }
-        if ($dataName === "publication[mature]") {
-            $publication->setMature($dataValue);
-        }
-        $publication->setUpdated(new \DateTime('now'));
-        $em->persist($publication);
-        $em->flush();
-        //
-        return $this->json([
-            "code" => 200
-        ]);
     }
     #[Route('/story/publish', name: 'app_publication_publish', methods: 'POST')]
     public function Axios_Publish(Request $request, PublicationRepository $pubRepo, EntityManagerInterface $em): Response

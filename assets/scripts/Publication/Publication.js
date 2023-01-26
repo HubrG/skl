@@ -1,5 +1,4 @@
 import { NotyDisplay } from "../Noty";
-
 export function AxiosSavePublication() {
   if (document.getElementById("togglePubAS")) {
     // ! Variables autosave
@@ -15,18 +14,21 @@ export function AxiosSavePublication() {
         pubMature.value = 0;
       }
     });
-    // ! Publish
-    publish.addEventListener("click", publishPublication);
-    publishPublication("init"); //  On initialise la publication
-    // ! EventListener sur l'auto-save
-    togglePubASfunc();
-    togglePubAS.addEventListener("change", () => {
+    // ! Si on est sur la page de publication
+    if (document.getElementById("hidePubStatus")) {
+      // ! Publish
+      publish.addEventListener("click", publishPublication);
+      publishPublication("init"); //  On initialise la publication
+      // ! EventListener sur l'auto-save
       togglePubASfunc();
-    });
-    // ! Sauvegarde du chapitre au bouton
-    savePublication.addEventListener("click", () => {
-      AxiosPublication();
-    });
+      togglePubAS.addEventListener("change", () => {
+        togglePubASfunc();
+      });
+      // ! Sauvegarde du chapitre au bouton
+      savePublication.addEventListener("click", () => {
+        AxiosPublication();
+      });
+    }
     // ! Autosave
     //  * Selection de tous les champs qui ont la classe axiosPubAs et execution d'axios
     let timeout;
@@ -124,7 +126,6 @@ function AxiosPublication() {
 // ! Fonction permettant de gérer l'autosave via le toggle
 // !
 function togglePubASfunc() {
-  console.log("ok");
   let hidePubStatus = document.getElementById("hidePubStatus");
   var togglePubAS = document.getElementById("togglePubAS");
   let axiosPubSpy = document.querySelectorAll(".axiosPubSpy");

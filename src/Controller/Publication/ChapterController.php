@@ -46,13 +46,12 @@ class ChapterController extends AbstractController
                         $em->persist($publicationChapterVersioning);
                         $em->flush();
                     }
-                    // * On récupère le chapitre qui vient d'être crée
+                    // * On récupère le chapitre qui vient d'être créé
                     $infoChapitre = $pcRepo->findOneBy(['publication' => $idPub, "status" => 0]);
                     // * Et on redirige
                     return $this->redirectToRoute('app_publication_edit_chapter', ['idPub' => $idPub, 'idChap' => $infoChapitre->getId()]);
                 }
                 // * Sinon, si l'ID du chapitre existe dans l'URL, on le récupère
-
                 else {
                     $infoChapitre = $pcRepo->find($idChap);
                     // * On vérifie que le chapitre existe bel et bien dans la BDD
@@ -64,10 +63,15 @@ class ChapterController extends AbstractController
                                 $infoChapitre->setStatus(1);
                             }
                             // * Si le chapitre est sur un autre status que 0
-
                             elseif ($infoChapitre->getStatus() > 0) {
                                 //
                             }
+                            // * On récupère le nombre de chapitres liés à cette publication afin de donner un nouveau titre (Chapitre X)
+                            $nbrChap = $pcRepo->findBy(['publication' => $idPub]);
+                            $nbrChap = count($nbrChap);
+                            $infoChapitre->setTitle("Chapitre sans titre " . $nbrChap);
+                            $infoChapitre->setOrderDisplay($nbrChap);
+                            //
                             $em->persist($infoChapitre);
                             $em->flush();
                         } else {
@@ -133,8 +137,9 @@ class ChapterController extends AbstractController
         $chapter = $pcRepo->find($idChap);
         if ($publication->getId() == $chapter->getPublication()->getId() && $this->getUser() == $publication->getUser()) {
             $pcv = new PublicationChapterVersioning;
-            $chapter->setTitle($dtTitle);
-            $chapter->setContent($dtQuill);
+            $chapter->setTitle($dtTitle)
+                ->setContent($dtQuill)
+                ->setUpdated(new \DateTime('now'));
             $em->persist($chapter);
             $em->flush();
             //!SECTION
@@ -160,13 +165,14 @@ class ChapterController extends AbstractController
     {
         $idPub = $request->get("idChap");
         $dataPublish = $request->get("publish");
-        $publication = $pcRepo->find($idPub);
+        $chapitre = $pcRepo->find($idPub);
         if ($dataPublish == "true") {
-            $publication->setStatus(2);
+            $chapitre->setStatus(2);
+            $chapitre->setPublished(new \DateTime('now'));
         } else {
-            $publication->setStatus(1);
+            $chapitre->setStatus(1);
         }
-        $em->persist($publication);
+        $em->persist($chapitre);
         $em->flush();
         return $this->json([
             "code" => $dataPublish
@@ -182,6 +188,19 @@ class ChapterController extends AbstractController
 
         return $this->json([
             "content" => $pcv->getContent()
+        ]);
+    }
+    #[Route('/story/chapter/sort', name: 'app_chapter_sort', methods: "POST")]
+    public function Axios_ChapSort(Request $request, EntityManagerInterface $em, PublicationChapterRepository $pcRepo): response
+    {
+        $idPub = $request->get("idChap");
+        $order = $request->get("order");
+        $chapter = $pcRepo->find($idPub);
+        $chapter->setOrderDisplay($order);
+        $em->persist($chapter);
+        $em->flush();
+        return $this->json([
+            "code" => 200 // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
         ]);
     }
 }

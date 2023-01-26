@@ -1,14 +1,19 @@
+import "../../node_modules/flowbite/dist/flowbite.turbo.js";
 import { addKeyword } from "../scripts/Publication/AddKeyword";
 import {
   axiosSave,
   axiosEvent,
 } from "../scripts/Publication/AxiosASPublication";
 import { AxiosSaveChapter } from "../scripts/Publication/Chapter";
+import { AxiosSavePublication } from "../scripts/Publication/Publication";
 import { darkMode, ok } from "../scripts/Publication/Darkmode";
-import { PublicationPublishButton } from "../scripts/Publication/PublicationPublish";
 import { ReadTime } from "../scripts/Publication/ChapterStats";
 import { quillEditor } from "../scripts/Quill.js";
 import Sortable from "sortablejs";
+import Quill from "quill";
+window.Noty = require("noty");
+window.axios = require("axios");
+
 // Default SortableJS
 if (document.getElementById("itemsChap")) {
   // List with handle
@@ -32,15 +37,16 @@ const TurboHelper = class {
     document.addEventListener("turbo:before-cache", () => {});
     document.addEventListener("turbo:render", () => {
       addKeyword();
-      axiosEvent();
       darkMode();
       AxiosSaveChapter();
-      PublicationPublishButton();
-      quillEditor();
+      AxiosSavePublication();
       ReadTime();
+      quillEditor();
+      // axiosEvent();
     });
     document.addEventListener("turbo:visit", () => {
       // fade out the old body
+
       document.body.classList.add("turbo-loading");
     });
     document.addEventListener("turbo:before-render", (event) => {

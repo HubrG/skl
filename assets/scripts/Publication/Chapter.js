@@ -10,9 +10,8 @@ export function AxiosSaveChapter() {
     var selectChapVersion = document.getElementById("selectChapVersion");
     var saveChapter = document.getElementById("saveChapter");
     var axiosChapterAS = document.querySelectorAll(".axiosChapterAS");
-    var axiosSpy = document.querySelectorAll(".axiosSpy");
-    var axiosSpyTab = [];
     var togglePublish = document.getElementById("togglePublish");
+    var spinAS = document.getElementById("spinAS");
     // ! EventListener sur l'auto save
     toggleAS.addEventListener("change", () => {
       toggleASfunc();
@@ -44,10 +43,12 @@ export function AxiosSaveChapter() {
     axiosChapterAS.forEach(function (row) {
       row.addEventListener("keyup", () => {
         if (row.classList.contains("axiosChapterAS")) {
+          spinAS.classList.remove("hidden");
           clearTimeout(timeout);
           timeout = setTimeout(() => {
             AxiosChapter();
-          }, 1000);
+            spinAS.classList.add("hidden");
+          }, 30000);
         }
       });
     });

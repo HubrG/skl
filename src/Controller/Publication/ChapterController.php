@@ -121,7 +121,7 @@ class ChapterController extends AbstractController
         return $this->redirectToRoute('app_publication_edit', ['id' => $idPub]);
     }
     #[Route('/story/chapter/autosave', name: 'app_chapter_autosave', methods: "POST")]
-    public function Axios_AutoSave(Request $request, EntityManagerInterface $em, PublicationChapterRepository $pcRepo, PublicationRepository $pRepo): response
+    public function Axios_ChapAutoSave(Request $request, EntityManagerInterface $em, PublicationChapterRepository $pcRepo, PublicationRepository $pRepo): response
     {
         $idPub = $request->get("idPub");
         $idChap = $request->get("idChap");

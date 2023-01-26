@@ -10,7 +10,6 @@
 }
 body {
   @apply bg-white dark:bg-slate-800;
-    transition: opacity 1000ms;
 }
 body.turbo-loading {
     opacity: 1;
@@ -19,15 +18,18 @@ footer {
   @apply shadow-2xl  border-slate-600
 }
 nav {
- @apply  bg-white shadow-sm border-b border-b-slate-300 px-2 md:px-4 py-2.5 dark:bg-slate-900 dark:border-b-slate-700
+  @apply  bg-white shadow-sm border-b border-b-slate-300 px-2 md:px-4 py-2.5 dark:bg-slate-900 dark:border-b-slate-700
 }
 main {
-  @apply min-h-screen w-full grid grid-cols-12 mx-auto md:p-10 p-3 pt-14 md:w-9/12 ;
-  transition-duration: 0.5s;
-  
+  @apply min-h-screen w-full grid grid-cols-12 mx-auto md:p-10 p-3 pt-14 md:w-9/12 z-50 ;
 }
+
 dialog {
-  @apply bg-slate-400 bg-opacity-25 backdrop-blur-[0.8px] backdrop-filter backdrop-grayscale backdrop-saturate-150 fixed inset-0 z-50;
+  @apply bg-white bg-opacity-10  backdrop-blur-[0.8px] backdrop-grayscale backdrop-filter backdrop-saturate-100  ;
+}
+.bg-gray-900 { 
+  /* lié au dialogue */
+  @apply bg-opacity-25 
 }
 h1 {
     font-weight: normal;
@@ -49,7 +51,6 @@ main a:hover {
 #keyList div {
   @apply bg-slate-700 mr-3 text-white h-auto text-sm font-medium w-auto items-center p-2 rounded dark:bg-gray-700 dark:text-gray-300;
 }
-
 #keyList {
   @apply flex flex-wrap ;
 }
@@ -78,13 +79,13 @@ form input[type=checkbox] {
 .peer:checked  {
   @apply bg-slate-600
 }
-form input[type=text],input[type=email],input[type=password]    {
+form input[type=text],input[type=email],input[type=password], .input    {
     @apply mt-5 bg-white rounded-md shadow z-0  border-0 border-r-[1px] border-slate-300 border-b-[4px]  border-b-slate-300 text-slate-500  text-base h-14 focus:ring-0   focus:border-slate-300  block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:text-slate-300  ;
 }
 form textarea {
   @apply mt-5 bg-white rounded-md shadow   z-0 text-justify    border-0  border-r-[1px]  border-slate-300 border-b-[4px]  border-b-slate-300  h-72  text-slate-500 focus:ring-0   text-base    focus:border-slate-300 block w-full p-2.5 pb-5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:text-slate-300;
 }
-form select {
+form select, .select {
   @apply mt-5 bg-white  rounded-md  shadow z-0   border-0 border-r-[1px] border-slate-300 border-b-[2px]  border-b-slate-300 font-medium  text-slate-500  text-base h-14 focus:ring-0  focus:border-slate-300 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:text-slate-300 ;
 }
 form input.icon-desc {
@@ -93,15 +94,10 @@ form input.icon-desc {
 span.form-icon {
     @apply inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600;
 }
-form button[type=submit] {
+form button[type=submit], .button {
   @apply bg-slate-500 hover:bg-slate-400 text-white font-bold py-2 px-4 border-b-4 border-slate-700 hover:border-slate-500 rounded ;
 }
-.button {
-  @apply bg-slate-500 hover:bg-slate-400 text-white font-bold py-2 px-4 border-b-4 border-slate-700 hover:border-slate-500 rounded ;
-}
-.select {
-  @apply mt-5 bg-white  rounded-md  shadow z-0   border-0 border-r-[1px] border-slate-300 border-b-[2px]  border-b-slate-300 font-medium  text-slate-500  text-base h-14 focus:ring-0  focus:border-slate-300 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:text-slate-300 ;
-}
+
 form button:disabled {
     background-color: dimgrey;
     color: linen;
@@ -170,7 +166,7 @@ form button:disabled {
       @apply rounded-lg mb-3
      
   }
-  *, ::before, ::after {
+*, ::before, ::after {
 
-    @apply border-b-slate-500
+    @apply border-b-slate-500;
 }

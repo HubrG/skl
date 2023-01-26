@@ -21,15 +21,12 @@
 			{% endfor %}
 		{% endfor %}
 		{% include "_partials/_navbar.html.twig" %}
+		<main>
 
-		<div id="bmain">
-			<main>
+			{% block body %}{% endblock %}
 
-				{% block body %}{% endblock %}
-
-			</main>
-		</div>
+		</main>
 		{% include "_partials/_footer.html.twig" %}
 		<script></script>
 	</body>
-</html></body></html></body></html>
+</html>

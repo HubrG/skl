@@ -172,8 +172,8 @@ class PublicationController extends AbstractController
             return $this->redirectToRoute("app_home");
         }
     }
-    #[Route('/story/as/{pub}', name: 'app_publication_autosave', methods: 'POST')]
-    public function Axios_AutoSave(Request $request, PublicationCategoryRepository $catRepo, PublicationRepository $pubRepo, EntityManagerInterface $em, $pub = null): Response
+    #[Route('/story/as/{pub}', name: 'app_publication_autosav', methods: 'POST')]
+    public function Axios_AutoSavee(Request $request, PublicationCategoryRepository $catRepo, PublicationRepository $pubRepo, EntityManagerInterface $em, $pub = null): Response
     {
         $dataName = $request->get("name");
         $dataValue = $request->get("value");
@@ -236,17 +236,17 @@ class PublicationController extends AbstractController
         //
         if ($this->getUser() == $publication->getUser()) {
             if ($dataPublish) {
-                $return = 2;
+                $return = 200;
                 $publication->setStatus(2);
                 $publication->setPublishedDate(new \DateTime('now'));
             } else {
                 $publication->setStatus(1);
-                $return = 1;
+                $return = 201;
             }
             $em->persist($publication);
             $em->flush();
             return $this->json([
-                "code" => "200", "value" => $return
+                "code" => $return
             ]);
         } else {
             return $this->json([
@@ -285,5 +285,57 @@ class PublicationController extends AbstractController
         $em->remove($publication);
         $em->flush();
         return $this->redirectToRoute("app_user_show_publications");
+    }
+    #[Route('/story/autosave', name: 'app_publication_autosave', methods: "POST")]
+    public function Axios_AutoSave(Request $request, EntityManagerInterface $em, PublicationCategoryRepository $catRepo, PublicationRepository $pRepo): response
+    {
+        $idPub = $request->get("idPub");
+        //
+        $dtTitle = $request->get("title");
+        $dtSummary = $request->get("summary");
+        $dtCategory = $request->get("category");
+        $dtMature = $request->get("mature");
+        $dtCoverName = $request->get("coverName");
+        $dtCover = $request->files->get("cover");
+        //  
+        $pub = $pRepo->find($idPub);
+        $category = $catRepo->find($dtCategory);
+        if ($this->getUser() == $pub->getUser()) {
+            //
+            //
+            $publication = $pub->setTitle($dtTitle)
+                ->setSummary($dtSummary)
+                ->setCategory($category)
+                ->setMature($dtMature);
+            if ($dtCover) {
+                // * On vérifie que le fichier est une image
+                if (getimagesize($dtCover) > 0) {
+                    $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $idPub;
+                    // * si une cover a déjà été envoyée, alors on la supprime pour la remplacer par la nouvelle
+                    if ($pub->getCover() && \file_exists($destination . "/" . $pub->getCover())) {
+                        \unlink($destination . "/" . $pub->getCover());
+                    }
+                    $newFilename = $dtCoverName . '.jpg';
+                    $dtCover->move(
+                        $destination,
+                        $newFilename
+                    );
+                    $publication->setCover($newFilename);
+                } else {
+                    return $this->json([
+                        "code" => 400
+                    ]);
+                }
+            }
+            $em->persist($publication);
+            $em->flush();
+        } else {
+            return $this->json([
+                "code" => 404
+            ]);
+        }
+        return $this->json([
+            "code" => 200 // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
+        ]);
     }
 }

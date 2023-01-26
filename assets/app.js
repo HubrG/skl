@@ -6,14 +6,13 @@
  */
 // any CSS you import will output into a single css file (app.css in this case)
 import "./styles/app.css";
-window.axios = require("axios");
-// start the Stimulus application
-import "./bootstrap";
-import "./turbo/turbo-helper";
 import "/node_modules/flowbite/dist/flowbite.turbo.js";
+window.axios = require("axios");
+import "./turbo/turbo-helper";
+import "./bootstrap";
 import { addKeyword } from "./scripts/Publication/AddKeyword";
-import "form-data";
 import Quill from "quill";
+// TODO: refaire cette fonction
 if (document.getElementById("keyValue")) {
   addKeyword();
 }

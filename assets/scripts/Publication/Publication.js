@@ -6,6 +6,9 @@ export function AxiosSavePublication() {
     var axiosPubAS = document.querySelectorAll(".axiosPubAS");
     var pubMature = document.getElementById("publication_mature");
     let publish = document.getElementById("PublicationPublishButton");
+    var coverShow = document.getElementById("cover");
+    var spinCover = document.getElementById("spinCover");
+    var cover = document.getElementById("publication_cover");
     // ! Checkboxes change values
     pubMature.addEventListener("change", () => {
       if (pubMature.checked) {
@@ -13,6 +16,10 @@ export function AxiosSavePublication() {
       } else {
         pubMature.value = 0;
       }
+    });
+    cover.addEventListener("change", () => {
+      spinCover.classList.toggle("hidden");
+      coverShow.classList.add("opacity-50");
     });
     // ! Si on est sur la page de publication
     if (document.getElementById("hidePubStatus")) {
@@ -66,7 +73,6 @@ function AxiosPublication() {
     "/images/uploads/story/" + hideIdPub + "/" + coverName + ".jpg";
   if (cover.files[0]) {
     var coverFile = cover.files[0];
-    spinCover.toggle("hidden");
   } else {
     var coverFile = "";
   }
@@ -99,6 +105,7 @@ function AxiosPublication() {
         if (coverFile) {
           spinCover.toggle("hidden");
           coverShow.src = coverPath;
+          coverShow.classList.remove("opacity-50");
           cover.value = "";
           if (hideNoCover) {
             if (showNewCover.classList.contains("hidden")) {
@@ -111,6 +118,7 @@ function AxiosPublication() {
         // * si le fichier n'était pas une image, on réinitialise le champ
         if (coverFile) {
           spinCover.toggle("hidden");
+          coverShow.classList.remove("opacity-50");
           cover.value = "";
         }
         // * on affiche l'erreur

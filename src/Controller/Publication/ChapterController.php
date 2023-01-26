@@ -33,15 +33,21 @@ class ChapterController extends AbstractController
                     // * si le chapitre n'existe pas en brouillon, on le crée
                     if (!$pcExists) {
                         // ! on l'ajoute aux chapitres
+                        // ! On récupère le nombre de chapitres liés à cette publication afin de donner un nouveau titre (Chapitre X)
+                        $nbrChap = $pcRepo->findBy(['publication' => $idPub]);
+                        $nbrChap = count($nbrChap);
+
                         $pc = new PublicationChapter;
                         $publicationChapter = $pc->setCreated(new \DateTime('now'))
                             ->setStatus(0) // 0 = brouillon / 1 = en cours de rédaction
-                            ->setTitle("Chapitre sans titre")
-                            ->setPublication($infoPublication);
+                            ->setPublication($infoPublication)
+                            ->setTitle("Chapitre sans titre " . $nbrChap)
+                            ->setOrderDisplay($nbrChap);
                         $em->persist($publicationChapter);
                         // ! on l'ajoute au versioning
                         $pcv = new PublicationChapterVersioning;
                         $publicationChapterVersioning = $pcv->setCreated(new \DateTime('now'))
+                            ->setTitle("Chapitre sans titre " . $nbrChap)
                             ->setChapter($publicationChapter);
                         $em->persist($publicationChapterVersioning);
                         $em->flush();
@@ -62,15 +68,6 @@ class ChapterController extends AbstractController
                             if ($infoChapitre->getStatus() === 0) {
                                 $infoChapitre->setStatus(1);
                             }
-                            // * Si le chapitre est sur un autre status que 0
-                            elseif ($infoChapitre->getStatus() > 0) {
-                                //
-                            }
-                            // * On récupère le nombre de chapitres liés à cette publication afin de donner un nouveau titre (Chapitre X)
-                            $nbrChap = $pcRepo->findBy(['publication' => $idPub]);
-                            $nbrChap = count($nbrChap);
-                            $infoChapitre->setTitle("Chapitre sans titre " . $nbrChap);
-                            $infoChapitre->setOrderDisplay($nbrChap);
                             //
                             $em->persist($infoChapitre);
                             $em->flush();

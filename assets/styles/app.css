@@ -170,3 +170,6 @@ form button:disabled {
 
     @apply border-b-slate-500;
 }
+.ghost {
+opacity: 0.4;
+}

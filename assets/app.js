@@ -11,7 +11,6 @@ window.axios = require("axios");
 import "./turbo/turbo-helper";
 import "./bootstrap";
 import { addKeyword } from "./scripts/Publication/AddKeyword";
-import Quill from "quill";
 // TODO: refaire cette fonction
 if (document.getElementById("keyValue")) {
   addKeyword();

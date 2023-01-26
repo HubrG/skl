@@ -6,8 +6,9 @@ export function Sortables() {
     // List with handle
     Sortable.create(document.getElementById("itemsChap"), {
       animation: 250, // ms, animation speed moving items when sorting, `0` — without animation
-      easing: "cubic-bezier(1, 0, 0, 1)",
-
+      easing: "cubic-bezier(0.65, 0, 0.35, 1)",
+      handle: ".item",
+      ghostClass: "ghost",
       onEnd: function (/**Event*/ evt) {
         var itemEl = evt.item; // dragged HTMLElement
         // evt.to; // target list

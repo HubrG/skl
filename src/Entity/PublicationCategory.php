@@ -21,6 +21,9 @@ class PublicationCategory
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Publication::class)]
     private Collection $publications;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slug = null;
+
     public function __construct()
     {
         $this->publications = new ArrayCollection();
@@ -69,6 +72,18 @@ class PublicationCategory
                 $publication->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

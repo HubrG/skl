@@ -70,10 +70,14 @@ class UserController extends AbstractController
         ]);
     }
     #[Route('user/publications/show', name: 'app_user_show_publications')]
-    public function showpublication(Request $request, PublicationRepository $pubRepo, EntityManagerInterface $em): Response
+    public function showpublication(Request $request, PublicationRepository $pubRepo, UserRepository $user, EntityManagerInterface $em): Response
     {
 
-        $publications = $pubRepo->createQueryBuilder("u")->where("u.status > 0")->getQuery()->getResult();
+        $user = $user->findOneBy(["id" => $this->getUser()]);
+        $user = $user->getId();
+        $publications = $pubRepo->createQueryBuilder("u")->where("u.status > 0 and u.user = " . $user)->getQuery()->getResult();
+        foreach ($publications as $publication) {
+        }
         return $this->renderForm('user/show_publication.html.twig', [
             'publication' => $publications
         ]);

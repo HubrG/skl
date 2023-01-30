@@ -72,7 +72,20 @@ function AxiosPublication() {
   var coverPath =
     "/images/uploads/story/" + hideIdPub + "/" + coverName + ".jpg";
   if (cover.files[0]) {
-    var coverFile = cover.files[0];
+    if (cover.files[0].size > 10000000) {
+      var coverFile = "";
+      var notyText =
+        "<span class='text-base font-medium'>Fichier trop volumineux</span><br />Le fichier ne doit pas dépasser 10Mo.";
+      var notyTimeout = 4500;
+      var notyType = "error";
+      NotyDisplay(notyText, notyType, notyTimeout);
+      spinCover.toggle("hidden");
+      cover.value = "";
+      coverShow.classList.remove("opacity-50");
+      return false;
+    } else {
+      var coverFile = cover.files[0];
+    }
   } else {
     var coverFile = "";
   }
@@ -104,8 +117,8 @@ function AxiosPublication() {
         // * cover
         if (coverFile) {
           spinCover.toggle("hidden");
-          coverShow.src = coverPath;
           coverShow.classList.remove("opacity-50");
+          coverShow.src = coverPath;
           cover.value = "";
           if (hideNoCover) {
             if (showNewCover.classList.contains("hidden")) {
@@ -181,12 +194,7 @@ function publishPublication(ev) {
       publishText.classList.add("text-red-900");
       publishToggle.classList.add("peer-checked:bg-red-600");
       publish.classList.add("bg-red-600", "hover:bg-red-800");
-      badgePubStatus.classList.add(
-        "bg-green-100",
-        "text-green-800",
-        "dark:text-green-300",
-        "dark:bg-green-900"
-      );
+      badgePubStatus.classList.toggle("badge-published");
     } else {
       PublicationPublishModalText.innerHTML =
         "Êtes-vous certain(e) de vouloir publier votre récit ?";
@@ -196,12 +204,7 @@ function publishPublication(ev) {
       publish.classList.add("bg-green-600", "hover:bg-green-800");
       publishDateText.classList.add("hidden");
       AStext.classList.add("hidden");
-      badgePubStatus.classList.add(
-        "bg-red-100",
-        "text-red-800",
-        "dark:text-red-300",
-        "dark:bg-red-900"
-      );
+      badgePubStatus.classList.toggle("badge-unpublished");
     }
   } else {
     if (publishButton.checked == false) {
@@ -219,18 +222,8 @@ function publishPublication(ev) {
       publish.classList.remove("bg-green-600", "hover:bg-green-800");
       publish.classList.add("bg-red-600", "hover:bg-red-800");
       AStext.classList.remove("hidden");
-      badgePubStatus.classList.remove(
-        "bg-red-100",
-        "text-red-800",
-        "dark:text-red-300",
-        "dark:bg-red-900"
-      );
-      badgePubStatus.classList.add(
-        "bg-green-100",
-        "text-green-800",
-        "dark:text-green-300",
-        "dark:bg-green-900"
-      );
+      badgePubStatus.classList.toggle("badge-unpublished");
+      badgePubStatus.classList.toggle("badge-published");
       badgePubStatus.innerHTML = "Publié";
     } else {
       publishButton.checked = false;
@@ -246,18 +239,8 @@ function publishPublication(ev) {
       publish.classList.remove("bg-red-600", "hover:bg-red-800");
       publish.classList.add("bg-green-600", "hover:bg-green-800");
       AStext.classList.add("hidden");
-      badgePubStatus.classList.add(
-        "bg-red-100",
-        "text-red-800",
-        "dark:text-red-300",
-        "dark:bg-red-900"
-      );
-      badgePubStatus.classList.remove(
-        "bg-green-100",
-        "text-green-800",
-        "dark:text-green-300",
-        "dark:bg-green-900"
-      );
+      badgePubStatus.classList.toggle("badge-unpublished");
+      badgePubStatus.classList.toggle("badge-published");
       badgePubStatus.innerHTML = "Dépublié";
       publishDateText.classList.add("hidden");
     }

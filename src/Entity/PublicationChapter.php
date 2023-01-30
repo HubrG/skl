@@ -43,6 +43,9 @@ class PublicationChapter
     #[ORM\OneToMany(mappedBy: 'chapter', cascade: ['remove'], targetEntity: PublicationChapterVersioning::class)]
     private Collection $publicationChapterVersionings;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slug = null;
+
     public function __construct()
     {
         $this->publicationChapterVersionings = new ArrayCollection();
@@ -178,6 +181,18 @@ class PublicationChapter
                 $publicationChapterVersioning->setChapter(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

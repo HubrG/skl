@@ -14,12 +14,13 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
 use App\Repository\PublicationKeywordRepository;
 use App\Repository\PublicationCategoryRepository;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PublicationController extends AbstractController
 {
     #[Route('/story/add', name: 'app_publication_add')]
-    public function Draft(Request $request, PublicationRepository $pubRepo, EntityManagerInterface $em): Response
+    public function Draft(Request $request, PublicationRepository $pubRepo, SluggerInterface $slugger, EntityManagerInterface $em): Response
     {
         // * If user is connected
         if ($this->getUser()) {
@@ -48,9 +49,12 @@ class PublicationController extends AbstractController
                 ->setCreated(new \DateTime('now'));
             // * if the title is empty...
             if ($form->get("title")->getViewData() === "") {
-                $status->setTitle("Récit sans titre");
+                $status->setTitle("Récit sans titre")
+                    ->setSlug("recit-sans-titre");
             } else {
-                $status->setTitle(trim(ucfirst($form->get("title")->getViewData())));
+                $title = trim(ucfirst($form->get("title")->getViewData()));
+                $status->setTitle($title)
+                    ->setSlug($slugger->slug(strtolower($title)));
             }
             // * We format the summary
             $status->setSummary(trim(ucfirst($form->get("summary")->getViewData())));
@@ -111,6 +115,7 @@ class PublicationController extends AbstractController
                             ->addPublication($publication);
                     }
                     // sinon, on cré le nouveau mot et on l'ajoute au ManyToMany de l'article...
+
                     else {
                         $keykey = new PublicationKeyword();
                         $key = $keykey->setKeyword($value)
@@ -233,7 +238,7 @@ class PublicationController extends AbstractController
         return $this->redirectToRoute("app_user_show_publications");
     }
     #[Route('/story/autosave', name: 'app_publication_autosave', methods: "POST")]
-    public function Axios_AutoSave(Request $request, EntityManagerInterface $em, PublicationCategoryRepository $catRepo, PublicationRepository $pRepo): response
+    public function Axios_AutoSave(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, PublicationCategoryRepository $catRepo, PublicationRepository $pRepo): response
     {
         $idPub = $request->get("idPub");
         //
@@ -248,11 +253,11 @@ class PublicationController extends AbstractController
         $category = $catRepo->find($dtCategory);
         if ($this->getUser() == $pub->getUser()) {
             //
-            //
-            $publication = $pub->setTitle($dtTitle)
+            $publication = $pub->setTitle($dtTitle)->setSlug($slugger->slug(strtolower($dtTitle)))
                 ->setSummary($dtSummary)
                 ->setCategory($category)
-                ->setMature($dtMature);
+                ->setMature($dtMature)
+                ->setUpdated(new \DateTime('now'));
             if ($dtCover) {
                 // * On vérifie que le fichier est une image
                 if (getimagesize($dtCover) > 0) {

@@ -48,8 +48,6 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath, Response::HTTP_SEE_OTHER);
         }
-        $request->getSession()->getFlashBag()->add('successTitle', 'Ravis de vous retrouver !');
-        $request->getSession()->getFlashBag()->add('successMessage', 'Bien des choses ont été écrites durant votre absence...');
         // For example:
         // return new RedirectResponse($this->urlGenerator->generate('some_route'));
         return new RedirectResponse($this->urlGenerator->generate('app_home'), Response::HTTP_SEE_OTHER);

@@ -1,4 +1,4 @@
-//window.Noty = require("noty");
+window.Noty = require("noty");
 export function NotyDisplay(notyText, notyType, notyTimeout) {
   new Noty({
     text: notyText,

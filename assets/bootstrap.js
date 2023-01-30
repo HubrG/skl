@@ -8,5 +8,6 @@ export const app = startStimulusApp(
   )
 );
 // ! differents modules Stimulus
+
 import { Application } from "@hotwired/stimulus";
 const application = Application.start();

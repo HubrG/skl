@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Repository\PublicationChapterVersioningRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -35,13 +36,20 @@ class ChapterController extends AbstractController
                         // ! on l'ajoute aux chapitres
                         // ! On récupère le nombre de chapitres liés à cette publication afin de donner un nouveau titre (Chapitre X)
                         $nbrChap = $pcRepo->findBy(['publication' => $idPub]);
-                        $nbrChap = count($nbrChap);
-
+                        $nbrChap = count($nbrChap) + 1;
+                        $chapTitleExist = $pcRepo->findBy(['publication' => $idPub, 'title' => 'Chapitre sans titre ' . $nbrChap]);
+                        $countSameTitle = count($chapTitleExist);
+                        if ($chapTitleExist) {
+                            $chapAdd = " (" . $countSameTitle . ")";
+                        } else {
+                            $chapAdd = "";
+                        }
                         $pc = new PublicationChapter;
                         $publicationChapter = $pc->setCreated(new \DateTime('now'))
                             ->setStatus(0) // 0 = brouillon / 1 = en cours de rédaction
                             ->setPublication($infoPublication)
-                            ->setTitle("Chapitre sans titre " . $nbrChap)
+                            ->setTitle("Chapitre sans titre " . $nbrChap . $chapAdd)
+                            ->setSlug("chapitre-sans-titre-" . $nbrChap . $chapAdd)
                             ->setOrderDisplay($nbrChap);
                         $em->persist($publicationChapter);
                         // ! on l'ajoute au versioning
@@ -122,7 +130,7 @@ class ChapterController extends AbstractController
         return $this->redirectToRoute('app_publication_edit', ['id' => $idPub]);
     }
     #[Route('/story/chapter/autosave', name: 'app_chapter_autosave', methods: "POST")]
-    public function Axios_ChapAutoSave(Request $request, EntityManagerInterface $em, PublicationChapterRepository $pcRepo, PublicationRepository $pRepo): response
+    public function Axios_ChapAutoSave(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, PublicationChapterRepository $pcRepo, PublicationRepository $pRepo): response
     {
         $idPub = $request->get("idPub");
         $idChap = $request->get("idChap");
@@ -133,14 +141,14 @@ class ChapterController extends AbstractController
         $publication = $pRepo->find($idPub);
         $chapter = $pcRepo->find($idChap);
         if ($publication->getId() == $chapter->getPublication()->getId() && $this->getUser() == $publication->getUser()) {
-            $pcv = new PublicationChapterVersioning;
             $chapter->setTitle($dtTitle)
+                ->setSlug($slugger->slug(strtolower($dtTitle)))
                 ->setContent($dtQuill)
                 ->setUpdated(new \DateTime('now'));
             $em->persist($chapter);
-            $em->flush();
             //!SECTION
             $chapter = $pcRepo->find($idChap);
+            $pcv = new PublicationChapterVersioning;
             $chapterVersioning = $pcv->setCreated(new \DateTime('now'))
                 ->setTitle($chapter->getTitle())
                 ->setContent($chapter->getContent())
@@ -185,6 +193,16 @@ class ChapterController extends AbstractController
 
         return $this->json([
             "content" => $pcv->getContent()
+        ]);
+    }
+    #[Route('/story/chapter/getlastversion', name: 'app_chapter_getlastversion', methods: "POST")]
+    public function Axios_ChapterLastVersion(Request $request, PublicationChapterVersioningRepository $pcvRepo): response
+    {
+        $idChap = $request->get("idChap");
+        $pcv = $pcvRepo->find($idChap);
+
+        return $this->json([
+            "content" => $pcv
         ]);
     }
     #[Route('/story/chapter/sort', name: 'app_chapter_sort', methods: "POST")]

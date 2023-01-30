@@ -7,11 +7,18 @@ export function AxiosSaveChapter() {
   if (document.getElementById("selectChapVersion")) {
     // ! Variables
     var toggleAS = document.getElementById("toggleAS");
+    var title = document.getElementById("title");
+    var editor = document.getElementById("editor");
     var selectChapVersion = document.getElementById("selectChapVersion");
     var saveChapter = document.getElementById("saveChapter");
     var axiosChapterAS = document.querySelectorAll(".axiosChapterAS");
     var togglePublish = document.getElementById("togglePublish");
     var spinAS = document.getElementById("spinAS");
+    // !
+    onload = () => {
+      title.setSelectionRange(title.value.length, title.value.length);
+      title.focus();
+    };
     // ! EventListener sur l'auto save
     toggleAS.addEventListener("change", () => {
       toggleASfunc();
@@ -120,6 +127,7 @@ function publishChapter(publish) {
         var notyText =
           "<span class='text-base font-medium'>Chapitre publié</span><br />Votre chapitre est désormais visible par vos lecteurs";
         hideChapStatus.value = 2;
+        AxiosChapter();
       } else {
         var notyText =
           "<span class='text-base font-medium'>Chapitre dépublié</span><br />Votre chapitre n'est plus visible par vos lecteurs";
@@ -171,11 +179,12 @@ function AxiosGetVersion(version) {
       setTimeout(() => {
         document
           .getElementById("selectChapVersionContainer")
-          .classList.add("animate__animated", "animate__shakeY");
-      }, 2000);
+          .classList.add("animate__animated", "animate__flash");
+      }, 1000);
       ReadTimeFunction(document.getElementById("editor"));
     });
 }
+
 // !
 // ! Fonction permettant de gérer l'autosave via le toggle
 // !
@@ -199,4 +208,6 @@ function toggleASfunc() {
     });
   }
 }
-AxiosSaveChapter();
+if (document.getElementById("editorHTML")) {
+  AxiosSaveChapter();
+}

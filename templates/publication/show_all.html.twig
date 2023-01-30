@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PublicationShowController!
+{% endblock %}
+
+{% block body %}
+<section class="col-span-12">
+<div class=" flex-col grid-cols-2 gap-3 grid row-span-full  items-stretch" >
+	{% for item in pubShow %}
+
+	<div class=" rounded-lg  dark:bg-gray-800 dark:border-gray-700 flex place-content-start">
+        <div class="w-2/6 col-span-12 h-auto rounded-lg">
+        <a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}">
+        <img class="rounded object-cover w-full shaow-md lazy animate-pulse animate__animated bg-slate-300"  loading="lazy" src="" data-src="{{ "https://picsum.photos/400/" ~ random(500, 520) }}" alt="" />
+        </a>
+        </div>
+        <div class="p-5 -mt-6 w-3/6 place-content-baseline items-baseline">
+            <a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}">
+                <h5 class="mb-2 text-xl font-bold tracking-tight text-slate-700 dark:text-white [font-family:'merriweather'">{{ item.title }}</h5>
+            </a>
+            <p class="mb-3 font-normal text-slate-800 text-sm text-justify  dark:text-gray-400">{{ item.summary|slice(0, 280) }}<br /><span class="text-xs">
+            </p> <p> 
+            {% for pkey in item.publicationKeywords %}
+            <span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 leading-8 mb-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-500">{{ pkey.keyword }}{% if not loop.last %}{% endif %}</span>
+            {% endfor %}
+            </p>
+        </div>
+    </div>
+	{% endfor %}
+</div>
+</section>
+
+{% endblock %}

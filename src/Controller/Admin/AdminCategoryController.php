@@ -9,19 +9,22 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationCategoryRepository;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AdminCategoryController extends AbstractController
 {
     #[Route('/admin/category', name: 'app_admin_category')]
-    public function index(Request $request, EntityManagerInterface $em, PublicationCategoryRepository $pubCatRepo): Response
+    public function index(Request $request, SluggerInterface $slugger, EntityManagerInterface $em, PublicationCategoryRepository $pubCatRepo): Response
     {
         // AJOUT D'UNE CATÉGORIE
         // création du formulaire d'édition
         $form = $this->createForm(PublicationCategoryType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($form->getData());
+            // on ajoute au formulaire la donnée de slug
+            $form = $form->getData()->setSlug($slugger->slug($form->getData()->getName()));
+            $em->persist($form);
             $em->flush();
             return $this->redirectToRoute("app_admin_category", [], Response::HTTP_SEE_OTHER);
         }

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html class="" id="html">
+<html id="html" lang="fr">
 	<head>
 		<meta charset="UTF-8">
+		<meta name="description" content="Publiez et lisez des romans, des nouvelles, de la poésie et plus encore sur notre plateforme littéraire en ligne. Rejoignez une communauté passionnée de littérature et découvrez de nouveaux talents dès aujourd'hui.">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>
 			{% block title %}Scrilab
@@ -17,16 +18,16 @@
 	<body>
 		{% for message in app.session.flashBag.get('successMessage') %}
 			{% for title in app.session.flashBag.get('successTitle') %}
-				{% include '_partials/_notif.html.twig'  with {'notifMessage': message, 'notifTitle' : title} %}
+				{% include 'partials/_notif.html.twig'  with {'notifMessage': message, 'notifTitle' : title} %}
 			{% endfor %}
 		{% endfor %}
-		{% include "_partials/_navbar.html.twig" %}
+		{% include "partials/_navbar.html.twig" %}
 		<main>
 
 			{% block body %}{% endblock %}
 
 		</main>
-		{% include "_partials/_footer.html.twig" %}
+		{% include "partials/_footer.html.twig" %}
 		<script></script>
 	</body>
 </html>

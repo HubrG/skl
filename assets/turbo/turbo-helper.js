@@ -5,10 +5,8 @@ import { AxiosSavePublication } from "../scripts/Publication/Publication";
 import { darkMode } from "../scripts/Darkmode";
 import { ReadTime } from "../scripts/Publication/ChapterStats";
 import { quillEditor } from "../scripts/Quill.js";
-import Quill from "quill";
-window.Noty = require("noty");
-window.axios = require("axios");
 import { Sortables } from "../scripts/Publication/Sortable";
+import { LazyLoad } from "../scripts/LazyLoad";
 
 const TurboHelper = class {
   constructor() {
@@ -16,28 +14,50 @@ const TurboHelper = class {
     document.addEventListener("turbo:render", () => {
       addKeyword();
       darkMode();
-      AxiosSaveChapter();
       AxiosSavePublication();
-      ReadTime();
-      quillEditor();
-      Sortables();
+      if (document.getElementById("editorHTML")) {
+        ReadTime();
+        AxiosSaveChapter();
+        quillEditor();
+      }
+      if (document.querySelector(".list-group-item")) {
+        Sortables();
+      }
+      LazyLoad();
     });
     document.addEventListener("turbo:visit", () => {
       // fade out the old body
-
       document.body.classList.add("turbo-loading");
     });
     document.addEventListener("turbo:before-render", (event) => {
-      // when we are *about* to render, start us fadeddd out
-      event.detail.newBody.classList.add("turbo-loading");
+      if (this.isPreviewRendered()) {
+        // this is a preview that has been instantly swapped
+        // remove .turbo-loading so the preview starts fully opaque
+        event.detail.newBody.classList.remove("turbo-loading");
+        // start fading out 10ms later after opacity starts full
+        setTimeout(() => {
+          document.body.classList.add("turbo-loading");
+        }, 10);
+      } else {
+        // when we are *about* to render a fresh page
+        // we should already be faded out, so start us faded out
+        event.detail.newBody.classList.add("turbo-loading");
+      }
     });
     document.addEventListener("turbo:render", () => {
-      // after rendering, we first allow the turbo-loading class to set the low opacity
-      // THEN, one frame later, we remove the turbo-loading class, which adllows the fade in
-      requestAnimationFrame(() => {
-        document.body.classList.remove("turbo-loading");
-      });
+      if (!this.isPreviewRendered()) {
+        // if this is a preview, then we do nothing: stay faded out
+        // after rendering the REAL page, we first allow the .turbo-loading to
+        // instantly start the page at lower opacity. THEN remove the class,
+        // which allows the fade in
+        setTimeout(() => {
+          document.body.classList.remove("turbo-loading");
+        }, 10);
+      }
     });
+  }
+  isPreviewRendered() {
+    return document.documentElement.hasAttribute("data-turbo-preview");
   }
 };
 export default new TurboHelper();

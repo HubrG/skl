@@ -17,27 +17,16 @@ export function quillEditor() {
   };
   if (document.getElementById("editor")) {
     const quill = new Quill("#editor", options);
-    // * exemple de bouton personnalisé TODO: à utiliser pour des images
-    // document
-    //   .getElementById("boldButton")
-    //   .addEventListener("click", function () {
-    //     quill.format("bold", true);
-    //   });
-
-    document.getElementById("editor").addEventListener("paste", function () {
-      quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
-        let ops = [];
-        delta.ops.forEach((op) => {
-          if (op.insert && typeof op.insert === "string") {
-            ops.push({
-              insert: op.insert,
-            });
-          }
-        });
-        delta.ops = ops;
-        return delta;
-      });
-    });
   }
+  var html = document.getElementById("editorHTML").value;
+
+  init(html, options);
 }
-quillEditor();
+function init(html, options) {
+  var quill = new Quill("#editor", options);
+  var delta = quill.clipboard.convert(html);
+  quill.setContents(delta, "silent");
+}
+if (document.getElementById("editorHTML")) {
+  quillEditor();
+}

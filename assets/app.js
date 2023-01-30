@@ -6,7 +6,6 @@
  */
 // any CSS you import will output into a single css file (app.css in this case)
 import "./styles/app.css";
-import "/node_modules/flowbite/dist/flowbite.turbo.js";
 window.axios = require("axios");
 import "./turbo/turbo-helper";
 import "./bootstrap";

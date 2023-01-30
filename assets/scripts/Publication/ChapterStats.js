@@ -41,4 +41,6 @@ export function ReadTimeFunction(div) {
     numParagraphs + ` ${numParagraphs > 1 ? "paragraphes" : "paragraphe"}`;
   // * suppression du formatage du texte
 }
-ReadTime();
+if (document.getElementById("editorHTML")) {
+  ReadTime();
+}

@@ -1,0 +1,51 @@
+- Raccourcis clavier
+Pour selectionner items tous les items : CMD+ALT+L
+
+
+
+{# ! On affiche les keywords utilisés #}
+{% set n = 0 %}
+{% set alreadyKeyw = [] %}
+{% for item in keywords %} 
+	{# * On crée le chemin (lien) qui supprime le keyword de la string / TODO: attention, il faut que ce soit le mot complet, donc ajouter les séparateur #}
+	{% set item2replace = item.keyword|lower %}
+	{% if item2replace ~ separator in kwString %}
+		{% set var = kwString|replace({(item2replace ~ separator):''}) %}
+	{% elseif separator ~ item2replace in kwString %}
+		{% set var = kwString|replace({(separator ~ item2replace):''}) %}
+		{% else %}
+		{% set var ="" %}
+	{% endif %}
+	{# * Si la string est finalement vide, on la vide complètement pour revenir à l'affichage initial #}
+	{% if var == separator %}
+		{% set var = "" %}
+	{% endif %}
+	{# * Si le premier caractère est un séparateur, on le supprime #}
+	{% if var|slice(0,1) == separator %} {% set var = var|slice(1,9999) %} {% endif %}
+		{# * Si le dernier caractère est un séparateur, on le supprime #}
+		{% set var2 = var|length - 1 %}
+	{% if var|slice(var2,1) == separator %} {% set var = var|slice(0,var2) %} {% endif %}	
+		{# * Enfin, on remplace les doubles séparateur par un seul #}
+		{% set var = var|replace({"——":separator}) %}
+		{# * On empêche que "qui" soit pris pour "quibusdam" et inversement... #}
+			{% if  separator ~ item.keyword|lower ~ separator in kwString %}
+				{% set varw = separator ~ item.keyword|lower ~ separator %}
+			{% elseif separator ~ item.keyword|lower in kwString %}
+				{% set varw = separator ~ item.keyword|lower %}
+			{% elseif item.keyword|lower ~ separator in kwString %}
+				{% set varw = item.keyword|lower ~ separator %}
+			{% elseif kwString == item.keyword|lower %}
+					{% set varw = item.keyword|lower %}
+				{% else %}
+				{% set varw = null %}
+			{% endif %}
+		{# * Enfin, on affiche les mots clés #}
+	{% if (item.keyword not in alreadyKeyw) and (varw in kwString == true) %} 
+		<a href="{{ path("app_publication_show_all_category", {slug:category.slug, keystring:var}) }}">
+			<span class="bg-emerald-200 text-emerald-800 text-sm font-medium mr-2 px-2.5 py-0.5 leading-10 rounded dark:bg-blue-900 dark:text-blue-300">{{item.keyword}} &nbsp;<i class="fa-solid fa-delete-left"></i></span> 
+		</a>
+	{% endif %}
+	{% set n = n + 1 %}
+	{% set alreadyKeyw = alreadyKeyw|merge([item.keyword]) %}
+{% endfor %}
+{# ! fin #}

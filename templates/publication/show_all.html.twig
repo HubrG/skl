@@ -4,30 +4,102 @@
 {% endblock %}
 
 {% block body %}
+<section class="col-span-12 mb-10">
+<h1>{{ category.name }}</h1>
+
+{# ! Séparateur de mots clés dans l'URL #}
+{% set separator = "—" %}
+{# 
+! On affiche les keywords utilisés 
+#}
+{% set n = 0 %}
+{% set alreadyKeyw = [] %}
+{% set kwStringSplit = kwString|split(separator) %}
+{# * début de la boucle #}
+{% for item in keywords %}
+	{% set item2replace = item.keyword|lower %}
+	{# * Si le keyword n'est pas dans alreadyKeyw (qui permet de détecter les doublons), et que le keyword est dans l'url, et que le keyword est dans le tableau kwStringSplit (mise en tableau afin d'éviter les confusions "Quis" "Quisa" "Quima" avec des simples replace...) #}
+	{% if (item.keyword not in alreadyKeyw) and (item2replace in kwString == true) and (item2replace in kwStringSplit) %} 
+		{# * on crée la nouvelle string #}
+		{% set kwStringNew = "" %}
+		{% for i, item in kwStringSplit %}
+			{% if item|lower != item2replace %}
+				{% set kwStringNew = kwStringNew ~ "—" ~ item %}		
+			{% endif %}
+		{% endfor %}
+		{# Si le premier caractère est un séparateur, on le supprime #}
+		{% if kwStringNew|slice(0,1) == separator %}
+			{% set kwStringNew = kwStringNew|slice(1,9999) %}
+		{% endif %}
+		{# Si le dernier caractère est un séparateur, on le supprime #}
+		{% set var = kwStringNew|length - 1 %}
+		{% if kwStringNew|slice(var,1) == separator %}
+			{% set kwStringNew = kwStringNew|slice(0,var) %}
+		{% endif %}
+		{# * affichage des keywords #}
+		<a href="{{ path("app_publication_show_all_category", {slug:category.slug, keystring:kwStringNew}) }}">
+			<span class="bg-emerald-200 text-emerald-800 text-sm font-medium mr-2 px-2.5 py-0.5 leading-10 rounded dark:bg-blue-900 dark:text-blue-300">{{item.keyword}} &nbsp;<i class="fa-solid fa-delete-left"></i></span> 
+		</a>
+	{% endif %}
+	{% set alreadyKeyw = alreadyKeyw|merge([item.keyword]) %}
+	{% set n = n + 1 %}
+{% endfor %}
+{# 
+! On affiche les keywords non utilisés 
+#}
+{% set n = 0 %}
+{% set alreadyKeyw = [] %}
+{# * début de la boucle #}
+{% for item in keywords %} 
+	{# * S'il n'y a aucun keyword dans la string, alors on ne met pas le séparateur #}
+	{% set kwAdd = separator ~ item.keyword|lower %}
+	{% if kwString|length == 0 %}
+		{% set kwAdd = item.keyword|lower %}
+	{% endif %}
+	{# * On affiche les keywords avec le bon lien #}
+	{% if (item.keyword not in alreadyKeyw) and (item.keyword|lower in kwString == false) %} <!-- Si le keyword n'est pas dans la variable, on le supprime (éviter les doublons) -->
+	{% set kwString = kwString|replace({"——":separator}) %}
+	<a href="{{ path("app_publication_show_all_category", {slug:category.slug, keystring:kwString ~ kwAdd}) }}">
+		<span class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 leading-10 rounded dark:bg-blue-900 dark:text-blue-300">{{item.keyword}}</span> 
+	</a>
+	{% endif %}
+{% set n = n + 1 %}
+{% set alreadyKeyw = alreadyKeyw|merge([item.keyword]) %}
+{% endfor %}
+</section>
+{# 
+! Affichage des articles
+#}
 <section class="col-span-12">
+<h4 class="w-full mb-5 text-slate-600">{{ pubShowAll|length }} récits</h4>
+<turbo-frame id="pubShowAll">
 <div class=" flex-col grid-cols-2 gap-3 grid row-span-full  items-stretch" >
 	{% for item in pubShow %}
-
 	<div class=" rounded-lg  dark:bg-gray-800 dark:border-gray-700 flex place-content-start">
-        <div class="w-2/6 col-span-12 h-auto rounded-lg">
-        <a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}">
-        <img class="rounded object-cover w-full shaow-md lazy animate-pulse animate__animated bg-slate-300"  loading="lazy" src="" data-src="{{ "https://picsum.photos/400/" ~ random(500, 520) }}" alt="" />
-        </a>
-        </div>
-        <div class="p-5 -mt-6 w-3/6 place-content-baseline items-baseline">
-            <a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}">
-                <h5 class="mb-2 text-xl font-bold tracking-tight text-slate-700 dark:text-white [font-family:'merriweather'">{{ item.title }}</h5>
-            </a>
-            <p class="mb-3 font-normal text-slate-800 text-sm text-justify  dark:text-gray-400">{{ item.summary|slice(0, 280) }}<br /><span class="text-xs">
-            </p> <p> 
-            {% for pkey in item.publicationKeywords %}
-            <span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 leading-8 mb-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-500">{{ pkey.keyword }}{% if not loop.last %}{% endif %}</span>
-            {% endfor %}
-            </p>
-        </div>
-    </div>
+		<div class="w-2/6 col-span-12 h-auto rounded-lg">
+			<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}">
+				<img class="rounded object-cover w-full shaow-md lazy animate-pulse animate__animated bg-slate-300"  loading="lazy" src="" data-src="{{ "https://picsum.photos/400/" ~ random(500, 520) }}" alt="" />
+			</a>
+		</div>
+		<div class="p-5 -mt-6 w-3/6 place-content-baseline items-baseline">
+			<h5 class="mb-2 text-xl font-bold tracking-tight [font-family:'merriweather'">
+				<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" class=" text-slate-700 dark:text-white ">{{ item.title }}</a>
+			</h5>
+			<p  class="text-xs -mt-2 mb-2 text-slate-500 font-base">{{ item.publicationChapters|chapter("nbr", "ft") }} | {{ item.publicationChapters|chapter("rt", "ft") }} de lecture</p>
+			<p class="mb-3 font-normal text-slate-800 text-sm text-justify  dark:text-gray-400">
+				{{ item.summary|slice(0, 280) }}
+				<br />
+				<span class="text-xs">
+			</p>
+			<p class=" text-cyan-600"> 
+				{% for pubKeyw in item.publicationKeywords %}
+				<span class="bg-slate-100 text-slate-600 text-xs font-medium mr-1 leading-7 mb-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 ">{{ pubKeyw.keyword|lower }}{% if not loop.last %}{% endif %}</span>
+				{% endfor %}
+			</p>
+			</div>
+	</div>
 	{% endfor %}
 </div>
+</turbo-frame>
 </section>
-
 {% endblock %}

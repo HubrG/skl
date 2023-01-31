@@ -37,6 +37,7 @@
         "animate.css": "^4.1.1",
         "axios": "^1.2.2",
         "bootstrap": "^5.2.3",
+        "epub-maker": "^1.2.0",
         "flowbite": "^1.6.0",
         "form-data": "^4.0.0",
         "maildev": "^2.0.5",

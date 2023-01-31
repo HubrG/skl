@@ -37,6 +37,11 @@ class TwigReadInfo extends AbstractExtension
             return $m . " mn";
         } elseif ($type == "ri_sc_ft_short") { // compteur de secondes, full text raccourci
             return $s . " sc";
+        } elseif ($type == "ft") { // full time en heure et minute (par rapport à un nombre total de minutes)
+            $minutes = $string;
+            $hours = floor($minutes / 60);
+            $minutes = $minutes % 60;
+            return $hours . "h" . ($minutes < 10 ? "0" . $minutes : $minutes);
         }
         return null;
     }

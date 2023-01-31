@@ -2,25 +2,14 @@
 
 namespace App\Controller;
 
-use Faker\Factory;
-use App\Entity\User;
-use App\Entity\Publication;
-use Psr\Log\LoggerInterface;
-use App\Entity\PublicationKeyword;
-use App\Repository\UserRepository;
+
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\PublicationKeywordRepository;
-use App\Repository\PublicationCategoryRepository;
-use Proxies\__CG__\App\Entity\PublicationCategory;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class HomeController extends AbstractController
 {
@@ -37,7 +26,6 @@ class HomeController extends AbstractController
         //     $em->persist($publication);
         // }
         // $em->flush();
-
 
 
         return $this->render('home/home.html.twig', [

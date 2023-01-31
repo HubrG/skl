@@ -12,9 +12,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PublicationShowController extends AbstractController
 {
-    #[Route('/stories/{slug}/{page?}/{keystring?}', name: 'app_publication_show_all_category')]
+    #[Route('/recits/{slug}/{page<\d+>?}/{keystring?}', name: 'app_publication_show_all_category')]
     public function show_all(PublicationCategoryRepository $pcRepo, PublicationKeywordRepository $kwRepo, PublicationRepository $pRepo, $page = null, $slug = null, $keystring = null): Response
     {
+        if (!$page) {
+            $page = 1;
+        }
         $pcRepo = $pcRepo->findOneBy(["slug" => $slug]);
         // ! Si il y a bien des publications dans la catégorie sélectionnée...
         if ($pcRepo) {
@@ -49,12 +52,8 @@ class PublicationShowController extends AbstractController
                 $count = count($publicationsAll);
                 $countPage = $count / $nbr_by_page;
                 $countPage = ceil($countPage);
-                if ($page) {
-                    $page = $page - 1;
-                    $publications = $pRepo->findBy(["id" => $publications, "status" => 2], ["published_date" => "DESC"], $nbr_by_page, $page * $nbr_by_page);
-                } else {
-                    $publications = $pRepo->findBy(["id" => $publications, "status" => 2], ["published_date" => "DESC"], $nbr_by_page);
-                }
+                $page = $page - 1;
+                $publications = $pRepo->findBy(["id" => $publications, "status" => 2], ["published_date" => "DESC"], $nbr_by_page, $page * $nbr_by_page);
                 // * tri des mots clés
                 $keywords = $this->keyw_sort($publicationsAll);
             }
@@ -65,12 +64,8 @@ class PublicationShowController extends AbstractController
                 $count = count($publicationsAll = $pRepo->findBy(["category" => $pcRepo->getId(), "status" => 2]));
                 $countPage = $count / $nbr_by_page;
                 $countPage = ceil($countPage);
-                if ($page) {
-                    $page = $page - 1;
-                    $publications = $pRepo->findBy(["category" => $pcRepo->getId(), "status" => 2], ["published_date" => "DESC"], $nbr_by_page, $page * $nbr_by_page);
-                } else {
-                    $publications = $pRepo->findBy(["category" => $pcRepo->getId(), "status" => 2], ["published_date" => "DESC"], $nbr_by_page);
-                }
+                $page = $page - 1;
+                $publications = $pRepo->findBy(["category" => $pcRepo->getId(), "status" => 2], ["published_date" => "DESC"], $nbr_by_page, $page * $nbr_by_page);
                 $keywString = null;
                 // * tri des mots clés
                 $keywords = $this->keyw_sort($publicationsAll);

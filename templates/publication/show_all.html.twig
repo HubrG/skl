@@ -37,7 +37,7 @@
 			{% set kwStringNew = kwStringNew|slice(0,var) %}
 		{% endif %}
 		{# * affichage des keywords #}
-		<a href="{{ path("app_publication_show_all_category", {slug:category.slug, keystring:kwStringNew}) }}">
+		<a href="{{ path("app_publication_show_all_category", {slug:category.slug, keystring:kwStringNew, page:1}) }}">
 			<span class="bg-emerald-200 text-emerald-800 text-sm font-medium mr-2 px-2.5 py-0.5 leading-10 rounded dark:bg-blue-900 dark:text-blue-300">{{item.keyword}} &nbsp;<i class="fa-solid fa-delete-left"></i></span> 
 		</a>
 	{% endif %}
@@ -59,7 +59,7 @@
 	{# * On affiche les keywords avec le bon lien #}
 	{% if (item.keyword not in alreadyKeyw) and (item.keyword|lower in kwString == false) %} <!-- Si le keyword n'est pas dans la variable, on le supprime (éviter les doublons) -->
 	{% set kwString = kwString|replace({"——":separator}) %}
-	<a href="{{ path("app_publication_show_all_category", {slug:category.slug, keystring:kwString ~ kwAdd}) }}">
+	<a href="{{ path("app_publication_show_all_category", {slug:category.slug, keystring:kwString ~ kwAdd, page:1}) }}">
 		<span class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 leading-10 rounded dark:bg-blue-900 dark:text-blue-300">{{item.keyword}}</span> 
 	</a>
 	{% endif %}
@@ -70,20 +70,21 @@
 {# 
 ! Affichage des articles
 #}
+{% set pageAct = app.request.get('_route_params')['page'] %}
+<turbo-frame id="pagination-{{ pageAct }}" class="col-span-12">
 <section class="col-span-12">
-<h4 class="w-full mb-5 text-slate-600">{{ pubShowAll|length }} récits</h4>
-<turbo-frame id="pubShowAll">
+<h4 class="w-full mb-5 text-slate-600">{{ count }} récits</h4>
 <div class=" flex-col grid-cols-2 gap-3 grid row-span-full  items-stretch" >
 	{% for item in pubShow %}
 	<div class=" rounded-lg  dark:bg-gray-800 dark:border-gray-700 flex place-content-start">
 		<div class="w-2/6 col-span-12 h-auto rounded-lg">
-			<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}">
+			<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug, page:1}) }}">
 				<img class="rounded object-cover w-full shaow-md lazy animate-pulse animate__animated bg-slate-300"  loading="lazy" src="" data-src="{{ "https://picsum.photos/400/" ~ random(500, 520) }}" alt="" />
 			</a>
 		</div>
 		<div class="p-5 -mt-6 w-3/6 place-content-baseline items-baseline">
 			<h5 class="mb-2 text-xl font-bold tracking-tight [font-family:'merriweather'">
-				<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" class=" text-slate-700 dark:text-white ">{{ item.title }}</a>
+				<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug, page:1}) }}" class=" text-slate-700 dark:text-white ">{{ item.title }}</a>
 			</h5>
 			<p  class="text-xs -mt-2 mb-2 text-slate-500 font-base">{{ item.publicationChapters|chapter("nbr", "ft") }} | {{ item.publicationChapters|chapter("rt", "ft") }} de lecture</p>
 			<p class="mb-3 font-normal text-slate-800 text-sm text-justify  dark:text-gray-400">
@@ -100,6 +101,48 @@
 	</div>
 	{% endfor %}
 </div>
-</turbo-frame>
 </section>
+<section class="w-full content-center mt-5">
+  <ul class="inline-flex items-center -space-x-px">
+    <li>
+	{% if pageAct == 1 or pageAct is null  %}
+      <span class="block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+	  </span>
+       {% else %}
+	   {% set ii = pageAct - 1 %}
+	         <a href="{{ path("app_publication_show_all_category", { slug:category.name, page:ii, keystring:kwString }) }}" class="block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+	  </a>
+	{% endif %}
+    </li>
+    	{% for i in 1..countPage %}
+		<li>
+		{% if pageAct == i or (pageAct == null and i == 1) %}
+      <span class="px-3 py-2 text-sm leading-tight  bg-blue-500 text-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{ i }}</span>
+		{% else %}
+      <a href="{{ path("app_publication_show_all_category", { slug:category.name, page:i, keystring:kwString }) }}" class="px-3 py-2 text-sm leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{ i }}</a>
+		{% endif %}
+	</li>
+   
+	{% endfor %}
+    <li>
+	{% if pageAct == countPage  %}
+      <span class="block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+		<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+	  </span>
+       {% else %}
+	   {% if pageAct is null %}
+	   {% set ii = 2 %}   
+	   {% else %}
+	   {% set ii = pageAct + 1 %}   
+	   {% endif %}
+	         <a href="{{ path("app_publication_show_all_category", { slug:category.name, page:ii, keystring:kwString }) }}" class="block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+		<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+	  </a>
+	{% endif %}
+    </li>
+  </ul>
+</section>
+</turbo-frame>
 {% endblock %}

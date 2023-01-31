@@ -12,8 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PublicationShowController extends AbstractController
 {
-    #[Route('/stories/{slug}/{keystring?}', name: 'app_publication_show_all_category')]
-    public function show_all(PublicationCategoryRepository $pcRepo, PublicationKeywordRepository $kwRepo, PublicationRepository $pRepo, $slug = null, $keystring = null): Response
+    #[Route('/stories/{slug}/{page?}/{keystring?}', name: 'app_publication_show_all_category')]
+    public function show_all(PublicationCategoryRepository $pcRepo, PublicationKeywordRepository $kwRepo, PublicationRepository $pRepo, $page = null, $slug = null, $keystring = null): Response
     {
         $pcRepo = $pcRepo->findOneBy(["slug" => $slug]);
         // ! Si il y a bien des publications dans la catégorie sélectionnée...
@@ -42,22 +42,47 @@ class PublicationShowController extends AbstractController
                     return $p->getCategory() == $pcRepo;
                 });
                 // * ... et on enlève les doublons
-                $publications = $pRepo->findBy(["id" => $publications], ["published_date" => "DESC"]);
-                $publicationsAll = $pRepo->findBy(["category" => $pcRepo->getId(), "status" => 2]);
-            } else { // ! s'il n'y a pas de publications dans la catégorie sélectionnée... 
-                $keywString = null;
-                $publications = $pRepo->findBy(["category" => $pcRepo->getId(), "status" => 2], ["published_date" => "DESC"], 10, 0);
-                $publicationsAll = $pRepo->findBy(["category" => $pcRepo->getId(), "status" => 2]);
+                //
+                $publicationsAll = $pRepo->findBy(["id" => $publications, "status" => 2]);
+                // ! pagination
+                $nbr_by_page = 10;
+                $count = count($publicationsAll);
+                $countPage = $count / $nbr_by_page;
+                $countPage = ceil($countPage);
+                if ($page) {
+                    $page = $page - 1;
+                    $publications = $pRepo->findBy(["id" => $publications, "status" => 2], ["published_date" => "DESC"], $nbr_by_page, $page * $nbr_by_page);
+                } else {
+                    $publications = $pRepo->findBy(["id" => $publications, "status" => 2], ["published_date" => "DESC"], $nbr_by_page);
+                }
+                // * tri des mots clés
+                $keywords = $this->keyw_sort($publicationsAll);
             }
-            // * Tri des mots clés les plus utilisés pour cette catégorie (DESC)
-            $keywords = $this->keyw_sort($publicationsAll);
+            // ! s'il n'y a pas de publications dans la catégorie sélectionnée... 
+            else {
+                // ! pagination
+                $nbr_by_page = 10;
+                $count = count($publicationsAll = $pRepo->findBy(["category" => $pcRepo->getId(), "status" => 2]));
+                $countPage = $count / $nbr_by_page;
+                $countPage = ceil($countPage);
+                if ($page) {
+                    $page = $page - 1;
+                    $publications = $pRepo->findBy(["category" => $pcRepo->getId(), "status" => 2], ["published_date" => "DESC"], $nbr_by_page, $page * $nbr_by_page);
+                } else {
+                    $publications = $pRepo->findBy(["category" => $pcRepo->getId(), "status" => 2], ["published_date" => "DESC"], $nbr_by_page);
+                }
+                $keywString = null;
+                // * tri des mots clés
+                $keywords = $this->keyw_sort($publicationsAll);
+            }
             // ! render
             return $this->render('publication/show_all.html.twig', [
                 'pubShow' => $publications, // affiche toutes les publications
-                'pubShowAll' => $publicationsAll, // affiche toutes les publications
                 'kwString' => $keywString, // affiche les keywords de la recherche
                 'keywords' => $keywords, // affiche les keywords les plus utilisés
-                'category' => $pcRepo // affiche la catégorie
+                'category' => $pcRepo, // affiche la catégorie
+                'count' => $count, // affiche le nombre de publications
+                'countPage' => $countPage // affiche le nombre de pages
             ]);
         } else {
             return $this->redirectToRoute("app_home", [], Response::HTTP_SEE_OTHER);

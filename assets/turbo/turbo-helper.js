@@ -26,6 +26,8 @@ const TurboHelper = class {
       LazyLoad();
     });
     document.addEventListener("turbo:visit", () => {
+      LazyLoad();
+
       // fade out the old body
       document.body.classList.add("turbo-loading");
     });

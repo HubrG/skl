@@ -4,14 +4,13 @@
 @import '~animate.css/animate.css';
 @import "~noty/lib/noty.css";
 @import "~noty/lib/themes/semanticui.css";
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+JP:wght@100;300;400;500;700&display=swap');@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+JP:wght@100;300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+JP:wght@100;300;400;500;700&display=swap');
 * {
-  font-family: "Noto Sans JP";
+  @apply font-sans
 }
 body {
-  @apply bg-white dark:bg-slate-800 h-screen ;
+  @apply bg-white dark:bg-slate-800 h-screen;
 }
-
 body.turbo-loading:not(nav), body.turbo-loaded:not(nav) {
   opacity: .9;
 }
@@ -23,7 +22,7 @@ nav {
   @apply  bg-white shadow-sm border-b border-b-slate-300 px-2 md:px-4 py-2.5 dark:bg-slate-900 dark:border-b-slate-700
 }
 main {
-  @apply  w-full grid grid-rows-none grid-cols-12 items-start mx-auto md:p-10 p-3 pt-14 md:w-9/12 z-50 flex-1;
+  @apply  grid grid-rows-none grid-cols-12  items-start mx-auto md:p-10 p-3 pt-14 md:w-9/12 z-50;
 }
 
 dialog {

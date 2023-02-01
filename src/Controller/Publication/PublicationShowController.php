@@ -12,17 +12,40 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PublicationShowController extends AbstractController
 {
-    #[Route('/recits/{slug}/{page<\d+>?}/{keystring?}', name: 'app_publication_show_all_category')]
-    public function show_all(PublicationCategoryRepository $pcRepo, PublicationKeywordRepository $kwRepo, PublicationRepository $pRepo, $page = null, $slug = null, $keystring = null): Response
+    #[Route('/recits/{slug?}/{page<\d+>?}/{order?}/{keystring?}', name: 'app_publication_show_all_category')]
+    public function show_all(PublicationCategoryRepository $pcRepo, PublicationKeywordRepository $kwRepo, PublicationRepository $pRepo, $page = null, $slug = null, $keystring = null, $order = null): Response
     {
         if (!$page) {
             $page = 1;
         }
-        $pcRepo = $pcRepo->findOneBy(["slug" => $slug]);
+        if (!$order) {
+            $order = "desc";
+        }
+        if (!$slug) {
+            $slug = "all";
+        }
+        if ($slug != "all") {
+            $pcRepo = $pcRepo->findOneBy(["slug" => $slug]);
+        } else {
+            $pcRepo = $pcRepo->findAll();
+        }
         // ! Si il y a bien des publications dans la catégorie sélectionnée...
         if ($pcRepo) {
+            // ! On prépare la pagination et on récupère les keywords de la catégorie sélectionnée
+            $nbr_by_page = 10;
+            $count = count($publicationsAll = $pRepo->findBy(["category" => $pcRepo, "status" => 2]));
+            $publicationAllSave = $publicationsAll;
+            $publicationAllSave = $this->keyw_sort($publicationAllSave);
+            // * S'il n'y a pas de keywords dans l'url
+            if (!$keystring) {
+                $countPage = $count / $nbr_by_page;
+                $countPage = ceil($countPage);
+                $page = $page - 1;
+                $publications = $pRepo->findBy(["category" => $pcRepo, "status" => 2], ["published_date" => $order], $nbr_by_page, $page * $nbr_by_page);
+                $keywString = null;
+            }
             // * Si il y a des keywords dans l'url
-            if ($keystring) {
+            else {
                 // * On récupère les keywords dans l'url et on les transforme en tableau
                 $keyw = explode("—", $keystring);
                 // * on supprime les keywords doublons
@@ -40,12 +63,13 @@ class PublicationShowController extends AbstractController
                         $publications[] = $p;
                     }
                 }
-                // * ... on enlève les publications qui ne sont pas de la catégorie
-                $publications = array_filter($publications, function ($p) use ($pcRepo) {
-                    return $p->getCategory() == $pcRepo;
-                });
-                // * ... et on enlève les doublons
-                //
+                if ($slug != "all") {
+                    // * ... on enlève les publications qui ne sont pas de la catégorie
+                    $publications = array_filter($publications, function ($p) use ($pcRepo) {
+                        return $p->getCategory() == $pcRepo;
+                    });
+                }
+                // * ... et on enlève les doublons en récupérant les ID unique de $publications
                 $publicationsAll = $pRepo->findBy(["id" => $publications, "status" => 2]);
                 // ! pagination
                 $nbr_by_page = 10;
@@ -53,40 +77,30 @@ class PublicationShowController extends AbstractController
                 $countPage = $count / $nbr_by_page;
                 $countPage = ceil($countPage);
                 $page = $page - 1;
-                $publications = $pRepo->findBy(["id" => $publications, "status" => 2], ["published_date" => "DESC"], $nbr_by_page, $page * $nbr_by_page);
-                // * tri des mots clés
-                $keywords = $this->keyw_sort($publicationsAll);
+                $publications = $pRepo->findBy(["id" => $publications, "status" => 2], ["published_date" => $order], $nbr_by_page, $page * $nbr_by_page);
             }
-            // ! s'il n'y a pas de publications dans la catégorie sélectionnée... 
-            else {
-                // ! pagination
-                $nbr_by_page = 10;
-                $count = count($publicationsAll = $pRepo->findBy(["category" => $pcRepo->getId(), "status" => 2]));
-                $countPage = $count / $nbr_by_page;
-                $countPage = ceil($countPage);
-                $page = $page - 1;
-                $publications = $pRepo->findBy(["category" => $pcRepo->getId(), "status" => 2], ["published_date" => "DESC"], $nbr_by_page, $page * $nbr_by_page);
-                $keywString = null;
-                // * tri des mots clés
-                $keywords = $this->keyw_sort($publicationsAll);
-            }
+            // * 
             // ! render
             return $this->render('publication/show_all.html.twig', [
-                'pubShow' => $publications, // affiche toutes les publications
+                'pubShow' => $publications,
+                'pubShowSave' => $publicationAllSave, // affiche toutes les publications
                 'kwString' => $keywString, // affiche les keywords de la recherche
-                'keywords' => $keywords, // affiche les keywords les plus utilisés
                 'category' => $pcRepo, // affiche la catégorie
                 'count' => $count, // affiche le nombre de publications
-                'countPage' => $countPage // affiche le nombre de pages
+                'countPage' => $countPage, // affiche le nombre de pages
+                'page' => $page + 1, // affiche le nombre de pages
+                'orderSort' => $order // affiche le nombre de pages
             ]);
-        } else {
+        }
+        // ! s'il n'y a pas de publications dans la catégorie sélectionnée... 
+        else {
             return $this->redirectToRoute("app_home", [], Response::HTTP_SEE_OTHER);
         }
     }
     #[Route('/story/{id}/{slug}', name: 'app_publication_show_one')]
     public function show_one($pubId = null): Response
     {
-        return $this->renderForm('publication/show_one.html.twig', [
+        return $this->render('publication/show_one.html.twig', [
             'pubShow' => "ok"
         ]);
     }

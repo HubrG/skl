@@ -22,6 +22,10 @@ module.exports = {
       animation: {
         "fade-in": "fade-in 0.2s ease-in-out",
       },
+      fontFamily: {
+        sans: ["Noto Sans JP", "sans-serif"],
+        serif: ["Merriweather", "serif"],
+      },
     },
   },
   safelist: [

@@ -1,0 +1,112 @@
+{% if type == "bottom" %}
+	{% set ii = 0 %}
+	<ul class="inline-flex items-center -space-x-px">
+		<li>
+			{% if pageAct == 1 or pageAct is null  %}
+				<span class="block px-3  py-[0.5rem] mt-[0.13rem] leading-tight disabled text-slate-300 bg-white border border-gray-300 rounded-l-lg  dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+					<svg aria-hidden="true" class="w-5 " fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+					</svg>
+				</span>
+			{% else %}
+				{% set ii = pageAct - 1 %}
+				<a href="{{ path("app_publication_show_all_category", { slug:slugCat, page:ii, keystring:kwString, order:orderSort }) }}" class="block px-3 py-[0.5rem] mt-[0.13rem] leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+					<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+					</svg>
+				</a>
+			{% endif %}
+		</li>
+		{% set show_nbr_pages = 4 %}
+		{% for i in 1..countPage %}
+			{% if i < 4 or i > countPage - show_nbr_pages  %}
+
+				<li>
+					{% if pageAct == i or (pageAct == null and i == 1) %}
+						<span class="px-3 py-2 text-sm leading-tight  h-5  bg-slate-500 text-blue-100 border border-slate-600 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{ i }}</span>
+					{% else %}
+						<a href="{{ path("app_publication_show_all_category", { slug:slugCat, page:i, keystring:kwString, order:orderSort }) }}" class="px-3 py-2  h-5 border border-l-0 text-sm leading-tight text-gray-500 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{ i }}</a>
+					{% endif %}
+				</li>
+			{% elseif i < pageAct + show_nbr_pages and i > pageAct - show_nbr_pages  %}
+				<li>
+					{% if pageAct == i or (pageAct == null and i == 1) %}
+						<span class="px-3 py-2 text-sm leading-tight  h-5  bg-slate-500 text-blue-100 border border-slate-600 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{ i }}</span>
+					{% else %}
+						<a href="{{ path("app_publication_show_all_category", { slug:slugCat, page:i, keystring:kwString, order:orderSort }) }}" class="px-3 py-2  h-5 border border-l-0 text-sm leading-tight text-gray-500 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{ i }}</a>
+					{% endif %}
+				</li>
+			{% elseif i == pageAct + show_nbr_pages or i == pageAct - show_nbr_pages  %}
+
+				<li>
+					<a href="{{ path("app_publication_show_all_category", { slug:slugCat, page:i, keystring:kwString, order:orderSort }) }}" class="px-3 py-2  h-5 border border-l-0 text-sm leading-tight text-gray-500 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
+				</li>
+
+
+			{% endif %}
+		{% endfor %}
+		<li>
+			{% if pageAct == countPage  %}
+				<span class="block px-3 disabled  py-[0.513rem] mt-[0.15rem]  text-slate-300 bg-white border border-gray-300 rounded-r-lg  dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+					<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+					</svg>
+				</span>
+			{% else %}
+				{% if pageAct is null %}
+					{% set ii = 2 %}
+				{% else %}
+					{% set ii = pageAct + 1 %}
+				{% endif %}
+				<a href="{{ path("app_publication_show_all_category", { slug:slugCat, page:ii, keystring:kwString, order:orderSort }) }}" class="block px-3  py-[0.5rem] mt-[0.12rem]  text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+					<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+					</svg>
+				</a>
+			{% endif %}
+		</li>
+	</ul>
+{% else %}
+	<p class="text-xs text-slate-500 -mt-4 text-center">Page
+		{{ page }}
+		sur
+		{{ countPage }}</p>
+	<ul class="inline-flex items-center -space-x-px">
+		<li>
+			{% if pageAct == 1 or pageAct is null  %}
+				<span class="block px-3  py-[0.5rem] mt-[0.13rem] leading-tight disabled text-slate-300 bg-white border border-gray-300 rounded-l-lg  dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+					<svg aria-hidden="true" class="w-5 " fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+					</svg>
+				</span>
+			{% else %}
+				{% set ii = pageAct - 1 %}
+				<a href="{{ path("app_publication_show_all_category", { slug:slugCat, page:ii, keystring:kwString, order:orderSort }) }}" class="block px-3 py-[0.5rem] mt-[0.13rem] leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+					<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+					</svg>
+				</a>
+			{% endif %}
+		</li>
+		<li>
+			{% if pageAct == countPage  %}
+				<span class="block px-3 disabled  py-[0.513rem] mt-[0.15rem]  text-slate-300 bg-white border border-gray-300 rounded-r-lg  dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+					<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+					</svg>
+				</span>
+			{% else %}
+				{% if pageAct is null %}
+					{% set ii = 2 %}
+				{% else %}
+					{% set ii = pageAct + 1 %}
+				{% endif %}
+				<a href="{{ path("app_publication_show_all_category", { slug:slugCat, page:ii, keystring:kwString, order:orderSort }) }}" class="block px-3  py-[0.5rem] mt-[0.12rem]  text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+					<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+					</svg>
+				</a>
+			{% endif %}
+		</li>
+	</ul>
+{% endif %}

@@ -26,9 +26,9 @@
 			</span>
 		</h1>
 	</div>
-	<section class="col-span-10 col-start-2 h-screen -mt-10">
+	<section class="col-span-10 col-start-2 h-screen -mt-10 grayscale">
 		<div class="flex items-baseline">
-			<input type="text" id="title" name="title" class=" caret-brown-500 focus:ring-0  font-normal text-slate-600 text-4xl py-2 overflow-hidden h-16 [font-family:'Merriweather'] w-full mt-10 border-0  border-b-2 border-b-slate-600 {% if (infoPub.status < 2 or infoChap.status < 2) %}axiosChapterAS{% endif %} axiosSpy" value="{{ infoChap.title }}" placeholder="Titre du chapitre">
+			<input type="text" id="title" name="title" class=" active:caret-none focus:ring-0  font-normal text-slate-600 text-4xl py-2 overflow-hidden h-16 [font-family:'Merriweather'] w-full mt-10 border-0  border-b-2 border-b-slate-600 {% if (infoPub.status < 2 or infoChap.status < 2) %}axiosChapterAS{% endif %} axiosSpy" value="{{ infoChap.title }}" placeholder="Titre du chapitre">
 			<div class="flex items-end pt-5 w-2/6 justify-end">
 				<div>
 					<button type="button" class="mr-2 p-2 px-4 cursor-pointer  rounded-lg text-md hover:bg-emerald-50 bg- shadow ring-emerald-500 ring-2 text-emerald-500" id="saveChapter">

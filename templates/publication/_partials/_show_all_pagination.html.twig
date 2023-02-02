@@ -1,6 +1,6 @@
 {% if type == "bottom" %}
 	{% set ii = 0 %}
-	<ul class="inline-flex items-center -space-x-px">
+	<ul class="inline-flex items-center -space-x-px grayscale">
 		<li>
 			{% if pageAct == 1 or pageAct is null  %}
 				<span class="block px-3  py-[0.5rem] mt-[0.13rem] leading-tight disabled text-slate-300 bg-white border border-gray-300 rounded-l-lg  dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
@@ -17,9 +17,9 @@
 				</a>
 			{% endif %}
 		</li>
-		{% set show_nbr_pages = 4 %}
+		{% set show_nbr_pages = 3 %}
 		{% for i in 1..countPage %}
-			{% if i < 4 or i > countPage - show_nbr_pages  %}
+			{% if i < show_nbr_pages or i > countPage - show_nbr_pages + 1  %}
 
 				<li>
 					{% if pageAct == i or (pageAct == null and i == 1) %}
@@ -37,12 +37,9 @@
 					{% endif %}
 				</li>
 			{% elseif i == pageAct + show_nbr_pages or i == pageAct - show_nbr_pages  %}
-
 				<li>
 					<a href="{{ path("app_publication_show_all_category", { slug:slugCat, page:i, keystring:kwString, order:orderSort }) }}" class="px-3 py-2  h-5 border border-l-0 text-sm leading-tight text-gray-500 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
 				</li>
-
-
 			{% endif %}
 		{% endfor %}
 		<li>
@@ -67,10 +64,11 @@
 		</li>
 	</ul>
 {% else %}
-	<p class="text-xs text-slate-500 -mt-4 text-center">Page
+	<p class="text-xs text-slate-500 -mt-6 pb-2 text-center">Page
 		{{ page }}
 		sur
-		{{ countPage }}</p>
+		{{ countPage }}
+	</p>
 	<ul class="inline-flex items-center -space-x-px">
 		<li>
 			{% if pageAct == 1 or pageAct is null  %}

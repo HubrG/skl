@@ -7,14 +7,17 @@ import { ReadTime } from "../scripts/Publication/ChapterStats";
 import { quillEditor } from "../scripts/Quill.js";
 import { Sortables } from "../scripts/Publication/Sortable";
 import { LazyLoad } from "../scripts/LazyLoad";
+import { ShowChapter } from "../scripts/Publication/ChapterShow";
 
 const TurboHelper = class {
   constructor() {
     document.addEventListener("turbo:before-cache", () => {});
     document.addEventListener("turbo:render", () => {
-      addKeyword();
       darkMode();
-      AxiosSavePublication();
+      if (document.getElementById("hideIdPub")) {
+        addKeyword();
+        AxiosSavePublication();
+      }
       if (document.getElementById("editorHTML")) {
         ReadTime();
         AxiosSaveChapter();
@@ -23,14 +26,14 @@ const TurboHelper = class {
       if (document.querySelector(".list-group-item")) {
         Sortables();
       }
+      ShowChapter();
       LazyLoad();
     });
     document.addEventListener("turbo:visit", () => {
-      LazyLoad();
-
       // fade out the old body
       document.body.classList.add("turbo-loading");
     });
+    document.addEventListener("turbo:after-render", (event) => {});
     document.addEventListener("turbo:before-render", (event) => {
       if (this.isPreviewRendered()) {
         // this is a preview that has been instantly swapped

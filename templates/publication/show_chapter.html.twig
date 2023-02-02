@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ infoPub.title ~ ' (' ~ infoChap.title ~ ')' }}
+	-
+	{{ parent() }}
+{% endblock %}
+
+{% block body %}
+	<section class="col-span-6 col-start-4  row-start-1 gap-10 grayscale">
+		<h1 class="text-center font-serif text-xl">
+			<a href="{{ path("app_publication_show_one", {id:infoPub.id, slug:infoPub.slug}) }}">{{ infoPub.title }}</a>
+		</h1>
+		<h2 class="text-center -mt-8 text-xs">
+			<small>par</small>
+			<span class="font-medium">
+				<a href="{{ path("app_user", {username:infoPub.user.username}) }}">{{ infoPub.user.nickname }}</a>
+			</span>
+		</h2>
+	</section>
+	<section class="col-span-8 col-start-3 pt-10 row-start-2" id="chapContent">
+		{% if previousChap %}
+			<div class="fixed top-0 w-10 bottom-0 left-0 flex items-center justify-start  ml-8 lg:ml-56 z-10" id="arrowPrevious">
+				<a href="{{ path("app_chapter_show", {idChap:previousChap.id, slugPub:infoPub.slug, user:infoPub.user.username, slug:previousChap.slug}) }}" class="text-slate-600">
+					<i class="fa-solid fa-angles-left text-4xl"></i>
+				</a>
+			</div>
+		{% endif %}
+		<turbo-frame id="chapContentTurbo">
+			<article class="flex flex-col justify-center">
+				{{ infoChap.content|raw }}
+			</article>
+		</turbo-frame>
+		{% if nextChap %}
+			<div class="fixed top-0 bottom-0 right-0 flex items-center justify-end mr-8 lg:mr-56  z-10" id="arrowNext">
+				<a href="{{ path("app_chapter_show", {idChap:nextChap.id, slugPub:infoPub.slug, user:infoPub.user.username, slug:nextChap.slug}) }}" class="text-slate-600">
+					<i class="fa-solid fa-angles-right  text-4xl"></i>
+				</a>
+			</div>
+		{% endif %}
+		<div class="mt-10" id="bottomChap">
+			{% if previousChap %}
+				<p class="float-left">
+					<a href="{{ path("app_chapter_show", {idChap:previousChap.id, slugPub:infoPub.slug, user:infoPub.user.username, slug:previousChap.slug}) }}">
+						<i class="fa-solid fa-angles-left"></i>
+						Chapitre précédent</a>
+				</p>
+			{% endif %}
+			{% if nextChap %}
+				<p class="float-right">
+					<a href="{{ path("app_chapter_show", {idChap:nextChap.id, slugPub:infoPub.slug, user:infoPub.user.username, slug:nextChap.slug}) }}">Chapitre suivant
+						<i class="fa-solid fa-angles-right"></i>
+					</a>
+				</p>
+			{% endif %}
+		</div>
+	</section>
+	{# TODO: ajouter temps de lecture restant dans le chapitre + temps de lecture total de la publication #}
+	<section class="col-span-8 col-start-3  mt-5 w-full row-start-3">
+		<hr class="mb-5"/>
+		<h3 class="text-2xl font-medium">Commentaires</h3>
+		{{ form_start(form, {attr:{"data-turbo-frame":"commentFrame"}}) }}
+		<div class="flex items-center">
+			{{ form_widget(form.content, {attr:{"class":"h-[3.4rem] items-center content-center pt-3"}}) }}
+			<button type="submit" class="btn btn-primary h-12" id="sendComment">Envoyer</button>
+		</div>
+		{{ form_end(form) }}
+		<hr>
+		<turbo-frame id="commentFrame">
+			<p>{{ infoChap.publicationChapterComments|length }}
+				commentaire(s)<br/><br/>
+			</p>
+			{% set n = 0 %}
+			{% for item in infoChap.publicationChapterComments|sort((a, b) => a.publishDate > b.publishDate ? -1 : 1) %}
+				{% if n == 0 and app.user.id == item.user.id and item.publishDate > "now"|date_modify("-2 seconds") %}
+					<p id="lastComment" class=" bg-amber-50 text-amber-600  p-2 rounded transition-colors duration-[4000ms]">{{ item.content|nl2br }}<br/>
+						<small>il y a
+							{{ item.publishDate|since }}
+							par
+							<a class="text-amber-600" href="{{ path("app_user", {username:item.user.username}) }}">{{ item.user.nickname }}</a>
+						</small>
+					</p>
+					{% include "publication/_partials/_scripts.html.twig" with {type:"show_chapter"} %}
+				{% else %}
+					<p class=" block animate__animated animate__fadeIn p-2 rounded">{{ item.content|nl2br }}<br/>
+						<small>il y a
+							{{ item.publishDate|since }}
+							par
+							<a class="text-amber-600" href="{{ path("app_user", {username:item.user.username}) }}">{{ item.user.nickname }}</a>
+							|
+							<a href="{{ path("app_chapter_del_comment", {id:item.id}) }}">Supprimer</a>
+							|
+							<a href="">Modifier</a>
+						</small>
+					</p>
+				{% endif %}
+				{% set n = n + 1 %}
+			{% endfor %}
+		</turbo-frame>
+
+	</section>
+{% endblock %}

@@ -1,6 +1,8 @@
 import { NotyDisplay } from "../Noty";
+import axios from "axios";
 export function AxiosSavePublication() {
   if (document.getElementById("togglePubAS")) {
+    axiosGoSortable();
     // ! Variables autosave
     var togglePubAS = document.getElementById("togglePubAS");
     var axiosPubAS = document.querySelectorAll(".axiosPubAS");
@@ -295,4 +297,44 @@ function publishPublication(ev) {
       });
   }
 }
+// !
+// ! Fonction permettant de passer le chapitre en publié/dépublié selon qu'on le place dans lap artie "publiée" ou "non publiée"
+// !
+function axiosGoSortable() {
+  let nbr = 0;
+  let url = "/story/chapter/sort";
+  //
+  // ! FIXME: Attention, pas du tout optimal, ça envoi une requête pour chaque chapitre... à voir comment refactoriser
+  var parent1 = document.querySelector("#itemsChap");
+  var parent2 = document.querySelector("#itemsChap2");
+  document.querySelectorAll(".list-group-item").forEach(function (row) {
+    row.id = nbr;
+    let data = new FormData();
+    // ! On envoi le nouveau status du chapitre en bdd
+    var t = "indicator" + row.getAttribute("chap");
+
+    var indicator = document.getElementById(t).classList;
+
+    if (parent1.contains(row)) {
+      data.append("status", 2);
+      indicator.remove("bg-gray-500");
+      indicator.add("bg-green-500");
+    } else {
+      data.append("status", 1);
+      indicator.remove("bg-green-500");
+      indicator.add("bg-gray-500");
+    }
+    data.append("idChap", row.getAttribute("chap"));
+    data.append("order", nbr);
+    axios
+      .post(url, data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then(function (response) {});
+    nbr++;
+  });
+}
+
 AxiosSavePublication();

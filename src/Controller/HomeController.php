@@ -2,7 +2,8 @@
 
 namespace App\Controller;
 
-
+use Spatie\PdfToText\Pdf;
+use Smalot\PdfParser\Parser;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,22 +15,24 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class HomeController extends AbstractController
 {
 
+    private $t;
+
+    public function __construct()
+    {
+        $this->t = new Pdf();
+    }
+
     #[Route('/', name: 'app_home')]
     public function index(Request $request, PublicationRepository $pRepo, SluggerInterface $slugger,  EntityManagerInterface $em): Response
     {
-        // on récupère toutes les publications afin de leur ajouter un slug
-        // $publications = $pRepo->findAll();
-        // foreach ($publications as $publication) {
-        //     $couco = $publication->getTitle();
-        //     $coucou = $slugger->slug("'" . $couco . '"');
-        //     $publication->setSlug($coucou);
-        //     $em->persist($publication);
-        // }
-        // $em->flush();
+
+        return $this->redirectToRoute('app_publication_show_all_category');
 
 
-        return $this->render('home/home.html.twig', [
-            'controller_name' => "d"
-        ]);
+
+        // return  $this->render('home/home.html.twig', [
+        //     'controller_name' => "d",
+        //     "test" =>  "d"
+        // ]);
     }
 }

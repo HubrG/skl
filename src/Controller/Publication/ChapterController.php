@@ -37,7 +37,7 @@ class ChapterController extends AbstractController
                         // ! On récupère le nombre de chapitres liés à cette publication afin de donner un nouveau titre (Chapitre X)
                         $nbrChap = $pcRepo->findBy(['publication' => $idPub]);
                         $nbrChap = count($nbrChap) + 1;
-                        $chapTitleExist = $pcRepo->findBy(['publication' => $idPub, 'title' => 'Chapitre sans titre ' . $nbrChap]);
+                        $chapTitleExist = $pcRepo->findBy(['publication' => $idPub, 'title' => 'Feuille n°' . $nbrChap]);
                         $countSameTitle = count($chapTitleExist);
                         if ($chapTitleExist) {
                             $chapAdd = " (" . $countSameTitle . ")";
@@ -48,14 +48,14 @@ class ChapterController extends AbstractController
                         $publicationChapter = $pc->setCreated(new \DateTime('now'))
                             ->setStatus(0) // 0 = brouillon / 1 = en cours de rédaction
                             ->setPublication($infoPublication)
-                            ->setTitle("Chapitre sans titre " . $nbrChap . $chapAdd)
+                            ->setTitle("Feuille n°" . $nbrChap . $chapAdd)
                             ->setSlug("chapitre-sans-titre-" . $nbrChap . $chapAdd)
                             ->setOrderDisplay($nbrChap);
                         $em->persist($publicationChapter);
                         // ! on l'ajoute au versioning
                         $pcv = new PublicationChapterVersioning;
                         $publicationChapterVersioning = $pcv->setCreated(new \DateTime('now'))
-                            ->setTitle("Chapitre sans titre " . $nbrChap)
+                            ->setTitle("Feuille n°" . $nbrChap)
                             ->setChapter($publicationChapter);
                         $em->persist($publicationChapterVersioning);
                         $em->flush();
@@ -210,8 +210,11 @@ class ChapterController extends AbstractController
     {
         $idPub = $request->get("idChap");
         $order = $request->get("order");
+        $status = $request->get("status");
         $chapter = $pcRepo->find($idPub);
-        $chapter->setOrderDisplay($order);
+        $chapter->setOrderDisplay($order)
+            ->setStatus($status);
+
         $em->persist($chapter);
         $em->flush();
         return $this->json([

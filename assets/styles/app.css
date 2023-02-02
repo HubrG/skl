@@ -81,13 +81,13 @@ form input[type=checkbox] {
   @apply bg-slate-600
 }
 form input[type=text],input[type=email],input[type=password], .input    {
-    @apply mt-5 bg-white rounded-md shadow z-0  border-0 border-r-[1px] border-slate-300 border-b-[4px]  border-b-slate-300 text-slate-500  text-base h-14 focus:ring-0   focus:border-slate-300  block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:text-slate-300  ;
+    @apply mt-5  rounded-md shadow z-0  border-0 border-r-[1px] border-slate-300 border-b-[4px]  border-b-slate-300 text-slate-500  text-base h-14 focus:ring-0   focus:border-slate-300  block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:text-slate-300  ;
 }
 form textarea {
-  @apply mt-5 bg-white rounded-md shadow   z-0 text-justify    border-0  border-r-[1px]  border-slate-300 border-b-[4px]  border-b-slate-300  h-72  text-slate-500 focus:ring-0   text-base    focus:border-slate-300 block w-full p-2.5 pb-5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:text-slate-300;
+  @apply mt-5  rounded-md shadow   z-0 text-justify    border-0  border-r-[1px]  border-slate-300 border-b-[4px]  border-b-slate-300  h-72  text-slate-500 focus:ring-0   text-base    focus:border-slate-300 block w-full p-2.5 pb-5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:text-slate-300;
 }
 form select, .select {
-  @apply mt-5 bg-white  rounded-md  shadow z-0   border-0 border-r-[1px] border-slate-300 border-b-[2px]  border-b-slate-300 font-medium  text-slate-500  text-base h-14 focus:ring-0  focus:border-slate-300 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:text-slate-300 ;
+  @apply mt-5   rounded-md  shadow z-0   border-0 border-r-[1px] border-slate-300 border-b-[2px]  border-b-slate-300 font-medium  text-slate-500  text-base h-14 focus:ring-0  focus:border-slate-300 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:text-slate-300 ;
 }
 form input.icon-desc {
     @apply rounded-none rounded-r-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
@@ -110,7 +110,7 @@ form button:disabled {
 }
 #editor p {
   font-family: "merriweather", serif;
-  @apply text-base mb-2 indent-2 text-justify text-slate-800 dark:text-slate-300 ;
+  @apply text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 ;
 }
 #editor img {
   @apply max-w-[20%] float-left;
@@ -183,4 +183,24 @@ opacity: 0.4;
 }
 .badge-unpublished {
   @apply ring-red-500 bg-red-50 text-red-500 dark:text-red-300 dark:bg-red-900;
+}
+
+#chapContent img {
+  @apply max-w-[20%] float-left;
+}
+#chapContent p {
+  font-family: "merriweather", serif;
+  @apply text-base text-slate-800 dark:text-slate-300 ;
+}
+.ql-align-center {
+  @apply text-center items-center;
+}
+.ql-align-right {
+  @apply text-right items-end;
+}
+.ql-align-left {
+  @apply text-left items-start;
+}
+.ql-align-justify {
+  @apply text-justify items-start;
 }

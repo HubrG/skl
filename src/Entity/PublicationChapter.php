@@ -46,9 +46,13 @@ class PublicationChapter
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $slug = null;
 
+    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationChapterComment::class, cascade: ['remove'])]
+    private Collection $publicationChapterComments;
+
     public function __construct()
     {
         $this->publicationChapterVersionings = new ArrayCollection();
+        $this->publicationChapterComments = new ArrayCollection();
     }
 
 
@@ -193,6 +197,36 @@ class PublicationChapter
     public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationChapterComment>
+     */
+    public function getPublicationChapterComments(): Collection
+    {
+        return $this->publicationChapterComments;
+    }
+
+    public function addPublicationChapterComment(PublicationChapterComment $publicationChapterComment): self
+    {
+        if (!$this->publicationChapterComments->contains($publicationChapterComment)) {
+            $this->publicationChapterComments->add($publicationChapterComment);
+            $publicationChapterComment->setChapter($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationChapterComment(PublicationChapterComment $publicationChapterComment): self
+    {
+        if ($this->publicationChapterComments->removeElement($publicationChapterComment)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationChapterComment->getChapter() === $this) {
+                $publicationChapterComment->setChapter(null);
+            }
+        }
 
         return $this;
     }

@@ -79,9 +79,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $join_date = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterComment::class)]
+    private Collection $publicationChapterComments;
+
     public function __construct()
     {
         $this->publications = new ArrayCollection();
+        $this->publicationChapterComments = new ArrayCollection();
     }
 
 
@@ -337,6 +341,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setJoinDate(\DateTimeInterface $join_date): self
     {
         $this->join_date = $join_date;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationChapterComment>
+     */
+    public function getPublicationChapterComments(): Collection
+    {
+        return $this->publicationChapterComments;
+    }
+
+    public function addPublicationChapterComment(PublicationChapterComment $publicationChapterComment): self
+    {
+        if (!$this->publicationChapterComments->contains($publicationChapterComment)) {
+            $this->publicationChapterComments->add($publicationChapterComment);
+            $publicationChapterComment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationChapterComment(PublicationChapterComment $publicationChapterComment): self
+    {
+        if ($this->publicationChapterComments->removeElement($publicationChapterComment)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationChapterComment->getUser() === $this) {
+                $publicationChapterComment->setUser(null);
+            }
+        }
 
         return $this;
     }

@@ -8,7 +8,7 @@
 			{% block title %}Scrilab
 			{% endblock %}
 		</title>
-		<link rel="icon" href="images/favicon.png">
+		<link rel="icon" href="/images/favicon.png">
 		{{ encore_entry_link_tags('app') }}
 		{% block stylesheets %}{% endblock %}
 		{{ encore_entry_script_tags('app') }}
@@ -23,7 +23,6 @@
 		{% endfor %}
 		{% include "partials/_navbar.html.twig" %}
 		<main>
-
 			{% block body %}{% endblock %}
 
 		</main>

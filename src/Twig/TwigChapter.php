@@ -24,14 +24,14 @@ class TwigChapter extends AbstractExtension
             }
             if ($nbr > 0) {
                 if ($format == "ft") {
-                    return $nbr . " chapitre" . ($nbr > 1 ? "s" : "");
+                    return $nbr . " feuille" . ($nbr > 1 ? "s" : "");
                 } elseif ($format == "ft_short") {
                     return $nbr . " chap.";
                 } else {
                     return $nbr;
                 }
             } else {
-                return "Aucun chapitre";
+                return "Aucune feuille";
             }
         } elseif ($type == "rt") { // read time - cumul de tous les chapitres publiés
             $word = 0;

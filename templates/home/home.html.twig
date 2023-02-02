@@ -2,17 +2,13 @@
 
 {% block title %}Hello HomeController!
 {% endblock %}
-{% block stylesheets %}
-{% endblock %}
-{% block javascripts %}
-{% endblock %}
+{% block stylesheets %}{% endblock %}
+{% block javascripts %}{% endblock %}
 {% block body %}
 
-	<section class="col-span-6 content-evently"></section>
-	<ul id="items">
-		<li>item 1</li>
-		<li>item 2</li>
-		<li>item 3</li>
-	</ul>
-{{ controller_name }}
+	<section class="col-span-12 content-evently">
+		{% set ok = test %}
+		{{ ok }}
+		{{ controller_name }}
+	</section>
 </section>{% endblock %}

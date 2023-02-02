@@ -6,6 +6,7 @@ export function quillEditor() {
     [{ header: 2 }], // custom button values
     [{ list: "ordered" }, { list: "bullet" }],
     ["link", "image"],
+    [{ align: [] }],
     ["clean"], // remove formatting button
   ];
   var options = {

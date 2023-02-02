@@ -2,7 +2,6 @@
 export function LazyLoad() {
   // code javascript
   var lazyloadImages;
-  console.log("LazyLoad");
   if ("IntersectionObserver" in window) {
     lazyloadImages = document.querySelectorAll(".lazy");
     var imageObserver = new IntersectionObserver(function (entries, observer) {

@@ -1,0 +1,105 @@
+{% for items in infoPub.publicationChapters|sort((a, b) => a.orderDisplay <=> b.orderDisplay) %}
+	{% if items.status == withStatus %}
+		{% set chapId = items.id  %}
+		<div class=" bg-white w-[48%] border-none border-gray-100 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-5 list-group-item " chap="{{ items.id }}" id="{{ items.orderDisplay }}">
+			<turbo-frame id="{{ chapId }}">
+				<i class="fa-solid fa-arrows-up-down-left-right float-right text-sm mr-2 mt-2 cursor-grab item text-slate-400"></i>
+				<div id="defaultTabContent{{ chapId }}">
+					<div class="hidden p-4 pt-3 bg-white rounded-lg md:p-8 md:pt-3 dark:bg-gray-800" id="about{{ chapId }}" role="tabpanel" aria-labelledby="about-tab{{ chapId }}">
+						<h2 class="mb-3 -ml-4 flex items-baseline gap-2 text-large font-extrabold tracking-tight text-slate-700 dark:text-white">
+							{% if items.status == 2 %}
+								<span class="flex w-3 h-3 bg-green-500 rounded-full" id="indicator{{chapId}}"></span>
+							{% else %}
+								<span class="flex w-3 h-3 bg-gray-500 rounded-full" id="indicator{{chapId}}"></span>
+							{% endif %}
+							{% if items.title  %}
+								{{ items.title|capitalize }}
+							{% else %}
+								Feuille n°{{ items.orderDisplay + 1 }}
+							{% endif %}
+
+						</h2>
+						<p class="mb-3 text-gray-500 text-sm dark:text-gray-400">{% set content = items.content %}{{ content|striptags|slice(0, 150)|capitalize }}...</p>
+						<a href="{{ path("app_publication_edit_chapter", { idPub:infoPub.id, idChap:items.id }) }}" data-turbo-frame="_top" class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 dark:text-blue-500 dark:hover:text-blue-700">
+							Éditer
+							<svg class="w-6 h-6 ml-1" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+								<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+							</svg>
+						</a>
+						|
+						<a href="{{path("app_publication_del_chapter", {idChap:items.id, idPub:infoPub.id})}}" class="mb-3 text-gray-500 text-sm text-justify dark:text-gray-400">Supprimer</a>
+						<span class="text-sm float-right -mb-10">
+							<i class="fa-solid fa-stopwatch-20"></i>
+							{{ items.content|readInfo("ri_mn") }}:{{ items.content|readInfo("ri_sc") }}
+							de lecture</span>
+					</div>
+					<div class="hidden p-4 bg-white rounded-lg md:p-8  dark:bg-gray-800" id="services{{ chapId }}" role="tabpanel" aria-labelledby="services-tab{{ chapId }}">
+						<h2 class="mb-5 text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white">We invest in the world’s potential</h2>
+						<!-- List -->
+						<ul role="list" class="space-y-4 text-gray-500 dark:text-gray-400">
+							<li
+								class="flex space-x-2">
+								<!-- Icon -->
+								<svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+								</svg>
+								<span class="font-light leading-tight">Dynamic reports and dashboards</span>
+							</li>
+							<li
+								class="flex space-x-2">
+								<!-- Icon -->
+								<svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+								</svg>
+								<span class="font-light leading-tight">Templates for everyone</span>
+							</li>
+							<li
+								class="flex space-x-2">
+								<!-- Icon -->
+								<svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+								</svg>
+								<span class="font-light leading-tight">Development workflow</span>
+							</li>
+							<li
+								class="flex space-x-2">
+								<!-- Icon -->
+								<svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+								</svg>
+								<span class="font-light leading-tight">Limitless business automation</span>
+							</li>
+						</ul>
+					</div>
+					<div class="hidden p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="statistics{{ chapId }}" role="tabpanel" aria-labelledby="statistics-tab{{ chapId }}">
+						<dl class="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-gray-900 sm:grid-cols-3 xl:grid-cols-6 dark:text-white sm:p-8">
+							<div class="flex flex-col">
+								<dt class="mb-2 text-3xl font-extrabold">73M+</dt>
+								<dd class="font-light text-gray-500 dark:text-gray-400">Developers</dd>
+							</div>
+							<div class="flex flex-col">
+								<dt class="mb-2 text-3xl font-extrabold">100M+</dt>
+								<dd class="font-light text-gray-500 dark:text-gray-400">Public repositories</dd>
+							</div>
+							<div class="flex flex-col">
+								<dt class="mb-2 text-3xl font-extrabold">1000s</dt>
+								<dd class="font-light text-gray-500 dark:text-gray-400">Open source projects</dd>
+							</div>
+						</dl>
+					</div>
+				</div>
+				<ul class=" flex-wrap text-xs hidden -mt-3 font-medium text-center text-gray-500 border-b border-gray-200 rounded-t-lg bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800" id="defaultTab" data-tabs-toggle="#defaultTabContent{{ chapId }}" role="tablist">
+					<li class="mr-2">
+						<button id="about-tab{{ chapId }}" data-tabs-target="#about{{ chapId }}" type="button" role="tab" aria-controls="about{{ chapId }}" aria-selected="true" class="inline-block p-4 text-slate-800 rounded-tl-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-blue-500">Chapitre</button>
+					</li>
+					<li class="mr-2">
+						<button id="services-tab{{ chapId }}" data-tabs-target="#services{{ chapId }}" type="button" role="tab" aria-controls="services{{ chapId }}" aria-selected="false" class="inline-block p-4  hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300">Information</button>
+					</li>
+					<li class="mr-2">
+						<button id="statistics-tab{{ chapId }}" data-tabs-target="#statistics{{ chapId }}" type="button" role="tab" aria-controls="statistics{{ chapId }}" aria-selected="false" class="inline-block p-4 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300">Statistiques</button>
+					</li>
+				</ul>
+			</turbo-frame>
+		</div>
+	{% endif %}
+{% endfor %}

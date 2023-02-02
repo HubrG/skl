@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use Spatie\PdfToText\Pdf;
-use Smalot\PdfParser\Parser;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
 use Symfony\Component\HttpFoundation\Request;

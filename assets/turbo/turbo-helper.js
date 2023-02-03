@@ -29,6 +29,10 @@ const TurboHelper = class {
       ShowChapter();
       LazyLoad();
     });
+    document.addEventListener("turbo:frame-render", () => {
+      ShowChapter();
+      LazyLoad();
+    });
     document.addEventListener("turbo:visit", () => {
       // fade out the old body
       document.body.classList.add("turbo-loading");

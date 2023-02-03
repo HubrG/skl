@@ -34,7 +34,7 @@ class ChapterController extends AbstractController
                     // * si le chapitre n'existe pas en brouillon, on le crée
                     if (!$pcExists) {
                         // ! on l'ajoute aux chapitres
-                        // ! On récupère le nombre de chapitres liés à cette publication afin de donner un nouveau titre (Chapitre X)
+                        // ! On récupère le nombre de chapitres liés à cette publication afin de donner un nouveau titre (Feuille X)
                         $nbrChap = $pcRepo->findBy(['publication' => $idPub]);
                         $nbrChap = count($nbrChap) + 1;
                         $chapTitleExist = $pcRepo->findBy(['publication' => $idPub, 'title' => 'Feuille n°' . $nbrChap]);
@@ -49,7 +49,7 @@ class ChapterController extends AbstractController
                             ->setStatus(0) // 0 = brouillon / 1 = en cours de rédaction
                             ->setPublication($infoPublication)
                             ->setTitle("Feuille n°" . $nbrChap . $chapAdd)
-                            ->setSlug("chapitre-sans-titre-" . $nbrChap . $chapAdd)
+                            ->setSlug("feuille-n0" . $nbrChap . $chapAdd)
                             ->setOrderDisplay($nbrChap);
                         $em->persist($publicationChapter);
                         // ! on l'ajoute au versioning
@@ -140,7 +140,12 @@ class ChapterController extends AbstractController
         //  
         $publication = $pRepo->find($idPub);
         $chapter = $pcRepo->find($idChap);
+        //
         if ($publication->getId() == $chapter->getPublication()->getId() && $this->getUser() == $publication->getUser()) {
+            if ($dtTitle == "") {
+                // * S'il n'y a pas de titre, on lui attribue un titre par défaut qui représente "Feuille n°X", dont le x est son numéro de feuille (orderDisplay)
+                $dtTitle = "Feuille n°" . $chapter->getOrderDisplay() + 1;
+            }
             $chapter->setTitle($dtTitle)
                 ->setSlug($slugger->slug(strtolower($dtTitle)))
                 ->setContent($dtQuill)

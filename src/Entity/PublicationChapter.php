@@ -49,10 +49,14 @@ class PublicationChapter
     #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationChapterComment::class, cascade: ['remove'])]
     private Collection $publicationChapterComments;
 
+    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationChapterView::class, cascade: ['remove'], orphanRemoval: true)]
+    private Collection $publicationChapterViews;
+
     public function __construct()
     {
         $this->publicationChapterVersionings = new ArrayCollection();
         $this->publicationChapterComments = new ArrayCollection();
+        $this->publicationChapterViews = new ArrayCollection();
     }
 
 
@@ -225,6 +229,36 @@ class PublicationChapter
             // set the owning side to null (unless already changed)
             if ($publicationChapterComment->getChapter() === $this) {
                 $publicationChapterComment->setChapter(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationChapterView>
+     */
+    public function getPublicationChapterViews(): Collection
+    {
+        return $this->publicationChapterViews;
+    }
+
+    public function addPublicationChapterView(PublicationChapterView $publicationChapterView): self
+    {
+        if (!$this->publicationChapterViews->contains($publicationChapterView)) {
+            $this->publicationChapterViews->add($publicationChapterView);
+            $publicationChapterView->setChapter($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationChapterView(PublicationChapterView $publicationChapterView): self
+    {
+        if ($this->publicationChapterViews->removeElement($publicationChapterView)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationChapterView->getChapter() === $this) {
+                $publicationChapterView->setChapter(null);
             }
         }
 

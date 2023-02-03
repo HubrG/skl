@@ -17,7 +17,6 @@
 							{% else %}
 								Feuille n°{{ items.orderDisplay + 1 }}
 							{% endif %}
-
 						</h2>
 						<p class="mb-3 text-gray-500 text-sm dark:text-gray-400">{% set content = items.content %}{{ content|striptags|slice(0, 150)|capitalize }}...</p>
 						<a href="{{ path("app_publication_edit_chapter", { idPub:infoPub.id, idChap:items.id }) }}" data-turbo-frame="_top" class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 dark:text-blue-500 dark:hover:text-blue-700">

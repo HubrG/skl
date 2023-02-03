@@ -82,10 +82,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterComment::class)]
     private Collection $publicationChapterComments;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterCommentLike::class)]
+    private Collection $publicationChapterCommentLikes;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterView::class)]
+    private Collection $publicationChapterViews;
+
+
     public function __construct()
     {
         $this->publications = new ArrayCollection();
         $this->publicationChapterComments = new ArrayCollection();
+        $this->publicationChapterCommentLikes = new ArrayCollection();
+        $this->publicationChapterViews = new ArrayCollection();
     }
 
 
@@ -369,6 +378,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($publicationChapterComment->getUser() === $this) {
                 $publicationChapterComment->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationChapterCommentLike>
+     */
+    public function getPublicationChapterCommentLikes(): Collection
+    {
+        return $this->publicationChapterCommentLikes;
+    }
+
+    public function addPublicationChapterCommentLike(PublicationChapterCommentLike $publicationChapterCommentLike): self
+    {
+        if (!$this->publicationChapterCommentLikes->contains($publicationChapterCommentLike)) {
+            $this->publicationChapterCommentLikes->add($publicationChapterCommentLike);
+            $publicationChapterCommentLike->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationChapterCommentLike(PublicationChapterCommentLike $publicationChapterCommentLike): self
+    {
+        if ($this->publicationChapterCommentLikes->removeElement($publicationChapterCommentLike)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationChapterCommentLike->getUser() === $this) {
+                $publicationChapterCommentLike->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationChapterView>
+     */
+    public function getPublicationChapterViews(): Collection
+    {
+        return $this->publicationChapterViews;
+    }
+
+    public function addPublicationChapterView(PublicationChapterView $publicationChapterView): self
+    {
+        if (!$this->publicationChapterViews->contains($publicationChapterView)) {
+            $this->publicationChapterViews->add($publicationChapterView);
+            $publicationChapterView->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationChapterView(PublicationChapterView $publicationChapterView): self
+    {
+        if ($this->publicationChapterViews->removeElement($publicationChapterView)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationChapterView->getUser() === $this) {
+                $publicationChapterView->setUser(null);
             }
         }
 

@@ -50,14 +50,18 @@
 				<ul class="list-disc list-inside">
 					{% for chapter in pubShow.publicationChapters|sort((a, b) => a.orderDisplay < b.orderDisplay ? -1 : 1) %}
 						{% if chapter.status > 1 %}
+							{% if chapter.slug %}
+								{% set chapterSlug = chapter.slug %}
+							{% else %}
+								{% set chapterSlug = "feuille-n0" ~ (chapter.orderDisplay + 1) %}
+							{% endif %}
 							<li class=" list-none">
-								<a href="{{ path("app_chapter_show", {idChap:chapter.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:chapter.slug}) }}">
+								<a href="{{ path("app_chapter_show", {idChap:chapter.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:chapterSlug}) }}">
 									{% if chapter.title  %}
 										{{ chapter.title|capitalize }}
 									{% else %}
 										Feuille n°{{ chapter.orderDisplay + 1 }}
 									{% endif %}
-
 								</a>
 							</li>
 						{% endif %}

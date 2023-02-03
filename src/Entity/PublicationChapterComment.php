@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\PublicationChapterCommentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use App\Repository\PublicationChapterCommentRepository;
 
 #[ORM\Entity(repositoryClass: PublicationChapterCommentRepository::class)]
 class PublicationChapterComment
@@ -25,6 +27,14 @@ class PublicationChapterComment
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $publish_date = null;
+
+    #[ORM\OneToMany(mappedBy: 'comment', targetEntity: PublicationChapterCommentLike::class, orphanRemoval: true)]
+    private Collection $publicationChapterCommentLikes;
+
+    public function __construct()
+    {
+        $this->publicationChapterCommentLikes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -75,6 +85,36 @@ class PublicationChapterComment
     public function setPublishDate(?\DateTimeInterface $publish_date): self
     {
         $this->publish_date = $publish_date;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationChapterCommentLike>
+     */
+    public function getPublicationChapterCommentLikes(): Collection
+    {
+        return $this->publicationChapterCommentLikes;
+    }
+
+    public function addPublicationChapterCommentLike(PublicationChapterCommentLike $publicationChapterCommentLike): self
+    {
+        if (!$this->publicationChapterCommentLikes->contains($publicationChapterCommentLike)) {
+            $this->publicationChapterCommentLikes->add($publicationChapterCommentLike);
+            $publicationChapterCommentLike->setComment($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationChapterCommentLike(PublicationChapterCommentLike $publicationChapterCommentLike): self
+    {
+        if ($this->publicationChapterCommentLikes->removeElement($publicationChapterCommentLike)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationChapterCommentLike->getComment() === $this) {
+                $publicationChapterCommentLike->setComment(null);
+            }
+        }
 
         return $this;
     }

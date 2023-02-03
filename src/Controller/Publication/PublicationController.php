@@ -94,6 +94,13 @@ class PublicationController extends AbstractController
     // ! //////////////////////////////////////////////////////////////////////////////////////////////////////
     // ! //////////////////////////////////////////////////////////////////////////////////////////////////////
     // ! //////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * Keywords management is done in Ajax, this road allows you to add a keyword to a post
+     * 
+     * 1) This function adds the link between the post and the keyword via manytomany
+     * 2) If Keyword does not already exist in BDD, we create it, otherwise, we do nothing.
+     * 3) The Keyword "Count" is incremented only used if the Publiciton Parente is published. Indeed, the keywords which only have posts that drafts are not counted to avoid the keywords ghostly
+     */
     #[Route('story/add_key/{pub<\d+>?0}/{value}', name: 'app_publication_add_keyword', methods: 'POST',)]
     public function Axios_AddKey(PublicationKeywordRepository $keyRepo, PublicationRepository $pubRepo, EntityManagerInterface $em, $pub = null, $value = null): Response
     {
@@ -108,19 +115,28 @@ class PublicationController extends AbstractController
                 if ($this->getUser() === $publication->getUser()) {
                     // Si le mot clé existe déjà...
                     if ($keyExists) {
-                        // ... alors on ne le recrée pas et on lui ajoute 1 occurrence
-                        $countKey = $keyExists->getCount() + 1;
-                        $key = $keyExists->setCount($countKey)
-                            // on ajoute le mot au ManyToMany de l'article correspondant
-                            ->addPublication($publication);
+                        // ... alors on ne le recrée pas et on lui ajoute 1 occurrence (uniquement si l'article est publié)
+                        if ($publication->getStatus() === 2) {
+                            $countKey = $keyExists->getCount() + 1;
+                            $key = $keyExists->setCount($countKey)
+                                // on ajoute le mot au ManyToMany de l'article correspondant
+                                ->addPublication($publication);
+                        }
+                        // ... Sinon, on ne le recrée pas, mais on ne lui ajoute pas d'occurrence, on ajoute seulement le mot au ManyToMany
+                        else {
+                            $key = $keyExists->addPublication($publication);
+                        }
                     }
-                    // sinon, on cré le nouveau mot et on l'ajoute au ManyToMany de l'article...
-
+                    // sinon, on crée le nouveau mot et on l'ajoute au ManyToMany de l'article et on setcount 1 (uniquement si l'article est publié).....
                     else {
                         $keykey = new PublicationKeyword();
                         $key = $keykey->setKeyword($value)
-                            ->setCount(1)
                             ->addPublication($publication);
+                        if ($publication->getStatus() === 2) {
+                            $key->setCount(1);
+                        } else {
+                            $key->setCount(0);
+                        }
                     }
                     $em->persist($key);
                     $em->flush();
@@ -135,6 +151,12 @@ class PublicationController extends AbstractController
             return $this->redirectToRoute("app_home");
         }
     }
+    /**
+     * Keywords management is done in Ajax, this road allows you to add a keyword to a post
+     * 
+     * 1) This function remove the link between the post and the keyword via manytomany
+     * 2) The Keyword "Count" is decremented only if the Publiciton Parente is published.
+     */
     #[Route('story/{mode}/del_key/{pub<\d+>?0}/{value}', name: 'app_publication_del_keyword')]
     public function Axios_DelKey(PublicationKeywordRepository $keyRepo, PublicationRepository $pubRepo, EntityManagerInterface $em, $pub = null, $value = null, $mode = null): Response
     {
@@ -148,17 +170,16 @@ class PublicationController extends AbstractController
                 if ($delKey) {
                     // * On verifie que le post existe et que ce keyword est bien lié au post
                     if ($delKey->getPublication()) {
-                        // * On décrémente le keyword dissocié
-                        $countKey = $delKey->getCount() - 1;
-                        $delKey->removePublication($publication)
-                            ->setCount($countKey);
+                        // * On décrémente le keyword dissocié (uniquement si l'article est publié)
+                        if ($publication->getStatus() === 2) {
+                            $countKey = $delKey->getCount() - 1;
+                            $delKey->setCount($countKey);
+                        }
+                        // * et son supprime le manytomany du post et du keyword
+                        $delKey->removePublication($publication);
                         $em->persist($delKey);
                         $em->flush();
-                        // * le cas échéant, on le supprime s'il est à 0
-                        if ($countKey === 0) {
-                            $em->remove($delKey);
-                            $em->flush();
-                        }
+                        // * On redirige vers la page d'édition du post
                         if ($mode === "edit") {
                             return $this->redirectToRoute("app_publication_edit", ["id" => $pub], Response::HTTP_SEE_OTHER);
                         } else {
@@ -177,8 +198,15 @@ class PublicationController extends AbstractController
             return $this->redirectToRoute("app_home");
         }
     }
+    /**
+     * This function makes it possible to manage the publication of a post via Ajax on the site
+     *
+     * 1) She first manages the change of post status, but also the management of keywords related to the post.
+     * 2) If the post is published, then we increment the count of the keywords related to the post
+     * 3) If the post is depubliated, then we decrease the count of the keywords linked to the post
+     */
     #[Route('/story/publish', name: 'app_publication_publish', methods: 'POST')]
-    public function Axios_Publish(Request $request, PublicationRepository $pubRepo, EntityManagerInterface $em): Response
+    public function Axios_Publish(Request $request, PublicationKeywordRepository $keyRepo, PublicationRepository $pubRepo, EntityManagerInterface $em): Response
     {
         $dataPub = $request->get("pub");
         $dataPublish = json_decode($request->get("publish"));
@@ -190,9 +218,23 @@ class PublicationController extends AbstractController
                 $return = 200;
                 $publication->setStatus(2);
                 $publication->setPublishedDate(new \DateTime('now'));
+                $keywords = $publication->getPublicationKeywords();
+                foreach ($keywords as $key) {
+                    $countKey = $key->getCount() + 1;
+                    $key->setCount($countKey);
+                    $em->persist($key);
+                    $em->flush();
+                }
             } else {
-                $publication->setStatus(1);
                 $return = 201;
+                $publication->setStatus(1);
+                $keywords = $publication->getPublicationKeywords();
+                foreach ($keywords as $key) {
+                    $countKey = $key->getCount() - 1;
+                    $key->setCount($countKey);
+                    $em->persist($key);
+                    $em->flush();
+                }
             }
             $em->persist($publication);
             $em->flush();
@@ -205,19 +247,23 @@ class PublicationController extends AbstractController
             ]);
         }
     }
+    /**
+     * Cette fonction permet la suppression complète d'une publication via Ajax
+     * 
+     * 1) Elle supprime toutes les traces de la publication dans la base de données avec tout ce qui lui est lié (chapitres, les commentaires et fichiers associés...).
+     * 2) Elle gère également l'incrémentation/décrémentation des mots clés liés à la publication (uniquement si l'articel est publié au moment de sa suppression) 
+     */
     #[Route('/story/delete/{id}', name: 'app_publication_delete')]
     public function DeletePublication(Request $request, PublicationRepository $pubRepo, PublicationChapterRepository $pcRepo, EntityManagerInterface $em, $id = null): Response
     {
         $publication = $pubRepo->find($id);
         $keyw = $publication->getPublicationKeywords();
         // ! Gestion du keyword
-        // * On décrémente le count des mots clés liés à la publication, et si le count tombe à zéro, on le supprime purement et simplement
-        foreach ($keyw as $key) {
-            $countKey = $key->getCount() - 1;
-            $setCountKey = $key->setCount($countKey);
-            if ($countKey === 0) {
-                $em->remove($key);
-            } else {
+        // * On décrémente le count des mots clés liés à la publication, et si le count tombe à zéro, on le supprime purement et simplement (uniquement si l'articel est publié au moment de sa suppression)
+        if ($publication->getStatus() === 2) {
+            foreach ($keyw as $key) {
+                $countKey = $key->getCount() - 1;
+                $setCountKey = $key->setCount($countKey);
                 $em->persist($setCountKey);
             }
         }

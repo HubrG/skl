@@ -78,6 +78,10 @@
 							{{ item.publishDate|since }}
 							par
 							<a class="text-amber-600" href="{{ path("app_user", {username:item.user.username}) }}">{{ item.user.nickname }}</a>
+							|
+							<a href="{{ path("app_chapter_del_comment", {id:item.id}) }}">Supprimer</a>
+							|
+							<a href="">Modifier</a>
 						</small>
 					</p>
 					{% include "publication/_partials/_scripts.html.twig" with {type:"show_chapter"} %}

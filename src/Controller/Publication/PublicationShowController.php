@@ -44,7 +44,11 @@ class PublicationShowController extends AbstractController
 			}
 			// * Sinon, on renvoie tous les keywords de la base de données
 			else {
-				$publicationKw = $kwRepo->findBy([], ["count" => "desc"]);
+				$qb = $kwRepo->createQueryBuilder('p');
+				$publicationKw = $qb->where($qb->expr()->gt('p.count', 0))
+					->orderBy('p.count', 'DESC')
+					->getQuery()
+					->getResult();
 			}
 			// ! On cherche les publications
 			// * S'il n'y a pas de keywords dans l'url, on renvoie toutes les publications
@@ -55,7 +59,7 @@ class PublicationShowController extends AbstractController
 				$publications = $pRepo->findBy(["category" => $pcRepo, "status" => 2], ["published_date" => $order], $nbr_by_page, $page * $nbr_by_page);
 				$keywString = null;
 			}
-			// * Si il y a des keywords dans l'url, on renvoie toutes les publications qui ont au moins un des keywords
+			//  Si il y a des keywords dans l'url, on renvoie toutes les publications qui ont au moins un des keywords
 			else {
 				// * On récupère les keywords dans l'url et on les transforme en tableau
 				$keyw = explode("—", $keystring);

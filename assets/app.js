@@ -9,5 +9,4 @@ import "./styles/app.css";
 window.axios = require("axios");
 import "./turbo/turbo-helper";
 import "./bootstrap";
-import { addKeyword } from "./scripts/Publication/AddKeyword";
 // TODO: refaire cette fonction

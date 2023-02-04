@@ -7,6 +7,10 @@
 {% endblock %}
 {% block body %}
 	<section class="col-span-6 col-start-4  row-start-1 gap-10 grayscale">
+		{% if app.user.id is defined  %}
+			{{ infoChap.publicationChapterNotes|length }}
+			surlignage(s)
+		{% endif %}
 		<h1 class="text-center font-serif text-xl">
 			<a href="{{ path("app_publication_show_one", {id:infoPub.id, slug:infoPub.slug}) }}">{{ infoPub.title }}</a>
 		</h1>
@@ -26,8 +30,9 @@
 			</div>
 		{% endif %}
 		<turbo-frame id="chapContentTurbo">
-			<article class="flex flex-col justify-center">
-				{{ infoChap.content|raw }}
+			<article class="flex flex-col justify-center" id="chapArticle">
+
+				{{ chapterContent|raw }}
 			</article>
 		</turbo-frame>
 		{% if nextChap %}
@@ -58,12 +63,15 @@
 	<section class="col-span-8 col-start-3  mt-5 w-full row-start-3">
 		<hr class="mb-5"/>
 		<h3 class="text-2xl font-medium">Commentaires</h3>
-		{{ form_start(form, {attr:{"data-turbo-frame":"commentFrame"}}) }}
-		<div class="flex items-center">
-			{{ form_widget(form.content, {attr:{"class":"h-[3.4rem] items-center content-center pt-3"}}) }}
-			<button type="submit" class="btn btn-primary h-12" id="sendComment">Envoyer</button>
-		</div>
-		{{ form_end(form) }}
+
+		{% if app.user.id is defined %}
+			{{ form_start(form, {attr:{"data-turbo-frame":"commentFrame"}}) }}
+			<div class="flex items-center">
+				{{ form_widget(form.content, {attr:{"class":"h-[3.4rem] items-center content-center pt-3"}}) }}
+				<button type="submit" class="btn btn-primary h-12" id="sendComment">Envoyer</button>
+			</div>
+			{{ form_end(form) }}
+		{% endif %}
 		<hr>
 		<turbo-frame id="commentFrame">
 			<p>{{ infoChap.publicationChapterComments|length }}
@@ -76,40 +84,42 @@
 				{% set userLogId = null %}
 			{% endif %}
 			{% for item in comments|sort((a, b) => a.publishDate > b.publishDate ? -1 : 1) %}
-				<div {% if n == 0 and userLogId == item.user.id and item.publishDate > "now"|date_modify("-2 seconds") %} id="lastComment" class="bg-slate-50 text-slate-600  animate__animated animate__fadeIn p-2 rounded transition-colors duration-[1000ms]" {% else %} class=" block  p-2 rounded" {% endif %}>
-					<p class=" text-lg">
-						<small>il y a
-							{{ item.publishDate|since }}
-							par
-							<a href="{{ path("app_user", {username:item.user.username}) }}">{{ item.user.nickname }}</a>
-							{% if item.user.id == userLogId %}
-								|
-								<a data-turbo-frame="_self" href="{{ path("app_chapter_del_comment", {id:item.id}) }}">Supprimer</a>
-								|
-								<button type="button" class="updateButton" id="updateButton-{{ item.id }}">Modifier</button>
-								{% set class = "fa-regular fa-heart " %}
-							{% elseif userLogId %}
-								{% set class = "fa-regular fa-heart likeButton cursor-pointer" %}
-							{% else %}
-								{% set class = "fa-regular fa-heart " %}
-							{% endif %}
-							|
-							{% for itemLike in item.publicationChapterCommentLikes %}
-								{% if itemLike.user.id == userLogId %}
-									{% set class = "fa-solid fa-heart text-red-500 cursor-pointer likeButton" %}
+				{% if item.user.id is defined %}
+					<div {% if n == 0 and userLogId == item.user.id and item.publishDate > "now"|date_modify("-2 seconds") %} id="lastComment" class="bg-slate-50 text-slate-600  animate__animated animate__fadeIn p-2 rounded transition-colors duration-[1000ms]" {% else %} class=" block  p-2 rounded" {% endif %}>
+						<p class=" text-lg">
+							<small>il y a
+								{{ item.publishDate|since }}
+								par
+								<a href="{{ path("app_user", {username:item.user.username}) }}">{{ item.user.nickname }}</a>
+								{% if item.user.id == userLogId %}
+									|
+									<a data-turbo-frame="_self" href="{{ path("app_chapter_del_comment", {id:item.id}) }}">Supprimer</a>
+									|
+									<button type="button" class="updateButton" id="updateButton-{{ item.id }}">Modifier</button>
+									{% set class = "fa-regular fa-heart " %}
+								{% elseif userLogId %}
+									{% set class = "fa-regular fa-heart likeButton cursor-pointer" %}
 								{% else %}
-									{% set class = "fa-regular fa-heart" %}
+									{% set class = "fa-regular fa-heart " %}
 								{% endif %}
-							{% endfor %}
-							<i class="{{ class }} animate__animated" id="likeButton-{{ item.id }}"></i>
-							<span id="nbLikes-{{ item.id }}">{{ item.publicationChapterCommentLikes|length }}</span>
-						</small>
-					</p>
-					<div id="updateCom-{{ item.id }}">
-						<p id="comShow-{{ item.id }}">{{ item.content|nl2br }}</p>
+								|
+								{% for itemLike in item.publicationChapterCommentLikes %}
+									{% if itemLike.user.id == userLogId %}
+										{% set class = "fa-solid fa-heart text-red-500 cursor-pointer likeButton" %}
+									{% else %}
+										{% set class = "fa-regular fa-heart" %}
+									{% endif %}
+								{% endfor %}
+								<i class="{{ class }} animate__animated" id="likeButton-{{ item.id }}"></i>
+								<span id="nbLikes-{{ item.id }}">{{ item.publicationChapterCommentLikes|length }}</span>
+							</small>
+						</p>
+						<div id="updateCom-{{ item.id }}">
+							<p id="comShow-{{ item.id }}">{{ item.content|nl2br }}</p>
+						</div>
 					</div>
-				</div>
-				{% set n = n + 1 %}
+					{% set n = n + 1 %}
+				{% endif %}
 			{% endfor %}
 			{% if nbrShowCom < infoChap.publicationChapterComments|length %}
 				{% if infoPub.slug %}
@@ -121,4 +131,11 @@
 			{% endif %}
 		</turbo-frame>
 	</section>
+	<div id="tools" class="absolute p-3 bg-slate-50 -mt-6 rounded-2xl shadow hidden">
+		<ul class="list-none inline">
+			<li id="highlight">Surligner</li>
+			<li>Caca</li>
+		</ul>
+	</div>
+	<input type="hidden" id="chapId" value="{{ infoChap.id }}">
 {% endblock %}

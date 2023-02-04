@@ -3,15 +3,18 @@
 namespace App\Controller\Publication;
 
 use Symfony\Bundle\SessionBundle;
+use App\Entity\PublicationChapterNote;
 use App\Entity\PublicationChapterView;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
 use App\Form\PublicationChapterCommentType;
+use Symfony\Component\HttpFoundation\Cookie;
 use App\Entity\PublicationChapterCommentLike;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
+use App\Repository\PublicationChapterNoteRepository;
 use Symfony\Component\HttpFoundation\Session\Session;
 use App\Repository\PublicationChapterCommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,10 +23,12 @@ class ChapterShowController extends AbstractController
 {
 
     private $em;
+    private $chapterNote;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, PublicationChapterNoteRepository $chapterNote)
     {
         $this->em = $em;
+        $this->chapterNote = $chapterNote;
     }
 
     #[Route('/recit-{slugPub}/{user}/{idChap}/{slug?}/{nbrShowCom?}', name: 'app_chapter_show')]
@@ -73,10 +78,12 @@ class ChapterShowController extends AbstractController
             return $this->redirectToRoute('app_chapter_show', ['slugPub' => $publication->getSlug(), 'user' => $publication->getUser()->getUsername(), 'idChap' => $chapter->getId(), 'slug' => $chapter->getSlug()]);
         }
         // * On ajoute un view pour le chapitre (si l'utilisateur n'est pas l'auteur de la publication)
-        if ($this->getUser() != $publication->getUser()) {
-            $this->viewChapter($chapter);
-        }
-        // *
+        $this->viewChapter($chapter);
+        // * On formate les notes du chapitre de l'utilisateur connecté
+
+        $chapterContent = $this->formatChapter($chapter);
+
+        // * La vue
         return $this->render('publication/show_chapter.html.twig', [
             'infoPub' => $publication,
             'infoChap' => $chapter,
@@ -85,6 +92,7 @@ class ChapterShowController extends AbstractController
             'form' => $form->createView(),
             "comments" => $comments,
             "nbrShowCom" => $nbrShowCom,
+            "chapterContent" => $chapterContent,
         ]);
     }
     #[Route('/recit/comment/del/{id}', name: 'app_chapter_del_comment')]
@@ -163,6 +171,48 @@ class ChapterShowController extends AbstractController
             'message' => 'Le like a bien été ajouté.'
         ], 200);
     }
+    /** Status des notes :
+     * 0 = Highlight
+     */
+    #[Route('/recit/chapter/note', name: 'app_chapter_note', methods: ['POST'])]
+    public function chapterNote(Request $request, PublicationChapterRepository $pchRepo, PublicationChapterNoteRepository $pcnRepo, EntityManagerInterface $em): response
+    {
+        $dtIdChapter = $request->get("idChapter");
+        $dtType = $request->get("type");
+        $dtStart = $request->get("start");
+        $dtEnd = $request->get("end");
+        $dtSuround = $request->get("surround");
+        $dtContent = $request->get("content");
+        // * On récupère le chapitre
+        $chapter = $pchRepo->find($dtIdChapter);
+        // * Si le chapitre existe et que l'utilisateur est connecté, on traite
+        if ($chapter and $this->getUser()) {
+            // Si le type est "highlight", on ajoute la valeur de $dtContent dans la bdd en statut 0
+            if ($dtType == "highlight") {
+                $note = new PublicationChapterNote();
+                $note->setUser($this->getUser())
+                    ->setChapter($chapter)
+                    ->setType(0)
+                    ->setStart($dtStart)
+                    ->setEnd($dtEnd)
+                    ->setSurround($dtSuround)
+                    ->setSelection($dtContent)
+                    ->setAddDate(new \DateTime('now'));
+                $em->persist($note);
+                $em->flush();
+            }
+        } else {
+            return $this->json([
+                'code' => 403,
+                'message' => 'Vous n\'avez pas les droits pour modifier ce commentaire.',
+            ], 403);
+        }
+        //
+        return $this->json([
+            'code' => 201,
+            'message' => "L'action a bien été effectuée."
+        ], 200);
+    }
     public function viewChapter($chapter)
     {
         $view = new PublicationChapterView();
@@ -188,5 +238,41 @@ class ChapterShowController extends AbstractController
         $view->setViewDate(new \DateTime('now'));
         $this->em->persist($view);
         $this->em->flush();
+    }
+    public function formatChapter($chapter)
+    {
+        $note = $this->chapterNote->findBy(['chapter' => $chapter, 'type' => 0, 'user' => $this->getUser()]);
+        $chapter = $chapter->getContent();
+        // On récupère toutes les notes du chapitre et on fait un str_replace sur $chapter à chaque occurrence simmilaire à "selection" (de la Note)
+        foreach ($note as $n) {
+            // On cherche la valeur de "selection" dans le surround, on découpe surround en trois variable, avant et après la selection, et la selection
+            $string = $n->getSurround();
+            $search = $n->getSelection();
+            $before = "";
+            $after = "";
+            $pos = strpos($string, $search);
+            if ($pos !== false) {
+                $before = substr($string, 0, $pos);
+                $after = substr($string, $pos + strlen($search));
+                // $chapter = $this->restore_tags($chapter);
+                // $chapter = str_replace($string, $before . '<i class="fa-solid fa-highlighter"></i>' . $n->getSelection() . $after, restore_tags($chapter));
+            }
+        }
+        return  $chapter;
+    }
+    #[Route('/recit/chapter/getnote', name: 'app_chapter_note', methods: ['POST'])]
+    public function teeest(Request $request, PublicationChapterNoteRepository $pcnRepo, PublicationChapterRepository $pchRepo)
+    {
+        $dtIdChapter = $request->get("idChapter");
+        // on cherche le chapitre 
+        $chapter = $pchRepo->find($dtIdChapter);
+        // je récupère toutes les notes en statut 0 du chapitre de l'utilisateur connecté 
+        $note = $pcnRepo->findBy(['chapter' => $chapter, 'type' => 0]);
+
+        // Je renvoie les notes en json
+        return $this->json([
+            'code' => 200,
+            'message' => json_encode($note),
+        ], 200);
     }
 }

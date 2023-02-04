@@ -184,7 +184,6 @@ opacity: 0.4;
 .badge-unpublished {
   @apply ring-red-500 bg-red-50 text-red-500 dark:text-red-300 dark:bg-red-900;
 }
-
 #chapContent img {
   @apply max-w-[20%] float-left;
 }
@@ -203,4 +202,7 @@ opacity: 0.4;
 }
 .ql-align-justify {
   @apply text-justify items-start;
+}
+.highlight {
+  @apply bg-amber-100 dark:bg-yellow-800 bg-opacity-70;
 }

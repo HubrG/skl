@@ -88,6 +88,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterView::class)]
     private Collection $publicationChapterViews;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterNote::class)]
+    private Collection $publicationChapterNotes;
+
 
     public function __construct()
     {
@@ -95,6 +98,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->publicationChapterComments = new ArrayCollection();
         $this->publicationChapterCommentLikes = new ArrayCollection();
         $this->publicationChapterViews = new ArrayCollection();
+        $this->publicationChapterNotes = new ArrayCollection();
     }
 
 
@@ -438,6 +442,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($publicationChapterView->getUser() === $this) {
                 $publicationChapterView->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationChapterNote>
+     */
+    public function getPublicationChapterNotes(): Collection
+    {
+        return $this->publicationChapterNotes;
+    }
+
+    public function addPublicationChapterNote(PublicationChapterNote $publicationChapterNote): self
+    {
+        if (!$this->publicationChapterNotes->contains($publicationChapterNote)) {
+            $this->publicationChapterNotes->add($publicationChapterNote);
+            $publicationChapterNote->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationChapterNote(PublicationChapterNote $publicationChapterNote): self
+    {
+        if ($this->publicationChapterNotes->removeElement($publicationChapterNote)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationChapterNote->getUser() === $this) {
+                $publicationChapterNote->setUser(null);
             }
         }
 

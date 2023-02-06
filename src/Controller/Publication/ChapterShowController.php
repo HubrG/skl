@@ -182,6 +182,7 @@ class ChapterShowController extends AbstractController
         $dtType = $request->get("type");
         $dtP = $request->get("p");
         $dtContext = $request->get("context");
+        $dtColor = $request->get("color");
         $dtSelection = $request->get("selection");
         $dtContentEl = $request->get("contentEl");
         // * On supprimer les balises HTML en début et fin de chaîne
@@ -195,10 +196,12 @@ class ChapterShowController extends AbstractController
         if ($chapter and $this->getUser()) {
             // Si le type est "highlight", on ajoute la valeur de $dtContent dans la bdd en statut 0
             if ($dtType == "highlight") {
+                // * On envoie l'highlight dans la BDD
                 $note = new PublicationChapterNote();
                 $note->setUser($this->getUser())
                     ->setChapter($chapter)
                     ->setType(0)
+                    ->setColor($dtColor)
                     ->setP($dtP)
                     ->setContext(trim($dtContext))
                     ->setSelection(trim($dtSelection))
@@ -206,6 +209,20 @@ class ChapterShowController extends AbstractController
                     ->setAddDate(new \DateTime('now'));
                 $em->persist($note);
                 $em->flush();
+                // * On récupère l'ID de l'highlight
+                $idNote = $note->getId();
+                $selectedTextEl = $note->getSelectionEl();
+                $selectedText = $note->getSelection();
+                $p = $note->getP();
+                // * On renvoie l'ID de l'highlight
+                return $this->json([
+                    'code' => 201,
+                    'message' => 'L\'highlight a bien été ajouté.',
+                    'idNote' => $idNote,
+                    'selectionEl' => $selectedTextEl,
+                    'selection' => $selectedText,
+                    'p' => $p,
+                ], 200);
             }
         } else {
             return $this->json([
@@ -269,6 +286,7 @@ class ChapterShowController extends AbstractController
                 'context' => $note->getContext(),
                 'selection' => $note->getSelection(),
                 'selectionEl' => $note->getSelectionEl(),
+                'color' => $note->getColor(),
                 'p' => $note->getP(),
             ];
         }, $note);

@@ -39,6 +39,9 @@ class PublicationChapterNote
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $selection_el = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $color = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -136,6 +139,18 @@ class PublicationChapterNote
     public function setSelectionEl(?string $selection_el): self
     {
         $this->selection_el = $selection_el;
+
+        return $this;
+    }
+
+    public function getColor(): ?int
+    {
+        return $this->color;
+    }
+
+    public function setColor(?int $color): self
+    {
+        $this->color = $color;
 
         return $this;
     }

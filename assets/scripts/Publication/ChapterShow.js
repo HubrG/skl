@@ -1,60 +1,8 @@
 import axios from "axios";
 export function ShowChapter() {
   if (document.getElementById("chapContentTurbo")) {
-    // ! Récupération des notes (type 0) du chapitre de l'utilisateur connecté
-    let url = "/recit/chapter/getnote";
-    let data = new FormData();
-    //
-    data.append("idChapter", document.getElementById("chapId").value);
-    axios
-      .post(url, data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }) // * TODO : Remettre le texte en contexte (avec "context")
-      .then(function (response) {
-        response.data.message.forEach((notes) => {
-          let selectionEl = notes.selectionEl;
-          let selection = notes.selection;
-          let context = notes.context.trim();
-          let id = notes.id;
-          let pr = notes.p;
-          if (!pr) {
-            pr = "0";
-          }
-          var chapArticle = document.getElementById("paragraphe-" + pr);
-          if (!chapArticle.innerHTML.includes(selection)) {
-            chapArticle.innerHTML = chapArticle.innerHTML.replace(
-              selectionEl,
-              "<span class='highlighted' id='hl-" +
-                id +
-                "'>" +
-                selection +
-                "</span>"
-            );
-          } else {
-            chapArticle.innerHTML = chapArticle.innerHTML.replace(
-              selection,
-              "<span class='highlighted' id='hl-" +
-                id +
-                "'>" +
-                selection +
-                "</span>"
-            );
-          }
-        });
-      });
-    // ! Fonction qui affiche une petite tooltip avec une icone de suppression au survol de la souris sur un élément de classe "highlighted"
-    var highlighted = document.querySelectorAll("span.highlighted");
-    highlighted.forEach((element) => {
-      element.addEventListener("click", function () {
-        let parts = element.id.split("-");
-        let result = parts[1];
-        let tooltiped = document.getElementById("highlited-options");
-        tooltiped.classList.toggle("hidden");
-      });
-    });
-    // ! Fonction de surlignage
+    // ! Récupération des notes (type 0) du chapitre de l'utilisateur connecté (avec Tooltip des options de surlignage)
+    AxiosGetHighlight();
     // * Sélection de texte
     document
       .getElementById("chapArticle")
@@ -112,38 +60,23 @@ export function ShowChapter() {
     let selectedTextContext = "";
     let selectedTextP = "";
     const tooltip = document.getElementById("tools");
-    let highlight = document.getElementById("highlight");
-    // * Click sur la popup
-    highlight.addEventListener("click", function () {
-      let url = "/recit/chapter/note";
-      let data = new FormData();
-      //
-      data.append("p", selectedTextP);
-      data.append("idChapter", document.getElementById("chapId").value);
-      data.append("selection", selectedText);
-      data.append("contentEl", selectedTextEl);
-      data.append("context", selectedTextContext.trim().replace(/\n.*/g, "")); // On enlève les sauts de ligne
-      data.append("end", selectedTextEnd);
-      data.append("type", "highlight");
-      axios
-        .post(url, data, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then(function (response) {
-          tooltip.classList.add("hidden");
-          document.getElementById("chapArticle").innerHTML = document
-            .getElementById("chapArticle")
-            .innerHTML.replace(
-              selectedText,
-              "<span style='bg-amber-200 w-10 h-10'>|</span>" +
-                selectedText +
-                "<span style='bg-amber-200 w-10 h-10'>|</span>"
-            );
-        });
+    let highlight = document.querySelectorAll("ul>li.hl");
+    highlight.forEach((element) => {
+      var color = element.getAttribute("data-color");
+      element.addEventListener("click", function () {
+        console.log(color);
+        axiosHighlight(
+          tooltip,
+          selectedTextP,
+          selectedText,
+          selectedTextEl,
+          selectedTextContext,
+          selectedTextEnd,
+          element.getAttribute("data-color")
+        );
+      });
     });
-    // * Click sur la fenêtre (pour fermer la popup)
+    // * Click sur la fenêtre (pour fermer les popups)
     window.addEventListener("click", function () {
       if (!tooltip.classList.contains("hidden")) {
         tooltip.classList.toggle("hidden");
@@ -180,7 +113,6 @@ export function ShowChapter() {
         elP.style.display = "none";
       }
     }
-
     // ! Fonction qui modifie le style du dernier commentaire posé
     if (document.getElementById("lastComment")) {
       var lastComment = document.getElementById("lastComment");
@@ -235,7 +167,6 @@ export function ShowChapter() {
         var buttonValid = document.getElementById("validCom-" + result);
         var newCom = document.getElementById("comShow-" + result);
         var cancelCom = document.getElementById("cancelCom-" + result);
-
         cancelCom.addEventListener("click", function () {
           inner.innerHTML =
             "<p id='comShow-" + result + "'>" + nl2br(com.textContent) + "</p>";
@@ -326,5 +257,139 @@ function nl2br(str, is_xhtml) {
     /([^>\r\n]?)(\r\n|\n\r|\r|\n)/g,
     "$1" + breakTag + "$2"
   );
+}
+// ! Fonction qui permet d'envoyer une highlight en base de données
+function axiosHighlight(
+  tooltip,
+  selectedTextP,
+  selectedText,
+  selectedTextEl,
+  selectedTextContext,
+  selectedTextEnd,
+  color
+) {
+  let url = "/recit/chapter/note";
+  let data = new FormData();
+  //
+  data.append("p", selectedTextP);
+  data.append("idChapter", document.getElementById("chapId").value);
+  data.append("selection", selectedText);
+  data.append("color", color);
+  data.append("contentEl", selectedTextEl);
+  data.append("context", selectedTextContext.trim().replace(/\n.*/g, "")); // On enlève les sauts de ligne
+  data.append("end", selectedTextEnd);
+  data.append("type", "highlight");
+  axios
+    .post(url, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then(function (response) {
+      tooltip.classList.add("hidden");
+      let pr = response.data.p;
+      if (!pr) {
+        pr = "0";
+      }
+      var chapArticle = document.getElementById("paragraphe-" + pr);
+      chapArticle.innerHTML = chapArticle.innerHTML.replaceAll(
+        response.data.selectionEl,
+        "<span id='hl-" +
+          response.data.idNote +
+          "' class='highlighted hl-" +
+          color +
+          "'>" +
+          selectedText +
+          "</span>"
+      );
+      chapArticle.innerHTML = chapArticle.innerHTML.replaceAll(
+        response.data.selection,
+        "<span id='hl-" +
+          response.data.idNote +
+          "' class='highlighted hl-" +
+          color +
+          "'>" +
+          response.data.selection +
+          "</span>"
+      );
+    });
+}
+// ! Fonction qui permet de récupérer les highlights en base de données
+function AxiosGetHighlight() {
+  let url = "/recit/chapter/getnote";
+  let data = new FormData();
+  //
+  data.append("idChapter", document.getElementById("chapId").value);
+  axios
+    .post(url, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }) // * TODO : Remettre le texte en contexte (avec "context")
+    .then(function (response) {
+      response.data.message.forEach((notes) => {
+        let selectionEl = notes.selectionEl;
+        let selection = notes.selection;
+        let context = notes.context.trim();
+        let color = notes.color;
+        let id = notes.id;
+        let pr = notes.p;
+        if (!pr) {
+          pr = "0";
+        }
+        var chapArticle = document.getElementById("paragraphe-" + pr);
+        if (!chapArticle.innerHTML.includes(selection)) {
+          chapArticle.innerHTML = chapArticle.innerHTML.replace(
+            selectionEl,
+            "<span class='highlighted hl-" +
+              color +
+              "' id='hl-" +
+              id +
+              "'>" +
+              selection +
+              "</span>"
+          );
+        } else {
+          chapArticle.innerHTML = chapArticle.innerHTML.replace(
+            selection,
+            "<span class='highlighted hl-" +
+              color +
+              "' id='hl-" +
+              id +
+              "'>" +
+              selection +
+              "</span>"
+          );
+        }
+      });
+      // * On ajoute un tooltip sur les highlights au click
+      let tooltiped = document.getElementById("highlighted-options");
+      let highlighted = document.querySelectorAll("span.highlighted");
+
+      highlighted.forEach((element) => {
+        element.addEventListener("click", function (event) {
+          if (tooltiped.classList.contains("hidden")) {
+            tooltiped.classList.remove("hidden");
+          }
+          highlightedOptions(element, tooltiped);
+          event.stopPropagation();
+        });
+      });
+      window.addEventListener("click", function () {
+        if (!tooltiped.classList.contains("hidden")) {
+          tooltiped.classList.add("hidden");
+        }
+      });
+    });
+}
+function highlightedOptions(element, tooltiped) {
+  let parts = element.id.split("-");
+  let result = parts[1];
+  console.log(result);
+  let selection = window.getSelection();
+  let range = selection.getRangeAt(0);
+  let rect = range.getBoundingClientRect();
+  tooltiped.style.left = rect.left + window.scrollX - 50 + "px";
+  tooltiped.style.top = rect.top + window.scrollY - 50 + "px";
 }
 ShowChapter();

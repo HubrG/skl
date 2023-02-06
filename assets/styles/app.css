@@ -229,12 +229,7 @@ opacity: 0.4;
 #chapContent code {
   @apply text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
 }
-#chapContent .highlighted {
-  @apply bg-amber-100 font-serif;
-}
-#chapContent .highlighted:hover {
-  @apply bg-amber-200 font-serif cursor-default;
-}
+
 .ql-align-center {
   @apply text-center items-center;
 }
@@ -247,12 +242,27 @@ opacity: 0.4;
 .ql-align-justify {
   @apply text-justify items-start;
 }
-.highlight {
-  @apply bg-amber-100 dark:bg-yellow-800 bg-opacity-70;
+.highlighted {
+  @apply  font-serif cursor-pointer;
 }
-.highlight-chapter {
-  @apply absolute p-3 bg-slate-50 w-auto -mt-6 rounded-2xl shadow hidden;
+#chapContent .hl-1 {
+  @apply bg-amber-100 dark:bg-amber-800 text-amber-900 ;
 }
-.highlight-chapter ul {
+#chapContent .hl-2 {
+  @apply bg-purple-100 dark:bg-purple-800 text-purple-900;
+}
+#chapContent .hl-3 {
+  @apply bg-red-100 dark:bg-red-800 text-red-900;
+}
+#chapContent .hl-4 {
+  @apply bg-slate-100 dark:bg-slate-800 text-slate-900;
+}
+#tools  {
+  @apply absolute p-3 bg-slate-50 w-auto -mt-6 rounded-2xl shadow;
+}
+#tools ul {
   @apply flex items-center justify-between;
+}
+#tools ul>li.hl {
+  @apply mx-[0.11rem];
 }

@@ -32,7 +32,7 @@ class ChapterShowController extends AbstractController
     }
 
     #[Route('/recit-{slugPub}/{user}/{idChap}/{slug?}/{nbrShowCom?}', name: 'app_chapter_show')]
-    public function showChapter(Request $request, PublicationChapterCommentRepository $pccRepo,  PublicationChapterRepository $pchRepo, EntityManagerInterface $em, PublicationRepository $pRepo, $slug = null, $idChap = null, $nbrShowCom = null): response
+    public function showChapter(Request $request, PublicationChapterCommentRepository $pccRepo, PublicationChapterRepository $pchRepo, EntityManagerInterface $em, PublicationRepository $pRepo, $slug = null, $idChap = null, $nbrShowCom = null): response
     {
         if (!$nbrShowCom) {
             $nbrShowCom = 10;
@@ -56,6 +56,7 @@ class ChapterShowController extends AbstractController
             return $this->redirectToRoute("app_home");
         }
         // * Si le chapitre n'est pas publié, on redirige vers la page d'acceuil — Uniquement si l'utilisateur n'est pas l'auteur de la publication
+
         elseif ($chapter->getStatus() != 2 && $publication->getUser() != $this->getUser()) {
             // On redirige vers la page précédente 
             return $this->redirectToRoute("app_home");
@@ -182,20 +183,27 @@ class ChapterShowController extends AbstractController
         $dtType = $request->get("type");
         $dtP = $request->get("p");
         $dtContext = $request->get("context");
+        if ($dtContext == "undefined") {
+            $dtContext = null;
+        }
         $dtColor = $request->get("color");
         $dtSelection = $request->get("selection");
         $dtContentEl = $request->get("contentEl");
         // * On supprimer les balises HTML en début et fin de chaîne
-        $dtContentEl = preg_replace('/^<*[^>]+>(.*)<\/[^>]+>$/', '$1', $dtContentEl);
+        $dtContentEl = preg_replace('/^(?:<[^>]+>)+|(?:<\/[^>]+>)+$/', '', $dtContentEl);
         // * On supprime les retours à la ligne en début et fin de chaîne sur $Content
         $lines = explode("\n", $dtSelection);
         $dtSelection = reset($lines);
         // * On récupère le chapitre
         $chapter = $pchRepo->find($dtIdChapter);
+        // * On traire les paragraphes multiples
+
+        // *
         // * Si le chapitre existe et que l'utilisateur est connecté, on traite
         if ($chapter and $this->getUser()) {
             // Si le type est "highlight", on ajoute la valeur de $dtContent dans la bdd en statut 0
             if ($dtType == "highlight") {
+
                 // * On envoie l'highlight dans la BDD
                 $note = new PublicationChapterNote();
                 $note->setUser($this->getUser())
@@ -203,16 +211,18 @@ class ChapterShowController extends AbstractController
                     ->setType(0)
                     ->setColor($dtColor)
                     ->setP($dtP)
-                    ->setContext(trim($dtContext))
-                    ->setSelection(trim($dtSelection))
-                    ->setSelectionEl(trim($dtContentEl))
+                    ->setContext($dtContext)
+                    ->setSelection($dtSelection)
+                    ->setSelectionEl($dtContentEl)
                     ->setAddDate(new \DateTime('now'));
                 $em->persist($note);
                 $em->flush();
+
                 // * On récupère l'ID de l'highlight
                 $idNote = $note->getId();
                 $selectedTextEl = $note->getSelectionEl();
                 $selectedText = $note->getSelection();
+                $context = $note->getContext();
                 $p = $note->getP();
                 // * On renvoie l'ID de l'highlight
                 return $this->json([
@@ -221,6 +231,7 @@ class ChapterShowController extends AbstractController
                     'idNote' => $idNote,
                     'selectionEl' => $selectedTextEl,
                     'selection' => $selectedText,
+                    'contextSel' => $context,
                     'p' => $p,
                 ], 200);
             }
@@ -266,10 +277,10 @@ class ChapterShowController extends AbstractController
     {
         $id = 0;
         $newText = preg_replace_callback('/<p\s*(.*?)>(.*?)<\/p>/', function ($matches) use (&$id) {
-            return '<p id="paragraphe-' . $id++ . '" ' . $matches[1] . '>' . $matches[2] . '</p>';
+            return '<p id="paragraphe-' . $id++ . '"' . $matches[1] . '>' . $matches[2] . '</p>';
         }, $chapter->getContent());
 
-        return  $newText;
+        return $newText;
     }
     #[Route('/recit/chapter/getnote', name: 'app_chapter_get_note', methods: ['POST'])]
     public function Axios_getNotes(Request $request, PublicationChapterNoteRepository $pcnRepo, PublicationChapterRepository $pchRepo)
@@ -283,7 +294,7 @@ class ChapterShowController extends AbstractController
         $note = array_map(function ($note) {
             return [
                 'id' => $note->getId(),
-                'context' => $note->getContext(),
+                'contextSel' => $note->getContext(),
                 'selection' => $note->getSelection(),
                 'selectionEl' => $note->getSelectionEl(),
                 'color' => $note->getColor(),
@@ -295,5 +306,26 @@ class ChapterShowController extends AbstractController
             'code' => 200,
             'message' => $note,
         ], 200);
+    }
+    #[Route('/recit/chapter/delnote', name: 'app_chapter_delete_note', methods: ['POST'])]
+    public function Axios_DeleteNotes(Request $request, PublicationChapterRepository $pchRepo, PublicationChapterNoteRepository $pcnRepo, EntityManagerInterface $em): response
+    {
+        // On récupère la note à supprimer via 
+        $dtIdNote = $request->get("idNote");
+        $note = $pcnRepo->find($dtIdNote);
+        // On supprime la note si l'utilisateur connecté est bien l'auteur de la note
+        if ($note->getUser() == $this->getUser()) {
+            $em->remove($note);
+            $em->flush();
+            return $this->json([
+                'code' => 200,
+                'message' => 'La note a bien été supprimée.',
+            ], 200);
+        } else {
+            return $this->json([
+                'code' => 403,
+                'message' => 'Vous n\'avez pas les droits pour supprimer cette note.',
+            ], 403);
+        }
     }
 }

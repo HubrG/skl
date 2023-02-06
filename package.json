@@ -55,6 +55,7 @@
         "stimulus-notification": "^2.2.0",
         "swup": "^2.0.19",
         "tailwindcss-stimulus-components": "^3.0.4",
+        "tippy.js": "^6.3.7",
         "turbolinks": "^5.2.0",
         "tw-elements": "^1.0.0-alpha13"
     }

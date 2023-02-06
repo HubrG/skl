@@ -3,7 +3,11 @@ export function ShowChapter() {
   if (document.getElementById("chapContentTurbo")) {
     // ! Récupération des notes (type 0) du chapitre de l'utilisateur connecté (avec Tooltip des options de surlignage)
     AxiosGetHighlight();
-    // * Sélection de texte
+    // ! Bouton permettant la suppression de HIghlights
+    document.getElementById("delete-hl").addEventListener("click", () => {
+      AxiosDeleteHighlight();
+    });
+    // ! Sélection de texte
     document
       .getElementById("chapArticle")
       .addEventListener("mouseup", function (e) {
@@ -14,14 +18,20 @@ export function ShowChapter() {
         });
         if (window.getSelection().toString()) {
           var selection = window.getSelection();
-          var start = selection.anchorOffset - 2;
-          var end = selection.focusOffset;
           var startNode = selection.anchorNode;
-          var textContent = startNode.textContent;
-          var contextStart = start >= 0 ? start : 0;
-          var contextEnd = end <= textContent.length ? end : textContent.length;
-          selectedTextContext = textContent.substring(contextStart, contextEnd);
-          console.log(selectedTextContext);
+          var startOffset = selection.anchorOffset;
+          var endNode = selection.focusNode;
+          var endOffset = selection.focusOffset;
+
+          if (startNode === endNode) {
+            // La sélection se trouve dans un seul noeud de texte
+            var start = Math.min(startOffset, endOffset);
+            var preceedingText = startNode.textContent.substring(
+              start - 5,
+              start
+            );
+          }
+          selectedTextContext = preceedingText;
           //
           //
           selectedText = window.getSelection().toString();
@@ -64,7 +74,7 @@ export function ShowChapter() {
     highlight.forEach((element) => {
       var color = element.getAttribute("data-color");
       element.addEventListener("click", function () {
-        console.log(color);
+        //!SECTION
         axiosHighlight(
           tooltip,
           selectedTextP,
@@ -82,6 +92,7 @@ export function ShowChapter() {
         tooltip.classList.toggle("hidden");
       }
     });
+
     // !
     // ! Fonction qui cache les flèches de navigation si on est au début ou à la fin du chapitre
     const target = document.getElementById("commentFrame");
@@ -273,10 +284,10 @@ function axiosHighlight(
   //
   data.append("p", selectedTextP);
   data.append("idChapter", document.getElementById("chapId").value);
-  data.append("selection", selectedText);
+  data.append("selection", selectedText.replace(/\n/g, "").trimEnd());
   data.append("color", color);
-  data.append("contentEl", selectedTextEl);
-  data.append("context", selectedTextContext.trim().replace(/\n.*/g, "")); // On enlève les sauts de ligne
+  data.append("contentEl", selectedTextEl.replace(/\n/g, "").trimEnd());
+  data.append("context", selectedTextContext); // On enlève les sauts de ligne
   data.append("end", selectedTextEnd);
   data.append("type", "highlight");
   axios
@@ -287,31 +298,23 @@ function axiosHighlight(
     })
     .then(function (response) {
       tooltip.classList.add("hidden");
+      //
       let pr = response.data.p;
       if (!pr) {
         pr = "0";
       }
       var chapArticle = document.getElementById("paragraphe-" + pr);
-      chapArticle.innerHTML = chapArticle.innerHTML.replaceAll(
-        response.data.selectionEl,
-        "<span id='hl-" +
-          response.data.idNote +
-          "' class='highlighted hl-" +
-          color +
-          "'>" +
-          selectedText +
-          "</span>"
-      );
-      chapArticle.innerHTML = chapArticle.innerHTML.replaceAll(
+      // * On affiche le highlight
+      // fonction d'affichage sur le DOM
+      showHighlightDom(
+        chapArticle,
+        response.data.contextSel,
+        color,
         response.data.selection,
-        "<span id='hl-" +
-          response.data.idNote +
-          "' class='highlighted hl-" +
-          color +
-          "'>" +
-          response.data.selection +
-          "</span>"
+        response.data.selectionEl,
+        response.data.idNote
       );
+      activeClickTooltipHL();
     });
 }
 // ! Fonction qui permet de récupérer les highlights en base de données
@@ -330,7 +333,7 @@ function AxiosGetHighlight() {
       response.data.message.forEach((notes) => {
         let selectionEl = notes.selectionEl;
         let selection = notes.selection;
-        let context = notes.context.trim();
+        let context = notes.contextSel;
         let color = notes.color;
         let id = notes.id;
         let pr = notes.p;
@@ -338,43 +341,21 @@ function AxiosGetHighlight() {
           pr = "0";
         }
         var chapArticle = document.getElementById("paragraphe-" + pr);
-        if (!chapArticle.innerHTML.includes(selection)) {
-          chapArticle.innerHTML = chapArticle.innerHTML.replace(
-            selectionEl,
-            "<span class='highlighted hl-" +
-              color +
-              "' id='hl-" +
-              id +
-              "'>" +
-              selection +
-              "</span>"
-          );
-        } else {
-          chapArticle.innerHTML = chapArticle.innerHTML.replace(
-            selection,
-            "<span class='highlighted hl-" +
-              color +
-              "' id='hl-" +
-              id +
-              "'>" +
-              selection +
-              "</span>"
-          );
-        }
+        // fonction d'affichage sur le DOM
+        showHighlightDom(
+          chapArticle,
+          context,
+          color,
+          selection,
+          selectionEl,
+          id
+        );
       });
       // * On ajoute un tooltip sur les highlights au click
       let tooltiped = document.getElementById("highlighted-options");
       let highlighted = document.querySelectorAll("span.highlighted");
 
-      highlighted.forEach((element) => {
-        element.addEventListener("click", function (event) {
-          if (tooltiped.classList.contains("hidden")) {
-            tooltiped.classList.remove("hidden");
-          }
-          highlightedOptions(element, tooltiped);
-          event.stopPropagation();
-        });
-      });
+      activeClickTooltipHL(tooltiped, highlighted);
       window.addEventListener("click", function () {
         if (!tooltiped.classList.contains("hidden")) {
           tooltiped.classList.add("hidden");
@@ -382,14 +363,104 @@ function AxiosGetHighlight() {
       });
     });
 }
+function activeClickTooltipHL() {
+  let tooltiped = document.getElementById("highlighted-options");
+  let highlighted = document.querySelectorAll("span.highlighted");
+  highlighted.forEach((element) => {
+    element.addEventListener("click", function (e) {
+      e.stopPropagation();
+      highlightedOptions(element, tooltiped);
+      tooltiped.classList.remove("hidden");
+    });
+  });
+}
 function highlightedOptions(element, tooltiped) {
   let parts = element.id.split("-");
   let result = parts[1];
-  console.log(result);
+  document.getElementById("delete-hl").setAttribute("data-note-id", result);
   let selection = window.getSelection();
   let range = selection.getRangeAt(0);
   let rect = range.getBoundingClientRect();
   tooltiped.style.left = rect.left + window.scrollX - 50 + "px";
   tooltiped.style.top = rect.top + window.scrollY - 50 + "px";
+}
+// ! Fonction d'affichage sur le dom des highlights
+function showHighlightDom(
+  chapArticle,
+  contextSel,
+  color,
+  selection,
+  selectionEl,
+  idNote
+) {
+  if (chapArticle.innerHTML.includes(contextSel)) {
+    var tests = contextSel + selection;
+    chapArticle.innerHTML = chapArticle.innerHTML.replace(
+      tests,
+      contextSel +
+        "<span id='hl-" +
+        idNote +
+        "' class='highlighted hl-" +
+        color +
+        "'>" +
+        selection +
+        "</span>"
+    );
+  } else if (!chapArticle.innerHTML.includes(selection)) {
+    chapArticle.innerHTML = chapArticle.innerHTML.replace(
+      selectionEl,
+      "<span id='hl-" +
+        idNote +
+        "' class='highlighted hl-" +
+        color +
+        "'>" +
+        selection +
+        "</span>"
+    );
+  } else {
+    chapArticle.innerHTML = chapArticle.innerHTML.replace(
+      selection,
+      "<span id='hl-" +
+        idNote +
+        "' class='highlighted hl-" +
+        color +
+        "'>" +
+        selection +
+        "</span>"
+    );
+  }
+  if (selectionEl.includes("</p>")) {
+    var bigArticle = document.getElementById("chapArticle");
+    bigArticle.innerHTML = bigArticle.innerHTML.replaceAll(
+      selectionEl,
+      "<span id='hl-" +
+        idNote +
+        "' class='highlighted hl-" +
+        color +
+        "'>" +
+        selectionEl +
+        "</span>"
+    );
+  }
+}
+// ! Fonction qui permet de récupérer les highlights en base de données
+function AxiosDeleteHighlight() {
+  let hlId = document.getElementById("delete-hl").getAttribute("data-note-id");
+  let url = "/recit/chapter/delnote";
+  let data = new FormData();
+  data.append("idNote", hlId);
+  axios
+    .post(url, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then(function (response) {
+      // * On supprime le highlight du DOM
+      var el = document.getElementById("hl-" + hlId);
+      var parent = el.parentNode;
+      while (el.firstChild) parent.insertBefore(el.firstChild, el);
+      parent.removeChild(el);
+    });
 }
 ShowChapter();

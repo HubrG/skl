@@ -177,12 +177,18 @@ class ChapterShowController extends AbstractController
     #[Route('/recit/chapter/note', name: 'app_chapter_note', methods: ['POST'])]
     public function chapterNote(Request $request, PublicationChapterRepository $pchRepo, PublicationChapterNoteRepository $pcnRepo, EntityManagerInterface $em): response
     {
+        // * On récupère les données
         $dtIdChapter = $request->get("idChapter");
         $dtType = $request->get("type");
-        $dtStart = $request->get("start");
-        $dtEnd = $request->get("end");
-        $dtSuround = $request->get("surround");
-        $dtContent = $request->get("content");
+        $dtP = $request->get("p");
+        $dtContext = $request->get("context");
+        $dtSelection = $request->get("selection");
+        $dtContentEl = $request->get("contentEl");
+        // * On supprimer les balises HTML en début et fin de chaîne
+        $dtContentEl = preg_replace('/^<*[^>]+>(.*)<\/[^>]+>$/', '$1', $dtContentEl);
+        // * On supprime les retours à la ligne en début et fin de chaîne sur $Content
+        $lines = explode("\n", $dtSelection);
+        $dtSelection = reset($lines);
         // * On récupère le chapitre
         $chapter = $pchRepo->find($dtIdChapter);
         // * Si le chapitre existe et que l'utilisateur est connecté, on traite
@@ -193,10 +199,10 @@ class ChapterShowController extends AbstractController
                 $note->setUser($this->getUser())
                     ->setChapter($chapter)
                     ->setType(0)
-                    ->setStart($dtStart)
-                    ->setEnd($dtEnd)
-                    ->setSurround($dtSuround)
-                    ->setSelection($dtContent)
+                    ->setP($dtP)
+                    ->setContext(trim($dtContext))
+                    ->setSelection(trim($dtSelection))
+                    ->setSelectionEl(trim($dtContentEl))
                     ->setAddDate(new \DateTime('now'));
                 $em->persist($note);
                 $em->flush();
@@ -241,38 +247,35 @@ class ChapterShowController extends AbstractController
     }
     public function formatChapter($chapter)
     {
-        $note = $this->chapterNote->findBy(['chapter' => $chapter, 'type' => 0, 'user' => $this->getUser()]);
-        $chapter = $chapter->getContent();
-        // On récupère toutes les notes du chapitre et on fait un str_replace sur $chapter à chaque occurrence simmilaire à "selection" (de la Note)
-        foreach ($note as $n) {
-            // On cherche la valeur de "selection" dans le surround, on découpe surround en trois variable, avant et après la selection, et la selection
-            $string = $n->getSurround();
-            $search = $n->getSelection();
-            $before = "";
-            $after = "";
-            $pos = strpos($string, $search);
-            if ($pos !== false) {
-                $before = substr($string, 0, $pos);
-                $after = substr($string, $pos + strlen($search));
-                // $chapter = $this->restore_tags($chapter);
-                // $chapter = str_replace($string, $before . '<i class="fa-solid fa-highlighter"></i>' . $n->getSelection() . $after, restore_tags($chapter));
-            }
-        }
-        return  $chapter;
+        $id = 0;
+        $newText = preg_replace_callback('/<p\s*(.*?)>(.*?)<\/p>/', function ($matches) use (&$id) {
+            return '<p id="paragraphe-' . $id++ . '" ' . $matches[1] . '>' . $matches[2] . '</p>';
+        }, $chapter->getContent());
+
+        return  $newText;
     }
-    #[Route('/recit/chapter/getnote', name: 'app_chapter_note', methods: ['POST'])]
-    public function teeest(Request $request, PublicationChapterNoteRepository $pcnRepo, PublicationChapterRepository $pchRepo)
+    #[Route('/recit/chapter/getnote', name: 'app_chapter_get_note', methods: ['POST'])]
+    public function Axios_getNotes(Request $request, PublicationChapterNoteRepository $pcnRepo, PublicationChapterRepository $pchRepo)
     {
         $dtIdChapter = $request->get("idChapter");
         // on cherche le chapitre 
         $chapter = $pchRepo->find($dtIdChapter);
         // je récupère toutes les notes en statut 0 du chapitre de l'utilisateur connecté 
         $note = $pcnRepo->findBy(['chapter' => $chapter, 'type' => 0]);
-
+        // Je récupère toutes les données de $note et je les mets dans un tableau
+        $note = array_map(function ($note) {
+            return [
+                'id' => $note->getId(),
+                'context' => $note->getContext(),
+                'selection' => $note->getSelection(),
+                'selectionEl' => $note->getSelectionEl(),
+                'p' => $note->getP(),
+            ];
+        }, $note);
         // Je renvoie les notes en json
         return $this->json([
             'code' => 200,
-            'message' => json_encode($note),
+            'message' => $note,
         ], 200);
     }
 }

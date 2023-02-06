@@ -11,22 +11,28 @@ export function quillEditor() {
   ];
   var options = {
     placeholder: "Contenu de votre chapitre...",
+    theme: "bubble",
     modules: {
       toolbar: toolbarOptions,
+      clipboard: {
+        matchVisual: false,
+        formats: [
+          "bold",
+          "italic",
+          "underline",
+          "align",
+          "link",
+          "header",
+          "list",
+        ],
+      },
     },
-    theme: "bubble",
+    formats: ["bold", "italic", "underline", "link", "header", "list", "align"],
   };
   if (document.getElementById("editor")) {
     const quill = new Quill("#editor", options);
+    quill.root.innerHTML = document.getElementById("editorHTML").value;
   }
-  var html = document.getElementById("editorHTML").value;
-
-  init(html, options);
-}
-function init(html, options) {
-  var quill = new Quill("#editor", options);
-  var delta = quill.clipboard.convert(html);
-  quill.setContents(delta, "silent");
 }
 if (document.getElementById("editorHTML")) {
   quillEditor();

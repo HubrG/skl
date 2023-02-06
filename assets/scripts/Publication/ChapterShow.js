@@ -1,21 +1,155 @@
 import axios from "axios";
 export function ShowChapter() {
   if (document.getElementById("chapContentTurbo")) {
+    // ! Récupération des notes (type 0) du chapitre de l'utilisateur connecté
     let url = "/recit/chapter/getnote";
     let data = new FormData();
     //
     data.append("idChapter", document.getElementById("chapId").value);
-
     axios
       .post(url, data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      })
+      }) // * TODO : Remettre le texte en contexte (avec "context")
       .then(function (response) {
-        console.log(response.data.message);
+        response.data.message.forEach((notes) => {
+          let selectionEl = notes.selectionEl;
+          let selection = notes.selection;
+          let context = notes.context.trim();
+          let id = notes.id;
+          let pr = notes.p;
+          if (!pr) {
+            pr = "0";
+          }
+          var chapArticle = document.getElementById("paragraphe-" + pr);
+          if (!chapArticle.innerHTML.includes(selection)) {
+            chapArticle.innerHTML = chapArticle.innerHTML.replace(
+              selectionEl,
+              "<span class='highlighted' id='hl-" +
+                id +
+                "'>" +
+                selection +
+                "</span>"
+            );
+          } else {
+            chapArticle.innerHTML = chapArticle.innerHTML.replace(
+              selection,
+              "<span class='highlighted' id='hl-" +
+                id +
+                "'>" +
+                selection +
+                "</span>"
+            );
+          }
+        });
       });
-
+    // ! Fonction qui affiche une petite tooltip avec une icone de suppression au survol de la souris sur un élément de classe "highlighted"
+    var highlighted = document.querySelectorAll("span.highlighted");
+    highlighted.forEach((element) => {
+      element.addEventListener("click", function () {
+        let parts = element.id.split("-");
+        let result = parts[1];
+        let tooltiped = document.getElementById("highlited-options");
+        tooltiped.classList.toggle("hidden");
+      });
+    });
+    // ! Fonction de surlignage
+    // * Sélection de texte
+    document
+      .getElementById("chapArticle")
+      .addEventListener("mouseup", function (e) {
+        window.addEventListener("click", function () {
+          if (window.getSelection().toString().length > 0) {
+            tooltip.classList.remove("hidden");
+          }
+        });
+        if (window.getSelection().toString()) {
+          var selection = window.getSelection();
+          var start = selection.anchorOffset - 2;
+          var end = selection.focusOffset;
+          var startNode = selection.anchorNode;
+          var textContent = startNode.textContent;
+          var contextStart = start >= 0 ? start : 0;
+          var contextEnd = end <= textContent.length ? end : textContent.length;
+          selectedTextContext = textContent.substring(contextStart, contextEnd);
+          console.log(selectedTextContext);
+          //
+          //
+          selectedText = window.getSelection().toString();
+          // Reprise du texte avec les balises
+          var selectedd = window.getSelection();
+          if (selectedd.rangeCount) {
+            var range = selectedd.getRangeAt(0);
+            var div = document.createElement("div");
+            div.appendChild(range.cloneContents());
+            selectedTextEl = div.innerHTML;
+          }
+          //
+          //
+          selectedTextEnd = window.getSelection().getRangeAt(0).endOffset;
+          let parts = window.getSelection().anchorNode.parentNode.closest("p");
+          parts = parts.id.split("-");
+          selectedTextP = parts[1];
+          //
+          if (selectedText) {
+            let selection = window.getSelection();
+            let range = selection.getRangeAt(0);
+            let rect = range.getBoundingClientRect();
+            tooltip.style.left = rect.left + window.scrollX + "px";
+            tooltip.style.top = rect.top + window.scrollY - 30 + "px";
+          } else {
+            tooltip.style.display = "none";
+            selectedText = "";
+            selectedTextP = "";
+            selectedTextEl = "";
+          }
+        }
+      });
+    let selectedText = "";
+    let selectedTextEl = "";
+    let selectedTextEnd = "";
+    let selectedTextContext = "";
+    let selectedTextP = "";
+    const tooltip = document.getElementById("tools");
+    let highlight = document.getElementById("highlight");
+    // * Click sur la popup
+    highlight.addEventListener("click", function () {
+      let url = "/recit/chapter/note";
+      let data = new FormData();
+      //
+      data.append("p", selectedTextP);
+      data.append("idChapter", document.getElementById("chapId").value);
+      data.append("selection", selectedText);
+      data.append("contentEl", selectedTextEl);
+      data.append("context", selectedTextContext.trim().replace(/\n.*/g, "")); // On enlève les sauts de ligne
+      data.append("end", selectedTextEnd);
+      data.append("type", "highlight");
+      axios
+        .post(url, data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then(function (response) {
+          tooltip.classList.add("hidden");
+          document.getElementById("chapArticle").innerHTML = document
+            .getElementById("chapArticle")
+            .innerHTML.replace(
+              selectedText,
+              "<span style='bg-amber-200 w-10 h-10'>|</span>" +
+                selectedText +
+                "<span style='bg-amber-200 w-10 h-10'>|</span>"
+            );
+        });
+    });
+    // * Click sur la fenêtre (pour fermer la popup)
+    window.addEventListener("click", function () {
+      if (!tooltip.classList.contains("hidden")) {
+        tooltip.classList.toggle("hidden");
+      }
+    });
+    // !
     // ! Fonction qui cache les flèches de navigation si on est au début ou à la fin du chapitre
     const target = document.getElementById("commentFrame");
     if (document.getElementById("arrowNext")) {
@@ -180,90 +314,6 @@ export function ShowChapter() {
           });
       });
     });
-    // ! Fonction de surlignage
-    let selectedText = "";
-    let selectedTextEnd = "";
-    let selectedTextStart = "";
-    let selectedTextSurround = "";
-    const tooltip = document.getElementById("tools");
-    let highlight = document.getElementById("highlight");
-    // * Click sur la popup
-    highlight.addEventListener("click", function () {
-      let url = "/recit/chapter/note";
-      let data = new FormData();
-      //
-      data.append("idChapter", document.getElementById("chapId").value);
-      data.append("content", selectedText.trim().replace(/\r?\n.*/g, ""));
-      data.append("surround", selectedTextSurround.replace(/\r?\n.*/g, ""));
-      data.append("start", selectedTextStart);
-      data.append("end", selectedTextEnd);
-      data.append("type", "highlight");
-      axios
-        .post(url, data, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then(function (response) {
-          tooltip.classList.add("hidden");
-          document.getElementById("chapArticle").innerHTML = document
-            .getElementById("chapArticle")
-            .innerHTML.replace(
-              selectedText,
-              "<span style='bg-amber-200 w-10 h-10'>|</span>" +
-                selectedText +
-                "<span style='bg-amber-200 w-10 h-10'>|</span>"
-            );
-        });
-    });
-    // * Click sur la fenêtre (pour fermer la popup)
-    window.addEventListener("click", function () {
-      if (!tooltip.classList.contains("hidden")) {
-        tooltip.classList.toggle("hidden");
-      }
-    });
-    // * Sélection de texte
-    document
-      .getElementById("chapArticle")
-      .addEventListener("mouseup", function (e) {
-        window.addEventListener("click", function () {
-          if (window.getSelection().toString().length > 0) {
-            tooltip.classList.remove("hidden");
-          }
-        });
-        if (window.getSelection().toString()) {
-          var selection = window.getSelection();
-          var start = selection.anchorOffset - 50;
-          var end = selection.focusOffset + 50;
-          var startNode = selection.anchorNode;
-          var textContent = startNode.textContent;
-          var contextStart = start >= 0 ? start : 0;
-          var contextEnd = end <= textContent.length ? end : textContent.length;
-          selectedTextSurround = textContent.substring(
-            contextStart,
-            contextEnd
-          );
-          //
-          selectedText = window.getSelection().toString();
-          selectedTextStart = window.getSelection().getRangeAt(0).startOffset;
-          selectedTextEnd = window.getSelection().getRangeAt(0).endOffset;
-          //
-          if (selectedText) {
-            let selection = window.getSelection();
-            let range = selection.getRangeAt(0);
-            let rect = range.getBoundingClientRect();
-            tooltip.style.left = rect.left + window.scrollX + "px";
-            tooltip.style.top = rect.top + window.scrollY - 30 + "px";
-          } else {
-            tooltip.style.display = "none";
-            selectedText = "";
-            selectedStart = "";
-            selectedEnd = "";
-          }
-        }
-      });
-
-    // * Si l'objet apparaît, le moindre clic le fait disparaitre
   }
 }
 function nl2br(str, is_xhtml) {

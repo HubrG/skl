@@ -6,7 +6,7 @@
 @import "~noty/lib/themes/semanticui.css";
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+JP:wght@100;300;400;500;700&display=swap');
 * {
-  @apply font-sans
+  @apply font-sans;
 }
 body {
   @apply bg-white dark:bg-slate-800 h-screen;
@@ -187,9 +187,53 @@ opacity: 0.4;
 #chapContent img {
   @apply max-w-[20%] float-left;
 }
+#chapContent {
+  @apply text-base text-slate-800 dark:text-slate-300 font-serif ;
+}
+#chapContent h1 {
+ @apply text-2xl
+}
+#chapContent h2 {
+ @apply text-xl
+}
+#chapContent h3 {
+ @apply text-lg
+}
+#chapContent h4 {
+ @apply text-base
+}
+#chapContent h5 {
+ @apply text-sm
+}
+#chapContent h6 {
+ @apply text-xs
+}
 #chapContent p {
-  font-family: "merriweather", serif;
-  @apply text-base text-slate-800 dark:text-slate-300 ;
+  @apply text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
+}
+#chapContent em {
+  @apply font-serif;
+}
+#chapContent ul {
+  @apply list-disc list-inside text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
+}
+#chapContent ol {
+  @apply list-decimal list-inside text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
+}
+#chapContent blockquote {
+  @apply text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
+}
+#chapContent pre {
+  @apply text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
+}
+#chapContent code {
+  @apply text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
+}
+#chapContent .highlighted {
+  @apply bg-amber-100 font-serif;
+}
+#chapContent .highlighted:hover {
+  @apply bg-amber-200 font-serif cursor-default;
 }
 .ql-align-center {
   @apply text-center items-center;
@@ -205,4 +249,10 @@ opacity: 0.4;
 }
 .highlight {
   @apply bg-amber-100 dark:bg-yellow-800 bg-opacity-70;
+}
+.highlight-chapter {
+  @apply absolute p-3 bg-slate-50 w-auto -mt-6 rounded-2xl shadow hidden;
+}
+.highlight-chapter ul {
+  @apply flex items-center justify-between;
 }

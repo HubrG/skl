@@ -29,14 +29,15 @@ class PublicationChapterNote
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $add_date = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $start = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $end = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $surround = null;
+    private ?string $context = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $p = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $selection_el = null;
 
     public function getId(): ?int
     {
@@ -103,38 +104,38 @@ class PublicationChapterNote
         return $this;
     }
 
-    public function getStart(): ?int
+    public function getcontext(): ?string
     {
-        return $this->start;
+        return $this->context;
     }
 
-    public function setStart(?int $start): self
+    public function setcontext(?string $context): self
     {
-        $this->start = $start;
+        $this->context = $context;
 
         return $this;
     }
 
-    public function getEnd(): ?int
+    public function getP(): ?int
     {
-        return $this->end;
+        return $this->p;
     }
 
-    public function setEnd(?int $end): self
+    public function setP(?int $p): self
     {
-        $this->end = $end;
+        $this->p = $p;
 
         return $this;
     }
 
-    public function getsurround(): ?string
+    public function getSelectionEl(): ?string
     {
-        return $this->surround;
+        return $this->selection_el;
     }
 
-    public function setsurround(?string $surround): self
+    public function setSelectionEl(?string $selection_el): self
     {
-        $this->surround = $surround;
+        $this->selection_el = $selection_el;
 
         return $this;
     }

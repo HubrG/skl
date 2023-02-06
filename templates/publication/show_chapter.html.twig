@@ -31,7 +31,6 @@
 		{% endif %}
 		<turbo-frame id="chapContentTurbo">
 			<article class="flex flex-col justify-center" id="chapArticle">
-
 				{{ chapterContent|raw }}
 			</article>
 		</turbo-frame>
@@ -131,9 +130,15 @@
 			{% endif %}
 		</turbo-frame>
 	</section>
-	<div id="tools" class="absolute p-3 bg-slate-50 -mt-6 rounded-2xl shadow hidden">
-		<ul class="list-none inline">
+	<div id="tools" class="absolute p-3 bg-slate-50 w-auto -mt-6 rounded-2xl shadow hidden">
+		<ul class="flex items-center justify-between">
 			<li id="highlight">Surligner</li>
+			<li>Caca</li>
+		</ul>
+	</div>
+	<div id="highlited-options" class="absolute p-3 bg-slate-50 -mt-6 rounded-2xl shadow hidden">
+		<ul class="list-none justify-center">
+			<li>Surligner</li>
 			<li>Caca</li>
 		</ul>
 	</div>

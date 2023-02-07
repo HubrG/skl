@@ -24,7 +24,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ["Noto Sans JP", "sans-serif"],
-        serif: ["Merriweather", "serif"],
+        serif: ["Playfair Display", "serif"],
       },
     },
   },

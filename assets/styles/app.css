@@ -4,7 +4,28 @@
 @import '~animate.css/animate.css';
 @import "~noty/lib/noty.css";
 @import "~noty/lib/themes/semanticui.css";
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+JP:wght@100;300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700&display=swap');
+
+@font-face {
+  font-family: "Solitreo";
+  src: url("../../public/fonts/Solitreo/Solitreo-Regular.ttf");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Playfair Display";
+  src: url("../../public/fonts/Playfair_Display/PlayfairDisplay-Italic-VariableFont_wght.ttf");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Playfair Display";
+  src: url("../../public/fonts/Playfair_Display/PlayfairDisplay-VariableFont_wght.ttf");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Playfair Display";
+  src: url("../../public/fonts/Playfair_Display/static/PlayfairDisplay-SemiBold.ttf");
+  font-weight: 700;
+}
 * {
   @apply font-sans;
 }
@@ -16,7 +37,6 @@ body.turbo-loading:not(nav), body.turbo-loaded:not(nav) {
 }
 footer {
   @apply shadow-2xl  border-slate-600 z-10;
-
 }
 nav {
   @apply  bg-white shadow-sm border-b border-b-slate-300 px-2 md:px-4 py-2.5 dark:bg-slate-900 dark:border-b-slate-700
@@ -24,7 +44,21 @@ nav {
 main {
   @apply  grid grid-rows-none grid-cols-12  items-start mx-auto md:p-10 p-3 pt-14 md:w-9/12 z-50;
 }
-
+#titleChapter {
+  @apply  py-2 col-span-12 rounded items-center -mt-10 ;
+}
+#titleChapter>h1 {
+  @apply text-left text-2xl font-normal font-serif pt-4 text-slate-900 ;
+}
+#titleChapter>h1, h1>a {
+  @apply text-slate-900 hover:underline font-serif text-xl;
+}
+#titleChapter>h2 {
+  @apply text-left font-light text-sm  font-serif -mt-9 ;
+}
+#titleChapter>h2>*>a {
+  @apply text-slate-700 hover:underline font-serif ;
+}
 dialog {
   @apply bg-white bg-opacity-50  backdrop-blur-[0.8px] backdrop-grayscale backdrop-filter backdrop-saturate-200  ;
 }
@@ -36,15 +70,13 @@ h1 {
     font-weight: normal;
     @apply  text-4xl text-slate-700 mb-10 dark:text-slate-100 md:text-5xl;
 }
-main a {
-  @apply text-blue-700;
-}
-main a:hover {
-  @apply text-blue-500;
-}
+
 #logo {
   font-family: 'Merriweather';
-  @apply font-light text-slate-700 dark:text-white
+  @apply font-light text-slate-700 dark:text-white flex
+}
+#logo span {
+  @apply font-[Solitreo] text-5xl -mt-[0.55rem] ml-1 block text-slate-700;
 }
 .alert, .alert-danger {
   @apply text-rose-500 text-sm -mt-2 mb-2;
@@ -209,7 +241,7 @@ opacity: 0.4;
  @apply text-xs
 }
 #chapContent p {
-  @apply text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
+  @apply text-lg mb-2 indent-2 leading-6 text-slate-800 dark:text-slate-300 font-serif;
 }
 #chapContent em {
   @apply font-serif;
@@ -229,7 +261,6 @@ opacity: 0.4;
 #chapContent code {
   @apply text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
 }
-
 .ql-align-center {
   @apply text-center items-center;
 }
@@ -246,23 +277,38 @@ opacity: 0.4;
   @apply  font-serif cursor-pointer;
 }
 #chapContent .hl-1 {
-  @apply bg-amber-100 dark:bg-amber-800 text-amber-900 ;
+  @apply bg-emerald-100 hover:bg-emerald-200 dark:bg-emerald-800 text-emerald-900 ;
 }
 #chapContent .hl-2 {
-  @apply bg-purple-100 dark:bg-purple-800 text-purple-900;
+  @apply bg-amber-100 hover:bg-amber-200 dark:bg-amber-800 text-amber-900;
 }
 #chapContent .hl-3 {
-  @apply bg-red-100 dark:bg-red-800 text-red-900;
+  @apply bg-red-100 hover:bg-red-100 dark:bg-red-800 text-red-900;
 }
 #chapContent .hl-4 {
-  @apply bg-slate-100 dark:bg-slate-800 text-slate-900;
+  @apply bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-900;
 }
 #tools  {
-  @apply absolute p-3 bg-slate-50 w-auto -mt-6 rounded-2xl shadow;
+  @apply absolute p-3 bg-white w-auto -mt-6 rounded-2xl shadow;
 }
 #tools ul {
   @apply flex items-center justify-between;
 }
-#tools ul>li.hl {
-  @apply mx-[0.11rem];
+#tools ul>li {
+  @apply mx-[0.3rem] cursor-pointer;
+}
+#highlighted-options {
+@apply absolute p-3  bg-white w-auto -mt-6 rounded-2xl shadow;
+}
+#highlighted-options ul {
+  @apply  items-center flex gap-2 justify-between;
+}
+#tools li {
+  @apply mx-[0.3rem] block cursor-pointer;
+}
+#delete-hl {
+@apply rounded-full h-[1.3rem] w-[1.3rem] items-center flex justify-center cursor-pointer bg-opacity-50;
+}
+#delete-hl:hover {
+  @apply  bg-opacity-100;
 }

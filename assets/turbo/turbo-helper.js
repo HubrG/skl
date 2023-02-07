@@ -8,6 +8,8 @@ import { quillEditor } from "../scripts/Quill.js";
 import { Sortables } from "../scripts/Publication/Sortable";
 import { LazyLoad } from "../scripts/LazyLoad";
 import { ShowChapter } from "../scripts/Publication/ChapterShow";
+import tippy from "tippy.js";
+tippy("[data-tippy-content]");
 
 const TurboHelper = class {
   constructor() {
@@ -28,10 +30,12 @@ const TurboHelper = class {
       }
       ShowChapter();
       LazyLoad();
+      tippy("[data-tippy-content]");
     });
     document.addEventListener("turbo:frame-render", () => {
       ShowChapter();
       LazyLoad();
+      tippy("[data-tippy-content]");
     });
     document.addEventListener("turbo:visit", () => {
       // fade out the old body

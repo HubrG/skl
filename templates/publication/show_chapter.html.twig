@@ -6,20 +6,21 @@
 	{{ parent() }}
 {% endblock %}
 {% block body %}
-	<section class="col-span-6 col-start-4  row-start-1 gap-10 grayscale">
-		{% if app.user.id is defined  %}
-			{{ infoChap.publicationChapterNotes|length }}
-			surlignage(s)
-		{% endif %}
-		<h1 class="text-center font-serif text-xl">
-			<a href="{{ path("app_publication_show_one", {id:infoPub.id, slug:infoPub.slug}) }}">{{ infoPub.title }}</a>
-		</h1>
-		<h2 class="text-center -mt-8 text-xs">
-			<small>par</small>
-			<span class="font-medium">
-				<a href="{{ path("app_user", {username:infoPub.user.username}) }}">{{ infoPub.user.nickname }}</a>
-			</span>
-		</h2>
+	<section id="titleChapter">
+		<div>
+			<h1>
+				<a id="chapTitle" href="{{ path("app_publication_show_one", {id:infoPub.id, slug:infoPub.slug}) }}">{{ infoPub.title }}</a>
+			</h1>
+			<h2>
+				<small>par</small>
+				<span class="font-medium">
+					<a href="{{ path("app_user", {username:infoPub.user.username}) }}">{{ infoPub.user.nickname }}</a>
+				</span>
+			</h2>
+		</div>
+		<div class="items-center justify-center justify-items-center flex">
+			<a href="{{ path("app_user", {username:infoPub.user.username}) }}" class=" text-xl text-slate-700">{{ infoChap.title }}</a>
+		</div>
 	</section>
 	<section class="col-span-8 col-start-3 pt-10 row-start-2" id="chapContent">
 		{% if previousChap %}
@@ -133,32 +134,68 @@
 	<div id="tools" class="hidden">
 		<ul>
 			<li class="hl" data-color="1">
-				<i class="fa-solid fa-circle text-amber-200"></i>
+				<i class="fa-solid fa-bookmark text-emerald-200"></i>
 			</li>
 			<li class="hl" data-color="2">
-				<i class="fa-solid fa-circle text-purple-200"></i>
+				<i class="fa-solid fa-bookmark text-amber-200"></i>
 			</li>
 			<li class="hl" data-color="3">
-				<i class="fa-solid fa-circle text-red-200"></i>
+				<i class="fa-solid fa-bookmark text-red-200"></i>
 			</li>
 			<li class="hl" data-color="4">
-				<i class="fa-solid fa-circle text-gray-200"></i>
+				<i class="fa-solid fa-bookmark text-slate-200"></i>
+			</li>
+			<li class="text-slate-400">|</li>
+			<li class="commentQuote" data-drawer-target="drawer-right-example" data-drawer-show="drawer-right-example" data-drawer-placement="right" aria-controls="drawer-right-example">
+				<i data-tippy-content="Commenter ce passage" class="fa-regular fa-comment"></i>
 			</li>
 			<li>
-				<i class="fa-regular fa-note-sticky"></i>
-				Annoter</li>
+				<i class="fa-solid fa-lock"></i>
+			</li>
+			<li>|</li>
 			<li>
-				<i class="fa-regular fa-comment"></i>
-				Commmenter</li>
+				<i data-tippy-content="Partager sur Twitter" class="shareTwitter  fa-brands fa-square-twitter text-[#1DA1F2]  text-xl"></i>
+			</li>
+			<li>
+				<i data-tippy-content="Partager sur Facebook" class="shareFb fa-brands fa-square-facebook text-[#3b5998]  text-xl"></i>
+			</li>
+			<li>
+				<i data-tippy-content="Partager sur Linkedin" class="shareLk fa-brands fa-linkedin text-[#0072b1] text-xl"></i>
+			</li>
+			<li>
+				<i data-tippy-content="Copier la sélection" class="fa-solid fa-link text-slate-700"></i>
+			</li>
 		</ul>
 	</div>
-	<div id="highlighted-options" class="absolute p-3 bg-slate-50 -mt-6 rounded-2xl shadow hidden">
-		<ul class="list-none justify-center">
-			<li id="delete-hl">Supprimer</li>
-			<li id="color-hl">Changer de couleur</li>
-			<li id="color-hl">Annoter</li>
-			<li id="color-hl">Commenter</li>
+	<div id="highlighted-options" class="hidden">
+		<ul>
+			<li>
+				<div id="delete-hl">
+					<i data-tippy-content="Supprimer le marquage" class="fa-solid fa-xmark"></i>
+				</div>
+			</li>
+			<li class="text-slate-400">|</li>
+			<li class="commentQuote" data-drawer-target="drawer-right-example" data-drawer-show="drawer-right-example" data-drawer-placement="right" aria-controls="drawer-right-example">
+				<i data-tippy-content="Commenter ce passage" class="fa-regular fa-comment"></i>
+			</li>
+			<li>
+				<i class="fa-solid fa-lock"></i>
+			</li>
+			<li class="text-slate-400">|</li>
+			<li>
+				<i data-tippy-content="Partager sur Twitter" class="shareTwitter  fa-brands fa-square-twitter text-[#1DA1F2]  text-xl cursor-pointer"></i>
+			</li>
+			<li>
+				<i data-tippy-content="Partager sur Facebook" class="shareFb fa-brands fa-square-facebook text-[#3b5998]  text-xl"></i>
+			</li>
+			<li>
+				<i data-tippy-content="Partager sur Linkedin" class="shareLk fa-brands fa-linkedin text-[#0072b1] text-xl"></i>
+			</li>
+			<li>
+				<i data-tippy-content="Copier la sélection" class="fa-solid fa-link text-slate-700"></i>
+			</li>
 		</ul>
 	</div>
+	{% include "publication/_partials/_show_drawer.html.twig" with {'type': "bottom"}  %}
 	<input type="hidden" id="chapId" value="{{ infoChap.id }}">
 {% endblock %}

@@ -81,8 +81,8 @@ class ChapterShowController extends AbstractController
         // * On ajoute un view pour le chapitre (si l'utilisateur n'est pas l'auteur de la publication)
         $this->viewChapter($chapter);
         // * On formate les notes du chapitre de l'utilisateur connecté
-
         $chapterContent = $this->formatChapter($chapter);
+        $chapterContent = $this->formatHL($chapterContent, $chapter);
 
         // * La vue
         return $this->render('publication/show_chapter.html.twig', [
@@ -276,9 +276,10 @@ class ChapterShowController extends AbstractController
     public function formatChapter($chapter)
     {
         $id = 0;
+        $newText = str_replace("<p><br></p>", "", $chapter->getContent());
         $newText = preg_replace_callback('/<p\s*(.*?)>(.*?)<\/p>/', function ($matches) use (&$id) {
-            return '<p id="paragraphe-' . $id++ . '"' . $matches[1] . '>' . $matches[2] . '</p>';
-        }, $chapter->getContent());
+            return '<p id="paragraphe-' . $id++ . '" ' . $matches[1] . '>' . $matches[2] . '</p>';
+        }, $newText);
 
         return $newText;
     }
@@ -327,5 +328,35 @@ class ChapterShowController extends AbstractController
                 'message' => 'Vous n\'avez pas les droits pour supprimer cette note.',
             ], 403);
         }
+    }
+    public function formatHL($chapter, $chapterTab)
+    {
+        $notes = $this->chapterNote->findBy(['chapter' => $chapterTab, 'type' => 0]);
+        $chapterText = $chapter;
+        foreach ($notes as $note) {
+            $contextSel = $note->getContext();
+            $selection = $note->getSelection();
+            $color = $note->getColor();
+            $selectionEl = $note->getSelectionEl();
+            $idNote = $note->getId();
+            $tests = $contextSel . $selection;
+            $regex = '/<p id="paragraphe-' . $note->getP() . '"(.*?)>(.*?)<\/p>/';
+            preg_match($regex, $chapterText, $match);
+            if (strpos($match[0], $tests)) {
+                $test = str_replace($tests, $contextSel . "<span id='hl-" . $idNote . "' class='highlighted hl-" . $color . "'>" . $selection . "</span>", $match[0]);
+                $chapterText = str_replace($match[0], $test, $chapterText);
+            } elseif (strpos($match[0], $selectionEl)) {
+                $test = str_replace($selectionEl, "<span id='hl-" . $idNote . "' class='highlighted hl-" . $color . "'>" . $selection . "</span>", $match[0]);
+                $chapterText = str_replace($match[0], $test, $chapterText);
+            } else {
+                $test = str_replace($selection, "<span id='hl-" . $idNote . "' class='highlighted hl-" . $color . "'>" . $selection . "</span>", $match[0]);
+                $chapterText = str_replace($match[0], $test, $chapterText);
+            }
+            if (strpos($selectionEl, "</p>") !== false) { // FIXME : HERE
+
+                $chapterText = str_replace($selectionEl, "<span id='hl-" . $idNote . "' class='highlighted hl-" . $color . "'>" . $selectionEl . "</span>",  $chapterText);
+            }
+        }
+        return $chapterText;
     }
 }

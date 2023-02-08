@@ -31,10 +31,9 @@ class PublicationChapterComment
     #[ORM\OneToMany(mappedBy: 'comment', targetEntity: PublicationChapterCommentLike::class, orphanRemoval: true)]
     private Collection $publicationChapterCommentLikes;
 
-    public function __construct()
-    {
-        $this->publicationChapterCommentLikes = new ArrayCollection();
-    }
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $quote = null;
+
 
     public function getId(): ?int
     {
@@ -115,6 +114,18 @@ class PublicationChapterComment
                 $publicationChapterCommentLike->setComment(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getQuote(): ?string
+    {
+        return $this->quote;
+    }
+
+    public function setQuote(?string $quote): self
+    {
+        $this->quote = $quote;
 
         return $this;
     }

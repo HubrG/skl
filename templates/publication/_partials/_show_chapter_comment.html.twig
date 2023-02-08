@@ -1,0 +1,55 @@
+<p>{{ infoChap.publicationChapterComments|length }}
+	commentaire(s)<br/><br/>
+</p>
+{% set n = 0 %}
+{% if app.user.id is defined %}
+	{% set userLogId = app.user.id %}
+{% else %}
+	{% set userLogId = null %}
+{% endif %}
+{% for item in comments|sort((a, b) => a.publishDate > b.publishDate ? -1 : 1) %}
+	{% if item.user.id is defined %}
+		<div {% if n == 0 and userLogId == item.user.id and item.publishDate > "now"|date_modify("-2 seconds") %} id="lastComment" class="bg-slate-50 text-slate-600  animate__animated animate__fadeIn p-2 rounded transition-colors duration-[1000ms]" {% else %} class=" block  p-2 rounded" {% endif %}>
+			<p class=" text-lg">
+				<small>il y a
+					{{ item.publishDate|since }}
+					par
+					<a href="{{ path("app_user", {username:item.user.username}) }}">{{ item.user.nickname }}</a>
+					{% if item.user.id == userLogId %}
+						|
+						<a data-turbo-frame="_self" href="{{ path("app_chapter_del_comment", {id:item.id}) }}">Supprimer</a>
+						|
+						<button type="button" class="updateButton" id="updateButton-{{ item.id }}">Modifier</button>
+						{% set class = "fa-solid fa-heart grayscale cursor-not-allowed text-slate-400 " %}
+					{% elseif userLogId %}
+						{% set class = "fa-regular fa-heart likeButton cursor-pointer" %}
+					{% else %}
+						{% set class = "fa-regular fa-heart grayscale" %}
+					{% endif %}
+					|
+					{% for itemLike in item.publicationChapterCommentLikes %}
+						{% if itemLike.user.id == userLogId %}
+							{% set class = "fa-solid fa-heart text-red-500 cursor-pointer likeButton" %}
+						{% else %}
+							{% set class = "fa-solid fa-heart" %}
+						{% endif %}
+					{% endfor %}
+					<i class="{{ class }} animate__animated" id="likeButton-{{ item.id }}"></i>
+					<span id="nbLikes-{{ item.id }}">{{ item.publicationChapterCommentLikes|length }}</span>
+				</small>
+			</p>
+			<div id="updateCom-{{ item.id }}">
+				<p id="comShow-{{ item.id }}">{{ item.content|nl2br }}</p>
+			</div>
+		</div>
+		{% set n = n + 1 %}
+	{% endif %}
+{% endfor %}
+{% if nbrShowCom < infoChap.publicationChapterComments|length %}
+	{% if infoPub.slug %}
+		{% set chapterSlug = infoPub.slug %}
+	{% else %}
+		{% set chapterSlug = "feuille-n0" ~ (chapter.orderDisplay + 1) %}
+	{% endif %}
+	<a href="{{path("app_chapter_show", {user:infoPub.user.id, slug:chapterSlug, slugPub:infoPub.slug, idChap:infoChap.id, nbrShowCom:nbrShowCom + 10})}}">Afficher plus de commentaires</a>
+{% endif %}

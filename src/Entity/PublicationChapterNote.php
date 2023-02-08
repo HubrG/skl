@@ -45,6 +45,10 @@ class PublicationChapterNote
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $content = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $p_content = null;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -166,6 +170,18 @@ class PublicationChapterNote
     public function setContent(?string $content): self
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    public function getPContent(): ?string
+    {
+        return $this->p_content;
+    }
+
+    public function setPContent(?string $p_content): self
+    {
+        $this->p_content = $p_content;
 
         return $this;
     }

@@ -26,6 +26,13 @@
   src: url("../../public/fonts/Playfair_Display/static/PlayfairDisplay-SemiBold.ttf");
   font-weight: 700;
 }
+.material-symbols-sharp {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 300,
+  'GRAD' 0,
+  'opsz' 48;
+}
 * {
   @apply font-sans;
 }
@@ -286,7 +293,7 @@ opacity: 0.4;
   @apply bg-red-100 hover:bg-red-100 dark:bg-red-800 text-red-900;
 }
 #chapContent .hl-4 {
-  @apply bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-900;
+  @apply bg-blue-100 hover:bg-blue-200 dark:bg-blue-800 text-blue-900;
 }
 #tools  {
   @apply absolute p-3 bg-white w-auto -mt-6 rounded-2xl shadow;

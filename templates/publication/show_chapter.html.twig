@@ -36,8 +36,8 @@
 			</article>
 		</turbo-frame>
 		{% if nextChap %}
-			<div class="fixed top-0 bottom-0 right-0 flex items-center justify-end mr-8 lg:mr-56  z-10" id="arrowNext">
-				<a href="{{ path("app_chapter_show", {idChap:nextChap.id, slugPub:infoPub.slug, user:infoPub.user.username, slug:nextChap.slug}) }}" class="text-slate-600">
+			<div class="fixed top-0 bottom-0 right-0 flex items-center justify-end mr-8 lg:mr-56 " id="arrowNext">
+				<a href="{{ path("app_chapter_show", {idChap:nextChap.id, slugPub:infoPub.slug, user:infoPub.user.username, slug:nextChap.slug}) }}" class="text-slate-600  z-10">
 					<i class="fa-solid fa-angles-right  text-4xl"></i>
 				</a>
 			</div>
@@ -59,78 +59,17 @@
 			{% endif %}
 		</div>
 	</section>
+	<div class="sticky col-span-12 bottom-10 flex justify-center z-50">
+		<div class="bg-white rounded-xl shadow p-3 flex gap-5 items-center">
+			<i class="fa-regular fa-comments toggleSidebar hover:text-blue-600 cursor-pointer"></i>
+			|
+			<i class="fa-regular fa-star-half-stroke hover:text-blue-600 cursor-pointer"></i>
+			|
+			<i class="fa-solid fa-ellipsis hover:text-blue-600 cursor-pointer"></i>
+		</div>
+		<div></div>
+	</div>
 	{# TODO: ajouter temps de lecture restant dans le chapitre + temps de lecture total de la publication #}
-	<section class="col-span-8 col-start-3  mt-5 w-full row-start-3">
-		<hr class="mb-5"/>
-		<h3 class="text-2xl font-medium">Commentaires</h3>
-
-		{% if app.user.id is defined %}
-			{{ form_start(form, {attr:{"data-turbo-frame":"commentFrame"}}) }}
-			<div class="flex items-center">
-				{{ form_widget(form.content, {attr:{"class":"h-[3.4rem] items-center content-center pt-3"}}) }}
-				<button type="submit" class="btn btn-primary h-12" id="sendComment">Envoyer</button>
-			</div>
-			{{ form_end(form) }}
-		{% endif %}
-		<hr>
-		<turbo-frame id="commentFrame">
-			<p>{{ infoChap.publicationChapterComments|length }}
-				commentaire(s)<br/><br/>
-			</p>
-			{% set n = 0 %}
-			{% if app.user.id is defined %}
-				{% set userLogId = app.user.id %}
-			{% else %}
-				{% set userLogId = null %}
-			{% endif %}
-			{% for item in comments|sort((a, b) => a.publishDate > b.publishDate ? -1 : 1) %}
-				{% if item.user.id is defined %}
-					<div {% if n == 0 and userLogId == item.user.id and item.publishDate > "now"|date_modify("-2 seconds") %} id="lastComment" class="bg-slate-50 text-slate-600  animate__animated animate__fadeIn p-2 rounded transition-colors duration-[1000ms]" {% else %} class=" block  p-2 rounded" {% endif %}>
-						<p class=" text-lg">
-							<small>il y a
-								{{ item.publishDate|since }}
-								par
-								<a href="{{ path("app_user", {username:item.user.username}) }}">{{ item.user.nickname }}</a>
-								{% if item.user.id == userLogId %}
-									|
-									<a data-turbo-frame="_self" href="{{ path("app_chapter_del_comment", {id:item.id}) }}">Supprimer</a>
-									|
-									<button type="button" class="updateButton" id="updateButton-{{ item.id }}">Modifier</button>
-									{% set class = "fa-regular fa-heart " %}
-								{% elseif userLogId %}
-									{% set class = "fa-regular fa-heart likeButton cursor-pointer" %}
-								{% else %}
-									{% set class = "fa-regular fa-heart " %}
-								{% endif %}
-								|
-								{% for itemLike in item.publicationChapterCommentLikes %}
-									{% if itemLike.user.id == userLogId %}
-										{% set class = "fa-solid fa-heart text-red-500 cursor-pointer likeButton" %}
-									{% else %}
-										{% set class = "fa-regular fa-heart" %}
-									{% endif %}
-								{% endfor %}
-								<i class="{{ class }} animate__animated" id="likeButton-{{ item.id }}"></i>
-								<span id="nbLikes-{{ item.id }}">{{ item.publicationChapterCommentLikes|length }}</span>
-							</small>
-						</p>
-						<div id="updateCom-{{ item.id }}">
-							<p id="comShow-{{ item.id }}">{{ item.content|nl2br }}</p>
-						</div>
-					</div>
-					{% set n = n + 1 %}
-				{% endif %}
-			{% endfor %}
-			{% if nbrShowCom < infoChap.publicationChapterComments|length %}
-				{% if infoPub.slug %}
-					{% set chapterSlug = infoPub.slug %}
-				{% else %}
-					{% set chapterSlug = "feuille-n0" ~ (chapter.orderDisplay + 1) %}
-				{% endif %}
-				<a href="{{path("app_chapter_show", {user:infoPub.user.id, slug:chapterSlug, slugPub:infoPub.slug, idChap:infoChap.id, nbrShowCom:nbrShowCom + 10})}}">Afficher plus de commentaires</a>
-			{% endif %}
-		</turbo-frame>
-	</section>
 	<div id="tools" class="hidden">
 		<ul>
 			<li class="hl" data-color="1">
@@ -142,12 +81,9 @@
 			<li class="hl" data-color="3">
 				<i class="fa-solid fa-bookmark text-red-200"></i>
 			</li>
-			<li class="hl" data-color="4">
-				<i class="fa-solid fa-bookmark text-slate-200"></i>
-			</li>
 			<li class="text-slate-400">|</li>
-			<li class="commentQuote" data-drawer-target="drawer-right-example" data-drawer-show="drawer-right-example" data-drawer-placement="right" aria-controls="drawer-right-example">
-				<i data-tippy-content="Commenter ce passage" class="fa-regular fa-comment"></i>
+			<li class="commentQuote">
+				<i data-tippy-content="Commenter ce passage" class="fa-regular fa-comment toggleSidebar"></i>
 			</li>
 			<li>
 				<i class="fa-solid fa-lock"></i>
@@ -175,8 +111,8 @@
 				</div>
 			</li>
 			<li class="text-slate-400">|</li>
-			<li class="commentQuote" data-drawer-target="drawer-right-example" data-drawer-show="drawer-right-example" data-drawer-placement="right" aria-controls="drawer-right-example">
-				<i data-tippy-content="Commenter ce passage" class="fa-regular fa-comment"></i>
+			<li class="commentAlreadyQuote">
+				<i data-tippy-content="Commenter ce passage" class="fa-regular fa-comment toggleSidebar"></i>
 			</li>
 			<li>
 				<i class="fa-solid fa-lock"></i>

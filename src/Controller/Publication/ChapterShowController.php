@@ -2,20 +2,18 @@
 
 namespace App\Controller\Publication;
 
-use Symfony\Bundle\SessionBundle;
 use App\Entity\PublicationChapterNote;
 use App\Entity\PublicationChapterView;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\PublicationChapterComment;
 use App\Repository\PublicationRepository;
 use App\Form\PublicationChapterCommentType;
-use Symfony\Component\HttpFoundation\Cookie;
 use App\Entity\PublicationChapterCommentLike;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
 use App\Repository\PublicationChapterNoteRepository;
-use Symfony\Component\HttpFoundation\Session\Session;
 use App\Repository\PublicationChapterCommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -32,7 +30,7 @@ class ChapterShowController extends AbstractController
     }
 
     #[Route('/recit-{slugPub}/{user}/{idChap}/{slug?}/{nbrShowCom?}', name: 'app_chapter_show')]
-    public function showChapter(Request $request, PublicationChapterCommentRepository $pccRepo, PublicationChapterRepository $pchRepo, EntityManagerInterface $em, PublicationRepository $pRepo, $slug = null, $idChap = null, $nbrShowCom = null): response
+    public function showChapter(Request $request, PublicationChapterCommentRepository $pccRepo, PublicationChapterRepository $pchRepo, EntityManagerInterface $em, PublicationChapterNoteRepository $pcnRepo, PublicationRepository $pRepo, $slug = null, $idChap = null, $nbrShowCom = null): response
     {
         if (!$nbrShowCom) {
             $nbrShowCom = 10;
@@ -68,13 +66,17 @@ class ChapterShowController extends AbstractController
         // * 
         $form = $this->createForm(PublicationChapterCommentType::class);
         $form->handleRequest($request);
+        // ON récupère le champ "quote" depuis la request
         if ($form->isSubmitted() && $form->isValid()) {
+            $quote = $request->request->get('quote');
             $comment = $form->getData();
             $comment->setChapter($chapter);
+            $comment->setQuote($quote);
             $comment->setUser($this->getUser());
             $comment->setPublishDate(new \DateTime('now'));
             $em->persist($comment);
             $em->flush();
+
             $this->addFlash('success', 'Votre commentaire a bien été ajouté.');
             return $this->redirectToRoute('app_chapter_show', ['slugPub' => $publication->getSlug(), 'user' => $publication->getUser()->getUsername(), 'idChap' => $chapter->getId(), 'slug' => $chapter->getSlug()]);
         }
@@ -91,6 +93,7 @@ class ChapterShowController extends AbstractController
             'previousChap' => $previous,
             'nextChap' => $next,
             'form' => $form->createView(),
+            'formQuote' => $form->createView(),
             "comments" => $comments,
             "nbrShowCom" => $nbrShowCom,
             "chapterContent" => $chapterContent,
@@ -183,13 +186,14 @@ class ChapterShowController extends AbstractController
         $dtType = $request->get("type");
         $dtP = $request->get("p");
         $dtContext = $request->get("context");
-        if ($dtContext == "undefined") {
-            $dtContext = null;
-        }
         $dtColor = $request->get("color");
         $dtSelection = $request->get("selection");
         $dtContentEl = $request->get("contentEl");
+        if ($dtContext == "undefined") {
+            $dtContext = null;
+        }
         // * On supprimer les balises HTML en début et fin de chaîne
+        $dtPContent = strip_tags($dtContentEl, "<p>");
         $dtContentEl = preg_replace('/^(?:<[^>]+>)+|(?:<\/[^>]+>)+$/', '', $dtContentEl);
         // * On supprime les retours à la ligne en début et fin de chaîne sur $Content
         $lines = explode("\n", $dtSelection);
@@ -214,6 +218,7 @@ class ChapterShowController extends AbstractController
                     ->setContext($dtContext)
                     ->setSelection($dtSelection)
                     ->setSelectionEl($dtContentEl)
+                    ->setPContent($dtPContent)
                     ->setAddDate(new \DateTime('now'));
                 $em->persist($note);
                 $em->flush();
@@ -342,19 +347,41 @@ class ChapterShowController extends AbstractController
             $tests = $contextSel . $selection;
             $regex = '/<p id="paragraphe-' . $note->getP() . '"(.*?)>(.*?)<\/p>/';
             preg_match($regex, $chapterText, $match);
-            if (strpos($match[0], $tests)) {
-                $test = str_replace($tests, $contextSel . "<span id='hl-" . $idNote . "' class='highlighted hl-" . $color . "'>" . $selection . "</span>", $match[0]);
-                $chapterText = str_replace($match[0], $test, $chapterText);
-            } elseif (strpos($match[0], $selectionEl)) {
-                $test = str_replace($selectionEl, "<span id='hl-" . $idNote . "' class='highlighted hl-" . $color . "'>" . $selection . "</span>", $match[0]);
-                $chapterText = str_replace($match[0], $test, $chapterText);
-            } else {
-                $test = str_replace($selection, "<span id='hl-" . $idNote . "' class='highlighted hl-" . $color . "'>" . $selection . "</span>", $match[0]);
-                $chapterText = str_replace($match[0], $test, $chapterText);
-            }
-            if (strpos($selectionEl, "</p>") !== false) { // FIXME : HERE
+            // On reformate le $selectionEl pour ne conserver que ce qui précède la première balise fermante </p> de la chaîne
+            if (strpos($selectionEl, "</p>") !== false) {
+                if (strpos($selectionEl, "</p>")) {
+                    $selectionEl2 = substr($selectionEl, 0, strpos($selectionEl, "</p>"));
+                    preg_match_all('/<[^>]*>|[^<]+/', $selectionEl2, $matches);
+                    $n = 0;
+                    foreach ($matches[0] as $key => $value) {
+                        if (strpos($value, "<") === false) {
+                            $matches[0][$key] = "<span id='hl-" . $idNote . "' class='hlId-" . $idNote . " highlighted hl-" . $color . " hlMultiple'>" . $value . "</span>";
+                        }
+                        $n++;
+                    }
+                    // on immlode
+                    $selectionEl3 = implode("", $matches[0]);
 
-                $chapterText = str_replace($selectionEl, "<span id='hl-" . $idNote . "' class='highlighted hl-" . $color . "'>" . $selectionEl . "</span>",  $chapterText);
+                    $chapterText = str_replace($selectionEl2, "<span id='hl-" . $idNote . "' class='highlighted hl-" . $color . "'>" . $selectionEl3 . "</span>", $chapterText);
+                } else {
+                    $chapterText = str_replace($selectionEl, "<span id='hl-" . $idNote . "' class='highlighted hl-" . $color . "'>" . $selectionEl . "</span>", $chapterText);
+                }
+                $chapterText = str_replace(
+                    $selectionEl,
+                    `<span id='hl-" . $idNote . "' class='highlighted hl-" . $color . "'>" . $selectionEl . "</span>`,
+                    $chapterText
+                );
+            } else {
+                if (strpos($match[0], $tests)) {
+                    $test = str_replace($tests, $contextSel . "<span id='hl-" . $idNote . "' class='highlighted hl-" . $color . "'>" . $selection . "</span>", $match[0]);
+                    $chapterText = str_replace($match[0], $test, $chapterText);
+                } elseif (strpos($match[0], $selectionEl)) {
+                    $test = str_replace($selectionEl, "<span id='hl-" . $idNote . "' class='highlighted hl-" . $color . "'>" . $selection . "</span>", $match[0]);
+                    $chapterText = str_replace($match[0], $test, $chapterText);
+                } else {
+                    $test = str_replace($selection, "<span id='hl-" . $idNote . "' class='highlighted hl-" . $color . "'>" . $selection . "</span>", $match[0]);
+                    $chapterText = str_replace($match[0], $test, $chapterText);
+                }
             }
         }
         return $chapterText;

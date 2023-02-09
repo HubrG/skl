@@ -19,146 +19,144 @@ export function ShowChapter() {
       sidebarScroll.style.paddingTop = "5rem";
     }
   });
-  //!SECTION — Traitement de tout ce qui concerne la sélection de texte
-  //ANCHOR — Traitement de tout ce qui concerne la sélection de texte
-  //!SECTION — Traitement de tout ce qui concerne la sélection de texte
+  if (document.getElementById("insightQuote")) {
+    // ! On vérifie que l'utilisateur est connecté
+    //!SECTION — Traitement de tout ce qui concerne la sélection de texte
+    //ANCHOR — Traitement de tout ce qui concerne la sélection de texte
+    //!SECTION — Traitement de tout ce qui concerne la sélection de texte
 
-  const chapArticle = document.getElementById("chapArticle");
-  const tooltip = document.getElementById("tools");
-  const highlight = document.querySelectorAll("ul > li.hl");
+    const chapArticle = document.getElementById("chapArticle");
+    const tooltip = document.getElementById("tools");
+    const highlight = document.querySelectorAll("ul > li.hl");
 
-  const highlightedOptions = document.getElementById("highlighted-options");
-  const highlightedSpans = document.querySelectorAll("span.highlighted");
-  activeClickTooltipHL(highlightedOptions, highlightedSpans);
+    const highlightedOptions = document.getElementById("highlighted-options");
+    const highlightedSpans = document.querySelectorAll("span.highlighted");
+    activeClickTooltipHL(highlightedOptions, highlightedSpans);
 
-  window.addEventListener("click", () => {
-    if (!highlightedOptions.classList.contains("hidden")) {
-      highlightedOptions.classList.add("hidden");
-    }
-  });
-  const handleClick = (callback) => (element) =>
-    element.addEventListener("click", callback);
-
-  // ! modifier le contenu des inputs hidden du drawer lorsqu'on clique sur le bouton "commenter"
-  const commentB = document.querySelectorAll(".commentQuote");
-  commentB.forEach(
-    handleClick(() =>
-      updateDrawerContent(
-        selectedText,
-        selectedTextP,
-        selectedTextEl,
-        selectedTextContext,
-        tooltip
-      )
-    )
-  );
-  // ! Permet de commenter un marquage déjà existant.
-  const commentBAlready = document.querySelectorAll(".commentAlreadyQuote");
-  commentBAlready.forEach(
-    handleClick(() => {
-      const idQuote = document
-        .getElementById("delete-hl")
-        .getAttribute("data-note-id");
-      let get = document.querySelector(".hlId-" + idQuote).innerHTML;
-      // On supprime les tags
-      get = get.replace(/<[^>]*>/g, "").trim();
-      // On supprime les espaces
-      document.getElementById("insightQuote").classList.remove("hidden");
-      document.getElementById("insightQuote").innerHTML = "« " + get + " »";
-      document.getElementById("drawerNoteQuote").value = get;
-    })
-  );
-  // commentBAlready.forEach(handleClick(() => updateDrawerContent()));
-  //*ANCHOR - partage sur les réseaux sociaux
-  const twitterB = document.querySelectorAll(".shareTwitter");
-  twitterB.forEach(handleClick(() => shareNw("twitter")));
-
-  const fbB = document.querySelectorAll(".shareFb");
-  fbB.forEach(handleClick(() => shareNw("facebook")));
-
-  const lkB = document.querySelectorAll(".shareLk");
-  lkB.forEach(handleClick(() => shareNw("linkedin")));
-  // ! Bouton permettant la suppression de Highlights
-  document.getElementById("delete-hl").addEventListener("click", () => {
-    deleteHighlight();
-  });
-  // ! Traitement de la selection (affichage de la tooltip avec toutes les options et récupération de toutes les infos de la sélection)
-
-  let selectedText = "";
-  let selectedTextEl = "";
-  let selectedTextEnd = "";
-  let selectedTextContext = "";
-  let selectedTextP = "";
-
-  chapArticle.addEventListener("mouseup", (e) => {
-    if (window.getSelection().toString().length > 0) {
-      tooltip.classList.remove("hidden");
-    } else {
-      tooltip.classList.add("hidden");
-    }
-    const selection = window.getSelection();
-    if (!selection.toString()) {
-      return;
-    }
-
-    const startNode = selection.anchorNode;
-    const startOffset = selection.anchorOffset;
-    const endNode = selection.focusNode;
-    const endOffset = selection.focusOffset;
-
-    let preceedingText = "";
-    if (startNode === endNode) {
-      const start = Math.min(startOffset, endOffset);
-      preceedingText = startNode.textContent.substring(start - 7, start);
-    }
-    selectedTextContext = preceedingText;
-
-    selectedText = selection.toString();
-
-    const selected = selection;
-    if (selected.rangeCount) {
-      const range = selected.getRangeAt(0);
-      const div = document.createElement("div");
-      div.appendChild(range.cloneContents());
-      selectedTextEl = div.innerHTML;
-    }
-
-    selectedTextEnd = selection.getRangeAt(0).endOffset;
-    const parts = selection.anchorNode.parentNode.closest("p");
-    selectedTextP = parts.id.split("-")[1];
-
-    if (selectedText) {
-      const range = selection.getRangeAt(0);
-      const rect = range.getBoundingClientRect();
-      tooltip.style.left = rect.left + window.scrollX - 130 + "px";
-      tooltip.style.top = rect.top + window.scrollY - 30 + "px";
-    } else {
-      tooltip.style.display = "none";
-      selectedText = "";
-      selectedTextP = "";
-      selectedTextEl = "";
-    }
-  });
-
-  highlight.forEach((element) => {
-    const color = element.getAttribute("data-color");
-    element.addEventListener("click", () => {
-      highlightData(
-        tooltip,
-        selectedTextP,
-        selectedText,
-        selectedTextEl,
-        selectedTextContext,
-        selectedTextEnd,
-        color
-      );
+    window.addEventListener("click", () => {
+      if (!highlightedOptions.classList.contains("hidden")) {
+        highlightedOptions.classList.add("hidden");
+      }
     });
-  });
+    const handleClick = (callback) => (element) =>
+      element.addEventListener("click", callback);
 
-  //!SECTION — Traitement de tout ce qui concerne les commentaires classiques (modification, suppression, style etc.)
-  //ANCHOR — Traitement de tout ce qui concerne les commentaires classiques (modification, suppression, style etc.)
-  //!SECTION — Traitement de tout ce qui concerne les commentaires classiques (modification, suppression, style etc.)
+    // ! modifier le contenu des inputs hidden du drawer lorsqu'on clique sur le bouton "commenter"
+    const commentB = document.querySelectorAll(".commentQuote");
+    commentB.forEach(
+      handleClick(() =>
+        updateDrawerContent(
+          selectedText,
+          selectedTextP,
+          selectedTextEl,
+          selectedTextContext,
+          tooltip
+        )
+      )
+    );
+    // ! Permet de commenter un marquage déjà existant.
+    const commentBAlready = document.querySelectorAll(".commentAlreadyQuote");
+    commentBAlready.forEach(
+      handleClick(() => {
+        const idQuote = document
+          .getElementById("delete-hl")
+          .getAttribute("data-note-id");
+        let get = document.querySelector(".hlId-" + idQuote).innerHTML;
+        // On supprime les tags
+        get = get.replace(/<[^>]*>/g, "").trim();
+        // On supprime les espaces
+        document.getElementById("insightQuote").classList.remove("hidden");
+        document.getElementById("insightQuote").innerHTML = "« " + get + " »";
+        document.getElementById("drawerNoteQuote").value = get;
+      })
+    );
+    // commentBAlready.forEach(handleClick(() => updateDrawerContent()));
+    //*ANCHOR - partage sur les réseaux sociaux
+    const twitterB = document.querySelectorAll(".shareTwitter");
+    twitterB.forEach(handleClick(() => shareNw("twitter")));
 
+    const fbB = document.querySelectorAll(".shareFb");
+    fbB.forEach(handleClick(() => shareNw("facebook")));
+
+    const lkB = document.querySelectorAll(".shareLk");
+    lkB.forEach(handleClick(() => shareNw("linkedin")));
+    // ! Bouton permettant la suppression de Highlights
+    document.getElementById("delete-hl").addEventListener("click", () => {
+      deleteHighlight();
+    });
+    // ! Traitement de la selection (affichage de la tooltip avec toutes les options et récupération de toutes les infos de la sélection)
+
+    let selectedText = "";
+    let selectedTextEl = "";
+    let selectedTextEnd = "";
+    let selectedTextContext = "";
+    let selectedTextP = "";
+
+    chapArticle.addEventListener("mouseup", (e) => {
+      if (window.getSelection().toString().length > 0) {
+        tooltip.classList.remove("hidden");
+      } else {
+        tooltip.classList.add("hidden");
+      }
+      const selection = window.getSelection();
+      if (!selection.toString()) {
+        return;
+      }
+
+      const startNode = selection.anchorNode;
+      const startOffset = selection.anchorOffset;
+      const endNode = selection.focusNode;
+      const endOffset = selection.focusOffset;
+
+      let preceedingText = "";
+      if (startNode === endNode) {
+        const start = Math.min(startOffset, endOffset);
+        preceedingText = startNode.textContent.substring(start - 7, start);
+      }
+      selectedTextContext = preceedingText;
+
+      selectedText = selection.toString();
+
+      const selected = selection;
+      if (selected.rangeCount) {
+        const range = selected.getRangeAt(0);
+        const div = document.createElement("div");
+        div.appendChild(range.cloneContents());
+        selectedTextEl = div.innerHTML;
+      }
+
+      selectedTextEnd = selection.getRangeAt(0).endOffset;
+      const parts = selection.anchorNode.parentNode.closest("p");
+      selectedTextP = parts.id.split("-")[1];
+
+      if (selectedText) {
+        const range = selection.getRangeAt(0);
+        const rect = range.getBoundingClientRect();
+        tooltip.style.left = rect.left + window.scrollX - 130 + "px";
+        tooltip.style.top = rect.top + window.scrollY - 30 + "px";
+      } else {
+        tooltip.style.display = "none";
+        selectedText = "";
+        selectedTextP = "";
+        selectedTextEl = "";
+      }
+    });
+
+    highlight.forEach((element) => {
+      const color = element.getAttribute("data-color");
+      element.addEventListener("click", () => {
+        highlightData(
+          tooltip,
+          selectedTextP,
+          selectedText,
+          selectedTextEl,
+          selectedTextContext,
+          selectedTextEnd,
+          color
+        );
+      });
+    });
+  }
   // ! Section qui permet de cacher la flèche "suivant" ou "précédent" si on est sur le dernier commentaire
   const target = document.getElementById("footer");
 
@@ -179,150 +177,156 @@ export function ShowChapter() {
   hideArrow("arrowNext", document.getElementById("arrowNext"));
   hideArrow("arrowPrevious", document.getElementById("arrowPrevious"));
 
+  //!SECTION — Traitement de tout ce qui concerne les commentaires classiques (modification, suppression, style etc.)
+  //ANCHOR — Traitement de tout ce qui concerne les commentaires classiques (modification, suppression, style etc.)
+  //!SECTION — Traitement de tout ce qui concerne les commentaires classiques (modification, suppression, style etc.)
+
   // ! Fonction qui modifie le style du dernier commentaire posé
-  const textarea = document.getElementById(
-    "publication_chapter_comment_content"
-  );
-  const lastComment = document.getElementById("lastComment");
+  if (document.getElementById("insightQuote")) {
+    const textarea = document.getElementById(
+      "publication_chapter_comment_content"
+    );
+    const lastComment = document.getElementById("lastComment");
 
-  if (lastComment) {
-    lastComment.classList.add("animate__animated", "animate__flipInX");
-    setTimeout(() => {
-      lastComment.classList.remove("bg-slate-50", "text-slate-600");
-    }, 2000);
-  }
-  // ! Agrandir le textarea des commentaires à mesure que l'on écrit
-  const commentContent = document.getElementById(
-    "publication_chapter_comment_content"
-  );
-  const sendComment = document.getElementById("sendComment");
-
-  if (textarea) {
-    textarea.addEventListener("input", () => {
-      textarea.style.height = "";
-
-      textarea.style.height = `${textarea.scrollHeight}px`;
-    });
-  }
-  // ! Au clic sur le bouton d'envoi, on efface le formulaire textarea
-  if (sendComment) {
-    sendComment.addEventListener("click", () => {
+    if (lastComment) {
+      lastComment.classList.add("animate__animated", "animate__flipInX");
       setTimeout(() => {
-        commentContent.value = "";
-        document.getElementById("insightQuote").classList.add("hidden");
-        document.getElementById("insightQuote").innerHTML = "";
-        document.getElementById("drawerNoteQuote").value = "";
-        commentContent.rows = 1;
-        commentContent.style.height = "";
-      }, 100);
-      setTimeout(() => {
-        document.getElementById("nbrComSmall").innerHTML =
-          document.getElementById("nbrCom").innerHTML;
-      }, 1000);
-    });
-  }
-  // ! Fonction qui permet de modifier les commentaires
-  const updateButton = document.querySelectorAll(".updateButton");
+        lastComment.classList.remove("bg-slate-50", "text-slate-600");
+      }, 2000);
+    }
+    // ! Agrandir le textarea des commentaires à mesure que l'on écrit
+    const commentContent = document.getElementById(
+      "publication_chapter_comment_content"
+    );
+    const sendComment = document.getElementById("sendComment");
 
-  updateButton.forEach((button) => {
-    button.addEventListener("click", () => {
-      const parts = button.id.split("-");
-      const result = parts[1];
+    if (textarea) {
+      textarea.addEventListener("input", () => {
+        textarea.style.height = "";
 
-      const com = document.getElementById(`comShow-${result}`);
-      const inner = document.getElementById(`updateCom-${result}`);
+        textarea.style.height = `${textarea.scrollHeight}px`;
+      });
+    }
+    // ! Au clic sur le bouton d'envoi, on efface le formulaire textarea
+    if (sendComment) {
+      sendComment.addEventListener("click", () => {
+        setTimeout(() => {
+          commentContent.value = "";
+          document.getElementById("insightQuote").classList.add("hidden");
+          document.getElementById("insightQuote").innerHTML = "";
+          document.getElementById("drawerNoteQuote").value = "";
+          commentContent.rows = 1;
+          commentContent.style.height = "";
+        }, 100);
+        setTimeout(() => {
+          document.getElementById("nbrComSmall").innerHTML =
+            document.getElementById("nbrCom").innerHTML;
+        }, 1000);
+      });
+    }
+    // ! Fonction qui permet de modifier les commentaires
+    const updateButton = document.querySelectorAll(".updateButton");
 
-      inner.innerHTML = `
+    updateButton.forEach((button) => {
+      button.addEventListener("click", () => {
+        const parts = button.id.split("-");
+        const result = parts[1];
+
+        const com = document.getElementById(`comShow-${result}`);
+        const inner = document.getElementById(`updateCom-${result}`);
+
+        inner.innerHTML = `
       <textarea id='comShow-${result}' class='chapterCommentEdit'>${com.textContent.trim()}</textarea>
       <button id='validCom-${result}' class='chapterCommentEditValidButton'><i class="fa-regular fa-circle-check"></i> &nbsp;Valider</button>
       <button id='cancelCom-${result}' class='chapterCommentEditCancelButton toggleSidebar' data-tippy-content="Annuler la modification"><i class="fa-solid fa-xmark toggleSidebar"></i></button>
     `;
 
-      const buttonValid = document.getElementById(`validCom-${result}`);
-      const newCom = document.getElementById(`comShow-${result}`);
-      const cancelCom = document.getElementById(`cancelCom-${result}`);
+        const buttonValid = document.getElementById(`validCom-${result}`);
+        const newCom = document.getElementById(`comShow-${result}`);
+        const cancelCom = document.getElementById(`cancelCom-${result}`);
 
-      cancelCom.addEventListener("click", () => {
-        inner.innerHTML = `<p class='chapterComment'  id='comShow-${result}'>${nl2br(
-          com.textContent
-        )}</p>`;
-      });
+        cancelCom.addEventListener("click", () => {
+          inner.innerHTML = `<p class='chapterComment'  id='comShow-${result}'>${nl2br(
+            com.textContent
+          )}</p>`;
+        });
 
-      buttonValid.addEventListener("click", () => {
-        const data = new FormData();
-        const url = "/recit/comment/up";
+        buttonValid.addEventListener("click", () => {
+          const data = new FormData();
+          const url = "/recit/comment/up";
 
-        data.append("idCom", result);
-        data.append("newCom", newCom.value);
+          data.append("idCom", result);
+          data.append("newCom", newCom.value);
 
-        axios
-          .post(url, data, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then((response) => {
-            newCom.textContent = response.data.comment;
-            inner.innerHTML = `<p class='chapterComment' id='comShow-${result}'>${nl2br(
-              newCom.textContent
-            )}</p>`;
-          });
+          axios
+            .post(url, data, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            })
+            .then((response) => {
+              newCom.textContent = response.data.comment;
+              inner.innerHTML = `<p class='chapterComment' id='comShow-${result}'>${nl2br(
+                newCom.textContent
+              )}</p>`;
+            });
+        });
       });
     });
-  });
 
-  // ! Fonction qui permet de mettre en exergue un nouveau commentaire
-  if (lastComment) {
-    setTimeout(() => {
-      lastComment.classList.remove("bg-slate-100", "text-slate-600");
-      lastComment.classList.add("bg-white");
-    }, 2000);
+    // ! Fonction qui permet de mettre en exergue un nouveau commentaire
+    if (lastComment) {
+      setTimeout(() => {
+        lastComment.classList.remove("bg-slate-100", "text-slate-600");
+        lastComment.classList.add("bg-white");
+      }, 2000);
+    }
+    // ! Fonction qui permet de liker un commentaire
+    const handleLikeButtonClick = (button, result) => {
+      const url = "/recit/comment/like";
+      const data = new FormData();
+      data.append("idCom", result);
+
+      axios
+        .post(url, data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          if (response.data.code === 201) {
+            button.classList.remove("fa-regular", "fa-heart", "animate__jello");
+            button.classList.add(
+              "fa-solid",
+              "fa-heart",
+              "text-red-500",
+              "animate__heartBeat"
+            );
+            const nbLikes = document.getElementById(`nbLikes-${result}`);
+            nbLikes.innerHTML = Number(nbLikes.innerHTML) + 1;
+          } else if (response.data.code === 200) {
+            button.classList.remove(
+              "fa-solid",
+              "fa-heart",
+              "text-red-500",
+              "animate__heartBeat"
+            );
+            button.classList.add("fa-regular", "fa-heart", "animate__jello");
+            const nbLikes = document.getElementById(`nbLikes-${result}`);
+            nbLikes.innerHTML = Number(nbLikes.innerHTML) - 1;
+          }
+        });
+    };
+
+    const likeButtons = document.querySelectorAll(".likeButton");
+    likeButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const parts = button.id.split("-");
+        const result = parts[1];
+        handleLikeButtonClick(button, result);
+      });
+    });
   }
-  // ! Fonction qui permet de liker un commentaire
-  const handleLikeButtonClick = (button, result) => {
-    const url = "/recit/comment/like";
-    const data = new FormData();
-    data.append("idCom", result);
-
-    axios
-      .post(url, data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        if (response.data.code === 201) {
-          button.classList.remove("fa-regular", "fa-heart", "animate__jello");
-          button.classList.add(
-            "fa-solid",
-            "fa-heart",
-            "text-red-500",
-            "animate__heartBeat"
-          );
-          const nbLikes = document.getElementById(`nbLikes-${result}`);
-          nbLikes.innerHTML = Number(nbLikes.innerHTML) + 1;
-        } else if (response.data.code === 200) {
-          button.classList.remove(
-            "fa-solid",
-            "fa-heart",
-            "text-red-500",
-            "animate__heartBeat"
-          );
-          button.classList.add("fa-regular", "fa-heart", "animate__jello");
-          const nbLikes = document.getElementById(`nbLikes-${result}`);
-          nbLikes.innerHTML = Number(nbLikes.innerHTML) - 1;
-        }
-      });
-  };
-
-  const likeButtons = document.querySelectorAll(".likeButton");
-  likeButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const parts = button.id.split("-");
-      const result = parts[1];
-      handleLikeButtonClick(button, result);
-    });
-  });
 }
 //*!SECTION FONCTIONS
 //*!SECTION FONCTIONS
@@ -372,6 +376,7 @@ const highlightData = (
         response.data.selection;
     });
 };
+
 const activeClickTooltipHL = () => {
   const tooltiped = document.getElementById("highlighted-options");
   const highlighted = document.querySelectorAll("span.highlighted");
@@ -630,9 +635,12 @@ export function toggleDrawer() {
       return;
     }
     if (!sidebar.classList.contains("hidden")) {
-      document.getElementById("insightQuote").classList.add("hidden");
-      document.getElementById("insightQuote").innerHTML = "";
-      document.getElementById("drawerNoteQuote").value = "";
+      if (document.getElementById("insightQuote")) {
+        // * Si l'utilisateur est connecté
+        document.getElementById("insightQuote").classList.add("hidden");
+        document.getElementById("insightQuote").innerHTML = "";
+        document.getElementById("drawerNoteQuote").value = "";
+      }
       toggleSidebar(sidebar);
     }
   });
@@ -679,9 +687,9 @@ export function DropdownMenu() {
     el.addEventListener("click", function () {
       // On trouve l'id de el et on le découpé via le "-"
       let elId = el.id.split("-")[1];
-      let content = document.getElementById("ddm-" + elId).classList;
+      let content = document.getElementById("ddm-" + elId);
       if (content) {
-        content.toggle("show");
+        content.classList.toggle("show");
       }
     });
   });

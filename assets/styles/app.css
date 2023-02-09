@@ -34,7 +34,7 @@
   'opsz' 48;
 }
 * {
-  @apply font-sans;
+  @apply font-sans ;
 }
 body {
   @apply bg-white dark:bg-slate-800 h-screen;
@@ -49,6 +49,8 @@ nav {
   @apply  bg-white shadow-sm border-b border-b-slate-300 px-2 md:px-4 py-2.5 dark:bg-slate-900 dark:border-b-slate-700
 }
 main {
+  transition: all 0.1s ease-out;
+
   @apply  grid grid-rows-none grid-cols-12  items-start mx-auto md:p-10 p-3 pt-14 md:w-9/12 z-50;
 }
 #titleChapter {
@@ -57,7 +59,7 @@ main {
 #titleChapter>h1 {
   @apply text-left text-2xl font-normal font-serif pt-4 text-slate-900 ;
 }
-#titleChapter>h1, h1>a {
+#titleChapter h1>a {
   @apply text-slate-900 hover:underline font-serif text-xl;
 }
 #titleChapter>h2 {
@@ -120,10 +122,10 @@ form input[type=checkbox] {
   @apply bg-slate-600
 }
 form input[type=text],input[type=email],input[type=password], .input    {
-    @apply mt-5  rounded-md shadow z-0  border-0 border-r-[1px] border-slate-300 border-b-[4px]  border-b-slate-300 text-slate-500  text-base h-14 focus:ring-0   focus:border-slate-300  block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:text-slate-300  ;
+    @apply mt-5  z-0    text-base h-14    block w-full pl-10 p-2.5 bg-white rounded-lg border border-gray-400  focus:outline-none focus:border-blue-500  ;
 }
 form textarea {
-  @apply mt-5  rounded-md shadow   z-0 text-justify    border-0  border-r-[1px]  border-slate-300 border-b-[4px]  border-b-slate-300  h-72  text-slate-500 focus:ring-0   text-base    focus:border-slate-300 block w-full p-2.5 pb-5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:text-slate-300;
+  @apply mt-5  rounded-md shadow   z-0 text-justify    border-0  border-r-[1px]  border-slate-300 border-b-[4px]  border-b-slate-300  text-slate-500 focus:ring-0   text-base    focus:border-slate-300 block w-full p-2.5 pb-5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:text-slate-300;
 }
 form select, .select {
   @apply mt-5   rounded-md  shadow z-0   border-0 border-r-[1px] border-slate-300 border-b-[2px]  border-b-slate-300 font-medium  text-slate-500  text-base h-14 focus:ring-0  focus:border-slate-300 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:text-slate-300 ;
@@ -134,9 +136,9 @@ form input.icon-desc {
 span.form-icon {
     @apply inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600;
 }
-form button[type=submit], .button {
+/* form button[type=submit], .button {
   @apply bg-slate-500 hover:bg-slate-400 text-white font-bold py-2 px-4 border-b-4 border-slate-700 hover:border-slate-500 rounded ;
-}
+} */
 
 form button:disabled {
     background-color: dimgrey;
@@ -318,4 +320,38 @@ opacity: 0.4;
 }
 #delete-hl:hover {
   @apply  bg-opacity-100;
+}
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  transform: translate(-80%, 0px);
+  z-index: 1;
+}
+.dropdown-chapter-content {
+  display: none;
+  position: absolute;
+  
+  z-index: 1;
+}
+.show {
+  display: block;
+}
+.chapterComment {
+  @apply mt-4 text-gray-700 text-sm;
+}
+.chapterCommentEdit {
+  @apply mt-5  z-0 h-28 text-sm    block w-full  p-2.5 bg-white rounded-lg border border-gray-400  focus:outline-none focus:border-blue-500 ;
+}
+.chapterCommentEditValidButton {
+  @apply   z-50 bg-white   mr-1 font-sans  p-1 px-2 mt-1 mb-2 text-center text-sm rounded hover:text-emerald-600 ;
+}
+.chapterCommentEditCancelButton {
+  @apply  float-right font-sans rounded-full -mt-[6.9rem] mr-[0.2rem]  px-1 text-slate-600  text-center text-xs ;
 }

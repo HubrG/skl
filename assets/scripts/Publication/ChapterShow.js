@@ -3,6 +3,22 @@ export function ShowChapter() {
   const chapContentTurbo = document.getElementById("chapContentTurbo");
   if (!chapContentTurbo) return;
 
+  // ! SECTION - Traitement de la position du sticky
+  window.addEventListener("scroll", function () {
+    let nav = document.querySelector("nav");
+    let stickyDiv = document.querySelector("#titleChapter");
+    let sidebarScroll = document.getElementById("sidebar");
+
+    if (nav.getBoundingClientRect().top < 0) {
+      stickyDiv.style.position = "sticky";
+      stickyDiv.style.top = "0";
+      sidebarScroll.style.paddingTop = "1rem";
+    } else {
+      stickyDiv.style.position = "sticky";
+      stickyDiv.style.top = "3.5rem";
+      sidebarScroll.style.paddingTop = "5rem";
+    }
+  });
   //!SECTION — Traitement de tout ce qui concerne la sélection de texte
   //ANCHOR — Traitement de tout ce qui concerne la sélection de texte
   //!SECTION — Traitement de tout ce qui concerne la sélection de texte
@@ -36,7 +52,22 @@ export function ShowChapter() {
       )
     )
   );
+  // ! Permet de commenter un marquage déjà existant.
   const commentBAlready = document.querySelectorAll(".commentAlreadyQuote");
+  commentBAlready.forEach(
+    handleClick(() => {
+      const idQuote = document
+        .getElementById("delete-hl")
+        .getAttribute("data-note-id");
+      let get = document.querySelector(".hlId-" + idQuote).innerHTML;
+      // On supprime les tags
+      get = get.replace(/<[^>]*>/g, "").trim();
+      // On supprime les espaces
+      document.getElementById("insightQuote").classList.remove("hidden");
+      document.getElementById("insightQuote").innerHTML = "« " + get + " »";
+      document.getElementById("drawerNoteQuote").value = get;
+    })
+  );
   // commentBAlready.forEach(handleClick(() => updateDrawerContent()));
   //*ANCHOR - partage sur les réseaux sociaux
   const twitterB = document.querySelectorAll(".shareTwitter");
@@ -127,29 +158,6 @@ export function ShowChapter() {
   //!SECTION — Traitement de tout ce qui concerne les commentaires classiques (modification, suppression, style etc.)
   //ANCHOR — Traitement de tout ce qui concerne les commentaires classiques (modification, suppression, style etc.)
   //!SECTION — Traitement de tout ce qui concerne les commentaires classiques (modification, suppression, style etc.)
-  // ! Sidebar
-  const toggleButton = document.querySelectorAll(".toggleSidebar");
-  var sidebar = document.getElementById("sidebar");
-
-  toggleButton.forEach((element) => {
-    element.addEventListener("click", () => {
-      toggleSidebar(sidebar);
-    });
-  });
-  window.addEventListener("click", () => {
-    // On désactive le clic si le click est sur un élément possedant la classe ".toggleSidebar"
-    if (
-      event.target.classList.contains("toggleSidebar") ||
-      event.target.id == "sidebar" ||
-      event.target.closest("#sidebar")
-    ) {
-      return;
-    }
-    if (!sidebar.classList.contains("hidden")) {
-      document.getElementById("insightQuote").classList.add("hidden");
-      toggleSidebar(sidebar);
-    }
-  });
 
   // ! Section qui permet de cacher la flèche "suivant" ou "précédent" si on est sur le dernier commentaire
   const target = document.getElementById("footer");
@@ -192,18 +200,27 @@ export function ShowChapter() {
   if (textarea) {
     textarea.addEventListener("input", () => {
       textarea.style.height = "";
+
       textarea.style.height = `${textarea.scrollHeight}px`;
     });
   }
   // ! Au clic sur le bouton d'envoi, on efface le formulaire textarea
-
-  sendComment.addEventListener("click", () => {
-    setTimeout(() => {
-      commentContent.value = "";
-      commentContent.style.height = "3.4rem";
-    }, 100);
-  });
-
+  if (sendComment) {
+    sendComment.addEventListener("click", () => {
+      setTimeout(() => {
+        commentContent.value = "";
+        document.getElementById("insightQuote").classList.add("hidden");
+        document.getElementById("insightQuote").innerHTML = "";
+        document.getElementById("drawerNoteQuote").value = "";
+        commentContent.rows = 1;
+        commentContent.style.height = "";
+      }, 100);
+      setTimeout(() => {
+        document.getElementById("nbrComSmall").innerHTML =
+          document.getElementById("nbrCom").innerHTML;
+      }, 1000);
+    });
+  }
   // ! Fonction qui permet de modifier les commentaires
   const updateButton = document.querySelectorAll(".updateButton");
 
@@ -216,9 +233,9 @@ export function ShowChapter() {
       const inner = document.getElementById(`updateCom-${result}`);
 
       inner.innerHTML = `
-      <textarea id='comShow-${result}'>${com.textContent}</textarea>
-      <button id='validCom-${result}'>Valider</button>
-      <button id='cancelCom-${result}'>Annuler</button>
+      <textarea id='comShow-${result}' class='chapterCommentEdit'>${com.textContent.trim()}</textarea>
+      <button id='validCom-${result}' class='chapterCommentEditValidButton'><i class="fa-regular fa-circle-check"></i> &nbsp;Valider</button>
+      <button id='cancelCom-${result}' class='chapterCommentEditCancelButton toggleSidebar' data-tippy-content="Annuler la modification"><i class="fa-solid fa-xmark toggleSidebar"></i></button>
     `;
 
       const buttonValid = document.getElementById(`validCom-${result}`);
@@ -226,7 +243,7 @@ export function ShowChapter() {
       const cancelCom = document.getElementById(`cancelCom-${result}`);
 
       cancelCom.addEventListener("click", () => {
-        inner.innerHTML = `<p id='comShow-${result}'>${nl2br(
+        inner.innerHTML = `<p class='chapterComment'  id='comShow-${result}'>${nl2br(
           com.textContent
         )}</p>`;
       });
@@ -246,7 +263,7 @@ export function ShowChapter() {
           })
           .then((response) => {
             newCom.textContent = response.data.comment;
-            inner.innerHTML = `<p id='comShow-${result}'>${nl2br(
+            inner.innerHTML = `<p class='chapterComment' id='comShow-${result}'>${nl2br(
               newCom.textContent
             )}</p>`;
           });
@@ -257,7 +274,8 @@ export function ShowChapter() {
   // ! Fonction qui permet de mettre en exergue un nouveau commentaire
   if (lastComment) {
     setTimeout(() => {
-      lastComment.classList.remove("bg-slate-50", "text-slate-600");
+      lastComment.classList.remove("bg-slate-100", "text-slate-600");
+      lastComment.classList.add("bg-white");
     }, 2000);
   }
   // ! Fonction qui permet de liker un commentaire
@@ -455,7 +473,9 @@ function showHighlightDom(
           selectionEl2,
           "<span id='hl-" +
             idNote +
-            "' class='highlighted hl-" +
+            "' class='class='hlId-" +
+            idNote +
+            " highlighted hl-" +
             color +
             "'>" +
             selectionEl3 +
@@ -466,7 +486,9 @@ function showHighlightDom(
           selectionEl,
           "<span id='hl-" +
             idNote +
-            "' class='highlighted hl-" +
+            "' class='hlId-" +
+            idNote +
+            " highlighted hl-" +
             color +
             "'>" +
             selectionEl +
@@ -476,25 +498,25 @@ function showHighlightDom(
     }
     bigArticle.innerHTML = bigArticle.innerHTML.replace(
       selectionEl,
-      `<span id='hl-${idNote}' class='highlighted hl-${color}'>${selectionEl}</span>`
+      `<span id='hl-${idNote}' class='highlighted hlId-${idNote}"  hl-${color}'>${selectionEl}</span>`
     );
   } else {
     let contextAndSel = contextSel + selection;
     let newHTML = chapArticle.innerHTML.replace(
       contextAndSel,
-      `${contextSel}<span id='hl-${idNote}' class='highlighted hl-${color}'>${selection}</span>`
+      `${contextSel}<span id='hl-${idNote}' class='highlighted  hlId-${idNote} hl-${color}'>${selection}</span>`
     );
     chapArticle.innerHTML = newHTML;
     if (chapArticle.innerHTML === newHTML) {
       newHTML = chapArticle.innerHTML.replace(
         selectionEl,
-        `<span id='hl-${idNote}' class='highlighted hl-${color}'>${selection}</span>`
+        `<span id='hl-${idNote}' class='highlighted  hlId-${idNote} hl-${color}'>${selection}</span>`
       );
     }
     if (chapArticle.innerHTML === newHTML) {
       newHTML = chapArticle.innerHTML.replace(
         selectionEl,
-        `<span id='hl-${idNote}' class='highlighted hl-${color}'>${selection}</span>`
+        `<span id='hl-${idNote}' class='highlighted  hlId-${idNote} hl-${color}'>${selection}</span>`
       );
     }
   }
@@ -585,4 +607,94 @@ function toggleSidebar(sidebar) {
   }
   sidebar.classList.toggle("-translate-x-full");
 }
+export function toggleDrawer() {
+  const chapContentTurbo = document.getElementById("chapContentTurbo");
+
+  if (!chapContentTurbo) return;
+  // ! Sidebar
+  const toggleButton = document.querySelectorAll(".toggleSidebar");
+  var sidebar = document.getElementById("sidebar");
+
+  toggleButton.forEach((element) => {
+    element.addEventListener("click", () => {
+      toggleSidebar(sidebar);
+    });
+  });
+  window.addEventListener("click", (event) => {
+    // On désactive le clic si le click est sur un élément possedant la classe ".toggleSidebar"
+    if (
+      event.target.classList.contains("toggleSidebar") ||
+      event.target.id == "sidebar" ||
+      event.target.closest("#sidebar")
+    ) {
+      return;
+    }
+    if (!sidebar.classList.contains("hidden")) {
+      document.getElementById("insightQuote").classList.add("hidden");
+      document.getElementById("insightQuote").innerHTML = "";
+      document.getElementById("drawerNoteQuote").value = "";
+      toggleSidebar(sidebar);
+    }
+  });
+}
+export function targetQuote() {
+  var quotes = document.querySelectorAll(".quoteComment");
+  quotes.forEach((elements) => {
+    elements.addEventListener("click", () => {
+      var element = elements.innerHTML;
+      // On supprime les signes "« »" et on récupère le texte
+      element = element.replace(/«|»/g, "").trim();
+      //
+      var chapArticle = document.getElementById("chapArticle");
+
+      // Récupération du texte "lorem ipsum" dans chapArticle
+      var targetText = chapArticle.textContent.trim().match(element);
+
+      // Vérification si le texte "lorem ipsum" se trouve dans chapArticle
+      if (targetText !== null) {
+        // Récupération de la position du texte dans chapArticle
+        var index = chapArticle.textContent.indexOf(targetText[0]);
+
+        // Récupération de la position du début de la première ligne de chapArticle
+        var lineStart = chapArticle.textContent.lastIndexOf("\n", index) + 1;
+
+        // Calcul de la position du texte dans chapArticle
+        var position =
+          chapArticle.offsetTop +
+          chapArticle.getBoundingClientRect().top +
+          index -
+          lineStart;
+        console.log(position);
+        // Déplacement vers la position du texte dans chapArticle
+        window.scrollTo(0, position);
+      }
+    });
+  });
+}
+export function DropdownMenu() {
+  const button = document.querySelectorAll(".dropdown-button");
+  const dropdownmenu = document.querySelectorAll(".dropdown-content");
+  //
+  button.forEach((el) => {
+    el.addEventListener("click", function () {
+      // On trouve l'id de el et on le découpé via le "-"
+      let elId = el.id.split("-")[1];
+      let content = document.getElementById("ddm-" + elId).classList;
+      if (content) {
+        content.toggle("show");
+      }
+    });
+  });
+  window.onclick = function () {
+    if (!event.target.classList.contains("dropdown-button")) {
+      // On ferme toutes content
+      dropdownmenu.forEach((el) => {
+        el.classList.remove("show");
+      });
+    }
+  };
+}
 ShowChapter();
+targetQuote();
+toggleDrawer();
+DropdownMenu();

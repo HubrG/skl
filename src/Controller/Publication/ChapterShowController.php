@@ -362,24 +362,24 @@ class ChapterShowController extends AbstractController
                     // on immlode
                     $selectionEl3 = implode("", $matches[0]);
 
-                    $chapterText = str_replace($selectionEl2, "<span id='hl-" . $idNote . "' class='highlighted hl-" . $color . "'>" . $selectionEl3 . "</span>", $chapterText);
+                    $chapterText = str_replace($selectionEl2, "<span id='hl-" . $idNote . "' class='hlId-" . $idNote . " highlighted hl-" . $color . "'>" . $selectionEl3 . "</span>", $chapterText);
                 } else {
-                    $chapterText = str_replace($selectionEl, "<span id='hl-" . $idNote . "' class='highlighted hl-" . $color . "'>" . $selectionEl . "</span>", $chapterText);
+                    $chapterText = str_replace($selectionEl, "<span id='hl-" . $idNote . "' class='hlId-" . $idNote . " highlighted hl-" . $color . "'>" . $selectionEl . "</span>", $chapterText);
                 }
                 $chapterText = str_replace(
                     $selectionEl,
-                    `<span id='hl-" . $idNote . "' class='highlighted hl-" . $color . "'>" . $selectionEl . "</span>`,
+                    `<span id='hl-" . $idNote . "' class='highlighted hlId-" . $idNote . " hl-" . $color . "'>" . $selectionEl . "</span>`,
                     $chapterText
                 );
             } else {
                 if (strpos($match[0], $tests)) {
-                    $test = str_replace($tests, $contextSel . "<span id='hl-" . $idNote . "' class='highlighted hl-" . $color . "'>" . $selection . "</span>", $match[0]);
+                    $test = str_replace($tests, $contextSel . "<span id='hl-" . $idNote . "' class='hlId-" . $idNote . " highlighted hl-" . $color . "'>" . $selection . "</span>", $match[0]);
                     $chapterText = str_replace($match[0], $test, $chapterText);
                 } elseif (strpos($match[0], $selectionEl)) {
-                    $test = str_replace($selectionEl, "<span id='hl-" . $idNote . "' class='highlighted hl-" . $color . "'>" . $selection . "</span>", $match[0]);
+                    $test = str_replace($selectionEl, "<span id='hl-" . $idNote . "' class='highlighted hlId-" . $idNote . " hl-" . $color . "'>" . $selection . "</span>", $match[0]);
                     $chapterText = str_replace($match[0], $test, $chapterText);
                 } else {
-                    $test = str_replace($selection, "<span id='hl-" . $idNote . "' class='highlighted hl-" . $color . "'>" . $selection . "</span>", $match[0]);
+                    $test = str_replace($selection, "<span id='hl-" . $idNote . "' class='highlighted hlId-" . $idNote . " hl-" . $color . "'>" . $selection . "</span>", $match[0]);
                     $chapterText = str_replace($match[0], $test, $chapterText);
                 }
             }

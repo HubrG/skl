@@ -97,21 +97,24 @@
 								<span class="text-xs"></p>
 							</p>
 							<p class=" text-cyan-600">
+								{% if slugCat == "all" %}
+									<span class="bg-blue-100 text-blue-500 text-xs font-medium mr-1 leading-7 mb-2 px-2.5 py-0.5 rounded dark:bg-slate-700 dark:text-slate-400 ">{{ item.category.name|lower }}</span>
+								{% endif %}
 								{% for pubKeyw in item.publicationKeywords %}
 									<span class="bg-slate-100 text-slate-600 text-xs font-medium mr-1 leading-7 mb-2 px-2.5 py-0.5 rounded dark:bg-slate-700 dark:text-slate-400 ">{{ pubKeyw.keyword|lower }}
 										{% if not loop.last %}{% endif %}
 									</span>
 								{% endfor %}
 							</p>
-						</div>
+						</p>
 					</div>
-				{% endfor %}
-			</div>
-		</section>
-		<div class="col-span-12  pt-20 flex justify-center">
-			{% if countPage > 1 %}
-				{% include "publication/_partials/_show_all_pagination.html.twig" with {'type': "bottom"}  %}
-			{% endif %}
+				</div>
+			{% endfor %}
 		</div>
-	</turbo-frame>
-{% endblock %}
+	</section>
+	<div class="col-span-12  pt-20 flex justify-center">
+		{% if countPage > 1 %}
+			{% include "publication/_partials/_show_all_pagination.html.twig" with {'type': "bottom"}  %}
+		{% endif %}
+	</div>
+</turbo-frame>{% endblock %}

@@ -7,7 +7,12 @@ import { ReadTime } from "../scripts/Publication/ChapterStats";
 import { quillEditor } from "../scripts/Quill.js";
 import { Sortables } from "../scripts/Publication/Sortable";
 import { LazyLoad } from "../scripts/LazyLoad";
-import { ShowChapter } from "../scripts/Publication/ChapterShow";
+import {
+  ShowChapter,
+  toggleDrawer,
+  targetQuote,
+  DropdownMenu,
+} from "../scripts/Publication/ChapterShow";
 import tippy from "tippy.js";
 tippy("[data-tippy-content]");
 
@@ -28,14 +33,19 @@ const TurboHelper = class {
       if (document.querySelector(".list-group-item")) {
         Sortables();
       }
-      ShowChapter();
       LazyLoad();
+      ShowChapter();
+      toggleDrawer();
+      targetQuote();
       tippy("[data-tippy-content]");
+      DropdownMenu();
     });
     document.addEventListener("turbo:frame-render", () => {
       ShowChapter();
+      targetQuote();
       LazyLoad();
       tippy("[data-tippy-content]");
+      DropdownMenu();
     });
     document.addEventListener("turbo:visit", () => {
       // fade out the old body

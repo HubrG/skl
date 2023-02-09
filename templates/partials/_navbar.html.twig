@@ -51,10 +51,10 @@
 					{% if not app.user %}
 						<a href="{{ path("app_register") }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Inscription</a>
 					{% endif %}
-					<button id="darkButton" type="button" data-tooltip-target="tooltip-dm" data-tooltip-placement="bottom" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+					<button id="darkButton" type="button" data-tooltip-target="tooltip-dm" data-tooltip-placement="bottom" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800 hidden">
 						<i class="fa-solid fa-circle-half-stroke text-black dark:text-slate-200"></i>
 					</button>
-					<div id="tooltip-dm" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-xs font-normal text-white bg-slate-700 rounded-lg opacity-0 tooltip dark:bg-gray-700">
+					<div id="tooltip-dm" role="tooltip" class=" absolute z-10 invisible px-3 py-2 text-xs font-normal text-white bg-slate-700 rounded-lg opacity-0 tooltip dark:bg-gray-700">
 						Passer en mode
 						<span id="darkMode"></span>
 						<div class="tooltip-arrow" data-popper-arrow></div>

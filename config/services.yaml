@@ -22,6 +22,7 @@ services:
 
     App\Twig\TwigDate:
         tags: ["twig.extension"]
+        arguments: ['@parameter_bag']
 
     App\Controller\Publication\PublicationController:
         tags: ['controller.service_arguments']

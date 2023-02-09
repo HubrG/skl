@@ -19,6 +19,7 @@ class PublicationChapterCommentType extends AbstractType
                 'label' => 'Commentaire',
                 'attr' => [
                     'placeholder' => 'Votre commentaire',
+                    'rows' => 1
                 ],
             ]);
     }

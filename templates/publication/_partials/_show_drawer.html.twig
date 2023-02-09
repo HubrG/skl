@@ -1,24 +1,32 @@
-<aside class="bg-white h-screen lg:w-3/12  md:4/6 w-10/12 z-49 shadow-lg  hidden fixed right-0 top-0  bg-opacity-60 p-5 pt-20 transition-all ease-in-out duration-700 backdrop-blur-sm sidebar" id="sidebar">
-	<quote class="ring-2 ring-emerald-300 p-5 text-slate-700 italic hidden font-serif flex justify-center" id="insightQuote"></quote>
+<aside class="bg-slate-50 border-l-[1px] border-l-slate-200 h-screen lg:w-3/12  backdrop-sepia-0 md:4/6 w-10/12 z-49 shadow-lg  hidden fixed right-0 top-0  bg-opacity-90 p-5 overflow-auto pt-20 transition-all ease-in-out duration-700 backdrop-blur-sm sidebar" id="sidebar">
 	{% if app.user.id is defined %}
-		{{ form_start(formQuote, {attr:{"data-turbo-frame":"commentFrameQuote"}}) }}
-		<div class="flex items-center">
-			{{ form_widget(formQuote.content, {attr:{"class":"h-[3.4rem] items-center content-center pt-3"}}) }}
+		<div>
+			<h2 class="text-lg">
+				<i class="fa-regular fa-comment-dots"></i>
+				&nbsp;Votre commentaire</h2>
+			<blockquote class="mt-4 border-l-4 hidden border-emerald-200 pl-4 italic text-slate-500 " id="insightQuote">
+				<p class="font-serif  quoteComment cursor-alias  text-[0.85rem]"></p>
+			</blockquote>
+			{{ form_start(formQuote, {attr:{"data-turbo-frame":"commentFrame"}}) }}
+			<label for="publication_chapter_comment_content" class="sr-only">Votre commentaire</label>
+			<div class="flex items-center py-2 w-full rounded-lg bg-gray-50 dark:bg-gray-700">
+				{{ form_widget(formQuote.content, {attr:{"class":"block p-2.5 w-full text-sm text-gray-900 resize-none bg-white pr-12 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"}}) }}
+				<button id="sendComment" type="submit" class="inline-flex justify-center p-2 text-slate-600 rounded-full cursor-pointer hover:bg-blue-100 hover:text-blue-500 dark:text-blue-500 dark:hover:bg-gray-600 -ml-10 mt-4">
+					<svg aria-hidden="true" class="w-6 h-6 rotate-45" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+						<path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
+					</svg>
+					<span class="sr-only">Envoyer</span>
+				</button>
+			</div>
 			<input type="hidden" name="quote" id="drawerNoteQuote">
-			<button type="submit" class="btn btn-primary h-12" id="sendComment">Envoyer</button>
+			{{ form_end(formQuote) }}
 		</div>
-		{{ form_end(formQuote) }}
+		<hr class="mb-5 shadow bg-slate-50 border-slate-50">
 	{% endif %}
-	<turbo-frame id="commentFrameQuote">
-		{% include "publication/_partials/_show_chapter_comment.html.twig" with {'quote': "Quote"}  %}
-	</turbo-frame>
-</aside>
+	{% include "publication/_partials/_show_chapter_comment.html.twig" with {'quote': "Quote"}  %}</aside>
 <div class="hidden">
 	<input type="hidden" value="" id="drawerSelectedText"/>
 	<input type="hidden" value="" id="drawerSelectedTextP"/>
 	<input type="hidden" value="" id="drawerSelectedTextEl"/>
 	<input type="hidden" value="" id="drawerSelectedTextContext"/>
-	<input type="hidden" value="4" id="drawerColor"/>
-
-
-</div>
+	<input type="hidden" value="4" id="drawerColor"/></div>

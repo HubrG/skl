@@ -223,6 +223,14 @@ export function ShowChapter() {
             document.getElementById("nbrCom").innerHTML;
         }, 1000);
       });
+      if (document.getElementById("delComment")) {
+        document.getElementById("delComment").addEventListener("click", () => {
+          setTimeout(() => {
+            document.getElementById("nbrComSmall").innerHTML =
+              document.getElementById("nbrCom").innerHTML;
+          }, 1000);
+        });
+      }
     }
     // ! Fonction qui permet de modifier les commentaires
     const updateButton = document.querySelectorAll(".updateButton");

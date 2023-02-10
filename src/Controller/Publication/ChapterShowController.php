@@ -76,16 +76,19 @@ class ChapterShowController extends AbstractController
             $comment->setPublishDate(new \DateTime('now'));
             $em->persist($comment);
             $em->flush();
-
             $this->addFlash('success', 'Votre commentaire a bien été ajouté.');
             return $this->redirectToRoute('app_chapter_show', ['slugPub' => $publication->getSlug(), 'user' => $publication->getUser()->getUsername(), 'idChap' => $chapter->getId(), 'slug' => $chapter->getSlug()]);
         }
         // * On ajoute un view pour le chapitre (si l'utilisateur n'est pas l'auteur de la publication)
         $this->viewChapter($chapter);
         // * On formate les notes du chapitre de l'utilisateur connecté
-        $chapterContent = $this->formatChapter($chapter);
-        $chapterContent = $this->formatHL($chapterContent, $chapter);
 
+        if ($this->getUser()) {
+            $chapterContent = $this->formatChapter($chapter);
+            $chapterContent = $this->formatHL($chapterContent, $chapter);
+        } else {
+            $chapterContent = $this->formatChapter($chapter);
+        }
         // * La vue
         return $this->render('publication/show_chapter.html.twig', [
             'infoPub' => $publication,
@@ -255,20 +258,36 @@ class ChapterShowController extends AbstractController
     public function viewChapter($chapter)
     {
         $view = new PublicationChapterView();
+        // * Si l'utilisateur est connecté
         if ($this->getUser()) {
-            $viewRepo = $this->em->getRepository(PublicationChapterView::class);
-            // On vérifie que l'utilisateur n'a pas vu le chapitre depuis plus d'une heure
-            $vieww = $viewRepo->findOneBy(['user' => $this->getUser(), 'chapter' => $chapter]);
-            if ($vieww) {
-                $date = $vieww->getViewDate();
-                $date->add(new \DateInterval('PT1H'));
-                if ($date > new \DateTime('now')) {
+            // * Si l'utilisateur n'est pas l'auteur du chapitre
+            if ($this->getUser() == $chapter->getPublication()->getUser()) {
+                // * On récupère les views liés au chapitre
+                $viewRepo = $this->em->getRepository(PublicationChapterView::class);
+                // * On récupère toutes les occurrences de vue de l'utilisateur sur ce chapitre et on vérifie qu'il ne l'a pas vu depuis 1h
+                $now = new \DateTime();
+                $interval = new \DateInterval("PT1H");
+                $now->sub($interval);
+                $qb = $viewRepo->createQueryBuilder('v');
+                $views = $qb
+                    ->where('v.user = :user')
+                    ->andWhere('v.chapter = :chapter')
+                    ->andWhere('v.view_date >= :now')
+                    ->setParameters([
+                        'user' => $this->getUser(),
+                        'chapter' => $chapter,
+                        'now' => $now,
+                    ])
+                    ->getQuery()
+                    ->getResult();
+                // * S'il y en a on ne fait rien:
+                if ($views) {
                     return;
                 } else {
                     $view->setUser($this->getUser());
                 }
             } else {
-                $view->setUser($this->getUser());
+                return;
             }
         } else {
             $view->setUser(null);
@@ -281,10 +300,9 @@ class ChapterShowController extends AbstractController
     public function formatChapter($chapter)
     {
         $id = 0;
-        $newText = str_replace("<p><br></p>", "", $chapter->getContent());
         $newText = preg_replace_callback('/<p\s*(.*?)>(.*?)<\/p>/', function ($matches) use (&$id) {
             return '<p id="paragraphe-' . $id++ . '" ' . $matches[1] . '>' . $matches[2] . '</p>';
-        }, $newText);
+        }, $chapter->getContent());
 
         return $newText;
     }

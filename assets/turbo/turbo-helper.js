@@ -46,11 +46,10 @@ const TurboHelper = class {
       LazyLoad();
       tippy("[data-tippy-content]");
       DropdownMenu();
-      if (document.getElementById("mega-menu-icons-dropdown")) {
-        document
-          .getElementById("mega-menu-icons-dropdown")
-          .classList.add("hidden");
-      }
+      document
+        .getElementById("mega-menu-icons-dropdown")
+        .classList.add("hidden");
+      document.getElementById("dropdownInformation").classList.add("hidden");
     });
     document.addEventListener("turbo:visit", () => {
       // fade out the old body

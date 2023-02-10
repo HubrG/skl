@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block body %}
-	<section class="col-span-12 gap-10 grayscale" style="z-index:9999">
+	<section class="col-span-12 gap-10 grayscale" style="z-index:999">
 		<h1 class="text-center font-serif text-4xl text-slate-800" style="text-shadow: 0 0.5px 1px blanchedalmond;">{{ pubShow.title }}</h1>
 		<h2 class="text-center -mt-8">
 			<small>par</small>
@@ -16,36 +16,38 @@
 			</span>
 		</h2>
 	</section>
-	<div class="absolute w-full h-4/6 left-0 opacity-10 right-0 top-0 bg-cover bg-center bg-no-repeat blur-md " style="z-index:-9;background-image: url('{{ " https://picsum.photos/400/" ~ random(500, 520) }}')"></div>
-	<section class="col-span-8 col-start-3  pt-10">
+	<div class="absolute w-full h-4/6 left-0 opacity-10 right-0 top-0 bg-cover bg-center bg-no-repeat" style="z-index:-9;background-image: url('{{ " https://picsum.photos/400/" ~ random(500, 520) }}')"></div>
+	<section class="col-span-8 col-start-3  pt-10 h-4/6 ">
 		<div class="flex gap-5 p-5  items-center">
 			<div class="flex-1 text-center flex flex-col justify-center items-center justify-items-center origin-center">
-				<p class="text-sm font-serif text-justify italic text-slate-900 leading-6 -mt-2">
-					<img class="float-left self-start rounded object-cover w-32 h-44 pr-3 pb-1 shaow-md lazy animate-pulse animate__animated bg-slate-300 grayscale-[50%] mt-3" loading="lazy" src="" data-src="{{ "https://picsum.photos/400/" ~ random(500, 520) }}" alt=""/>
-					{% if orderChap %}
-						{% if pubShow.summary %}
-							<i class="fa-solid fa-quote-left text-2xl"></i>&nbsp;
-							{{ pubShow.summary }}... &nbsp;&nbsp;
-							<div class="mt-5"></div>
-						{% endif %}
-						<a href="{{ path("app_chapter_show", {idChap:orderChap.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:orderChap.slug}) }}" class=" block not-italic font-bold py-5 text-center w-full px-10 bg-slate-100 bg-opacity-20 hover:bg-opacity-40 text-slate-900 shadow hover:text-slate-900 hover:bg-slate-200 rounded-lg">
-							<i class="fa-solid fa-glasses"></i>
-							&nbsp;commencer la lecture</a>
-					{% else %}
-						<center>
-							<i class="fa-solid fa-hourglass-half text-4xl font-thin text-slate-600"></i>
-						</center>
-						<br><span class="text-xl text-slate-500">Récit en cours de rédaction, aucune feuille pour le moment...</span>
-					{% endif %}
+				<div class="flex">
+					<img class="rounded object-cover w-32 h-44 pr-3 pb-1 shaow-md lazy animate-pulse animate__animated bg-slate-300 grayscale-[50%] mt-3" loading="lazy" src="" data-src="{{ "https://picsum.photos/400/" ~ random(500, 520) }}" alt=""/>
+					<p class="text-sm font-serif text-justify italic text-slate-900 leading-6 -mt-2">
+						{% if orderChap %}
+							{% if pubShow.summary %}
+								<i class="fa-solid fa-quote-left text-2xl"></i>&nbsp;
+								{{ pubShow.summary }}... &nbsp;&nbsp;
+								<div class="mt-5"></div>
+							{% endif %}
 
-				</p>
+						{% else %}
+							<center>
+								<i class="fa-solid fa-hourglass-half text-4xl font-thin text-slate-600"></i>
+							</center>
+							<br><span class="text-xl text-slate-500">Récit en cours de rédaction, aucune feuille pour le moment...</span>
+						{% endif %}
+					</p>
+				</div>
+				<a href="{{ path("app_chapter_show", {idChap:orderChap.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:orderChap.slug}) }}" class=" block not-italic font-bold py-5 text-center w-full px-10 bg-slate-100 bg-opacity-20 hover:bg-opacity-40 text-slate-900 shadow hover:text-slate-900 hover:bg-slate-200 rounded-lg">
+					<i class="fa-solid fa-glasses"></i>
+					&nbsp;commencer la lecture</a>
 			</div>
 		</div>
 	</section>
 
 	{% if orderChap %}
 
-		<section class="flex col-span-8 col-start-3 row-start-3 mt-6 border-t-2 border-t-white border-opacity-40 pt-5">
+		<section class="flex col-span-8 col-start-3 row-start-3 mt-6  pt-5">
 
 			<div class="w-9/12">
 				<h3 class="text-2xl mb-2">Chapitres</h3>

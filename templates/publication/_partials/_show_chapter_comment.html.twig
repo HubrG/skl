@@ -26,7 +26,7 @@
 				{% set class = "fa-solid fa-heart" %}
 			{% endif %}
 		{% endfor %}
-		<div {% if n == 0 and userLogId == item.user.id and item.publishDate > "now"|date_modify("-2 seconds") %} id="lastComment" class="bg-slate-100 text-slate-600 mb-3  animate__animated animate__fadeIn transition-colors duration-[1000ms] p-6  shadow-sm relative" {% else %} class="bg-white p-6  mb-3  shadow-sm relative" {% endif %}>
+		<div {% if n == 0 and userLogId == item.user.id and item.publishDate > "now"|date_modify("-2 seconds") %} id="lastComment" class="mb-3  animate__animated animate__fadeIn transition-colors duration-[1000ms] p-6  shadow-sm relative" {% else %} class="bg-white p-6  mb-3  shadow-sm relative" {% endif %}>
 			<div class="flex items-start">
 				{% set profilPic = asset('images/uploads/profil_pictures/' ~ item.user.id ~ '/' ~ item.user.profilPicture) %}
 				<img class="w-12 h-12 rounded-full mr-4" {% if item.user.profilPicture and profilPic|exists %} src="{{ profilPic }}" {% else %} src="https://picsum.photos/200/300" {% endif %} alt="avatar">

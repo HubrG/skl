@@ -14,9 +14,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class PublicationShowController extends AbstractController
 {
 	#[Route('/recits/{slug?}/{page<\d+>?}/{order?}/{keystring?}', name: 'app_publication_show_all_category')]
-	public function show_all(PublicationCategoryRepository $pcRepo, PublicationKeywordRepository $kwRepo, PublicationRepository $pRepo, $page = null, $slug = null, $keystring = null, $order = null): Response
+	public function show_all(PublicationCategoryRepository $pcRepo, PublicationKeywordRepository $kwRepo, PublicationChapterRepository $pchRepo, PublicationRepository $pRepo, $page = null, $slug = null, $keystring = null, $order = null): Response
 	{
 		// * On set les variables si elles ne sont pas dans l'url
+		$nbr_by_page = 10;
+		//
 		if (!$page) {
 			$page = 1;
 		}
@@ -28,14 +30,25 @@ class PublicationShowController extends AbstractController
 		}
 		if ($slug != "all") {
 			$pcRepo = $pcRepo->findOneBy(["slug" => $slug]);
+			$qb = $pRepo->createQueryBuilder("p")
+				->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
+				->innerJoin("p.category", "pc", "WITH", "pc.id = :category_id")
+				->where("p.status = 2")
+				->andWhere("pc.id = :category_id")
+				->setParameter("category_id", $pcRepo);
+			$count = count($qb->getQuery()->getResult());
+			$publicationsAll = $qb->getQuery()->getResult();
 		} else {
 			$pcRepo = $pcRepo->findAll();
+			$qb = $pRepo->createQueryBuilder("p")
+				->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
+				->where("p.status = 2")
+				->andWhere("p.category is not null");
+			$count = count($qb->getQuery()->getResult());
+			$publicationsAll = $qb->getQuery()->getResult();
 		}
 		// ! Si il y a bien des publications dans la catégorie sélectionnée...
 		if ($pcRepo) {
-			// ! On prépare la pagination et on récupère les keywords de la catégorie sélectionnée
-			$nbr_by_page = 10;
-			$count = count($publicationsAll = $pRepo->findBy(["category" => $pcRepo, "status" => 2]));
 			// ! On chercher les keywords
 			// * S'il n'y a pas de slug dans l'url, on renvoie les keywords liés à toutes les publications
 			if ($slug != "all") {
@@ -44,11 +57,7 @@ class PublicationShowController extends AbstractController
 			}
 			// * Sinon, on renvoie tous les keywords de la base de données
 			else {
-				$qb = $kwRepo->createQueryBuilder('p');
-				$publicationKw = $qb->where($qb->expr()->gt('p.count', 0))
-					->orderBy('p.count', 'DESC')
-					->getQuery()
-					->getResult();
+				$publicationKw = $this->keyw_sort($publicationsAll);
 			}
 			// ! On cherche les publications
 			// * S'il n'y a pas de keywords dans l'url, on renvoie toutes les publications
@@ -56,7 +65,29 @@ class PublicationShowController extends AbstractController
 				$countPage = $count / $nbr_by_page;
 				$countPage = ceil($countPage);
 				$page = $page - 1;
-				$publications = $pRepo->findBy(["category" => $pcRepo, "status" => 2], ["published_date" => $order], $nbr_by_page, $page * $nbr_by_page);
+				//!SECTION
+				if ($slug == "all") {
+					$qb = $pRepo->createQueryBuilder("p")
+						->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
+						->where("p.status = 2")
+						->andWhere("p.category is not null")
+						->orderBy("p.published_date", $order)
+						->setFirstResult($page * $nbr_by_page)
+						->setMaxResults($nbr_by_page);
+				} else {
+					$qb = $pRepo->createQueryBuilder("p")
+						->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
+						->innerJoin("p.category", "pc", "WITH", "pc.id = :category_id")
+						->where("p.status = 2")
+						->andWhere("pc.id = :category_id")
+						->setParameter("category_id", $pcRepo)
+						->orderBy("p.published_date", $order)
+						->setFirstResult($page * $nbr_by_page)
+						->setMaxResults($nbr_by_page);
+				}
+				$publications = $qb->getQuery()->getResult();
+
+				//!SECTION
 				$keywString = null;
 			}
 			//  Si il y a des keywords dans l'url, on renvoie toutes les publications qui ont au moins un des keywords
@@ -79,21 +110,44 @@ class PublicationShowController extends AbstractController
 					}
 				}
 				if ($slug != "all") {
-					// * ... on enlève les publications qui ne sont pas de la catégorie
+					// * ... on enlève les publications qui ne sont pas de la catégorie et qui n'ont pas de chapitre publié
 					$publications = array_filter($publications, function ($p) use ($pcRepo) {
 						return $p->getCategory() == $pcRepo;
 					});
+					// * On vérifie que la publication a au moins un chapitre publié
+					$publications = array_filter($publications, function ($p) {
+						$chapters = $p->getPublicationChapters();
+						if ($chapters->count() > 0) {
+							foreach ($chapters as $chapter) {
+								if ($chapter->getStatus() == 2) {
+									return true;
+								}
+							}
+						}
+						return false;
+					});
+				} else {
+					// * On vérifie que la publication a au moins un chapitre publié
+					$publications = array_filter($publications, function ($p) {
+						$chapters = $p->getPublicationChapters();
+						if ($chapters->count() > 0) {
+							foreach ($chapters as $chapter) {
+								if ($chapter->getStatus() == 2) {
+									return true;
+								}
+							}
+						}
+						return false;
+					});
 				}
 				// * ... et on enlève les doublons en récupérant les ID unique de $publications
-				$publicationsAll = $pRepo->findBy(["id" => $publications, "status" => 2]);
 				// ! pagination
-				$nbr_by_page = 10;
-				$count = count($publicationsAll);
+				$count = count($publications);
 				$countPage = $count / $nbr_by_page;
 				$countPage = ceil($countPage);
 				$page = $page - 1;
 				// *
-				$publications = $pRepo->findBy(["id" => $publications, "status" => 2], ["published_date" => $order], $nbr_by_page, $page * $nbr_by_page);
+				$publications = $pRepo->findBy(["id" => $publications], ["published_date" => $order], $nbr_by_page, $page * $nbr_by_page);
 			}
 			// * 
 			// ! render
@@ -105,7 +159,8 @@ class PublicationShowController extends AbstractController
 				'count' => $count, // Retourne le nombre de publications
 				'countPage' => $countPage, // Retourne le nombre de pages
 				'page' => $page + 1, // Retourne la page actuelle
-				'orderSort' => $order // Retourne l'ordre d'affichage
+				'orderSort' => $order, // Retourne l'ordre d'affichage
+				'limit' => $nbr_by_page // Retourne l'ordre d'affichage
 			]);
 		}
 		// ! s'il n'y a pas de publications dans la catégorie sélectionnée... 

@@ -52,8 +52,14 @@ class PublicationChapter
     #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationChapterView::class, cascade: ['remove'], orphanRemoval: true)]
     private Collection $publicationChapterViews;
 
-    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationChapterNote::class)]
+    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationChapterNote::class, cascade: ['remove'])]
     private Collection $publicationChapterNotes;
+
+    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationChapterLike::class, cascade: ['remove'])]
+    private Collection $publicationChapterLikes;
+
+    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationChapterBookmark::class, cascade: ['remove'])]
+    private Collection $publicationChapterBookmarks;
 
     public function __construct()
     {
@@ -61,6 +67,8 @@ class PublicationChapter
         $this->publicationChapterComments = new ArrayCollection();
         $this->publicationChapterViews = new ArrayCollection();
         $this->publicationChapterNotes = new ArrayCollection();
+        $this->publicationChapterLikes = new ArrayCollection();
+        $this->publicationChapterBookmarks = new ArrayCollection();
     }
 
 
@@ -293,6 +301,66 @@ class PublicationChapter
             // set the owning side to null (unless already changed)
             if ($publicationChapterNote->getChapter() === $this) {
                 $publicationChapterNote->setChapter(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationChapterLike>
+     */
+    public function getPublicationChapterLikes(): Collection
+    {
+        return $this->publicationChapterLikes;
+    }
+
+    public function addPublicationChapterLike(PublicationChapterLike $publicationChapterLike): self
+    {
+        if (!$this->publicationChapterLikes->contains($publicationChapterLike)) {
+            $this->publicationChapterLikes->add($publicationChapterLike);
+            $publicationChapterLike->setChapter($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationChapterLike(PublicationChapterLike $publicationChapterLike): self
+    {
+        if ($this->publicationChapterLikes->removeElement($publicationChapterLike)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationChapterLike->getChapter() === $this) {
+                $publicationChapterLike->setChapter(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationChapterBookmark>
+     */
+    public function getPublicationChapterBookmarks(): Collection
+    {
+        return $this->publicationChapterBookmarks;
+    }
+
+    public function addPublicationChapterBookmark(PublicationChapterBookmark $publicationChapterBookmark): self
+    {
+        if (!$this->publicationChapterBookmarks->contains($publicationChapterBookmark)) {
+            $this->publicationChapterBookmarks->add($publicationChapterBookmark);
+            $publicationChapterBookmark->setChapter($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationChapterBookmark(PublicationChapterBookmark $publicationChapterBookmark): self
+    {
+        if ($this->publicationChapterBookmarks->removeElement($publicationChapterBookmark)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationChapterBookmark->getChapter() === $this) {
+                $publicationChapterBookmark->setChapter(null);
             }
         }
 

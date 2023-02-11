@@ -2,19 +2,22 @@
 
 namespace App\Controller\Publication;
 
+use App\Entity\PublicationChapterLike;
 use App\Entity\PublicationChapterNote;
 use App\Entity\PublicationChapterView;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Entity\PublicationChapterComment;
 use App\Repository\PublicationRepository;
+use App\Entity\PublicationChapterBookmark;
 use App\Form\PublicationChapterCommentType;
 use App\Entity\PublicationChapterCommentLike;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
+use App\Repository\PublicationChapterLikeRepository;
 use App\Repository\PublicationChapterNoteRepository;
 use App\Repository\PublicationChapterCommentRepository;
+use App\Repository\PublicationChapterBookmarkRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ChapterShowController extends AbstractController
@@ -404,5 +407,75 @@ class ChapterShowController extends AbstractController
             }
         }
         return $chapterText;
+    }
+    #[Route('/recit/chapter/like', name: 'app_chapter_like', methods: ['POST'])]
+    public function Axios_ChapterLike(Request $request, PublicationChapterRepository $pchRepo, PublicationChapterLikeRepository $pclRepo, EntityManagerInterface $em): response
+    {
+        $pch = $pchRepo->find($request->get("idChapter"));
+        if ($pch && $this->getUser()) {
+            if ($pclRepo->findOneBy(['chapter' => $pch, 'user' => $this->getUser()])) {
+                // On supprime le like
+                $like = $pclRepo->findOneBy(['chapter' => $pch, 'user' => $this->getUser()]);
+                $em->remove($like);
+                $em->flush();
+                return $this->json([
+                    'code' => 200,
+                    'resp' => false,
+                    'nbrLike' => $pclRepo->count(['chapter' => $pch]),
+                    'message' => 'Le like a bien été supprimée.',
+                ], 200);
+            } else {
+                $like = new PublicationChapterLike();
+                $like->setChapter($pch);
+                $like->setUser($this->getUser());
+                $em->persist($like);
+                $em->flush();
+                return $this->json([
+                    'code' => 200,
+                    'resp' => true,
+                    'nbrLike' => $pclRepo->count(['chapter' => $pch]),
+                    'message' => 'Le chapitre a bien été liké.',
+                ], 200);
+            }
+        }
+        return $this->json([
+            'code' => 200,
+            'message' => 'Le like a bien été supprimée.',
+        ], 200);
+    }
+    #[Route('/recit/chapter/bm', name: 'app_chapter_bm', methods: ['POST'])]
+    public function Axios_ChapterBm(Request $request, PublicationChapterRepository $pchRepo, PublicationChapterBookmarkRepository $pcbRepo, EntityManagerInterface $em): response
+    {
+        $pch = $pchRepo->find($request->get("idChapter"));
+        if ($pch && $this->getUser()) {
+            if ($pcbRepo->findOneBy(['chapter' => $pch, 'user' => $this->getUser()])) {
+                // On supprime le like
+                $like = $pcbRepo->findOneBy(['chapter' => $pch, 'user' => $this->getUser()]);
+                $em->remove($like);
+                $em->flush();
+                return $this->json([
+                    'code' => 200,
+                    'resp' => false,
+                    'nbrBm' => $pcbRepo->count(['chapter' => $pch]),
+                    'message' => 'Le chapitre a bien été supprimée des bookmarks.',
+                ], 200);
+            } else {
+                $like = new PublicationChapterBookmark();
+                $like->setChapter($pch);
+                $like->setUser($this->getUser());
+                $em->persist($like);
+                $em->flush();
+                return $this->json([
+                    'code' => 200,
+                    'resp' => true,
+                    'nbrBm' => $pcbRepo->count(['chapter' => $pch]),
+                    'message' => 'Le chapitre a bien été ajouté aux bookmarks',
+                ], 200);
+            }
+        }
+        return $this->json([
+            'code' => 200,
+            'message' => 'Le chapitre a bien été supprimée des bookmarks.',
+        ], 200);
     }
 }

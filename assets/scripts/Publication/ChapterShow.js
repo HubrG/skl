@@ -2,7 +2,22 @@ import axios from "axios";
 export function ShowChapter() {
   const chapContentTurbo = document.getElementById("chapContentTurbo");
   if (!chapContentTurbo) return;
-
+  //!SECTION — Click sur le bouton "like" du chapitre
+  const likeChapter = document.getElementById("likeThisChapter");
+  if (likeChapter) {
+    likeChapter.addEventListener("click", () => {
+      const likeChapterId = likeChapter.getAttribute("data-id");
+      likeChapterData(likeChapterId);
+    });
+  }
+  //!SECTION — Click sur le bouton "add bookmark" du chapitre
+  const bmChapter = document.getElementById("bmThisChapter");
+  if (bmChapter) {
+    bmChapter.addEventListener("click", () => {
+      const bmChapterId = bmChapter.getAttribute("data-id");
+      bmChapterData(bmChapterId);
+    });
+  }
   // ! SECTION - Traitement de la position du sticky
   window.addEventListener("scroll", function () {
     let nav = document.querySelector("nav");
@@ -709,6 +724,46 @@ export function DropdownMenu() {
       });
     }
   };
+}
+function likeChapterData(likeChapterId) {
+  const nbrLike = document.getElementById("nbrLike");
+  const likeChapter = document.getElementById("likeChapterThumb");
+  const url = "/recit/chapter/like";
+  const data = new FormData();
+  //
+  //
+  data.append("idChapter", likeChapterId);
+  axios.post(url, data).then((response) => {
+    if (response.data.resp) {
+      likeChapter.classList.remove("fa-regular");
+      likeChapter.classList.add("fa-solid", "text-blue-500");
+      nbrLike.innerHTML = response.data.nbrLike;
+    } else {
+      likeChapter.classList.add("fa-regular");
+      likeChapter.classList.remove("fa-solid", "text-blue-500");
+      nbrLike.innerHTML = response.data.nbrLike;
+    }
+  });
+}
+function bmChapterData(bmChapterId) {
+  const nbrBm = document.getElementById("nbrBm");
+  const bmChapter = document.getElementById("bmChapter");
+  const url = "/recit/chapter/bm";
+  const data = new FormData();
+  //
+  //
+  data.append("idChapter", bmChapterId);
+  axios.post(url, data).then((response) => {
+    if (response.data.resp) {
+      bmChapter.classList.remove("fa-regular");
+      bmChapter.classList.add("fa-solid", "text-blue-500");
+      nbrBm.innerHTML = response.data.nbrBm;
+    } else {
+      bmChapter.classList.add("fa-regular");
+      bmChapter.classList.remove("fa-solid", "text-blue-500");
+      nbrBm.innerHTML = response.data.nbrBm;
+    }
+  });
 }
 ShowChapter();
 targetQuote();

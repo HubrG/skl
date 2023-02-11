@@ -14,22 +14,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class PublicationShowController extends AbstractController
 {
 	#[Route('/recits/{slug?}/{page<\d+>?}/{order?}/{keystring?}', name: 'app_publication_show_all_category')]
-	public function show_all(PublicationCategoryRepository $pcRepo, PublicationKeywordRepository $kwRepo, PublicationChapterRepository $pchRepo, PublicationRepository $pRepo, $page = null, $slug = null, $keystring = null, $order = null): Response
+	public function show_all(PublicationCategoryRepository $pcRepo, PublicationKeywordRepository $kwRepo, PublicationChapterRepository $pchRepo, PublicationRepository $pRepo, $page = 1, $slug = "all", $keystring = null, $order = "desc"): Response
 	{
 		// * On set les variables si elles ne sont pas dans l'url
 		$nbr_by_page = 10;
-		//
-		if (!$page) {
-			$page = 1;
-		}
-		if (!$order) {
-			$order = "desc";
-		}
-		if (!$slug) {
-			$slug = "all"; // S'il n'y a pas de slug, on affiche toutes les catégories
-		}
+		$page = $page ?? 1;
+		$order = $order ?? "desc";
+		$slug = $slug ?? "all";
+		$pcRepo = ($slug != "all") ? $pcRepo->findOneBy(["slug" => $slug]) : $pcRepo->findAll();
 		if ($slug != "all") {
-			$pcRepo = $pcRepo->findOneBy(["slug" => $slug]);
 			$qb = $pRepo->createQueryBuilder("p")
 				->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
 				->innerJoin("p.category", "pc", "WITH", "pc.id = :category_id")
@@ -39,7 +32,6 @@ class PublicationShowController extends AbstractController
 			$count = count($qb->getQuery()->getResult());
 			$publicationsAll = $qb->getQuery()->getResult();
 		} else {
-			$pcRepo = $pcRepo->findAll();
 			$qb = $pRepo->createQueryBuilder("p")
 				->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
 				->where("p.status = 2")
@@ -48,7 +40,9 @@ class PublicationShowController extends AbstractController
 			$publicationsAll = $qb->getQuery()->getResult();
 		}
 		// ! Si il y a bien des publications dans la catégorie sélectionnée...
-		if ($pcRepo) {
+		if (!$pcRepo) {
+			return $this->redirectToRoute("app_home", [], Response::HTTP_SEE_OTHER);
+		} else {
 			// ! On chercher les keywords
 			// * S'il n'y a pas de slug dans l'url, on renvoie les keywords liés à toutes les publications
 			if ($slug != "all") {
@@ -162,10 +156,6 @@ class PublicationShowController extends AbstractController
 				'orderSort' => $order, // Retourne l'ordre d'affichage
 				'limit' => $nbr_by_page // Retourne l'ordre d'affichage
 			]);
-		}
-		// ! s'il n'y a pas de publications dans la catégorie sélectionnée... 
-		else {
-			return $this->redirectToRoute("app_home", [], Response::HTTP_SEE_OTHER);
 		}
 	}
 	#[Route('/recit/{id<\d+>}/{slug}', name: 'app_publication_show_one')]

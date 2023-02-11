@@ -261,7 +261,7 @@ class ChapterShowController extends AbstractController
         // * Si l'utilisateur est connecté
         if ($this->getUser()) {
             // * Si l'utilisateur n'est pas l'auteur du chapitre
-            if ($this->getUser() == $chapter->getPublication()->getUser()) {
+            if ($this->getUser() != $chapter->getPublication()->getUser()) {
                 // * On récupère les views liés au chapitre
                 $viewRepo = $this->em->getRepository(PublicationChapterView::class);
                 // * On récupère toutes les occurrences de vue de l'utilisateur sur ce chapitre et on vérifie qu'il ne l'a pas vu depuis 1h
@@ -277,6 +277,7 @@ class ChapterShowController extends AbstractController
                         'user' => $this->getUser(),
                         'chapter' => $chapter,
                         'now' => $now,
+
                     ])
                     ->getQuery()
                     ->getResult();

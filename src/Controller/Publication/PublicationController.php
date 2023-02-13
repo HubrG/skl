@@ -315,8 +315,8 @@ class PublicationController extends AbstractController
                 ->setMature($dtMature)
                 ->setUpdated(new \DateTime('now'));
             if ($dtCover) {
+                $imagine = new Imagine();
                 try {
-                    $imagine = new Imagine();
                     $this->isImage($imagine, $dtCover);
                 } catch (\Exception $e) {
                     // On verifie le format du fichier
@@ -327,7 +327,7 @@ class PublicationController extends AbstractController
                 $fullPath = $destination . "/" . $newFilename;
                 try {
                     $format = 'jpg';
-                    $this->convertImage($dtCover, $fullPath, $format);
+                    $this->convertImage($imagine, $dtCover, $fullPath, $format);
                 } catch (FileException $e) {
                     return $this->json(["code" => "notimg", "value" => "Veuillez choisir une image au format jpg"]);
                 }
@@ -336,12 +336,9 @@ class PublicationController extends AbstractController
                     \unlink($destination . "/" . $pub->getCover());
                 }
                 $publication->setCover($newFilename);
-            } else {
-
-
-                $em->persist($publication);
-                $em->flush();
             }
+            $em->persist($publication);
+            $em->flush();
         } else {
             return $this->json([
                 "code" => 404
@@ -351,7 +348,7 @@ class PublicationController extends AbstractController
             "code" => 200 // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
         ]);
     }
-    public function convertImage($inputPath, $outputPath, $format)
+    public function convertImage(ImagineInterface $imagine, $inputPath, $outputPath, $format)
     {
         $imagine = new Imagine();
 

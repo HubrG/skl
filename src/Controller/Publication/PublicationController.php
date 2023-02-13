@@ -1,23 +1,17 @@
 <?php
 
 namespace App\Controller\Publication;
-// FIXME : Problème avec Imagine chez Heroku
-use Aws\S3\S3Client;
+
 use DirectoryIterator;
-use Imagine\Image\Box;
-use Imagine\Gd\Imagine;
-use Imagine\Image\Point;
+use Cloudinary\Cloudinary;
 use App\Entity\Publication;
 use App\Form\PublicationType;
-use Imagine\Image\ImageInterface;
 use App\Entity\PublicationKeyword;
-use Imagine\Image\ImagineInterface;
-use Imagine\Exception\RuntimeException;
+use Cloudinary\Transformation\Resize;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Imagine\Exception\InvalidArgumentException;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
 use App\Repository\PublicationKeywordRepository;
@@ -25,6 +19,7 @@ use App\Repository\PublicationCategoryRepository;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+
 
 class PublicationController extends AbstractController
 {
@@ -302,11 +297,12 @@ class PublicationController extends AbstractController
         $dtSummary = $request->get("summary");
         $dtCategory = $request->get("category");
         $dtMature = $request->get("mature");
-        $dtCoverName = $request->get("coverName");
         $dtCover = $request->files->get("cover");
         //
         $pub = $pRepo->find($idPub);
         $category = $catRepo->find($dtCategory);
+        //
+        $urlCloudinary = "";
         if ($this->getUser() == $pub->getUser()) {
             //
             $publication = $pub->setTitle($dtTitle)->setSlug($slugger->slug(strtolower($dtTitle)))
@@ -314,28 +310,46 @@ class PublicationController extends AbstractController
                 ->setCategory($category)
                 ->setMature($dtMature)
                 ->setUpdated(new \DateTime('now'));
+            // * Traitement de l'image
             if ($dtCover) {
-                $imagine = new Imagine();
-                try {
-                    $this->isImage($imagine, $dtCover);
-                } catch (\Exception $e) {
-                    // On verifie le format du fichier
-                    return $this->json(["code" => "Le fichier n'est pas une image", "value" => "Le fichier n'est pas une image"]);
-                }
                 $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $idPub;
-                $newFilename = $dtCoverName . '.jpg';
-                $fullPath = $destination . "/" . $newFilename;
+                $newFilename = $pub->getId() . rand(0, 9999) . '.img';
                 try {
-                    $format = 'jpg';
-                    $this->convertImage($imagine, $dtCover, $fullPath, $format);
+                    $dtCover->move(
+                        $destination,
+                        $newFilename
+                    );
                 } catch (FileException $e) {
-                    return $this->json(["code" => "notimg", "value" => "Veuillez choisir une image au format jpg"]);
+                    return $this->json([
+                        "code" => 500,
+                        "value" => "Une erreur est survenue. Vérifiez que le fichier n'est pas corrompu, sinon préférez un format JPG"
+                    ]);
                 }
-                // * si une cover a déjà été envoyée, alors on la supprime pour la remplacer par la nouvelle
-                if ($pub->getCover() && \file_exists($destination . "/" . $pub->getCover())) {
-                    \unlink($destination . "/" . $pub->getCover());
+                $cloudinary = new Cloudinary(
+                    [
+                        'cloud' => [
+                            'cloud_name' => 'djaro8nwk',
+                            'api_key'    => '716759172429212',
+                            'api_secret' => 'A35hPbZP0NsjnMKrE9pLR-EHwiU',
+                        ],
+                    ]
+                );
+
+                $cloudinary->uploadApi()->upload(
+                    $destination . "/" . $newFilename,
+                    ['public_id' => $newFilename, 'folder' => "story/" . $idPub,]
+                );
+
+                $urlCloudinary = $cloudinary->image("story/" . $idPub . "/" . $newFilename)->resize(Resize::fill(529, 793))->toUrl();
+                // * On supprime la cover
+                if (\file_exists($destination . "/" . $newFilename)) {
+                    \unlink($destination . "/" . $newFilename);
                 }
-                $publication->setCover($newFilename);
+                // On récupère le dernier cover de la publication pour la supprimer de Cloudinary : 
+                preg_match("/\/([^\/]*\.img)/", $pub->getCover(), $matches);
+                $result = $matches[1];
+                $cloudinary->uploadApi()->destroy("story/" . $idPub . "/" . $result, ['invalidate' => true,]);
+                $publication->setCover($urlCloudinary);
             }
             $em->persist($publication);
             $em->flush();
@@ -345,64 +359,8 @@ class PublicationController extends AbstractController
             ]);
         }
         return $this->json([
-            "code" => 200 // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
+            "code" => 200,
+            "cloudinary" => $urlCloudinary // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
         ]);
-    }
-    public function convertImage(ImagineInterface $imagine, $inputPath, $outputPath, $format)
-    {
-        $imagine = new Imagine();
-
-        // Appliquer un filtre
-
-        // Enregistrer l'image modifiée
-        // Chargement de l'image
-        $image = $imagine->open($inputPath);
-
-
-        // Redimensionnement de l'image à la nouvelle taille
-        $image = $image->thumbnail(new Box(529, 793), ImageInterface::THUMBNAIL_OUTBOUND);
-
-        $image->effects()->sharpen();
-
-
-        $s3Client = new S3Client([
-            'version' => 'latest',
-            'region'  => 'us-east-1',
-            'credentials' => [
-                'key'    => 'AKIAYHDZQPCHQDG46HJ4',
-                'secret' => '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',
-            ],
-        ]);
-
-        // Génération d'un nom de fichier unique
-        $fileName = uniqid() . '.' . $format;
-
-        // Téléchargement de l'image sur Amazon S3
-        $result = $s3Client->putObject([
-            'Bucket' => 'scrilab',
-            'Key'    => 'path/to/' . $fileName,
-            'Body'   => $image->get($format, array('quality' => 100)),
-            'ACL'    => 'public-read',
-        ]);
-
-
-        // Définition du point d'ancrage
-        $point = new Point(0, 0);
-
-        // Sauvegarde de l'image convertie
-        try {
-            $image->save($outputPath, array('format' => $format, 'quality' => 100));
-        } catch (RuntimeException $e) {
-            return $this->json(["code" => "notimg", "value" => "Veuillez choisir une image au format jpg"]);
-        }
-    }
-    public function isImage(ImagineInterface $imagine, $filePath)
-    {
-        try {
-            $imagine->open($filePath);
-            return true;
-        } catch (InvalidArgumentException $e) {
-            return false;
-        }
     }
 }

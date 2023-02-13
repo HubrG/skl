@@ -70,9 +70,7 @@ function AxiosPublication() {
   var showNewCover = document.getElementById("showNewCover");
   var coverShow = document.getElementById("cover");
   var cover = document.getElementById("publication_cover");
-  var coverName = hideIdPub + Math.floor(Math.random() * 9999);
-  var coverPath =
-    "/images/uploads/story/" + hideIdPub + "/" + coverName + ".jpg";
+
   if (cover.files[0]) {
     if (cover.files[0].size > 10000000) {
       var coverFile = "";
@@ -100,7 +98,6 @@ function AxiosPublication() {
   data.append("mature", mature);
   data.append("idPub", hideIdPub);
   data.append("cover", coverFile);
-  data.append("coverName", coverName);
   // * Envoi sur le serveur via Axios
   axios
     .post(url, data, {
@@ -116,10 +113,10 @@ function AxiosPublication() {
         var notyType = "success";
         NotyDisplay(notyText, notyType, notyTimeout);
         // * cover
-        if (coverFile) {
+        if (response.data.cloudinary) {
           spinCover.toggle("hidden");
           coverShow.classList.remove("opacity-50");
-          coverShow.src = coverPath;
+          coverShow.src = response.data.cloudinary;
           cover.value = "";
           if (hideNoCover) {
             if (showNewCover.classList.contains("hidden")) {

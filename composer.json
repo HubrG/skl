@@ -13,6 +13,7 @@
         "babdev/pagerfanta-bundle": "^3.7",
         "calcinai/php-imagick": "^0.1.2",
         "cebe/markdown": "^1.2",
+        "cloudinary/cloudinary_php": "^2.10",
         "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/doctrine-migrations-bundle": "^3.2",

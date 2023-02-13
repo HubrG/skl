@@ -8,6 +8,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-intl": "*",
+        "ext-gd": "*",
         "babdev/pagerfanta-bundle": "^3.7",
         "calcinai/php-imagick": "^0.1.2",
         "ext-imagick": "*",

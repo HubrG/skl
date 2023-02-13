@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller\Publication;
-
+// FIXME : Problème avec Imagine chez Heroku
 use DirectoryIterator;
 use Imagine\Image\Box;
 use Imagine\Gd\Imagine;
@@ -337,12 +337,11 @@ class PublicationController extends AbstractController
                 }
                 $publication->setCover($newFilename);
             } else {
-                return $this->json([
-                    "code" => "ok"
-                ]);
+
+
+                $em->persist($publication);
+                $em->flush();
             }
-            $em->persist($publication);
-            $em->flush();
         } else {
             return $this->json([
                 "code" => 404

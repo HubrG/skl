@@ -364,9 +364,10 @@ class PublicationController extends AbstractController
 
 
         // Redimensionnement de l'image à la nouvelle taille
-        $image = $image->thumbnail(new Box(529, 793), ImageInterface::THUMBNAIL_OUTBOUND);
+        $image = $image->thumbnail(new Box(529, 793));
+        // $image = $image->thumbnail(new Box(529, 793), ImageInterface::THUMBNAIL_OUTBOUND);
 
-
+        // $image->effects()->sharpen();
 
 
 

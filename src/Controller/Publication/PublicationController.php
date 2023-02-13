@@ -4,9 +4,9 @@ namespace App\Controller\Publication;
 
 use DirectoryIterator;
 use Imagine\Image\Box;
+use Imagine\Gd\Imagine;
 use Imagine\Image\Point;
 use App\Entity\Publication;
-use Imagine\Imagick\Imagine;
 use App\Form\PublicationType;
 use Imagine\Image\ImageInterface;
 use App\Entity\PublicationKeyword;
@@ -25,8 +25,10 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
+
 class PublicationController extends AbstractController
 {
+
     #[Route('/story/add', name: 'app_publication_add')]
     public function Draft(Request $request, PublicationRepository $pubRepo, SluggerInterface $slugger, EntityManagerInterface $em): Response
     {
@@ -312,7 +314,7 @@ class PublicationController extends AbstractController
                 ->setCategory($category)
                 ->setMature($dtMature)
                 ->setUpdated(new \DateTime('now'));
-            $imagine = new \Imagine\Gd\Imagine();
+            $imagine = new Imagine();
             if ($dtCover) {
                 try {
                     $this->isImage($imagine, $dtCover);
@@ -359,13 +361,13 @@ class PublicationController extends AbstractController
         // Enregistrer l'image modifiée
         // Chargement de l'image
         $image = $imagine->open($inputPath);
-        $image->effects()->grayscale();
 
-        // Création d'une nouvelle boîte de taille spécifiée
-        $size = new Box(300, 400);
 
         // Redimensionnement de l'image à la nouvelle taille
-        $image->thumbnail($size, ImageInterface::THUMBNAIL_OUTBOUND);
+        $image = $image->thumbnail(new Box(529, 793), ImageInterface::THUMBNAIL_OUTBOUND);
+
+        $image->effects()->sharpen();
+
 
 
 
@@ -374,7 +376,7 @@ class PublicationController extends AbstractController
 
         // Sauvegarde de l'image convertie
         try {
-            $image->save($outputPath, array('format' => $format, 'quality' => 90));
+            $image->save($outputPath, array('format' => $format, 'quality' => 100));
         } catch (RuntimeException $e) {
             return $this->json(["code" => "notimg", "value" => "Veuillez choisir une image au format jpg"]);
         }

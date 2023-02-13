@@ -51,8 +51,8 @@
 		{% include "publication/_partials/_show_all_keywords.html.twig"  %}
 		{# ! Affichage des récits #}
 		<section class="col-span-10 -mt-5 grayscale-[2px]" style="--animate-duration: 1s;">
-			<div class="flex mb-10 justify-center gap-7 ">
-				<h4 class="w-4/6 mb-5 font-light text-lg text-slate-500">
+			<div class="flex mb-10 justify-between ">
+				<h4 class="w-4/6 mb-5  pl-5 font-light text-lg text-slate-500">
 					{% if count == 0 %}Aucun récit.
 						<a href="{{path("app_publication_add")}}" class="text-blue-500">N'hésitez pas à publier le vôtre !</a>
 						{% elseif count == 1 %}1 récit
@@ -61,7 +61,7 @@
 						récits
 					{% endif %}
 				</h4>
-				<div class="-mt-3 -ml-2 items-end">
+				<div class="-mt-3 items-end">
 					<button id="sortButton" data-dropdown-toggle="sortHover" data-dropdown-trigger="hover" class="text-slate-500 ring-1  grayscale ring-slate-300 bg-none hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
 						Organiser par
 						<svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -98,19 +98,19 @@
 						</ul>
 					</div>
 				</div>
-				<div class="-mt-3 -mr-5">
-					{% if countPage > 1 %}
+				{% if countPage > 1 %}
+					<div class="-mt-3 -mr-5">
 						{% include "publication/_partials/_show_all_pagination.html.twig" with {'type': "top"}  %}
-					{% endif %}
-				</div>
+					</div>
+				{% endif %}
 			</div>
 			<div class=" flex-col grid-cols-2 gap-3 grid row-span-full  items-stretch animate__animated animate__fadeIn">
 				{% for item in pubShow %}
 					<div class=" rounded-lg   dark:border-slate-700 flex place-content-start">
 						<div class="w-2/6  h-auto rounded-lg">
 							<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}">
-								{% set pic = asset('images/uploads/story/' ~ item.id ~ '/' ~ item.cover) %}
-								<img class="rounded object-cover w-full shadow lazy animate-pulse animate__animated bg-slate-300 grayscale-[50%]" loading="lazy" src="" data-src="{% if pic and pic|exists %}{{pic}}{% else %}{{ " https://picsum.photos/200/" ~ random(300, 310) }} {% endif %}" alt=""/>
+								{% set pic = item.cover %}
+								<img class="rounded object-cover w-full lazy animate-pulse animate__animated bg-slate-300 grayscale-[50%]" loading="lazy" src="" data-src="{% if pic %}{{pic}}{% else %}{{ " https://picsum.photos/200/" ~ random(300, 310) }} {% endif %}" alt=""/>
 							</a>
 						</div>
 						<div class="p-5 -mt-7 w-4/6 place-content-baseline items-baseline">
@@ -118,7 +118,7 @@
 								<a href="{{ path("app_user", {username:item.user.username}) }}" class="hover:underline">{{ item.user.nickname }}</a>
 							</small>
 							<h5 class="mb-2 text-base font-bold tracking-tight">
-								<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" class=" text-slate-600  dark:text-white text-lg leading-5 hover:underline">{{ item.title }}</a>
+								<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" class=" text-slate-600  dark:text-white text-base leading-5 hover:underline">{{ item.title }}</a>
 							</h5>
 							<p class="text-xs -mt-2 mb-2 text-slate-500 font-base">{{ item.publicationChapters|chapter("nbr", "ft") }}
 								—
@@ -157,8 +157,9 @@
 					</div>
 				{% endfor %}
 				{% set placeholderimg = "https://via.placeholder.com/200x300" %}
+
 				{% if kwString is null and page == 1 %}
-					{% for i in count..limit-1 %}
+					{% for i in count..limit - 1 %}
 						<div class=" rounded-lg   dark:border-slate-700 flex place-content-start opacity-80">
 							<p class="absolute z-50 ml-[13%] mt-[5%] shadow-lg">
 								<a href="{{path("app_publication_add")}}" class=" text-slate-900  rounded ring-1 ring-slate-900 px-4 bg-white  p-3 font-medium hover:bg-slate-50 shadow">
@@ -182,7 +183,7 @@
 										{% endif %}
 									</a>
 								</small>
-								<h5 class="mb-2 font-bold tracking-tight  text-lg blur-[2px]">
+								<h5 class="mb-2 font-bold tracking-tight  text-base blur-[2px]">
 									<a href="{{path("app_publication_add")}}" class=" text-slate-700  dark:text-white ">{{ "title"|faker(4) }}</a>
 								</h5>
 								<p class="mb-3 font-normal text-slate-400 text-sm text-justify  dark:text-slate-400 blur-[2px]">

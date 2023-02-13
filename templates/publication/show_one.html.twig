@@ -7,8 +7,8 @@
 {% endblock %}
 
 {% block body %}
-	{% set pic = asset('images/uploads/story/' ~ pubShow.id ~ '/' ~ pubShow.cover) %}
-	{% if pic and pic|exists %}
+	{% set pic = pubShow.cover %}
+	{% if pic %}
 		{% else %}
 			{% set pic = " https://picsum.photos/200/" ~ random(300, 310) %}
 	{% endif %}
@@ -44,7 +44,7 @@
 			</span>
 		</h2>
 		<div class="flex justify-center">
-			<img class=" rounded-full mt-6 object-cover w-40 h-40 justify-center  mb-5  pb-1 shaow-md  grayscale-[50%]" src="{% if pic and pic|exists %}{{pic}}{% else %}{{ " https://picsum.photos/200/" ~ random(300, 310) }} {% endif %}" alt=""/>
+			<img class=" rounded-full mt-6 object-cover w-40 h-40 justify-center  mb-5  pb-1 shaow-md  grayscale-[50%]" src="{{pic}}" alt=""/>
 
 		</div>
 		<div class="flex gap-5 p-10 pt-0  items-center">

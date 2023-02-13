@@ -9,6 +9,7 @@ use App\Form\PublicationType;
 use App\Entity\PublicationKeyword;
 use Cloudinary\Transformation\Resize;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpKernel\Kernel;
 use App\Repository\PublicationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,6 +24,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class PublicationController extends AbstractController
 {
+
 
     #[Route('/story/add', name: 'app_publication_add')]
     public function Draft(Request $request, PublicationRepository $pubRepo, SluggerInterface $slugger, EntityManagerInterface $em): Response
@@ -310,10 +312,12 @@ class PublicationController extends AbstractController
                 ->setCategory($category)
                 ->setMature($dtMature)
                 ->setUpdated(new \DateTime('now'));
+
             // * Traitement de l'image
             if ($dtCover) {
                 $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $idPub;
                 $newFilename = $pub->getId() . rand(0, 9999) . '.img';
+
                 try {
                     $dtCover->move(
                         $destination,
@@ -346,9 +350,11 @@ class PublicationController extends AbstractController
                     \unlink($destination . "/" . $newFilename);
                 }
                 // On récupère le dernier cover de la publication pour la supprimer de Cloudinary : 
-                preg_match("/\/([^\/]*\.img)/", $pub->getCover(), $matches);
-                $result = $matches[1];
-                $cloudinary->uploadApi()->destroy("story/" . $idPub . "/" . $result, ['invalidate' => true,]);
+                if ($pub->getCover()) {
+                    preg_match("/\/([^\/]*\.img)/", $pub->getCover(), $matches);
+                    $result = $matches[1];
+                    $cloudinary->uploadApi()->destroy("story/" . $idPub . "/" . $result, ['invalidate' => true,]);
+                }
                 $publication->setCover($urlCloudinary);
             }
             $em->persist($publication);

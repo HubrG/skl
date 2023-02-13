@@ -4,6 +4,7 @@
 namespace App\Controller\Publication;
 
 use App\Repository\PublicationRepository;
+use Proxies\__CG__\App\Entity\Publication;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
@@ -28,6 +29,13 @@ class PublicationShowController extends AbstractController
 	#[Route('/recits/{slug?}/{page<\d+>?}/{sortby?}/{order?}/{keystring?}', name: 'app_publication_show_all_category')]
 	public function show_all(PublicationCategoryRepository $pcRepo, PublicationKeywordRepository $kwRepo, PublicationRepository $pRepo, $sortby = "p.pop", $page = 1, $slug = "all", $keystring = null, $order = "desc"): Response
 	{
+
+		// $p = $pRepo->findAll();
+		// for ($i = 0; $i < count($p); $i++) {
+		// 	$pp = new Publication();
+		// 	$pp = $p[$i];
+		// 	$this->publicationPopularity->PublicationPopularity($pp);
+		// }
 		// * On set les variables si elles ne sont pas dans l'url
 		$nbr_by_page = 10;
 		$page = $page ?? 1;
@@ -38,6 +46,7 @@ class PublicationShowController extends AbstractController
 		} else {
 			$sortby = "p.pop";
 		}
+		// dd($sortby, $order, $slug, $keystring, $page, $nbr_by_page);
 		$pcRepo = ($slug != "all") ? $pcRepo->findOneBy(["slug" => $slug]) : $pcRepo->findAll();
 		if ($slug != "all") {
 			$qb = $pRepo->createQueryBuilder("p")
@@ -45,7 +54,8 @@ class PublicationShowController extends AbstractController
 				->innerJoin("p.category", "pc", "WITH", "pc.id = :category_id")
 				->where("p.status = 2")
 				->andWhere("pc.id = :category_id")
-				->setParameter("category_id", $pcRepo);
+				->setParameter("category_id", $pcRepo)
+				->orderBy($sortby, $order);
 			try {
 				$count = count($qb->getQuery()->getResult());
 				$publicationsAll = $qb->getQuery()->getResult();
@@ -56,7 +66,8 @@ class PublicationShowController extends AbstractController
 			$qb = $pRepo->createQueryBuilder("p")
 				->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
 				->where("p.status = 2")
-				->andWhere("p.category is not null");
+				->andWhere("p.category is not null")
+				->orderBy($sortby, $order);
 			try {
 				$count = count($qb->getQuery()->getResult());
 				$publicationsAll = $qb->getQuery()->getResult();
@@ -81,18 +92,35 @@ class PublicationShowController extends AbstractController
 			// ! On cherche les publications
 			// * S'il n'y a pas de keywords dans l'url, on renvoie toutes les publications
 			if (!$keystring) {
-				$countPage = $count / $nbr_by_page;
-				$countPage = ceil($countPage);
-				$page = $page - 1;
+				if ($count > $nbr_by_page) {
+					// * On calcule le nombre de pages
+					$countPage = $count / $nbr_by_page;
+					$countPage = ceil($countPage);
+					$start = ($page - 1) * $nbr_by_page;
+					$end = $start + $nbr_by_page;
+					if ($end > $count) {
+						$end = $count;
+					}
+				} else {
+					$start = 0;
+					$countPage = 1;
+				}
 				//!SECTION
 				if ($slug == "all") {
 					$qb = $pRepo->createQueryBuilder("p")
 						->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
 						->where("p.status = 2")
-						->andWhere("p.category is not null")
-						->orderBy($sortby, $order)
-						->setFirstResult($page * $nbr_by_page)
-						->setMaxResults($nbr_by_page);
+						->andWhere("p.category is not null");
+					if ($sortby == "p.pop") {
+
+						$qb->orderBy($sortby, $order)
+							->setFirstResult($start)
+							->setMaxResults($nbr_by_page);
+					} else {
+						$qb->orderBy($sortby, $order)
+							->setFirstResult($start)
+							->setMaxResults($nbr_by_page);
+					}
 				} else {
 					$qb = $pRepo->createQueryBuilder("p")
 						->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
@@ -100,13 +128,13 @@ class PublicationShowController extends AbstractController
 						->where("p.status = 2")
 						->andWhere("pc.id = :category_id")
 						->setParameter("category_id", $pcRepo);
-					if ($sortby == "p.popularity") {
+					if ($sortby == "p.pop") {
 						$qb->orderBy($sortby, $order)
-							->setFirstResult($page * $nbr_by_page)
+							->setFirstResult($start)
 							->setMaxResults($nbr_by_page);
 					} else {
 						$qb->orderBy($sortby, $order)
-							->setFirstResult($page * $nbr_by_page)
+							->setFirstResult($start)
 							->setMaxResults($nbr_by_page);
 					}
 				}
@@ -171,12 +199,23 @@ class PublicationShowController extends AbstractController
 				// * ... et on enlève les doublons en récupérant les ID unique de $publications
 				// ! pagination
 				$count = count($publications);
-				$countPage = $count / $nbr_by_page;
-				$countPage = ceil($countPage);
-				$page = $page - 1;
+				if ($count > $nbr_by_page) {
+					// * On calcule le nombre de pages
+					$countPage = $count / $nbr_by_page;
+					$countPage = ceil($countPage);
+					$start = ($page - 1) * $nbr_by_page;
+					$end = $start + $nbr_by_page;
+					if ($end > $count) {
+						$end = $count;
+					}
+				} else {
+					$start = 0;
+					$countPage = 1;
+				}
 				// *
-				$publications = $pRepo->findBy(["id" => $publications], ["published_date" => $order], $nbr_by_page, $page * $nbr_by_page);
+				$publications = $pRepo->findBy(["id" => $publications], ["published_date" => $order], $nbr_by_page, $start);
 			}
+
 			// * 
 			// ! render
 			return $this->render('publication/show_all.html.twig', [
@@ -186,7 +225,7 @@ class PublicationShowController extends AbstractController
 				'category' => $pcRepo, // Retourne la catégorie
 				'count' => $count, // Retourne le nombre de publications
 				'countPage' => $countPage, // Retourne le nombre de pages
-				'page' => $page + 1, // Retourne la page actuelle
+				'page' => $page, // Retourne la page actuelle
 				'orderSort' => $order, // Retourne l'ordre d'affichage
 				'limit' => $nbr_by_page // Retourne l'ordre d'affichage
 			]);

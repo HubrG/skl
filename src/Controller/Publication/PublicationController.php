@@ -2,6 +2,7 @@
 
 namespace App\Controller\Publication;
 // FIXME : Problème avec Imagine chez Heroku
+use Aws\S3\S3Client;
 use DirectoryIterator;
 use Imagine\Image\Box;
 use Imagine\Gd\Imagine;
@@ -24,7 +25,6 @@ use App\Repository\PublicationCategoryRepository;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-
 
 class PublicationController extends AbstractController
 {
@@ -365,6 +365,25 @@ class PublicationController extends AbstractController
         $image->effects()->sharpen();
 
 
+        $s3Client = new S3Client([
+            'version' => 'latest',
+            'region'  => 'us-east-1',
+            'credentials' => [
+                'key'    => 'AKIAYHDZQPCHQDG46HJ4',
+                'secret' => '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',
+            ],
+        ]);
+
+        // Génération d'un nom de fichier unique
+        $fileName = uniqid() . '.' . $format;
+
+        // Téléchargement de l'image sur Amazon S3
+        $result = $s3Client->putObject([
+            'Bucket' => 'scrilab',
+            'Key'    => 'path/to/' . $fileName,
+            'Body'   => $image->get($format, array('quality' => 100)),
+            'ACL'    => 'public-read',
+        ]);
 
 
         // Définition du point d'ancrage

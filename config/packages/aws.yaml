@@ -1,0 +1,6 @@
+aws:
+    sdk:
+        credentials:
+            # Your AWS access key ID and secret access key
+            key: 'AKIAYHDZQPCHQDG46HJ4'
+            secret: 'XdP7rVO4Nclsk+wtjLBBN8V1q5VKKPrsuIOIgZga'

@@ -9,6 +9,7 @@
         "ext-gd": "*",
         "ext-iconv": "*",
         "ext-intl": "*",
+        "aws/aws-sdk-php": "^3.258",
         "babdev/pagerfanta-bundle": "^3.7",
         "calcinai/php-imagick": "^0.1.2",
         "cebe/markdown": "^1.2",

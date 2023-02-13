@@ -196,7 +196,7 @@ function publishPublication(ev) {
       publishText.classList.add("text-red-900");
       publishToggle.classList.add("peer-checked:bg-red-600");
       publish.classList.add("bg-red-600", "hover:bg-red-800");
-      badgePubStatus.classList.add("badge-published");
+      badgePubStatus.classList.toggle("badge-published");
     } else {
       PublicationPublishModalText.innerHTML =
         "Êtes-vous certain(e) de vouloir publier votre récit ?";
@@ -206,7 +206,7 @@ function publishPublication(ev) {
       publish.classList.add("bg-green-600", "hover:bg-green-800");
       publishDateText.classList.add("hidden");
       AStext.classList.add("hidden");
-      badgePubStatus.classList.add("badge-unpublished");
+      badgePubStatus.classList.toggle("badge-unpublished");
     }
   } else {
     if (publishButton.checked == false) {
@@ -224,8 +224,8 @@ function publishPublication(ev) {
       publish.classList.remove("bg-green-600", "hover:bg-green-800");
       publish.classList.add("bg-red-600", "hover:bg-red-800");
       AStext.classList.remove("hidden");
-      badgePubStatus.classList.add("badge-unpublished");
-      badgePubStatus.classList.remove("badge-published");
+      badgePubStatus.classList.toggle("badge-unpublished");
+      badgePubStatus.classList.toggle("badge-published");
       badgePubStatus.innerHTML = "Publié";
     } else {
       publishButton.checked = false;
@@ -241,8 +241,8 @@ function publishPublication(ev) {
       publish.classList.remove("bg-red-600", "hover:bg-red-800");
       publish.classList.add("bg-green-600", "hover:bg-green-800");
       AStext.classList.add("hidden");
-      badgePubStatus.classList.remove("badge-unpublished");
-      badgePubStatus.classList.add("badge-published");
+      badgePubStatus.classList.toggle("badge-unpublished");
+      badgePubStatus.classList.toggle("badge-published");
       badgePubStatus.innerHTML = "Dépublié";
       publishDateText.classList.add("hidden");
     }

@@ -13,14 +13,14 @@
 			<span class="text-xs italic font-serif">Édition du récit</span><br/>
 			<span id="pubTitle" class="text-4xl font-serif">
 				{{ infoPub.title|capitalize }}
-				<sup>
-					{% if (infoPub.status > 1) %}
-						<span id="badgePubStatus" class="badge badge-publish">Publié</span>
-					{% else %}
-						<span id="badgePubStatus" class="badge badge-unpublish">Dépublié</span>
-					{% endif %}
-				</sup>
 			</span>
+			<sup>
+				{% if (infoPub.status > 1) %}
+					<span id="badgePubStatus" class="badge">Publié</span>
+				{% else %}
+					<span id="badgePubStatus" class="badge">Dépublié</span>
+				{% endif %}
+			</sup>
 		</h1>
 	</div>
 	<aside class="relative col-span-7 col-start-4 pr-10 mb-14 lg:col-span-3 lg:mt-5">
@@ -66,15 +66,15 @@
 						Feuilles</button>
 				</li>
 				{# <li class="mr-2  text-xs lg:text-sm" role="presentation">
-																																																																																																																																																																																																																																																																																																																																																																																			<button class="inline-block p-4 border-b-4  dark:bg-slate-900  text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="profile-tab" data-tabs-target="#imagination" type="button" role="tab" aria-controls="imagination" aria-selected="false">
-																																																																																																																																																																																																																																																																																																																																																																																				<i class="fa-solid fa-meteor"></i>
-																																																																																																																																																																																																																																																																																																																																																																																				Imagination</button>
-																																																																																																																																																																																																																																																																																																																																																																																		</li>
-																																																																																																																																																																																																																																																																																																																																																																																		<li class="mr-2 text-xs lg:text-sm" role="presentation">
-																																																																																																																																																																																																																																																																																																																																																																																			<button class="inline-block p-4 border-b-4  dark:bg-slate-900  text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="profile-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">
-																																																																																																																																																																																																																																																																																																																																																																																				<i class="fa-solid fa-gear"></i>
-																																																																																																																																																																																																																																																																																																																																																																																				Paramètres</button>
-																																																																																																																																																																																																																																																																																																																																																																																		</li> #}
+																																																																																																																																																																																																																																																																																																																																																																																															<button class="inline-block p-4 border-b-4  dark:bg-slate-900  text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="profile-tab" data-tabs-target="#imagination" type="button" role="tab" aria-controls="imagination" aria-selected="false">
+																																																																																																																																																																																																																																																																																																																																																																																																<i class="fa-solid fa-meteor"></i>
+																																																																																																																																																																																																																																																																																																																																																																																																Imagination</button>
+																																																																																																																																																																																																																																																																																																																																																																																														</li>
+																																																																																																																																																																																																																																																																																																																																																																																														<li class="mr-2 text-xs lg:text-sm" role="presentation">
+																																																																																																																																																																																																																																																																																																																																																																																															<button class="inline-block p-4 border-b-4  dark:bg-slate-900  text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="profile-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">
+																																																																																																																																																																																																																																																																																																																																																																																																<i class="fa-solid fa-gear"></i>
+																																																																																																																																																																																																																																																																																																																																																																																																Paramètres</button>
+																																																																																																																																																																																																																																																																																																																																																																																														</li> #}
 			</ul>
 		</div>
 		<div id="myTabContent">

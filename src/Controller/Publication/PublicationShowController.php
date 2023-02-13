@@ -9,18 +9,35 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
 use App\Repository\PublicationKeywordRepository;
 use App\Repository\PublicationCategoryRepository;
+use App\Controller\Services\PublicationPopularity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PublicationShowController extends AbstractController
 {
-	#[Route('/recits/{slug?}/{page<\d+>?}/{order?}/{keystring?}', name: 'app_publication_show_all_category')]
-	public function show_all(PublicationCategoryRepository $pcRepo, PublicationKeywordRepository $kwRepo, PublicationChapterRepository $pchRepo, PublicationRepository $pRepo, $page = 1, $slug = "all", $keystring = null, $order = "desc"): Response
+
+	private $publicationPopularity;
+
+
+	public function __construct(PublicationPopularity $publicationPopularity)
+	{
+
+		$this->publicationPopularity = $publicationPopularity;
+	}
+
+
+	#[Route('/recits/{slug?}/{page<\d+>?}/{sortby?}/{order?}/{keystring?}', name: 'app_publication_show_all_category')]
+	public function show_all(PublicationCategoryRepository $pcRepo, PublicationKeywordRepository $kwRepo, PublicationRepository $pRepo, $sortby = "p.pop", $page = 1, $slug = "all", $keystring = null, $order = "desc"): Response
 	{
 		// * On set les variables si elles ne sont pas dans l'url
 		$nbr_by_page = 10;
 		$page = $page ?? 1;
 		$order = $order ?? "desc";
 		$slug = $slug ?? "all";
+		if ($sortby == "published") {
+			$sortby = "p.published_date";
+		} else {
+			$sortby = "p.pop";
+		}
 		$pcRepo = ($slug != "all") ? $pcRepo->findOneBy(["slug" => $slug]) : $pcRepo->findAll();
 		if ($slug != "all") {
 			$qb = $pRepo->createQueryBuilder("p")
@@ -29,15 +46,23 @@ class PublicationShowController extends AbstractController
 				->where("p.status = 2")
 				->andWhere("pc.id = :category_id")
 				->setParameter("category_id", $pcRepo);
-			$count = count($qb->getQuery()->getResult());
-			$publicationsAll = $qb->getQuery()->getResult();
+			try {
+				$count = count($qb->getQuery()->getResult());
+				$publicationsAll = $qb->getQuery()->getResult();
+			} catch (\Exception $e) {
+				return $this->redirectToRoute('app_home');
+			}
 		} else {
 			$qb = $pRepo->createQueryBuilder("p")
 				->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
 				->where("p.status = 2")
 				->andWhere("p.category is not null");
-			$count = count($qb->getQuery()->getResult());
-			$publicationsAll = $qb->getQuery()->getResult();
+			try {
+				$count = count($qb->getQuery()->getResult());
+				$publicationsAll = $qb->getQuery()->getResult();
+			} catch (\Exception $e) {
+				return $this->redirectToRoute('app_home');
+			}
 		}
 		// ! Si il y a bien des publications dans la catégorie sélectionnée...
 		if (!$pcRepo) {
@@ -65,7 +90,7 @@ class PublicationShowController extends AbstractController
 						->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
 						->where("p.status = 2")
 						->andWhere("p.category is not null")
-						->orderBy("p.published_date", $order)
+						->orderBy($sortby, $order)
 						->setFirstResult($page * $nbr_by_page)
 						->setMaxResults($nbr_by_page);
 				} else {
@@ -74,13 +99,22 @@ class PublicationShowController extends AbstractController
 						->innerJoin("p.category", "pc", "WITH", "pc.id = :category_id")
 						->where("p.status = 2")
 						->andWhere("pc.id = :category_id")
-						->setParameter("category_id", $pcRepo)
-						->orderBy("p.published_date", $order)
-						->setFirstResult($page * $nbr_by_page)
-						->setMaxResults($nbr_by_page);
+						->setParameter("category_id", $pcRepo);
+					if ($sortby == "p.popularity") {
+						$qb->orderBy($sortby, $order)
+							->setFirstResult($page * $nbr_by_page)
+							->setMaxResults($nbr_by_page);
+					} else {
+						$qb->orderBy($sortby, $order)
+							->setFirstResult($page * $nbr_by_page)
+							->setMaxResults($nbr_by_page);
+					}
 				}
-				$publications = $qb->getQuery()->getResult();
-
+				try {
+					$publications = $qb->getQuery()->getResult();
+				} catch (\Exception $e) {
+					return $this->redirectToRoute('app_home');
+				}
 				//!SECTION
 				$keywString = null;
 			}
@@ -158,6 +192,7 @@ class PublicationShowController extends AbstractController
 			]);
 		}
 	}
+
 	#[Route('/recit/{id<\d+>}/{slug}', name: 'app_publication_show_one')]
 	public function show_one(PublicationRepository $pRepo, PublicationChapterRepository $pchRepo, $id = null, $slug = null): Response
 	{

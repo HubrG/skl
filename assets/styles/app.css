@@ -33,6 +33,9 @@
   'GRAD' 0,
   'opsz' 48;
 }
+::selection{
+  @apply bg-slate-800 text-white;
+}
 * {
   @apply font-sans ;
 }

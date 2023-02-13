@@ -26,5 +26,10 @@ services:
 
     App\Controller\Publication\PublicationController:
         tags: ['controller.service_arguments']
+
+    App\Controller\ErrorController:
+        tags: ['controller.service_arguments']
+   
+            
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

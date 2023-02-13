@@ -7,6 +7,32 @@
 	{% set slugCat = "all" %}
 	{% set slugCatName = "Tous les récits" %}
 {% endif %}
+{% set route_params = app.request.attributes.get('_route_params') %}
+{% if route_params.slug %}
+	{% set querySlug = route_params.slug %}
+{% else %}
+	{% set querySlug = "all" %}
+{% endif %}
+{% if route_params.page %}
+	{% set queryPage = route_params.page %}
+{% else %}
+	{% set queryPage = 1 %}
+{% endif %}
+{% if route_params.order %}
+	{% set queryOrder = route_params.order %}
+{% else %}
+	{% set queryOrder = "desc" %}
+{% endif %}
+{% if route_params.keystring %}
+	{% set queryKeystring = route_params.keystring %}
+{% else %}
+	{% set queryKeystring = null %}
+{% endif %}
+{% if route_params.sortby %}
+	{% set querySortby = route_params.sortby %}
+{% else %}
+	{% set querySortby = "published" %}
+{% endif %}
 {% block title %}Récits |
 	{{ slugCatName }}
 	—
@@ -45,15 +71,28 @@
 					<!-- Dropdown menu -->
 					<div id="sortHover" class="z-10 hidden bg-white divide-y divide-slate-100 rounded-lg shadow w-auto dark:bg-slate-700  grayscale">
 						<ul class="text-sm text-slate-700 dark:text-slate-200" aria-labelledby="sortButton">
-							<li class="py-2 rounded-t-lg {% if orderSort == 'desc' %} bg-slate-100 hover:bg-slate-100{% else %} hover:bg-slate-200 {% endif %}">
-								<a href="{{ path("app_publication_show_all_category", {slug:slugCat, keystring:kwString, page:page, order:"desc"}) }}" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Récits les plus
+							<li class="py-2 rounded-t-lg {% if orderSort == 'desc'  and querySortby == 'published'  %}bg-slate-100 hover:bg-slate-100 {% else %}hover:bg-slate-200 {% endif %}">
+								<a href="{{ path("app_publication_show_all_category", {slug:slugCat,sortby:"published", keystring:kwString, page:page, order:"desc"}) }}" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Récits les plus
 									<strong>récents</strong>
 									d'abord
 								</a>
 							</li>
-							<li class="py-2  {% if orderSort == 'asc' %} bg-slate-100 hover:bg-slate-100{% else %} hover:bg-slate-200{% endif %}">
-								<a href="{{ path("app_publication_show_all_category", {slug:slugCat, keystring:kwString, page:page, order:"asc"}) }}" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Récits les plus
+							<li class="py-2  {% if orderSort == 'asc' and querySortby == 'published' %} bg-slate-100 hover:bg-slate-100{% else %} hover:bg-slate-200{% endif %}">
+								<a href="{{ path("app_publication_show_all_category", {slug:slugCat,sortby:"published", keystring:kwString, page:page, order:"asc"}) }}" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Récits les plus
 									<strong>anciens</strong>
+									d'abord
+								</a>
+							</li>
+
+							<li class="py-2 {% if querySortby == 'pop' and orderSort == 'desc' %} bg-slate-100 hover:bg-slate-100{% else %} hover:bg-slate-200{% endif %} ">
+								<a href="{{ path("app_publication_show_all_category", {slug:slugCat, keystring:queryKeystring, page:page, order:"desc", sortby:"pop"}) }}" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Récits les
+									<strong>plus populaires</strong>
+									d'abord
+								</a>
+							</li>
+							<li class="py-2 {% if querySortby == 'pop' and orderSort == 'asc' %} bg-slate-100 hover:bg-slate-100{% else %} hover:bg-slate-200{% endif %}">
+								<a href="{{ path("app_publication_show_all_category", {slug:slugCat, keystring:queryKeystring, page:page, order:"asc", sortby:"pop"}) }}" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Récits les
+									<strong>moins populaires</strong>
 									d'abord
 								</a>
 							</li>
@@ -72,20 +111,16 @@
 						<div class="w-2/6  h-auto rounded-lg">
 							<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}">
 								{% set pic = asset('images/uploads/story/' ~ item.id ~ '/' ~ item.cover) %}
-								<img class="rounded object-cover w-full shaow-md lazy animate-pulse animate__animated bg-slate-300 grayscale-0" loading="lazy" src="" data-src="{% if pic and pic|exists %}{{pic}}{% else %}{{ " https://picsum.photos/200/" ~ random(300, 310) }} {% endif %}" alt=""/>
+								<img class="rounded object-cover w-full shadow lazy animate-pulse animate__animated bg-slate-300 grayscale-[50%]" loading="lazy" src="" data-src="{% if pic and pic|exists %}{{pic}}{% else %}{{ " https://picsum.photos/200/" ~ random(300, 310) }} {% endif %}" alt=""/>
 							</a>
 						</div>
 						<div class="p-5 -mt-7 w-4/6 place-content-baseline items-baseline">
 							<small class="font-light">
-								<a href="{{ path("app_user", {username:item.user.username}) }}">{{ item.user.nickname }}</a>
+								<a href="{{ path("app_user", {username:item.user.username}) }}" class="hover:underline">{{ item.user.nickname }}</a>
 							</small>
 							<h5 class="mb-2 text-base font-bold tracking-tight ">
-								<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" class=" text-slate-700  dark:text-white ">{{ item.title }}</a>
+								<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" class=" text-slate-600  dark:text-white text-lg hover:underline">{{ item.title }}</a>
 							</h5>
-							<p class="text-xs -mt-2 mb-2 text-slate-500 font-base">{{ item.publicationChapters|chapter("nbr", "ft") }}
-								|
-								{{ item.publicationChapters|chapter("rt", "ft") }}
-								de lecture</p>
 							<p class="mb-3 font-normal text-slate-600 text-sm text-justify  dark:text-slate-400">
 								{% if item.summary %}
 									{{ item.summary|slice(0, 210) }}
@@ -101,35 +136,18 @@
 								<br/>
 
 							</p>
+							<p class="text-xs -mt-2 mb-2 text-slate-500 font-base">{{ item.publicationChapters|chapter("nbr", "ft") }}
+								—
+								{{ item.publicationChapters|chapter("rt", "ft") }}
+								de lecture</p>
 							<p class=" text-cyan-600">
 								{% if slugCat == "all" %}
-									<a href="{{ path("app_publication_show_all_category", {slug:item.category.slug, page:null}) }}">
+									<a href="{{ path("app_publication_show_all_category", {slug:item.category.slug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:queryKeystring}) }}">
 										<span class="bg-blue-100 text-blue-500 text-xs font-medium mr-1 leading-7 mb-2 px-2.5 py-0.5 rounded dark:bg-slate-700 dark:text-slate-400 ">{{ item.category.name|lower }}</span>
 									</a>
 								{% endif %}
-								{% set route_params = app.request.attributes.get('_route_params') %}
-								{% if route_params.slug %}
-									{% set querySlug = route_params.slug %}
-								{% else %}
-									{% set querySlug = "all" %}
-								{% endif %}
-								{% if route_params.page %}
-									{% set queryPage = route_params.page %}
-								{% else %}
-									{% set queryPage = 1 %}
-								{% endif %}
-								{% if route_params.order %}
-									{% set queryOrder = route_params.order %}
-								{% else %}
-									{% set queryOrder = "desc" %}
-								{% endif %}
-								{% if route_params.keystring %}
-									{% set queryKeystring = route_params.keystring %}
-								{% else %}
-									{% set queryKeystring = null %}
-								{% endif %}
 								{% for pubKeyw in item.publicationKeywords %}
-									<a href="{{ path("app_publication_show_all_category", {slug:querySlug, page:queryPage, order:queryOrder, keystring:pubKeyw.keyword|lower}) }}">
+									<a href="{{ path("app_publication_show_all_category", {slug:querySlug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:pubKeyw.keyword|lower}) }}">
 										<span class="bg-slate-100 text-slate-600 text-xs font-medium mr-1 leading-7 mb-2 px-2.5 py-0.5 rounded dark:bg-slate-700 dark:text-slate-400 ">{{ pubKeyw.keyword|lower }}
 											{% if not loop.last %}{% endif %}
 										</span>
@@ -144,7 +162,7 @@
 					{% for i in count..limit-1 %}
 						<div class=" rounded-lg   dark:border-slate-700 flex place-content-start opacity-80">
 							<p class="absolute z-50 ml-[13%] mt-[5%] shadow-lg">
-								<a href="{{path("app_publication_add")}}" class=" text-slate-900  rounded ring-1 ring-slate-900 font-serif px-4 bg-white  p-3 font-medium hover:bg-slate-50 shadow">
+								<a href="{{path("app_publication_add")}}" class=" text-slate-900  rounded ring-1 ring-slate-900 px-4 bg-white  p-3 font-medium hover:bg-slate-50 shadow">
 									<i class="fa-regular fa-newspaper"></i>
 									&nbsp;Publier mon récit
 
@@ -155,7 +173,7 @@
 									<img class="rounded object-cover w-full shaow-md lazy animate-pulse animate__animated bg-slate-300 grayscale-0  blur-[2px]" loading="lazy" src="" data-src="{{placeholderimg}}" alt=""/>
 								</a>
 							</div>
-							<div class="p-5 -mt-7 w-4/6 place-content-baseline items-baseline  blur-[2px]">
+							<div class="p-5 -mt-7 w-4/6 place-content-baseline items-baseline blur-[2px]">
 								<small class="font-light">
 									<a href="{{path("app_publication_add")}}">
 										{% if app.user.id is defined %}
@@ -165,11 +183,11 @@
 										{% endif %}
 									</a>
 								</small>
-								<h5 class="mb-2 text-base font-bold tracking-tight  blur-[2px]">
+								<h5 class="mb-2 font-bold tracking-tight  text-lg blur-[2px]">
 									<a href="{{path("app_publication_add")}}" class=" text-slate-700  dark:text-white ">{{ "title"|faker(4) }}</a>
 								</h5>
 								<p class="mb-3 font-normal text-slate-400 text-sm text-justify  dark:text-slate-400 blur-[2px]">
-									Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Curabitur aliquet quam id dui posuere blandit. Quisque velit nisi, pretium ut lacinia in, elementum id enim.
+									Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Curabitur aliquet quam. Quisque velit nisi, pretium ut lacinia in, elementum id enim.
 								</p>
 							</div>
 						</div>

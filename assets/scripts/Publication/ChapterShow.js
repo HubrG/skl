@@ -2,22 +2,7 @@ import axios from "axios";
 export function ShowChapter() {
   const chapContentTurbo = document.getElementById("chapContentTurbo");
   if (!chapContentTurbo) return;
-  //!SECTION — Click sur le bouton "like" du chapitre
-  const likeChapter = document.getElementById("likeThisChapter");
-  if (likeChapter) {
-    likeChapter.addEventListener("click", () => {
-      const likeChapterId = likeChapter.getAttribute("data-id");
-      likeChapterData(likeChapterId);
-    });
-  }
-  //!SECTION — Click sur le bouton "add bookmark" du chapitre
-  const bmChapter = document.getElementById("bmThisChapter");
-  if (bmChapter) {
-    bmChapter.addEventListener("click", () => {
-      const bmChapterId = bmChapter.getAttribute("data-id");
-      bmChapterData(bmChapterId);
-    });
-  }
+
   // ! SECTION - Traitement de la position du sticky
   window.addEventListener("scroll", function () {
     let nav = document.querySelector("nav");
@@ -36,6 +21,23 @@ export function ShowChapter() {
   });
   if (document.getElementById("insightQuote")) {
     // ! On vérifie que l'utilisateur est connecté
+
+    //!SECTION — Click sur le bouton "like" du chapitre
+    const likeChapter = document.getElementById("likeThisChapter");
+    if (likeChapter) {
+      likeChapter.addEventListener("click", () => {
+        const likeChapterId = likeChapter.getAttribute("data-id");
+        likeChapterData(likeChapterId);
+      });
+    }
+    //!SECTION — Click sur le bouton "add bookmark" du chapitre
+    const bmChapter = document.getElementById("bmThisChapter");
+    if (bmChapter) {
+      bmChapter.addEventListener("click", () => {
+        const bmChapterId = bmChapter.getAttribute("data-id");
+        bmChapterData(bmChapterId);
+      });
+    }
     //!SECTION — Traitement de tout ce qui concerne la sélection de texte
     //ANCHOR — Traitement de tout ce qui concerne la sélection de texte
     //!SECTION — Traitement de tout ce qui concerne la sélection de texte

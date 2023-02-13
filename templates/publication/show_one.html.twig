@@ -7,6 +7,11 @@
 {% endblock %}
 
 {% block body %}
+	{% set pic = asset('images/uploads/story/' ~ pubShow.id ~ '/' ~ pubShow.cover) %}
+	{% if pic and pic|exists %}
+		{% else %}
+			{% set pic = " https://picsum.photos/200/" ~ random(300, 310) %}
+	{% endif %}
 	<style>
 		#test
 		{
@@ -23,35 +28,35 @@
 			left: 0;
 			right: 0;
 			width: 100%;
-			height: 100%;
+			min-height: 85vh;
 			opacity: .1;
-			z-index: -99;
-			background-image: url('{{ "https://picsum.photos/400/500" }}');
+			z-index: -99999999999;
+			background-image: url('{{ pic }}');
 			background-position: center;
 		}
 	</style>
-	<section class=" before:bg-cover before:blur-md  col-span-12 col-start-0 md:col-span-9 md:col-start-3 gap-10" id="test">
+	<section class=" before:bg-cover before:blur before:-z-[9999]  col-span-12 col-start-0 md:col-span-10 md:col-start-2 gap-10" id="test">
 		<h1 class="text-center font-serif text-4xl bg-center text-slate-800" style="text-shadow: 0 0.5px 1px blanchedalmond;">{{ pubShow.title }}</h1>
 		<h2 class="text-center -mt-8">
 			<small>par</small>
 			<span class="font-medium font-serif">
-				<a class=" font-serif" href="{{ path("app_user", {username:pubShow.user.username}) }}">{{ pubShow.user.nickname }}</a>
+				<a href="{{ path("app_user", {username:pubShow.user.username}) }}" class="font-sans hover:underline">{{ pubShow.user.nickname }}</a>
 			</span>
 		</h2>
 		<div class="flex justify-center">
-			<img class=" rounded-full mt-6 object-cover w-40 h-40 justify-center  mb-5  pb-1 shaow-md lazy animate-pulse animate__animated bg-slate-300 grayscale-[50%]" loading="lazy" src="" data-src="{{ "https://picsum.photos/400/" ~ random(500, 520) }}" alt=""/>
+			<img class=" rounded-full mt-6 object-cover w-40 h-40 justify-center  mb-5  pb-1 shaow-md  grayscale-[50%]" src="{% if pic and pic|exists %}{{pic}}{% else %}{{ " https://picsum.photos/200/" ~ random(300, 310) }} {% endif %}" alt=""/>
+
 		</div>
 		<div class="flex gap-5 p-10 pt-0  items-center">
 			<div class="flex-1 text-center flex flex-col justify-center items-center justify-items-center origin-center">
-				<div class="md:flex">
-					<p class="text-base font-serif text-justify italic text-slate-900 leading-6 -mt-2">
+				<div class="md:flex w-5/6">
+					<p class="text-base font-serif text-justify italic text-slate-900 leading-7 mt-1">
 						{% if orderChap %}
 							{% if pubShow.summary %}
 								<i class="fa-solid fa-quote-left text-2xl"></i>&nbsp;
 								{{ pubShow.summary }}... &nbsp;&nbsp;
 								<div class="mt-5"></div>
 							{% endif %}
-
 						{% else %}
 							<center>
 								<i class="fa-solid fa-hourglass-half text-4xl font-thin text-slate-600"></i>
@@ -60,19 +65,28 @@
 						{% endif %}
 					</p>
 				</div>
-				<a href="{{ path("app_chapter_show", {idChap:orderChap.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:orderChap.slug}) }}" class=" block mt-5 not-italic font-bold py-5 text-center w-full lg:w-3/6 px-10 bg-slate-100 bg-opacity-20 hover:bg-opacity-40 text-slate-900 shadow hover:text-slate-900 hover:bg-white rounded-lg">
-					<i class="fa-solid fa-glasses"></i>
-					&nbsp;commencer la lecture</a>
+				<a href="{{ path("app_chapter_show", {idChap:orderChap.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:orderChap.slug}) }}" class=" block mt-5 not-italic py-5 text-center w-full lg:w-3/6 px-10 bg-white bg-opacity-70 hover:bg-white text-slate-900 shadow hover:text-slate-900 hover:bg-opacity-100 rounded-lg">
+					<i class="fa-solid fa-book-open-reader text-2xl"></i>
+					<br/><span class="font-medium">Commencer la lecture</span>
+				</a>
 			</div>
 		</div>
 	</section>
 	{% if orderChap %}
-
-		<section class="flex col-span-8 col-start-3 row-start-3 mt-6  pt-5 z-50">
-
-			<div class="w-9/12">
-				<h3 class="text-2xl mb-2">Chapitres</h3>
-				<ul class="list-disc list-inside">
+		<section class="md:flex col-span-12 md:col-span-10 md:col-start-2  mt-6 justify-evenly min-h-[50vh]">
+			<div class="absolute bg-white w-full min-h-[30%] left-0 right-0 -z-[10] lg:z-40 border-t-[1px] border-slate-200">&nbsp;</div>
+			<div class="w-full lg:w-7/12 z-[999] lg:z-50 pt-10 order-2 lg:order-1 ">
+				<h3 class="text-2xl mb-5 lg:text-left text-center">
+					<i class="fa-solid fa-list-ul"></i>
+					&nbsp;
+					{{pubShow.publicationChapters|length}}
+					feuilles</h3>
+				<ul class=" flex flex-col">
+					{% set nbrLikes = 0 %}
+					{% set nbrViews = 0 %}
+					{% set nbrBm = 0 %}
+					{% set nbrComments = 0 %}
+					{% set nbr = 1 %}
 					{% for chapter in pubShow.publicationChapters|sort((a, b) => a.orderDisplay < b.orderDisplay ? -1 : 1) %}
 						{% if chapter.status > 1 %}
 							{% if chapter.slug %}
@@ -80,19 +94,125 @@
 							{% else %}
 								{% set chapterSlug = "feuille-n0" ~ (chapter.orderDisplay + 1) %}
 							{% endif %}
-							<li class=" list-none">
-								<a href="{{ path("app_chapter_show", {idChap:chapter.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:chapterSlug}) }}">
-									{% if chapter.title  %}
-										{{ chapter.title|capitalize }}
-									{% else %}
-										Feuille n°{{ chapter.orderDisplay + 1 }}
-									{% endif %}
-								</a>
+							<li class="inline-flex items-center gap-x-2 py-1 px-4 text-base font-medium  text-slate-900 -mt-px  dark:bg-gray-800  dark:text-white">
+								<div class="flex justify-between w-full">
+									<a href="{{ path("app_chapter_show", {idChap:chapter.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:chapterSlug}) }}" class="h-full w-4/6 font-normal text-slate-900 text-lg hover:underline">
+										<span class="font-bold">{{nbr}}.</span>
+										{% if chapter.title  %}
+											{{ chapter.title|capitalize }}
+										{% else %}
+											Feuille n°{{ chapter.orderDisplay + 1 }}
+										{% endif %}
+									</a>
+									<div class="w-2/6 justify-items-end">
+										<div class="py-1 px-2 rounded-full flex justify-between text-sm text-slate-600 font-medium ">
+											<div>
+												<i class="fa-regular fa-heart"></i>
+												{{ chapter.publicationChapterLikes|length }}
+												{% set nbrLikes = nbrLikes + chapter.publicationChapterLikes|length %}
+											</div>
+											<div>
+												<i class="fa-regular fa-bookmark"></i>
+												{{ chapter.publicationChapterBookmarks|length }}
+												{% set nbrBm = nbrBm + chapter.publicationChapterBookmarks|length %}
+											</div>
+											<div>
+												<i class="fa-regular fa-eye"></i>
+												{{ chapter.publicationChapterViews|length }}
+												{% set nbrViews = nbrViews + chapter.publicationChapterViews|length %}
+											</div>
+											<div>
+												<i class="fa-regular fa-comments"></i>
+												{{ chapter.publicationChapterComments|length }}
+												{% set nbrComments = nbrComments + chapter.publicationChapterComments|length %}
+											</div>
+										</div>
+
+									</div>
+								</div>
 							</li>
+							{% set nbr = nbr + 1 %}
 						{% endif %}
 					{% endfor %}
-				</div>
-				<div class="w-3/12">f</div>
-			</section>
-		{% endif %}
-	{% endblock %}
+				</ul>
+			</div>
+			<div class="w-full  z-50 mt-5 pt-5 px-2 md:w-4/12  order-1 lg:order-2  shadow-slate-300 text-slate-900 border-slate-200 border-t-[1px] border-t-slate-200 lg:border-l-[1px] lg:border-t-0 ">
+				<ul class="opacity-60 flex flex-col  text-sm">
+					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+						<span class="font-medium">
+							<i class="fa-solid fa-masks-theater"></i>
+							&nbsp;&nbsp;Genre
+						</span>
+						<a href="{{path("app_publication_show_all_category", {slug:pubShow.category.slug})}}" class="hover:underline">
+							<span>{{ pubShow.category.name }}</span>
+						</a>
+					</li>
+					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+						<span class="font-medium">
+							<i class="fa-regular fa-clock"></i>
+							&nbsp;&nbsp;Temps de lecture
+						</span>
+						<span>{{ pubShow.publicationChapters|chapter("rt", "ft") }}</span>
+					</li>
+					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+						<span class="font-medium">
+							<i class="fa-regular fa-eye"></i>
+							&nbsp;&nbsp;Nombre de lecteurs
+						</span>
+						<span>{{nbrViews}}</span>
+					</li>
+					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+						<span class="font-medium">
+							<i class="fa-regular fa-comments"></i>
+							&nbsp;Commentaires
+						</span>
+						<span>
+							{% if nbrComments > 0 %}
+								{{nbrComments}}
+							{% else %}
+								Aucun
+							{% endif %}
+						</span>
+					</li>
+					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+						<span class="font-medium">
+							<i class="fa-regular fa-bookmark"></i>
+							&nbsp;&nbsp;&nbsp;Pages marquées
+						</span>
+						<span>{{nbrBm}}</span>
+					</li>
+					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+						<span class="font-medium">
+							<i class="fa-regular fa-heart"></i>
+							&nbsp;&nbsp;&nbsp;J'aime
+						</span>
+						<span>{{nbrLikes}}</span>
+					</li>
+				</ul>
+				<ul class=" flex flex-col  text-sm border-t-[1px] border-t-slate-200 pt-5 mt-5">
+					<li class="inline-flex items-center justify-between gap-x-2 font-medium py-1 px-4 -mt-px  dark:bg-gray-800  dark:text-white">
+						{% for item in pubShow.publicationKeywords %}
+							<a href="{{path("app_publication_show_all_category", {keystring:item.keyword|lower, order:'desc', sortby:'published', page:1, slug:"all"})}}" class="hover:underline text-slate-800">#{{ item.keyword }}</a>
+						{% endfor %}
+					</li>
+				</ul>
+				<ul class=" flex flex-col opacity-60 text-sm border-t-[1px] border-t-slate-200 pt-5 mt-5">
+					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+						<span class="font-medium">
+							<i class="fa-regular fa-newspaper"></i>
+							&nbsp;&nbsp;Publié depuis
+						</span>
+						<span>{{ pubShow.publishedDate|since }}</span>
+					</li>
+					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+						<span class="font-medium">
+							<i class="fa-solid fa-highlighter"></i>
+							&nbsp;&nbsp;Modifié il y a
+						</span>
+						<span>{{ pubShow.updated|since }}</span>
+					</li>
+				</ul>
+			</div>
+		</section>
+	{% endif %}
+{% endblock %}

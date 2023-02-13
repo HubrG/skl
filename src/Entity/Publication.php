@@ -58,6 +58,10 @@ class Publication
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $slug = null;
 
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 3, nullable: true)]
+    private ?string $pop = null;
+
     public function __construct()
     {
         $this->publicationChapters = new ArrayCollection();
@@ -267,6 +271,19 @@ class Publication
     public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+
+    public function getPop(): ?string
+    {
+        return $this->pop;
+    }
+
+    public function setPop(?string $pop): self
+    {
+        $this->pop = $pop;
 
         return $this;
     }

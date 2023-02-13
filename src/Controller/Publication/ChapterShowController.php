@@ -14,8 +14,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
+use App\Controller\Services\PublicationPopularity;
 use App\Repository\PublicationChapterLikeRepository;
 use App\Repository\PublicationChapterNoteRepository;
+use App\Repository\PublicationChapterViewRepository;
 use App\Repository\PublicationChapterCommentRepository;
 use App\Repository\PublicationChapterBookmarkRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,10 +28,14 @@ class ChapterShowController extends AbstractController
     private $em;
     private $chapterNote;
 
-    public function __construct(EntityManagerInterface $em, PublicationChapterNoteRepository $chapterNote)
+    private $publicationPopularity;
+
+
+    public function __construct(EntityManagerInterface $em, PublicationChapterNoteRepository $chapterNote, PublicationPopularity $publicationPopularity)
     {
         $this->em = $em;
         $this->chapterNote = $chapterNote;
+        $this->publicationPopularity = $publicationPopularity;
     }
 
     #[Route('/recit-{slugPub}/{user}/{idChap}/{slug?}/{nbrShowCom?}', name: 'app_chapter_show')]
@@ -79,6 +85,9 @@ class ChapterShowController extends AbstractController
             $comment->setPublishDate(new \DateTime('now'));
             $em->persist($comment);
             $em->flush();
+            // * On met à jour la popularité de la publication
+            $this->publicationPopularity->PublicationPopularity($comment->getChapter()->getPublication());
+            //
             $this->addFlash('success', 'Votre commentaire a bien été ajouté.');
             return $this->redirectToRoute('app_chapter_show', ['slugPub' => $publication->getSlug(), 'user' => $publication->getUser()->getUsername(), 'idChap' => $chapter->getId(), 'slug' => $chapter->getSlug()]);
         }
@@ -113,6 +122,9 @@ class ChapterShowController extends AbstractController
             $em->remove($comment);
             $em->flush();
             $this->addFlash('success', 'Votre commentaire a bien été supprimé.');
+            // * On met à jour la popularité de la publication
+            $this->publicationPopularity->PublicationPopularity($comment->getChapter()->getPublication());
+            //
             return $this->redirectToRoute('app_chapter_show', ['slugPub' => $comment->getChapter()->getPublication()->getSlug(), 'user' => $comment->getChapter()->getPublication()->getUser()->getUsername(), 'idChap' => $comment->getChapter()->getId(), 'slug' => $comment->getChapter()->getSlug()]);
         } else {
             return $this->redirectToRoute('app_home');
@@ -157,6 +169,9 @@ class ChapterShowController extends AbstractController
             if ($like) {
                 $em->remove($like);
                 $em->flush();
+                // * On met à jour la popularité de la publication
+                $this->publicationPopularity->PublicationPopularity($comment->getChapter()->getPublication());
+                //
                 return $this->json([
                     'code' => 200,
                     'message' => 'Le like a bien été supprimé.'
@@ -169,6 +184,9 @@ class ChapterShowController extends AbstractController
                 ->setLikeDate(new \DateTime('now'));
             $em->persist($like);
             $em->flush();
+            // * On met à jour la popularité de la publication
+            $this->publicationPopularity->PublicationPopularity($comment->getChapter()->getPublication());
+            //
         } else {
             return $this->json([
                 'code' => 403,
@@ -213,7 +231,6 @@ class ChapterShowController extends AbstractController
         if ($chapter and $this->getUser()) {
             // Si le type est "highlight", on ajoute la valeur de $dtContent dans la bdd en statut 0
             if ($dtType == "highlight") {
-
                 // * On envoie l'highlight dans la BDD
                 $note = new PublicationChapterNote();
                 $note->setUser($this->getUser())
@@ -293,13 +310,16 @@ class ChapterShowController extends AbstractController
             } else {
                 return;
             }
+            $view->setChapter($chapter);
+            $view->setViewDate(new \DateTime('now'));
+            $this->em->persist($view);
+            $this->em->flush();
+            // * On met à jour la popularité de la publication
+            $this->publicationPopularity->PublicationPopularity($chapter->getPublication());
+            //
         } else {
-            $view->setUser(null);
+            return;
         }
-        $view->setChapter($chapter);
-        $view->setViewDate(new \DateTime('now'));
-        $this->em->persist($view);
-        $this->em->flush();
     }
     public function formatChapter($chapter)
     {
@@ -335,14 +355,22 @@ class ChapterShowController extends AbstractController
             'message' => $note,
         ], 200);
     }
+    private function getNoteToDelete(Request $request, PublicationChapterNoteRepository $pcnRepo)
+    {
+        $dtIdNote = $request->get("idNote");
+        return $pcnRepo->find($dtIdNote);
+    }
+
+    private function checkUserHasRights(PublicationChapterNote $note)
+    {
+        return $note->getUser() == $this->getUser();
+    }
+
     #[Route('/recit/chapter/delnote', name: 'app_chapter_delete_note', methods: ['POST'])]
     public function Axios_DeleteNotes(Request $request, PublicationChapterRepository $pchRepo, PublicationChapterNoteRepository $pcnRepo, EntityManagerInterface $em): response
     {
-        // On récupère la note à supprimer via 
-        $dtIdNote = $request->get("idNote");
-        $note = $pcnRepo->find($dtIdNote);
-        // On supprime la note si l'utilisateur connecté est bien l'auteur de la note
-        if ($note->getUser() == $this->getUser()) {
+        $note = $this->getNoteToDelete($request, $pcnRepo);
+        if ($this->checkUserHasRights($note)) {
             $em->remove($note);
             $em->flush();
             return $this->json([
@@ -356,6 +384,7 @@ class ChapterShowController extends AbstractController
             ], 403);
         }
     }
+
     public function formatHL($chapter, $chapterTab)
     {
         $notes = $this->chapterNote->findBy(['chapter' => $chapterTab, 'type' => 0]);
@@ -412,70 +441,83 @@ class ChapterShowController extends AbstractController
     public function Axios_ChapterLike(Request $request, PublicationChapterRepository $pchRepo, PublicationChapterLikeRepository $pclRepo, EntityManagerInterface $em): response
     {
         $pch = $pchRepo->find($request->get("idChapter"));
-        if ($pch && $this->getUser()) {
-            if ($pclRepo->findOneBy(['chapter' => $pch, 'user' => $this->getUser()])) {
-                // On supprime le like
-                $like = $pclRepo->findOneBy(['chapter' => $pch, 'user' => $this->getUser()]);
-                $em->remove($like);
-                $em->flush();
-                return $this->json([
-                    'code' => 200,
-                    'resp' => false,
-                    'nbrLike' => $pclRepo->count(['chapter' => $pch]),
-                    'message' => 'Le like a bien été supprimée.',
-                ], 200);
-            } else {
-                $like = new PublicationChapterLike();
-                $like->setChapter($pch);
-                $like->setUser($this->getUser());
-                $em->persist($like);
-                $em->flush();
-                return $this->json([
-                    'code' => 200,
-                    'resp' => true,
-                    'nbrLike' => $pclRepo->count(['chapter' => $pch]),
-                    'message' => 'Le chapitre a bien été liké.',
-                ], 200);
-            }
+        if (!$pch || !$this->getUser()) {
+            return $this->json([
+                'code' => 200,
+                'message' => 'Erreur',
+            ], 200);
         }
+
+        $like = $pclRepo->findOneBy(['chapter' => $pch, 'user' => $this->getUser()]);
+        if ($like) {
+            $em->remove($like);
+            $em->flush();
+            // * On met à jour la popularité de la publication
+            $this->publicationPopularity->PublicationPopularity($pch->getPublication());
+            //
+            return $this->json([
+                'code' => 200,
+                'resp' => false,
+                'nbrLike' => $pclRepo->count(['chapter' => $pch]),
+                'message' => 'Le like a bien été supprimée.',
+            ], 200);
+        }
+
+        $like = new PublicationChapterLike();
+        $like->setChapter($pch);
+        $like->setUser($this->getUser());
+        $em->persist($like);
+        $em->flush();
+        // * On met à jour la popularité de la publication
+        $this->publicationPopularity->PublicationPopularity($pch->getPublication());
+        //
         return $this->json([
             'code' => 200,
-            'message' => 'Le like a bien été supprimée.',
+            'resp' => true,
+            'nbrLike' => $pclRepo->count(['chapter' => $pch]),
+            'message' => 'Le chapitre a bien été liké.',
         ], 200);
     }
+
     #[Route('/recit/chapter/bm', name: 'app_chapter_bm', methods: ['POST'])]
     public function Axios_ChapterBm(Request $request, PublicationChapterRepository $pchRepo, PublicationChapterBookmarkRepository $pcbRepo, EntityManagerInterface $em): response
     {
         $pch = $pchRepo->find($request->get("idChapter"));
-        if ($pch && $this->getUser()) {
-            if ($pcbRepo->findOneBy(['chapter' => $pch, 'user' => $this->getUser()])) {
-                // On supprime le like
-                $like = $pcbRepo->findOneBy(['chapter' => $pch, 'user' => $this->getUser()]);
-                $em->remove($like);
-                $em->flush();
-                return $this->json([
-                    'code' => 200,
-                    'resp' => false,
-                    'nbrBm' => $pcbRepo->count(['chapter' => $pch]),
-                    'message' => 'Le chapitre a bien été supprimée des bookmarks.',
-                ], 200);
-            } else {
-                $like = new PublicationChapterBookmark();
-                $like->setChapter($pch);
-                $like->setUser($this->getUser());
-                $em->persist($like);
-                $em->flush();
-                return $this->json([
-                    'code' => 200,
-                    'resp' => true,
-                    'nbrBm' => $pcbRepo->count(['chapter' => $pch]),
-                    'message' => 'Le chapitre a bien été ajouté aux bookmarks',
-                ], 200);
-            }
+        if (!$pch || !$this->getUser()) {
+            return $this->json([
+                'code' => 200,
+                'message' => 'Non autorisé.',
+            ], 200);
         }
+
+        $like = $pcbRepo->findOneBy(['chapter' => $pch, 'user' => $this->getUser()]);
+        if ($like) {
+            $em->remove($like);
+            $em->flush();
+            // * On met à jour la popularité de la publication
+            $this->publicationPopularity->PublicationPopularity($pch->getPublication());
+            //
+            return $this->json([
+                'code' => 200,
+                'resp' => false,
+                'nbrBm' => $pcbRepo->count(['chapter' => $pch]),
+                'message' => 'Le chapitre a bien été supprimée des bookmarks.',
+            ], 200);
+        }
+
+        $like = new PublicationChapterBookmark();
+        $like->setChapter($pch);
+        $like->setUser($this->getUser());
+        $em->persist($like);
+        $em->flush();
+        // * On met à jour la popularité de la publication
+        $this->publicationPopularity->PublicationPopularity($pch->getPublication());
+        //
         return $this->json([
             'code' => 200,
-            'message' => 'Le chapitre a bien été supprimée des bookmarks.',
+            'resp' => true,
+            'nbrBm' => $pcbRepo->count(['chapter' => $pch]),
+            'message' => 'Le chapitre a bien été ajouté aux bookmarks',
         ], 200);
     }
 }

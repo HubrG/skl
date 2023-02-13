@@ -75,7 +75,7 @@
 		</div>
 		<div class="sticky bottom-10 -mt-11 flex  w-full md:w-auto justify-center place-content-center z-10">
 			<div class="bg-white rounded-xl shadow p-3 flex gap-5 items-center">
-				<div class="text-sm cursor-default">
+				<div data-tippy-content="Nombre de vues" class="text-sm cursor-default">
 					<i class="fa-regular fa-eye"></i>
 					&nbsp;{{ infoChap.publicationChapterViews|length }}
 				</div>
@@ -97,12 +97,12 @@
 						{% set bm = true %}
 					{% endif %}
 				{% endfor %}
-				<div data-tippy-content="{% if liked == false %}J'aime cette feuille{% else %}Je n'aime plus cette feuille{% endif %}" data-id="{{infoChap.id}}" class="hover:text-blue-600 cursor-pointer text-sm" id="likeThisChapter">
-					<i class="{% if liked == false %}fa-regular{% else %}fa-solid text-blue-500{% endif %} fa-thumbs-up" id="likeChapterThumb"></i>
+				<div {% if app.user.id is defined %} data-tippy-content="{% if liked == false %}J'aime cette feuille{% else %}Je n'aime plus cette feuille{% endif %}" {% endif %} data-id="{{infoChap.id}}" class=" {% if app.user.id is defined %}hover:text-blue-600 cursor-pointer{% endif %} text-sm" id="likeThisChapter">
+					<i class="{% if liked == false %}fa-regular{% else %}fa-solid text-blue-500{% endif %} fa-heart" id="likeChapterThumb"></i>
 					&nbsp;<span id="nbrLike">{{ infoChap.publicationChapterLikes|length }}</span>
 				</div>
 				|
-				<div data-tippy-content="{% if bm == false %}Ajouter cette feuille à ma collection{% else %}Retirer cette feuille de ma collection{% endif %}" id="bmThisChapter" data-id="{{infoChap.id}}" class="hover:text-blue-600 cursor-pointer text-sm">
+				<div {% if app.user.id is defined %} data-tippy-content="{% if bm == false %}Ajouter cette feuille à ma collection{% else %}Retirer cette feuille de ma collection{% endif %}" {% endif %} id="bmThisChapter" data-id="{{infoChap.id}}" class="{% if app.user.id is defined %}hover:text-blue-600 cursor-pointer{% endif %} text-sm">
 					<i class="{% if bm == false %}fa-regular{% else %}fa-solid text-blue-500{% endif %} fa-bookmark" id="bmChapter"></i>
 					&nbsp;<span id="nbrBm">{{ infoChap.publicationChapterBookmarks|length }}</span>
 				</div>

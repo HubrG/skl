@@ -6,12 +6,11 @@
     "require": {
         "php": ">=8.0.2",
         "ext-ctype": "*",
+        "ext-gd": "*",
         "ext-iconv": "*",
         "ext-intl": "*",
-        "ext-gd": "*",
         "babdev/pagerfanta-bundle": "^3.7",
         "calcinai/php-imagick": "^0.1.2",
-        "ext-imagick": "*",
         "cebe/markdown": "^1.2",
         "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.7",

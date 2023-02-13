@@ -98,7 +98,7 @@
 					{% endif %}
 				{% endfor %}
 				<div {% if app.user.id is defined %} data-tippy-content="{% if liked == false %}J'aime cette feuille{% else %}Je n'aime plus cette feuille{% endif %}" {% endif %} data-id="{{infoChap.id}}" class=" {% if app.user.id is defined %}hover:text-blue-600 cursor-pointer{% endif %} text-sm" id="likeThisChapter">
-					<i class="{% if liked == false %}fa-regular{% else %}fa-solid text-blue-500{% endif %} fa-heart" id="likeChapterThumb"></i>
+					<i class="{% if liked == false %}fa-regular{% else %}fa-solid text-red-500{% endif %} fa-heart" id="likeChapterThumb"></i>
 					&nbsp;<span id="nbrLike">{{ infoChap.publicationChapterLikes|length }}</span>
 				</div>
 				|

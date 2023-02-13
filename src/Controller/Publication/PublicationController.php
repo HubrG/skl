@@ -3,19 +3,27 @@
 namespace App\Controller\Publication;
 
 use DirectoryIterator;
+use Imagine\Image\Box;
+use Imagine\Image\Point;
 use App\Entity\Publication;
+use Imagine\Imagick\Imagine;
 use App\Form\PublicationType;
+use Imagine\Image\ImageInterface;
 use App\Entity\PublicationKeyword;
+use Imagine\Image\ImagineInterface;
+use Imagine\Exception\RuntimeException;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Imagine\Exception\InvalidArgumentException;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
 use App\Repository\PublicationKeywordRepository;
 use App\Repository\PublicationCategoryRepository;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class PublicationController extends AbstractController
 {
@@ -294,7 +302,7 @@ class PublicationController extends AbstractController
         $dtMature = $request->get("mature");
         $dtCoverName = $request->get("coverName");
         $dtCover = $request->files->get("cover");
-        //  
+        //
         $pub = $pRepo->find($idPub);
         $category = $catRepo->find($dtCategory);
         if ($this->getUser() == $pub->getUser()) {
@@ -304,25 +312,32 @@ class PublicationController extends AbstractController
                 ->setCategory($category)
                 ->setMature($dtMature)
                 ->setUpdated(new \DateTime('now'));
+            $imagine = new \Imagine\Gd\Imagine();
             if ($dtCover) {
-                // * On vérifie que le fichier est une image
-                if (getimagesize($dtCover) > 0) {
-                    $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $idPub;
-                    // * si une cover a déjà été envoyée, alors on la supprime pour la remplacer par la nouvelle
-                    if ($pub->getCover() && \file_exists($destination . "/" . $pub->getCover())) {
-                        \unlink($destination . "/" . $pub->getCover());
-                    }
-                    $newFilename = $dtCoverName . '.jpg';
-                    $dtCover->move(
-                        $destination,
-                        $newFilename
-                    );
-                    $publication->setCover($newFilename);
-                } else {
-                    return $this->json([
-                        "code" => 400
-                    ]);
+                try {
+                    $this->isImage($imagine, $dtCover);
+                } catch (\Exception $e) {
+                    // On verifie le format du fichier
+                    return $this->json(["code" => "Le fichier n'est pas une image", "value" => "Le fichier n'est pas une image"]);
                 }
+                $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $idPub;
+                $newFilename = $dtCoverName . '.jpg';
+                $fullPath = $destination . "/" . $newFilename;
+                try {
+                    $format = 'jpg';
+                    $this->convertImage($imagine, $dtCover, $fullPath, $format);
+                } catch (FileException $e) {
+                    return $this->json(["code" => "notimg", "value" => "Veuillez choisir une image au format jpg"]);
+                }
+                // * si une cover a déjà été envoyée, alors on la supprime pour la remplacer par la nouvelle
+                if ($pub->getCover() && \file_exists($destination . "/" . $pub->getCover())) {
+                    \unlink($destination . "/" . $pub->getCover());
+                }
+                $publication->setCover($newFilename);
+            } else {
+                return $this->json([
+                    "code" => "ok"
+                ]);
             }
             $em->persist($publication);
             $em->flush();
@@ -334,5 +349,43 @@ class PublicationController extends AbstractController
         return $this->json([
             "code" => 200 // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
         ]);
+    }
+    public function convertImage(ImagineInterface $imagine, $inputPath, $outputPath, $format)
+    {
+        $imagine = new Imagine();
+
+        // Appliquer un filtre
+
+        // Enregistrer l'image modifiée
+        // Chargement de l'image
+        $image = $imagine->open($inputPath);
+        $image->effects()->grayscale();
+
+        // Création d'une nouvelle boîte de taille spécifiée
+        $size = new Box(300, 400);
+
+        // Redimensionnement de l'image à la nouvelle taille
+        $image->thumbnail($size, ImageInterface::THUMBNAIL_OUTBOUND);
+
+
+
+        // Définition du point d'ancrage
+        $point = new Point(0, 0);
+
+        // Sauvegarde de l'image convertie
+        try {
+            $image->save($outputPath, array('format' => $format, 'quality' => 90));
+        } catch (RuntimeException $e) {
+            return $this->json(["code" => "notimg", "value" => "Veuillez choisir une image au format jpg"]);
+        }
+    }
+    public function isImage(ImagineInterface $imagine, $filePath)
+    {
+        try {
+            $imagine->open($filePath);
+            return true;
+        } catch (InvalidArgumentException $e) {
+            return false;
+        }
     }
 }

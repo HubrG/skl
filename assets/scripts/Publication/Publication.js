@@ -109,7 +109,6 @@ function AxiosPublication() {
       },
     })
     .then(function (response) {
-      console.log(response.data.code);
       if (response.data.code == 200) {
         var notyText =
           "<span class='text-base font-medium'>Récit enregistré</span><br />Votre récit est à jour.";
@@ -138,7 +137,8 @@ function AxiosPublication() {
         }
         // * on affiche l'erreur
         var notyText =
-          "<span class='text-base font-medium'>Erreur</span><br />Une erreur est survenue lors de la sauvegarde de votre chapitre";
+          "<span class='text-base font-medium'>Erreur</span><br />" +
+          response.data.value;
         var notyTimeout = 4500;
         var notyType = "error";
         NotyDisplay(notyText, notyType, notyTimeout);

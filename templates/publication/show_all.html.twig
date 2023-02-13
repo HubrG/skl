@@ -31,7 +31,7 @@
 {% if route_params.sortby %}
 	{% set querySortby = route_params.sortby %}
 {% else %}
-	{% set querySortby = "published" %}
+	{% set querySortby = "pop" %}
 {% endif %}
 {% block title %}Récits |
 	{{ slugCatName }}
@@ -70,29 +70,28 @@
 					</button>
 					<!-- Dropdown menu -->
 					<div id="sortHover" class="z-10 hidden bg-white divide-y divide-slate-100 rounded-lg shadow w-auto dark:bg-slate-700  grayscale">
-						<ul class="text-sm text-slate-700 dark:text-slate-200" aria-labelledby="sortButton">
-							<li class="py-2 rounded-t-lg {% if orderSort == 'desc'  and querySortby == 'published'  %}bg-slate-100 hover:bg-slate-100 {% else %}hover:bg-slate-200 {% endif %}">
-								<a href="{{ path("app_publication_show_all_category", {slug:slugCat,sortby:"published", keystring:kwString, page:page, order:"desc"}) }}" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Récits les plus
-									<strong>récents</strong>
-									d'abord
-								</a>
-							</li>
-							<li class="py-2  {% if orderSort == 'asc' and querySortby == 'published' %} bg-slate-100 hover:bg-slate-100{% else %} hover:bg-slate-200{% endif %}">
-								<a href="{{ path("app_publication_show_all_category", {slug:slugCat,sortby:"published", keystring:kwString, page:page, order:"asc"}) }}" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Récits les plus
-									<strong>anciens</strong>
-									d'abord
-								</a>
-							</li>
-
+						<ul class="text-sm  text-slate-700 dark:text-slate-200" aria-labelledby="sortButton">
 							<li class="py-2 {% if querySortby == 'pop' and orderSort == 'desc' %} bg-slate-100 hover:bg-slate-100{% else %} hover:bg-slate-200{% endif %} ">
-								<a href="{{ path("app_publication_show_all_category", {slug:slugCat, keystring:queryKeystring, page:page, order:"desc", sortby:"pop"}) }}" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Récits les
+								<a href="{{ path("app_publication_show_all_category", {slug:slugCat, keystring:queryKeystring, page:page, order:"desc", sortby:"pop"}) }}" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Les
 									<strong>plus populaires</strong>
 									d'abord
 								</a>
 							</li>
 							<li class="py-2 {% if querySortby == 'pop' and orderSort == 'asc' %} bg-slate-100 hover:bg-slate-100{% else %} hover:bg-slate-200{% endif %}">
-								<a href="{{ path("app_publication_show_all_category", {slug:slugCat, keystring:queryKeystring, page:page, order:"asc", sortby:"pop"}) }}" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Récits les
+								<a href="{{ path("app_publication_show_all_category", {slug:slugCat, keystring:queryKeystring, page:page, order:"asc", sortby:"pop"}) }}" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Les
 									<strong>moins populaires</strong>
+									d'abord
+								</a>
+							</li>
+							<li class="py-2 {% if orderSort == 'desc'  and querySortby == 'published'  %}bg-slate-100 hover:bg-slate-100 {% else %}hover:bg-slate-200 {% endif %}">
+								<a href="{{ path("app_publication_show_all_category", {slug:slugCat,sortby:"published", keystring:kwString, page:page, order:"desc"}) }}" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Les
+									<strong>nouveautés</strong>
+									d'abord
+								</a>
+							</li>
+							<li class="py-2  {% if orderSort == 'asc' and querySortby == 'published' %} bg-slate-100 hover:bg-slate-100{% else %} hover:bg-slate-200{% endif %}">
+								<a href="{{ path("app_publication_show_all_category", {slug:slugCat,sortby:"published", keystring:kwString, page:page, order:"asc"}) }}" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Les plus
+									<strong>anciens</strong>
 									d'abord
 								</a>
 							</li>
@@ -118,9 +117,13 @@
 							<small class="font-light">
 								<a href="{{ path("app_user", {username:item.user.username}) }}" class="hover:underline">{{ item.user.nickname }}</a>
 							</small>
-							<h5 class="mb-2 text-base font-bold tracking-tight ">
-								<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" class=" text-slate-600  dark:text-white text-lg hover:underline">{{ item.title }}</a>
+							<h5 class="mb-2 text-base font-bold tracking-tight">
+								<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" class=" text-slate-600  dark:text-white text-lg leading-5 hover:underline">{{ item.title }}</a>
 							</h5>
+							<p class="text-xs -mt-2 mb-2 text-slate-500 font-base">{{ item.publicationChapters|chapter("nbr", "ft") }}
+								—
+								{{ item.publicationChapters|chapter("rt", "ft") }}
+								de lecture</p>
 							<p class="mb-3 font-normal text-slate-600 text-sm text-justify  dark:text-slate-400">
 								{% if item.summary %}
 									{{ item.summary|slice(0, 210) }}
@@ -136,10 +139,6 @@
 								<br/>
 
 							</p>
-							<p class="text-xs -mt-2 mb-2 text-slate-500 font-base">{{ item.publicationChapters|chapter("nbr", "ft") }}
-								—
-								{{ item.publicationChapters|chapter("rt", "ft") }}
-								de lecture</p>
 							<p class=" text-cyan-600">
 								{% if slugCat == "all" %}
 									<a href="{{ path("app_publication_show_all_category", {slug:item.category.slug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:queryKeystring}) }}">

@@ -738,11 +738,11 @@ function likeChapterData(likeChapterId) {
   axios.post(url, data).then((response) => {
     if (response.data.resp) {
       likeChapter.classList.remove("fa-regular");
-      likeChapter.classList.add("fa-solid", "text-blue-500");
+      likeChapter.classList.add("fa-solid", "text-red-500");
       nbrLike.innerHTML = response.data.nbrLike;
     } else {
       likeChapter.classList.add("fa-regular");
-      likeChapter.classList.remove("fa-solid", "text-blue-500");
+      likeChapter.classList.remove("fa-solid", "text-red-500");
       nbrLike.innerHTML = response.data.nbrLike;
     }
   });

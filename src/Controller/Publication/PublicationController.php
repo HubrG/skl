@@ -3,13 +3,13 @@
 namespace App\Controller\Publication;
 
 use DirectoryIterator;
+use Cloudinary\Uploader;
 use Cloudinary\Cloudinary;
 use App\Entity\Publication;
 use App\Form\PublicationType;
 use App\Entity\PublicationKeyword;
 use Cloudinary\Transformation\Resize;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpKernel\Kernel;
 use App\Repository\PublicationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,7 +53,8 @@ class PublicationController extends AbstractController
             $status = $pubRepo->findOneBy(["user" => $this->getUser(), "status" => 0]);
             $status->setStatus(1)
                 ->setUpdated(new \DateTime('now'))
-                ->setCreated(new \DateTime('now'));
+                ->setCreated(new \DateTime('now'))
+                ->setPop(0);
             // * if the title is empty...
             if ($form->get("title")->getViewData() === "") {
                 $status->setTitle("Récit sans titre")
@@ -79,6 +80,7 @@ class PublicationController extends AbstractController
     #[Route('/story/edit/{id}', name: 'app_publication_edit')]
     public function EditPublication(PublicationRepository $pubRepo, $id = null): Response
     {
+
         if ($this->getUser()) {
             $infoPublication = $pubRepo->findOneBy(["user" => $this->getUser(), "id" => $id]);
             if ($infoPublication) {
@@ -285,7 +287,23 @@ class PublicationController extends AbstractController
                 endforeach;
                 \rmdir($destination);
             }
+            $cloudinary = new Cloudinary(
+                [
+                    'cloud' => [
+                        'cloud_name' => 'djaro8nwk',
+                        'api_key'    => '716759172429212',
+                        'api_secret' => 'A35hPbZP0NsjnMKrE9pLR-EHwiU',
+                    ],
+                ]
+            );
         }
+        if ($publication->getCover()) {
+            preg_match("/\/([^\/]*\.img)/", $publication->getCover(), $matches);
+            $result = $matches[1];
+            $cloudinary->uploadApi()->destroy("story/" . $id . "/" . $result, ['invalidate' => true,]);
+            $cloudinary->adminApi()->deleteFolder("story/" . $id);
+        }
+
         $em->remove($publication);
         $em->flush();
         return $this->redirectToRoute("app_user_show_publications");

@@ -50,7 +50,7 @@
 	<turbo-frame id="pagination-{{ random(0,999) }}" class="grid col-span-full gap-x-10 container -mt-5 ">
 		{% include "publication/_partials/_show_all_keywords.html.twig"  %}
 		{# ! Affichage des récits #}
-		<section class="col-span-10 -mt-5 grayscale-[2px]" style="--animate-duration: 1s;">
+		<section class="col-span-10 justify-between -mt-5 grayscale-[2px]" style="--animate-duration: 1s;">
 			<div class="flex mb-10 justify-between ">
 				<h4 class="w-4/6 mb-5  pl-5 font-light text-lg text-slate-500">
 					{% if count == 0 %}Aucun récit.
@@ -124,7 +124,7 @@
 								—
 								{{ item.publicationChapters|chapter("rt", "ft") }}
 								de lecture</p>
-							<p class="mb-3 font-normal text-slate-600 text-sm text-justify  dark:text-slate-400">
+							<p class="mb-3 font-normal text-slate-600 text-sm leading-[1.4rem] dark:text-slate-400">
 								{% if item.summary %}
 									{{ item.summary|slice(0, 210) }}
 								{% else %}
@@ -158,8 +158,9 @@
 				{% endfor %}
 				{% set placeholderimg = "https://via.placeholder.com/200x300" %}
 
-				{% if kwString is null and page == 1 %}
+				{% if kwString is null and page == 1 and count < limit %}
 					{% for i in count..limit - 1 %}
+
 						<div class=" rounded-lg   dark:border-slate-700 flex place-content-start opacity-80">
 							<p class="absolute z-50 ml-[13%] mt-[5%] shadow-lg">
 								<a href="{{path("app_publication_add")}}" class=" text-slate-900  rounded ring-1 ring-slate-900 px-4 bg-white  p-3 font-medium hover:bg-slate-50 shadow">

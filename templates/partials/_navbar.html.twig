@@ -36,6 +36,11 @@
 										&nbsp;Mon profil</a>
 								</li>
 								<li>
+									<a href="{{ path("app_user", { username : app.user.username}) }}" class=" hover:bg-gray-100 text-gray-900 dark:text-slate-200 dark:hover:bg-slate-600 block px-4 py-2 text-sm">
+										<i class="fa-regular fa-bookmark"></i>
+										&nbsp;Ma bibliothèque</a>
+								</li>
+								<li>
 									<a href="{{ path("app_user_show_publications") }}" class=" hover:bg-gray-100 text-gray-900 dark:text-slate-200 dark:hover:bg-slate-600 block px-4 py-2 text-sm">
 										<i class="fa-solid fa-book"></i>
 										&nbsp;Mes histoires</a>

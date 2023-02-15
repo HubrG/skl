@@ -4,35 +4,7 @@
 @import '~animate.css/animate.css';
 @import "~noty/lib/noty.css";
 @import "~noty/lib/themes/semanticui.css";
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700&display=swap');
-
-@font-face {
-  font-family: "Solitreo";
-  src: url("../../public/fonts/Solitreo/Solitreo-Regular.ttf");
-  font-weight: 400;
-}
-@font-face {
-  font-family: "Playfair Display";
-  src: url("../../public/fonts/Playfair_Display/PlayfairDisplay-Italic-VariableFont_wght.ttf");
-  font-weight: 400;
-}
-@font-face {
-  font-family: "Playfair Display";
-  src: url("../../public/fonts/Playfair_Display/PlayfairDisplay-VariableFont_wght.ttf");
-  font-weight: 400;
-}
-@font-face {
-  font-family: "Playfair Display";
-  src: url("../../public/fonts/Playfair_Display/static/PlayfairDisplay-SemiBold.ttf");
-  font-weight: 700;
-}
-.material-symbols-sharp {
-  font-variation-settings:
-  'FILL' 0,
-  'wght' 300,
-  'GRAD' 0,
-  'opsz' 48;
-}
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Solitreo&display=swap');
 ::selection{
   @apply bg-slate-800 text-white;
 }
@@ -42,8 +14,9 @@
 body {
   @apply bg-white dark:bg-slate-800 h-screen;
 }
-body.turbo-loading:not(nav), body.turbo-loaded:not(nav) {
-  opacity: .9;
+
+body.turbo-loading, body.turbo-loaded {
+  opacity: .1;
 }
 footer {
   @apply shadow-2xl  border-slate-600 z-10;
@@ -220,7 +193,7 @@ opacity: 0.4;
 /* ! Components */
 /* * Badges */
 .badge {
-  @apply text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full ring-1;
+  @apply text-[0.65rem] font-medium mr-2 px-2.5 py-0.5 rounded-full ring-1;
 }
 .badge-published {
   @apply ring-emerald-500 bg-emerald-50 text-emerald-500 dark:text-emerald-300 dark:bg-emerald-900

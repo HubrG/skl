@@ -79,8 +79,13 @@
 				<h3 class="text-2xl mb-5 lg:text-left text-center">
 					<i class="fa-solid fa-list-ul"></i>
 					&nbsp;
-					{{pubShow.publicationChapters|length}}
-					feuilles</h3>
+					{% set count = 0 %}
+					{% for chapter in pubShow.publicationChapters %}
+						{% if chapter.status == 2 %}
+							{% set count = count + 1 %}
+						{% endif %}
+					{% endfor %}
+					{{ count > 1 ? count ~ " feuilles" : count ~ " feuille"}}</h3>
 				<ul class=" flex flex-col">
 					{% set nbrLikes = 0 %}
 					{% set nbrViews = 0 %}

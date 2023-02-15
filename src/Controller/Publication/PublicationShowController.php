@@ -46,7 +46,6 @@ class PublicationShowController extends AbstractController
 		} else {
 			$sortby = "p.pop";
 		}
-		// dd($sortby, $order, $slug, $keystring, $page, $nbr_by_page);
 		$pcRepo = ($slug != "all") ? $pcRepo->findOneBy(["slug" => $slug]) : $pcRepo->findAll();
 		if ($slug != "all") {
 			$qb = $pRepo->createQueryBuilder("p")
@@ -54,32 +53,23 @@ class PublicationShowController extends AbstractController
 				->innerJoin("p.category", "pc", "WITH", "pc.id = :category_id")
 				->where("p.status = 2")
 				->andWhere("pc.id = :category_id")
-				->setParameter("category_id", $pcRepo)
-				->orderBy($sortby, $order);
-			try {
-				$count = count($qb->getQuery()->getResult());
-				$publicationsAll = $qb->getQuery()->getResult();
-			} catch (\Exception $e) {
-				return $this->redirectToRoute('app_home');
-			}
+				->setParameter("category_id", $pcRepo);
 		} else {
 			$qb = $pRepo->createQueryBuilder("p")
 				->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
 				->where("p.status = 2")
-				->andWhere("p.category is not null")
-				->orderBy($sortby, $order);
-			try {
-				$count = count($qb->getQuery()->getResult());
-				$publicationsAll = $qb->getQuery()->getResult();
-			} catch (\Exception $e) {
-				return $this->redirectToRoute('app_home');
-			}
+				->andWhere("p.category is not null");
 		}
-		// ! Si il y a bien des publications dans la catégorie sélectionnée...
+		try {
+			$count = count($qb->getQuery()->getResult());
+			$publicationsAll = $qb->getQuery()->getResult();
+		} catch (\Exception $e) {
+			return $this->redirectToRoute('app_home');
+		}
 		if (!$pcRepo) {
 			return $this->redirectToRoute("app_home", [], Response::HTTP_SEE_OTHER);
+			// ! Si il y a bien des publications dans la catégorie sélectionnée...  On cherche les keywords
 		} else {
-			// ! On chercher les keywords
 			// * S'il n'y a pas de slug dans l'url, on renvoie les keywords liés à toutes les publications
 			if ($slug != "all") {
 				// * On trouve les keywords de toutes les publications de la catégorie sélectionnée, et on les tri par ordre du plus utilisé au moins utilisé
@@ -93,53 +83,43 @@ class PublicationShowController extends AbstractController
 			// * S'il n'y a pas de keywords dans l'url, on renvoie toutes les publications
 			if (!$keystring) {
 				if ($count > $nbr_by_page) {
-					// * On calcule le nombre de pages
-					$countPage = $count / $nbr_by_page;
-					$countPage = ceil($countPage);
+					$countPage = ceil($count / $nbr_by_page);
 					$start = ($page - 1) * $nbr_by_page;
-					$end = $start + $nbr_by_page;
-					if ($end > $count) {
-						$end = $count;
-					}
+					$end = min($start + $nbr_by_page, $count);
 				} else {
 					$start = 0;
 					$countPage = 1;
+					$end = $count;
 				}
 				//!SECTION
-				if ($slug == "all") {
-					$qb = $pRepo->createQueryBuilder("p")
-						->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
-						->where("p.status = 2")
-						->andWhere("p.category is not null");
-					if ($sortby == "p.pop") {
-
-						$qb->orderBy($sortby, $order)
-							->setFirstResult($start)
-							->setMaxResults($nbr_by_page);
-					} else {
-						$qb->orderBy($sortby, $order)
-							->setFirstResult($start)
-							->setMaxResults($nbr_by_page);
-					}
+				// if ($slug == "all") {
+				// 	$qb = $pRepo->createQueryBuilder("p")
+				// 		->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
+				// 		->where("p.status = 2")
+				// 		->andWhere("pch.status = 2")
+				// 		->andWhere("p.category is not null")
+				// 		->orderBy($sortby, $order)
+				// 		->setFirstResult($start)
+				// 		->setMaxResults($nbr_by_page);
+				// } else {
+				// 	$qb = $pRepo->createQueryBuilder("p")
+				// 		->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
+				// 		->innerJoin("p.category", "pc", "WITH", "pc.id = :category_id")
+				// 		->where("p.status = 2")
+				// 		->andWhere("pc.id = :category_id")
+				// 		->setParameter("category_id", $pcRepo)
+				// 		->orderBy($sortby, $order)
+				// 		->setFirstResult($start)
+				// 		->setMaxResults($nbr_by_page);
+				// }
+				if ($sortby == "p.pop") {
+					$publications = $pRepo->findBy(["id" => $publicationsAll], ["pop" => $order], $nbr_by_page, $start);
 				} else {
-					$qb = $pRepo->createQueryBuilder("p")
-						->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
-						->innerJoin("p.category", "pc", "WITH", "pc.id = :category_id")
-						->where("p.status = 2")
-						->andWhere("pc.id = :category_id")
-						->setParameter("category_id", $pcRepo);
-					if ($sortby == "p.pop") {
-						$qb->orderBy($sortby, $order)
-							->setFirstResult($start)
-							->setMaxResults($nbr_by_page);
-					} else {
-						$qb->orderBy($sortby, $order)
-							->setFirstResult($start)
-							->setMaxResults($nbr_by_page);
-					}
+					$publications = $pRepo->findBy(["id" => $publicationsAll], ["published_date" => $order], $nbr_by_page, $start);
 				}
 				try {
-					$publications = $qb->getQuery()->getResult();
+					// $publications = $qb->getQuery()->getResult();
+					// dd("Start: " . $start, "End: " . $end, "CountPage: " . $countPage, "Count Pub: " . $count, "Nbr by page: " . $nbr_by_page, "Page: " . $page, "Slug: " . $slug, "Keystring: " . $keystring, "Order: " . $order, "Sort by: " . $sortby, $publicationsAll);
 				} catch (\Exception $e) {
 					return $this->redirectToRoute('app_home');
 				}
@@ -165,57 +145,53 @@ class PublicationShowController extends AbstractController
 						$publications[] = $p;
 					}
 				}
-				if ($slug != "all") {
-					// * ... on enlève les publications qui ne sont pas de la catégorie et qui n'ont pas de chapitre publié
-					$publications = array_filter($publications, function ($p) use ($pcRepo) {
-						return $p->getCategory() == $pcRepo;
-					});
-					// * On vérifie que la publication a au moins un chapitre publié
-					$publications = array_filter($publications, function ($p) {
-						$chapters = $p->getPublicationChapters();
-						if ($chapters->count() > 0) {
-							foreach ($chapters as $chapter) {
-								if ($chapter->getStatus() == 2) {
-									return true;
-								}
-							}
-						}
-						return false;
-					});
-				} else {
-					// * On vérifie que la publication a au moins un chapitre publié
-					$publications = array_filter($publications, function ($p) {
-						$chapters = $p->getPublicationChapters();
-						if ($chapters->count() > 0) {
-							foreach ($chapters as $chapter) {
-								if ($chapter->getStatus() == 2) {
-									return true;
-								}
-							}
-						}
-						return false;
-					});
-				}
-				// * ... et on enlève les doublons en récupérant les ID unique de $publications
-				// ! pagination
+				// if ($slug != "all") {
+				// 	// * ... on enlève les publications qui ne sont pas de la catégorie et qui n'ont pas de chapitre publié
+				// 	$publications = array_filter($publications, function ($p) use ($pcRepo) {
+				// 		return $p->getCategory() == $pcRepo;
+				// 	});
+				// 	// * On vérifie que la publication a au moins un chapitre publié
+				// 	$publications = array_filter($publications, function ($p) {
+				// 		$chapters = $p->getPublicationChapters();
+				// 		if ($chapters->count() > 0) {
+				// 			foreach ($chapters as $chapter) {
+				// 				if ($chapter->getStatus() == 2) {
+				// 					return true;
+				// 				}
+				// 			}
+				// 		}
+				// 		return false;
+				// 	});
+				// } else {
+				// 	// * On vérifie que la publication a au moins un chapitre publié
+				// 	$publications = array_filter($publications, function ($p) {
+				// 		$chapters = $p->getPublicationChapters();
+				// 		if ($chapters->count() > 0) {
+				// 			foreach ($chapters as $chapter) {
+				// 				if ($chapter->getStatus() == 2) {
+				// 					return true;
+				// 				}
+				// 			}
+				// 		}
+				// 		return false;
+				// 	});
+				// // }
+				// // * ... et on enlève les doublons en récupérant les ID unique de $publications
+				// // ! pagination
 				$count = count($publications);
 				if ($count > $nbr_by_page) {
-					// * On calcule le nombre de pages
-					$countPage = $count / $nbr_by_page;
-					$countPage = ceil($countPage);
+					$countPage = ceil($count / $nbr_by_page);
 					$start = ($page - 1) * $nbr_by_page;
-					$end = $start + $nbr_by_page;
-					if ($end > $count) {
-						$end = $count;
-					}
+					$end = min($start + $nbr_by_page, $count);
 				} else {
 					$start = 0;
 					$countPage = 1;
+					$end = $count;
 				}
 				// *
 				$publications = $pRepo->findBy(["id" => $publications], ["published_date" => $order], $nbr_by_page, $start);
+				$count = count($publications);
 			}
-
 			// * 
 			// ! render
 			return $this->render('publication/show_all.html.twig', [

@@ -130,14 +130,72 @@
 						<div class="p-5 -mt-7 w-4/6 place-content-baseline items-baseline">
 							<small class="font-light">
 								<a href="{{ path("app_user", {username:item.user.username}) }}" class="hover:underline">{{ item.user.nickname }}</a>
-							</small>&nbsp;<i class="fa-solid fa-magnifying-glass-plus float-right opacity-20  publication-button" id="info-{{item.id}}"></i>
+							</small>&nbsp;<i class="fa-solid fa-info-circle float-right opacity-20  publication-button" data-popover-target="popover-info-{{item.id}}" data-popover-placement="bottom-end" id="info-{{item.id}}"></i>
+							{# popover #}
+							<div data-popover id="popover-info-{{item.id}}" role="tooltip" class="absolute z-10 invisible inline-block text-sm font-light text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 w-72 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400">
+								{% set pch = item.publicationChapters %}
+								<div class="p-4 space-y-2">
+									<h3 class="font-semibold text-gray-900 dark:text-white text-center">{{ item.title }}</h3>
+									<ul class="opacity-60 flex flex-col  text-sm  py-2 gap-2 ">
+										<li class="inline-flex items-center justify-between font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+											<span class="font-medium">
+												<i class="fa-solid fa-paperclip"></i>
+												&nbsp;&nbsp;Nombre de feuilles
+											</span>
+											<span>{{ pch|chapter("nbr", "st") }}</span>
+										</li>
+										<li class="inline-flex items-center justify-between  font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+											<span class="font-medium">
+												<i class="fa-regular fa-clock"></i>
+												&nbsp;&nbsp;Temps de lecture
+											</span>
+											<span>{{ item.publicationChapters|chapter("rt", "ft") }}</span>
+										</li>
+										<li class="inline-flex items-center justify-between  font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+											<span class="font-medium">
+												<i class="fa-regular fa-eye"></i>
+												&nbsp;&nbsp;Nombre de lecteurs
+											</span>
+											{% set totalViews = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterViews|length, 0) %}
+											<span>{{ totalViews }}</span>
+										</li>
+										<li class="inline-flex items-center justify-between font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+											<span class="font-medium">
+												<i class="fa-regular fa-comments"></i>
+												&nbsp;Commentaires
+											</span>
+											<span>
+												{% set totalComments = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterComments|length, 0) %}
+												{% if totalComments > 0 %}
+													{{totalComments}}
+												{% else %}
+													Aucun
+												{% endif %}
+											</span>
+										</li>
+										<li class="inline-flex items-center justify-between font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+											<span class="font-medium">
+												<i class="fa-regular fa-heart"></i>
+												&nbsp;&nbsp;&nbsp;J'aime
+											</span>
+											{% set totalLikes = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterLikes|length, 0) %}
+											<span>{{totalLikes}}</span>
+										</li>
+										<li class="inline-flex items-center justify-between font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+											<span class="font-medium">
+												<i class="fa-regular fa-circle-down"></i>
+												&nbsp;&nbsp;&nbsp;Téléchargements
+											</span>
+											<span>{{item.PublicationDownloads|length}}</span>
+										</li>
+									</ul>
+								</div>
+								<div data-popper-arrow></div>
+							</div>
+							{# popver end #}
 							<h5 class="mb-2 text-base font-bold tracking-tight">
 								<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" class=" text-slate-600  dark:text-white text-base leading-5 hover:underline">{{ item.title }}</a>
 							</h5>
-							<p class="text-xs -mt-2 mb-2 text-slate-500 font-base">{{ item.publicationChapters|chapter("nbr", "ft") }}
-								—
-								{{ item.publicationChapters|chapter("rt", "ft") }}
-								de lecture</p>
 							<p class="mb-3 font-normal text-slate-600 text-sm leading-[1.4rem] dark:text-slate-400">
 								{% if item.summary %}
 									{{ item.summary|slice(0, 210) }}

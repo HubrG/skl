@@ -2,6 +2,7 @@ twig:
     default_path: '%kernel.project_dir%/templates'
     globals:
         publicationCategoryRepository: "@App\\Repository\\PublicationCategoryRepository"
+    cache: '%kernel.cache_dir%/twig'
 
 when@test:
     twig:

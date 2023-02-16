@@ -4,13 +4,13 @@
 namespace App\Controller\Publication;
 
 use App\Repository\PublicationRepository;
-use Proxies\__CG__\App\Entity\Publication;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
 use App\Repository\PublicationKeywordRepository;
 use App\Repository\PublicationCategoryRepository;
 use App\Controller\Services\PublicationPopularity;
+use App\Controller\Services\PublicationDownloadPDF;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PublicationShowController extends AbstractController
@@ -18,20 +18,22 @@ class PublicationShowController extends AbstractController
 
 	private $publicationPopularity;
 
+	private $publicationDownloadPDF;
 
-	public function __construct(PublicationPopularity $publicationPopularity)
+
+
+	public function __construct(PublicationPopularity $publicationPopularity, PublicationDownloadPDF $publicationDownloadPDF)
 	{
-
 		$this->publicationPopularity = $publicationPopularity;
+		$this->publicationDownloadPDF = $publicationDownloadPDF;
 	}
-
 
 	#[Route('/recits/{slug?}/{page<\d+>?}/{sortby?}/{order?}/{keystring?}', name: 'app_publication_show_all_category')]
 	public function show_all(PublicationCategoryRepository $pcRepo, PublicationKeywordRepository $kwRepo, PublicationRepository $pRepo, $sortby = "p.pop", $page = 1, $slug = "all", $keystring = null, $order = "desc"): Response
 	{
 
 		// $p = $pRepo->findAll();
-		// for ($i = 0; $i < count($p); $i++) {
+		// for ($i = 0; $i <h2 count($p); $i++) {
 		// 	$pp = new Publication();
 		// 	$pp = $p[$i];
 		// 	$this->publicationPopularity->PublicationPopularity($pp);
@@ -76,6 +78,7 @@ class PublicationShowController extends AbstractController
 				$publicationKw = $this->keyw_sort($publicationsAll);
 			}
 			// * Sinon, on renvoie tous les keywords de la base de données
+
 			else {
 				$publicationKw = $this->keyw_sort($publicationsAll);
 			}
@@ -127,6 +130,7 @@ class PublicationShowController extends AbstractController
 				$keywString = null;
 			}
 			//  Si il y a des keywords dans l'url, on renvoie toutes les publications qui ont au moins un des keywords
+
 			else {
 				// * On récupère les keywords dans l'url et on les transforme en tableau
 				$keyw = explode("—", $keystring);
@@ -211,12 +215,27 @@ class PublicationShowController extends AbstractController
 	#[Route('/recit/{id<\d+>}/{slug}', name: 'app_publication_show_one')]
 	public function show_one(PublicationRepository $pRepo, PublicationChapterRepository $pchRepo, $id = null, $slug = null): Response
 	{
+
+
 		$publication = $pRepo->find($id);
 		$orderChap = $pchRepo->findOneBy(["publication" => $publication, "order_display" => 0, "status" => 2]);
-		return $this->render('publication/show_one.html.twig', [
-			'pubShow' => $publication,
-			'orderChap' => $orderChap
-		]);
+		$chapters = $pchRepo->findBy(["publication" => $publication, "status" => 2], ["order_display" => "ASC"]);
+
+
+		if ($slug == "download") {
+			$this->publicationDownloadPDF->PublicationDownloadPDF($id, "dl"); // download PDF
+			return $this->redirectToRoute('app_publication_show_one', [
+				'id' => $id,
+				'slug' => $publication->getSlug()
+			]);
+		} else {
+
+			return $this->render('publication/show_one.html.twig', [
+				'pubShow' => $publication,
+				'orderChap' => $orderChap,
+				'chapShow' => $chapters
+			]);
+		}
 	}
 	public function keyw_sort($publications)
 	{

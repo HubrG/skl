@@ -1,65 +1,62 @@
-<aside
-	class="items-center justify-items-between content-center w-6/6 snap-y h-18 grayscale">
-	{# ! On affiche les keywords utilisés #}
-	{% if kwString %}
-		<p class="text-center text-md">
-			<a href="{{ path("app_publication_show_all_category", {slug:slugCat, page:1, order:orderSort, sortby:querySortby}) }}" class="text-slate-600 font-semibold">Réinitialiser</a>
-		</p>
-		<hr class="my-2">
-		{% set n = 0 %}
-		{% set alreadyKeyw = [] %}
-		{% set kwStringSplit = kwString|split(separator) %}
-		{# * début de la boucle #}
-		{% for item in pubShowKw %}
-			{% set item2replace = item.keyword|lower %}
-			{# * Si le keyword n'est pas dans alreadyKeyw (qui permet de détecter les doublons), et que le keyword est dans l'url, et que le keyword est dans le tableau kwStringSplit (mise en tableau afin d'éviter les confusions "Quis" "Quisa" "Quima" avec des simples replace...) #}
-			{% if (item.keyword not in alreadyKeyw) and (item2replace in kwString == true) and (item2replace in kwStringSplit) %}
-				{# * on crée la nouvelle string #}
-				{% set kwStringNew = "" %}
-				{% for i, item in kwStringSplit %}
-					{% if item|lower != item2replace %}
-						{% set kwStringNew = kwStringNew ~ separator ~ item %}
-					{% endif %}
-				{% endfor %}
-				{# Si le premier caractère est un séparateur, on le supprime #}
-				{% if kwStringNew|slice(0,1) == separator %}
-					{% set kwStringNew = kwStringNew|slice(1,9999) %}
-				{% endif %}
-				{# Si le dernier caractère est un séparateur, on le supprime #}
-				{% set var = kwStringNew|length - 1 %}
-				{% if kwStringNew|slice(var,1) == separator %}
-					{% set kwStringNew = kwStringNew|slice(0,var) %}
-				{% endif %}
-				{# * affichage des keywords #}
-				<a href="{{ path("app_publication_show_all_category", {slug:slugCat, keystring:kwStringNew, page:1, order:orderSort, sortby:querySortby}) }}" class=" bg-slate-300 rounded justify-items-between mb-1 text-center hover:text-slate-800 grid  text-slate-700 text-sm font-medium ">
-					<span class="mr-2 leading-[1.7rem]  dark:bg-blue-900 dark:text-blue-300">{{item.keyword}}
-						<i class="fa-solid fa-delete-left float-right mt-2"></i>
-					</span>
-				</a>
-			{% endif %}
-			{% set alreadyKeyw = alreadyKeyw|merge([item.keyword]) %}
-			{% set n = n + 1 %}
-		{% endfor %}
-	{% endif %}
-	{# ! On affiche les keywords non utilisés #}
+{# ! On affiche les keywords utilisés #}
+{% if kwString %}
+	<p class="text-center text-md">
+		<a href="{{ path("app_publication_show_all_category", {slug:slugCat, page:1, order:orderSort, sortby:querySortby}) }}" class="text-slate-600 font-semibold">Réinitialiser</a>
+	</p>
+	<hr class="my-2">
 	{% set n = 0 %}
 	{% set alreadyKeyw = [] %}
+	{% set kwStringSplit = kwString|split(separator) %}
 	{# * début de la boucle #}
 	{% for item in pubShowKw %}
-		{# * S'il n'y a aucun keyword dans la string, alors on ne met pas le séparateur #}
-		{% set kwAdd = separator ~ item.keyword|lower %}
-		{% if kwString|length == 0 %}
-			{% set kwAdd = item.keyword|lower %}
-		{% endif %}
-		{# * On affiche les keywords avec le bon lien #}
-		{% if (item.keyword not in alreadyKeyw) and (item.keyword|lower in kwString == false) %}
-			<!-- Si le keyword n'est pas dans la variable, on le supprime (éviter les doublons) -->
-			{% set kwString = kwString|replace({separator_d:separator}) %}
-			<a href="{{ path("app_publication_show_all_category", {slug:slugCat, sortby:querySortby, keystring:kwString ~ kwAdd, order:orderSort, page:1}) }}">
-				<span class="bg-slate-100 text-slate-600 text-sm font-medium mr-2 px-2.5 py-0.5 leading-10 rounded dark:bg-blue-900 dark:text-blue-300">{{item.keyword}}</span>
+		{% set item2replace = item.keyword|lower %}
+		{# * Si le keyword n'est pas dans alreadyKeyw (qui permet de détecter les doublons), et que le keyword est dans l'url, et que le keyword est dans le tableau kwStringSplit (mise en tableau afin d'éviter les confusions "Quis" "Quisa" "Quima" avec des simples replace...) #}
+		{% if (item.keyword not in alreadyKeyw) and (item2replace in kwString == true) and (item2replace in kwStringSplit) %}
+			{# * on crée la nouvelle string #}
+			{% set kwStringNew = "" %}
+			{% for i, item in kwStringSplit %}
+				{% if item|lower != item2replace %}
+					{% set kwStringNew = kwStringNew ~ separator ~ item %}
+				{% endif %}
+			{% endfor %}
+			{# Si le premier caractère est un séparateur, on le supprime #}
+			{% if kwStringNew|slice(0,1) == separator %}
+				{% set kwStringNew = kwStringNew|slice(1,9999) %}
+			{% endif %}
+			{# Si le dernier caractère est un séparateur, on le supprime #}
+			{% set var = kwStringNew|length - 1 %}
+			{% if kwStringNew|slice(var,1) == separator %}
+				{% set kwStringNew = kwStringNew|slice(0,var) %}
+			{% endif %}
+			{# * affichage des keywords #}
+			<a href="{{ path("app_publication_show_all_category", {slug:slugCat, keystring:kwStringNew, page:1, order:orderSort, sortby:querySortby}) }}" class=" bg-slate-300 rounded justify-items-between mb-1 text-center hover:text-slate-800 grid  text-slate-700 text-sm font-medium ">
+				<span class="mr-2 leading-[1.7rem]  dark:bg-blue-900 dark:text-blue-300">{{item.keyword}}
+					<i class="fa-solid fa-delete-left float-right mt-2"></i>
+				</span>
 			</a>
 		{% endif %}
-		{% set n = n + 1 %}
 		{% set alreadyKeyw = alreadyKeyw|merge([item.keyword]) %}
+		{% set n = n + 1 %}
 	{% endfor %}
-</aside>
+{% endif %}
+{# ! On affiche les keywords non utilisés #}
+{% set n = 0 %}
+{% set alreadyKeyw = [] %}
+{# * début de la boucle #}
+{% for item in pubShowKw %}
+	{# * S'il n'y a aucun keyword dans la string, alors on ne met pas le séparateur #}
+	{% set kwAdd = separator ~ item.keyword|lower %}
+	{% if kwString|length == 0 %}
+		{% set kwAdd = item.keyword|lower %}
+	{% endif %}
+	{# * On affiche les keywords avec le bon lien #}
+	{% if (item.keyword not in alreadyKeyw) and (item.keyword|lower in kwString == false) %}
+		<!-- Si le keyword n'est pas dans la variable, on le supprime (éviter les doublons) -->
+		{% set kwString = kwString|replace({separator_d:separator}) %}
+		<a href="{{ path("app_publication_show_all_category", {slug:slugCat, sortby:querySortby, keystring:kwString ~ kwAdd, order:orderSort, page:1}) }}">
+			<span class="bg-slate-100 text-slate-600 text-sm font-medium mr-2 px-2.5 py-0.5 leading-10 rounded dark:bg-blue-900 dark:text-blue-300">{{item.keyword}}</span>
+		</a>
+	{% endif %}
+	{% set n = n + 1 %}
+	{% set alreadyKeyw = alreadyKeyw|merge([item.keyword]) %}
+{% endfor %}

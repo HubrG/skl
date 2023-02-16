@@ -38,25 +38,30 @@ class PublicationPopularity
      */
     public function PublicationPopularity($publication)
     {
-        $priorityPcv = 0.001; // views
-        $priorityPcl = 0.006; // likes
-        $priorityPchc = 0.004; // comments
-        $priorityBm = 0.007; // Bookmarks
+        $priorityPcv = 0.01; // views
+        $priorityPcl = 0.06; // likes
+        $priorityPchc = 0.04; // comments
+        $priorityBm = 0.07; // Bookmarks
+
         $p = $this->pRepo->find($publication);
         $pch = $this->pchRepo->findBy(["publication" => $p]);
         $pchc = count($this->pchcRepo->findBy(["chapter" => $pch]));
         $pcv = count($this->pcvRepo->findBy(["chapter" => $pch]));
         $pcl = count($this->pclRepo->findBy(["chapter" => $pch]));
         $pcb = count($this->pcbRepo->findBy(["chapter" => $pch]));
-        // On crée un tableau avec les publications et leur nombre de vue
+
+        // Calculate time decay factor
+        $createdAt = $p->getCreated();
+        $timeSincePublication = ($createdAt !== null) ? (time() - strtotime($createdAt->format('Y-m-d H:i:s'))) : 0;
+        $decayFactor = exp(- ($timeSincePublication / (60 * 60 * 24 * 30))); // factor de décroissance (exprimé en jours)
+
+        // Calculate popularity with time decay factor
         $popularity = ($pcv * $priorityPcv) + ($pcl * $priorityPcl) + ($pchc * $priorityPchc) + ($pcb * $priorityBm);
-        // On met à jour en bdd
-        $p = $this->pRepo->find($publication);
+        $popularity = $popularity * $decayFactor;
 
+        // Update popularity in database
         $p->setPop($popularity);
-
         $this->em->persist($p);
-
         $this->em->flush();
 
         return;

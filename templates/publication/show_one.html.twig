@@ -38,7 +38,6 @@
 	<section class=" before:bg-cover before:blur before:-z-[9999]  col-span-12 col-start-0 md:col-span-10 md:col-start-2 gap-10" id="test">
 		<h1 class="text-center font-serif text-4xl bg-center text-slate-800" style="text-shadow: 0 0.5px 1px blanchedalmond;">{{ pubShow.title }}</h1>
 		<h2 class="text-center -mt-8">
-			<small>par</small>
 			<span class="font-medium font-serif">
 				<a href="{{ path("app_user", {username:pubShow.user.username}) }}" class="font-sans hover:underline">{{ pubShow.user.nickname }}</a>
 			</span>
@@ -69,6 +68,11 @@
 					<i class="fa-solid fa-book-open-reader text-2xl"></i>
 					<br/><span class="font-medium">Commencer la lecture</span>
 				</a>
+				<a target="_top" href="{{ path("app_publication_show_one", {id:pubShow.id, slug:"download"}) }}" class=" block mt-5 not-italic  text-center text-sm px-5 text-slate-900 ">
+					<i class="fa-solid fa-file-pdf"></i>
+					<span class="font-medium">
+						&nbsp;Télécharger au format pdf</span>
+				</a>
 			</div>
 		</div>
 	</section>
@@ -91,8 +95,9 @@
 					{% set nbrViews = 0 %}
 					{% set nbrBm = 0 %}
 					{% set nbrComments = 0 %}
+					{% set nbrPages = 0 %}
 					{% set nbr = 1 %}
-					{% for chapter in pubShow.publicationChapters|sort((a, b) => a.orderDisplay < b.orderDisplay ? -1 : 1) %}
+					{% for chapter in chapShow %}
 						{% if chapter.status > 1 %}
 							{% if chapter.slug %}
 								{% set chapterSlug = chapter.slug %}
@@ -132,7 +137,7 @@
 												{% set nbrComments = nbrComments + chapter.publicationChapterComments|length %}
 											</div>
 										</div>
-
+										{% set nbrPages = nbrPages + chapter.content|readInfo("nbr_page_A4") %}
 									</div>
 								</div>
 							</li>
@@ -151,6 +156,15 @@
 						<a href="{{path("app_publication_show_all_category", {slug:pubShow.category.slug})}}" class="hover:underline">
 							<span>{{ pubShow.category.name }}</span>
 						</a>
+					</li>
+					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+						<span class="font-medium">
+							<i class="fa-regular fa-map"></i>
+							&nbsp;&nbsp;Nombre de pages
+						</span>
+
+						<span>{{ nbrPages }}</span>
+
 					</li>
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:bg-gray-800  dark:text-white">
 						<span class="font-medium">

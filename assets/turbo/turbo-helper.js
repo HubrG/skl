@@ -7,6 +7,7 @@ import { ReadTime } from "../scripts/Publication/ChapterStats";
 import { quillEditor } from "../scripts/Quill.js";
 import { Sortables } from "../scripts/Publication/Sortable";
 import { LazyLoad } from "../scripts/LazyLoad";
+import { PublicationShow } from "../scripts/Publication/PublicationShow";
 import {
   ShowChapter,
   toggleDrawer,
@@ -32,6 +33,9 @@ const TurboHelper = class {
       }
       if (document.querySelector(".list-group-item")) {
         Sortables();
+      }
+      if (document.getElementById("PublicationShowContent")) {
+        PublicationShow();
       }
       LazyLoad();
       ShowChapter();

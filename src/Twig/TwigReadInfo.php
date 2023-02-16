@@ -42,6 +42,32 @@ class TwigReadInfo extends AbstractExtension
             $hours = floor($minutes / 60);
             $minutes = $minutes % 60;
             return $hours . "h" . ($minutes < 10 ? "0" . $minutes : $minutes);
+        } elseif ($type == "nbr_page_A5") {
+            $stringOrigin = strip_tags($stringOrigin);
+            // on compte le nombre de caractères, espaces compris, de $stringOrigine
+            $stringOrigin = \strlen($stringOrigin);
+            $largeur_disponible = 9.8; // Largeur disponible pour le texte en cm
+            $hauteur_disponible = 16; // Hauteur disponible pour le texte en cm
+            $hauteur_police = 0.42; // Hauteur de la police en cm
+
+            $caracteres_par_ligne = 35; // Nombre de caractères par ligne (estimation basée sur une police de caractère Times New Roman de 12 points avec un interligne de 1,5)
+            $lignes_par_page = floor($hauteur_disponible / $hauteur_police); // Nombre de lignes par page
+
+            $caracteres_par_page = $caracteres_par_ligne * $lignes_par_page; // Nombre de caractères par page
+            return ceil($stringOrigin / $caracteres_par_page); // Nombre de pages (arrondi au nombre entier supérieur)
+        } elseif ($type == "nbr_page_A4") {
+            $stringOrigin = strip_tags($stringOrigin);
+            // on compte le nombre de caractères, espaces compris, de $stringOrigine
+            $stringOrigin = \strlen($stringOrigin);
+            $largeur_disponible = 16; // Largeur disponible pour le texte en cm
+            $hauteur_disponible = 24.7; // Hauteur disponible pour le texte en cm
+            $hauteur_police = 0.42; // Hauteur de la police en cm
+
+            $caracteres_par_ligne = 60; // Nombre de caractères par ligne (estimation basée sur une police de caractère Times New Roman de 12 points avec un interligne de 1,5)
+            $lignes_par_page = floor($hauteur_disponible / $hauteur_police); // Nombre de lignes par page
+
+            $caracteres_par_page = $caracteres_par_ligne * $lignes_par_page; // Nombre de caractères par page
+            return ceil($stringOrigin / $caracteres_par_page); // Nombre de pages (arrondi au nombre entier supérieur)
         }
         return null;
     }

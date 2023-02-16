@@ -7,6 +7,8 @@
 /public/bundles/
 /var/
 /vendor/
+/credentials_aws.csv
+/public/uploads/
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
@@ -20,7 +22,6 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
-
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
 /public/build/

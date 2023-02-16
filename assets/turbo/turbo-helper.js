@@ -1,4 +1,3 @@
-import "../../node_modules/flowbite/dist/flowbite.turbo.js";
 import { addKeyword } from "../scripts/Publication/AddKeyword";
 import { AxiosSaveChapter } from "../scripts/Publication/Chapter";
 import { AxiosSavePublication } from "../scripts/Publication/Publication";
@@ -61,6 +60,7 @@ const TurboHelper = class {
     });
     document.addEventListener("turbo:after-render", (event) => {});
     document.addEventListener("turbo:before-render", (event) => {
+      document.getElementById("flowbite").remove();
       if (this.isPreviewRendered()) {
         // this is a preview that has been instantly swapped
         // remove .turbo-loading so the preview starts fully opaque
@@ -87,6 +87,7 @@ const TurboHelper = class {
       }
     });
   }
+
   isPreviewRendered() {
     return document.documentElement.hasAttribute("data-turbo-preview");
   }

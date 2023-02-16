@@ -9,18 +9,17 @@
 			{% endblock %}
 		</title>
 		<link rel="icon" href="/images/favicon.png">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.turbo.min.js"></script>
+
 		{{ encore_entry_link_tags('app') }}
 		{% block stylesheets %}{% endblock %}
 		{{ encore_entry_script_tags('app') }}
+
 		<script src="https://kit.fontawesome.com/8a11333aa0.js" crossorigin="anonymous"></script>
 		{% block javascripts %}{% endblock %}
 	</head>
 	<body>
-		{# {% for message in app.session.flashBag.get('successMessage') %}
-					{% for title in app.session.flashBag.get('successTitle') %}
-						{% include 'partials/_notif.html.twig'  with {'notifMessage': message, 'notifTitle' : title} %}
-					{% endfor %}
-				{% endfor %} #}
+
 		{% include "partials/_navbar.html.twig" %}
 		<main>
 			{% block body %}{% endblock %}

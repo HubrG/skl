@@ -28,7 +28,7 @@ class Publication
     #[ORM\Column]
     private ?int $status = null;
 
-    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationChapter::class, cascade: ['remove'])]
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationChapter::class, orphanRemoval: true)]
     private Collection $publicationChapters;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -62,10 +62,18 @@ class Publication
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 3, nullable: true)]
     private ?string $pop = null;
 
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationDownload::class, orphanRemoval: true)]
+    private Collection $publicationDownloads;
+
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationPopularity::class, orphanRemoval: true)]
+    private Collection $publicationPopularities;
+
     public function __construct()
     {
         $this->publicationChapters = new ArrayCollection();
         $this->publicationKeywords = new ArrayCollection();
+        $this->publicationDownloads = new ArrayCollection();
+        $this->publicationPopularities = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -284,6 +292,66 @@ class Publication
     public function setPop(?string $pop): self
     {
         $this->pop = $pop;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationDownload>
+     */
+    public function getPublicationDownloads(): Collection
+    {
+        return $this->publicationDownloads;
+    }
+
+    public function addPublicationDownload(PublicationDownload $publicationDownload): self
+    {
+        if (!$this->publicationDownloads->contains($publicationDownload)) {
+            $this->publicationDownloads->add($publicationDownload);
+            $publicationDownload->setPublication($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationDownload(PublicationDownload $publicationDownload): self
+    {
+        if ($this->publicationDownloads->removeElement($publicationDownload)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationDownload->getPublication() === $this) {
+                $publicationDownload->setPublication(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationPopularity>
+     */
+    public function getPublicationPopularities(): Collection
+    {
+        return $this->publicationPopularities;
+    }
+
+    public function addPublicationPopularity(PublicationPopularity $publicationPopularity): self
+    {
+        if (!$this->publicationPopularities->contains($publicationPopularity)) {
+            $this->publicationPopularities->add($publicationPopularity);
+            $publicationPopularity->setPublication($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationPopularity(PublicationPopularity $publicationPopularity): self
+    {
+        if ($this->publicationPopularities->removeElement($publicationPopularity)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationPopularity->getPublication() === $this) {
+                $publicationPopularity->setPublication(null);
+            }
+        }
 
         return $this;
     }

@@ -387,7 +387,10 @@ class ChapterShowController extends AbstractController
 
     public function formatHL($chapter, $chapterTab)
     {
-        $notes = $this->chapterNote->findBy(['chapter' => $chapterTab, 'type' => 0]);
+        $notes = $this->chapterNote->findBy(['chapter' => $chapterTab, 'type' => 0, 'user' => $this->getUser()]);
+        if (!$notes) {
+            return $chapter;
+        }
         $chapterText = $chapter;
         foreach ($notes as $note) {
             $contextSel = $note->getContext();
@@ -441,13 +444,13 @@ class ChapterShowController extends AbstractController
     public function Axios_ChapterLike(Request $request, PublicationChapterRepository $pchRepo, PublicationChapterLikeRepository $pclRepo, EntityManagerInterface $em): response
     {
         $pch = $pchRepo->find($request->get("idChapter"));
-        if (!$pch || !$this->getUser()) {
+        if (!$pch || !$this->getUser() || $pch->getPublication()->getUser() == $this->getUser()) {
             return $this->json([
                 'code' => 200,
+                'nbrLike' => $pclRepo->count(['chapter' => $pch]),
                 'message' => 'Erreur',
             ], 200);
         }
-
         $like = $pclRepo->findOneBy(['chapter' => $pch, 'user' => $this->getUser()]);
         if ($like) {
             $em->remove($like);
@@ -466,6 +469,7 @@ class ChapterShowController extends AbstractController
         $like = new PublicationChapterLike();
         $like->setChapter($pch);
         $like->setUser($this->getUser());
+        $like->setCreatedAt(new \DateTimeImmutable('now'));
         $em->persist($like);
         $em->flush();
         // * On met à jour la popularité de la publication
@@ -483,16 +487,17 @@ class ChapterShowController extends AbstractController
     public function Axios_ChapterBm(Request $request, PublicationChapterRepository $pchRepo, PublicationChapterBookmarkRepository $pcbRepo, EntityManagerInterface $em): response
     {
         $pch = $pchRepo->find($request->get("idChapter"));
-        if (!$pch || !$this->getUser()) {
+        if (!$pch || !$this->getUser() || $pch->getPublication()->getUser() == $this->getUser()) {
             return $this->json([
                 'code' => 200,
+                'nbrBm' => $pcbRepo->count(['chapter' => $pch]),
                 'message' => 'Non autorisé.',
             ], 200);
         }
 
-        $like = $pcbRepo->findOneBy(['chapter' => $pch, 'user' => $this->getUser()]);
-        if ($like) {
-            $em->remove($like);
+        $bm = $pcbRepo->findOneBy(['chapter' => $pch, 'user' => $this->getUser()]);
+        if ($bm) {
+            $em->remove($bm);
             $em->flush();
             // * On met à jour la popularité de la publication
             $this->publicationPopularity->PublicationPopularity($pch->getPublication());
@@ -505,10 +510,11 @@ class ChapterShowController extends AbstractController
             ], 200);
         }
 
-        $like = new PublicationChapterBookmark();
-        $like->setChapter($pch);
-        $like->setUser($this->getUser());
-        $em->persist($like);
+        $bm = new PublicationChapterBookmark();
+        $bm->setChapter($pch);
+        $bm->setUser($this->getUser());
+        $bm->setCreatedAt(new \DateTimeImmutable('now'));
+        $em->persist($bm);
         $em->flush();
         // * On met à jour la popularité de la publication
         $this->publicationPopularity->PublicationPopularity($pch->getPublication());

@@ -3,33 +3,41 @@
 namespace App\Controller\Services;
 
 use TCPDF;
+use DateTime;
+use Exception;
+use DateTimeImmutable;
+use App\Entity\PublicationDownload;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repository\PublicationChapterRepository;
+use App\Repository\PublicationDownloadRepository;
 use App\Repository\PublicationChapterCommentRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-
-class PublicationDownloadPDF
+class PublicationDownloadPDF extends AbstractController
 {
     private $pRepo;
     private $pchRepo;
     private $pcRepo;
     private $em;
 
-    public function __construct(EntityManagerInterface $em, PublicationRepository $pRepo, PublicationChapterRepository $pchRepo, PublicationChapterCommentRepository $pcRepo)
+    private $pdRepo;
+
+    public function __construct(PublicationDownloadRepository $pdRepo, EntityManagerInterface $em, PublicationRepository $pRepo, PublicationChapterRepository $pchRepo, PublicationChapterCommentRepository $pcRepo)
     {
         $this->pRepo = $pRepo;
         $this->pchRepo = $pchRepo;
         $this->pcRepo = $pcRepo;
         $this->em = $em;
+        $this->pdRepo = $pdRepo;
     }
     /**
      * @param $publication
      * Cette fonction permet de calculer la popularité d'une publication
      * @return void
      */
-    public function PublicationDownloadPDF($id, $type)
+    public function PublicationDownloadPDF($id)
     {
         $publication = $this->pRepo->find($id);
         $orderChap = $this->pchRepo->findBy(["publication" => $publication, "status" => 2], ["order_display" => "ASC"]);
@@ -38,7 +46,6 @@ class PublicationDownloadPDF
         $pdf = new TCPDF();
         $pdf->SetPrintHeader(false);
         $pdf->SetFont('Times', '', 12);
-        $image_file = $publication->getCover();
         // Définition de la taille de la page
         $pdf->AddPage();
 
@@ -55,15 +62,14 @@ class PublicationDownloadPDF
         <p><a href="http://scrilab.com/user/' . $publication->getUser()->getUsername() . '">Cliquez ici pour contacter l\'auteur(ice)</a></p>
         </div>
 		</div>';
-        $html_bottom = '<div style="text-align:center"><img src="' . $image_file . '" width="' . $pdf->getPageWidth() . '"></div>';
-
         // Ajout de la moitié haute
         $pdf->writeHTMLCell(0, $half_height, 0, 0, $html_top, 0, 0, false, true, 'C', true);
-
+        if ($publication->getCover() != null) {
+            $image_file = $publication->getCover();
+            $html_bottom = '<div style="text-align:center"><img src="' . $image_file . '" width="' . $pdf->getPageWidth() . '"></div>';
+            $pdf->writeHTMLCell(0, $half_height, 0, $half_height, $html_bottom, 0, 0, false, true, 'C', true);
+        }
         // Ajout de la moitié basse
-        $pdf->writeHTMLCell(0, $half_height, 0, $half_height, $html_bottom, 0, 0, false, true, 'C', true);
-
-
         foreach ($orderChap as $chapter) {
             // On vérifie que le chapitre est publié
 
@@ -145,10 +151,25 @@ class PublicationDownloadPDF
         }
         $pdf->SetKeywords(implode(", ", $keywords));
         $pdf->SetCreator('http://scrilab.com');
-        if ($type == "dl") {
+        try {
+            $this->addPublicationDownload($publication);
             $pdf->Output($publication->getTitle() . ' - ' . $publication->getUser()->getNickname() . '.pdf', 'D');
-        } else {
-            return $pdf->getNumPages();
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+        // * On ajoute le téléchargement à la la BDD
+    }
+    private function addPublicationDownload($publication)
+    {
+        $pdRepo = $this->pdRepo;
+        $pdRepo = $pdRepo->findOneBy(["publication" => $publication, "user" => $this->getUser()]);
+        if ($pdRepo == null && $this->getUser() != $publication->getUser()) {
+            $pd = new PublicationDownload();
+            $pd->setPublication($publication);
+            $pd->setUser($this->getUser());
+            $pd->setDlAt(new DateTimeImmutable());
+            $this->em->persist($pd);
+            $this->em->flush();
         }
     }
 }

@@ -97,12 +97,12 @@
 						{% set bm = true %}
 					{% endif %}
 				{% endfor %}
-				<div {% if app.user.id is defined %} data-tippy-content="{% if liked == false %}J'aime cette feuille{% else %}Je n'aime plus cette feuille{% endif %}" {% endif %} data-id="{{infoChap.id}}" class=" {% if app.user.id is defined %}hover:text-blue-600 cursor-pointer{% endif %} text-sm" id="likeThisChapter">
+				<div {% if app.user.id is defined %} {% if app.user.id != infoPub.user.id %} data-tippy-content="{% if liked == false %}J'aime cette feuille{% else %}Je n'aime plus cette feuille{% endif %}" {% else %} data-tippy-content='Vous ne pas aimer votre propre feuille !' {% endif %} {% else %} data-tippy-content="Connectez-vous pour aimer cette feuille !" {% endif %} data-id="{{infoChap.id}}" class="{% if app.user.id is defined %}{% if app.user.id != infoPub.user.id %}hover:text-blue-600 cursor-pointer{% endif %}{% endif %} text-sm" id="likeThisChapter">
 					<i class="{% if liked == false %}fa-regular{% else %}fa-solid text-red-500{% endif %} fa-heart" id="likeChapterThumb"></i>
 					&nbsp;<span id="nbrLike">{{ infoChap.publicationChapterLikes|length }}</span>
 				</div>
 				|
-				<div {% if app.user.id is defined %} data-tippy-content="{% if bm == false %}Ajouter cette feuille à ma collection{% else %}Retirer cette feuille de ma collection{% endif %}" {% endif %} id="bmThisChapter" data-id="{{infoChap.id}}" class="{% if app.user.id is defined %}hover:text-blue-600 cursor-pointer{% endif %} text-sm">
+				<div {% if app.user.id is defined %} {% if app.user.id != infoPub.user.id %} data-tippy-content="{% if bm == false %}Ajouter cette feuille à ma collection{% else %}Retirer cette feuille de ma collection{% endif %}" {% else %} data-tippy-content='Vous ne pouvez pas marquer votre propre feuille !' {% endif %} {% else %} data-tippy-content="Connectez-vous pour marquer cette feuille !" {% endif %} id="bmThisChapter" data-id="{{infoChap.id}}" class="{% if app.user.id is defined %}{% if app.user.id != infoPub.user.id %}hover:text-blue-600 cursor-pointer{% endif %}{% endif %} text-sm">
 					<i class="{% if bm == false %}fa-regular{% else %}fa-solid text-blue-500{% endif %} fa-bookmark" id="bmChapter"></i>
 					&nbsp;<span id="nbrBm">{{ infoChap.publicationChapterBookmarks|length }}</span>
 				</div>

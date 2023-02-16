@@ -23,7 +23,7 @@ class AdminCategoryController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // on ajoute au formulaire la donnée de slug
-            $form = $form->getData()->setSlug($slugger->slug($form->getData()->getName()));
+            $form = $form->getData()->setSlug($slugger->slug(strtolower($form->getData()->getName())));
             $em->persist($form);
             $em->flush();
             return $this->redirectToRoute("app_admin_category", [], Response::HTTP_SEE_OTHER);

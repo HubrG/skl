@@ -24,6 +24,9 @@ class PublicationCategory
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $slug = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $color = null;
+
     public function __construct()
     {
         $this->publications = new ArrayCollection();
@@ -84,6 +87,18 @@ class PublicationCategory
     public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getColor(): ?int
+    {
+        return $this->color;
+    }
+
+    public function setColor(?int $color): self
+    {
+        $this->color = $color;
 
         return $this;
     }

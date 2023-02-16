@@ -69,7 +69,7 @@
 					<br/><span class="font-medium">Commencer la lecture</span>
 				</a>
 				<a target="_top" href="{{ path("app_publication_show_one", {id:pubShow.id, slug:"download"}) }}" class=" block mt-5 not-italic  text-center text-sm px-5 text-slate-900 ">
-					<i class="fa-solid fa-file-pdf"></i>
+					<i class="fa-regular fa-circle-down"></i>
 					<span class="font-medium">
 						&nbsp;Télécharger au format pdf</span>
 				</a>
@@ -114,7 +114,7 @@
 											Feuille n°{{ chapter.orderDisplay + 1 }}
 										{% endif %}
 									</a>
-									<div class="w-2/6 justify-items-end">
+									<div class="w-2/6 justify-items-end opacity-60">
 										<div class="py-1 px-2 rounded-full flex justify-between text-sm text-slate-600 font-medium ">
 											<div>
 												<i class="fa-regular fa-heart"></i>
@@ -153,7 +153,7 @@
 							<i class="fa-solid fa-masks-theater"></i>
 							&nbsp;&nbsp;Genre
 						</span>
-						<a href="{{path("app_publication_show_all_category", {slug:pubShow.category.slug})}}" class="hover:underline">
+						<a href="{{path("app_publication_show_all_category", {slug:pubShow.category.slug})}}" class="catColor-{{pubShow.category.color}} rounded px-2 py-1 text-xs">
 							<span>{{ pubShow.category.name }}</span>
 						</a>
 					</li>
@@ -162,9 +162,7 @@
 							<i class="fa-regular fa-map"></i>
 							&nbsp;&nbsp;Nombre de pages
 						</span>
-
 						<span>{{ nbrPages }}</span>
-
 					</li>
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:bg-gray-800  dark:text-white">
 						<span class="font-medium">
@@ -206,6 +204,38 @@
 							&nbsp;&nbsp;&nbsp;J'aime
 						</span>
 						<span>{{nbrLikes}}</span>
+					</li>
+					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+						<span class="font-medium">
+							<i class="fa-regular fa-circle-down"></i>
+							&nbsp;&nbsp;&nbsp;Téléchargements
+						</span>
+						<span>{{pubShow.PublicationDownloads|length}}</span>
+					</li>
+					{# Progression #}
+					{% set nbr = 0 %}
+					{% set valueLast = 0 %}
+					{% set valueNow = 0 %}
+					{% if pubShow.PublicationPopularities|length > 1 %}
+						{% for item in pubShow.PublicationPopularities %}
+							{% if nbr < 2 %}
+								{% if nbr == 0 %}
+									{% set valueLast = item.popularity %}
+								{% else %}
+									{% set valueNow = item.popularity %}
+								{% endif %}
+								{% set nbr = nbr + 1 %}
+							{% endif %}
+						{% endfor %}
+					{% endif %}
+					{% set value = valueNow - valueLast %}
+					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+						<span class="font-medium">
+							<i class="fa-solid fa-chart-line"></i>
+							&nbsp;&nbsp;&nbsp;Popularité
+							<span class="font-light text-xs">(7 jours)</span>
+						</span>
+						<span>{{ value > 0 ? '<i class="fa-solid fa-circle-chevron-up  text-emerald-700"></i>' : value == 0 ? '<i class="fa-solid fa-equals"></i>' : '<i class="fa-solid fa-circle-chevron-down text-red-700"></i>' }}</span>
 					</li>
 				</ul>
 				<ul class=" flex flex-col  text-sm border-t-[1px] border-t-slate-200 pt-5 mt-5">

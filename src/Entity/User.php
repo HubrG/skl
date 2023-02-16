@@ -79,23 +79,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $join_date = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterComment::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterComment::class, orphanRemoval: true)]
     private Collection $publicationChapterComments;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterCommentLike::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterCommentLike::class, orphanRemoval: true)]
     private Collection $publicationChapterCommentLikes;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterView::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterView::class, orphanRemoval: true)]
     private Collection $publicationChapterViews;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterNote::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterNote::class, orphanRemoval: true)]
     private Collection $publicationChapterNotes;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterLike::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterLike::class, orphanRemoval: true)]
     private Collection $publicationChapterLikes;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterBookmark::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterBookmark::class, orphanRemoval: true)]
     private Collection $publicationChapterBookmarks;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationDownload::class, orphanRemoval: true)]
+    private Collection $publicationDownloads;
 
 
     public function __construct()
@@ -107,6 +110,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->publicationChapterNotes = new ArrayCollection();
         $this->publicationChapterLikes = new ArrayCollection();
         $this->publicationChapterBookmarks = new ArrayCollection();
+        $this->publicationDownloads = new ArrayCollection();
     }
 
 
@@ -540,6 +544,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($publicationChapterBookmark->getUser() === $this) {
                 $publicationChapterBookmark->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationDownload>
+     */
+    public function getPublicationDownloads(): Collection
+    {
+        return $this->publicationDownloads;
+    }
+
+    public function addPublicationDownload(PublicationDownload $publicationDownload): self
+    {
+        if (!$this->publicationDownloads->contains($publicationDownload)) {
+            $this->publicationDownloads->add($publicationDownload);
+            $publicationDownload->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationDownload(PublicationDownload $publicationDownload): self
+    {
+        if ($this->publicationDownloads->removeElement($publicationDownload)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationDownload->getUser() === $this) {
+                $publicationDownload->setUser(null);
             }
         }
 

@@ -39,22 +39,24 @@
 	{{ parent() }}
 {% endblock %}
 {% block body %}
-	<section class="col-span-12">
+	<section class="col-span-12 xl:mt-1 -mt-8">
 		<h1 class="text-center font-serif">{{ slugCatName }}</h1>
 	</section>
 	{# ! Séparateur de mots clés dans l'URL & page #}
 	{% set separator = "—" %}
 	{% set separator_d = "——" %}
-	<!-- double séparateur -->
 	{% set pageAct = app.request.get('_route_params')['page'] %}
-	<turbo-frame id="pagination-{{ random(0,999) }}" class="grid grid-cols-2 grid-rows-auto gap-4 col-span-full gap-x-10 container -mt-10 ">
-		<aside class="items-center justify-items-between content-center row-span-12 col-span-12 xl:col-span-5 xl:row-span-5 mb-5 xl:mb-0 order-2 xl:order-1 snap-y  grayscale">
-			<hr class="xl:hidden my-5"/>
-			<h2 class="xl:hidden text-center font-bold my-5">Mot-clés</h2>
-			{% include "publication/_partials/_show_all_keywords.html.twig"  %}
-		</aside>
+	{% set random = random(0,999) %}
+	<turbo-frame id="pagination-{{random}}" class="grid grid-cols-2 grid-rows-auto gap-4 col-span-full gap-x-10 container -mt-12 xl:-mt-20 ">
+		{% if pubShowKw %}
+			<aside class="items-center justify-items-between content-center row-span-12 col-span-12 xl:col-span-5 xl:row-span-5 mb-5 xl:mb-0 order-2 xl:order-1 snap-y  grayscale">
+				<hr class="xl:hidden my-5"/>
+				<h2 class="xl:hidden text-center font-bold my-5">Mot-clés</h2>
+				{% include "publication/_partials/_show_all_keywords.html.twig"  %}
+			</aside>
+		{% endif %}
 		{# ! Affichage des récits #}
-		<section class=" row-span-12 col-span-12 xl:col-span-7 xl:row-span-7 order-1 xl:order-2 justify-between -mt-5 grayscale-[2px]" style="--animate-duration: 1s;">
+		<section class="row-span-12 col-span-12 xl:col-span-7 xl:row-span-7{% if pubShowKw %} {% else %}col-start-0 xl:col-start-4 {% endif %}  order-1 xl:order-2 justify-between -mt-5 grayscale-[2px]" style="--animate-duration: 1s;">
 			<div class="flex mb-10 justify-around ">
 				<h4 class="w-4/6 mb-5  pl-5 font-light text-lg text-slate-500">
 					{% if count == 0 %}Aucun récit.
@@ -84,25 +86,25 @@
 					<div id="sortHover" class="z-10 hidden bg-white divide-y divide-slate-100 rounded-lg shadow w-auto dark:bg-slate-700  grayscale">
 						<ul class="text-sm  text-slate-700 dark:text-slate-200" aria-labelledby="sortButton">
 							<li class="py-2 rounded-t-lg {% if querySortby == 'pop' and orderSort == 'desc' %} bg-slate-100 hover:bg-slate-100{% else %} hover:bg-slate-200{% endif %} ">
-								<a href="{{ path("app_publication_show_all_category", {slug:slugCat, keystring:queryKeystring, page:page, order:"desc", sortby:"pop"}) }}" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Les
+								<a href="{{ path("app_publication_show_all_category", {slug:slugCat, keystring:queryKeystring, page:page, order:"desc", sortby:"pop"}) }}" data-turbo-frame="_self" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Les
 									<strong>plus populaires</strong>
 									d'abord
 								</a>
 							</li>
 							<li class="py-2 {% if querySortby == 'pop' and orderSort == 'asc' %} bg-slate-100 hover:bg-slate-100{% else %} hover:bg-slate-200{% endif %}">
-								<a href="{{ path("app_publication_show_all_category", {slug:slugCat, keystring:queryKeystring, page:page, order:"asc", sortby:"pop"}) }}" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Les
+								<a href="{{ path("app_publication_show_all_category", {slug:slugCat, keystring:queryKeystring, page:page, order:"asc", sortby:"pop"}) }}" data-turbo-frame="_self" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Les
 									<strong>moins populaires</strong>
 									d'abord
 								</a>
 							</li>
 							<li class="py-2 {% if orderSort == 'desc'  and querySortby == 'published'  %}bg-slate-100 hover:bg-slate-100 {% else %}hover:bg-slate-200 {% endif %}">
-								<a href="{{ path("app_publication_show_all_category", {slug:slugCat,sortby:"published", keystring:kwString, page:page, order:"desc"}) }}" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Les
+								<a href="{{ path("app_publication_show_all_category", {slug:slugCat,sortby:"published", keystring:kwString, page:page, order:"desc"}) }}" data-turbo-frame="_self" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Les
 									<strong>nouveautés</strong>
 									d'abord
 								</a>
 							</li>
 							<li class="py-2 rounded-b-lg {% if orderSort == 'asc' and querySortby == 'published' %} bg-slate-100 hover:bg-slate-100{% else %} hover:bg-slate-200{% endif %}">
-								<a href="{{ path("app_publication_show_all_category", {slug:slugCat,sortby:"published", keystring:kwString, page:page, order:"asc"}) }}" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Les plus
+								<a href="{{ path("app_publication_show_all_category", {slug:slugCat,sortby:"published", keystring:kwString, page:page, order:"asc"}) }}" data-turbo-frame="_self" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Les plus
 									<strong>anciens</strong>
 									d'abord
 								</a>
@@ -153,7 +155,7 @@
 							<p class=" text-cyan-600">
 								{% if slugCat == "all" %}
 									<a href="{{ path("app_publication_show_all_category", {slug:item.category.slug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:queryKeystring}) }}">
-										<span class="bg-blue-100 text-blue-500 text-xs font-medium mr-1 leading-7 mb-2 px-2.5 py-0.5 rounded dark:bg-slate-700 dark:text-slate-400 ">{{ item.category.name|lower }}</span>
+										<span class="catColor-{{item.category.color}} text-xs mr-1 leading-7 mb-2 px-2.5 py-0.5 rounded dark:bg-slate-700 dark:text-slate-400 ">{{ item.category.name|lower }}</span>
 									</a>
 								{% endif %}
 								{% for pubKeyw in item.publicationKeywords %}
@@ -172,8 +174,8 @@
 				{% if kwString is null and page == 1 and count < limit %}
 					{% for i in count..limit - 1 %}
 
-						<div class=" rounded-lg   dark:border-slate-700 flex place-content-start opacity-80">
-							<p class="absolute z-50 ml-[13%] mt-[5%] shadow-lg">
+						<div class="relative rounded-lg   dark:border-slate-700 flex place-content-start opacity-80">
+							<p class="absolute z-50 ml-[40%] mt-[23%] shadow-lg">
 								<a href="{{path("app_publication_add")}}" class=" text-slate-900  rounded ring-1 ring-slate-900 px-4 bg-white  p-3 font-medium hover:bg-slate-50 shadow">
 									<i class="fa-regular fa-newspaper"></i>
 									&nbsp;Publier mon récit

@@ -223,7 +223,7 @@ class PublicationShowController extends AbstractController
 
 
 		if ($slug == "download") {
-			$this->publicationDownloadPDF->PublicationDownloadPDF($id, "dl"); // download PDF
+			$this->publicationDownloadPDF->PublicationDownloadPDF($id); // download PDF
 			return $this->redirectToRoute('app_publication_show_one', [
 				'id' => $id,
 				'slug' => $publication->getSlug()

@@ -19,6 +19,9 @@ class PublicationChapterBookmark
     #[ORM\ManyToOne(inversedBy: 'publicationChapterBookmarks')]
     private ?PublicationChapter $chapter = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $CreatedAt = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +47,18 @@ class PublicationChapterBookmark
     public function setChapter(?PublicationChapter $chapter): self
     {
         $this->chapter = $chapter;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->CreatedAt;
+    }
+
+    public function setCreatedAt(?\DateTimeImmutable $CreatedAt): self
+    {
+        $this->CreatedAt = $CreatedAt;
 
         return $this;
     }

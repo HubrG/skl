@@ -8,7 +8,8 @@
 /var/
 /vendor/
 /credentials_aws.csv
-/public/images/uploads/
+/public/images/uploads/story/
+/public/images/uploads/profil_pictures/
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###

@@ -13,7 +13,6 @@ export function TippyC() {
     // fade in/out
     arrow: true,
     // show arrow
-    arrowType: "sharp",
     // arrow type
 
     // animate the fill color

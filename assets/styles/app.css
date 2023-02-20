@@ -104,13 +104,13 @@ h1 {
 	@apply text-rose-500 text-sm -mt-2 mb-2;
 }
 #keyList div {
-	@apply bg-slate-700 mr-3 text-white h-auto text-sm font-medium w-auto items-center p-2 rounded dark:bg-gray-700 dark:text-gray-300;
+	@apply bg-slate-700 mr-3 text-white h-auto font-medium w-auto items-center p-2 rounded dark:bg-gray-700 dark:text-gray-300;
 }
 #keyList {
 	@apply flex flex-wrap ;
 }
 #keyList a {
-	@apply text-red-300;
+	@apply text-white text-base;
 }
 form label.required:after {
 		content: " *";
@@ -126,10 +126,10 @@ form hr {
 	@apply h-px my-8 bg-gray-200 border-0 dark:bg-gray-700
 }
 form label {
-		@apply block mb-2 text-sm font-medium text-slate-800 dark:text-white  text-base;
+		@apply block -mb-2 font-medium text-slate-800 dark:text-white  text-sm;
 }
 form input[type=checkbox] {
-	@apply w-4 h-4 text-green-600 cursor-pointer rounded focus:ring-green-500 dark:focus:ring-green-600 text-green-500 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600
+	@apply w-4 h-4 cursor-pointer rounded focus:ring-green-500 dark:focus:ring-green-600 text-green-500 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600
 }
 .peer:checked  {
 	@apply bg-slate-600

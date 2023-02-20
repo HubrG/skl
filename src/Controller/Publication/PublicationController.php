@@ -13,6 +13,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mime\MimeTypesInterface;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
 use App\Repository\PublicationKeywordRepository;
@@ -309,7 +311,7 @@ class PublicationController extends AbstractController
         return $this->redirectToRoute("app_user_show_publications");
     }
     #[Route('/story/autosave', name: 'app_publication_autosave', methods: "POST")]
-    public function Axios_AutoSave(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, PublicationCategoryRepository $catRepo, PublicationRepository $pRepo): response
+    public function Axios_AutoSave(Request $request, MimeTypesInterface $mimeTypes, EntityManagerInterface $em, SluggerInterface $slugger, PublicationCategoryRepository $catRepo, PublicationRepository $pRepo): response
     {
         $idPub = $request->get("idPub");
         //
@@ -332,6 +334,18 @@ class PublicationController extends AbstractController
                 ->setUpdated(new \DateTime('now'));
 
             // * Traitement de l'image
+            //! Le ficheir est-il une image ?
+            $file = new File($dtCover);
+            $mimeType = $mimeTypes->guessMimeType($file->getPathname());
+            $isImage = strpos($mimeType, 'image/') === 0;
+            if (!$isImage) {
+                // Fichier n'est une image
+                return $this->json([
+                    "code" => 500,
+                    "value" => "Le fichier que vous avez envoyé n'est pas une image."
+                ]);
+            }
+            //
             if ($dtCover) {
                 $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $idPub;
                 $newFilename = $pub->getId() . rand(0, 9999) . '.img';

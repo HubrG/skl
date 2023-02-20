@@ -29,13 +29,13 @@ export function addKeyword() {
             document.getElementById("keyList").appendChild(newKey);
             document.getElementById("keyw_" + result.toUpperCase()).innerHTML =
               result +
-              " &nbsp;<a href='/story/" +
+              ' &nbsp;<a href="/story/' +
               page +
               "/del_key/" +
               inputPost.value +
               "/" +
               result +
-              "'><i class='fa-solid fa-delete-left hover:text-red-400'></i></a>";
+              '"><span class="material-symbols-outlined hover:text-red-400">backspace</span></a>';
             inputKey.value = "";
           });
         } else {

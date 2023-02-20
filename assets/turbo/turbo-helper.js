@@ -8,6 +8,7 @@ import { Sortables } from "../scripts/Publication/Sortable";
 import { LazyLoad } from "../scripts/LazyLoad";
 import { TippyC } from "../scripts/Tippy";
 import { PublicationShow } from "../scripts/Publication/PublicationShow";
+import { User } from "../scripts/User/User";
 import {
   ShowChapter,
   toggleDrawer,
@@ -41,6 +42,7 @@ const TurboHelper = class {
       targetQuote();
       TippyC();
       DropdownMenu();
+      User();
       if (document.location.href.includes("#first")) {
         document.getElementById("itemsChap2").classList.add("animate__swing");
         setTimeout(() => {
@@ -57,6 +59,8 @@ const TurboHelper = class {
       LazyLoad();
       TippyC();
       DropdownMenu();
+      User();
+
       document
         .getElementById("mega-menu-icons-dropdown")
         .classList.add("hidden");

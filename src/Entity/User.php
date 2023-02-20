@@ -62,6 +62,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $facebook = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    private ?string $instagram = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $profil_picture = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
@@ -99,6 +102,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationDownload::class, orphanRemoval: true)]
     private Collection $publicationDownloads;
+
 
 
     public function __construct()
@@ -576,6 +580,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $publicationDownload->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getInstagram(): ?string
+    {
+        return $this->instagram;
+    }
+
+    public function setInstagram(string $instagram): self
+    {
+        $this->instagram = $instagram;
 
         return $this;
     }

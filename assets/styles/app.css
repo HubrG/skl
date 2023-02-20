@@ -4,188 +4,233 @@
 @import '~animate.css/animate.css';
 @import "~noty/lib/noty.css";
 @import "~noty/lib/themes/semanticui.css";
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Solitreo&display=swap');
+@import "~Tippy.js/dist/tippy.css";
+@import "~Tippy.js/themes/translucent.css";
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;1,100;1,300;1,400;1,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Solitreo&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+.material-symbols-outlined {
+	@apply align-top text-[1.35em] mt-[0.1rem];
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 200,
+  'GRAD' 0,
+  'opsz' 24
+}
+.material-icons-outlined {
+	@apply align-top text-[1.35em] mt-[0.1rem];
+  font-family: 'Material Icons';
+  font-weight: thin;
+  font-style: normal;
+  display: inline-block;
+  line-height: 1;
+	stroke:black;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
 ::selection{
-  @apply bg-slate-800 text-white;
+	@apply bg-slate-700 text-slate-50 font-light;
 }
 * {
-  @apply font-sans ;
+	@apply font-sans ;
 }
 body {
-  @apply bg-white dark:bg-slate-800 h-screen;
+	@apply bg-white dark:bg-slate-800 h-screen;
 }
 
 body.turbo-loading, body.turbo-loaded {
-  opacity: .1;
+	opacity: .1;
 }
 footer {
-  @apply shadow-2xl  border-slate-600 z-10;
+	@apply shadow-2xl  border-slate-600 z-10;
 }
 nav {
-  @apply  bg-white shadow-sm border-b border-b-slate-300 px-2 md:px-4 py-2.5 dark:bg-slate-900 dark:border-b-slate-700
+	@apply  bg-white shadow-sm border-b border-b-slate-300 px-2 md:px-4 py-2.5 dark:bg-slate-900 dark:border-b-slate-700
 }
 main {
-  transition: all 0.1s ease-out;
+	transition: all 0.1s ease-out;
 
-  @apply  grid grid-rows-none grid-cols-12  items-start mx-auto md:p-10 p-3 pt-14 md:w-9/12 z-50;
+	@apply  grid grid-rows-none grid-cols-12  items-start mx-auto md:p-10 p-3 pt-14 md:w-9/12 z-50;
 }
 #titleChapter {
-  @apply  py-2 col-span-12 rounded items-center -mt-10 ;
+	@apply  py-2 col-span-12 rounded items-center -mt-10 ;
 }
 #titleChapter>h1 {
-  @apply text-left text-2xl font-normal font-serif pt-4 text-slate-900 ;
+	@apply text-left text-2xl font-normal font-serif pt-4 text-slate-900 ;
 }
 #titleChapter h1>a {
-  @apply text-slate-900 hover:underline font-serif text-xl;
+	@apply text-slate-900 hover:underline font-serif text-xl;
 }
 #titleChapter>h2 {
-  @apply text-left font-light text-sm  font-serif -mt-9 ;
+	@apply text-left font-light text-sm  font-serif -mt-9 ;
 }
 #titleChapter>h2>*>a {
-  @apply text-slate-700 hover:underline font-serif ;
+	@apply text-slate-700 hover:underline font-serif ;
 }
 dialog {
-  @apply bg-white bg-opacity-50  backdrop-blur-[0.8px] backdrop-grayscale backdrop-filter backdrop-saturate-200  ;
+	@apply bg-white bg-opacity-90  backdrop-blur-[1px] backdrop-grayscale backdrop-filter backdrop-saturate-200  ;
 }
 .bg-gray-900 { 
-  /* lié au dialogue */
-  @apply bg-opacity-25 
+	/* lié au dialogue */
+	@apply bg-opacity-10 
 }
 h1 {
-    font-weight: normal;
-    @apply  text-4xl text-slate-700 mb-10 dark:text-slate-100 md:text-5xl;
+		font-weight: normal;
+		@apply  text-4xl text-slate-700 mb-10 dark:text-slate-100 md:text-5xl;
 }
 
 #logo {
-  font-family: 'Merriweather';
-  @apply font-light text-slate-700 dark:text-white flex
+	font-family: 'Merriweather';
+	@apply font-light text-slate-700 dark:text-white flex
 }
 #logo span {
-  @apply font-[Solitreo] text-5xl -mt-[0.55rem] ml-1 block text-slate-700;
+	@apply font-[Solitreo] text-5xl -mt-[0.55rem] ml-1 block text-slate-700;
 }
 .alert, .alert-danger {
-  @apply text-rose-500 text-sm -mt-2 mb-2;
+	@apply text-rose-500 text-sm -mt-2 mb-2;
 }
 #keyList div {
-  @apply bg-slate-700 mr-3 text-white h-auto text-sm font-medium w-auto items-center p-2 rounded dark:bg-gray-700 dark:text-gray-300;
+	@apply bg-slate-700 mr-3 text-white h-auto text-sm font-medium w-auto items-center p-2 rounded dark:bg-gray-700 dark:text-gray-300;
 }
 #keyList {
-  @apply flex flex-wrap ;
+	@apply flex flex-wrap ;
 }
 #keyList a {
-  @apply text-red-300;
+	@apply text-red-300;
 }
 form label.required:after {
-    content: " *";
-    @apply text-pink-500
+		content: " *";
+		@apply text-pink-500
 }
 form label+ul>li, .form-error {
-    @apply text-rose-500 text-sm -mt-2 mb-2;
+		@apply text-rose-500 text-sm -mt-2 mb-2;
 }
 form div {
-    @apply mb-6;
+		@apply mb-6;
 }
 form hr {
-  @apply h-px my-8 bg-gray-200 border-0 dark:bg-gray-700
+	@apply h-px my-8 bg-gray-200 border-0 dark:bg-gray-700
 }
 form label {
-    @apply block mb-2 text-sm font-medium text-slate-800 dark:text-white  text-base;
+		@apply block mb-2 text-sm font-medium text-slate-800 dark:text-white  text-base;
 }
 form input[type=checkbox] {
-  @apply w-4 h-4 text-green-600 cursor-pointer rounded focus:ring-green-500 dark:focus:ring-green-600 text-green-500 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600
+	@apply w-4 h-4 text-green-600 cursor-pointer rounded focus:ring-green-500 dark:focus:ring-green-600 text-green-500 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600
 }
 .peer:checked  {
-  @apply bg-slate-600
+	@apply bg-slate-600
 }
 form input[type=text],input[type=email],input[type=password], .input    {
-    @apply mt-5  z-0    text-base h-14    block w-full pl-10 p-2.5 bg-white rounded-lg border border-gray-400  focus:outline-none focus:border-blue-500  ;
+		@apply mt-5  z-0    text-base h-14    block w-full pl-10 p-2.5 bg-white rounded-lg border border-gray-400  focus:outline-none focus:border-blue-500  ;
 }
 form textarea {
-  @apply mt-5  rounded-md   z-0 text-justify    border border-gray-400   text-slate-500  focus:outline-none focus:border-blue-500  text-base   block w-full p-2.5 pb-5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:text-slate-300;
+	@apply mt-5  rounded-md   z-0 text-justify    border border-gray-400   focus:outline-none focus:border-blue-500  text-base   block w-full p-2.5 pb-5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:text-slate-300;
 }
 form select, .select {
-  @apply mt-5  rounded-md   z-0 text-justify    border border-gray-400   text-slate-500   text-base h-14 focus:ring-0  focus:border-slate-300 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-slate-300 ;
+	@apply mt-5  rounded-md   z-0 text-justify    border border-gray-400    text-base h-14 focus:border-blue-500   block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-slate-300 ;
 }
 form input.icon-desc {
-    @apply rounded-none rounded-r-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
+		@apply rounded-none rounded-r-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
 }
 span.form-icon {
-    @apply inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600;
+		@apply inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600;
 }
 /* form button[type=submit], .button {
-  @apply bg-slate-500 hover:bg-slate-400 text-white font-bold py-2 px-4 border-b-4 border-slate-700 hover:border-slate-500 rounded ;
+	@apply bg-slate-500 hover:bg-slate-400 text-white font-bold py-2 px-4 border-b-4 border-slate-700 hover:border-slate-500 rounded ;
 } */
 
 form button:disabled {
-    background-color: dimgrey;
-    color: linen;
-    opacity: 1;
+		background-color: dimgrey;
+		color: linen;
+		opacity: 1;
 }
 /* ! QuillJS */
 #editor {
-  @apply mt-5 bg-white rounded-md   z-0 text-justify    border-0  border-b-[4px]  border-b-slate-300 max-h-[80vh] h-4/6  text-slate-500 focus:ring-0   text-base    focus:border-slate-300 block w-full p-2.5 pb-5  dark:bg-slate-700 dark:border-gray-600 dark:placeholder-gray-400  dark:text-slate-50;
+	@apply     z-0  border-0  border-b-[2px]  border-b-slate-300 max-h-[80vh] h-4/6  text-slate-500 focus:ring-0   text-base    focus:border-slate-300 block w-full pt-3  dark:bg-slate-700 dark:border-gray-600 dark:placeholder-gray-400  dark:text-slate-50;
 }
 #editor p {
-  font-family: "merriweather", serif;
-  @apply text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 ;
+	@apply text-lg mb-2 indent-2 leading-6 text-slate-800 dark:text-slate-300 font-serif;
 }
 #editor img {
-  @apply max-w-[20%] float-left;
+	@apply max-w-[20%] float-left;
 }
 .ql-editor.ql-blank::before {
-  font-family: "merriweather", serif;
-  content: attr(data-placeholder);
-  font-style: italic;
-  left: 50px;
-  margin-top:2px;
-  margin-left:17px;
-  pointer-events: none;
-  position: absolute;
-  right: 30px;
+	@apply font-serif;
+	content: attr(data-placeholder);
+	font-style: italic;
+	left: 50px;
+	margin-top:2px;
+	margin-left:17px;
+	pointer-events: none;
+	position: absolute;
+	right: 30px;
+}
+.ql-bubble * {
+	@apply font-serif;
+}
+.ql-editor {
+	margin-top:-0.7rem;
+	@apply font-serif;
 }
 .help-text {
-    margin: -20px 0 10px 0;
-    @apply text-xs text-gray-500 italic;
+		margin: -20px 0 10px 0;
+		@apply text-xs text-gray-500 italic;
 }
 @layer utilities {
-    .text-shadow {
-      text-shadow: 0 1px 2px white;
-    }
-  
-    .text-shadow-md {
-        text-shadow: 0 1px 2px white;
-    }
-  
-    .text-shadow-lg {
-        text-shadow: 0 1px 2px white;
-    }
-  
-    .text-shadow-none {
-      text-shadow: none;
-    }
-  }
+		.text-shadow {
+			text-shadow: 0 1px 2px white;
+		}
+	
+		.text-shadow-md {
+				text-shadow: 0 1px 2px white;
+		}
+	
+		.text-shadow-lg {
+				text-shadow: 0 1px 2px white;
+		}
+	
+		.text-shadow-none {
+			text-shadow: none;
+		}
+	}
 .noty_close_button {
-  @apply bg-transparent text-white rounded-full
+	@apply bg-transparent text-white rounded-full
 }
 
 .noty_theme__semanticui.noty_type__success {
-  @apply bg-green-200 text-green-600 shadow-lg text-sm rounded-lg flex font-normal h-auto text-center justify-center items-center;
+	@apply bg-green-200 text-green-600 shadow-lg text-sm rounded-lg flex font-normal h-auto text-center justify-center items-center;
 }
 .noty_theme__semanticui.noty_type__error {
-  @apply bg-red-200 text-red-600 shadow-lg text-sm rounded-lg flex font-normal text-center h-auto justify-center items-center;
+	@apply bg-red-200 text-red-600 shadow-lg text-sm rounded-lg flex font-normal text-center h-auto justify-center items-center;
 }
 .noty_theme__semanticui.noty_type__info,
 .noty_theme__semanticui.noty_type__information {
-  @apply bg-slate-200 text-slate-700 shadow-lg text-sm rounded-lg flex font-normal text-center h-auto justify-center items-center;
+	@apply bg-slate-200 text-slate-700 shadow-lg text-sm rounded-lg flex font-normal text-center h-auto justify-center items-center;
 
 }  
 .noty_theme__semanticui.noty_bar {
-    font-family: "Noto Sans JP";
-      @apply rounded-lg mb-3
-     
-  }
+		font-family: "Noto Sans JP";
+			@apply rounded-lg mb-3
+		 
+	}
 *, ::before, ::after {
-    @apply border-b-slate-500;
+		@apply border-b-slate-500;
 }
 .ghost {
 opacity: 0.4;
@@ -193,19 +238,19 @@ opacity: 0.4;
 /* ! Components */
 /* * Badges */
 .badge {
-  @apply text-[0.65rem] font-medium mr-2 px-2.5 py-0.5 rounded-full ring-1;
+	@apply text-[0.65rem] font-medium mr-2 px-2.5 py-0.5 rounded-full ring-1;
 }
 .badge-published {
-  @apply ring-emerald-500 bg-emerald-50 text-emerald-500 dark:text-emerald-300 dark:bg-emerald-900
+	@apply ring-emerald-500 bg-emerald-50 text-emerald-500 dark:text-emerald-300 dark:bg-emerald-600
 }
 .badge-unpublished {
-  @apply ring-red-500 bg-red-50 text-red-500 dark:text-red-300 dark:bg-red-900;
+	@apply ring-red-500 bg-red-50 text-red-500 dark:text-red-300 dark:bg-red-600;
 }
 #chapContent img {
-  @apply max-w-[20%] float-left;
+	@apply max-w-[20%] float-left;
 }
 #chapContent {
-  @apply text-base text-slate-800 dark:text-slate-300 font-serif ;
+	@apply text-base text-slate-800 dark:text-slate-300 font-serif ;
 }
 #chapContent h1 {
  @apply text-2xl
@@ -226,163 +271,231 @@ opacity: 0.4;
  @apply text-xs
 }
 #chapContent p {
-  @apply text-lg mb-2 indent-2 leading-6 text-slate-800 dark:text-slate-300 font-serif;
+	@apply text-lg mb-2 indent-2 leading-6 text-slate-800 dark:text-slate-300 font-serif;
 }
 #chapContent em {
-  @apply font-serif;
+	@apply font-serif;
 }
 #chapContent ul {
-  @apply list-disc list-inside text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
+	@apply list-disc list-inside text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
 }
 #chapContent ol {
-  @apply list-decimal list-inside text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
+	@apply list-decimal list-inside text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
 }
 #chapContent blockquote {
-  @apply text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
+	@apply text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
 }
 #chapContent pre {
-  @apply text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
+	@apply text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
 }
 #chapContent code {
-  @apply text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
+	@apply text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
 }
 .ql-align-center {
-  @apply text-center items-center;
+	@apply text-center items-center font-serif;
 }
 .ql-align-right {
-  @apply text-right items-end;
+	@apply text-right items-end font-serif;
 }
 .ql-align-left {
-  @apply text-left items-start;
+	@apply text-left items-start font-serif;
 }
 .ql-align-justify {
-  @apply text-justify items-start;
+	@apply text-justify items-start font-serif;
 }
 .highlighted {
-  @apply  font-serif cursor-pointer;
+	@apply  font-serif cursor-pointer;
 }
 #chapContent .hl-1 {
-  @apply bg-emerald-100 hover:bg-emerald-200 dark:bg-emerald-800 text-emerald-900 ;
+	@apply bg-emerald-100 hover:bg-emerald-200 dark:bg-emerald-800 text-emerald-900 ;
 }
 #chapContent .hl-2 {
-  @apply bg-amber-100 hover:bg-amber-200 dark:bg-amber-800 text-amber-900;
+	@apply bg-amber-100 hover:bg-amber-200 dark:bg-amber-800 text-amber-900;
 }
 #chapContent .hl-3 {
-  @apply bg-red-100 hover:bg-red-100 dark:bg-red-800 text-red-900;
+	@apply bg-red-100 hover:bg-red-100 dark:bg-red-800 text-red-900;
 }
 #chapContent .hl-4 {
-  @apply bg-blue-100 hover:bg-blue-200 dark:bg-blue-800 text-blue-900;
+	@apply bg-blue-100 hover:bg-blue-200 dark:bg-blue-800 text-blue-900;
 }
 #tools  {
-  @apply absolute p-3 bg-white w-auto -mt-6 rounded-2xl shadow;
+	@apply absolute p-3 bg-white w-auto -mt-6 rounded-2xl shadow;
 }
 #tools ul {
-  @apply flex items-center justify-between;
+	@apply flex items-center justify-between;
 }
 #tools ul>li {
-  @apply mx-[0.3rem] cursor-pointer;
+	@apply mx-[0.3rem] cursor-pointer;
 }
 #highlighted-options {
 @apply absolute p-3  bg-white w-auto -mt-6 rounded-2xl shadow;
 }
 #highlighted-options ul {
-  @apply  items-center flex gap-2 justify-between;
+	@apply  items-center flex gap-2 justify-between;
 }
 #tools li {
-  @apply mx-[0.3rem] block cursor-pointer;
+	@apply mx-[0.3rem] block cursor-pointer;
 }
 #delete-hl {
 @apply rounded-full h-[1.3rem] w-[1.3rem] items-center flex justify-center cursor-pointer bg-opacity-50;
 }
 #delete-hl:hover {
-  @apply  bg-opacity-100;
+	@apply  bg-opacity-100;
 }
 .dropdown {
-  position: relative;
-  display: inline-block;
+	position: relative;
+	display: inline-block;
 }
 
 .dropdown-content {
-  display: none;
-  position: absolute;
-  left: 0;
-  top: 100%;
-  transform: translate(-80%, 0px);
-  z-index: 1;
+	display: none;
+	position: absolute;
+	left: 0;
+	top: 100%;
+	transform: translate(-80%, 0px);
+	z-index: 1;
 }
 .dropdown-chapter-content {
-  display: none;
-  position: absolute;
-  
-  z-index: 1;
+	display: none;
+	position: absolute;
+	
+	z-index: 1;
 }
 .show {
-  display: block;
+	display: block;
 }
 .chapterComment {
-  @apply mt-4 text-gray-700 text-sm;
+	@apply mt-4 text-gray-700 text-sm;
 }
 .chapterCommentEdit {
-  @apply mt-5  z-0 h-28 text-sm    block w-full  p-2.5 bg-white rounded-lg border border-gray-400  focus:outline-none focus:border-blue-500 ;
+	@apply mt-5  z-0 h-28 text-sm    block w-full  p-2.5 bg-white rounded-lg border border-gray-400  focus:outline-none focus:border-blue-500 ;
 }
 .chapterCommentEditValidButton {
-  @apply   z-50 bg-white   mr-1 font-sans  p-1 px-2 mt-1 mb-2 text-center text-sm rounded hover:text-emerald-600 ;
+	@apply   z-50 bg-white   mr-1 font-sans  p-1 px-2 mt-1 mb-2 text-center text-sm rounded hover:text-emerald-600 ;
 }
 .chapterCommentEditCancelButton {
-  @apply  float-right font-sans rounded-full -mt-[6.9rem] mr-[0.2rem]  px-1 text-slate-600  text-center text-xs ;
+	@apply  float-right font-sans rounded-full -mt-[6.9rem] mr-[0.2rem]  px-1 text-slate-600  text-center text-xs ;
+}
+.kwTag {
+	@apply bg-slate-100 text-slate-600 text-sm font-light mr-1 leading-7 mb-2 px-2.5 py-0.5 rounded dark:bg-slate-700 dark:text-slate-400 hover:bg-slate-200;
+}
+.catTag {
+	@apply text-sm mr-1 leading-7 mb-2 px-2.5 py-0.5 rounded dark:bg-slate-700 dark:text-slate-400;
 }
 .catColor-1 {
-  @apply bg-emerald-100 text-emerald-900 hover:bg-emerald-200 font-medium;
+	@apply bg-emerald-100 text-emerald-900 hover:bg-emerald-200;
 }
 .catColor-2 {
-  @apply bg-amber-100 text-amber-900  hover:bg-amber-200 font-medium;
+	@apply bg-amber-100 text-amber-900  hover:bg-amber-200;
 }
 .catColor-3 {
-  @apply bg-red-100 text-red-900 hover:bg-red-200 font-medium;
+	@apply bg-red-100 text-red-900 hover:bg-red-200;
 }
 .catColor-4 {
-  @apply bg-blue-100 text-blue-900 hover:bg-blue-200 font-medium;
+	@apply bg-blue-100 text-blue-900 hover:bg-blue-200;
 }
 .catColor-5 {
-  @apply bg-purple-100 text-purple-900 hover:bg-purple-200 font-medium;
+	@apply bg-purple-100 text-purple-900 hover:bg-purple-200;
 }
 .catColor-6 {
-  @apply bg-pink-100 text-pink-900 hover:bg-pink-200 font-medium;
+	@apply bg-pink-100 text-pink-900 hover:bg-pink-200;
 }
 .catColor-7 {
-  @apply bg-indigo-100 text-indigo-900 hover:bg-indigo-200 font-medium;
+	@apply bg-indigo-100 text-indigo-900 hover:bg-indigo-200;
 }
 .catColor-8 {
-  @apply bg-teal-100 text-teal-900 hover:bg-teal-200 font-medium;
+	@apply bg-teal-100 text-teal-900 hover:bg-teal-200;
 }
 .catColor-9 {
-  @apply bg-cyan-100 text-cyan-900 hover:bg-cyan-200 font-medium;
+	@apply bg-cyan-100 text-cyan-900 hover:bg-cyan-200;
 }
 .catColor-10 {
-  @apply bg-gray-100 text-gray-900 hover:bg-gray-200 font-medium;
+	@apply bg-gray-100 text-gray-900 hover:bg-gray-200;
 }
 .catColor-11 {
-  @apply bg-slate-100 text-slate-900 hover:bg-slate-200 font-medium;
+	@apply bg-slate-100 text-slate-900 hover:bg-slate-200;
 }
 .catColor-12 {
-  @apply bg-green-100 text-green-900 hover:bg-green-200 font-medium;
+	@apply bg-green-100 text-green-900 hover:bg-green-200;
 }
 .catColor-13 {
-  @apply bg-orange-100 text-orange-900 hover:bg-orange-200 font-medium;
+	@apply bg-orange-100 text-orange-900 hover:bg-orange-200;
 }
 .catColor-14 {
-  @apply bg-lime-100 text-lime-900 hover:bg-lime-200 font-medium;
+	@apply bg-lime-100 text-lime-900 hover:bg-lime-200;
 }
 .catColor-15 {
-  @apply bg-yellow-100 text-yellow-900 hover:bg-yellow-200 font-medium;
+	@apply bg-yellow-100 text-yellow-900 hover:bg-yellow-200;
 }
 .catColor-16 {
-  @apply bg-fuchsia-100 text-fuchsia-900 hover:bg-fuchsia-200 font-medium;
+	@apply bg-fuchsia-100 text-fuchsia-900 hover:bg-fuchsia-200;
 }
 .catColor-17 {
-  @apply bg-violet-100 text-violet-900 hover:bg-violet-200 font-medium;
+	@apply bg-violet-100 text-violet-900 hover:bg-violet-200;
 }
 .catColor-18 {
-  @apply bg-rose-100 text-rose-900 hover:bg-rose-200 font-medium;
+	@apply bg-rose-100 text-rose-900 hover:bg-rose-200;
 }
-
+.button-classic {
+@apply  rounded ring-1 text-sm  border-b-2 px-3 py-3 	 hover:grayscale-[90%] active:border-b active:py-[0.78rem] font-normal;
+}
+.button-violet {
+	@apply   bg-violet-50 text-violet-900 ring-violet-600 border-violet-600;
+}
+.button-rose {
+	@apply   bg-rose-50 text-rose-900 ring-rose-600 border-rose-600;
+}
+.button-fuchsia {
+	@apply   bg-fuchsia-50 text-fuchsia-900 ring-fuchsia-600 border-fuchsia-600;
+}
+.button-yellow {
+	@apply   bg-yellow-50 text-yellow-900 ring-yellow-600 border-yellow-600;
+}
+.button-lime {
+	@apply   bg-lime-50 text-lime-900 ring-lime-600 border-lime-600;
+}
+.button-orange {
+	@apply   bg-orange-50 text-orange-900 ring-orange-600 border-orange-600;
+}
+.button-green {
+	@apply   bg-green-50 text-green-900 ring-green-600 border-green-600;
+}
+.button-slate {
+	@apply   bg-slate-50 text-slate-900 ring-slate-600 border-slate-600;
+}
+.button-gray {
+	@apply   bg-gray-50 text-gray-900 ring-gray-600 border-gray-600;
+}
+.button-cyan {
+	@apply   bg-cyan-50 text-cyan-900 ring-cyan-600 border-cyan-600;
+}
+.button-teal {
+	@apply   bg-teal-50 text-teal-900 ring-teal-600 border-teal-600;
+}
+.button-indigo {
+	@apply   bg-indigo-50 text-indigo-900 ring-indigo-600 border-indigo-600;
+}
+.button-pink {
+	@apply   bg-pink-50 text-pink-900 ring-pink-600 border-pink-600;
+}
+.button-purple {
+	@apply   bg-purple-50 text-purple-900 ring-purple-600 border-purple-600;
+}
+.button-blue {
+	@apply   bg-blue-50 text-blue-900 ring-blue-600 border-blue-600;
+}
+.button-red {
+	@apply   bg-red-50 text-red-900 ring-red-600 border-red-600;
+}
+.button-amber {
+	@apply   bg-amber-50 text-amber-900 ring-amber-600 border-amber-600;
+}
+.button-emerald {
+	@apply   bg-emerald-50 text-emerald-900 ring-emerald-600 border-emerald-600;
+}
+.button-sky {
+	@apply   bg-sky-50 text-sky-900 ring-sky-600 border-sky-600;
+}
+.tippy-box {
+	@apply bg-slate-800 text-center py-1 px-1 w-full text-sm;
+}

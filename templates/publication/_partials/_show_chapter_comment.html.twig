@@ -3,76 +3,89 @@
 		<i class="fa-regular fa-comments"></i>
 		&nbsp;
 		{% set nbComment = infoChap.publicationChapterComments|length %}
-		{% if nbComment == 0 %}Aucun commentaire
+		{% if nbComment == 0 %}
+			Aucun commentaire
 			<span id="nbrCom" class="hidden">{{ nbComment }}</span>
 		{% else %}
 			<span id="nbrCom">{{ nbComment }}</span>
-			{{ (nbComment > 1) ? 'commentaires' : 'commentaire' }}
+			{% if nbComment > 1 %}
+				commentaires
+			{% else %}
+				commentaire
+			{% endif %}
 		{% endif %}
 		<br/><br/>
 	</p>
 	{% set n = 0 %}
-	{% if app.user.id is defined %}
-		{% set userLogId = app.user.id %}
-	{% else %}
-		{% set userLogId = null %}
-	{% endif %}
+	{% set userLogId = app.user.id is defined ? app.user.id : null %}
 	{% for item in comments|sort((a, b) => a.publishDate > b.publishDate ? -1 : 1) %}
-		{% if app.user.id is defined %}
-			{% if item.user.id == app.user.id  %}
+		{% set class = "fa-regular fa-heart" %}
+		{% if userLogId is not null %}
+			{% if item.user.id == userLogId %}
 				{% set class = "fa-solid fa-heart grayscale cursor-not-allowed text-slate-300 " %}
 			{% else %}
-				{% set class = "fa-regular fa-heart likeButton cursor-pointer " %}
-			{% endif %}
-			{% for itemLike in item.publicationChapterCommentLikes %}
-				{% if itemLike.user.id == app.user.id %}
-					{% set class = "fa-solid fa-heart text-red-500 cursor-pointer likeButton " %}
-				{% else %}
-					{% set class = "fa-solid fa-heart" %}
+				{% for itemLike in item.publicationChapterCommentLikes %}
+					{% if itemLike.user.id == app.user.id %}
+						{% set class = "fa-solid fa-heart text-red-500 cursor-pointer likeButton " %}
+						{% set liked = true %}
+						{% set break = "" %}
+					{% endif %}
+				{% endfor %}
+				{% if not liked %}
+					{% set class = "fa-regular fa-heart likeButton cursor-pointer " %}
 				{% endif %}
-			{% endfor %}
+				{% if class == "fa-regular fa-heart" %}
+					{% set class = "fa-regular fa-heart likeButton cursor-pointer " %}
+				{% endif %}
+			{% endif %}
 		{% else %}
 			{% set class = "fa-regular fa-heart cursor-default text-slate-400" %}
 		{% endif %}
-		<div {% if n == 0 and userLogId == item.user.id and item.publishDate > "now"|date_modify("-2 seconds") %} id="lastComment" class="mb-3  animate__animated animate__fadeIn transition-colors duration-[1000ms] p-6  shadow-sm relative" {% else %} class="bg-white p-6  mb-3  shadow-sm relative" {% endif %}>
+		{% set lastComment = n == 0 and userLogId == item.user.id and item.publishDate > "now"|date_modify("-2 seconds") %}
+		<div class="{{ lastComment ? 'mb-3 animate__animated animate__fadeIn transition-colors duration-[1000ms] p-6 shadow-sm relative' : 'bg-white p-6 mb-3 shadow-sm relative' }}" {% if lastComment %} id="lastComment" {% endif %}>
 			<div class="flex items-start">
-				{% set profilPic = asset('images/uploads/profil_pictures/' ~ item.user.id ~ '/' ~ item.user.profilPicture) %}
-				<img class="w-12 h-12 rounded-full mr-4" {% if item.user.profilPicture and profilPic|exists %} src="{{ profilPic }}" {% else %} src="https://picsum.photos/200/300" {% endif %} alt="avatar">
+				{% set profilPic = item.user.profilPicture is defined and asset('images/uploads/profil_pictures/' ~ item.user.id ~ '/' ~ item.user.profilPicture)|exists ? asset('images/uploads/profil_pictures/' ~ item.user.id ~ '/' ~ item.user.profilPicture) : 'https://picsum.photos/200/300' %}
+				<img class="w-12 h-12 rounded-full mr-4" src="{{ profilPic }}" alt="avatar">
 				<div class="flex-1">
 					<h4 class="font-medium text-sm">
 						<a href="{{ path("app_user", {username:item.user.username}) }}">{{ item.user.nickname }}</a>
 					</h4>
 					<p class="text-gray-600 text-xs">{{ item.publishDate|since }}</p>
 				</div>
-				<div class="dropdown  dropdown-button ">
-					<button class="text-gray-600 hover:text-gray-900 dropdown-button focus:outline-none focus:text-gray-900  ">
-						<svg class="w-6 h-6 dropdown-button" fill="currentColor" viewbox="0 0 20 20" id="ddb-{{ item.id }}">
-							<path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-						</svg>
-					</button>
-					<div id="ddm-{{ item.id }}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dropdown-content">
-						<ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
-							{% if item.user.id == userLogId %}
-								<li>
-									<button type="button" id="updateButton-{{ item.id }}" class="updateButton w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-										<i class="fa-regular fa-pen-to-square"></i>
-										&nbsp;Modifier</button>
-								</li>
-								<li>
-									<a id="delComment" data-turbo-frame="_self" href="{{ path("app_chapter_del_comment", {id:item.id}) }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-										<i class="fa-regular fa-trash-can"></i>
-										&nbsp;Supprimer</a>
-								</li>
-							{% else %}
-								<li>
-									<a data-turbo-frame="_self" href="{{ path("app_chapter_del_comment", {id:item.id}) }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-										<i class="fa-solid fa-circle-exclamation"></i>
-										&nbsp;Signaler un abus</a>
-								</li>
-							{% endif %}
-						</ul>
+				{% if userLogId is not null %}
+					<div class="dropdown dropdown-button">
+						<button class="text-gray-600 hover:text-gray-900 dropdown-button focus:outline-none focus:text-gray-900">
+							<svg class="w-6 h-6 dropdown-button" fill="currentColor" viewbox="0 0 20 20" id="ddb-{{ item.id }}">
+								<path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+							</svg>
+						</button>
+						<div id="ddm-{{ item.id }}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dropdown-content">
+							<ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+								{% if item.user.id == userLogId %}
+									<li>
+										<button type="button" id="updateButton-{{ item.id }}" class="updateButton w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+											<i class="fa-regular fa-pen-to-square"></i>
+											&nbsp;Modifier
+										</button>
+									</li>
+									<li>
+										<a id="delComment" data-turbo-frame="_self" href="{{ path("app_chapter_del_comment", {id:item.id}) }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+											<i class="fa-regular fa-trash-can"></i>
+											&nbsp;Supprimer
+										</a>
+									</li>
+								{% else %}
+									<li>
+										<a data-turbo-frame="_self" href="{{ path("app_chapter_del_comment", {id:item.id}) }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+											<i class="fa-solid fa-circle-exclamation"></i>
+											&nbsp;Signaler un abus
+										</a>
+									</li>
+								{% endif %}
+							</ul>
+						</div>
 					</div>
-				</div>
+				{% endif %}
 			</div>
 			<div id="updateCom-{{ item.id }}">
 				<p id="comShow-{{ item.id }}" class="chapterComment">
@@ -81,13 +94,11 @@
 			</div>
 			{% if item.quote %}
 				<blockquote class="mt-4 border-l-4 border-emerald-200 pl-4 italic text-slate-500">
-					<p class="font-serif  quoteComment cursor-alias  text-[0.85rem]">{{ item.quote }}</p>
+					<p class="font-serif quoteComment cursor-alias text-[0.85rem]">{{ item.quote }}</p>
 				</blockquote>
 			{% endif %}
 			<div class="mt-4 flex items-center justify-end">
-
 				<i class="{{ class }} animate__animated" id="likeButton-{{ item.id }}"></i>
-
 				<span class="ml-2 font-medium text-gray-600">
 					<span id="nbLikes-{{ item.id }}">{{ item.publicationChapterCommentLikes|length }}</span>
 				</span>

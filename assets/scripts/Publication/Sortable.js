@@ -16,7 +16,16 @@ export function Sortables() {
       ghostClass: "ghost",
       onEnd: function (/**Event*/ evt) {
         var itemEl = evt.item; // dragged HTMLElement
+        var origEl = evt.item;
+        var cloneEl = evt.clone;
         axiosGoSortable();
+      },
+      onChange: function (/**Event*/ evt) {
+        evt.newIndex; // most likely why this event is used is to get the dragging element's current index
+        if (document.getElementById("noPublication")) {
+          document.getElementById("noPublication").remove();
+        }
+        // same properties as onEnd
       },
     });
     // List with handle

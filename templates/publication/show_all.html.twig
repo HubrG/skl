@@ -1,38 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% if category.slug is defined %}
-	{% set slugCat = category.slug %}
-	{% set slugCatName = category.name %}
-{% else %}
-	{% set slugCat = "all" %}
-	{% set slugCatName = "Tous les récits" %}
-{% endif %}
+{% set slugCat = category.slug|default('all') %}
+{% set slugCatName = category.name|default('Tous les récits') %}
 {% set route_params = app.request.attributes.get('_route_params') %}
-{% if route_params.slug %}
-	{% set querySlug = route_params.slug %}
-{% else %}
-	{% set querySlug = "all" %}
-{% endif %}
-{% if route_params.page %}
-	{% set queryPage = route_params.page %}
-{% else %}
-	{% set queryPage = 1 %}
-{% endif %}
-{% if route_params.order %}
-	{% set queryOrder = route_params.order %}
-{% else %}
-	{% set queryOrder = "desc" %}
-{% endif %}
-{% if route_params.keystring %}
-	{% set queryKeystring = route_params.keystring %}
-{% else %}
-	{% set queryKeystring = null %}
-{% endif %}
-{% if route_params.sortby %}
-	{% set querySortby = route_params.sortby %}
-{% else %}
-	{% set querySortby = "pop" %}
-{% endif %}
+{% set querySlug = route_params.slug|default('all') %}
+{% set queryPage = route_params.page|default(1) %}
+{% set queryOrder = route_params.order|default('desc') %}
+{% set queryKeystring = route_params.keystring %}
+{% set querySortby = route_params.sortby|default('pop') %}
 {% block title %}Récits |
 	{{ slugCatName }}
 	—
@@ -45,70 +20,73 @@
 	{# ! Séparateur de mots clés dans l'URL & page #}
 	{% set separator = "—" %}
 	{% set separator_d = "——" %}
-	{% set pageAct = app.request.get('_route_params')['page'] %}
+	{% set pageAct = app.request.get('_route_params')['page'] is defined ? app.request.get('_route_params')['page'] : null %}
 	{% set random = random(0,999) %}
-	<turbo-frame id="pagination-{{random}}" class="grid grid-cols-2 grid-rows-auto gap-4 col-span-full gap-x-10 container -mt-12 xl:-mt-20 ">
+	<turbo-frame id="pagination-{{random}}" class="grid grid-cols-2 grid-rows-auto gap-4 col-span-full xl:gap-x-10 container -mt-12 xl:-mt-20 ">
 		{% if pubShowKw %}
-			<aside class="items-center justify-items-between content-center row-span-12 col-span-12 xl:col-span-5 xl:row-span-5 mb-5 xl:mb-0 order-2 xl:order-1 snap-y  grayscale">
-				<hr class="xl:hidden my-5"/>
+			<aside class="items-center justify-items-between content-center row-span-12 -mt-5 col-span-12 xl:col-span-5 xl:row-span-5 mb-5  xl:mb-0 order-2 xl:order-1 snap-y  grayscale">
+				<hr class="xl:hidden mb-5"/>
 				<h2 class="xl:hidden text-center font-bold my-5">Mot-clés</h2>
 				{% include "publication/_partials/_show_all_keywords.html.twig"  %}
 			</aside>
 		{% endif %}
 		{# ! Affichage des récits #}
-		<section class="row-span-12 col-span-12 xl:col-span-7 xl:row-span-7{% if pubShowKw %} {% else %}col-start-0 xl:col-start-4 {% endif %}  order-1 xl:order-2 justify-between -mt-5 grayscale-[2px]" style="--animate-duration: 1s;">
-			<div class="flex mb-10 justify-around ">
-				<h4 class="w-4/6 mb-5  pl-5 font-light text-lg text-slate-500">
-					{% if count == 0 %}Aucun récit.
-						<a href="{{path("app_publication_add")}}" class="text-blue-500">N'hésitez pas à publier le vôtre !</a>
-						{% elseif count == 1 %}1 récit
-					{% else %}
-						{{ count }}
-						récits
+		<section class="row-span-12 col-span-12 xl:col-span-7 xl:row-span-7{% if pubShowKw %} {% else %}col-start-0 xl:col-start-4 {% endif %}  order-1 xl:order-2 justify-around -mt-5 grayscale-[2px]" style="--animate-duration: 1s;">
+			<div class="flex mb-10 justify-between">
+				<h4 class="w-2/6 mb-5 ml-2  font-light text-lg text-slate-500">
+					{% set recount = count == 1 ? "1 récit" : count ~ " récits" %}
+					{{ recount | default('Aucun récit.') }}
+					{% if count == 0 %}
+						<a href="{{ path("app_publication_add") }}" class="text-blue-500">N'hésitez pas à publier le vôtre !</a>
 					{% endif %}
 				</h4>
-				<div class="-mt-3 w-5/6 xl:w-auto">
-					<button id="sortButton" data-dropdown-toggle="sortHover" data-dropdown-trigger="hover" class="text-slate-500 ring-1  grayscale ring-slate-300 bg-none hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-						{% if querySortby == 'pop' and orderSort == 'desc' %}
-							Les plus populaires d'abord
-						{% elseif querySortby == 'pop' and orderSort == 'asc' %}
-							Les moins populaires d'abord
-						{% elseif querySortby == 'published' and orderSort == 'desc' %}
-							Les nouveautés d'abord
-						{% else %}
-							Les plus anciens d'abord
-						{% endif %}
+				<div class="-mt-3 w-auto xl:w-auto">
+					<button id="sortButton" data-dropdown-toggle="sortHover" class="text-slate-500 ring-1  grayscale ring-slate-300 bg-none hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs lg:text-sm lg:mt-0 mt-2 px-4 py-2.5 text-center inline-flex  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+						{% set sortText = 
+						querySortby == 'pop' and orderSort == 'desc' ? "Les plus populaires d'abord" :
+						querySortby == 'pop' and orderSort == 'asc' ? "Les moins populaires d'abord" :
+						querySortby == 'published' and orderSort == 'desc' ? "Les nouveautés d'abord" :
+						"Les plus anciens d'abord" %}
+						{{ sortText }}
 						<svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
 						</svg>
 					</button>
 					<!-- Dropdown menu -->
 					<div id="sortHover" class="z-10 hidden bg-white divide-y divide-slate-100 rounded-lg shadow w-auto dark:bg-slate-700  grayscale">
+						{% set options = [
+							{
+								'text': 'Les plus populaires d\'abord',
+								'order': 'desc',
+								'sortby': 'pop',
+								'class': 'rounded-t-lg'
+							},
+							{
+								'text': 'Les moins populaires d\'abord',
+								'order': 'asc',
+								'sortby': 'pop',
+								'class': ''
+							},
+							{
+								'text': 'Les nouveautés d\'abord',
+								'order': 'desc',
+								'sortby': 'published',
+								'class': ''
+							},
+							{
+								'text': 'Les plus anciens d\'abord',
+								'order': 'asc',
+								'sortby': 'published',
+								'class': 'rounded-b-lg'
+							}
+						] %}
 						<ul class="text-sm  text-slate-700 dark:text-slate-200" aria-labelledby="sortButton">
-							<li class="py-2 rounded-t-lg {% if querySortby == 'pop' and orderSort == 'desc' %} bg-slate-100 hover:bg-slate-100{% else %} hover:bg-slate-200{% endif %} ">
-								<a href="{{ path("app_publication_show_all_category", {slug:slugCat, keystring:queryKeystring, page:page, order:"desc", sortby:"pop"}) }}" data-turbo-frame="_self" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Les
-									<strong>plus populaires</strong>
-									d'abord
-								</a>
-							</li>
-							<li class="py-2 {% if querySortby == 'pop' and orderSort == 'asc' %} bg-slate-100 hover:bg-slate-100{% else %} hover:bg-slate-200{% endif %}">
-								<a href="{{ path("app_publication_show_all_category", {slug:slugCat, keystring:queryKeystring, page:page, order:"asc", sortby:"pop"}) }}" data-turbo-frame="_self" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Les
-									<strong>moins populaires</strong>
-									d'abord
-								</a>
-							</li>
-							<li class="py-2 {% if orderSort == 'desc'  and querySortby == 'published'  %}bg-slate-100 hover:bg-slate-100 {% else %}hover:bg-slate-200 {% endif %}">
-								<a href="{{ path("app_publication_show_all_category", {slug:slugCat,sortby:"published", keystring:kwString, page:page, order:"desc"}) }}" data-turbo-frame="_self" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Les
-									<strong>nouveautés</strong>
-									d'abord
-								</a>
-							</li>
-							<li class="py-2 rounded-b-lg {% if orderSort == 'asc' and querySortby == 'published' %} bg-slate-100 hover:bg-slate-100{% else %} hover:bg-slate-200{% endif %}">
-								<a href="{{ path("app_publication_show_all_category", {slug:slugCat,sortby:"published", keystring:kwString, page:page, order:"asc"}) }}" data-turbo-frame="_self" class="block px-4 py-2 hover:text-slate-700  dark:hover:bg-slate-600 dark:hover:text-white">Les plus
-									<strong>anciens</strong>
-									d'abord
-								</a>
-							</li>
+							{% for option in options %}
+								{% set activeClass = option.order == orderSort and option.sortby == querySortby ? 'bg-slate-100 hover:bg-slate-100' : 'hover:bg-slate-200' %}
+								<li class="py-2 {{ option.class }} {{ activeClass }}">
+									<a href="{{ path("app_publication_show_all_category", {slug: slugCat, keystring: queryKeystring, page: page, order: option.order, sortby: option.sortby}) }}" data-turbo-frame="_self" class="block px-4 py-2 hover:text-slate-700 dark:hover:bg-slate-600 dark:hover:text-white">{{ option.text }}</a>
+								</li>
+							{% endfor %}
 						</ul>
 					</div>
 				</div>
@@ -118,42 +96,53 @@
 					</div>
 				{% endif %}
 			</div>
-			<div class="animate__animated animate__fadeIn grid grid-cols-1 grid-rows-1  gap-4 xl:grid-cols-2" id="PublicationShowContent">
+			<div class="animate__animated animate__fadeIn grid grid-cols-1 grid-rows-1  gap-5 xl:grid-cols-2" id="PublicationShowContent">
 				{% for item in pubShow %}
 					<div class=" rounded-lg dark:border-slate-700 flex row-span-2 transition duration-500  xl:row-span-1 " id="publication-{{item.id}}">
 						<div class="w-2/6  h-auto rounded-lg">
 							<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}">
 								{% set pic = item.cover %}
-								<img class="rounded object-cover w-full lazy animate-pulse animate__animated bg-slate-300 grayscale-[50%]" loading="lazy" src="" data-src="{% if pic %}{{pic}}{% else %}{{ " https://picsum.photos/200/" ~ random(300, 310) }} {% endif %}" alt=""/>
+								<img class="rounded object-cover w-full lazy animate-pulse animate__animated bg-slate-300" loading="lazy" src="" data-src="{% if pic %}{{pic}}{% else %}{{ " https://picsum.photos/200/" ~ random(300, 310) }} {% endif %}" alt=""/>
 							</a>
 						</div>
-						<div class="p-5 -mt-7 w-4/6 place-content-baseline items-baseline">
+						<div class="p-5 -mt-7 w-4/6 relative place-content-baseline items-baseline">
 							<small class="font-light">
 								<a href="{{ path("app_user", {username:item.user.username}) }}" class="hover:underline">{{ item.user.nickname }}</a>
-							</small>&nbsp;<i class="fa-solid fa-info-circle float-right opacity-20  publication-button" data-popover-target="popover-info-{{item.id}}" data-popover-placement="bottom-end" id="info-{{item.id}}"></i>
+							</small>
+							<h5 class="mb-2 text-base text-slate-600 font-medium tracking-tight">
+								<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" class=" text-slate-600  dark:text-white text-base leading-5 font-bold hover:underline">{{ item.title }}</a>
+							</h5>
+							<span class="material-symbols-outlined absolute right-3 top-11 cursor-zoom-in  float-right opacity-40 hover:opacity-80 text-slate-500  publication-button" data-popover-target="popover-info-{{item.id}}" data-popover-trigger="hover" data-popover-placement="bottom-end" id="info-{{item.id}}">
+								info
+							</span>
 							{# popover #}
-							<div data-popover id="popover-info-{{item.id}}" role="tooltip" class="absolute z-10 invisible inline-block text-sm font-light text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 w-72 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400">
+							<div data-popover id="popover-info-{{item.id}}" role="tooltip" class="absolute z-10 invisible  text-sm font-light text-gray-500 transition-opacity duration-300 bg-white  rounded-lg  opacity-0 w-[90%] dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400">
 								{% set pch = item.publicationChapters %}
-								<div class="p-4 space-y-2">
-									<h3 class="font-semibold text-gray-900 dark:text-white text-center">{{ item.title }}</h3>
-									<ul class="opacity-60 flex flex-col  text-sm  py-2 gap-2 ">
+								<div class="pb-10 space-y-2">
+									<ul class="opacity-90 flex flex-col  text-sm  py-2 gap-2 ">
 										<li class="inline-flex items-center justify-between font-normal -mt-px  dark:bg-gray-800  dark:text-white">
 											<span class="font-medium">
-												<i class="fa-solid fa-paperclip"></i>
+												<span class="material-symbols-outlined">
+													format_list_bulleted
+												</span>
 												&nbsp;&nbsp;Nombre de feuilles
 											</span>
 											<span>{{ pch|chapter("nbr", "st") }}</span>
 										</li>
 										<li class="inline-flex items-center justify-between  font-normal -mt-px  dark:bg-gray-800  dark:text-white">
 											<span class="font-medium">
-												<i class="fa-regular fa-clock"></i>
+												<span class="material-symbols-outlined">
+													timer
+												</span>
 												&nbsp;&nbsp;Temps de lecture
 											</span>
 											<span>{{ item.publicationChapters|chapter("rt", "ft") }}</span>
 										</li>
 										<li class="inline-flex items-center justify-between  font-normal -mt-px  dark:bg-gray-800  dark:text-white">
 											<span class="font-medium">
-												<i class="fa-regular fa-eye"></i>
+												<span class="material-symbols-outlined">
+													visibility
+												</span>
 												&nbsp;&nbsp;Nombre de lecteurs
 											</span>
 											{% set totalViews = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterViews|length, 0) %}
@@ -161,7 +150,9 @@
 										</li>
 										<li class="inline-flex items-center justify-between font-normal -mt-px  dark:bg-gray-800  dark:text-white">
 											<span class="font-medium">
-												<i class="fa-regular fa-comments"></i>
+												<span class="material-symbols-outlined">
+													forum
+												</span>
 												&nbsp;Commentaires
 											</span>
 											<span>
@@ -175,7 +166,9 @@
 										</li>
 										<li class="inline-flex items-center justify-between font-normal -mt-px  dark:bg-gray-800  dark:text-white">
 											<span class="font-medium">
-												<i class="fa-regular fa-heart"></i>
+												<span class="material-symbols-outlined">
+													favorite
+												</span>
 												&nbsp;&nbsp;&nbsp;J'aime
 											</span>
 											{% set totalLikes = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterLikes|length, 0) %}
@@ -183,7 +176,9 @@
 										</li>
 										<li class="inline-flex items-center justify-between font-normal -mt-px  dark:bg-gray-800  dark:text-white">
 											<span class="font-medium">
-												<i class="fa-regular fa-circle-down"></i>
+												<span class="material-symbols-outlined">
+													downloading
+												</span>
 												&nbsp;&nbsp;&nbsp;Téléchargements
 											</span>
 											<span>{{item.PublicationDownloads|length}}</span>
@@ -193,17 +188,14 @@
 								<div data-popper-arrow></div>
 							</div>
 							{# popver end #}
-							<h5 class="mb-2 text-base font-bold tracking-tight">
-								<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" class=" text-slate-600  dark:text-white text-base leading-5 hover:underline">{{ item.title }}</a>
-							</h5>
-							<p class="mb-3 font-normal text-slate-600 text-sm leading-[1.4rem] dark:text-slate-400">
+							<p class="mb-3 font-normal text-slate-600 text-sm leading-[1.4rem] dark:text-slate-400 line-clamp-[7] md:line-clamp-[10] lg:line-clamp-[7] text-justify">
 								{% if item.summary %}
-									{{ item.summary|slice(0, 210) }}
+									{{ item.summary}}
 								{% else %}
 									{% set nbr = 0 %}
 									{% for chap in item.publicationChapters %}
 										{% if nbr == 0 %}
-											{{ chap.content|striptags|slice(0, 210) }}...
+											{{ chap.content|regex_replace('/<p.*?>/i', ' ')|striptags }}
 											{% set nbr = nbr + 1 %}
 										{% endif %}
 									{% endfor %}
@@ -213,12 +205,13 @@
 							<p class=" text-cyan-600">
 								{% if slugCat == "all" %}
 									<a href="{{ path("app_publication_show_all_category", {slug:item.category.slug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:queryKeystring}) }}">
-										<span class="catColor-{{item.category.color}} text-xs mr-1 leading-7 mb-2 px-2.5 py-0.5 rounded dark:bg-slate-700 dark:text-slate-400 ">{{ item.category.name|lower }}</span>
+										<span class="font-normal catColor-{{item.category.color}} catTag ">{{ item.category.name|lower }}</span>
 									</a>
+
 								{% endif %}
 								{% for pubKeyw in item.publicationKeywords %}
 									<a href="{{ path("app_publication_show_all_category", {slug:querySlug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:pubKeyw.keyword|lower}) }}">
-										<span class="bg-slate-100 text-slate-600 text-xs font-medium mr-1 leading-7 mb-2 px-2.5 py-0.5 rounded dark:bg-slate-700 dark:text-slate-400 ">{{ pubKeyw.keyword|lower }}
+										<span class="kwTag">{{ pubKeyw.keyword|lower }}
 											{% if not loop.last %}{% endif %}
 										</span>
 									</a>
@@ -228,37 +221,36 @@
 					</div>
 				{% endfor %}
 				{% set placeholderimg = "https://via.placeholder.com/200x300" %}
-
 				{% if kwString is null and page == 1 and count < limit %}
 					{% for i in count..limit - 1 %}
-
-						<div class="relative rounded-lg   dark:border-slate-700 flex place-content-start opacity-80">
+						<div class="relative rounded-lg dark:border-slate-700 flex place-content-start opacity-80">
 							<p class="absolute z-50 ml-[40%] mt-[23%] shadow-lg">
-								<a href="{{path("app_publication_add")}}" class=" text-slate-900  rounded ring-1 ring-slate-900 px-4 bg-white  p-3 font-medium hover:bg-slate-50 shadow">
-									<i class="fa-regular fa-newspaper"></i>
+								<a href="{{ path("app_publication_add") }}" class="text-slate-900 rounded ring-1 ring-slate-900 px-4 bg-white p-3 font-medium hover:bg-slate-50 shadow">
+									<span class="material-symbols-outlined">
+										history_edu
+									</span>
 									&nbsp;Publier mon récit
-
 								</a>
 							</p>
-							<div class="w-2/6  h-auto rounded-lg">
-								<a href="{{path("app_publication_add")}}">
-									<img class="rounded object-cover w-full shaow-md lazy animate-pulse animate__animated bg-slate-300 grayscale-0  blur-[2px]" loading="lazy" src="" data-src="{{placeholderimg}}" alt=""/>
+							<div class="w-2/6 h-auto rounded-lg">
+								<a href="{{ path("app_publication_add") }}">
+									<img class="rounded object-cover w-full shaow-md lazy animate-pulse animate__animated bg-slate-300 grayscale-0 blur-[2px]" loading="lazy" src="" data-src="{{ placeholderimg }}" alt="">
 								</a>
 							</div>
 							<div class="p-5 -mt-7 w-4/6 place-content-baseline items-baseline blur-[2px]">
 								<small class="font-light">
-									<a href="{{path("app_publication_add")}}">
+									<a href="{{ path("app_publication_add") }}">
 										{% if app.user.id is defined %}
-											{{app.user.nickname}}
+											{{ app.user.nickname }}
 										{% else %}
 											{{ "name"|faker(4) }}
 										{% endif %}
 									</a>
 								</small>
-								<h5 class="mb-2 font-bold tracking-tight  text-base blur-[2px]">
-									<a href="{{path("app_publication_add")}}" class=" text-slate-700  dark:text-white ">{{ "title"|faker(4) }}</a>
+								<h5 class="mb-2 font-bold tracking-tight text-base blur-[2px]">
+									<a href="{{ path("app_publication_add") }}" class="text-slate-700 dark:text-white">{{ "title"|faker(4) }}</a>
 								</h5>
-								<p class="mb-3 font-normal text-slate-400 text-sm text-justify  dark:text-slate-400 blur-[2px]">
+								<p class="mb-3 font-normal text-slate-400 text-sm text-justify dark:text-slate-400 blur-[2px]">
 									Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Curabitur aliquet quam. Quisque velit nisi, pretium ut lacinia in, elementum id enim.
 								</p>
 							</div>

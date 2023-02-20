@@ -177,7 +177,8 @@ function publishPublication(ev) {
   var publishDateText = document.getElementById("publishDateText");
   var badgePubStatus = document.getElementById("badgePubStatus");
   var togglePubAS = document.getElementById("togglePubAS");
-  var AStext = document.getElementById("AStext");
+  var ASTooltip = document.getElementById("ASTooltip");
+  var ASText = document.getElementById("ASText");
   var savePublication = document.getElementById("savePublication");
   var PublicationPublishModalText = document.getElementById(
     "PublicationPublishModalText"
@@ -189,20 +190,16 @@ function publishPublication(ev) {
     if (publishButton.checked) {
       PublicationPublishModalText.innerHTML =
         "Êtes-vous certain(e) de vouloir annuler la publication de votre récit ?";
-      publishDiv.classList.add("border-red-500", "bg-red-100");
-      publishText.classList.add("text-red-900");
       publishToggle.classList.add("peer-checked:bg-red-600");
       publish.classList.add("bg-red-600", "hover:bg-red-800");
       badgePubStatus.classList.toggle("badge-published");
     } else {
       PublicationPublishModalText.innerHTML =
         "Êtes-vous certain(e) de vouloir publier votre récit ?";
-      publishDiv.classList.add("bg-green-100", "border-green-500");
-      publishText.classList.add("text-green-900");
-      publishToggle.classList.add("peer-checked:bg-green-600", "bg-green-200");
-      publish.classList.add("bg-green-600", "hover:bg-green-800");
+      publishToggle.classList.add("peer-checked:bg-slate-600", "bg-slate-200");
+      publish.classList.add("bg-slate-600", "hover:bg-slate-800");
       publishDateText.classList.add("hidden");
-      AStext.classList.add("hidden");
+      ASTooltip.classList.add("hidden");
       badgePubStatus.classList.toggle("badge-unpublished");
     }
   } else {
@@ -212,32 +209,28 @@ function publishPublication(ev) {
       publishText.innerHTML = "Dépublier le récit";
       PublicationPublishModalText.innerHTML =
         "Êtes-vous certain(e) de vouloir annuler la publication de votre récit ?";
-      publishDiv.classList.remove("bg-green-100", "border-green-500");
-      publishDiv.classList.add("bg-red-100", "border-red-500");
-      publishToggle.classList.remove("peer-checked:bg-green-600");
+      publishToggle.classList.remove("peer-checked:bg-slate-600");
       publishToggle.classList.add("peer-checked:bg-red-600");
-      publishText.classList.remove("text-green-900");
-      publishText.classList.add("text-red-900");
-      publish.classList.remove("bg-green-600", "hover:bg-green-800");
+      publish.classList.remove("bg-slate-600", "hover:bg-slate-800");
       publish.classList.add("bg-red-600", "hover:bg-red-800");
-      AStext.classList.remove("hidden");
+      ASTooltip.classList.remove("hidden");
+      ASText.classList.add("cursor-default", "text-slate-400");
+      ASText.classList.remove("cursor-pointer");
       badgePubStatus.classList.toggle("badge-unpublished");
       badgePubStatus.classList.toggle("badge-published");
       badgePubStatus.innerHTML = "Publié";
+      publishDateText.classList.remove("hidden");
     } else {
       publishButton.checked = false;
       publishText.innerHTML = "Publier le récit";
       PublicationPublishModalText.innerHTML =
         "Êtes-vous certain(e) de vouloir publier votre récit ?";
       publishToggle.classList.remove("peer-checked:bg-red-600");
-      publishToggle.classList.add("bg-green-200", "peer-checked:bg-green-600");
-      publishDiv.classList.remove("bg-red-100", "border-red-500");
-      publishDiv.classList.add("bg-green-100", "border-green-500");
-      publishText.classList.remove("text-red-900");
-      publishText.classList.add("text-green-900");
-      publish.classList.remove("bg-red-600", "hover:bg-red-800");
-      publish.classList.add("bg-green-600", "hover:bg-green-800");
-      AStext.classList.add("hidden");
+      publishToggle.classList.add("bg-slate-200", "peer-checked:bg-slate-600");
+      publish.classList.add("bg-slate-600", "hover:bg-slate-800");
+      ASTooltip.classList.add("hidden");
+      ASText.classList.remove("cursor-default", "text-slate-400");
+      ASText.classList.add("cursor-pointer");
       badgePubStatus.classList.toggle("badge-unpublished");
       badgePubStatus.classList.toggle("badge-published");
       badgePubStatus.innerHTML = "Dépublié";
@@ -267,8 +260,9 @@ function publishPublication(ev) {
           hidePubStatus.value = 2;
           togglePubAS.checked = false;
           togglePubAS.disabled = true;
-          savePublication.innerHTML =
-            "<i class='fa-solid fa-cloud-arrow-up'></i> &nbsp;Publier les modifications";
+          savePublication.innerHTML = `<span class="material-symbols-outlined">
+            cloud_upload
+          </span> &nbsp;Publier les modifications`;
 
           togglePubASfunc();
         } else {
@@ -277,8 +271,9 @@ function publishPublication(ev) {
           hidePubStatus.value = 1;
           togglePubAS.checked = true;
           togglePubAS.disabled = false;
-          savePublication.innerHTML =
-            "<i class='fa-solid fa-floppy-disk'></i>  &nbsp;Enregistrer";
+          savePublication.innerHTML = `<span class="material-symbols-outlined">
+            save
+          </span>  &nbsp;Enregistrer`;
           togglePubASfunc();
         }
         NotyDisplay(notyText, notyType, notyTimeout);
@@ -286,7 +281,7 @@ function publishPublication(ev) {
       .catch(function (error) {
         if (error.response) {
           var notyText =
-            "<span class='text-base font-medium'>Erreur</span><br />Une erreur est survenue lors de la sauvegarde de votre chapitre";
+            "<span class='text-base font-medium'>Erreur</span><br />Une erreur est survenue lors de la sauvegarde de votre feuille";
           var notyTimeout = 4500;
           var notyType = "error";
           NotyDisplay(notyText, notyType, notyTimeout);
@@ -333,5 +328,4 @@ function axiosGoSortable() {
     nbr++;
   });
 }
-
 AxiosSavePublication();

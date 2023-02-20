@@ -1,5 +1,7 @@
+{% set nbr = 0 %}
 {% for items in infoPub.publicationChapters|sort((a, b) => a.orderDisplay <=> b.orderDisplay) %}
 	{% if items.status == withStatus %}
+		{% set nbr = nbr + 1 %}
 		{% set chapId = items.id  %}
 		<div class=" bg-white w-[48%] border-none border-gray-100 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-5 list-group-item " chap="{{ items.id }}" id="{{ items.orderDisplay }}">
 			<turbo-frame id="{{ chapId }}">

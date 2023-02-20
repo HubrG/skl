@@ -46,13 +46,13 @@ class PublicationPopularity
     public function PublicationPopularity($publication)
     {
         $priorityPcv = 0.01; // views
-        $priorityPcl = 0.06; // likes
-        $priorityPchc = 0.04; // comments
-        $priorityBm = 0.07; // Bookmarks
-        $priorityDl = 0.08; // Downloads
+        $priorityPchc = 0.030; // comments
+        $priorityPcl = 0.050; // likes
+        $priorityDl = 0.060; // Downloads
+        $priorityBm = 0.070; // Bookmarks
 
         $p = $this->pRepo->find($publication);
-        $pch = $this->pchRepo->findBy(["publication" => $p]);
+        $pch = $this->pchRepo->findBy(["publication" => $p, "status" => 2]);
         //
         $pchc = count($this->pchcRepo->findBy(["chapter" => $pch])); // comments
         $pcv = count($this->pcvRepo->findBy(["chapter" => $pch])); // views
@@ -63,7 +63,7 @@ class PublicationPopularity
         // Calculate time decay factor
         $createdAt = $p->getCreated();
         $timeSincePublication = ($createdAt !== null) ? (time() - strtotime($createdAt->format('Y-m-d H:i:s'))) : 0;
-        $decayFactor = exp(- ($timeSincePublication / (60 * 60 * 24 * 3.5))); // factor de décroissance (exprimé en jours)
+        $decayFactor = exp(($timeSincePublication / (60 * 60 * 24 * 30))); // factor de décroissance (exprimé en jours)
 
         // Calculate popularity with time decay factor
         $popularity = ($pcv * $priorityPcv) + ($pcl * $priorityPcl) + ($pchc * $priorityPchc) + ($pcb * $priorityBm) + ($pdl * $priorityDl);

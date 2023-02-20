@@ -6,6 +6,7 @@ import { ReadTime } from "../scripts/Publication/ChapterStats";
 import { quillEditor } from "../scripts/Quill.js";
 import { Sortables } from "../scripts/Publication/Sortable";
 import { LazyLoad } from "../scripts/LazyLoad";
+import { TippyC } from "../scripts/Tippy";
 import { PublicationShow } from "../scripts/Publication/PublicationShow";
 import {
   ShowChapter,
@@ -13,9 +14,7 @@ import {
   targetQuote,
   DropdownMenu,
 } from "../scripts/Publication/ChapterShow";
-import tippy from "tippy.js";
-tippy("[data-tippy-content]");
-
+import confetti from "canvas-confetti";
 const TurboHelper = class {
   constructor() {
     document.addEventListener("turbo:before-cache", () => {});
@@ -40,14 +39,23 @@ const TurboHelper = class {
       ShowChapter();
       toggleDrawer();
       targetQuote();
-      tippy("[data-tippy-content]");
+      TippyC();
       DropdownMenu();
+      if (document.location.href.includes("#first")) {
+        document.getElementById("itemsChap2").classList.add("animate__swing");
+        setTimeout(() => {
+          document
+            .getElementById("itemsChap2")
+            .classList.remove("animate__swing");
+          location.hash = "";
+        }, 2500);
+      }
     });
     document.addEventListener("turbo:frame-render", () => {
       ShowChapter();
       targetQuote();
       LazyLoad();
-      tippy("[data-tippy-content]");
+      TippyC();
       DropdownMenu();
       document
         .getElementById("mega-menu-icons-dropdown")
@@ -60,7 +68,6 @@ const TurboHelper = class {
     });
     document.addEventListener("turbo:after-render", (event) => {});
     document.addEventListener("turbo:before-render", (event) => {
-      document.getElementById("flowbite").remove();
       if (this.isPreviewRendered()) {
         // this is a preview that has been instantly swapped
         // remove .turbo-loading so the preview starts fully opaque

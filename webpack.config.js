@@ -73,3 +73,4 @@ Encore
 //.autoProvidejQuery()
 
 module.exports = Encore.getWebpackConfig();
+// Exécute le script "yarn dev" à chaque sauvegarde de fichier

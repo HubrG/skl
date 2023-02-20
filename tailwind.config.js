@@ -23,8 +23,15 @@ module.exports = {
         "fade-in": "fade-in 0.2s ease-in-out",
       },
       fontFamily: {
-        sans: ["Noto Sans JP", "sans-serif"],
+        sans: ["Lato", "sans-serif"],
         serif: ["Playfair Display", "serif"],
+      },
+      fontSize: {
+        xs: "0.85rem", // 12px
+        sm: "0.95rem", // 14px
+        base: "1.12rem", // 16px
+        lg: "1.125rem", // 18px
+        xl: "1.25rem", // 20px
       },
     },
   },
@@ -42,5 +49,5 @@ module.exports = {
     "leading-9",
     "shadow-lg",
   ],
-  plugins: [require("flowbite/plugin")],
+  plugins: [require("flowbite/plugin"), require("@tailwindcss/line-clamp")],
 };

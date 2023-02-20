@@ -24,47 +24,52 @@
 			</span>
 		</h1>
 	</div>
-	<aside class="relative col-span-7 col-start-4 pr-10 mb-14 lg:col-span-3 lg:mt-5">
-		<div class="sticky top-20">
-			{% if infoPub.cover == "" %}
-				<div id="hideNoCover" class="shadow-md p-10 text-2xl flex h-80 bg-slate-100 rounded-md dark:bg-slate-500" for="publication_cover" data-tooltip-placement="bottom" data-tooltip-target="tooltip-cover">
-					<label for="publication_cover" class="cursor-pointer justify-center h-80">
-						<h2 class="m-auto text-center font-light shadow-slate-300 text-slate-600 dark:shadow-slate-900 mt-10 rounded-lg">
-							<i class="fa-regular fa-images text-5xl"></i><br/><br/>Ajouter une couverture
-						</h2>
-					</label>
-				</div>
+	<aside class="relative col-span-7 col-start-4 pr-10 mb-14 lg:col-span-3 lg:mt-8">
+		{% if infoPub.cover == "" %}
+			<div id="hideNoCover" data-tippy-content="Cliquez ici pour ajouter une photo de couverture" class="shadow-md p-10 text-2xl flex h-80 bg-white rounded-md dark:bg-slate-500" for="publication_cover" data-tooltip-placement="bottom" data-tooltip-target="tooltip-cover">
+				<label for="publication_cover" class="cursor-pointer justify-center h-80">
+					<h2 class="m-auto text-center font-light shadow-slate-300 text-slate-600 dark:shadow-slate-900 mt-10 rounded-lg">
+						<i class="fa-regular fa-images text-5xl"></i><br/><br/>Ajouter une couverture
+					</h2>
+				</label>
+			</div>
+			<div role="status" id="spinCover" class="hidden absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2">
+				<svg aria-hidden="true" class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewbox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/><path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/></svg>
+				<span class="sr-only">Loading...</span>
+			</div>
+			<label for="publication_cover" id="showNewCover" class="cursor-pointer hidden"><img id="cover" src="" data-tooltip-target="tooltip-cover" data-tooltip-placement="bottom" class="shadow-md shadow-slate-300 dark:shadow-slate-900 rounded-lg"/></label>
+		{% else %}
+			<label for="publication_cover" class="cursor-pointer">
 				<div role="status" id="spinCover" class="hidden absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2">
 					<svg aria-hidden="true" class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewbox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/><path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/></svg>
 					<span class="sr-only">Loading...</span>
 				</div>
-				<label for="publication_cover" id="showNewCover" class="cursor-pointer hidden"><img id="cover" src="" data-tooltip-target="tooltip-cover" data-tooltip-placement="bottom" class="shadow-md shadow-slate-300 dark:shadow-slate-900 rounded-lg"/></label>
-			{% else %}
-				<label for="publication_cover" class="cursor-pointer">
-					<div role="status" id="spinCover" class="hidden absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2">
-						<svg aria-hidden="true" class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewbox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/><path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/></svg>
-						<span class="sr-only">Loading...</span>
-					</div>
-					<img data-tooltip-target="tooltip-cover" data-tooltip-placement="bottom" id="cover" class="shadow-md shadow-slate-300 dark:shadow-slate-900 rounded-lg" src="{{infoPub.cover}}"/></label>
-			{% endif %}
-			<div id="tooltip-cover" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-normal text-white bg-slate-700 rounded-lg opacity-0 tooltip dark:bg-gray-700">
-				Cliquez ici pour importer une photo<br/>de couverture
-				<div class="tooltip-arrow" data-popper-arrow></div>
-			</div>
-		</div>
+				<img data-tippy-content="Cliquez ici pour modifier votre photo de couvertur" id="cover" class="shadow-md shadow-slate-300 dark:shadow-slate-900 rounded-lg" src="{{infoPub.cover}}"/></label>
+		{% endif %}
 	</aside>
-	<section class="col-span-12 -mt-5 -col-start-0 lg:col-span-6">
+	<section class="col-span-12 -col-start-0 lg:col-span-6 -mt-10">
 		<div class="mb-4  dark:border-gray-700  dark:bg-slate-800 pt-5  pb-[3px]z-40">
 			<ul class="flex justify-center -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
 				<li class="mr-2 text-xs lg:text-sm" role="presentation">
 					<button class="inline-block p-4 border-b-4  dark:bg-slate-900  text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
-						<i class="fa-solid fa-circle-info"></i>
+						<span class="material-symbols-outlined">
+							info
+						</span>
 						Informations</button>
 				</li>
 				<li class="mr-2 text-xs lg:text-sm" role="presentation">
 					<button class="inline-block p-4 border-b-4  dark:bg-slate-900 text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="profile-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">
-						<i class="fa-solid fa-list"></i>
+						<span class="material-symbols-outlined">
+							auto_stories
+						</span>
 						Feuilles</button>
+				</li>
+				<li class="mr-2 text-xs lg:text-sm" role="presentation">
+					<button class="inline-block p-4 border-b-4  dark:bg-slate-900 text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="profile-tab" data-tabs-target="#statistiques" type="button" role="tab" aria-controls="statistiques" aria-selected="false">
+						<span class="material-symbols-outlined">
+							monitoring
+						</span>
+						Statistiques</button>
 				</li>
 			</ul>
 		</div>
@@ -119,14 +124,25 @@
 				{{ form_end(formPub) }}
 			</div>
 			<div class="hidden p-4 rounded-lg" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-				<a href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}" class=" block text-center hover:ring-slate-400 -mt-3 target:bg-slate-400 text-slate-600  hover:text-slate-900 ring-2 ring-slate-300 bg-slate-100 rounded-lg text-sm font-medium w-full p-3 active:translate-y-[2px] active:border-b-2">
-					<i class="fa-solid fa-paperclip"></i>
-					&nbsp;&nbsp;Ajouter une feuille</a>
-				<div id="accordion-flush" data-accordion="open" data-active-classes="dark:bg-gray-900 text-gray-900 dark:text-white" class="list-group " data-inactive-classes="text-gray-500 dark:text-gray-400">
-					<h2 id="accordion-flush-heading-1">
-						<button type="button" class="flex items-center justify-between w-full py-5 font-medium text-left text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400" data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
+				{% if infoPub.publicationChapters|length > 0 %}
+					<ul>
+						<li class="button-classic button-slate text-center">
+							<a href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}" class="block w-full">
+								<span class="material-symbols-outlined">
+									add_notes
+								</span>
+								&nbsp;&nbsp;Ajouter une nouvelle feuille
+							</a>
+						</li>
+					</ul>
+				{% endif %}
+				<div id="accordion-flush" data-accordion="open" data-active-classes="dark:bg-gray-900 text-gray-900 dark:text-white" class="list-group" data-inactive-classes="text-gray-500 dark:text-gray-400">
+					<h2 id="accordion-flush-heading-1" class="border-b-[1px] border-b-slate-400  px-5 ">
+						<button type="button" class="flex items-center justify-between w-full py-5 font-medium text-left  dark:border-gray-700 dark:text-gray-400" data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
 							<span>
-								<i class="fa-regular fa-eye"></i>
+								<span class="material-symbols-outlined">
+									visibility
+								</span>
 								Feuilles publiées</span>
 							<svg data-accordion-icon class="w-6 h-6 rotate-180 shrink-0" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 								<path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
@@ -135,27 +151,73 @@
 					</h2>
 					<div id="accordion-flush-body-1" class="hidden" aria-labelledby="accordion-flush-heading-1">
 						<div id="itemsChap" class=" flex  flex-wrap gap-x-4">
+							{% if infoPub.publicationChapters|length == 0 %}
+								<div class="w-full text-center bg-slate-100 text-slate-600 rounded border-2 border-slate-300 border-dashed mt-3 opacity-60 hover:opacity-80" id="noPublication">
+									<p>
+										<a class="block w-full h-full px-5 pt-5 font-medium leading-5" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}#first">
+											<span class="text-slate-900 text-base">
+												Cliquez ici pour éditer votre première feuille</span><br><br>
+											<span class="text-4xl">
+												<i class="fa-solid fa-file-circle-plus"></i>
+											</span><br><br>
+											<hr>
+											<span class="text-xs font-normal block text-justify items-center text-slate-600">
+												<i class="fa-solid fa-info"></i>
+												| Vous pouvez créer autant de feuilles que vous le souhaitez et les organiser selon vos besoins. Une feuille peut être considérée comme une simple feuille de texte, sinon comme un chapitre de votre récit. L'ordre dans lequel vous les placerez sera l'ordre dans lequel vos lecteurs les parcoureront au fil de leur lecture.</span><br>
+										</a>
+									</p>
+								</div>
+							{% elseif infoPub.publicationChapters|length > 0 %}
+								{% set var = true %}
+								{% for item in infoPub.publicationChapters %}
+									{% if item.status > 1 %}
+										{% set var = false %}
+									{% endif %}
+								{% endfor %}
+								{% if var %}
+									<div class="w-full text-center bg-amber-100 text-amber-900 rounded border-2 border-amber-300 border-dashed mt-3 opacity-60" id="noPublication">
+										<p class="block w-full h-full px-5 pt-5 pb-5  font-medium leading-5" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}">
+											<span class=" text-base">
+												Vous avez créé votre première feuille !
+											</span><br><br>
+											<span class="text-4xl">
+												<i class="fa-solid fa-hands-clapping"></i>
+											</span><br/><br/>
+											<span class="text-xs font-normal block text-justify items-center">
+												<i class="fa-solid fa-info"></i>
+												| Celle-ci est dépubliée et se trouve dans la section ci-dessous. Vous pouvez la publier en la déposant dans cet espace
+												<i class="fa-solid fa-arrows-up-down-left-right"></i>. Vous pourrez également modifier l'ordre d'affichage des feuilles publiées. Cet ordre sera celui par lequel vos lecteurs parcoureront vos feuilles.
+											</span>
+										</p>
+									</div>
+								{% endif %}
+							{% endif %}
 							{% include "publication/_partials/_edit_publication_show_chapters.html.twig" with {withStatus:2} %}
 						</div>
 					</div>
-					<h2 id="accordion-flush-heading-2">
-						<button type="button" class="flex items-center justify-between w-full py-5 font-medium text-left text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400" data-accordion-target="#accordion-flush-body-2" aria-expanded="true" aria-controls="accordion-flush-body-2">
+					<h2 id="accordion-flush-heading-2" class="border-b-[1px] border-b-slate-400  px-5 ">
+						<button type="button" class="flex items-center justify-between w-full py-5 font-medium text-left text-gray-500  dark:border-gray-700 dark:text-gray-400" data-accordion-target="#accordion-flush-body-2" aria-expanded="true" aria-controls="accordion-flush-body-2">
 							<span>
-								<i class="fa-solid fa-eye-slash"></i>
+								<span class="material-symbols-outlined">
+									visibility_off
+								</span>
 								Feuilles dépubliées, brouillons...</span>
 							<svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 								<path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
 							</svg>
 						</button>
 					</h2>
+					<div id="confettis"></div>
 					<div id="accordion-flush-body-2" class="hidden" aria-labelledby="accordion-flush-heading-2">
-						<div id="itemsChap2" class=" flex  flex-wrap gap-x-4  opacity-80 grayscale">
+
+						<div id="itemsChap2" class=" flex animate__animated  flex-wrap gap-x-4  opacity-80">
+
 							{% include "publication/_partials/_edit_publication_show_chapters.html.twig" with {withStatus:1} %}
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="hidden p-4 rounded-lg  min-h-screen" id="imagination" role="tabpanel" aria-labelledby="settings-tab">
+			<div class="hidden p-4 rounded-lg  min-h-screen" id="statistiques" role="tabpanel" aria-labelledby="settings-tab">
 				<p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the
 					<strong class="font-medium text-gray-800 dark:text-white">Settings tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
 			</div>
@@ -165,95 +227,100 @@
 			</div>
 		</div>
 	</section>
-	<aside class="col-span-12 mt-9 ml-5 lg:col-span-3 lg:mt-5 opacity-90">
+	<aside class="col-span-12 mt-9 ml-5 lg:col-span-3 lg:mt-5 opacity-90  p-3 rounded">
 		<hr class="w-full col-span-12 lg:hidden">
-		<div class="sticky top-20">
-			<button type="button" class="p-2 w-full rounded-md text-sm ring-emerald-500 ring-2 font-bold text-green-600 bg-green-100 hover:border-green-300 active:bg-emerald-200  mb-4 py-4" id="savePublication">
-				{% if infoPub.status > 1 %}
-					<i class="fa-solid fa-cloud-arrow-up"></i>
-					&nbsp;Publier les modifications
-				{% else %}
-					<i class="fa-solid fa-floppy-disk"></i>
-					&nbsp;Enregistrer
-				{% endif %}
-			</button>
-			<div id="publishDiv" class="p-4 rounded-lg  w-full dark:bg-gray-800 mb-4 border-2 ">
-				<label class="relative inline-flex items-center mr-5 cursor-pointer" data-modal-target="popup-modal" data-modal-toggle="popup-modal">
+		<button type="button" class="button-classic button-green w-full mb-3" id="savePublication">
+			{% if infoPub.status > 1 %}
+				<span class="material-symbols-outlined">
+					cloud_upload
+				</span>
+				&nbsp;Publier les modifications
+			{% else %}
+				<span class="material-symbols-outlined">
+					save
+				</span>
+				&nbsp;Enregistrer
+			{% endif %}
+		</button>
+		<div class="bg-slate-50 py-3 mb-5 mt-3 rounded-lg">
+			<div id="publishDiv" class="px-3 rounded-lg  w-full dark:bg-gray-800 mb-3 mt-2 flex hover:opacity-100 hover:grayscale-0" for="publishToggle">
+				<label class="relative inline-flex  mr-5 cursor-pointer" data-modal-target="popup-modal" data-modal-toggle="popup-modal">
 					<input type="checkbox" id="publishButton" class="disabled sr-only peer" disabled {% if infoPub.status == 2 %} checked {% endif %}>
-					<div id="publishToggle" class="w-11 h-6 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-green-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 "></div>
-					<span class="ml-3 text-xs font-medium dark:text-gray-300" id="publishText">
+					<div id="publishToggle" class="w-11 h-6 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 "></div>
+					<p class="ml-3 text-sm font-normal dark:text-gray-300" id="publishText">
 						{% if infoPub.status > 1 %}Dépublier le récit{% else %}Publier le récit
 						{% endif %}
-					</span>
+					</p>
 				</label>
 			</div>
-			<div class="p-4 rounded-lg bg-slate-50 w-full dark:bg-gray-800 mb-4">
-				<label class="relative inline-flex items-center cursor-pointer">
+			<div class="px-3 rounded-lg  w-full dark:bg-gray-800 relative mb-3 flex hover:opacity-100 hover:grayscale-0">
+				<label class="relative inline-flex items-center">
 					{% if infoPub.status < 2 %}
 						<input type="checkbox" value="" class="sr-only peer" id="togglePubAS" checked/>
 					{% else %}
 						<input type="checkbox" value="" class="sr-only peer" id="togglePubAS" disabled/>
 					{% endif %}
-					<div class="w-11 h-6 bg-blue-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-blue-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-					<span class="ml-3 text-xs font-medium text-blue-900 dark:text-gray-300">Sauvegarde automatique</span>
+					<div class="w-11 h-6 bg-slate-200 cursor-pointer rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-blue-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+					<span class="ml-3 text-sm {{ infoPub.status > 1 ? " text-slate-400 cursor-default" : " cursor-pointer" }}  dark:text-gray-300 disabled" id="ASText">Sauvegarde auto.</span>
 				</label>
-				<p id="AStext" class="text-xs text-slate-500 leading-normal text-opacity-70 text-center border-t-[1px] border-t-slate-200 pt-2 mt-2">
-					<i class="fa-solid fa-circle-info"></i>
-					&nbsp;La sauvegarde automatique est désactivée car votre récit est publié.</p>
+				<span class="absolute right-0 mr-11" id="ASTooltip">
+					<i data-tippy-content='<p class="text-justify tippy-tt p-2"><strong>La sauvegarde automatique est désactivée car votre récit est publié.</strong> Si vous souhaitez enregistrer les modifications apportées à votre récit, vous pouvez cliquer sur le bouton « Publier les modifications ».</p>' class="fa-solid fa-circle-info opacity-30"></i>
+				</span>
 			</div>
-			<div class="p-4 rounded-lg bg-slate-50 w-full dark:bg-gray-800 mb-4 text-slate-800 dark:text-slate-400">
-				<label class="relative inline-flex items-center cursor-pointer">
+			<div class="px-3 rounded-lg  w-full dark:bg-gray-800 mb-3 flex hover:opacity-100 hover:grayscale-0">
+				<label class="relative inline-flex items-center">
 					{% if infoPub.status < 2 %}
-						<input type="checkbox" value="" class="sr-only peer" id="togglePubFinish" checked/>
+						<input type="checkbox" value="" class="sr-only peer" id="" checked/>
 					{% else %}
-						<input type="checkbox" value="" class="sr-only peer" id="togglePubFinish" disabled/>
+						<input type="checkbox" value="" class="sr-only peer" id="" disabled/>
 					{% endif %}
 					<div class="w-11 h-6 bg-blue-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-blue-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-					<span class="ml-3 text-xs font-medium text-blue-900 dark:text-gray-300">Le récit est terminé</span>
-				</label>
-				<p class="text-xs text-slate-500 leading-normal text-opacity-70 text-center border-t-[1px] border-t-slate-200 pt-2 mt-2">
-					<i class="fa-solid fa-circle-info"></i>
-					&nbsp;Cochez cette case pour informer vos lecteurs que votre récit est terminé et qu'aucune nouvelle feuille n'est à attendre.</p>
-			</div>
-			<div class="p-4 rounded-lg bg-slate-50 w-full dark:bg-gray-800 mb-4 text-slate-800 dark:text-slate-400">
-				<p class="text-xs mb-1">
-					<i class="fa-regular fa-clock"></i>
-					&nbsp;Crée il y a
-					<span class="font-medium">{{ infoPub.created|since }}</span>
-				</p>
-				<p class="text-xs mb-1">
-					<i class="fa-regular fa-clock"></i>
-					&nbsp;Modifié il y a
-					<span class="font-medium">{{ infoPub.updated|since }}</span>
-				</p>
-				<p id="publishDateText" class="text-xs mb-1">
-					<i class="fa-regular fa-clock"></i>
-					&nbsp;Publié il y a
-					<span class="font-medium" id="publishDateTextSpan">
-						{% if infoPub.publishedDate %}
-							{{ infoPub.publishedDate|since }}
-						{% endif %}
+					<span class="ml-3 text-sm cursor-pointer dark:text-gray-300">Récit terminé&nbsp;&nbsp;
+						<span data-tippy-content="Cochez cette case pour informer vos lecteurs que votre récit est terminé et qu'aucune nouvelle feuille n'est à attendre.">
+							<i class="fa-regular fa-circle-question"></i>
+						</span>
 					</span>
-				</p>
+				</label>
 			</div>
-			<div class="p-4 rounded-lg bg-slate-50 w-full dark:bg-gray-800 mb-4 text-slate-800 dark:text-slate-400">
-				<p class="text-xs mb-1">
-					<a href="{{ path("app_publication_show_one", {id:infoPub.id, slug:infoPub.slug}) }}">Voir le récit sur le site</a>
-				</p>
-			</div>
+		</div>
+		<div class="p-4 rounded-lg bg-slate-50 w-full dark:bg-gray-800 mb-4 text-slate-800 dark:text-slate-400">
+			<p class="text-xs mb-1">
+				<i class="fa-regular fa-clock"></i>
+				&nbsp;Crée il y a
+				<span class="font-medium">{{ infoPub.created|since }}</span>
+			</p>
+			<p class="text-xs mb-1">
+				<i class="fa-regular fa-clock"></i>
+				&nbsp;Modifié il y a
+				<span class="font-medium">{{ infoPub.updated|since }}</span>
+			</p>
+			<p id="publishDateText" class="text-xs mb-1">
+				<i class="fa-regular fa-clock"></i>
+				&nbsp;Publié il y a
+				<span class="font-medium" id="publishDateTextSpan">
+					{% if infoPub.publishedDate %}
+						{{ infoPub.publishedDate|since }}
+					{% endif %}
+				</span>
+			</p>
+		</div>
+		<div class="p-4 rounded-lg bg-slate-50 w-full dark:bg-gray-800 mb-4 text-slate-800 dark:text-slate-400">
+			<p class="text-xs mb-1">
+				<a href="{{ path("app_publication_show_one", {id:infoPub.id, slug:infoPub.slug}) }}">Voir le récit sur le site</a>
+			</p>
 		</div>
 	</aside>
 	<div>
 		<dialog id="popup-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
-			<div class="relative w-full h-full max-w-2xl md:h-auto">
-				<div class="relative bg-red rounded-lg shadow dark:bg-gray-700 top-1/3">
+			<div class="relative h-full max-w-[30rem] md:h-auto">
+				<div class="relative bg-red rounded-lg shadow-lg dark:bg-gray-700 top-1/3">
 					<button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="popup-modal">
 						<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 							<path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
 						</svg>
 						<span class="sr-only">Close modal</span>
 					</button>
-					<div class="p-6 text-center bg-white rounded-2xl">
+					<div class="p-6 text-center w-42 bg-white rounded-2xl">
 						<svg aria-hidden="true" class="mx-auto mb-4 text-gray-400 w-14 h-14 dark:text-gray-200" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
 						</svg>

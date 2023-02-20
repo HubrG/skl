@@ -1,5 +1,4 @@
 import { startStimulusApp } from "@symfony/stimulus-bridge";
-import "../node_modules/tippy.js/dist/tippy.css";
 
 // Registers Stimulus controllers from controllers.json and in the controllers/ directory
 export const app = startStimulusApp(

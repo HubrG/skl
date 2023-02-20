@@ -17,14 +17,14 @@
 			</p>
 		{% endif %}
 		<div class="col-span-6">
-			<button type="button" onclick="document.getElementById('submitAdd').click()" class="rounded ring-1 text-sm ring-slate-500 border-b-2  px-3 py-2 duration-300">Je renseignerai ces informations plus tard &nbsp;
+			<button type="button" onclick="document.getElementById('submitAdd').click()" class="button-classic button-gray">Je renseignerai ces informations plus tard &nbsp;
 				<i class="fa-solid fa-arrow-right-long"></i>
 			</button>
 		</div>
 	</div>
 	<aside class="col-span-7 col-start-4 justify-items-end pr-10  mb-14 sm:col-start-2 sm:col-span-3">
 		{% if pub.cover == "" %}
-			<div id="hideNoCover" class="shadow ring-1 ring-slate-200 p-10 text-2xl flex h-80 bg-slate-100 rounded-md dark:bg-slate-500" for="publication_cover" data-tooltip-placement="bottom" data-tooltip-target="tooltip-cover">
+			<div id="hideNoCover" class=" p-10 text-2xl flex h-80 bg-white shadow-md rounded-md dark:bg-slate-500" for="publication_cover" data-tooltip-placement="bottom" data-tooltip-target="tooltip-cover">
 				<label for="publication_cover" class="cursor-pointer justify-center h-80">
 					<h2 class="m-auto text-center font-light shadow-slate-300 text-slate-600 dark:shadow-slate-900 mt-10 rounded-lg">
 						<i class="fa-regular fa-images text-5xl"></i><br/><br/>Ajouter une couverture
@@ -71,7 +71,7 @@
 			<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
 				<i class="fa-solid fa-list"></i>
 			</div>
-			{{ form_widget(form.category, {attr:{"class":"axiosPubAS"}}) }}
+			{{ form_widget(form.category, {attr:{"class":"axiosPubAS select"}}) }}
 		</div>
 		<label>En quelques mots, quelles sont les grandes thématiques de votre récit ?</label>
 		<div class="relative mb-6">
@@ -98,7 +98,7 @@
 			<span class="ml-3 -mt-6 text-sm font-medium text-gray-900 dark:text-gray-300">Votre récit contient-il du contenu pour adulte ?</span>
 		</label>
 		<div>
-			<button type="submit" id="submitAdd" class="float-right rounded ring-1 border-b-2 text-sm ring-slate-500 px-3 py-2">Passer à l'étape suivante &nbsp;&nbsp;&nbsp;<i class="fa-solid fa-angle-right"></i>
+			<button type="submit" id="submitAdd" class="float-right button-classic button-slate">Passer à l'étape suivante &nbsp;&nbsp;&nbsp;<i class="fa-solid fa-angle-right"></i>
 			</button>
 		</div>
 		{{ form_end(form) }}

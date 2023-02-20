@@ -1,4 +1,6 @@
 import tippy, { animateFill } from "tippy.js";
+import "tippy.js/dist/tippy.css";
+import "tippy.js/themes/translucent.css";
 
 export function TippyC() {
   tippy("[data-tippy-content]", {

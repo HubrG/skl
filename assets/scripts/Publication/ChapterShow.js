@@ -262,8 +262,10 @@ export function ShowChapter() {
 
         inner.innerHTML = `
       <textarea id='comShow-${result}' class='chapterCommentEdit'>${com.textContent.trim()}</textarea>
-      <button id='validCom-${result}' class='chapterCommentEditValidButton'><i class="fa-regular fa-circle-check"></i> &nbsp;Valider</button>
-      <button id='cancelCom-${result}' class='chapterCommentEditCancelButton toggleSidebar' data-tippy-content="Annuler la modification"><i class="fa-solid fa-xmark toggleSidebar"></i></button>
+      <button id='validCom-${result}' class='chapterCommentEditValidButton'><span class="material-symbols-outlined">check_circle</span> &nbsp;Valider</button>
+      <button id='cancelCom-${result}' class='chapterCommentEditCancelButton toggleSidebar' data-tippy-content="Annuler la modification"><span class="material-symbols-outlined toggleSidebar">
+      cancel
+      </span></button>
     `;
 
         const buttonValid = document.getElementById(`validCom-${result}`);
@@ -320,10 +322,12 @@ export function ShowChapter() {
         })
         .then((response) => {
           if (response.data.code === 201) {
-            button.classList.remove("fa-regular", "fa-heart", "animate__jello");
+            button.classList.remove(
+              "material-symbols-outlined",
+              "animate__jello"
+            );
             button.classList.add(
-              "fa-solid",
-              "fa-heart",
+              "material-icons",
               "text-red-500",
               "animate__heartBeat"
             );
@@ -331,12 +335,11 @@ export function ShowChapter() {
             nbLikes.innerHTML = Number(nbLikes.innerHTML) + 1;
           } else if (response.data.code === 200) {
             button.classList.remove(
-              "fa-solid",
-              "fa-heart",
+              "material-icons",
               "text-red-500",
               "animate__heartBeat"
             );
-            button.classList.add("fa-regular", "fa-heart", "animate__jello");
+            button.classList.add("material-symbols-outlined", "animate__jello");
             const nbLikes = document.getElementById(`nbLikes-${result}`);
             nbLikes.innerHTML = Number(nbLikes.innerHTML) - 1;
           }
@@ -737,12 +740,12 @@ function likeChapterData(likeChapterId) {
   data.append("idChapter", likeChapterId);
   axios.post(url, data).then((response) => {
     if (response.data.resp) {
-      likeChapter.classList.remove("fa-regular");
-      likeChapter.classList.add("fa-solid", "text-red-500");
+      likeChapter.classList.remove("material-symbols-outlined");
+      likeChapter.classList.add("material-icons", "text-red-500");
       nbrLike.innerHTML = response.data.nbrLike;
     } else {
-      likeChapter.classList.add("fa-regular");
-      likeChapter.classList.remove("fa-solid", "text-red-500");
+      likeChapter.classList.add("material-symbols-outlined");
+      likeChapter.classList.remove("material-icons", "text-red-500");
       nbrLike.innerHTML = response.data.nbrLike;
     }
   });
@@ -757,12 +760,12 @@ function bmChapterData(bmChapterId) {
   data.append("idChapter", bmChapterId);
   axios.post(url, data).then((response) => {
     if (response.data.resp) {
-      bmChapter.classList.remove("fa-regular");
-      bmChapter.classList.add("fa-solid", "text-blue-500");
+      bmChapter.classList.remove("material-symbols-outlined");
+      bmChapter.classList.add("material-icons", "text-blue-500");
       nbrBm.innerHTML = response.data.nbrBm;
     } else {
-      bmChapter.classList.add("fa-regular");
-      bmChapter.classList.remove("fa-solid", "text-blue-500");
+      bmChapter.classList.add("material-symbols-outlined");
+      bmChapter.classList.remove("material-icons", "text-blue-500");
       nbrBm.innerHTML = response.data.nbrBm;
     }
   });

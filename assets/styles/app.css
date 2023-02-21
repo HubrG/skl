@@ -16,7 +16,15 @@
   'GRAD' 0,
   'opsz' 24
 }
-.material-icons-outlined {
+.material-symbols {
+	@apply align-top text-[1.35em] mt-[0.1rem];
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 00,
+  'GRAD' 0,
+  'opsz' 24
+}
+.material-icons {
 	@apply align-top text-[1.35em] mt-[0.1rem];
   font-family: 'Material Icons';
   font-weight: thin;

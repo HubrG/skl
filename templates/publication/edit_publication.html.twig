@@ -29,7 +29,9 @@
 			<div id="hideNoCover" data-tippy-content="Cliquez ici pour ajouter une photo de couverture" class="shadow-md p-10 text-2xl flex h-80 bg-white rounded-md dark:bg-slate-500" for="publication_cover">
 				<label for="publication_cover" class="cursor-pointer justify-center h-80">
 					<h2 class="m-auto text-center font-light shadow-slate-300 text-slate-600 dark:shadow-slate-900 mt-10 rounded-lg">
-						<i class="fa-regular fa-images text-5xl"></i><br/><br/>Ajouter une couverture
+						<span class="material-symbols-outlined">
+							add_photo_alternate
+						</span><br/><br/>Ajouter une couverture
 					</h2>
 				</label>
 			</div>
@@ -172,7 +174,9 @@
 											</span><br><br>
 											<hr>
 											<span class="text-xs font-normal block text-justify items-center text-slate-600">
-												<i class="fa-solid fa-info"></i>
+												<span class="material-symbols-outlined">
+													tips_and_updates
+												</span>
 												| Vous pouvez créer autant de feuilles que vous le souhaitez et les organiser selon vos besoins. Une feuille peut être considérée comme une simple feuille de texte, sinon comme un chapitre de votre récit. L'ordre dans lequel vous les placerez sera l'ordre dans lequel vos lecteurs les parcoureront au fil de leur lecture.</span><br>
 										</a>
 									</p>
@@ -196,9 +200,13 @@
 												</span>
 											</span><br/><br/>
 											<span class="text-xs font-normal block text-justify items-center">
-												<i class="fa-solid fa-info"></i>
+												<span class="material-symbols-outlined">
+													tips_and_updates
+												</span>
 												| Celle-ci est dépubliée et se trouve dans la section ci-dessous. Vous pouvez la publier en la déposant dans cet espace
-												<i class="fa-solid fa-arrows-up-down-left-right"></i>. Vous pourrez également modifier l'ordre d'affichage des feuilles publiées. Cet ordre sera celui par lequel vos lecteurs parcoureront vos feuilles.
+												<span class="material-symbols-outlined">
+													open_with
+												</span>. Vous pourrez également modifier l'ordre d'affichage des feuilles publiées. Cet ordre sera celui par lequel vos lecteurs parcoureront vos feuilles.
 											</span>
 										</p>
 									</div>
@@ -275,8 +283,10 @@
 					<div class="w-11 h-6 bg-slate-200 cursor-pointer rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-blue-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
 					<span class="ml-3 text-sm {{ infoPub.status > 1 ? " text-slate-400 cursor-default" : " cursor-pointer" }}  dark:text-gray-300 disabled" id="ASText">Sauvegarde auto.</span>
 				</label>
-				<span class="absolute right-0 mr-11" id="ASTooltip">
-					<i data-tippy-content='<p class="text-justify tippy-tt p-2"><strong>La sauvegarde automatique est désactivée car votre récit est publié.</strong> Si vous souhaitez enregistrer les modifications apportées à votre récit, vous pouvez cliquer sur le bouton « Publier les modifications ».</p>' class="fa-solid fa-circle-info opacity-30"></i>
+				<span class="absolute right-0 mr-5 cursor-default" id="ASTooltip">
+					<span class="material-symbols-outlined opacity-30" data-tippy-content='<p class="text-justify tippy-tt p-2"><strong>La sauvegarde automatique est désactivée car votre récit est publié.</strong> Si vous souhaitez enregistrer les modifications apportées à votre récit, vous pouvez cliquer sur le bouton « Publier les modifications ».</p>'>
+						info
+					</span>
 				</span>
 			</div>
 			<div class="px-3 rounded-lg  w-full dark:bg-gray-800 mb-3 flex hover:opacity-100 hover:grayscale-0">
@@ -287,9 +297,11 @@
 						<input type="checkbox" value="" class="sr-only peer" id="" disabled/>
 					{% endif %}
 					<div class="w-11 h-6 bg-blue-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-blue-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-					<span class="ml-3 text-sm cursor-pointer dark:text-gray-300">Récit terminé&nbsp;&nbsp;
+					<span class="ml-3 text-sm dark:text-gray-300">Récit terminé&nbsp;&nbsp;
 						<span data-tippy-content="Cochez cette case pour informer vos lecteurs que votre récit est terminé et qu'aucune nouvelle feuille n'est à attendre.">
-							<i class="fa-regular fa-circle-question"></i>
+							<span class="material-symbols-outlined">
+								help
+							</span>
 						</span>
 					</span>
 				</label>
@@ -297,17 +309,23 @@
 		</div>
 		<div class="p-4 rounded-lg bg-slate-50 w-full dark:bg-gray-800 mb-4 text-slate-800 dark:text-slate-400">
 			<p class="text-xs mb-1">
-				<i class="fa-regular fa-clock"></i>
+				<span class="material-symbols-outlined">
+					history_toggle_off
+				</span>
 				&nbsp;Crée il y a
 				<span class="font-medium">{{ infoPub.created|since }}</span>
 			</p>
 			<p class="text-xs mb-1">
-				<i class="fa-regular fa-clock"></i>
+				<span class="material-symbols-outlined">
+					update
+				</span>
 				&nbsp;Modifié il y a
 				<span class="font-medium">{{ infoPub.updated|since }}</span>
 			</p>
 			<p id="publishDateText" class="text-xs mb-1">
-				<i class="fa-regular fa-clock"></i>
+				<span class="material-symbols-outlined">
+					cloud_upload
+				</span>
 				&nbsp;Publié il y a
 				<span class="font-medium" id="publishDateTextSpan">
 					{% if infoPub.publishedDate %}

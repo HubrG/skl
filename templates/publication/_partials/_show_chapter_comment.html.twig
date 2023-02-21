@@ -1,6 +1,8 @@
 <turbo-frame id="commentFrame">
 	<p>
-		<i class="fa-regular fa-comments"></i>
+		<span class="material-symbols-outlined">
+			question_answer
+		</span>
 		&nbsp;
 		{% set nbComment = infoChap.publicationChapterComments|length %}
 		{% if nbComment == 0 %}
@@ -19,27 +21,27 @@
 	{% set n = 0 %}
 	{% set userLogId = app.user.id is defined ? app.user.id : null %}
 	{% for item in comments|sort((a, b) => a.publishDate > b.publishDate ? -1 : 1) %}
-		{% set class = "fa-regular fa-heart" %}
+		{% set class = "material-symbols-outlined" %}
 		{% if userLogId is not null %}
 			{% if item.user.id == userLogId %}
-				{% set class = "fa-solid fa-heart grayscale cursor-not-allowed text-slate-300 " %}
+				{% set class = "material-icons grayscale cursor-not-allowed text-slate-300 " %}
 			{% else %}
 				{% for itemLike in item.publicationChapterCommentLikes %}
 					{% if itemLike.user.id == app.user.id %}
-						{% set class = "fa-solid fa-heart text-red-500 cursor-pointer likeButton " %}
+						{% set class = "material-icons text-red-500 cursor-pointer likeButton " %}
 						{% set liked = true %}
 						{% set break = "" %}
 					{% endif %}
 				{% endfor %}
 				{% if not liked %}
-					{% set class = "fa-regular fa-heart likeButton cursor-pointer " %}
+					{% set class = "material-symbols-outlined likeButton cursor-pointer " %}
 				{% endif %}
-				{% if class == "fa-regular fa-heart" %}
-					{% set class = "fa-regular fa-heart likeButton cursor-pointer " %}
+				{% if class == "material-symbols-outlined" %}
+					{% set class = "material-symbols-outlined likeButton cursor-pointer " %}
 				{% endif %}
 			{% endif %}
 		{% else %}
-			{% set class = "fa-regular fa-heart cursor-default text-slate-400" %}
+			{% set class = "material-symbols-outlined cursor-default text-slate-400" %}
 		{% endif %}
 		{% set lastComment = n == 0 and userLogId == item.user.id and item.publishDate > "now"|date_modify("-2 seconds") %}
 		<div class="{{ lastComment ? 'mb-3 animate__animated animate__fadeIn transition-colors duration-[1000ms] p-6 shadow-sm relative' : 'bg-white p-6 mb-3 shadow-sm relative' }}" {% if lastComment %} id="lastComment" {% endif %}>
@@ -64,21 +66,27 @@
 								{% if item.user.id == userLogId %}
 									<li>
 										<button type="button" id="updateButton-{{ item.id }}" class="updateButton w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-											<i class="fa-regular fa-pen-to-square"></i>
+											<span class="material-symbols-outlined">
+												edit_note
+											</span>
 											&nbsp;Modifier
 										</button>
 									</li>
 									<li>
 										<a id="delComment" data-turbo-frame="_self" href="{{ path("app_chapter_del_comment", {id:item.id}) }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-											<i class="fa-regular fa-trash-can"></i>
+											<span class="material-symbols-outlined">
+												delete
+											</span>
 											&nbsp;Supprimer
 										</a>
 									</li>
 								{% else %}
 									<li>
 										<a data-turbo-frame="_self" href="{{ path("app_chapter_del_comment", {id:item.id}) }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-											<i class="fa-solid fa-circle-exclamation"></i>
-											&nbsp;Signaler un abus
+											<span class="material-symbols-outlined">
+												report
+											</span>
+											&nbsp;Signaler
 										</a>
 									</li>
 								{% endif %}
@@ -98,7 +106,7 @@
 				</blockquote>
 			{% endif %}
 			<div class="mt-4 flex items-center justify-end">
-				<i class="{{ class }} animate__animated" id="likeButton-{{ item.id }}"></i>
+				<span class="{{ class }}" id="likeButton-{{ item.id }}">favorite</span>
 				<span class="ml-2 font-medium text-gray-600">
 					<span id="nbLikes-{{ item.id }}">{{ item.publicationChapterCommentLikes|length }}</span>
 				</span>

@@ -143,14 +143,14 @@ function publishChapter(publish) {
         toggleAS.checked = false;
         toggleAS.disabled = true;
         saveChapter.innerHTML =
-          '<i class="fa-solid fa-cloud-arrow-up"></i>&nbsp;Publier les modifications';
+          '<span class="material-symbols-outlined">cloud_upload</span>&nbsp;Publier les modifications';
         asTip.setAttribute("data-tooltip-target", "tooltip-default");
         toggleASfunc();
       } else {
         // * on active l'autosave et on rétabli le toggle autosave
         toggleAS.disabled = false;
         saveChapter.innerHTML =
-          '<i class="fa-regular fa-floppy-disk"></i>&nbsp;Enregistrer';
+          '<span class="material-symbols-outlined">save</span>&nbsp;Enregistrer';
         asTip.removeAttribute("data-tooltip-target", "tooltip-default");
       }
     });

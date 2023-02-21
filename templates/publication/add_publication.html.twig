@@ -18,7 +18,9 @@
 		{% endif %}
 		<div class="col-span-6">
 			<button type="button" onclick="document.getElementById('submitAdd').click()" class="button-classic button-gray">Je renseignerai ces informations plus tard &nbsp;
-				<i class="fa-solid fa-arrow-right-long"></i>
+				<span class="material-symbols-outlined">
+					arrow_right_alt
+				</span>
 			</button>
 		</div>
 	</div>
@@ -27,7 +29,9 @@
 			<div id="hideNoCover" data-tippy-content="Cliquez ici pour ajouter une photo de couverture" class=" p-10 text-2xl flex h-80 bg-white shadow-md rounded-md dark:bg-slate-500" for="publication_cover" data-tooltip-placement="bottom" data-tooltip-target="tooltip-cover">
 				<label for="publication_cover" class="cursor-pointer justify-center h-80">
 					<h2 class="m-auto text-center font-light shadow-slate-300 text-slate-600 dark:shadow-slate-900 mt-10 rounded-lg">
-						<i class="fa-regular fa-images text-5xl"></i><br/><br/>Ajouter une couverture
+						<span class="material-symbols-outlined">
+							add_photo_alternate
+						</span><br/><br/>Ajouter une couverture
 					</h2>
 
 				</label>
@@ -103,7 +107,9 @@
 			<span class="ml-3 -mt-6 text-sm font-medium text-gray-900 dark:text-gray-300">Votre récit contient-il du contenu pour adulte ?</span>
 		</label>
 		<div>
-			<button type="submit" id="submitAdd" class="float-right button-classic button-slate">Passer à l'étape suivante &nbsp;&nbsp;&nbsp;<i class="fa-solid fa-angle-right"></i>
+			<button type="submit" id="submitAdd" class="float-right button-classic button-slate">Passer à l'étape suivante &nbsp;&nbsp;&nbsp;<span class="material-symbols-outlined">
+					arrow_right_alt
+				</span>
 			</button>
 		</div>
 		{{ form_end(form) }}

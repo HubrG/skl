@@ -7,6 +7,7 @@ use Cloudinary\Uploader;
 use Cloudinary\Cloudinary;
 use App\Entity\Publication;
 use App\Form\PublicationType;
+use App\Services\ImageService;
 use App\Entity\PublicationKeyword;
 use Cloudinary\Transformation\Resize;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,6 +28,12 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 class PublicationController extends AbstractController
 {
 
+    private $uploadImage;
+
+    public function __construct(ImageService $uploadImage)
+    {
+        $this->uploadImage = $uploadImage;
+    }
 
     #[Route('/story/add', name: 'app_publication_add')]
     public function Draft(Request $request, PublicationRepository $pubRepo, SluggerInterface $slugger, EntityManagerInterface $em): Response
@@ -311,7 +318,7 @@ class PublicationController extends AbstractController
         return $this->redirectToRoute("app_user_show_publications");
     }
     #[Route('/story/autosave', name: 'app_publication_autosave', methods: "POST")]
-    public function Axios_AutoSave(Request $request, MimeTypesInterface $mimeTypes, EntityManagerInterface $em, SluggerInterface $slugger, PublicationCategoryRepository $catRepo, PublicationRepository $pRepo): response
+    public function Axios_AutoSave(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, PublicationCategoryRepository $catRepo, PublicationRepository $pRepo): response
     {
         $idPub = $request->get("idPub");
         //
@@ -334,60 +341,8 @@ class PublicationController extends AbstractController
                 ->setUpdated(new \DateTime('now'));
 
             // * Traitement de l'image
-            //! Le ficheir est-il une image ?
-            $file = new File($dtCover);
-            $mimeType = $mimeTypes->guessMimeType($file->getPathname());
-            $isImage = strpos($mimeType, 'image/') === 0;
-            if (!$isImage) {
-                // Fichier n'est une image
-                return $this->json([
-                    "code" => 500,
-                    "value" => "Le fichier que vous avez envoyé n'est pas une image."
-                ]);
-            }
-            //
             if ($dtCover) {
-                $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $idPub;
-                $newFilename = $pub->getId() . rand(0, 9999) . '.img';
-
-                try {
-                    $dtCover->move(
-                        $destination,
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    return $this->json([
-                        "code" => 500,
-                        "value" => "Une erreur est survenue. Vérifiez que le fichier n'est pas corrompu, sinon préférez un format JPG"
-                    ]);
-                }
-                $cloudinary = new Cloudinary(
-                    [
-                        'cloud' => [
-                            'cloud_name' => 'djaro8nwk',
-                            'api_key'    => '716759172429212',
-                            'api_secret' => 'A35hPbZP0NsjnMKrE9pLR-EHwiU',
-                        ],
-                    ]
-                );
-
-                $cloudinary->uploadApi()->upload(
-                    $destination . "/" . $newFilename,
-                    ['public_id' => $newFilename, 'folder' => "story/" . $idPub,]
-                );
-
-                $urlCloudinary = $cloudinary->image("story/" . $idPub . "/" . $newFilename)->resize(Resize::fill(529, 793))->toUrl();
-                // * On supprime la cover
-                if (\file_exists($destination . "/" . $newFilename)) {
-                    \unlink($destination . "/" . $newFilename);
-                }
-                // On récupère le dernier cover de la publication pour la supprimer de Cloudinary : 
-                if ($pub->getCover()) {
-                    preg_match("/\/([^\/]*\.img)/", $pub->getCover(), $matches);
-                    $result = $matches[1];
-                    $cloudinary->uploadApi()->destroy("story/" . $idPub . "/" . $result, ['invalidate' => true,]);
-                }
-                $publication->setCover($urlCloudinary);
+                return $this->uploadImage->UploadImage($dtCover, "story", $pub->getId(), 529, 793);
             }
             $em->persist($publication);
             $em->flush();
@@ -397,8 +352,7 @@ class PublicationController extends AbstractController
             ]);
         }
         return $this->json([
-            "code" => 200,
-            "cloudinary" => $urlCloudinary // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
+            "code" => 200 // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
         ]);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Services;
+namespace App\Services;
 
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;

@@ -589,7 +589,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->instagram;
     }
 
-    public function setInstagram(string $instagram): self
+    public function setInstagram(?string $instagram): self
     {
         $this->instagram = $instagram;
 

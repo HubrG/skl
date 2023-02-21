@@ -4,7 +4,7 @@
 @import '~animate.css/animate.css';
 @import "~noty/lib/noty.css";
 @import "~noty/lib/themes/semanticui.css";
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;1,100;1,300;1,400;1,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Solitreo&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Solitreo&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
@@ -375,7 +375,7 @@ opacity: 0.4;
 	@apply  float-right font-sans rounded-full -mt-[6.9rem] mr-[0.2rem]  px-1 text-slate-600  text-center text-xs ;
 }
 .kwTag {
-	@apply bg-slate-100 text-slate-600 text-sm font-light mr-1 leading-7 mb-2 px-2.5 py-0.5 rounded dark:bg-slate-700 dark:text-slate-400 hover:bg-slate-200;
+	@apply bg-slate-100 text-slate-600 text-xs font-light mr-1 leading-7 mb-2 px-2.5 py-1 rounded dark:bg-slate-700 dark:text-slate-400 hover:bg-slate-200;
 }
 .catTag {
 	@apply text-sm mr-1 leading-7 mb-2 px-2.5 py-0.5 rounded dark:bg-slate-700 dark:text-slate-400;
@@ -435,7 +435,7 @@ opacity: 0.4;
 	@apply bg-rose-100 text-rose-900 hover:bg-rose-200;
 }
 .button-classic {
-@apply  rounded ring-1 text-sm  border-b-2 px-3 py-3 	 hover:grayscale-[90%] active:border-b active:py-[0.78rem] font-normal;
+@apply  rounded ring-1 text-sm  border-b-2 px-3 py-3 	 hover:grayscale-[90%] active:border-b active:py-[0.78rem] font-normal transition ease-in duration-75;
 }
 .button-violet {
 	@apply   bg-violet-50 text-violet-900 ring-violet-600 border-violet-600;
@@ -496,4 +496,7 @@ opacity: 0.4;
 }
 .tippy-box {
 	@apply bg-slate-800 text-center py-1 px-1 w-full text-sm;
+}
+.dropdown-sort-swap {
+	@apply  opacity-25;
 }

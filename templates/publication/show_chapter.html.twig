@@ -28,9 +28,13 @@
 					<div>
 						<a href="{{ path("app_chapter_show", {idChap:item.id, slugPub:infoPub.slug, user:infoPub.user.username, slug:item.slug}) }}" class="block px-4 py-4 text-sm text-gray-700 {% if item.id == infoChap.id %}bg-slate-50{% endif %} hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
 							{% if item.id == infoChap.id %}
-								<i class="fa-solid fa-bookmark"></i>
+								<span class="material-symbols-outlined">
+									document_scanner
+								</span>
 							{% else %}
-								<i class="fa-regular fa-bookmark"></i>
+								<span class="material-symbols-outlined">
+									article
+								</span>
 							{% endif %}
 							{{ item.title }}
 						</a>
@@ -124,9 +128,6 @@
 			<li class="commentQuote">
 				<i data-tippy-content="Commenter ce passage" class="fa-regular fa-comment toggleSidebar"></i>
 			</li>
-			<li>
-				<i class="fa-solid fa-lock"></i>
-			</li>
 			<li>|</li>
 			<li>
 				<i data-tippy-content="Partager sur Twitter" class="shareTwitter  fa-brands fa-square-twitter text-[#1DA1F2]  text-xl"></i>
@@ -138,7 +139,7 @@
 				<i data-tippy-content="Partager sur Linkedin" class="shareLk fa-brands fa-linkedin text-[#0072b1] text-xl"></i>
 			</li>
 			<li>
-				<i data-tippy-content="Copier la sélection" class="fa-solid fa-link text-slate-700"></i>
+				<i data-tippy-content="Copier le lien menant à cette selection" class="fa-solid fa-link text-slate-700"></i>
 			</li>
 		</ul>
 	</div>
@@ -153,9 +154,6 @@
 			<li class="commentAlreadyQuote">
 				<i data-tippy-content="Commenter ce passage" class="fa-regular fa-comment toggleSidebar"></i>
 			</li>
-			<li>
-				<i class="fa-solid fa-lock"></i>
-			</li>
 			<li class="text-slate-400">|</li>
 			<li>
 				<i data-tippy-content="Partager sur Twitter" class="shareTwitter  fa-brands fa-square-twitter text-[#1DA1F2]  text-xl cursor-pointer"></i>
@@ -167,7 +165,7 @@
 				<i data-tippy-content="Partager sur Linkedin" class="shareLk fa-brands fa-linkedin text-[#0072b1] text-xl"></i>
 			</li>
 			<li>
-				<i data-tippy-content="Copier la sélection" class="fa-solid fa-link text-slate-700"></i>
+				<i data-tippy-content="Copier le lien menant à cette selection" class="fa-solid fa-link text-slate-700"></i>
 			</li>
 		</ul>
 	</div>

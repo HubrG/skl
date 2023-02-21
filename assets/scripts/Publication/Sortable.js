@@ -1,5 +1,5 @@
 // Default SortableJS
-import Sortable from "sortablejs";
+import { Sortable } from "sortablejs";
 
 export function Sortables() {
   if (document.getElementById("itemsChap")) {
@@ -9,10 +9,10 @@ export function Sortables() {
 
     // List with handle
     Sortable.create(document.getElementById("itemsChap"), {
-      animation: 250, // ms, animation speed moving items when sorting, `0` — without animation
       easing: "cubic-bezier(0.65, 0, 0.35, 1)",
       group: "shared", // set both lists to same group
       handle: ".item",
+      animation: 300,
       ghostClass: "ghost",
       onEnd: function (/**Event*/ evt) {
         var itemEl = evt.item; // dragged HTMLElement
@@ -30,10 +30,12 @@ export function Sortables() {
     });
     // List with handle
     Sortable.create(document.getElementById("itemsChap2"), {
-      animation: 250, // ms, animation speed moving items when sorting, `0` — without animation
       easing: "cubic-bezier(0.65, 0, 0.35, 1)",
       group: "shared", // set both lists to same group
       handle: ".item",
+      animation: 300,
+
+      swapClass: "dropdown-sort-swap", // The class applied to the hovered swap item
       ghostClass: "ghost",
       onEnd: function (/**Event*/ evt) {
         var itemEl = evt.item; // dragged HTMLElement
@@ -51,16 +53,12 @@ export function Sortables() {
 function axiosGoSortable() {
   let nbr = 0;
   let url = "/story/chapter/sort";
-  //
-  // ! FIXME: Attention, pas du tout optimal, ça envoi une requête pour chaque chapitre... à voir comment refactoriser
   var parent1 = document.querySelector("#itemsChap");
   var parent2 = document.querySelector("#itemsChap2");
   document.querySelectorAll(".list-group-item").forEach(function (row) {
     row.id = nbr;
     let data = new FormData();
-    // ! On envoi le nouveau status du chapitre en bdd
     var t = "indicator" + row.getAttribute("chap");
-
     var indicator = document.getElementById(t).classList;
 
     if (parent1.contains(row)) {
@@ -80,7 +78,19 @@ function axiosGoSortable() {
           "Content-Type": "multipart/form-data",
         },
       })
-      .then(function (response) {});
+      .then(function (response) {
+        var chapterNumber = document.getElementById(
+          "chapter-sort-" + row.getAttribute("chap")
+        );
+        if (response.data.status == 2) {
+          if (chapterNumber.classList.contains("hidden")) {
+            chapterNumber.classList.remove("hidden");
+          }
+          chapterNumber.innerHTML = response.data.order;
+        } else {
+          chapterNumber.classList.add("hidden");
+        }
+      });
     nbr++;
   });
 }

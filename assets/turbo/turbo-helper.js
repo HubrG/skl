@@ -60,7 +60,9 @@ const TurboHelper = class {
       TippyC();
       DropdownMenu();
       User();
-
+      if (document.querySelector(".list-group-item")) {
+        Sortables();
+      }
       document
         .getElementById("mega-menu-icons-dropdown")
         .classList.add("hidden");

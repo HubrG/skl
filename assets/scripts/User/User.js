@@ -4,26 +4,39 @@ export function User() {
   // Si "pp" existe, on ajoute un event listener sur le bouton "pp" sinon on retourne rien
 
   const pp = document.getElementById("pp");
+  const pbg = document.getElementById("pbg");
   if (!pp) return;
-
   pp.addEventListener("change", (event) => {
-    UpdateProfilPicture(pp.files[0]);
+    UpdateProfilPicture(pp.files[0], "pp");
+  });
+  pbg.addEventListener("change", (event) => {
+    UpdateProfilPicture(pbg.files[0], "pbg");
   });
 }
-function UpdateProfilPicture(file) {
+function UpdateProfilPicture(file, type) {
+  if (type === "pp") {
+    var image = document.getElementById("profil_picture");
+  } else if (type === "pbg") {
+    var image = document.getElementById("section_profil");
+  }
+  if (!file) {
+    return;
+  }
+  image.classList.add("opacity-50");
   if (file.size > 10000000) {
     var notyText =
       "<span class='text-base font-medium'>Fichier trop volumineux</span><br />Le fichier ne doit pas dépasser 10mo.";
     var notyTimeout = 4500;
     var notyType = "error";
     NotyDisplay(notyText, notyType, notyTimeout);
+    image.classList.remove("opacity-50");
     return;
   }
   // On crée un objet FormData
-  const url = "/update/user/update_pp";
+  const url = "/update/user/update_picture";
   const formData = new FormData();
   // On ajoute le fichier à l'objet FormData
-  formData.append("pp", file);
+  formData.append(type, file);
   // On envoie la requête
   axios
     .post(url, formData, {
@@ -33,17 +46,30 @@ function UpdateProfilPicture(file) {
     })
     .then((response) => {
       if (response.data.code === 200) {
-        document.getElementById("profil_picture").src =
-          response.data.cloudinary;
-        var notyText =
-          "<span class='text-base font-medium'>Photo de profil mise à jour</span>";
+        if (type === "pp") {
+          image.src = response.data.cloudinary;
+          var notyText =
+            "<span class='text-base font-medium'>Photo de profil mise à jour</span>";
+          if (
+            document.getElementById("profil_picture_navbar") &&
+            type === "pp"
+          ) {
+            document.getElementById("profil_picture_navbar").src =
+              response.data.cloudinary;
+          }
+        } else if (type === "pbg") {
+          var notyText =
+            "<span class='text-base font-medium'>Photo de couverture mise à jour</span>";
+          const newStyle = document.createElement("style");
+          newStyle.innerHTML =
+            '#section_profil::before { background-image:url("' +
+            response.data.cloudinary +
+            '") }';
+          document.body.appendChild(newStyle);
+        }
         var notyTimeout = 3500;
         var notyType = "success";
         NotyDisplay(notyText, notyType, notyTimeout);
-        if (document.getElementById("profil_picture_navbar")) {
-          document.getElementById("profil_picture_navbar").src =
-            response.data.cloudinary;
-        }
       } else {
         var notyText =
           "<span class='text-base font-medium'>Erreur</span><br/>" +
@@ -52,30 +78,9 @@ function UpdateProfilPicture(file) {
         var notyType = "error";
         NotyDisplay(notyText, notyType, notyTimeout);
       }
+    })
+    .then(() => {
+      image.classList.remove("opacity-50");
     });
-}
-function isImage(file) {
-  const reader = new FileReader();
-  reader.readAsArrayBuffer(file);
-
-  reader.onloadend = function () {
-    const arr = new Uint8Array(reader.result).subarray(0, 4);
-    let header = "";
-    for (let i = 0; i < arr.length; i++) {
-      header += arr[i].toString(16);
-    }
-    switch (header) {
-      case "89504e47":
-        return true; // PNG
-      case "47494638":
-        return true; // GIF
-      case "ffd8ffe0":
-      case "ffd8ffe1":
-      case "ffd8ffe2":
-        return true; // JPEG
-      default:
-        return false; // not an image
-    }
-  };
 }
 User();

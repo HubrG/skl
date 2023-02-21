@@ -23,7 +23,7 @@ module.exports = {
         "fade-in": "fade-in 0.2s ease-in-out",
       },
       fontFamily: {
-        sans: ["Lato", "sans-serif"],
+        sans: ["Open Sans", "sans-serif"],
         serif: ["Playfair Display", "serif"],
       },
       fontSize: {

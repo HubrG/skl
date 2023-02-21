@@ -3,14 +3,14 @@
 
 namespace App\Controller\Publication;
 
+use App\Services\PublicationPopularity;
+use App\Services\PublicationDownloadPDF;
 use App\Repository\PublicationRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
 use App\Repository\PublicationKeywordRepository;
 use App\Repository\PublicationCategoryRepository;
-use App\Controller\Services\PublicationPopularity;
-use App\Controller\Services\PublicationDownloadPDF;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PublicationShowController extends AbstractController
@@ -221,6 +221,9 @@ class PublicationShowController extends AbstractController
 		$orderChap = $pchRepo->findOneBy(["publication" => $publication, "order_display" => 0, "status" => 2]);
 		$chapters = $pchRepo->findBy(["publication" => $publication, "status" => 2], ["order_display" => "ASC"]);
 
+		if (!$chapters) {
+			return $this->redirectToRoute('app_home');
+		}
 
 		if ($slug == "download") {
 			$this->publicationDownloadPDF->PublicationDownloadPDF($id); // download PDF

@@ -223,7 +223,9 @@ class ChapterController extends AbstractController
         $em->persist($chapter);
         $em->flush();
         return $this->json([
-            "code" => 200 // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
+            "code" => 200, // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
+            "order" => $chapter->getOrderDisplay() + 1, // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
+            "status" => $chapter->getStatus() // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
         ]);
     }
 }

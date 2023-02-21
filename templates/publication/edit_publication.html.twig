@@ -15,7 +15,7 @@
 			<span id="pubTitle" class="text-4xl font-serif">
 				{{ infoPub.title|capitalize }}
 			</span>
-			<span class="absolute top-0">
+			<span class="absolute top-0 cursor-pointer" data-modal-target="popup-modal" data-modal-toggle="popup-modal">
 				{% if (infoPub.status > 1) %}
 					<span id="badgePubStatus" class="badge">Publié</span>
 				{% else %}
@@ -166,7 +166,9 @@
 											<span class="text-slate-900 text-base">
 												Cliquez ici pour éditer votre première feuille</span><br><br>
 											<span class="text-4xl">
-												<i class="fa-solid fa-file-circle-plus"></i>
+												<span class="material-symbols-outlined">
+													add_notes
+												</span>
 											</span><br><br>
 											<hr>
 											<span class="text-xs font-normal block text-justify items-center text-slate-600">
@@ -186,10 +188,12 @@
 									<div class="w-full text-center bg-amber-100 text-amber-900 rounded border-2 border-amber-300 border-dashed mt-3 opacity-60" id="noPublication">
 										<p class="block w-full h-full px-5 pt-5 pb-5  font-medium leading-5" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}">
 											<span class=" text-base">
-												Vous avez créé votre première feuille !
+												Vous venez de créer votre première feuille !
 											</span><br><br>
 											<span class="text-4xl">
-												<i class="fa-solid fa-hands-clapping"></i>
+												<span class="material-symbols-outlined">
+													cheer
+												</span>
 											</span><br/><br/>
 											<span class="text-xs font-normal block text-justify items-center">
 												<i class="fa-solid fa-info"></i>

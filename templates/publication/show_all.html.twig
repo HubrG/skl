@@ -109,8 +109,8 @@
 							<small class="font-light">
 								<a href="{{ path("app_user", {username:item.user.username}) }}" class="hover:underline">{{ item.user.nickname }}</a>
 							</small>
-							<h5 class="mb-2 text-base text-slate-600 font-medium tracking-tight">
-								<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" class=" text-slate-600  dark:text-white text-base leading-5 font-bold hover:underline">{{ item.title }}</a>
+							<h5 class="mb-2 text-base text-slate-600 font-medium tracking-tight pr-2">
+								<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" class=" text-slate-600  dark:text-white text-base leading-5 font-medium hover:underline">{{ item.title }}</a>
 							</h5>
 							<span class="material-symbols-outlined absolute right-3 top-11 cursor-zoom-in  float-right opacity-40 hover:opacity-80 text-slate-500  publication-button" data-popover-target="popover-info-{{item.id}}" data-popover-trigger="hover" data-popover-placement="bottom-end" id="info-{{item.id}}">
 								info
@@ -188,7 +188,7 @@
 								<div data-popper-arrow></div>
 							</div>
 							{# popver end #}
-							<p class="mb-3 font-normal text-slate-600 text-sm leading-[1.4rem] dark:text-slate-400 line-clamp-[7] md:line-clamp-[10] lg:line-clamp-[7] text-justify">
+							<p class="mb-3 font-normal text-slate-600 text-xs leading-[1.4rem] dark:text-slate-400 line-clamp-[6] md:line-clamp-[10] lg:line-clamp-[6] text-justify">
 								{% if item.summary %}
 									{{ item.summary}}
 								{% else %}

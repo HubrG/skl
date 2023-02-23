@@ -205,22 +205,23 @@ class UserController extends AbstractController
 			return $this->redirectToRoute("app_home");
 		}
 	}
-	#[Route('update/user/account', name: 'app_user_account')]
-	public function account(Request $request, EntityManagerInterface $em, UserRepository $userRepo,  UserPasswordHasherInterface $userPasswordHasher): Response
+	#[Route('update/user/account/{success?}', name: 'app_user_account')]
+	public function account(Request $request, EntityManagerInterface $em, UserRepository $userRepo,  UserPasswordHasherInterface $userPasswordHasher, $success = null): Response
 	{
 		if (!$this->getUser()) {
 			return $this->redirectToRoute("app_home");
 		}
+		$success = null;
 		$user = $userRepo->findOneBy(["id" => $this->getUser()]);
 		$form = $this->createForm(UserAccountType::class, $user);
 		$pwForm = $this->createForm(UserChangePasswordType::class, $user);
 		//
 		$form->handleRequest($request);
+
 		if ($form->isSubmitted() && $form->isValid()) {
 			$em->persist($user);
 			$em->flush();
-			$this->addFlash("success", "Votre compte a bien été mis à jour");
-			return $this->redirectToRoute("app_user_account");
+			return $this->redirectToRoute("app_user_account", ["success" => "success"]);
 		}
 
 		$pwForm->handleRequest($request);
@@ -229,13 +230,13 @@ class UserController extends AbstractController
 			$user->setPassword($newEncodedPassword);
 			$em->persist($user);
 			$em->flush();
-			$this->addFlash("success", "Votre compte a bien été mis à jour");
-			return $this->redirectToRoute("app_user_account");
+			return $this->redirectToRoute("app_user_account", ["success" => "success"]);
 		}
 
 		return $this->render('user/account.html.twig', [
 			'form' => $form,
-			'passwordForm' => $pwForm
+			'passwordForm' => $pwForm,
+			'success' => $success
 		]);
 	}
 }

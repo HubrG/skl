@@ -6,3 +6,7 @@ Pour selectionner items tous les items : CMD+ALT+L
 * TODO: Créer un compteur de "partage" et l'ajouter dans l'algo de popularité
 * TODO: Utiliser twig pour enlever des données surnuméraires pour les mobiles (exemple sur la page "tous les articles, enlever la bulle d'info)
 + {% if app.request.headers.get('User-Agent') matches '/(iPhone|iPod|iPad|Android|webOS|BlackBerry|IEMobile|Opera Mini)/i' %} {% endif %}
+* TODO: Créer plusieurs vues pour "Show all" (large/smart etc.)
+* TODO: Faire un moteur de recherche
+* TODO: Créer un système de commentaire et de note pour les publications elles-mêmes.
++ Créer un système de collection (pour les publications)

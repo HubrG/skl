@@ -4,6 +4,31 @@
 {% endblock %}
 
 {% block body %}
+	<style>
+		#section_profil
+		{
+			position: inherit;
+			z-index: 1;
+		}
+		#section_profil::before
+		{
+			content: "";
+			position: absolute;
+			display: inline;
+			top: 0;
+			left: 0;
+			right: 0;
+			width: 100%;
+			min-height: 30vh;
+			height: 36vh;
+			opacity: 0.1;
+			z-index: -99999999999;
+			background-position: center;
+			background-image: url('{{app.user.profilBackground}}');
+
+		}
+	</style>
+
 	<div class="col-span-10 col-start-2">
 		<h1 class="text-center font-serif block">
 			<span class="material-symbols-outlined">
@@ -11,19 +36,26 @@
 			</span><br/>
 			Mon compte
 		</h1>
-		<hr class="mb-10">
 	</div>
-	<section class="col-span-10 col-start-2 flex gap-x-6">
+
+	<section class="col-span-10 col-start-2 mt-5 flex gap-x-6 before:bg-cover before:-z-[9999] {{ app.user.profilBackground ? " before:border-b-[1px]" }} before:border-b-black" id="section_profil">
 		<div class="w-3/6  bg-white rounded border">
-			<div class="w-full bg-[#eff0f3] p-5 rounded-t border-b-[1px] border-b-[#dee4e1] ">
+			<div class="w-full  p-5 rounded-t border-b-[1px] bg-slate-50 border-b-[#dee4e1] ">
 				<h2 class="text-xl text-center mt-2 font-medium text-[#00473e]">
 					<span class="material-symbols-outlined">
 						frame_person
 					</span>
 					<br>Informations générales
+					{% if success is null %}
+
+						{% else %}
+
+							<div id="success"></div>
+					{% endif %}
 				</h2>
+
 			</div>
-			<div class="w-full bg-[#f0f1f5a1] rounded-b p-5 pb-2">
+			<div class="w-full rounded-b p-5 pb-2">
 				{{ form_start(form) }}
 				{% include "./partials/_form-row.html.twig" with {'form': form.email, 'icon':"mail"} %}
 				{% include "./partials/_form-row.html.twig" with {'form': form.username, 'icon':"alternate_email"} %}
@@ -45,15 +77,15 @@
 				{{ form_end(form) }}
 			</div>
 		</div>
-		<div class="w-3/6 rounded h-auto">
-			<div class="w-full bg-[#eff0f3] p-5 rounded-t border-b-[1px] border-b-[#dee4e1] ">
+		<div class="w-3/6 rounded h-auto border">
+			<div class="w-full p-5 rounded-t border-b-[1px] border-b-[#dee4e1] bg-slate-50 ">
 				<h2 class="text-xl text-center mt-2 font-medium text-slate-700">
 					<span class="material-symbols-outlined">
 						lock_reset
 					</span>
 					<br>Modification de votre mot de passe</h2>
 			</div>
-			<div class="w-full bg-[#f0f1f5a1] rounded-b p-5 pb-2">
+			<div class="w-full  rounded-b p-5 pb-2">
 				{{ form_start(passwordForm) }}
 				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.oldPassword, 'icon':"password"} %}
 				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.plainPassword.first, 'icon':"enhanced_encryption"} %}

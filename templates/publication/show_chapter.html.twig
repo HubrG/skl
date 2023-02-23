@@ -10,13 +10,21 @@
 	<section id="titleChapter" class="sticky {{ infoChap.Publication.status < 2 ? " -mt-20 top-16" : " top-14" }} bg-white bg-transparent bg-opacity-50 backdrop-blur-sm">
 		{% if infoChap.Publication.status < 2 %}
 			<div class="mb-0">
-				<div class="w-5/6 mx-auto -mt-2 h-10 bg-purple-100 ring-1 ring-purple-700 right-0 opacity-60 rounded-b-sm">
-					<p class="text-center p-2 font-medium text-sm text-purple-900">
-						<span class="material-symbols-outlined">
-							preview
-						</span>
-						Aperçu de votre récit (dépublié) |
-						<a href="{{ path("app_publication_edit", {id:infoPub.id}) }}" class="hover:underline">Revenir à l'édition</a>
+				<div class="w-5/6 mx-auto -mt-2 h-10  bg-slate-100 ring-1 ring-slate-700 opacity-80 right-0 rounded-b-sm">
+					<p class="text-center p-2 font-medium text-xs flex justify-between px-5 text-slate-900">
+						<span>
+							<span class="material-symbols-outlined">
+								preview
+							</span>
+							Aperçu de votre récit (<span class="material-icons text-red-600">
+								fiber_manual_record
+							</span>dépublié)</span>
+
+						<a href="{{ path("app_publication_edit", {id:infoPub.id}) }}" class="hover:underline">Revenir à l'édition
+							<span class="material-icons">
+								redo
+							</span>
+						</a>
 					</p>
 				</div>
 			</div>

@@ -13,10 +13,10 @@ export function User() {
         confirmDelete.removeAttribute("data-url-delete");
         let pubId = item.getAttribute("data-pub-id");
         confirmDelete.setAttribute("data-url-delete", pubId);
-        console.log(confirmDelete.getAttribute("data-url-delete"));
       });
     });
     confirmDelete.addEventListener("click", (event) => {
+      document.querySelector("main").classList.add("opacity-50");
       window.location.href = confirmDelete.getAttribute("data-url-delete");
     });
   }

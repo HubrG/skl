@@ -81,7 +81,7 @@ class PublicationController extends AbstractController
             //
             return $this->redirectToRoute("app_publication_edit", ["id" => $brouillon->getId()], Response::HTTP_SEE_OTHER);
         }
-        return $this->renderForm('publication/add_publication.html.twig', [
+        return $this->render('publication/add_publication.html.twig', [
             'form' => $form,
             'pub' => $brouillon
         ]);
@@ -94,7 +94,7 @@ class PublicationController extends AbstractController
             $infoPublication = $pubRepo->findOneBy(["user" => $this->getUser(), "id" => $id]);
             if ($infoPublication) {
                 $formPub = $this->createForm(PublicationType::class, $infoPublication);
-                return $this->renderForm('publication/edit_publication.html.twig', [
+                return $this->render('publication/edit_publication.html.twig', [
                     'infoPub' => $infoPublication,
                     'formPub' => $formPub
                 ]);

@@ -12,7 +12,7 @@
 			<div class="grid grid-cols-3  relative mb-10">
 				<div class="flex justify-center order-first md:order-first text-2xl mt-20 md:mt-0 gap-x-5"></div>
 				<label class="absolute mr-32 cursor-pointer font-semibold" for="pbg">
-					<p class="text-center button-classic button-indigo">
+					<p class="text-center text-indigo-600 bg-indigo-300 p-3 border-[1px] border-indigo-400 rounded-full bg-opacity-10 hover:text-indigo-900 hover:bg-opacity-40">
 						<span class="material-symbols-outlined">
 							wallpaper
 						</span>
@@ -35,7 +35,7 @@
 
 			</div>
 		</div>
-		<div class="bg-slate-50 rounded bg-opacity-80 w-5/6 mx-auto p-10 pb-0 ring-1 ring-gray-200 mt-14">
+		<div class="bg-slate-50 rounded bg-opacity-50 w-5/6 mx-auto p-10 pb-0 ring-1 ring-gray-200 mt-14">
 			<div class="grid grid-cols-2 gap-6 pt-0">
 				<div>
 					{{ form_label(editUserForm.nickname) }}
@@ -48,7 +48,7 @@
 						{{ form_widget(editUserForm.nickname, {attr: {'novalidate': 'novalidate'}})}}
 					</div>
 					{{ form_label(editUserForm.about) }}
-					{{ form_widget(editUserForm.about, {attr: {'novalidate': 'novalidate', 'class': 'h-[17.8rem] text-left'}})}}
+					{{ form_widget(editUserForm.about, {attr: {'novalidate': 'novalidate', 'class': 'h-[16.4rem] text-left'}})}}
 				</div>
 				<div>
 					{{ form_label(editUserForm.website) }}
@@ -95,13 +95,13 @@
 			</div>
 			<div class="order-3 gap-x-5 -mt-10 pb-10 flex justify-end">
 				{% if app.user %}
-					<button type="submit" href="{{ path("app_user_edit", {"username" : app.user.username}) }}" class="button-classic button-sky float-right">
+					<button type="submit" href="{{ path("app_user_edit", {"username" : app.user.username}) }}" class="button-classic button-emerald float-right">
 						<span class="material-symbols-outlined">
 							save
 						</span>
 						Enregistrer
 					</button>
-					<a href="{{ path("app_user", {"username" : app.user.username}) }}" data-turbo-frame="profil_up" class="button-classic button-red float-right">
+					<a href="{{ path("app_user", {"username" : app.user.username}) }}" data-turbo-frame="profil_up" class="button-classic button-slate float-right">
 						<span class="material-symbols-outlined">
 							close
 						</span>
@@ -109,8 +109,8 @@
 				{% endif %}
 			</div>
 		</div>
-
-
 		{{ form_end(editUserForm) }}
+		<hr>
+
 	</turbo-frame>
 {% endblock %}

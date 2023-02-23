@@ -10,3 +10,4 @@ window.axios = require("axios");
 import "./turbo/turbo-helper";
 import "./bootstrap";
 // TODO: refaire cette fonction
+import "./scripts/Noty";

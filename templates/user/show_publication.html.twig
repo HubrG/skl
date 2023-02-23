@@ -16,7 +16,31 @@
 {% endif %}
 
 {% block body %}
-	<section class="col-span-12 min-h-screen">
+	<style>
+		#section_profil
+		{
+			position: inherit;
+			z-index: 1;
+		}
+		#section_profil::before
+		{
+			content: "";
+			position: absolute;
+			display: inline;
+			top: 0;
+			left: 0;
+			right: 0;
+			width: 100%;
+			min-height: 30vh;
+			height: 36vh;
+			opacity: 0.1;
+			z-index: -99999999999;
+			background-position: center;
+			background-image: url('{{app.user.profilBackground}}');
+
+		}
+	</style>
+	<section class="col-span-12 min-h-screen mt-[1.3rem] md:mt-[0.6rem] before:bg-cover before:-z-[9999] {{ app.user.profilBackground ? " before:border-b-[1px]" }} before:border-b-black" id="section_profil">
 		<h1 class="text-center font-serif">
 			<span class="material-symbols-outlined">
 				auto_stories
@@ -39,7 +63,7 @@
 
 
 					<table class="w-full text-left text-gray-500 dark:text-gray-400 shadow-inner h-64 text-xs  ">
-						<thead class=" text-gray-700 font-semibold text-sm  bg-gray-50 dark:bg-gray-700 dark:text-gray-400 text-center">
+						<thead class=" text-gray-700 font-semibold text-sm  bg-gray-50 dark:bg-gray-700 dark:text-gray-400 text-center border-b-[1px] border-b-slate-200">
 							<tr>
 								<th data-tippy-content="Statut de la publication" scope="col" class=" text-center">
 									<a href="{{path("app_user_show_publications", {sort:"status", order:order})}}">
@@ -304,7 +328,7 @@
 
 		{% endif %}
 	</section>
-	<div class="modal micromodal-slide" id="popup-confirm-delete" aria-hidden="true">
+	<div class="modal micromodal-slide z-50" id="popup-confirm-delete" aria-hidden="true">
 		<div class="modal__overlay" tabindex="-1" data-micromodal-close>
 			<div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="popup-confirm-delete-title">
 				<div class="py-3 text-center w-42 bg-white rounded-2xl">
@@ -315,10 +339,8 @@
 					</div>
 					<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Êtes-vous certain(e) de vouloir supprimer<br/>
 						ce récit ?</h3>
-					<p class="text-center text-red-500 font-semibold">
-						<span class="material-symbols-outlined">
-							warning
-						</span>&nbsp;&nbsp;Cette action est irréversible.</p>
+					<p class="text-center text-red-500 font-normal">
+						Cette action est irréversible.</p>
 					<div class="mt-10">
 						<button id="confirm-delete-button" data-micromodal-close type="button" class="text-white bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
 							Oui, je suis certain(e)

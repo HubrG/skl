@@ -10,8 +10,14 @@ import { TippyC } from "../scripts/Tippy";
 import { PublicationShow } from "../scripts/Publication/PublicationShow";
 import { User } from "../scripts/User/User";
 import { Dropdown } from "../scripts/Dropdown";
+import { NotyDisplay } from "../scripts/Noty";
+import "../scripts/SymfonyFlash";
 import MicroModal from "micromodal"; // es6 module
 MicroModal.init();
+// ! Flashes
+if (document.getElementById("success")) {
+  NotyDisplay("Success", "success", 2500);
+}
 import {
   ShowChapter,
   toggleDrawer,
@@ -23,6 +29,7 @@ const TurboHelper = class {
   constructor() {
     document.addEventListener("turbo:before-cache", () => {});
     document.addEventListener("turbo:render", () => {
+      //
       darkMode();
       if (document.getElementById("hideIdPub")) {
         addKeyword();

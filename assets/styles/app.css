@@ -109,7 +109,7 @@ h1 {
 	@apply font-[Solitreo] text-5xl -mt-[0.55rem] ml-1 block text-slate-700;
 }
 #logo:hover span {
-	@apply text-rose-600;
+	@apply text-slate-400;
 }
 .alert, .alert-danger {
 	@apply text-rose-500 text-sm -mt-2 mb-2;

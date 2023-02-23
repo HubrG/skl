@@ -4,8 +4,10 @@ namespace App\Controller\User;
 
 use App\Form\UserInfoType;
 use Cloudinary\Cloudinary;
+use App\Form\UserAccountType;
 use App\Services\ImageService;
 use App\Repository\UserRepository;
+use App\Form\UserChangePasswordType;
 use Cloudinary\Transformation\Resize;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
@@ -16,6 +18,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
 {
@@ -201,5 +204,38 @@ class UserController extends AbstractController
 		} else {
 			return $this->redirectToRoute("app_home");
 		}
+	}
+	#[Route('update/user/account', name: 'app_user_account')]
+	public function account(Request $request, EntityManagerInterface $em, UserRepository $userRepo,  UserPasswordHasherInterface $userPasswordHasher): Response
+	{
+		if (!$this->getUser()) {
+			return $this->redirectToRoute("app_home");
+		}
+		$user = $userRepo->findOneBy(["id" => $this->getUser()]);
+		$form = $this->createForm(UserAccountType::class, $user);
+		$pwForm = $this->createForm(UserChangePasswordType::class, $user);
+		//
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+			$em->persist($user);
+			$em->flush();
+			$this->addFlash("success", "Votre compte a bien été mis à jour");
+			return $this->redirectToRoute("app_user_account");
+		}
+
+		$pwForm->handleRequest($request);
+		if ($pwForm->isSubmitted() && $pwForm->isValid()) {
+			$newEncodedPassword = $userPasswordHasher->hashPassword($user, $user->getPlainPassword());
+			$user->setPassword($newEncodedPassword);
+			$em->persist($user);
+			$em->flush();
+			$this->addFlash("success", "Votre compte a bien été mis à jour");
+			return $this->redirectToRoute("app_user_account");
+		}
+
+		return $this->render('user/account.html.twig', [
+			'form' => $form,
+			'passwordForm' => $pwForm
+		]);
 	}
 }

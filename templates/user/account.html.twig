@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification du profil
+{% endblock %}
+
+{% block body %}
+	<div class="col-span-10 col-start-2">
+		<h1 class="text-center font-serif block">
+			<span class="material-symbols-outlined">
+				manage_accounts
+			</span><br/>
+			Mon compte
+		</h1>
+		<hr class="mb-10">
+	</div>
+	<section class="col-span-10 col-start-2 flex gap-x-6">
+		<div class="w-3/6  bg-white rounded border">
+			<div class="w-full bg-[#eff0f3] p-5 rounded-t border-b-[1px] border-b-[#dee4e1] ">
+				<h2 class="text-xl text-center mt-2 font-medium text-[#00473e]">
+					<span class="material-symbols-outlined">
+						frame_person
+					</span>
+					<br>Informations générales
+				</h2>
+			</div>
+			<div class="w-full bg-[#f0f1f5a1] rounded-b p-5 pb-2">
+				{{ form_start(form) }}
+				{% include "./partials/_form-row.html.twig" with {'form': form.email, 'icon':"mail"} %}
+				{% include "./partials/_form-row.html.twig" with {'form': form.username, 'icon':"alternate_email"} %}
+				<hr>
+				{% include "./partials/_form-row.html.twig" with {'form': form.country, 'icon':"public"} %}
+				{% include "./partials/_form-row.html.twig" with {'form': form.city, 'icon':"location_city"} %}
+				{% include "./partials/_form-row.html.twig" with {'form': form.birth, 'icon':"cake"} %}
+
+
+				<div class="flex justify-center">
+					<button type="submit" class="button-classic button-slate">
+						<span class="material-symbols-outlined">
+							check_circle
+						</span>
+						Enregistrer les informations
+					</button>
+				</div>
+
+				{{ form_end(form) }}
+			</div>
+		</div>
+		<div class="w-3/6 rounded h-auto">
+			<div class="w-full bg-[#eff0f3] p-5 rounded-t border-b-[1px] border-b-[#dee4e1] ">
+				<h2 class="text-xl text-center mt-2 font-medium text-slate-700">
+					<span class="material-symbols-outlined">
+						lock_reset
+					</span>
+					<br>Modification de votre mot de passe</h2>
+			</div>
+			<div class="w-full bg-[#f0f1f5a1] rounded-b p-5 pb-2">
+				{{ form_start(passwordForm) }}
+				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.oldPassword, 'icon':"password"} %}
+				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.plainPassword.first, 'icon':"enhanced_encryption"} %}
+				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.plainPassword.second, 'icon':"enhanced_encryption"} %}
+				<div class="flex justify-center">
+					<button type="submit" class="button-classic button-slate">
+						<span class="material-symbols-outlined">
+							check_circle
+						</span>
+						Modifier mon mot de passe
+					</button>
+					<div>
+						{{ form_end(passwordForm) }}
+					</div>
+				</div>
+			</section>
+
+
+		{% endblock %}

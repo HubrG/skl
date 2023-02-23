@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'Cette adresse email est déjà enregistrée')]
-#[UniqueEntity(fields: ['username'], message: 'Cet nom d\'utilisateur existe déjà')]
+#[UniqueEntity(fields: ['username'], message: 'Ce nom d\'utilisateur existe déjà')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -103,7 +103,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationDownload::class, orphanRemoval: true)]
     private Collection $publicationDownloads;
 
+    /**
+     * @Assert\Length(max=4096)
+     */
+    private $plainPassword;
 
+    /**
+     * @Assert\Length(max=4096)
+     */
+    private $oldPassword;
 
     public function __construct()
     {
@@ -593,6 +601,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->instagram = $instagram;
 
+        return $this;
+    }
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    public function getOldPassword(): ?string
+    {
+        return $this->oldPassword;
+    }
+
+    public function setOldPassword(string $oldPassword): self
+    {
+        $this->oldPassword = $oldPassword;
         return $this;
     }
 }

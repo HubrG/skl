@@ -54,6 +54,27 @@
 		}
 	</style>
 	<section class=" before:bg-cover before:blur before:-z-[9999]  col-span-12 col-start-0 md:col-span-10 md:col-start-2 gap-10" id="test">
+		{% if pubShow.status < 2 %}
+			<div class="mb-0">
+				<div class="w-full -mt-10 mb-5 h-10 bg-slate-100 ring-1 ring-slate-700 opacity-80 right-0 rounded-b-sm">
+					<p class="text-center p-2 font-medium text-xs flex justify-between px-5 text-slate-900">
+						<span>
+							<span class="material-symbols-outlined">
+								preview
+							</span>
+							Aperçu de votre récit (<span class="material-icons text-red-600">
+								fiber_manual_record
+							</span>dépublié)</span>
+
+						<a href="{{ path("app_publication_edit", {id:pubShow.id}) }}" class="hover:underline">Revenir à l'édition
+							<span class="material-icons">
+								redo
+							</span>
+						</a>
+					</p>
+				</div>
+			</div>
+		{% endif %}
 		<h1 class="text-center font-serif text-4xl bg-center text-slate-800" style="text-shadow: 0 0.5px 1px blanchedalmond;">{{ pubShow.title }}</h1>
 		<h2 class="text-center -mt-8">
 			<span class="font-medium font-serif">
@@ -175,8 +196,21 @@
 							</span>
 							&nbsp;&nbsp;Genre
 						</span>
-						<a href="{{path("app_publication_show_all_category", {slug:pubShow.category.slug})}}" class="catColor-{{pubShow.category.color}} rounded px-2 py-1 text-xs">
-							<span>{{ pubShow.category.name }}</span>
+						{% if pubShow.category.slug is defined %}
+							{% set slug = pubShow.category.slug %}
+							{% set slugName = pubShow.category.slug|capitalize %}
+
+						{% else %}
+							{% set slug = "all" %}
+							{% set slugName = "Sans catégorie" %}
+						{% endif %}
+						{% if pubShow.category.color is defined %}
+							{% set color = pubShow.category.color %}
+						{% else %}
+							{% set color = 11 %}
+						{% endif %}
+						<a href="{{path("app_publication_show_all_category", {slug:slug})}}" class="catColor-{{color}} rounded px-2 py-1 text-xs">
+							<span>{{ slugName }}</span>
 						</a>
 					</li>
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:bg-gray-800  dark:text-white">
@@ -255,7 +289,6 @@
 						{% set currentPopularity = pubShow.PublicationPopularities[0].popularity %}
 						{% set popularityChange = currentPopularity - lastPopularity %}
 					{% endif %}
-
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px dark:bg-gray-800 dark:text-white">
 						<span class="font-medium">
 							<span class="material-symbols-outlined">
@@ -296,7 +329,7 @@
 							</span>
 							&nbsp;&nbsp;Publié depuis
 						</span>
-						<span>{{ pubShow.publishedDate|since }}</span>
+						<span>{{ pubShow.publishedDate ? pubShow.publishedDate|since : "Jamais publié" }}</span>
 					</li>
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:bg-gray-800  dark:text-white">
 						<span class="font-medium">

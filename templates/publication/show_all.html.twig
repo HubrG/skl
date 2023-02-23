@@ -24,10 +24,18 @@
 	{% set random = random(0,999) %}
 	<turbo-frame id="pagination-{{random}}" class="grid grid-cols-2 grid-rows-auto gap-4 col-span-full xl:gap-x-10 container -mt-12 xl:-mt-20 ">
 		{% if pubShowKw %}
-			<aside class="items-center justify-items-between content-center row-span-12 -mt-5 col-span-12 xl:col-span-5 xl:row-span-5 mb-5  xl:mb-0 order-2 xl:order-1 snap-y  grayscale">
+			<aside class="row-span-12 -mt-5 col-span-12 xl:col-span-5 xl:row-span-5 mb-5  xl:mb-0 order-2 xl:order-1 snap-y  grayscale">
 				<hr class="xl:hidden mb-5"/>
 				<h2 class="xl:hidden text-center font-bold my-5">Mot-clés</h2>
-				{% include "publication/_partials/_show_all_keywords.html.twig"  %}
+				{% if kwString %}
+					<p class="text-center text-md">
+						<a href="{{ path("app_publication_show_all_category", {slug:slugCat, page:1, order:orderSort, sortby:querySortby}) }}" class="text-slate-600 font-semibold">Réinitialiser</a>
+					</p>
+					<hr class="my-2">
+				{% endif %}
+				<div class="flex flex-wrap gap-x-1 justify-evenly flex-row">
+					{% include "publication/_partials/_show_all_keywords.html.twig"  %}
+				</div>
 			</aside>
 		{% endif %}
 		{# ! Affichage des récits #}
@@ -61,24 +69,14 @@
 								'sortby': 'pop',
 								'class': 'rounded-t-lg'
 							},
-							{
-								'text': 'Les moins populaires d\'abord',
-								'order': 'asc',
-								'sortby': 'pop',
-								'class': ''
-							},
+							
 							{
 								'text': 'Les nouveautés d\'abord',
 								'order': 'desc',
 								'sortby': 'published',
 								'class': ''
 							},
-							{
-								'text': 'Les plus anciens d\'abord',
-								'order': 'asc',
-								'sortby': 'published',
-								'class': 'rounded-b-lg'
-							}
+							
 						] %}
 						<ul class="text-sm  text-slate-700 dark:text-slate-200" aria-labelledby="sortButton">
 							{% for option in options %}
@@ -102,7 +100,7 @@
 						<div class="w-2/6  h-auto rounded-lg">
 							<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}">
 								{% set pic = item.cover %}
-								<img class="rounded object-cover w-full lazy animate-pulse animate__animated bg-slate-300" loading="lazy" src="" data-src="{% if pic %}{{pic}}{% else %}{{ " https://picsum.photos/200/" ~ random(300, 310) }} {% endif %}" alt=""/>
+								<img class="rounded object-cover w-full lazy animate-pulse animate__animated bg-slate-300" loading="lazy" src="" data-src="{% if pic %}{{pic}}{% else %}{{ "https://via.placeholder.com/529x793" }} {% endif %}" alt=""/>
 							</a>
 						</div>
 						<div class="p-5 -mt-7 w-4/6 relative place-content-baseline items-baseline">
@@ -205,7 +203,7 @@
 							<p class=" text-cyan-600">
 								{% if slugCat == "all" %}
 									<a href="{{ path("app_publication_show_all_category", {slug:item.category.slug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:queryKeystring}) }}">
-										<span class="font-normal catColor-{{item.category.color}} catTag ">{{ item.category.name|lower }}</span>
+										<span class="font-normal catColor-{{item.category.color}} catTag text-xs font-semibold ">{{ item.category.name|lower }}</span>
 									</a>
 
 								{% endif %}
@@ -226,7 +224,7 @@
 						<div class="relative rounded-lg dark:border-slate-700 flex place-content-start opacity-80">
 							<p class="absolute z-50 ml-[40%] mt-[23%] shadow-lg">
 								<a href="{{ path("app_publication_add") }}" class="text-slate-900 rounded ring-1 ring-slate-900 px-4 bg-white p-3 font-medium hover:bg-slate-50 shadow">
-									<span class="material-symbols-outlined">
+									<span class="material-symbols-outlined ">
 										history_edu
 									</span>
 									&nbsp;Publier mon récit

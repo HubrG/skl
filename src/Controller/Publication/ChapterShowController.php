@@ -50,8 +50,8 @@ class ChapterShowController extends AbstractController
         // * On recherche le chapitre
         $chapter = $pchRepo->find($idChap);
         // ! Test des conditions pour afficher le chapitre
-        // * Si le chapitre existe, on récupère la publication
-        if ($chapter) {
+        // * Si le chapitre existe, qu'il est publié, on récupère la publication
+        if ($chapter && $chapter->getStatus() == 2) {
             $publication = $pRepo->find($chapter->getPublication());
         } else {
             // * Sinon on redirige vers la page d'acceuil

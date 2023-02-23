@@ -1,9 +1,6 @@
 {# ! On affiche les keywords utilisés #}
 {% if kwString %}
-	<p class="text-center text-md">
-		<a href="{{ path("app_publication_show_all_category", {slug:slugCat, page:1, order:orderSort, sortby:querySortby}) }}" class="text-slate-600 font-semibold">Réinitialiser</a>
-	</p>
-	<hr class="my-2">
+
 	{% set n = 0 %}
 	{% set alreadyKeyw = [] %}
 	{% set kwStringSplit = kwString|split(separator) %}
@@ -29,9 +26,12 @@
 				{% set kwStringNew = kwStringNew|slice(0,var) %}
 			{% endif %}
 			{# * affichage des keywords #}
-			<a href="{{ path("app_publication_show_all_category", {slug:slugCat, keystring:kwStringNew, page:1, order:orderSort, sortby:querySortby}) }}" class=" bg-slate-300 rounded justify-items-between mb-1 text-center hover:text-slate-800 grid  text-slate-700 text-sm font-medium ">
+			<a href="{{ path("app_publication_show_all_category", {slug:slugCat, keystring:kwStringNew, page:1, order:orderSort, sortby:querySortby}) }}" class="  w-full justify-items-between mb-1 text-center hover:text-slate-800  text-slate-700 text-sm font-semibold kwTag">
 				<span class="mr-2 leading-[1.7rem]  dark:bg-blue-900 dark:text-blue-300">{{item.keyword}}
-					<i class="fa-solid fa-delete-left float-right mt-2"></i>
+
+					<span class="material-icons hover:text-red-400 float-right pt-[0.17rem]">
+						backspace
+					</span>
 				</span>
 			</a>
 		{% endif %}
@@ -53,8 +53,8 @@
 	{% if (item.keyword not in alreadyKeyw) and (item.keyword|lower in kwString == false) %}
 		<!-- Si le keyword n'est pas dans la variable, on le supprime (éviter les doublons) -->
 		{% set kwString = kwString|replace({separator_d:separator}) %}
-		<a href="{{ path("app_publication_show_all_category", {slug:slugCat, sortby:querySortby, keystring:kwString ~ kwAdd, order:orderSort, page:1}) }}">
-			<span class="bg-slate-100 text-slate-600 text-sm font-medium mr-2 px-2.5 py-0.5 leading-10 rounded dark:bg-blue-900 dark:text-blue-300">{{item.keyword}}</span>
+		<a href="{{ path("app_publication_show_all_category", {slug:slugCat, sortby:querySortby, keystring:kwString ~ kwAdd, order:orderSort, page:1}) }}" class="kwTag p-2 ">
+			<span class="font-normal dark:bg-blue-900 dark:text-blue-300">{{item.keyword}}</span>
 		</a>
 	{% endif %}
 	{% set n = n + 1 %}

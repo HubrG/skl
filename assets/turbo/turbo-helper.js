@@ -9,13 +9,16 @@ import { LazyLoad } from "../scripts/LazyLoad";
 import { TippyC } from "../scripts/Tippy";
 import { PublicationShow } from "../scripts/Publication/PublicationShow";
 import { User } from "../scripts/User/User";
+import { Dropdown } from "../scripts/Dropdown";
+import MicroModal from "micromodal"; // es6 module
+MicroModal.init();
 import {
   ShowChapter,
   toggleDrawer,
   targetQuote,
   DropdownMenu,
 } from "../scripts/Publication/ChapterShow";
-import confetti from "canvas-confetti";
+
 const TurboHelper = class {
   constructor() {
     document.addEventListener("turbo:before-cache", () => {});
@@ -42,6 +45,7 @@ const TurboHelper = class {
       targetQuote();
       TippyC();
       DropdownMenu();
+      MicroModal.init();
       User();
       if (document.location.href.includes("#first")) {
         document.getElementById("itemsChap2").classList.add("animate__swing");
@@ -54,6 +58,8 @@ const TurboHelper = class {
       }
     });
     document.addEventListener("turbo:frame-render", () => {
+      MicroModal.init();
+
       ShowChapter();
       targetQuote();
       LazyLoad();

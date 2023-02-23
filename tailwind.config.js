@@ -12,6 +12,7 @@ module.exports = {
     "./src/**/*.js",
   ],
   theme: {
+    
     extend: {
       keyframes: {
         "fade-in": {

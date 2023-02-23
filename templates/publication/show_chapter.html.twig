@@ -7,7 +7,20 @@
 {% endblock %}
 
 {% block body %}
-	<section id="titleChapter" class="sticky top-14 bg-white bg-transparent bg-opacity-50 backdrop-blur-sm">
+	<section id="titleChapter" class="sticky {{ infoChap.Publication.status < 2 ? " -mt-20 top-16" : " top-14" }} bg-white bg-transparent bg-opacity-50 backdrop-blur-sm">
+		{% if infoChap.Publication.status < 2 %}
+			<div class="mb-0">
+				<div class="w-5/6 mx-auto -mt-2 h-10 bg-purple-100 ring-1 ring-purple-700 right-0 opacity-60 rounded-b-sm">
+					<p class="text-center p-2 font-medium text-sm text-purple-900">
+						<span class="material-symbols-outlined">
+							preview
+						</span>
+						Aperçu de votre récit (dépublié) |
+						<a href="{{ path("app_publication_edit", {id:infoPub.id}) }}" class="hover:underline">Revenir à l'édition</a>
+					</p>
+				</div>
+			</div>
+		{% endif %}
 		<h1>
 			<a id="pubTitle" class="dark:text-white" href="{{ path("app_publication_show_one", {id:infoPub.id, slug:infoPub.slug}) }}">{{ infoPub.title }}</a>
 		</h1>
@@ -90,122 +103,128 @@
 				{% endif %}
 			</p>
 		</div>
-		<div class="sticky bottom-10 -mt-16 flex  w-full md:w-auto ml-5 justify-center place-content-center z-10">
-			<div class="bg-white rounded-xl shadow p-3 py-4 flex justify-center gap-3 items-center">
-				<div data-tippy-content="Nombre de lecteurs" class="text-sm cursor-default">
-					<span class="material-symbols-outlined">
-						visibility
-					</span>
-					&nbsp;{{ infoChap.publicationChapterViews|length }}
-				</div>
-				|
-				<div data-tippy-content="Afficher les commentaires" class="hover:text-blue-600 cursor-pointer text-sm">
-					<span class="material-symbols-outlined toggleSidebar">
-						forum
-					</span>
-					<span id="nbrComSmall" class="toggleSidebar">&nbsp;{{ infoChap.publicationChapterComments|length }}</span>
-				</div>
-				|
-				{% set userLikesChapter = app.user and app.user.id != infoPub.user.id %}
-				{% set userCanBookmark = app.user and app.user.id != infoPub.user.id %}
+		{# On affiche uniquement si la publication est publiée #}
+		{% if infoChap.Publication.status > 1 %}
+			<div class="sticky bottom-10 -mt-16 flex  w-full md:w-auto ml-5 justify-center place-content-center z-10">
+				<div class="bg-white rounded-xl shadow p-3 py-4 flex justify-center gap-3 items-center">
+					<div data-tippy-content="Nombre de lecteurs" class="text-sm cursor-default">
+						<span class="material-symbols-outlined">
+							visibility
+						</span>
+						&nbsp;{{ infoChap.publicationChapterViews|length }}
+					</div>
+					|
+					<div data-tippy-content="Afficher les commentaires" class="hover:text-blue-600 cursor-pointer text-sm">
+						<span class="material-symbols-outlined toggleSidebar">
+							forum
+						</span>
+						<span id="nbrComSmall" class="toggleSidebar">&nbsp;{{ infoChap.publicationChapterComments|length }}</span>
+					</div>
+					|
+					{% set userLikesChapter = app.user and app.user.id != infoPub.user.id %}
+					{% set userCanBookmark = app.user and app.user.id != infoPub.user.id %}
 
-				{% set liked = userLikesChapter ? infoChap.publicationChapterLikes|map(item => item.user.id)|contains(app.user.id) : false %}
-				{% set bm = userCanBookmark ? infoChap.publicationChapterBookmarks|map(item => item.user.id)|contains(app.user.id) : false %}
+					{% set liked = userLikesChapter ? infoChap.publicationChapterLikes|map(item => item.user.id)|contains(app.user.id) : false %}
+					{% set bm = userCanBookmark ? infoChap.publicationChapterBookmarks|map(item => item.user.id)|contains(app.user.id) : false %}
 
-				{% set likeTooltip = app.user is not defined ? "Connectez-vous pour aimer cette feuille !" : infoPub.user.id == app.user.id ? 'Vous ne pouvez pas aimer votre feuille.' : liked ? "Je n'aime plus cette feuille" : "J'aime cette feuille" %}
-				{% set bmTooltip = app.user is not defined ? "Connectez-vous pour marquer cette feuille !" : infoPub.user.id == app.user.id ? 'Vous ne pouvez pas marquer votre feuille.' : bm ? "Retirer cette feuille de ma collection" : "Ajouter cette feuille à ma collection" %}
+					{% set likeTooltip = app.user is not defined ? "Connectez-vous pour aimer cette feuille !" : infoPub.user.id == app.user.id ? 'Vous ne pouvez pas aimer votre feuille.' : liked ? "Je n'aime plus cette feuille" : "J'aime cette feuille" %}
+					{% set bmTooltip = app.user is not defined ? "Connectez-vous pour marquer cette feuille !" : infoPub.user.id == app.user.id ? 'Vous ne pouvez pas marquer votre feuille.' : bm ? "Retirer cette feuille de ma collection" : "Ajouter cette feuille à ma collection" %}
 
-				<div class="text-sm {% if userLikesChapter %}hover:text-blue-600 cursor-pointer{% endif %}" id="likeThisChapter" data-tippy-content="{{ likeTooltip }}" data-id="{{ infoChap.id }}">
-					<span class="material-{{ liked ? 'icons text-red-500' : 'symbols-outlined' }} " id="likeChapterThumb">
-						favorite
-					</span>
-					&nbsp;<span id="nbrLike">{{ infoChap.publicationChapterLikes|length }}</span>
-				</div>
-				|
-				<div class="text-sm {% if userCanBookmark %}hover:text-blue-600 cursor-pointer{% endif %}" id="bmThisChapter" data-tippy-content="{{ bmTooltip }}" data-id="{{ infoChap.id }}">
-					<span class="material-{{ bm ? 'icons text-blue-500' : 'symbols-outlined' }}" id="bmChapter">
-						bookmark
-					</span>
-					&nbsp;<span id="nbrBm">{{ infoChap.publicationChapterBookmarks|length }}</span>
+					<div class="text-sm {% if userLikesChapter %}hover:text-blue-600 cursor-pointer{% endif %}" id="likeThisChapter" data-tippy-content="{{ likeTooltip }}" data-id="{{ infoChap.id }}">
+						<span class="material-{{ liked ? 'icons text-red-500' : 'symbols-outlined' }} " id="likeChapterThumb">
+							favorite
+						</span>
+						&nbsp;<span id="nbrLike">{{ infoChap.publicationChapterLikes|length }}</span>
+					</div>
+					|
+					<div class="text-sm {% if userCanBookmark %}hover:text-blue-600 cursor-pointer{% endif %}" id="bmThisChapter" data-tippy-content="{{ bmTooltip }}" data-id="{{ infoChap.id }}">
+						<span class="material-{{ bm ? 'icons text-blue-500' : 'symbols-outlined' }}" id="bmChapter">
+							bookmark
+						</span>
+						&nbsp;<span id="nbrBm">{{ infoChap.publicationChapterBookmarks|length }}</span>
+					</div>
 				</div>
 			</div>
-		</div>
+		{% endif %}
 	</section>
 	{# TODO: ajouter temps de lecture restant dans le chapitre + temps de lecture total de la publication #}
-	<div id="tools" class="hidden">
-		<ul>
-			<li class="hl" data-color="1">
-				<span class="material-icons text-emerald-200">
-					bookmark
-				</span>
-			</li>
-			<li class="hl" data-color="2">
-				<span class="material-icons text-amber-200">
-					bookmark
-				</span>
-			</li>
-			<li class="hl" data-color="3">
-				<span class="material-icons text-red-200">
-					bookmark
-				</span>
-			</li>
-			<li class="text-slate-400">|</li>
-			<li class="commentQuote">
-				<span data-tippy-content="Commenter ce passage" class="material-symbols-outlined toggleSidebar">
-					reviews
-				</span>
-			</li>
-			<li>|</li>
-			<li>
-				<svg data-tippy-content="Partager sur Twitter" class="w-6 h-6 shareTwitter fill-[#1da1f2]" fill="currentColor" viewbox="0 0 24 24" aria-hidden="true">
-					<path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path>
-				</svg>
-			</li>
-			<li>
-				<svg data-tippy-content="Partager sur Facebook" class="w-6 h-6 shareFb fill-[#1877f2]" fill="currentColor" viewbox="0 0 24 24" aria-hidden="true">
-					<path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"></path>
-				</svg>
-			</li>
-			<li>
-				<span data-tippy-content="Copier le lien menant à cette selection" class="font-medium material-icons">
-					link
-				</span>
-			</li>
-		</ul>
-	</div>
-	<div id="highlighted-options" class="hidden">
-		<ul>
-			<li>
-				<div id="delete-hl">
-					<span data-tippy-content="Supprimer le marquage" class="material-icons">
-						close
+	{% if infoChap.Publication.status > 1 %}
+
+		<div id="tools" class="hidden">
+			<ul>
+				<li class="hl" data-color="1">
+					<span class="material-icons text-emerald-200">
+						bookmark
 					</span>
-				</div>
-			</li>
-			<li class="text-slate-400">|</li>
-			<li class="commentAlreadyQuote">
-				<span data-tippy-content="Commenter ce passage" class="material-symbols-outlined toggleSidebar cursor-pointer">
-					reviews
-				</span>
-			</li>
-			<li class="text-slate-400">|</li>
-			<li>
-				<svg data-tippy-content="Partager sur Twitter" class="w-6 h-6 shareTwitter fill-[#1da1f2]" fill="currentColor" viewbox="0 0 24 24" aria-hidden="true">
-					<path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path>
-				</svg>
-			</li>
-			<li>
-				<svg data-tippy-content="Partager sur Facebook" class="w-6 h-6 shareFb fill-[#1877f2]" fill="currentColor" viewbox="0 0 24 24" aria-hidden="true">
-					<path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"></path>
-				</svg>
-			</li>
-			<li>
-				<span data-tippy-content="Copier le lien menant à cette selection" class="font-medium material-icons">
-					link
-				</span>
-			</li>
-		</ul>
-	</div>
-	{% include "publication/_partials/_show_drawer.html.twig" with {'type': "bottom"}  %}
-	<input type="hidden" id="chapId" value="{{ infoChap.id }}">
+				</li>
+				<li class="hl" data-color="2">
+					<span class="material-icons text-amber-200">
+						bookmark
+					</span>
+				</li>
+				<li class="hl" data-color="3">
+					<span class="material-icons text-red-200">
+						bookmark
+					</span>
+				</li>
+				<li class="text-slate-400">|</li>
+				<li class="commentQuote">
+					<span data-tippy-content="Commenter ce passage" class="material-symbols-outlined toggleSidebar">
+						reviews
+					</span>
+				</li>
+				<li>|</li>
+				<li>
+					<svg data-tippy-content="Partager sur Twitter" class="w-6 h-6 shareTwitter fill-[#1da1f2]" fill="currentColor" viewbox="0 0 24 24" aria-hidden="true">
+						<path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path>
+					</svg>
+				</li>
+				<li>
+					<svg data-tippy-content="Partager sur Facebook" class="w-6 h-6 shareFb fill-[#1877f2]" fill="currentColor" viewbox="0 0 24 24" aria-hidden="true">
+						<path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"></path>
+					</svg>
+				</li>
+				<li>
+					<span data-tippy-content="Copier le lien menant à cette selection" class="font-medium material-icons">
+						link
+					</span>
+				</li>
+			</ul>
+		</div>
+		<div id="highlighted-options" class="hidden">
+			<ul>
+				<li>
+					<div id="delete-hl">
+						<span data-tippy-content="Supprimer le marquage" class="material-icons">
+							close
+						</span>
+					</div>
+				</li>
+				<li class="text-slate-400">|</li>
+				<li class="commentAlreadyQuote">
+					<span data-tippy-content="Commenter ce passage" class="material-symbols-outlined toggleSidebar cursor-pointer">
+						reviews
+					</span>
+				</li>
+				<li class="text-slate-400">|</li>
+				<li>
+					<svg data-tippy-content="Partager sur Twitter" class="w-6 h-6 shareTwitter fill-[#1da1f2]" fill="currentColor" viewbox="0 0 24 24" aria-hidden="true">
+						<path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path>
+					</svg>
+				</li>
+				<li>
+					<svg data-tippy-content="Partager sur Facebook" class="w-6 h-6 shareFb fill-[#1877f2]" fill="currentColor" viewbox="0 0 24 24" aria-hidden="true">
+						<path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"></path>
+					</svg>
+				</li>
+				<li>
+					<span data-tippy-content="Copier le lien menant à cette selection" class="font-medium material-icons">
+						link
+					</span>
+				</li>
+			</ul>
+		</div>
+		{% include "publication/_partials/_show_drawer.html.twig" with {'type': "bottom"}  %}
+		<input type="hidden" id="chapId" value="{{ infoChap.id }}">
+	{% endif %}
 {% endblock %}

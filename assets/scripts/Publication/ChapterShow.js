@@ -1,7 +1,8 @@
 import axios from "axios";
 export function ShowChapter() {
   const chapContentTurbo = document.getElementById("chapContentTurbo");
-  if (!chapContentTurbo) return;
+  const chapAvalaible = document.getElementById("chapId");
+  if (!chapContentTurbo && !chapAvalaible) return;
 
   // ! SECTION - Traitement de la position du sticky
   window.addEventListener("scroll", function () {

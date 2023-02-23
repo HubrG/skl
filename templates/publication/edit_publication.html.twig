@@ -8,19 +8,36 @@
 {% endblock %}
 
 {% block body %}
+	<div class="col-span-12 col-start-0 -mt-10 mb-10 ">
+		<nav class="flex py-3  justify-center  shadow-none border-slate-200 border-l-[1px] border-l-slate-100 border-r-[1px] border-r-slate-100  mb-10 bg-slate-50" aria-label="Breadcrumb">
+			<ol class="inline-flex items-center space-x-1 md:space-x-3">
+				<li class="inline-flex items-center">
+					<a href="{{path("app_user_show_publications")}}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+						Tous les récits</a>
+				</li>
+				<li aria-current="page">
+					<div class="flex items-center">
+						<svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+							<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+						</svg>
+						<span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Édition d'un récit |
+							<span class=" cursor-pointer" data-modal-target="popup-modal" data-modal-toggle="popup-modal">
+								{% if (infoPub.status > 1) %}
+									<span id="badgePubStatus" class="badge">Publié</span>
+								{% else %}
+									<span id="badgePubStatus" class="badge">Dépublié</span>
+								{% endif %}
+							</span>
+						</span>
+					</div>
+				</li>
+			</ol>
+		</nav>
+	</div>
 	<div class=" col-span-11 col-start-2 row-span-1 " id="showTitle">
 		<h1 class=" -mt-10 mb-10 text-center -ml-10 relative">
-			<span class="text-xs">Édition du récit</span>
-			<br/>
 			<span id="pubTitle" class="text-4xl font-serif">
 				{{ infoPub.title|capitalize }}
-			</span>
-			<span class="absolute top-0 cursor-pointer" data-modal-target="popup-modal" data-modal-toggle="popup-modal">
-				{% if (infoPub.status > 1) %}
-					<span id="badgePubStatus" class="badge">Publié</span>
-				{% else %}
-					<span id="badgePubStatus" class="badge">Dépublié</span>
-				{% endif %}
 			</span>
 		</h1>
 	</div>
@@ -335,8 +352,24 @@
 			</p>
 		</div>
 		<div class="p-4 rounded-lg bg-slate-50 w-full dark:bg-gray-800 mb-4 text-slate-800 dark:text-slate-400">
-			<p class="text-xs mb-1">
-				<a href="{{ path("app_publication_show_one", {id:infoPub.id, slug:infoPub.slug}) }}">Voir le récit sur le site</a>
+			<p class="text-sm mb-1 font-semibold">
+
+				{% set slug = "recit-sans-titre" %}
+				{% if infoPub.slug %}
+					{% set slug = infoPub.slug %}
+
+				{% endif %}
+				{% if infoPub.status < 2 %}
+					<span class="material-symbols-outlined">
+						preview
+					</span>
+					<a href="{{ path("app_publication_show_one", {id:infoPub.id, slug:slug}) }}" class=" hover:underline" target="_blank">Voir un aperçu du récit</a>
+				{% else %}
+					<span class="material-symbols-outlined">
+						eyeglasses
+					</span>
+					<a href="{{ path("app_publication_show_one", {id:infoPub.id, slug:slug}) }}" class=" hover:underline" target="_blank">Voir le récit sur le site</a>
+				{% endif %}
 			</p>
 		</div>
 	</aside>

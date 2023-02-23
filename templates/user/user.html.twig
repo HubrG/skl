@@ -1,8 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello UserController!
+{% block title %}
+	Profil de
+	{{ userInfo.nickname }}
+	—
+	{{ parent() }}
+
 {% endblock %}
 {% block body %}
+
 	<style>
 		#section_profil
 		{
@@ -28,7 +34,7 @@
 		}
 	</style>
 	<!-- TODO: créer un extends de User dans Edit (au cas ou on voudrait arriver directement sur la page de modification) -->
-	<section class="col-span-12 pt-10  before:bg-cover before:-z-[9999] before:border-b-[1px] before:border-b-black" id="section_profil">
+	<section class="col-span-12 pt-10  before:bg-cover before:-z-[9999] {{ userInfo.profilBackground ? " before:border-b-[1px]" }} before:border-b-black" id="section_profil">
 		<turbo-frame id="profil_up">
 			<div class="grid grid-cols-3  relative mb-10">
 
@@ -80,8 +86,8 @@
 			</div>
 			<div class="flex justify-center">
 				<div class="flex-grid grid-cols-1 w-6/6 justify-center mt-16 text-center border-b pb-10 border-b-slate-400">
-					<h1 class="text-4xl font-medium text-slate-700 font-serif" style="text-shadow:1px 1px 1px white">{{ userInfo.nickname }}</h1>
-					<p class="text-slate-700 text-center md:pt-6">{{ userInfo.about|nl2br }}</p>
+					<h1 class="text-4xl font-medium text-slate-700 font-serif">{{ userInfo.nickname }}</h1>
+					<p class="text-slate-700 text-center {{ userInfo.profilBackground ? " md:pt-6" }}">{{ userInfo.about|nl2br }}</p>
 				</div>
 			</div>
 		</turbo-frame>
@@ -90,7 +96,7 @@
 		<h2 class="p-10 text-center text-2xl text-slate-800">
 			<span class="material-symbols-outlined">
 				menu_book
-			</span>
+			</span><br/>
 			{{pubInfo|length > 1 ? pubInfo|length ~ " récits publiés" : pubInfo|length == 0 ? "Aucun récit publié" : pubInfo|length ~ " récit publié"}}
 		</h2>
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-7">

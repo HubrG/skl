@@ -84,15 +84,107 @@ class UserController extends AbstractController
 			'editUserForm' => $form
 		]);
 	}
-	#[Route('user/publications/show', name: 'app_user_show_publications')]
-	public function showpublication(Request $request, PublicationRepository $pubRepo, UserRepository $user, EntityManagerInterface $em): Response
+	#[Route('user/publications/show/{sort?}/{order?}', name: 'app_user_show_publications')]
+	public function showpublication(Request $request, PublicationRepository $pubRepo, UserRepository $user, EntityManagerInterface $em, $sort = null, $order = null): Response
 	{
-
+		if (!$this->getUser()) {
+			return $this->redirectToRoute("app_home");
+		}
 		$user = $user->findOneBy(["id" => $this->getUser()]);
 		$user = $user->getId();
-		$publications = $pubRepo->createQueryBuilder("u")->where("u.status > 0 and u.user = " . $user)->getQuery()->getResult();
-		foreach ($publications as $publication) {
+		//
+		$order = $order ?? "desc";
+		$sort = $sort ?? "created";
+		//
+		if ($sort == "published_date" or $sort == "status" or $sort == "created" or $sort == "title") {
+			$publications = $pubRepo
+				->createQueryBuilder("p")
+				->where("p.status > 0 and p.user = " . $user)
+				->groupBy("p.id")
+				->orderBy("p." . $sort, $order)
+				->addOrderBy("p.published_date", "desc")
+				->getQuery()->getResult();
+		} elseif ($sort == "pop") {
+			$publications = $pubRepo
+				->createQueryBuilder("p")
+				->where("p.status > 1 and p.user = " . $user)
+				->groupBy("p.id")
+				->orderBy("p." . $sort, $order)
+				->addOrderBy("p.published_date", "desc")
+				->getQuery()->getResult();
+		} elseif ($sort == "views") {
+			$publications = $pubRepo
+				->createQueryBuilder("p")
+				->leftJoin("p.publicationChapters", "pc")
+				->leftJoin("pc.publicationChapterViews", "pcadd")
+				->addSelect("COUNT(pcadd.id) AS HIDDEN add")
+				->where("p.status > 1 and p.user = " . $user)
+				->groupBy("p.id")
+				->orderBy("add", $order)
+				->getQuery()
+				->getResult();
+		} elseif ($sort == "comments") {
+			$publications = $pubRepo
+				->createQueryBuilder("p")
+				->leftJoin("p.publicationChapters", "pc")
+				->leftJoin("pc.publicationChapterComments", "pcadd")
+				->addSelect("COUNT(pcadd.id) AS HIDDEN add")
+				->where("p.status > 1 and p.user = " . $user)
+				->groupBy("p.id")
+				->orderBy("add", $order)
+				->getQuery()
+				->getResult();
+		} elseif ($sort == "likes") {
+			$publications = $pubRepo
+				->createQueryBuilder("p")
+				->leftJoin("p.publicationChapters", "pc")
+				->leftJoin("pc.publicationChapterLikes", "pcadd")
+				->addSelect("COUNT(pcadd.id) AS HIDDEN add")
+				->where("p.status > 1 and p.user = " . $user)
+				->groupBy("p.id")
+				->orderBy("add", $order)
+				->getQuery()
+				->getResult();
+		} elseif ($sort == "downloads") {
+			$publications = $pubRepo
+				->createQueryBuilder("p")
+				->leftJoin("p.publicationDownloads", "pc")
+				->addSelect("COUNT(pc.id) AS HIDDEN add")
+				->where("p.status > 1 and p.user = " . $user)
+				->groupBy("p.id")
+				->orderBy("add", $order)
+				->getQuery()
+				->getResult();
+		} elseif ($sort == "category") {
+			$publications = $pubRepo
+				->createQueryBuilder("p")
+				->where("p.status > 1 and p.user = " . $user)
+				->groupBy("p.id")
+				->orderBy("p.category", $order)
+				->getQuery()
+				->getResult();
+		} elseif ($sort == "chapters") {
+			$publications = $pubRepo
+				->createQueryBuilder("p")
+				->leftJoin("p.publicationChapters", "pc")
+				->addSelect("COUNT(pc.id) AS HIDDEN add")
+				->where("p.status > 1 and p.user = " . $user)
+				->groupBy("p.id")
+				->orderBy("add", $order)
+				->getQuery()
+				->getResult();
 		}
+		if ($sort != "published_date" && $sort != "status" && $sort != "created" && $sort != "title") {
+			$publicationsOffline = $pubRepo
+				->createQueryBuilder("p")
+				->where("p.status = 1 and p.user = " . $user)
+				->groupBy("p.id")
+				->orderBy("p.created", "asc")
+				->addOrderBy("p.published_date", "desc")
+				->getQuery()->getResult();
+			$publications = array_merge($publications, $publicationsOffline);
+		}
+
 		return $this->render('user/show_publication.html.twig', [
 			'publication' => $publications
 		]);
@@ -105,7 +197,7 @@ class UserController extends AbstractController
 			return $this->uploadImage->UploadImage($dtPp, "profil_picture", $userRepo->find($this->getUser())->getId(), 500, 500);
 		} elseif ($request->files->get("pbg")) {
 			$dtPbg = $request->files->get("pbg");
-			return $this->uploadImage->UploadImage($dtPbg, "profil_background", $userRepo->find($this->getUser())->getId(), 600, 300);
+			return $this->uploadImage->UploadImage($dtPbg, "profil_background", $userRepo->find($this->getUser())->getId(), 1024, 500);
 		} else {
 			return $this->redirectToRoute("app_home");
 		}

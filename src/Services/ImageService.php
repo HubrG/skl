@@ -75,6 +75,7 @@ class ImageService extends AbstractController
                 "value" => "Une erreur est survenue lors de l'upload de votre image."
             ]);
         }
+
         $cloudinary = new Cloudinary(
             [
                 'cloud' => [
@@ -90,9 +91,9 @@ class ImageService extends AbstractController
         );
 
         $urlCloudinary = $cloudinary->image($folder . "/" . $id . "/" . $newFilename)->resize(Resize::fill($x, $y))->toUrl();
+
         $this->DeleteImage($destination . "/" . $newFilename, $get, $id, $folder);
         // * On supprime la pp de l'utilisateur
-
         //!
         if ($repoSave == "profil_picture") {
             $repo->setProfilPicture($urlCloudinary);
@@ -126,9 +127,16 @@ class ImageService extends AbstractController
         }
         // On récupère le dernier cover de la publication pour la supprimer de Cloudinary : 
         if ($get) {
-            preg_match("/\/([^\/]*\.img)/", $get, $matches);
-            $result = $matches[1];
-            $cloudinary->uploadApi()->destroy($folder . "/" . $id . "/" . $result, ['invalidate' => true,]);
+
+            try {
+                preg_match("/\/([^\/]*\.img)/", $get, $matches);
+                $result = $matches[1];
+            } catch (\Exception $e) {
+                $result = null;
+            }
+            if ($result) {
+                $cloudinary->uploadApi()->destroy($folder . "/" . $id . "/" . $result, ['invalidate' => true,]);
+            }
         }
     }
 }

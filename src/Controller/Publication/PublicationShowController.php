@@ -221,6 +221,9 @@ class PublicationShowController extends AbstractController
 		$orderChap = $pchRepo->findOneBy(["publication" => $publication, "order_display" => 0, "status" => 2]);
 		$chapters = $pchRepo->findBy(["publication" => $publication, "status" => 2], ["order_display" => "ASC"]);
 
+		if ($publication->getStatus() < 2 && $publication->getUser() != $this->getUser()) {
+			return $this->redirectToRoute('app_home');
+		}
 		if (!$chapters) {
 			return $this->redirectToRoute('app_home');
 		}

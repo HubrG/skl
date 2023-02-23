@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello UserController!
+{% block title %}Modification du profil
 {% endblock %}
 
 {% block body %}
@@ -11,19 +11,19 @@
 		<div class=" w-5/6 mx-auto">
 			<div class="grid grid-cols-3  relative mb-10">
 				<div class="flex justify-center order-first md:order-first text-2xl mt-20 md:mt-0 gap-x-5"></div>
-				<label class="absolute mr-32 hover:underline cursor-pointer font-semibold" for="pbg">
-					<p class="text-center">
+				<label class="absolute mr-32 cursor-pointer font-semibold" for="pbg">
+					<p class="text-center button-classic button-indigo">
 						<span class="material-symbols-outlined">
 							wallpaper
-						</span><br/>
+						</span>
 						Modifier le fond d'écran</p>
 				</label>
 				<div class="relative grid grid-cols-1  order-2">
 					<label for="pp" class="cursor-pointer">
 						<div class="w-48 h-48 mx-auto rounded-full absolute inset-x-0 top-5 -mt-24 flex items-center justify-center text-indigo-500">
-							<img class="w-40 h-40 p-1 ring-4 ring-offset-1 ring-slate-200 rounded-full object-fill dark:ring-gray-500" id="profil_picture" src="{{app.user.profilPicture ? app.user.profilPicture : "https://via.placeholder.com/500/500"}}">
-							<div class="absolute inset-0 mt-[38%] ml-[38%] text-2xl">
-								<span class="material-symbols-outlined bg-slate-800 bg-opacity-30 p-2 rounded-full hover:bg-opacity-60 text-white hover:text-slate-50">
+							<img class="w-40 h-40 p-1 ring-4  ring-slate-200 rounded-full object-fill dark:ring-gray-500" id="profil_picture" src="{{app.user.profilPicture ? app.user.profilPicture : "https://via.placeholder.com/500/500"}}">
+							<div class="absolute inset-0 mt-[37%] ml-[38%] text-2xl">
+								<span class="material-symbols-outlined bg-white bg-opacity-30 p-2 rounded-full hover:bg-opacity-60 text-slate-900">
 									edit_square
 								</span>
 							</div>
@@ -32,25 +32,10 @@
 				</div>
 				<input type="file" class="hidden" id="pp" name="pp">
 				<input type="file" class="hidden" id="pbg" name="pbg">
-				<div class="order-3 gap-x-5 mt-5 flex justify-end">
-					{% if app.user %}
-						<button type="submit" href="{{ path("app_user_edit", {"username" : app.user.username}) }}" class="button-classic button-emerald float-right">
-							<span class="material-symbols-outlined">
-								save
-							</span>
-							Enregistrer
-						</button>
-						<a href="{{ path("app_user", {"username" : app.user.username}) }}" data-turbo-frame="profil_up" class="button-classic button-slate float-right">
-							<span class="material-symbols-outlined">
-								close
-							</span>
-						</a>
-					{% endif %}
-				</div>
+
 			</div>
 		</div>
-		<div class="bg-slate-100 w-5/6 mx-auto p-10 pb-0 rounded-lg ring-1 ring-slate-300">
-
+		<div class="bg-slate-50 rounded bg-opacity-80 w-5/6 mx-auto p-10 pb-0 ring-1 ring-gray-200 mt-14">
 			<div class="grid grid-cols-2 gap-6 pt-0">
 				<div>
 					{{ form_label(editUserForm.nickname) }}
@@ -63,7 +48,7 @@
 						{{ form_widget(editUserForm.nickname, {attr: {'novalidate': 'novalidate'}})}}
 					</div>
 					{{ form_label(editUserForm.about) }}
-					{{ form_widget(editUserForm.about, {attr: {'novalidate': 'novalidate', 'class': 'h-[17.8rem]'}})}}
+					{{ form_widget(editUserForm.about, {attr: {'novalidate': 'novalidate', 'class': 'h-[17.8rem] text-left'}})}}
 				</div>
 				<div>
 					{{ form_label(editUserForm.website) }}
@@ -108,11 +93,24 @@
 				</div>
 
 			</div>
+			<div class="order-3 gap-x-5 -mt-10 pb-10 flex justify-end">
+				{% if app.user %}
+					<button type="submit" href="{{ path("app_user_edit", {"username" : app.user.username}) }}" class="button-classic button-sky float-right">
+						<span class="material-symbols-outlined">
+							save
+						</span>
+						Enregistrer
+					</button>
+					<a href="{{ path("app_user", {"username" : app.user.username}) }}" data-turbo-frame="profil_up" class="button-classic button-red float-right">
+						<span class="material-symbols-outlined">
+							close
+						</span>
+					</a>
+				{% endif %}
+			</div>
 		</div>
 
 
 		{{ form_end(editUserForm) }}
-
 	</turbo-frame>
-
 {% endblock %}

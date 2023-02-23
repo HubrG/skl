@@ -1,8 +1,27 @@
 import { NotyDisplay } from "../Noty";
 
 export function User() {
-  // Si "pp" existe, on ajoute un event listener sur le bouton "pp" sinon on retourne rien
+  // ! Suppression d'un récit
+  // * Popup de confirmation de suppression
 
+  const popupConfirmPub = document.getElementById("popup-confirm-delete");
+  if (popupConfirmPub) {
+    let deleteDropdown = document.querySelectorAll(".delete-pub"); // Dropdown de suppression
+    var confirmDelete = document.getElementById("confirm-delete-button"); // Boutton de confirmation de suppression
+    deleteDropdown.forEach((item) => {
+      item.addEventListener("click", (event) => {
+        confirmDelete.removeAttribute("data-url-delete");
+        let pubId = item.getAttribute("data-pub-id");
+        confirmDelete.setAttribute("data-url-delete", pubId);
+        console.log(confirmDelete.getAttribute("data-url-delete"));
+      });
+    });
+    confirmDelete.addEventListener("click", (event) => {
+      window.location.href = confirmDelete.getAttribute("data-url-delete");
+    });
+  }
+  // * Modification du background de la section profil et de la photo de profil
+  // Si "pp" existe, on ajoute un event listener sur le bouton "pp" sinon on retourne rien
   const pp = document.getElementById("pp");
   const pbg = document.getElementById("pbg");
   if (!pp) return;

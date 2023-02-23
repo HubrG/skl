@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html id="html" lang="fr" class="scroll-smooth">
 	<head>
-		<meta
-		charset="UTF-8">
-		{# <meta name="turbo-visit-control" content="reload"/> #}
+		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		{% block metatags %}
 			<meta name="description" content="Publiez et lisez des romans, des nouvelles, de la poésie et plus encore sur notre plateforme littéraire en ligne. Rejoignez une communauté passionnée de littérature et découvrez de nouveaux talents dès aujourd'hui.">
@@ -13,7 +11,7 @@
 			{% endblock %}
 		</title>
 		<link rel="icon" href="/images/favicon.png">
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.turbo.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.turbo.min.js" data-turbo-track="reload"></script>
 
 		{{ encore_entry_link_tags('app') }}
 		{% block stylesheets %}{% endblock %}

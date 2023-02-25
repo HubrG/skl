@@ -10,7 +10,6 @@ use App\Repository\PublicationDownloadRepository;
 use App\Repository\PublicationPopularityRepository;
 use App\Repository\PublicationChapterLikeRepository;
 use App\Repository\PublicationChapterViewRepository;
-use App\Repository\PublicationChapterCommentRepository;
 use App\Repository\PublicationChapterBookmarkRepository;
 use App\Entity\PublicationPopularity as EntityPublicationPopularity;
 
@@ -18,7 +17,7 @@ class PublicationPopularity
 {
     private $pRepo;
     private $pchRepo;
-    private $pchcRepo;
+
     private $pcvRepo;
     private $pcomRepo;
     private $pclRepo;
@@ -28,11 +27,10 @@ class PublicationPopularity
 
     private $em;
 
-    public function __construct(PublicationCommentRepository $pcomRepo, PublicationPopularityRepository $ppRepo, PublicationDownloadRepository $pdRepo, EntityManagerInterface $em, PublicationRepository $pRepo, PublicationChapterRepository $pchRepo, PublicationChapterCommentRepository $pchcRepo, PublicationChapterViewRepository $pcvRepo, PublicationChapterLikeRepository $pclRepo, PublicationChapterBookmarkRepository $pcbRepo)
+    public function __construct(PublicationCommentRepository $pcomRepo, PublicationPopularityRepository $ppRepo, PublicationDownloadRepository $pdRepo, EntityManagerInterface $em, PublicationRepository $pRepo, PublicationChapterRepository $pchRepo,  PublicationChapterViewRepository $pcvRepo, PublicationChapterLikeRepository $pclRepo, PublicationChapterBookmarkRepository $pcbRepo)
     {
         $this->pRepo = $pRepo;
         $this->pchRepo = $pchRepo;
-        $this->pchcRepo = $pchcRepo;
         $this->pcvRepo = $pcvRepo;
         $this->pclRepo = $pclRepo;
         $this->pcbRepo = $pcbRepo;

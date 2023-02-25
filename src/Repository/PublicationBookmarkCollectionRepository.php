@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\PublicationChapterCommentLike;
+use App\Entity\PublicationBookmarkCollection;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<PublicationChapterCommentLike>
+ * @extends ServiceEntityRepository<PublicationBookmarkCollection>
  *
- * @method PublicationChapterCommentLike|null find($id, $lockMode = null, $lockVersion = null)
- * @method PublicationChapterCommentLike|null findOneBy(array $criteria, array $orderBy = null)
- * @method PublicationChapterCommentLike[]    findAll()
- * @method PublicationChapterCommentLike[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method PublicationBookmarkCollection|null find($id, $lockMode = null, $lockVersion = null)
+ * @method PublicationBookmarkCollection|null findOneBy(array $criteria, array $orderBy = null)
+ * @method PublicationBookmarkCollection[]    findAll()
+ * @method PublicationBookmarkCollection[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PublicationChapterCommentLikeRepository extends ServiceEntityRepository
+class PublicationBookmarkCollectionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, PublicationChapterCommentLike::class);
+        parent::__construct($registry, PublicationBookmarkCollection::class);
     }
 
-    public function save(PublicationChapterCommentLike $entity, bool $flush = false): void
+    public function save(PublicationBookmarkCollection $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class PublicationChapterCommentLikeRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(PublicationChapterCommentLike $entity, bool $flush = false): void
+    public function remove(PublicationBookmarkCollection $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -40,7 +40,7 @@ class PublicationChapterCommentLikeRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return PublicationChapterCommentLike[] Returns an array of PublicationChapterCommentLike objects
+//     * @return PublicationBookmarkCollection[] Returns an array of PublicationBookmarkCollection objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -54,7 +54,7 @@ class PublicationChapterCommentLikeRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?PublicationChapterCommentLike
+//    public function findOneBySomeField($value): ?PublicationBookmarkCollection
 //    {
 //        return $this->createQueryBuilder('p')
 //            ->andWhere('p.exampleField = :val')

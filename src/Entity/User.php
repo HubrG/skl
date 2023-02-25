@@ -82,11 +82,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $join_date = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterComment::class, orphanRemoval: true)]
-    private Collection $publicationChapterComments;
-
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterCommentLike::class, orphanRemoval: true)]
-    private Collection $publicationChapterCommentLikes;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterView::class, orphanRemoval: true)]
     private Collection $publicationChapterViews;
@@ -125,11 +120,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationRating::class)]
     private Collection $publicationRatings;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationBookmarkCollection::class)]
+    private Collection $publicationBookmarkCollections;
+
     public function __construct()
     {
         $this->publications = new ArrayCollection();
-        $this->publicationChapterComments = new ArrayCollection();
-        $this->publicationChapterCommentLikes = new ArrayCollection();
         $this->publicationChapterViews = new ArrayCollection();
         $this->publicationChapterNotes = new ArrayCollection();
         $this->publicationChapterLikes = new ArrayCollection();
@@ -139,6 +135,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->publicationBookmarks = new ArrayCollection();
         $this->publicationCommentLikes = new ArrayCollection();
         $this->publicationRatings = new ArrayCollection();
+        $this->publicationBookmarkCollections = new ArrayCollection();
     }
 
 
@@ -398,65 +395,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, PublicationChapterComment>
-     */
-    public function getPublicationChapterComments(): Collection
-    {
-        return $this->publicationChapterComments;
-    }
-
-    public function addPublicationChapterComment(PublicationChapterComment $publicationChapterComment): self
-    {
-        if (!$this->publicationChapterComments->contains($publicationChapterComment)) {
-            $this->publicationChapterComments->add($publicationChapterComment);
-            $publicationChapterComment->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removePublicationChapterComment(PublicationChapterComment $publicationChapterComment): self
-    {
-        if ($this->publicationChapterComments->removeElement($publicationChapterComment)) {
-            // set the owning side to null (unless already changed)
-            if ($publicationChapterComment->getUser() === $this) {
-                $publicationChapterComment->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, PublicationChapterCommentLike>
-     */
-    public function getPublicationChapterCommentLikes(): Collection
-    {
-        return $this->publicationChapterCommentLikes;
-    }
-
-    public function addPublicationChapterCommentLike(PublicationChapterCommentLike $publicationChapterCommentLike): self
-    {
-        if (!$this->publicationChapterCommentLikes->contains($publicationChapterCommentLike)) {
-            $this->publicationChapterCommentLikes->add($publicationChapterCommentLike);
-            $publicationChapterCommentLike->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removePublicationChapterCommentLike(PublicationChapterCommentLike $publicationChapterCommentLike): self
-    {
-        if ($this->publicationChapterCommentLikes->removeElement($publicationChapterCommentLike)) {
-            // set the owning side to null (unless already changed)
-            if ($publicationChapterCommentLike->getUser() === $this) {
-                $publicationChapterCommentLike->setUser(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, PublicationChapterView>
@@ -760,5 +698,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationBookmarkCollection>
+     */
+    public function getPublicationBookmarkCollections(): Collection
+    {
+        return $this->publicationBookmarkCollections;
+    }
+
+    public function addPublicationBookmarkCollection(PublicationBookmarkCollection $publicationBookmarkCollection): self
+    {
+        if (!$this->publicationBookmarkCollections->contains($publicationBookmarkCollection)) {
+            $this->publicationBookmarkCollections->add($publicationBookmarkCollection);
+            $publicationBookmarkCollection->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationBookmarkCollection(PublicationBookmarkCollection $publicationBookmarkCollection): self
+    {
+        if ($this->publicationBookmarkCollections->removeElement($publicationBookmarkCollection)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationBookmarkCollection->getUser() === $this) {
+                $publicationBookmarkCollection->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isIsVerified(): ?bool
+    {
+        return $this->isVerified;
     }
 }

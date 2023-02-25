@@ -19,16 +19,14 @@ class PublicationDownloadPDF extends AbstractController
 {
     private $pRepo;
     private $pchRepo;
-    private $pcRepo;
     private $em;
 
     private $pdRepo;
 
-    public function __construct(PublicationDownloadRepository $pdRepo, EntityManagerInterface $em, PublicationRepository $pRepo, PublicationChapterRepository $pchRepo, PublicationChapterCommentRepository $pcRepo)
+    public function __construct(PublicationDownloadRepository $pdRepo, EntityManagerInterface $em, PublicationRepository $pRepo, PublicationChapterRepository $pchRepo)
     {
         $this->pRepo = $pRepo;
         $this->pchRepo = $pchRepo;
-        $this->pcRepo = $pcRepo;
         $this->em = $em;
         $this->pdRepo = $pdRepo;
     }

@@ -25,6 +25,9 @@ class PublicationBookmark
     #[ORM\ManyToOne(inversedBy: 'publicationBookmarks')]
     private ?PublicationChapter $chapter = null;
 
+    #[ORM\ManyToOne(inversedBy: 'publicationBookmarks')]
+    private ?PublicationBookmarkCollection $collection = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,6 +77,18 @@ class PublicationBookmark
     public function setChapter(?PublicationChapter $chapter): self
     {
         $this->chapter = $chapter;
+
+        return $this;
+    }
+
+    public function getCollection(): ?PublicationBookmarkCollection
+    {
+        return $this->collection;
+    }
+
+    public function setCollection(?PublicationBookmarkCollection $collection): self
+    {
+        $this->collection = $collection;
 
         return $this;
     }

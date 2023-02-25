@@ -46,8 +46,6 @@ class PublicationChapter
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $slug = null;
 
-    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationChapterComment::class, orphanRemoval: true)]
-    private Collection $publicationChapterComments;
 
     #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationChapterView::class, orphanRemoval: true)]
     private Collection $publicationChapterViews;
@@ -70,7 +68,6 @@ class PublicationChapter
     public function __construct()
     {
         $this->publicationChapterVersionings = new ArrayCollection();
-        $this->publicationChapterComments = new ArrayCollection();
         $this->publicationChapterViews = new ArrayCollection();
         $this->publicationChapterNotes = new ArrayCollection();
         $this->publicationChapterLikes = new ArrayCollection();
@@ -225,35 +222,7 @@ class PublicationChapter
         return $this;
     }
 
-    /**
-     * @return Collection<int, PublicationChapterComment>
-     */
-    public function getPublicationChapterComments(): Collection
-    {
-        return $this->publicationChapterComments;
-    }
 
-    public function addPublicationChapterComment(PublicationChapterComment $publicationChapterComment): self
-    {
-        if (!$this->publicationChapterComments->contains($publicationChapterComment)) {
-            $this->publicationChapterComments->add($publicationChapterComment);
-            $publicationChapterComment->setChapter($this);
-        }
-
-        return $this;
-    }
-
-    public function removePublicationChapterComment(PublicationChapterComment $publicationChapterComment): self
-    {
-        if ($this->publicationChapterComments->removeElement($publicationChapterComment)) {
-            // set the owning side to null (unless already changed)
-            if ($publicationChapterComment->getChapter() === $this) {
-                $publicationChapterComment->setChapter(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, PublicationChapterView>

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230205140345 extends AbstractMigration
+final class Version20230225131547 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,12 +20,13 @@ final class Version20230205140345 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE publication_chapter_note ADD selection_el LONGTEXT DEFAULT NULL');
+        $schema->dropTable('publication_chapter_comment');
+        $schema->dropTable('publication_chapter_comment_like');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE publication_chapter_note DROP selection_el');
+        $this->addSql('ALTER TABLE publication_chapter_comment DROP sdfsdq');
     }
 }

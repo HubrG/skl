@@ -274,47 +274,56 @@ class PublicationController extends AbstractController
     #[Route('/story/delete/{id}', name: 'app_publication_delete')]
     public function DeletePublication(Request $request, PublicationRepository $pubRepo, PublicationChapterRepository $pcRepo, EntityManagerInterface $em, $id = null): Response
     {
-        $publication = $pubRepo->find($id);
-        $keyw = $publication->getPublicationKeywords();
-        // ! Gestion du keyword
-        // * On décrémente le count des mots clés liés à la publication, et si le count tombe à zéro, on le supprime purement et simplement (uniquement si l'articel est publié au moment de sa suppression)
-        if ($publication->getStatus() === 2) {
-            foreach ($keyw as $key) {
-                $countKey = $key->getCount() - 1;
-                $setCountKey = $key->setCount($countKey);
-                $em->persist($setCountKey);
-            }
-        }
-        // ! Suppression du dossier $id avec tous les fichiers
-        if ($publication->getCover()) {
-            $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $id;
-            if (\file_exists($destination)) {
-                foreach (new DirectoryIterator($destination) as $item) :
-                    if ($item->isFile()) {
-                        \unlink($item->getPathname());
-                    }
-                endforeach;
-                \rmdir($destination);
-            }
-            $cloudinary = new Cloudinary(
-                [
-                    'cloud' => [
-                        'cloud_name' => 'djaro8nwk',
-                        'api_key'    => '716759172429212',
-                        'api_secret' => 'A35hPbZP0NsjnMKrE9pLR-EHwiU',
-                    ],
-                ]
-            );
-        }
-        if ($publication->getCover()) {
-            preg_match("/\/([^\/]*\.img)/", $publication->getCover(), $matches);
-            $result = $matches[1];
-            $cloudinary->uploadApi()->destroy("story/" . $id . "/" . $result, ['invalidate' => true,]);
-            $cloudinary->adminApi()->deleteFolder("story/" . $id);
-        }
 
-        $em->remove($publication);
-        $em->flush();
+        $publication = $pubRepo->find($id);
+        // * Si l'utilisateur est bien l'auteur de la publication
+        if ($this->getUser() === $publication->getUser()) {
+
+
+            $keyw = $publication->getPublicationKeywords();
+            // ! Gestion du keyword
+            // * On décrémente le count des mots clés liés à la publication, et si le count tombe à zéro, on le supprime purement et simplement (uniquement si l'articel est publié au moment de sa suppression)
+            if ($publication->getStatus() === 2) {
+                foreach ($keyw as $key) {
+                    $countKey = $key->getCount() - 1;
+                    $setCountKey = $key->setCount($countKey);
+                    $em->persist($setCountKey);
+                }
+            }
+            // ! Suppression du dossier $id avec tous les fichiers
+            if ($publication->getCover()) {
+                $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $id;
+                if (\file_exists($destination)) {
+                    foreach (new DirectoryIterator($destination) as $item) :
+                        if ($item->isFile()) {
+                            \unlink($item->getPathname());
+                        }
+                    endforeach;
+                    \rmdir($destination);
+                }
+                $cloudinary = new Cloudinary(
+                    [
+                        'cloud' => [
+                            'cloud_name' => 'djaro8nwk',
+                            'api_key' => '716759172429212',
+                            'api_secret' => 'A35hPbZP0NsjnMKrE9pLR-EHwiU',
+                        ],
+                    ]
+                );
+            }
+            if ($publication->getCover()) {
+                preg_match("/\/([^\/]*\.img)/", $publication->getCover(), $matches);
+                $result = $matches[1];
+                $cloudinary->uploadApi()->destroy("story/" . $id . "/" . $result, ['invalidate' => true,]);
+                $cloudinary->adminApi()->deleteFolder("story/" . $id);
+            }
+
+            $em->remove($publication);
+            $em->flush();
+            $this->addFlash("success", "Le récit a bien été supprimée.");
+        } else {
+            return $this->redirectToRoute("app_home");
+        }
         return $this->redirectToRoute("app_user_show_publications");
     }
     #[Route('/story/autosave', name: 'app_publication_autosave', methods: "POST")]

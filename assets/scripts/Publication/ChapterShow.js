@@ -1,4 +1,5 @@
 import axios from "axios";
+import { NotyDisplay } from "../Noty";
 export function ShowChapter() {
   const chapContentTurbo = document.getElementById("chapContentTurbo");
   const chapAvalaible = document.getElementById("chapId");
@@ -89,15 +90,6 @@ export function ShowChapter() {
       })
     );
     // commentBAlready.forEach(handleClick(() => updateDrawerContent()));
-    //*ANCHOR - partage sur les réseaux sociaux
-    const twitterB = document.querySelectorAll(".shareTwitter");
-    twitterB.forEach(handleClick(() => shareNw("twitter")));
-
-    const fbB = document.querySelectorAll(".shareFb");
-    fbB.forEach(handleClick(() => shareNw("facebook")));
-
-    const lkB = document.querySelectorAll(".shareLk");
-    lkB.forEach(handleClick(() => shareNw("linkedin")));
     // ! Bouton permettant la suppression de Highlights
     document.getElementById("delete-hl").addEventListener("click", () => {
       deleteHighlight();
@@ -117,10 +109,21 @@ export function ShowChapter() {
         tooltip.classList.add("hidden");
       }
       const selection = window.getSelection();
+      let selectionShare = "";
+      selectionShare = selection.toString();
       if (!selection.toString()) {
         return;
       }
+      //*ANCHOR - partage sur les réseaux sociaux
+      const twitterB = document.querySelectorAll(".shareTwitter");
+      twitterB.forEach(handleClick(() => shareNw("twitter")));
 
+      const fbB = document.querySelectorAll(".shareFb");
+      fbB.forEach(handleClick(() => shareNw("facebook")));
+
+      const lkB = document.querySelectorAll(".shareLk");
+      lkB.forEach(handleClick(() => shareNw("linkedin")));
+      //*
       const startNode = selection.anchorNode;
       const startOffset = selection.anchorOffset;
       const endNode = selection.focusNode;
@@ -198,164 +201,6 @@ export function ShowChapter() {
   //!SECTION — Traitement de tout ce qui concerne les commentaires classiques (modification, suppression, style etc.)
   //ANCHOR — Traitement de tout ce qui concerne les commentaires classiques (modification, suppression, style etc.)
   //!SECTION — Traitement de tout ce qui concerne les commentaires classiques (modification, suppression, style etc.)
-
-  // ! Fonction qui modifie le style du dernier commentaire posé
-  if (document.getElementById("insightQuote")) {
-    const textarea = document.getElementById(
-      "publication_chapter_comment_content"
-    );
-    const lastComment = document.getElementById("lastComment");
-
-    if (lastComment) {
-      lastComment.classList.add("animate__animated", "animate__flipInX");
-      setTimeout(() => {
-        lastComment.classList.remove("bg-slate-50", "text-slate-600");
-      }, 2000);
-    }
-    // ! Agrandir le textarea des commentaires à mesure que l'on écrit
-    const commentContent = document.getElementById(
-      "publication_chapter_comment_content"
-    );
-    const sendComment = document.getElementById("sendComment");
-
-    if (textarea) {
-      textarea.addEventListener("input", () => {
-        textarea.style.height = "";
-
-        textarea.style.height = `${textarea.scrollHeight}px`;
-      });
-    }
-    // ! Au clic sur le bouton d'envoi, on efface le formulaire textarea
-    if (sendComment) {
-      sendComment.addEventListener("click", () => {
-        setTimeout(() => {
-          commentContent.value = "";
-          document.getElementById("insightQuote").classList.add("hidden");
-          document.getElementById("insightQuote").innerHTML = "";
-          document.getElementById("drawerNoteQuote").value = "";
-          commentContent.rows = 1;
-          commentContent.style.height = "";
-        }, 100);
-        setTimeout(() => {
-          document.getElementById("nbrComSmall").innerHTML =
-            document.getElementById("nbrCom").innerHTML;
-        }, 1000);
-      });
-      if (document.getElementById("delComment")) {
-        document.getElementById("delComment").addEventListener("click", () => {
-          setTimeout(() => {
-            document.getElementById("nbrComSmall").innerHTML =
-              document.getElementById("nbrCom").innerHTML;
-          }, 1000);
-        });
-      }
-    }
-    // ! Fonction qui permet de modifier les commentaires
-    const updateButton = document.querySelectorAll(".updateButton");
-
-    updateButton.forEach((button) => {
-      button.addEventListener("click", () => {
-        const parts = button.id.split("-");
-        const result = parts[1];
-
-        const com = document.getElementById(`comShow-${result}`);
-        const inner = document.getElementById(`updateCom-${result}`);
-
-        inner.innerHTML = `
-      <textarea id='comShow-${result}' class='chapterCommentEdit'>${com.textContent.trim()}</textarea>
-      <button id='validCom-${result}' class='chapterCommentEditValidButton'><span class="material-symbols-outlined">check_circle</span> &nbsp;Valider</button>
-      <button id='cancelCom-${result}' class='chapterCommentEditCancelButton toggleSidebar' data-tippy-content="Annuler la modification"><span class="material-symbols-outlined toggleSidebar">
-      cancel
-      </span></button>
-    `;
-
-        const buttonValid = document.getElementById(`validCom-${result}`);
-        const newCom = document.getElementById(`comShow-${result}`);
-        const cancelCom = document.getElementById(`cancelCom-${result}`);
-
-        cancelCom.addEventListener("click", () => {
-          inner.innerHTML = `<p class='chapterComment'  id='comShow-${result}'>${nl2br(
-            com.textContent
-          )}</p>`;
-        });
-
-        buttonValid.addEventListener("click", () => {
-          const data = new FormData();
-          const url = "/recit/comment/up";
-
-          data.append("idCom", result);
-          data.append("newCom", newCom.value);
-
-          axios
-            .post(url, data, {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            })
-            .then((response) => {
-              newCom.textContent = response.data.comment;
-              inner.innerHTML = `<p class='chapterComment' id='comShow-${result}'>${nl2br(
-                newCom.textContent
-              )}</p>`;
-            });
-        });
-      });
-    });
-
-    // ! Fonction qui permet de mettre en exergue un nouveau commentaire
-    if (lastComment) {
-      setTimeout(() => {
-        lastComment.classList.remove("bg-slate-100", "text-slate-600");
-        lastComment.classList.add("bg-white");
-      }, 2000);
-    }
-    // ! Fonction qui permet de liker un commentaire
-    const handleLikeButtonClick = (button, result) => {
-      const url = "/recit/comment/like";
-      const data = new FormData();
-      data.append("idCom", result);
-
-      axios
-        .post(url, data, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((response) => {
-          if (response.data.code === 201) {
-            button.classList.remove(
-              "material-symbols-outlined",
-              "animate__jello"
-            );
-            button.classList.add(
-              "material-icons",
-              "text-red-500",
-              "animate__heartBeat"
-            );
-            const nbLikes = document.getElementById(`nbLikes-${result}`);
-            nbLikes.innerHTML = Number(nbLikes.innerHTML) + 1;
-          } else if (response.data.code === 200) {
-            button.classList.remove(
-              "material-icons",
-              "text-red-500",
-              "animate__heartBeat"
-            );
-            button.classList.add("material-symbols-outlined", "animate__jello");
-            const nbLikes = document.getElementById(`nbLikes-${result}`);
-            nbLikes.innerHTML = Number(nbLikes.innerHTML) - 1;
-          }
-        });
-    };
-
-    const likeButtons = document.querySelectorAll(".likeButton");
-    likeButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        const parts = button.id.split("-");
-        const result = parts[1];
-        handleLikeButtonClick(button, result);
-      });
-    });
-  }
 }
 //*!SECTION FONCTIONS
 //*!SECTION FONCTIONS
@@ -417,6 +262,14 @@ const activeClickTooltipHL = () => {
     });
   });
 };
+function handleClick(shareFn) {
+  return function (selection) {
+    return function (event) {
+      event.preventDefault();
+      shareFn(selection);
+    };
+  };
+}
 function highlightedOptions(element, tooltiped) {
   const parts = element.id.split("-");
   const result = parts[1];
@@ -447,24 +300,35 @@ function highlightedOptions(element, tooltiped) {
   deleteBtn.classList.add(...classes);
 }
 // ! fonction de partage sur les réseaux
+let selectedText = "";
+
+document.addEventListener("selectionchange", () => {
+  const selection = window.getSelection();
+  if (selection.toString().length > 0) {
+    selectedText = "« " + selection.toString() + " »\n";
+  }
+});
 function shareNw(nw) {
-  const url = window.location.href;
-  const title = document.getElementById("chapTitle").innerText;
-  let urlShare;
+  let url = window.location.href;
+  let urlShare = "";
   switch (nw) {
     case "twitter":
-      urlShare = `https://twitter.com/share?url=${url}&text=${title}`;
+      urlShare = `https://twitter.com/share?url=${url}&via=ScrilabEditions&text=${encodeURIComponent(
+        selectedText
+      )}`;
+      window.open(urlShare, "_blank");
       break;
     case "facebook":
       urlShare = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+      window.open(urlShare, "_blank");
       break;
     case "linkedin":
       urlShare = `https://www.linkedin.com/shareArticle/?mini=true&url=${url}`;
+      window.open(urlShare, "_blank");
       break;
     default:
       return;
   }
-  window.open(urlShare, "_blank");
 }
 // ! Fonction d'affichage sur le dom des highlights
 function showHighlightDom(

@@ -15,6 +15,8 @@ class SecurityController extends AbstractController
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('app_home');
+            // On renvoie sur la page précédente avec le referrer
+
         }
 
         // get the login error if there is one
@@ -25,9 +27,11 @@ class SecurityController extends AbstractController
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
     #[Route(path: '/logout', name: 'app_logout')]
-    public function logout(): void
+    public function logout(Request $request): response
     {
 
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        // throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        // On redirige vers la page précédente avec le referrer
+        return $this->redirect($request->headers->get('referer'));
     }
 }

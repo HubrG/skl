@@ -1,7 +1,7 @@
 export function Dropdown() {
   if (!document.querySelectorAll(".dropdown-button")) return;
   const button = document.querySelectorAll(".dropdown-button");
-  let dropdownmenu = document.querySelectorAll(".dropdown-content");
+  const dropdownmenu = document.querySelectorAll(".dropdown-content");
   let activeDropdown = null;
   //
   button.forEach((el) => {
@@ -9,7 +9,7 @@ export function Dropdown() {
       // On ferme tous les menus déroulants
       dropdownmenu.forEach((ell) => {
         if (!ell.classList.contains("hidden")) {
-          ell.add("hidden");
+          ell.classList.add("hidden");
         }
       });
       const elId = el.id.split("-")[1];

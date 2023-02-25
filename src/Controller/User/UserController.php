@@ -77,10 +77,8 @@ class UserController extends AbstractController
 			$em->persist($user);
 			$em->flush();
 			// flash
-			$this->addFlash('successTitle', 'Modification enregistrées !');
-			$this->addFlash('successMessage', 'Les modifications apportées sur votre page de profil sont désormais visibles de tous.');
+			$this->addFlash('success', 'Modification enregistrées !');
 			// return
-
 			return $this->redirectToRoute("app_user", ["username" => $user->getUsername()], Response::HTTP_SEE_OTHER);
 		}
 		return $this->render('user/edit.html.twig', [
@@ -130,7 +128,7 @@ class UserController extends AbstractController
 			$publications = $pubRepo
 				->createQueryBuilder("p")
 				->leftJoin("p.publicationChapters", "pc")
-				->leftJoin("pc.publicationChapterComments", "pcadd")
+				->leftJoin("pc.publicationComments", "pcadd")
 				->addSelect("COUNT(pcadd.id) AS HIDDEN add")
 				->where("p.status > 1 and p.user = " . $user)
 				->groupBy("p.id")
@@ -205,13 +203,12 @@ class UserController extends AbstractController
 			return $this->redirectToRoute("app_home");
 		}
 	}
-	#[Route('update/user/account/{success?}', name: 'app_user_account')]
+	#[Route('update/user/account', name: 'app_user_account')]
 	public function account(Request $request, EntityManagerInterface $em, UserRepository $userRepo,  UserPasswordHasherInterface $userPasswordHasher, $success = null): Response
 	{
 		if (!$this->getUser()) {
 			return $this->redirectToRoute("app_home");
 		}
-		$success = null;
 		$user = $userRepo->findOneBy(["id" => $this->getUser()]);
 		$form = $this->createForm(UserAccountType::class, $user);
 		$pwForm = $this->createForm(UserChangePasswordType::class, $user);
@@ -221,7 +218,8 @@ class UserController extends AbstractController
 		if ($form->isSubmitted() && $form->isValid()) {
 			$em->persist($user);
 			$em->flush();
-			return $this->redirectToRoute("app_user_account", ["success" => "success"]);
+			$this->addFlash('success', 'Vos informations ont bien été modifées');
+			return $this->redirectToRoute("app_user_account", [], Response::HTTP_SEE_OTHER);
 		}
 
 		$pwForm->handleRequest($request);
@@ -230,13 +228,13 @@ class UserController extends AbstractController
 			$user->setPassword($newEncodedPassword);
 			$em->persist($user);
 			$em->flush();
-			return $this->redirectToRoute("app_user_account", ["success" => "success"]);
+			$this->addFlash('success', 'Votre mot de passe a bien été modifié.');
+			return $this->redirectToRoute("app_user_account", [], Response::HTTP_SEE_OTHER);
 		}
 
 		return $this->render('user/account.html.twig', [
 			'form' => $form,
-			'passwordForm' => $pwForm,
-			'success' => $success
+			'passwordForm' => $pwForm
 		]);
 	}
 }

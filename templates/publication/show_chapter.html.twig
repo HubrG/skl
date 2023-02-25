@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block body %}
-	<section id="titleChapter" class="sticky {{ infoChap.Publication.status < 2 ? " -mt-20 top-16" : " top-14" }} bg-white bg-transparent bg-opacity-50 backdrop-blur-sm">
+	<section id="titleChapter" data-title="{{infoChap.title}}" class="sticky {{ infoChap.Publication.status < 2 ? " -mt-20 top-16" : " top-14" }} bg-white bg-transparent bg-opacity-50 backdrop-blur-sm">
 		{% if infoChap.Publication.status < 2 %}
 			<div class="mb-0">
 				<div class="w-5/6 mx-auto -mt-2 h-10  bg-slate-100 ring-1 ring-slate-700 opacity-80 right-0 rounded-b-sm">
@@ -125,8 +125,8 @@
 					<div data-tippy-content="Afficher les commentaires" class="hover:text-blue-600 cursor-pointer text-sm">
 						<span class="material-symbols-outlined toggleSidebar">
 							forum
-						</span>
-						<span id="nbrComSmall" class="toggleSidebar">&nbsp;{{ infoChap.publicationChapterComments|length }}</span>
+						</span>&nbsp;
+						<span id="nbrComSmall" class="toggleSidebar nbr-com nbr-com-let" data-nbr-com="{{infoChap.publicationComments|length}}">{{ infoChap.publicationComments|length }}</span>
 					</div>
 					|
 					{% set userLikesChapter = app.user and app.user.id != infoPub.user.id %}

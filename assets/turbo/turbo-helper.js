@@ -1,4 +1,5 @@
 import { addKeyword } from "../scripts/Publication/AddKeyword";
+import { Comment } from "../scripts/Publication/Comment";
 import { AxiosSaveChapter } from "../scripts/Publication/Chapter";
 import { AxiosSavePublication } from "../scripts/Publication/Publication";
 import { darkMode } from "../scripts/Darkmode";
@@ -15,9 +16,19 @@ import "../scripts/SymfonyFlash";
 import MicroModal from "micromodal"; // es6 module
 MicroModal.init();
 // ! Flashes
-if (document.getElementById("success")) {
-  NotyDisplay("Success", "success", 2500);
+if (document.getElementById("flashbag-success")) {
+  if (
+    document.getElementById("flashbag-success").getAttribute("data-count") == 1
+  ) {
+    NotyDisplay(
+      document.getElementById("flashbag-success").innerHTML,
+      document.getElementById("flashbag-success").getAttribute("data-status"),
+      2500
+    );
+    document.getElementById("flashbag-success").setAttribute("data-count", 2);
+  }
 }
+//!
 import {
   ShowChapter,
   toggleDrawer,
@@ -29,7 +40,26 @@ const TurboHelper = class {
   constructor() {
     document.addEventListener("turbo:before-cache", () => {});
     document.addEventListener("turbo:render", () => {
-      //
+      // ! Flashes
+      if (document.getElementById("flashbag-success")) {
+        if (
+          document
+            .getElementById("flashbag-success")
+            .getAttribute("data-count") == 1
+        ) {
+          NotyDisplay(
+            document.getElementById("flashbag-success").innerHTML,
+            document
+              .getElementById("flashbag-success")
+              .getAttribute("data-status"),
+            2500
+          );
+          document
+            .getElementById("flashbag-success")
+            .setAttribute("data-count", 2);
+        }
+      }
+      //!
       darkMode();
       if (document.getElementById("hideIdPub")) {
         addKeyword();
@@ -49,8 +79,10 @@ const TurboHelper = class {
       LazyLoad();
       ShowChapter();
       toggleDrawer();
+      Comment();
       targetQuote();
       TippyC();
+      Dropdown();
       DropdownMenu();
       MicroModal.init();
       User();
@@ -66,12 +98,33 @@ const TurboHelper = class {
     });
     document.addEventListener("turbo:frame-render", () => {
       MicroModal.init();
-
+      // ! Flashes
+      if (document.getElementById("flashbag-success")) {
+        if (
+          document
+            .getElementById("flashbag-success")
+            .getAttribute("data-count") == 1
+        ) {
+          NotyDisplay(
+            document.getElementById("flashbag-success").innerHTML,
+            document
+              .getElementById("flashbag-success")
+              .getAttribute("data-status"),
+            2500
+          );
+          document
+            .getElementById("flashbag-success")
+            .setAttribute("data-count", 2);
+        }
+      }
+      //!
       ShowChapter();
       targetQuote();
       LazyLoad();
       TippyC();
+      Comment();
       DropdownMenu();
+      Dropdown();
       User();
       if (document.querySelector(".list-group-item")) {
         Sortables();

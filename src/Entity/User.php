@@ -113,6 +113,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $oldPassword;
 
+    #[ORM\OneToMany(mappedBy: 'User', targetEntity: PublicationComment::class)]
+    private Collection $publicationComments;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationBookmark::class)]
+    private Collection $publicationBookmarks;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationCommentLike::class)]
+    private Collection $publicationCommentLikes;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationRating::class)]
+    private Collection $publicationRatings;
+
     public function __construct()
     {
         $this->publications = new ArrayCollection();
@@ -123,6 +135,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->publicationChapterLikes = new ArrayCollection();
         $this->publicationChapterBookmarks = new ArrayCollection();
         $this->publicationDownloads = new ArrayCollection();
+        $this->publicationComments = new ArrayCollection();
+        $this->publicationBookmarks = new ArrayCollection();
+        $this->publicationCommentLikes = new ArrayCollection();
+        $this->publicationRatings = new ArrayCollection();
     }
 
 
@@ -623,6 +639,126 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setOldPassword(string $oldPassword): self
     {
         $this->oldPassword = $oldPassword;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationComment>
+     */
+    public function getPublicationComments(): Collection
+    {
+        return $this->publicationComments;
+    }
+
+    public function addPublicationComment(PublicationComment $publicationComment): self
+    {
+        if (!$this->publicationComments->contains($publicationComment)) {
+            $this->publicationComments->add($publicationComment);
+            $publicationComment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationComment(PublicationComment $publicationComment): self
+    {
+        if ($this->publicationComments->removeElement($publicationComment)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationComment->getUser() === $this) {
+                $publicationComment->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationBookmark>
+     */
+    public function getPublicationBookmarks(): Collection
+    {
+        return $this->publicationBookmarks;
+    }
+
+    public function addPublicationBookmark(PublicationBookmark $publicationBookmark): self
+    {
+        if (!$this->publicationBookmarks->contains($publicationBookmark)) {
+            $this->publicationBookmarks->add($publicationBookmark);
+            $publicationBookmark->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationBookmark(PublicationBookmark $publicationBookmark): self
+    {
+        if ($this->publicationBookmarks->removeElement($publicationBookmark)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationBookmark->getUser() === $this) {
+                $publicationBookmark->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationCommentLike>
+     */
+    public function getPublicationCommentLikes(): Collection
+    {
+        return $this->publicationCommentLikes;
+    }
+
+    public function addPublicationCommentLike(PublicationCommentLike $publicationCommentLike): self
+    {
+        if (!$this->publicationCommentLikes->contains($publicationCommentLike)) {
+            $this->publicationCommentLikes->add($publicationCommentLike);
+            $publicationCommentLike->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationCommentLike(PublicationCommentLike $publicationCommentLike): self
+    {
+        if ($this->publicationCommentLikes->removeElement($publicationCommentLike)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationCommentLike->getUser() === $this) {
+                $publicationCommentLike->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationRating>
+     */
+    public function getPublicationRatings(): Collection
+    {
+        return $this->publicationRatings;
+    }
+
+    public function addPublicationRating(PublicationRating $publicationRating): self
+    {
+        if (!$this->publicationRatings->contains($publicationRating)) {
+            $this->publicationRatings->add($publicationRating);
+            $publicationRating->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationRating(PublicationRating $publicationRating): self
+    {
+        if ($this->publicationRatings->removeElement($publicationRating)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationRating->getUser() === $this) {
+                $publicationRating->setUser(null);
+            }
+        }
+
         return $this;
     }
 }

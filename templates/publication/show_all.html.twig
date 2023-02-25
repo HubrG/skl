@@ -158,7 +158,7 @@
 												&nbsp;Commentaires
 											</span>
 											<span>
-												{% set totalComments = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterComments|length, 0) %}
+												{% set totalComments = item.publicationComments|length %}
 												{% if totalComments > 0 %}
 													{{totalComments}}
 												{% else %}

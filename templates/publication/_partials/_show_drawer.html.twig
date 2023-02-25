@@ -7,7 +7,7 @@
 			<blockquote class="mt-4 border-l-4 hidden border-emerald-200 pl-4 italic text-slate-500 " id="insightQuote">
 				<p class="font-serif  quoteComment cursor-alias  text-[0.85rem]"></p>
 			</blockquote>
-			{{ form_start(formQuote, {attr:{"data-turbo-frame":"commentFrame"}}) }}
+			{{ form_start(formQuote, {attr:{"data-turbo-frame":"comment-section"}}) }}
 			<label for="publication_chapter_comment_content" class="sr-only">Votre commentaire</label>
 			<div class="flex items-center py-2 w-full rounded-lg bg-gray-50 dark:bg-gray-700">
 				{{ form_widget(formQuote.content, {attr:{"class":"block p-2.5 w-full text-sm text-gray-900 resize-none bg-white pr-12 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"}}) }}
@@ -23,7 +23,22 @@
 		</div>
 		<hr class="mb-5 shadow bg-slate-50 border-slate-50">
 	{% endif %}
-	{% include "publication/_partials/_show_chapter_comment.html.twig" with {'quote': "Quote"}  %}</aside>
+	<turbo-frame id="comment-section">
+		{% set n = 0 %}
+		{% for item in pCom %}
+			{% include "publication/_partials/_comment.html.twig" with { item:item, n:n, pcom:nbrCom} %}
+			{% set n = n + 1  %}
+		{% endfor %}
+		{% if nbrShowCom < nbrCom %}
+			{% if infoPub.slug %}
+				{% set chapterSlug = infoPub.slug %}
+			{% else %}
+				{% set chapterSlug = "feuille-n0" ~ (chapter.orderDisplay + 1) %}
+			{% endif %}
+			<a href="{{path("app_chapter_show", {user:infoPub.user.id, slug:chapterSlug, slugPub:infoPub.slug, idChap:infoChap.id, nbrShowCom:nbrShowCom + 10})}}">Afficher plus de commentaires</a>
+		{% endif %}
+	</turbo-frame>
+</aside>
 <div class="hidden">
 	<input type="hidden" value="" id="drawerSelectedText"/>
 	<input type="hidden" value="" id="drawerSelectedTextP"/>

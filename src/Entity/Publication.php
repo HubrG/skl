@@ -68,12 +68,24 @@ class Publication
     #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationPopularity::class, orphanRemoval: true)]
     private Collection $publicationPopularities;
 
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationComment::class, orphanRemoval: true)]
+    private Collection $publicationComments;
+
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationBookmark::class, orphanRemoval: true)]
+    private Collection $publicationBookmarks;
+
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationRating::class, orphanRemoval: true)]
+    private Collection $publicationRatings;
+
     public function __construct()
     {
         $this->publicationChapters = new ArrayCollection();
         $this->publicationKeywords = new ArrayCollection();
         $this->publicationDownloads = new ArrayCollection();
         $this->publicationPopularities = new ArrayCollection();
+        $this->publicationComments = new ArrayCollection();
+        $this->publicationBookmarks = new ArrayCollection();
+        $this->publicationRatings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -350,6 +362,96 @@ class Publication
             // set the owning side to null (unless already changed)
             if ($publicationPopularity->getPublication() === $this) {
                 $publicationPopularity->setPublication(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationComment>
+     */
+    public function getPublicationComments(): Collection
+    {
+        return $this->publicationComments;
+    }
+
+    public function addPublicationComment(PublicationComment $publicationComment): self
+    {
+        if (!$this->publicationComments->contains($publicationComment)) {
+            $this->publicationComments->add($publicationComment);
+            $publicationComment->setPublication($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationComment(PublicationComment $publicationComment): self
+    {
+        if ($this->publicationComments->removeElement($publicationComment)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationComment->getPublication() === $this) {
+                $publicationComment->setPublication(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationBookmark>
+     */
+    public function getPublicationBookmarks(): Collection
+    {
+        return $this->publicationBookmarks;
+    }
+
+    public function addPublicationBookmark(PublicationBookmark $publicationBookmark): self
+    {
+        if (!$this->publicationBookmarks->contains($publicationBookmark)) {
+            $this->publicationBookmarks->add($publicationBookmark);
+            $publicationBookmark->setPublication($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationBookmark(PublicationBookmark $publicationBookmark): self
+    {
+        if ($this->publicationBookmarks->removeElement($publicationBookmark)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationBookmark->getPublication() === $this) {
+                $publicationBookmark->setPublication(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationRating>
+     */
+    public function getPublicationRatings(): Collection
+    {
+        return $this->publicationRatings;
+    }
+
+    public function addPublicationRating(PublicationRating $publicationRating): self
+    {
+        if (!$this->publicationRatings->contains($publicationRating)) {
+            $this->publicationRatings->add($publicationRating);
+            $publicationRating->setPublication($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationRating(PublicationRating $publicationRating): self
+    {
+        if ($this->publicationRatings->removeElement($publicationRating)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationRating->getPublication() === $this) {
+                $publicationRating->setPublication(null);
             }
         }
 

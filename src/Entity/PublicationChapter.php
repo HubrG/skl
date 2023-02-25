@@ -61,6 +61,12 @@ class PublicationChapter
     #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationChapterBookmark::class, orphanRemoval: true)]
     private Collection $publicationChapterBookmarks;
 
+    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationComment::class)]
+    private Collection $publicationComments;
+
+    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationBookmark::class)]
+    private Collection $publicationBookmarks;
+
     public function __construct()
     {
         $this->publicationChapterVersionings = new ArrayCollection();
@@ -69,6 +75,8 @@ class PublicationChapter
         $this->publicationChapterNotes = new ArrayCollection();
         $this->publicationChapterLikes = new ArrayCollection();
         $this->publicationChapterBookmarks = new ArrayCollection();
+        $this->publicationComments = new ArrayCollection();
+        $this->publicationBookmarks = new ArrayCollection();
     }
 
 
@@ -361,6 +369,66 @@ class PublicationChapter
             // set the owning side to null (unless already changed)
             if ($publicationChapterBookmark->getChapter() === $this) {
                 $publicationChapterBookmark->setChapter(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationComment>
+     */
+    public function getPublicationComments(): Collection
+    {
+        return $this->publicationComments;
+    }
+
+    public function addPublicationComment(PublicationComment $publicationComment): self
+    {
+        if (!$this->publicationComments->contains($publicationComment)) {
+            $this->publicationComments->add($publicationComment);
+            $publicationComment->setChapter($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationComment(PublicationComment $publicationComment): self
+    {
+        if ($this->publicationComments->removeElement($publicationComment)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationComment->getChapter() === $this) {
+                $publicationComment->setChapter(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationBookmark>
+     */
+    public function getPublicationBookmarks(): Collection
+    {
+        return $this->publicationBookmarks;
+    }
+
+    public function addPublicationBookmark(PublicationBookmark $publicationBookmark): self
+    {
+        if (!$this->publicationBookmarks->contains($publicationBookmark)) {
+            $this->publicationBookmarks->add($publicationBookmark);
+            $publicationBookmark->setChapter($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationBookmark(PublicationBookmark $publicationBookmark): self
+    {
+        if ($this->publicationBookmarks->removeElement($publicationBookmark)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationBookmark->getChapter() === $this) {
+                $publicationBookmark->setChapter(null);
             }
         }
 

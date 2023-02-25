@@ -2,6 +2,7 @@
 
 namespace App\Controller\Publication;
 
+use App\Form\PublicationCommentType;
 use App\Entity\PublicationChapterLike;
 use App\Entity\PublicationChapterNote;
 use App\Entity\PublicationChapterView;
@@ -15,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
+use App\Repository\PublicationCommentRepository;
 use App\Repository\PublicationChapterLikeRepository;
 use App\Repository\PublicationChapterNoteRepository;
 use App\Repository\PublicationChapterViewRepository;
@@ -39,7 +41,7 @@ class ChapterShowController extends AbstractController
     }
 
     #[Route('/recit-{slugPub}/{user}/{idChap}/{slug?}/{nbrShowCom?}', name: 'app_chapter_show')]
-    public function showChapter(Request $request, PublicationChapterCommentRepository $pccRepo, PublicationChapterRepository $pchRepo, EntityManagerInterface $em, PublicationChapterNoteRepository $pcnRepo, PublicationRepository $pRepo, $slug = null, $idChap = null, $nbrShowCom = null): response
+    public function showChapter(Request $request, PublicationCommentRepository $pcomRepo, PublicationChapterRepository $pchRepo, EntityManagerInterface $em, PublicationChapterNoteRepository $pcnRepo, PublicationRepository $pRepo, $slug = null, $idChap = null, $nbrShowCom = null): response
     {
         if (!$nbrShowCom) {
             $nbrShowCom = 10;
@@ -71,9 +73,10 @@ class ChapterShowController extends AbstractController
         // ! Si toutes les conditions sont réunies, on traitre les données
         $previous = $pchRepo->findOneBy(['publication' => $publication->getId(), 'status' => 2, 'order_display' => $chapter->getOrderDisplay() - 1]);
         $next = $pchRepo->findOneBy(['publication' => $publication->getId(), 'status' => 2, 'order_display' => $chapter->getOrderDisplay() + 1]);
-        $comments = $pccRepo->findBy(['chapter' => $chapter], ['publish_date' => 'DESC'], $nbrShowCom, 0);
+        $comments = $pcomRepo->findBy(['chapter' => $chapter], ['published_at' => 'DESC'], $nbrShowCom, 0);
+        $nbrCom = count($pcomRepo->findBy(['chapter' => $chapter]));
         // * 
-        $form = $this->createForm(PublicationChapterCommentType::class);
+        $form = $this->createForm(PublicationCommentType::class);
         $form->handleRequest($request);
         // ON récupère le champ "quote" depuis la request
         if ($form->isSubmitted() && $form->isValid()) {
@@ -82,11 +85,12 @@ class ChapterShowController extends AbstractController
             $comment->setChapter($chapter);
             $comment->setQuote($quote);
             $comment->setUser($this->getUser());
-            $comment->setPublishDate(new \DateTime('now'));
+            $comment->setPublication($publication);
+            $comment->setPublishedAt(new \DateTimeImmutable());
             $em->persist($comment);
             $em->flush();
             // * On met à jour la popularité de la publication
-            $this->publicationPopularity->PublicationPopularity($comment->getChapter()->getPublication());
+            $this->publicationPopularity->PublicationPopularity($comment->getPublication());
             //
             $this->addFlash('success', 'Votre commentaire a bien été ajouté.');
             return $this->redirectToRoute('app_chapter_show', ['slugPub' => $publication->getSlug(), 'user' => $publication->getUser()->getUsername(), 'idChap' => $chapter->getId(), 'slug' => $chapter->getSlug()]);
@@ -102,32 +106,41 @@ class ChapterShowController extends AbstractController
             $chapterContent = $this->formatChapter($chapter);
         }
         // * La vue
-        return $this->render('publication/show_chapter.html.twig', [
+        return $this->renderForm('publication/show_chapter.html.twig', [
             'infoPub' => $publication,
             'infoChap' => $chapter,
             'previousChap' => $previous,
             'nextChap' => $next,
-            'form' => $form->createView(),
-            'formQuote' => $form->createView(),
-            "comments" => $comments,
+            'form' => $form,
+            'formQuote' => $form,
+            "pCom" => $comments,
             "nbrShowCom" => $nbrShowCom,
+            "nbrCom" => $nbrCom,
             "chapterContent" => $chapterContent,
         ]);
     }
-    #[Route('/recit/comment/del/{id}', name: 'app_chapter_del_comment')]
-    public function delComment(Request $request, EntityManagerInterface $em, PublicationChapterCommentRepository $pccRepo, $id): response
+    #[Route('/recit/comment/del', name: 'app_chapter_del_comment', methods: ['POST'])]
+    public function delComment(Request $request, EntityManagerInterface $em, PublicationChapterCommentRepository $pccRepo): response
     {
+        $id = $request->get("idCom");
         $comment = $pccRepo->find($id);
         if ($comment and $comment->getUser() == $this->getUser()) {
             $em->remove($comment);
             $em->flush();
-            $this->addFlash('success', 'Votre commentaire a bien été supprimé.');
-            // * On met à jour la popularité de la publication
             $this->publicationPopularity->PublicationPopularity($comment->getChapter()->getPublication());
+            return $this->json([
+                'code' => 200,
+                'message' => 'Le commentaire a bien été supprimé.',
+            ], 200);
+            // * On met à jour la popularité de la publication
             //
-            return $this->redirectToRoute('app_chapter_show', ['slugPub' => $comment->getChapter()->getPublication()->getSlug(), 'user' => $comment->getChapter()->getPublication()->getUser()->getUsername(), 'idChap' => $comment->getChapter()->getId(), 'slug' => $comment->getChapter()->getSlug()]);
+            // return $this->redirectToRoute('app_chapter_show', ['slugPub' => $comment->getChapter()->getPublication()->getSlug(), 'user' => $comment->getChapter()->getPublication()->getUser()->getUsername(), 'idChap' => $comment->getChapter()->getId(), 'slug' => $comment->getChapter()->getSlug()]);
         } else {
-            return $this->redirectToRoute('app_home');
+            // return $this->redirectToRoute('app_home');
+            return $this->json([
+                'code' => 403,
+                'message' => 'Vous n\'avez pas les droits pour supprimer ce commentaire.',
+            ], 403);
         }
     }
     #[Route('/recit/comment/up', name: 'app_chapter_up_comment', methods: ['POST'])]

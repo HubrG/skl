@@ -3,14 +3,21 @@
 
 namespace App\Controller\Publication;
 
+use App\Entity\Publication;
+use App\Form\PublicationCommentType;
+use App\Entity\PublicationCommentLike;
 use App\Services\PublicationPopularity;
 use App\Services\PublicationDownloadPDF;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
+use App\Repository\PublicationCommentRepository;
 use App\Repository\PublicationKeywordRepository;
 use App\Repository\PublicationCategoryRepository;
+use App\Repository\PublicationChapterCommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PublicationShowController extends AbstractController
@@ -212,11 +219,11 @@ class PublicationShowController extends AbstractController
 		}
 	}
 
-	#[Route('/recit/{id<\d+>}/{slug}', name: 'app_publication_show_one')]
-	public function show_one(PublicationRepository $pRepo, PublicationChapterRepository $pchRepo, $id = null, $slug = null): Response
+	#[Route('/recit/{id<\d+>}/{slug}/{nbrShowCom?}', name: 'app_publication_show_one')]
+	public function show_one(Request $request, PublicationCommentRepository $pcomRepo, EntityManagerInterface $em, PublicationRepository $pRepo, PublicationChapterRepository $pchRepo, $nbrShowCom = 10, $id = null, $slug = null): Response
 	{
 
-
+		$nbrShowCom = $nbrShowCom ?? 10;
 		$publication = $pRepo->find($id);
 		$orderChap = $pchRepo->findOneBy(["publication" => $publication, "order_display" => 0, "status" => 2]);
 		$chapters = $pchRepo->findBy(["publication" => $publication, "status" => 2], ["order_display" => "ASC"]);
@@ -235,11 +242,32 @@ class PublicationShowController extends AbstractController
 				'slug' => $publication->getSlug()
 			]);
 		} else {
-
+			$form = $this->createForm(PublicationCommentType::class);
+			$form->handleRequest($request);
+			if ($form->isSubmitted() && $form->isValid()) {
+				$comment = $form->getData();
+				$comment->setUser($this->getUser());
+				$comment->setPublication($publication);
+				$comment->setPublishedAt(new \DateTimeImmutable());
+				$em->persist($comment);
+				$em->flush();
+				$this->addFlash('success', 'Votre commentaire a bien été envoyé !');
+				$this->publicationPopularity->PublicationPopularity($comment->getPublication());
+				return $this->redirectToRoute('app_publication_show_one', [
+					'id' => $id,
+					'slug' => $publication->getSlug()
+				]);
+			}
+			$comments =  $pcomRepo->findBy(["publication" => $publication, "chapter" => null], ["published_at" => "DESC"]);
+			$nbrComments =  count($comments);
 			return $this->render('publication/show_one.html.twig', [
 				'pubShow' => $publication,
 				'orderChap' => $orderChap,
-				'chapShow' => $chapters
+				'chapShow' => $chapters,
+				'formQuote' => $form,
+				'pCom' => $comments,
+				'nbrCom' => $nbrComments,
+				'nbrShowCom' => $nbrShowCom
 			]);
 		}
 	}
@@ -263,5 +291,99 @@ class PublicationShowController extends AbstractController
 			return $b['occ'] <=> $a['occ'];
 		});
 		return $keywords;
+	}
+	#[Route('/recit/publication/comment/del', name: 'app_publication_del_comment', methods: ['POST'])]
+	public function delComment(Request $request, EntityManagerInterface $em, PublicationCommentRepository $pcomRepo): response
+	{
+		$dtIdCom = $request->get("idCom");
+		$comment = $pcomRepo->find($dtIdCom);
+		if ($comment and $comment->getUser() == $this->getUser()) {
+			$em->remove($comment);
+			$em->flush();
+			// * On met à jour la popularité de la publication
+			$this->publicationPopularity->PublicationPopularity($comment->getPublication());
+			//
+			// On renvoie sur la page précédente
+			// return $this->redirectToRoute('app_publication_show_one', ['slug' => $comment->getPublication()->getSlug(), 'id' => $comment->getPublication()->getId()]);
+			return $this->json([
+				'code' => 200,
+				'message' => 'Votre commentaire a bien été supprimé.',
+			], 200);
+		} else {
+			return $this->json([
+				'code' => 403,
+				'message' => 'Vous ne pouvez pas supprimer ce commentaire.',
+			], 403);
+			// return $this->redirectToRoute('app_publication_show_one', ['slug' => $comment->getPublication()->getSlug(), 'id' => $comment->getPublication()->getId()]);
+		}
+	}
+	#[Route('/recit/publication/comment/like', name: 'app_publication_like_comment', methods: ['POST'])]
+	public function likeComment(Request $request, PublicationCommentRepository $pcomRepo, EntityManagerInterface $em): response
+	{
+		$dtIdCom = $request->get("idCom");
+		// * On récupère le commentaire
+		$comment = $pcomRepo->find($dtIdCom);
+		// * Si le commentaire existe et que l'auteur du commentaire n'est pas l'auteur du like
+		if ($comment and $comment->getUser() != $this->getUser()) {
+			// * On vérifie que le commentaire n'a pas déjà été liké par l'utilisateur
+			$like = $comment->getPublicationCommentLikes()->filter(function ($like) {
+				return $like->getUser() == $this->getUser();
+			})->first();
+			// * Si le commentaire a déjà été liké, on supprime le like
+			if ($like) {
+				$em->remove($like);
+				$em->flush();
+				// * On met à jour la popularité de la publication
+				// $this->publicationPopularity->PublicationPopularity($comment->getChapter()->getPublication());
+				//
+				return $this->json([
+					'code' => 200,
+					'message' => 'Le like a bien été supprimé.'
+				], 200);
+			}
+			// * Sinon, on ajoute le like
+			$like = new PublicationCommentLike();
+			$like->setUser($this->getUser())
+				->setComment($comment)
+				->setCreatedAt(new \DateTimeImmutable());
+			$em->persist($like);
+			$em->flush();
+			// * On met à jour la popularité de la publication
+			// $this->publicationPopularity->PublicationPopularity($comment->getChapter()->getPublication());
+			//
+		} else {
+			return $this->json([
+				'code' => 403,
+				'message' => 'Vous n\'avez pas les droits pour modifier ce commentaire.',
+			], 403);
+		}
+		//
+		return $this->json([
+			'code' => 201,
+			'message' => 'Le like a bien été ajouté.'
+		], 200);
+	}
+	#[Route('/recit/publication/comment/up', name: 'app_publication_up_comment', methods: ['POST'])]
+	public function upComment(Request $request, PublicationCommentRepository $pccRepo, EntityManagerInterface $em): response
+	{
+		$dtIdCom = $request->get("idCom");
+		$dtNewCom = $request->get("newCom");
+		$comment = $pccRepo->find($dtIdCom);
+		if ($comment and $comment->getUser() == $this->getUser()) {
+			$comment->setContent($dtNewCom);
+			$em->persist($comment);
+			$em->flush();
+		} else {
+			return $this->json([
+				'code' => 403,
+				'message' => 'Vous n\'avez pas les droits pour modifier ce commentaire.',
+			], 403);
+		}
+		//
+		return $this->json([
+			'code' => 200,
+			'message' => 'Le commentaire a bien été modifié.',
+			'comment' => $comment->getContent()
+		], 200);
 	}
 }

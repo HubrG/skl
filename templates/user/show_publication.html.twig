@@ -272,9 +272,8 @@
 										{{totalViews}}
 									</td>
 									<td class="px-6 py-3  {{item.status < 2 ? " opacity-60"}}">
-										{% set totalComments = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterComments|length, 0) %}
 
-										{{totalComments}}
+										{{item.publicationComments|length}}
 
 									</td>
 									<td class="px-6 py-3  {{item.status < 2 ? " opacity-60"}}">

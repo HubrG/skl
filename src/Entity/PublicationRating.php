@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
-use App\Repository\PublicationRatingRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\PublicationRatingRepository;
 
 #[ORM\Entity(repositoryClass: PublicationRatingRepository::class)]
 class PublicationRating
@@ -24,6 +24,8 @@ class PublicationRating
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $createdAt = null;
+
+
 
     public function getId(): ?int
     {

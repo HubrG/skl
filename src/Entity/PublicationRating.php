@@ -25,6 +25,9 @@ class PublicationRating
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $test = null;
+
 
 
     public function getId(): ?int
@@ -76,6 +79,18 @@ class PublicationRating
     public function setCreatedAt(?\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getTest(): ?string
+    {
+        return $this->test;
+    }
+
+    public function setTest(?string $test): self
+    {
+        $this->test = $test;
 
         return $this;
     }

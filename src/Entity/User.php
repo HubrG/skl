@@ -123,6 +123,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationBookmarkCollection::class)]
     private Collection $publicationBookmarkCollections;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Notification::class)]
+    private Collection $notifications;
+
     public function __construct()
     {
         $this->publications = new ArrayCollection();
@@ -136,6 +139,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->publicationCommentLikes = new ArrayCollection();
         $this->publicationRatings = new ArrayCollection();
         $this->publicationBookmarkCollections = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
 
@@ -733,5 +737,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function isIsVerified(): ?bool
     {
         return $this->isVerified;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications->add($notification);
+            $notification->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getUser() === $this) {
+                $notification->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

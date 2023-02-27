@@ -126,6 +126,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Notification::class)]
     private Collection $notifications;
 
+    #[ORM\OneToMany(mappedBy: 'from_user', targetEntity: Notification::class)]
+    private Collection $UserFrom;
+
     public function __construct()
     {
         $this->publications = new ArrayCollection();
@@ -140,6 +143,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->publicationRatings = new ArrayCollection();
         $this->publicationBookmarkCollections = new ArrayCollection();
         $this->notifications = new ArrayCollection();
+        $this->UserFrom = new ArrayCollection();
     }
 
 
@@ -763,6 +767,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($notification->getUser() === $this) {
                 $notification->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getUserFrom(): Collection
+    {
+        return $this->UserFrom;
+    }
+
+    public function addUserFrom(Notification $userFrom): self
+    {
+        if (!$this->UserFrom->contains($userFrom)) {
+            $this->UserFrom->add($userFrom);
+            $userFrom->setFromUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserFrom(Notification $userFrom): self
+    {
+        if ($this->UserFrom->removeElement($userFrom)) {
+            // set the owning side to null (unless already changed)
+            if ($userFrom->getFromUser() === $this) {
+                $userFrom->setFromUser(null);
             }
         }
 

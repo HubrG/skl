@@ -3,8 +3,8 @@
 
 namespace App\Controller\Publication;
 
-use App\Entity\Publication;
 use App\Form\PublicationCommentType;
+use App\Services\NotificationSystem;
 use App\Entity\PublicationCommentLike;
 use App\Services\PublicationPopularity;
 use App\Services\PublicationDownloadPDF;
@@ -17,7 +17,6 @@ use App\Repository\PublicationChapterRepository;
 use App\Repository\PublicationCommentRepository;
 use App\Repository\PublicationKeywordRepository;
 use App\Repository\PublicationCategoryRepository;
-use App\Repository\PublicationChapterCommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PublicationShowController extends AbstractController
@@ -27,12 +26,13 @@ class PublicationShowController extends AbstractController
 
 	private $publicationDownloadPDF;
 
+	private $notificationSystem;
 
-
-	public function __construct(PublicationPopularity $publicationPopularity, PublicationDownloadPDF $publicationDownloadPDF)
+	public function __construct(NotificationSystem $notificationSystem, PublicationPopularity $publicationPopularity, PublicationDownloadPDF $publicationDownloadPDF)
 	{
 		$this->publicationPopularity = $publicationPopularity;
 		$this->publicationDownloadPDF = $publicationDownloadPDF;
+		$this->notificationSystem = $notificationSystem;
 	}
 
 	#[Route('/recits/{slug?}/{page<\d+>?}/{sortby?}/{order?}/{keystring?}', name: 'app_publication_show_all_category')]
@@ -236,6 +236,7 @@ class PublicationShowController extends AbstractController
 		}
 
 		if ($slug == "download") {
+
 			$this->publicationDownloadPDF->PublicationDownloadPDF($id); // download PDF
 			return $this->redirectToRoute('app_publication_show_one', [
 				'id' => $id,
@@ -252,7 +253,11 @@ class PublicationShowController extends AbstractController
 				$em->persist($comment);
 				$em->flush();
 				$this->addFlash('success', 'Votre commentaire a bien été envoyé !');
+				// Mise à jour de la popularité
 				$this->publicationPopularity->PublicationPopularity($comment->getPublication());
+				// Envoi d'une notification
+				$this->notificationSystem->addNotification(1, $comment->getPublication()->getUser(), $this->getUser(), $comment);
+				//
 				return $this->redirectToRoute('app_publication_show_one', [
 					'id' => $id,
 					'slug' => $publication->getSlug()

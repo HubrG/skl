@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Services\NotificationSystem;
 use App\Entity\PublicationCommentLike;
 use App\Services\PublicationPopularity;
 use Doctrine\ORM\EntityManagerInterface;
@@ -9,15 +10,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationCommentRepository;
-use App\Repository\PublicationChapterCommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CommentController extends AbstractController
 {
     private $publicationPopularity;
-    public function __construct(EntityManagerInterface $em, PublicationPopularity $publicationPopularity)
+    private $notificationSystem;
+    public function __construct(NotificationSystem $notificationSystem, EntityManagerInterface $em, PublicationPopularity $publicationPopularity)
     {
         $this->publicationPopularity = $publicationPopularity;
+        $this->notificationSystem = $notificationSystem;
     }
     #[Route('/comment/delete', name: 'app_comment_delete', methods: ['POST'])]
     public function CommentDelete(Request $request, EntityManagerInterface $em, PublicationCommentRepository $pcomRepo): Response
@@ -63,7 +65,6 @@ class CommentController extends AbstractController
                 $em->flush();
                 // * On met à jour la popularité de la publication
                 $this->publicationPopularity->PublicationPopularity($comment->getPublication());
-                //
                 return $this->json([
                     'code' => 200,
                     'message' => 'Le like a bien été supprimé.'
@@ -78,6 +79,8 @@ class CommentController extends AbstractController
             $em->flush();
             // * On met à jour la popularité de la publication
             $this->publicationPopularity->PublicationPopularity($comment->getPublication());
+            // Envoi d'une notification
+            $this->notificationSystem->addNotification(3, $like->getComment()->getUser(), $this->getUser(), $like);
             //
         } else {
             return $this->json([

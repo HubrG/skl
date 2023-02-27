@@ -54,7 +54,10 @@
 				<h4 class="font-medium text-sm">
 					<a href="{{ path("app_user", {username:item.user.username}) }}">{{ item.user.nickname }}</a>
 				</h4>
-				<p class="text-gray-600 text-xs">{{ item.publishedAt|since }}</p>
+				<p class="text-gray-600 text-xs">
+					{{ item.publishedAt|since }}
+					<span class="text-gray-400 text-[0.70rem]">{{item.updatedAt ? "| modifié il y a " ~ item.updatedAt|since}}</span>
+				</p>
 			</div>
 			{% if userLogId is not null %}
 				<div class="dropdown">

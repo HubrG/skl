@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use App\Repository\PublicationChapterLikeRepository;
 
 #[ORM\Entity(repositoryClass: PublicationChapterLikeRepository::class)]
@@ -21,6 +23,14 @@ class PublicationChapterLike
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $CreatedAt = null;
+
+    #[ORM\OneToMany(mappedBy: 'chapter_like', targetEntity: Notification::class, orphanRemoval: true)]
+    private Collection $notifications;
+
+    public function __construct()
+    {
+        $this->notifications = new ArrayCollection();
+    }
 
 
 
@@ -61,6 +71,36 @@ class PublicationChapterLike
     public function setCreatedAt(?\DateTimeImmutable $CreatedAt): self
     {
         $this->CreatedAt = $CreatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications->add($notification);
+            $notification->setChapterLike($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getChapterLike() === $this) {
+                $notification->setChapterLike(null);
+            }
+        }
 
         return $this;
     }

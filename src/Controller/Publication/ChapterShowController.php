@@ -3,6 +3,7 @@
 namespace App\Controller\Publication;
 
 use App\Form\PublicationCommentType;
+use App\Services\NotificationSystem;
 use App\Entity\PublicationChapterLike;
 use App\Entity\PublicationChapterNote;
 use App\Entity\PublicationChapterView;
@@ -29,15 +30,16 @@ class ChapterShowController extends AbstractController
 
     private $em;
     private $chapterNote;
-
+    private $notificationSystem;
     private $publicationPopularity;
 
 
-    public function __construct(EntityManagerInterface $em, PublicationChapterNoteRepository $chapterNote, PublicationPopularity $publicationPopularity)
+    public function __construct(NotificationSystem $notificationSystem, EntityManagerInterface $em, PublicationChapterNoteRepository $chapterNote, PublicationPopularity $publicationPopularity)
     {
         $this->em = $em;
         $this->chapterNote = $chapterNote;
         $this->publicationPopularity = $publicationPopularity;
+        $this->notificationSystem = $notificationSystem;
     }
 
     #[Route('/recit-{slugPub}/{user}/{idChap}/{slug?}/{nbrShowCom?}', name: 'app_chapter_show')]
@@ -91,7 +93,10 @@ class ChapterShowController extends AbstractController
             $em->flush();
             // * On met à jour la popularité de la publication
             $this->publicationPopularity->PublicationPopularity($comment->getPublication());
+            // * Envoi d'une notification
+            $this->notificationSystem->addNotification(2, $comment->getPublication()->getUser(), $this->getUser(), $comment);
             //
+
             $this->addFlash('success', 'Votre commentaire a bien été ajouté.');
             return $this->redirectToRoute('app_chapter_show', ['slugPub' => $publication->getSlug(), 'user' => $publication->getUser()->getUsername(), 'idChap' => $chapter->getId(), 'slug' => $chapter->getSlug()]);
         } elseif ($form->isSubmitted() && !$this->getUser()) {
@@ -398,6 +403,8 @@ class ChapterShowController extends AbstractController
         $em->flush();
         // * On met à jour la popularité de la publication
         $this->publicationPopularity->PublicationPopularity($pch->getPublication());
+        // * Envoi d'une notification
+        $this->notificationSystem->addNotification(6, $like->getChapter()->getPublication()->getUser(), $this->getUser(), $like);
         //
         return $this->json([
             'code' => 200,
@@ -442,6 +449,8 @@ class ChapterShowController extends AbstractController
         $em->flush();
         // * On met à jour la popularité de la publication
         $this->publicationPopularity->PublicationPopularity($pch->getPublication());
+        // * Envoi d'une notification
+        $this->notificationSystem->addNotification(4, $bm->getChapter()->getPublication()->getUser(), $this->getUser(), $bm);
         //
         return $this->json([
             'code' => 200,

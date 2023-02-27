@@ -46,10 +46,14 @@ class PublicationComment
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $quote = null;
 
+    #[ORM\OneToMany(mappedBy: 'comment', targetEntity: Notification::class, orphanRemoval: true)]
+    private Collection $notifications;
+
     public function __construct()
     {
         $this->publicationCommentLikes = new ArrayCollection();
         $this->publicationComments = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -209,6 +213,36 @@ class PublicationComment
     public function setQuote(?string $quote): self
     {
         $this->quote = $quote;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications->add($notification);
+            $notification->setComment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getComment() === $this) {
+                $notification->setComment(null);
+            }
+        }
 
         return $this;
     }

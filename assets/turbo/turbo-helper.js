@@ -29,6 +29,7 @@ if (document.getElementById("flashbag-success")) {
   }
 }
 //!
+import { Navbar } from "../scripts/Navbar";
 import {
   ShowChapter,
   toggleDrawer,
@@ -79,6 +80,7 @@ const TurboHelper = class {
       LazyLoad();
       ShowChapter();
       toggleDrawer();
+      Navbar();
       Comment();
       targetQuote();
       TippyC();
@@ -122,6 +124,7 @@ const TurboHelper = class {
       targetQuote();
       LazyLoad();
       TippyC();
+      Navbar();
       Comment();
       DropdownMenu();
       Dropdown();

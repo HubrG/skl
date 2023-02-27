@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use App\Repository\PublicationChapterBookmarkRepository;
 
 #[ORM\Entity(repositoryClass: PublicationChapterBookmarkRepository::class)]
@@ -21,6 +23,14 @@ class PublicationChapterBookmark
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $CreatedAt = null;
+
+    #[ORM\OneToMany(mappedBy: 'chapter_bookmark', targetEntity: Notification::class, orphanRemoval: true)]
+    private Collection $notifications;
+
+    public function __construct()
+    {
+        $this->notifications = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -59,6 +69,36 @@ class PublicationChapterBookmark
     public function setCreatedAt(?\DateTimeImmutable $CreatedAt): self
     {
         $this->CreatedAt = $CreatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications->add($notification);
+            $notification->setChapterBookmark($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getChapterBookmark() === $this) {
+                $notification->setChapterBookmark(null);
+            }
+        }
 
         return $this;
     }

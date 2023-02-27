@@ -23,12 +23,14 @@ class PublicationDownloadPDF extends AbstractController
 
     private $pdRepo;
 
-    public function __construct(PublicationDownloadRepository $pdRepo, EntityManagerInterface $em, PublicationRepository $pRepo, PublicationChapterRepository $pchRepo)
+    private $notificationSystem;
+    public function __construct(NotificationSystem $notificationSystem, PublicationDownloadRepository $pdRepo, EntityManagerInterface $em, PublicationRepository $pRepo, PublicationChapterRepository $pchRepo)
     {
         $this->pRepo = $pRepo;
         $this->pchRepo = $pchRepo;
         $this->em = $em;
         $this->pdRepo = $pdRepo;
+        $this->notificationSystem = $notificationSystem;
     }
     /**
      * @param $publication
@@ -168,6 +170,8 @@ class PublicationDownloadPDF extends AbstractController
             $pd->setDlAt(new DateTimeImmutable());
             $this->em->persist($pd);
             $this->em->flush();
+            // add notification
+            $this->notificationSystem->addNotification(5, $publication->getUser(), $this->getUser(), $pd);
         }
     }
 }

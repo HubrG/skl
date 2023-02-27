@@ -4,6 +4,9 @@ export function Navbar() {
   const notificationButton = document.getElementById(
     "notification-menu-button"
   );
+  if (!notificationButton) {
+    return;
+  }
   notificationButton.addEventListener("click", () => {
     const notificationNbr = document.getElementById("nbr-notification");
     if (notificationNbr) {

@@ -71,7 +71,6 @@ nav {
 	@apply  bg-white shadow-sm border-b border-b-slate-300 px-2 md:px-4 py-2.5 dark:bg-slate-900 dark:border-b-slate-700
 }
 main {
-	transition: all 0.1s ease-out;
 
 	@apply  grid grid-rows-none grid-cols-12  items-start mx-auto md:p-10 p-3 pt-14 md:w-9/12 z-50;
 }
@@ -91,7 +90,10 @@ main {
 	@apply text-slate-700 hover:underline font-serif ;
 }
 dialog {
-	@apply bg-white bg-opacity-90  backdrop-blur-[1px] backdrop-grayscale backdrop-filter backdrop-saturate-200  ;
+	@apply bg-white backdrop-blur-sm border-2 rounded border-slate-800 bg-opacity-25 text-left  ;
+}
+dialog h1,h2,h3 {
+	@apply text-center  ;
 }
 .bg-gray-900 { 
 	/* lié au dialogue */
@@ -385,7 +387,7 @@ opacity: 0.4;
 	@apply  float-right font-sans rounded-full -mt-[6.9rem] mr-[0.2rem]  px-1 text-slate-600  text-center text-xs ;
 }
 .kwTag {
-	@apply bg-slate-100 text-slate-600 text-xs  mr-1 leading-7 mb-2 px-2.5 py-1 rounded dark:bg-slate-700 dark:text-slate-400 hover:bg-slate-200;
+	@apply bg-slate-100 text-slate-600 text-xs  mr-1 leading-8 mb-2 px-2.5 py-1 rounded dark:bg-slate-700 dark:text-slate-400 hover:bg-slate-200;
 }
 .catTag {
 	@apply  mr-1 leading-7 mb-2 px-2.5 py-1  rounded dark:bg-slate-700 dark:text-slate-400;
@@ -445,7 +447,7 @@ opacity: 0.4;
 	@apply bg-rose-100 text-rose-900 hover:bg-rose-200;
 }
 .button-classic {
-@apply  rounded ring-1 text-sm  border-b-2 px-3 py-2 	 hover:grayscale-[90%] active:border-b active:py-[0.55rem] font-normal transition ease-in duration-75;
+@apply  rounded ring-1 text-sm  border-b-2 px-3 py-2 hover:grayscale-[90%] active:border-b active:py-[0.55rem] font-medium transition ease-in duration-75;
 }
 .button-violet {
 	@apply   bg-violet-50 text-violet-900 ring-violet-600 border-violet-600;
@@ -519,3 +521,10 @@ opacity: 0.4;
 .form_error ul li {
  	@apply   -mt-5 p-0;
 }
+.comment-up {
+	@apply -translate-y-[10rem] ;
+  }
+  .one-comment {
+	@apply transition-all ease-in-out delay-150 duration-500;
+
+  }

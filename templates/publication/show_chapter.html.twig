@@ -135,17 +135,17 @@
 					{% set liked = userLikesChapter ? infoChap.publicationChapterLikes|map(item => item.user.id)|contains(app.user.id) : false %}
 					{% set bm = userCanBookmark ? infoChap.publicationChapterBookmarks|map(item => item.user.id)|contains(app.user.id) : false %}
 
-					{% set likeTooltip = app.user is not defined ? "Connectez-vous pour aimer cette feuille !" : infoPub.user.id == app.user.id ? 'Vous ne pouvez pas aimer votre feuille.' : liked ? "Je n'aime plus cette feuille" : "J'aime cette feuille" %}
-					{% set bmTooltip = app.user is not defined ? "Connectez-vous pour marquer cette feuille !" : infoPub.user.id == app.user.id ? 'Vous ne pouvez pas marquer votre feuille.' : bm ? "Retirer cette feuille de ma collection" : "Ajouter cette feuille à ma collection" %}
+					{% set likeTooltip = app.user.id is not defined ? "Connectez-vous pour aimer cette feuille !" : (infoPub is not null and infoPub.user.id == app.user.id) ? 'Vous ne pouvez pas aimer votre feuille.' : (liked ? "Je n'aime plus cette feuille" : "J'aime cette feuille") %}
+					{% set bmTooltip = app.user.id is not defined ? "Connectez-vous pour marquer cette feuille !" : infoPub.user.id == app.user.id ? 'Vous ne pouvez pas marquer votre feuille.' : bm ? "Retirer cette feuille de ma collection" : "Ajouter cette feuille à ma collection" %}
 
-					<div class="text-sm {% if userLikesChapter %}hover:text-blue-600 cursor-pointer{% endif %}" id="likeThisChapter" data-tippy-content="{{ likeTooltip }}" data-id="{{ infoChap.id }}">
+					<div class="text-sm {% if userLikesChapter %}hover:text-blue-600 cursor-pointer{% endif %} {% if app.user.id is not defined %}cursor-pointer{% endif %}" id="likeThisChapter" data-tippy-content="{{ likeTooltip }}" {% if app.user.id is not defined %} data-modal-show="authentication-modal" {% endif %} data-id="{{ infoChap.id }}">
 						<span class="material-{{ liked ? 'icons text-red-500' : 'symbols-outlined' }} " id="likeChapterThumb">
 							favorite
 						</span>
 						&nbsp;<span id="nbrLike">{{ infoChap.publicationChapterLikes|length }}</span>
 					</div>
 					|
-					<div class="text-sm {% if userCanBookmark %}hover:text-blue-600 cursor-pointer{% endif %}" id="bmThisChapter" data-tippy-content="{{ bmTooltip }}" data-id="{{ infoChap.id }}">
+					<div class="text-sm {% if userCanBookmark %}hover:text-blue-600 cursor-pointer{% endif %} {% if app.user.id is not defined %}cursor-pointer{% endif %}" id="bmThisChapter" data-tippy-content="{{ bmTooltip }}" {% if app.user.id is not defined %} data-modal-show="authentication-modal" {% endif %} data-id="{{ infoChap.id }}">
 						<span class="material-{{ bm ? 'icons text-blue-500' : 'symbols-outlined' }}" id="bmChapter">
 							bookmark
 						</span>

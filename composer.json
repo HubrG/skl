@@ -67,6 +67,7 @@
         "symfony/web-link": "6.2.*",
         "symfony/webpack-encore-bundle": "^1.16",
         "symfony/yaml": "6.2.*",
+        "symfonycasts/reset-password-bundle": "^1.17",
         "symfonycasts/verify-email-bundle": "^1.13",
         "tecnickcom/tcpdf": "^6.6",
         "twig/extra-bundle": "^3.5",

@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Password Reset Email Sent
+{% endblock %}
+
+{% block body %}
+	<section class="col-span-12 grid flex-row grid-cols-12 gap-5 text-center mb-20 mt-10">
+		<h1 class="text-center font-serif col-span-12">
+			<span class="material-symbols-outlined mb-10">
+				mark_email_read
+			</span>
+			<br/>
+			Réinitialisation du mot de passe
+		</h1>
+		<hr class="col-span-8 col-start-3">
+		<p class=" col-span-8 col-start-3">
+			Si un compte correspondant à votre adresse e-mail existe, un e-mail vient d'être envoyé contenant un lien que vous pouvez utiliser pour réinitialiser votre mot de passe. Ce lien expirera dans
+			{{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+		</p>
+		<p class=" col-span-8 col-start-3">
+			Si vous ne recevez pas d'e-mail, veuillez vérifier votre dossier spam ou
+			<button data-modal-show="reset-modal" class="font-semibold hover:underline">réessayer</button>.
+		</p>
+
+		<p class=" col-span-8 col-start-3">
+			À tout de suite !
+			<span class="material-symbols-outlined">
+				sentiment_satisfied
+			</span><br><br>
+			<span class="font-medium">L'équipe éditoriale de Scrilab</span>
+		</p>
+
+	</section>
+{% endblock %}

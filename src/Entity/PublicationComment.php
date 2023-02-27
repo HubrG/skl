@@ -17,10 +17,10 @@ class PublicationComment
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'publicationComments')]
-    private ?Publication $publication = null;
+    private Publication $publication;
 
     #[ORM\ManyToOne(inversedBy: 'publicationComments')]
-    private ?User $User = null;
+    private User $User;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $content = null;

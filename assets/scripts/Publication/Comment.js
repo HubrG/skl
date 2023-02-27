@@ -25,9 +25,15 @@ export function Comment() {
               nbr.innerHTML = Number(nbr.innerHTML) - 1;
             });
             comment.classList.add("animate__animated", "animate__zoomOut");
+            //
+            document.querySelectorAll(".one-comment").forEach((el) => {
+              el.classList.add("commment-up");
+            });
+            // réduire la hauteur de la div à 0px
             setTimeout(() => {
               comment.remove();
-            }, 1000);
+            }, 500);
+
             NotyDisplay(response.data.message, "success", 2500);
           }
         })

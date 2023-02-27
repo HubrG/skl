@@ -312,9 +312,7 @@ class PublicationController extends AbstractController
                 );
             }
             if ($publication->getCover()) {
-                preg_match("/\/([^\/]*\.img)/", $publication->getCover(), $matches);
-                $result = $matches[1];
-                $cloudinary->uploadApi()->destroy("story/" . $id . "/" . $result, ['invalidate' => true,]);
+                $this->uploadImage->deleteImage($destination . "/" . $publication->getCover(), $publication->getCover(), $publication->getId(), "story");
                 $cloudinary->adminApi()->deleteFolder("story/" . $id);
             }
 

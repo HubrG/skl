@@ -47,17 +47,22 @@
 			</span><br/>
 			Mes récits
 		</h1>
-		<hr class="h-[0.4rem] bg-slate-200 rounded-t border-0 dark:bg-gray-700 mt-14">
 		{% if publication|length == 0 %}
-			<div class="flex flex-col items-center justify-center mt-10">
+			<div class="flex flex-col items-center justify-center mt-[6.8rem] border-t border-t-slate-300 pt-10">
 				<span class="material-symbols-outlined text-5xl">
 					cloud_off
 				</span>
 				<h2 class="text-2xl ">Vous n'avez pas encore publié de récit</h2>
-				<a href="{{path("app_publication_add")}}" class="btn btn-primary mt-5 hover:underline">Publier un récit</a>
+				<a href="{{path("app_publication_add")}}" class="btn btn-primary mt-5 hover:underline">Publier un récit
+					<span class="material-icons">
+						redo
+					</span>
+				</a>
+
 			</div>
 		{% endif %}
 		{% if publication|length > 0 %}
+			<hr class="h-[0.4rem] bg-slate-200 rounded-t border-0 dark:bg-gray-700 mt-14">
 			<div class="relative overflow-x-auto h-auto  ">
 				<turbo-frame id="publication-frame">
 

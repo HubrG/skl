@@ -19,12 +19,21 @@
 							auto_stories
 						</span>
 						&nbsp;Lire</button>
-					<a href="{{ path("app_publication_add")}}" type="button" data-action="dropdown#toggle click@window->dropdown#hide" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2  md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
-						<span class="material-symbols-outlined">
-							draw
-						</span>
-						Écrire & publier
-					</a>
+					{% if app.user %}
+						<a href="{{ path("app_publication_add")}}" type="button" data-action="dropdown#toggle click@window->dropdown#hide" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2  md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+							<span class="material-symbols-outlined">
+								draw
+							</span>
+							Écrire & publier
+						</a>
+					{% else %}
+						<button data-modal-target="register-modal" data-modal-toggle="register-modal" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2  md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+							<span class="material-symbols-outlined">
+								draw
+							</span>
+							Écrire & publier
+						</button>
+					{% endif %}
 					{% if app.user %}
 						<button type="button" id="dropdownInformationButton" data-dropdown-toggle="dropdownInformation" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800 flex gap-x-2 ">
 							{% if app.user.profilPicture %}
@@ -89,10 +98,11 @@
 						<button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
 							Connexion
 						</button>
-						{% include "partials/_modals.html.twig" with {"modal" : "reset"} %}
+						{% include "partials/_login-modal.html.twig" with {"modal" : "reset"} %}
 					{% endif %}
 					{% if not app.user %}
-						<a href="{{ path("app_register") }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Inscription</a>
+						<button data-modal-target="register-modal" data-modal-toggle="register-modal" class="button-classic button-sky border-none ring-0">Inscription</button>
+						{% include "partials/_register-modal.html.twig" with {"modal" : "reset"} %}
 					{% endif %}
 					<button id="darkButton" type="button" data-tooltip-target="tooltip-dm" data-tooltip-placement="bottom" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800 hidden">
 						<i class="fa-solid fa-circle-half-stroke text-black dark:text-slate-200"></i>

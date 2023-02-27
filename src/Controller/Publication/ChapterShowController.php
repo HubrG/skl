@@ -79,7 +79,7 @@ class ChapterShowController extends AbstractController
         $form = $this->createForm(PublicationCommentType::class);
         $form->handleRequest($request);
         // ON récupère le champ "quote" depuis la request
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && $this->getUser()) {
             $quote = $request->request->get('quote');
             $comment = $form->getData();
             $comment->setChapter($chapter);
@@ -93,6 +93,9 @@ class ChapterShowController extends AbstractController
             $this->publicationPopularity->PublicationPopularity($comment->getPublication());
             //
             $this->addFlash('success', 'Votre commentaire a bien été ajouté.');
+            return $this->redirectToRoute('app_chapter_show', ['slugPub' => $publication->getSlug(), 'user' => $publication->getUser()->getUsername(), 'idChap' => $chapter->getId(), 'slug' => $chapter->getSlug()]);
+        } elseif ($form->isSubmitted() && !$this->getUser()) {
+            $this->addFlash('danger', 'Vous devez être connecté pour pouvoir commenter.');
             return $this->redirectToRoute('app_chapter_show', ['slugPub' => $publication->getSlug(), 'user' => $publication->getUser()->getUsername(), 'idChap' => $chapter->getId(), 'slug' => $chapter->getSlug()]);
         }
         // * On ajoute un view pour le chapitre (si l'utilisateur n'est pas l'auteur de la publication)

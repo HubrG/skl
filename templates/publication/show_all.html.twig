@@ -84,7 +84,7 @@
 							{% for option in options %}
 								{% set activeClass = option.order == orderSort and option.sortby == querySortby ? 'bg-slate-100 hover:bg-slate-100' : 'hover:bg-slate-200' %}
 								<li class="py-2 {{ option.class }} {{ activeClass }} ">
-									<a href="{{ path("app_publication_show_all_category", {slug: slugCat, keystring: queryKeystring, page: page, order: option.order, sortby: option.sortby}) }}" data-turbo-frame="_self" class="block px-4 py-2 hover:text-slate-700 dark:hover:bg-slate-600 dark:hover:text-white">
+									<a href="{{ path("app_publication_show_all_category", {slug: slugCat, keystring: queryKeystring, page: page, order: option.order, sortby: option.sortby}) }}" target="_self" class="block px-4 py-2 hover:text-slate-700 dark:hover:bg-slate-600 dark:hover:text-white">
 										{{ option.icon|raw }}
 										&nbsp;{{ option.text }}</a>
 								</li>
@@ -212,7 +212,7 @@
 
 								{% endif %}
 								{% for pubKeyw in item.publicationKeywords %}
-									<a href="{{ path("app_publication_show_all_category", {slug:querySlug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:pubKeyw.keyword|lower}) }}">
+									<a href="{{ path("app_publication_show_all_category", {slug:querySlug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:pubKeyw.keyword|lower}) }}" target="_self">
 										<span class="kwTag">{{ pubKeyw.keyword|lower }}
 											{% if not loop.last %}{% endif %}
 										</span>

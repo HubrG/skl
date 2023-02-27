@@ -244,7 +244,7 @@ class PublicationShowController extends AbstractController
 		} else {
 			$form = $this->createForm(PublicationCommentType::class);
 			$form->handleRequest($request);
-			if ($form->isSubmitted() && $form->isValid()) {
+			if ($form->isSubmitted() && $form->isValid() && $this->getUser()) {
 				$comment = $form->getData();
 				$comment->setUser($this->getUser());
 				$comment->setPublication($publication);
@@ -253,6 +253,12 @@ class PublicationShowController extends AbstractController
 				$em->flush();
 				$this->addFlash('success', 'Votre commentaire a bien été envoyé !');
 				$this->publicationPopularity->PublicationPopularity($comment->getPublication());
+				return $this->redirectToRoute('app_publication_show_one', [
+					'id' => $id,
+					'slug' => $publication->getSlug()
+				]);
+			} elseif ($form->isSubmitted() && $form->isValid() && !$this->getUser()) {
+				$this->addFlash('danger', 'Vous devez être connecté pour poster un commentaire !');
 				return $this->redirectToRoute('app_publication_show_one', [
 					'id' => $id,
 					'slug' => $publication->getSlug()

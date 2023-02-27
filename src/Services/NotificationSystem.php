@@ -51,9 +51,9 @@ class NotificationSystem extends AbstractController
      */
     public function addNotification($type, $user, $fromUser, $idLink)
     {
-        if ($user == $fromUser) {
-            return;
-        }
+        // if ($user == $fromUser) {
+        //     return;
+        // }
         // $email = (new Email())
         //     ->from('youremail@example.com')
         //     ->to('recipient@example.com');

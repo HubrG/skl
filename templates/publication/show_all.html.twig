@@ -41,10 +41,11 @@
 		{# ! Affichage des récits #}
 		<section class="row-span-12 col-span-12 xl:col-span-7 xl:row-span-7{% if pubShowKw %} {% else %}col-start-0 xl:col-start-4 {% endif %}  order-1 xl:order-2 justify-around -mt-5 grayscale-[2px]" style="--animate-duration: 1s;">
 			<div class="flex mb-10 justify-between">
-				<h4 class="w-2/6 mb-5 ml-2  font-light text-lg text-slate-500">
+				<h4 class="w-3/6 mb-5 ml-2  font-light text-lg text-slate-500">
 					{% set recount = count == 1 ? "1 récit" : count ~ " récits" %}
 					{{ recount | default('Aucun récit.') }}
 					{% if count == 0 and app.user %}
+						|
 						<a href="{{ path("app_publication_add") }}" class="text-blue-500">N'hésitez pas à publier le vôtre !</a>
 					{% elseif count == 0 and not app.user %}
 						<button data-micromodal-trigger="popup-register" class="text-blue-500">N'hésitez pas à publier le vôtre !</button>

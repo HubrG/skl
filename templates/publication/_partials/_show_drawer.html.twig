@@ -33,10 +33,12 @@
 			<p class="mb-5 text-center font-bold">
 				Aucun commentaire pour le moment
 			</p>
-			<hr class="mb-5">
-			<p class="text-center font-medium">
-				<button data-micromodal-trigger="popup-login" class="hover:underline">Connectez-vous pour commenter !</button>
-			</p>
+			{% if not app.user %}
+				<hr class="mb-5">
+				<p class="text-center font-medium">
+					<button data-micromodal-trigger="popup-login" class="hover:underline">Connectez-vous pour commenter !</button>
+				</p>
+			{% endif %}
 		{% endif %}
 		{% set n = 0 %}
 		{% for item in pCom %}

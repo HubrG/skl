@@ -35,15 +35,14 @@ class HomeController extends AbstractController
     {
 
 
-        return $this->redirectToRoute('app_publication_show_all_category');
+        // return $this->redirectToRoute('app_publication_show_all_category');
 
 
 
-        // return  $this->render('home/home.html.twig', [
-        //     'controller_name' => "d",
-        //     "test" =>  "d",
-        //     "notif" => $notif,
-        // ]);
+        return  $this->render('home/home.html.twig', [
+            'controller_name' => "d",
+            "test" =>  "d",
+        ]);
     }
     #[Route('/test/{nbrShowCom?}', name: 'app_test')]
     public function test(Request $request, PublicationCommentRepository $pcomRepo, PublicationRepository $pRepo, SluggerInterface $slugger, EntityManagerInterface $em, $nbrShowCom = 10): Response

@@ -17,3 +17,7 @@ Pour selectionner items tous les items : CMD+ALT+L
 ! Connexion à POSTGRES (local)
 1) ouvrir le terminal et taper : psql postgres
 2) \conninfo (pour avoir les infos du serveur)
+
+
+* Pour configurer le routage HTTPS (SSL) : heroku certs:auto:enable -a <appname>
+* Pour configurer IONOS : Scrilab.com = CNAME (avec un www.scrilab.com) -> rediriger vers www.scrilab.com (les autres domaines, rediriger vers le nom de domaine scrilab.com (interne))

@@ -11,3 +11,9 @@ Pour selectionner items tous les items : CMD+ALT+L
 * TODO: Créer un système de commentaire et de note pour les publications elles-mêmes.
 + Créer un système de collection (pour les publications)
 * harmoniser le système des commentaires (pour éviter de publiquer pour publication/chapters etc...)
+
+
+
+! Connexion à POSTGRES (local)
+1) ouvrir le terminal et taper : psql postgres
+2) \conninfo (pour avoir les infos du serveur)

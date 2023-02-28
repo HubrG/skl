@@ -36,12 +36,13 @@
 	max-height: 100vh;
 	border-radius: 4px;
 	overflow-y: auto;
+	align-items:flex-start;
+
   }
   
   .modal__header {
 	display: flex;
-	justify-content: space-between;
-	align-items: center;
+	align-items:baseline;
   }
   
   .modal__title {

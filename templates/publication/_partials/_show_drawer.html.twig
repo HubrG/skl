@@ -24,6 +24,20 @@
 		<hr class="mb-5 shadow bg-slate-50 border-slate-50">
 	{% endif %}
 	<turbo-frame id="comment-section">
+		{% if pCom|length == 0 %}
+			<p class="mb-3 text-center text-lg font-semibold">
+				<span class="material-symbols-outlined">
+					comments_disabled
+				</span>
+			</p>
+			<p class="mb-5 text-center font-bold">
+				Aucun commentaire pour le moment
+			</p>
+			<hr class="mb-5">
+			<p class="text-center font-medium">
+				<button data-micromodal-trigger="popup-login" class="hover:underline">Connectez-vous pour commenter !</button>
+			</p>
+		{% endif %}
 		{% set n = 0 %}
 		{% for item in pCom %}
 			{% include "publication/_partials/_comment.html.twig" with { item:item, n:n, pcom:nbrCom} %}

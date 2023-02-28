@@ -526,5 +526,14 @@ opacity: 0.4;
   }
   .one-comment {
 	@apply transition-all ease-in-out delay-150 duration-500;
-
   }
+.cgu li {
+@apply mt-5;
+  }
+  .cgu li h3 {
+	@apply font-semibold text-left;
+	  }
+	  .cgu li p {
+		@apply my-5 text-sm;
+		  }
+  

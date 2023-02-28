@@ -229,12 +229,20 @@
 					{% for i in count..limit - 1 %}
 						<div class="relative rounded-lg dark:border-slate-700 flex place-content-start opacity-80">
 							<p class="absolute z-50 ml-[40%] mt-[23%] shadow-lg">
-								<a href="{{ path("app_publication_add") }}" class="text-slate-900 rounded ring-1 ring-slate-900 px-4 bg-white p-3 font-medium hover:bg-slate-50 shadow">
-									<span class="material-symbols-outlined ">
-										history_edu
-									</span>
-									&nbsp;Publier mon récit
-								</a>
+								{% if not app.user %}
+									<button data-micromodal-trigger="popup-register" class="text-slate-900 rounded ring-1 ring-slate-900 px-4 bg-white p-3 font-medium hover:bg-slate-50 shadow">
+										<span class="material-symbols-outlined ">
+											history_edu
+										</span>
+										&nbsp;Publier mon récit</button>
+								{% else %}
+									<a href="{{ path("app_publication_add") }}" class="text-slate-900 rounded ring-1 ring-slate-900 px-4 bg-white p-3 font-medium hover:bg-slate-50 shadow">
+										<span class="material-symbols-outlined ">
+											history_edu
+										</span>
+										&nbsp;Publier mon récit
+									</a>
+								{% endif %}
 							</p>
 							<div class="w-2/6 h-auto rounded-lg">
 								<a href="{{ path("app_publication_add") }}">

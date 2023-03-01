@@ -19,7 +19,7 @@
 						Connectez-vous sur Scrilab
 					</h3>
 					<hr class="mt-5 mb-3">
-					<button tabindex="0" onclick='document.getElementById("popup-login").classList.add("animate__animated","animate__fadeOut");setTimeout(function() {MicroModal.close("popup-login");document.getElementById("popup-login").classList.remove("animate__animated","animate__fadeOut");},1000)' data-micromodal-trigger="popup-register" class="text-center w-full mb-3 text-sm text-blue-700 font-medium hover:underline">Je n'ai pas encore de compte</button>
+					<button tabindex="0" onclick='document.getElementById("popup-login").classList.add("animate__animated","animate__fadeOut","animate__faster");setTimeout(function() {MicroModal.close("popup-login");document.getElementById("popup-login").classList.remove("animate__animated","animate__fadeOut");},1000)' data-micromodal-trigger="popup-register" class="text-center w-full mb-3 text-sm text-blue-700 font-medium hover:underline">Je n'ai pas encore de compte</button>
 					<hr class="mb-5">
 					<turbo-frame id="loginframe">
 						<form method="post" action="{{ path("app_login") }}">
@@ -43,7 +43,7 @@
 							</div>
 							<div>
 								<label tabindex="3" for="password" class="block text-left text-sm font-medium text-gray-900 dark:text-white">Votre mot de passe
-									<button tabindex="4" type="button" data-micromodal-trigger="popup-forgotpw" onclick='document.getElementById("popup-login").classList.add("animate__animated","animate__fadeOut");setTimeout(function() {MicroModal.close("popup-login");document.getElementById("popup-login").classList.remove("animate__animated","animate__fadeOut");},1000)' class="text-sm font-medium text-blue-600  dark:text-blue-800 float-right">
+									<button tabindex="4" type="button" onclick='MicroModal.show("popup-forgotpw");document.getElementById("popup-login").classList.add("animate__animated","animate__fadeOut");setTimeout(function() {MicroModal.close("popup-login");document.getElementById("popup-login").classList.remove("animate__animated","animate__fadeOut");},1000)' class="text-sm font-medium text-blue-600  dark:text-blue-800 float-right">
 										<span class="material-symbols-outlined">
 											lock_reset
 										</span>

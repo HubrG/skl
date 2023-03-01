@@ -40,7 +40,7 @@
 				</span>
 			</div>
 		</div>
-		<div class="flex pl-10 justify-center mt-14 md:-mt-5">
+		<div class="flex pl-10 justify-center mt-14 md:-mt-6">
 			<button class="text-base md:text-2xl font-serif -mt-[4rem] text-slate-800 dark:text-white" id="chapListButton" data-dropdown-toggle="dropdownChapter">{{ infoChap.title }}
 				<span class="material-symbols-outlined">
 					expand_more
@@ -100,14 +100,13 @@
 						<span class="material-symbols-outlined">
 							arrow_back
 						</span>
-						<span class="hidden md:inline">Feuille précédente</span>
 					</a>
 				{% endif %}
 			</div>
 			<div class="z-50">
 				{% if nextChap %}
 					<a href="{{ path("app_chapter_show", {idChap:nextChap.id, slugPub:infoPub.slug, user:infoPub.user.username, slug:nextChap.slug}) }}" class="flex justify-around button-classic button-slate">
-						<span class="hidden md:inline">Feuille suivante</span>
+
 						<span class="material-symbols-outlined">
 							arrow_forward
 						</span>

@@ -35,8 +35,8 @@
 	max-width: 500px;
 	max-height: 100vh;
 	border-radius: 4px;
-	overflow-y: auto;
-	align-items:flex-start;
+	overflow-y: scroll;
+	align-items:start;
 
   }
   

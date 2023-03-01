@@ -55,7 +55,8 @@
 	@apply bg-slate-700 text-slate-50 font-light;
 }
 * {
-	@apply font-sans ;
+	@apply font-sans;
+	font-display: swap;
 }
 body {
 	@apply bg-white dark:bg-slate-800 h-screen;

@@ -1,17 +1,17 @@
 {% if app.user is null %}
 	{# Login Modal #}
-	<div id="popup-login" tabindex="-1" aria-hidden="true" class="modal micromodal-slide  z-50">
+	<div id="popup-login" tabindex="-1" aria-hidden="true" class="modal micromodal-slide  z-50 ">
 		<div
-			class="modal__overlay" tabindex="-1" data-micromodal-close class=" max-w-md md:h-auto  rounded-lg shadow">
+			class="modal__overlay" tabindex="-1" data-micromodal-close class=" max-w-md md:h-auto  rounded-lg shadow  ">
 			<!-- Modal content -->
-			<div class="modal__container  h-screen sm:h-auto sm:w-auto w-screen" data-micromodal-close role="dialog" aria-modal="true" aria-labelledby="popup-login-title">
-				<button tabindex="5" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-micromodal-close>
-					<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-						<path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-					</svg>
-					<span class="sr-only">Close modal</span>
-				</button>
-				<div class="px-6 py-6 lg:px-8">
+			<div class="modal__container  h-screen sm:h-auto sm:w-auto w-screen items-center  flex md:flex-none justify-items-center" data-micromodal-close role="dialog" aria-modal="true" aria-labelledby="popup-login-title">
+				<div class="px-6 py-6 lg:px-8 relative">
+					<button tabindex="5" onclick='MicroModal.show("popup-login")' type="button" class="absolute top-0 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-micromodal-close>
+						<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+							<path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+						</svg>
+						<span class="sr-only">Close modal</span>
+					</button>
 					<h3 class="text-xl font-medium text-gray-900 dark:text-white -mt-5">
 						<span class="material-symbols-outlined">
 							login
@@ -21,8 +21,8 @@
 					<hr class="mt-5 mb-3">
 					<button tabindex="0" onclick='document.getElementById("popup-login").classList.add("animate__animated","animate__fadeOut","animate__faster");MicroModal.close("popup-login");document.getElementById("popup-login").classList.remove("animate__animated","animate__fadeOut")' data-micromodal-trigger="popup-register" class="text-center w-full mb-3 text-sm text-blue-700 font-medium hover:underline">Je n'ai pas encore de compte</button>
 					<hr class="mb-5">
-					<turbo-frame id="loginframe">
-						<form method="post" action="{{ path("app_login") }}">
+					<turbo-frame id="loginframe" class="w-full">
+						<form method="post" action="{{ path("app_login") }}" class="w-full">
 							{% if error is defined %}
 								{% if error %}
 									<div class="flex justify-center items-center font-bold mt-10">

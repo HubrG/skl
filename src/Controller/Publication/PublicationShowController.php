@@ -17,6 +17,8 @@ use App\Repository\PublicationChapterRepository;
 use App\Repository\PublicationCommentRepository;
 use App\Repository\PublicationKeywordRepository;
 use App\Repository\PublicationCategoryRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Gzip;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PublicationShowController extends AbstractController

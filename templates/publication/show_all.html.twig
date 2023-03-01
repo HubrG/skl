@@ -13,6 +13,9 @@
 	—
 	{{ parent() }}
 {% endblock %}
+{% block metatags %}
+	<link rel="canonical" href="https://www.scrilab.com/recits">
+{% endblock %}
 {% block body %}
 	<section class="col-span-12 md:mt-1 -mt-8">
 		<h1 class="text-center font-serif">{{ slugCatName }}</h1>
@@ -108,7 +111,7 @@
 						<div class="w-2/6  h-auto rounded-lg">
 							<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}">
 								{% set pic = item.cover %}
-								<img class="rounded object-cover w-full lazy animate-pulse animate__animated bg-slate-300" loading="lazy" src="" data-src="{% if pic %}{{pic}}{% else %}{{ "https://via.placeholder.com/529x793" }} {% endif %}" alt=""/>
+								<img class="rounded object-cover w-full lazy animate-pulse animate__animated bg-slate-300" width="529" height="793" loading="lazy" src="" data-src="{% if pic %}{{pic}}{% else %}{{ "https://via.placeholder.com/529x793" }} {% endif %}" alt=""/>
 							</a>
 						</div>
 						<div class="p-5 -mt-7 w-4/6 relative place-content-baseline items-baseline">
@@ -248,7 +251,7 @@
 							</p>
 							<div class="w-2/6 h-auto rounded-lg">
 								<a href="{{ path("app_publication_add") }}">
-									<img class="rounded object-cover w-full shaow-md lazy animate-pulse animate__animated bg-slate-300 grayscale-0 blur-[2px]" loading="lazy" src="" data-src="{{ placeholderimg }}" alt="">
+									<img class="rounded object-cover w-full shaow-md lazy animate-pulse animate__animated bg-slate-300 grayscale-0 blur-[2px]" width="529" height="793" loading="lazy" src="" data-src="{{ placeholderimg }}" alt="">
 								</a>
 							</div>
 							<div class="p-5 -mt-7 w-4/6 place-content-baseline items-baseline blur-[2px]">

@@ -3,7 +3,7 @@
 	{% if items.status == withStatus %}
 		{% set nbr = nbr + 1 %}
 		{% set chapId = items.id  %}
-		<div class="relative bg-white w-[48%] border-none border-gray-100 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-5 list-group-item " chap="{{ items.id }}" id="{{ items.orderDisplay }}">
+		<div class="relative bg-white w-[100%] md:[50%] border-none border-gray-100 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-5 list-group-item " chap="{{ items.id }}" id="{{ items.orderDisplay }}">
 			<span data-chapter-status="{{items.status}}" id="chapter-sort-{{items.id}}" class="absolute {{ items.status < 2 ? " hidden" }} left-[0.0rem] -bottom-[0.1rem] inline-flex items-center justify-center w-5 h-5 text-xs font-semibold text-slate-50 bg-slate-700 rounded-sm rounded-tl-none rounded-br-none chapter-number z-50">
 				{{items.orderDisplay + 1}}</span>
 			<turbo-frame id="{{ chapId }}">

@@ -177,7 +177,7 @@
 						</button>
 					</h2>
 					<div id="accordion-flush-body-1" class="hidden" aria-labelledby="accordion-flush-heading-1">
-						<div id="itemsChap" class=" flex  flex-wrap gap-x-4">
+						<div id="itemsChap" class=" flex  justify-center flex-wrap gap-x-4">
 							{% if infoPub.publicationChapters|length == 0 %}
 								<div class="w-full text-center bg-slate-100 text-slate-600 rounded border-2 border-slate-300 border-dashed mt-3 opacity-60 hover:opacity-80" id="noPublication">
 									<p>
@@ -247,8 +247,7 @@
 					<div id="confettis"></div>
 					<div id="accordion-flush-body-2" class="hidden" aria-labelledby="accordion-flush-heading-2">
 
-						<div id="itemsChap2" class=" flex animate__animated  flex-wrap gap-x-4  opacity-80">
-
+						<div id="itemsChap2" class=" flex animate__animated  flex-wrap gap-x-4 justify-center  opacity-80">
 							{% include "publication/_partials/_edit_publication_show_chapters.html.twig" with {withStatus:1} %}
 						</div>
 					</div>

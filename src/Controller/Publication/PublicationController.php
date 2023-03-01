@@ -54,7 +54,7 @@ class PublicationController extends AbstractController
             }
             $form = $this->createForm(PublicationType::class, $brouillon);
         } else {
-            return $this->redirectToRoute("app_register");
+            return $this->redirectToRoute("app_home");
         }
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

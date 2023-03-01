@@ -180,7 +180,7 @@
 					<div aria-labelledby="mega-menu-icons-dropdown-button" class="w-full hover:bg-slate-50 border-b-[1px] border-b-slate-200">
 						<a class="block px-4 py-4 text-sm text-emerald-900   dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white  font-medium" href="{{ path("app_publication_show_all_category", {slug:null, page:null})}}">Tous les récits</a>
 					</div>
-					<ul class="space-y-3 px-6 flex-col grid-rows-6 grid-flow-col gap-x-2 grid justify-items-start items-baseline" aria-labelledby="mega-menu-icons-dropdown-button">
+					<ul class="space-y-3 px-6 flex-col grid-rows-6 grid-flow-col gap-x-2 grid justify-items-start items-baseline py-4" aria-labelledby="mega-menu-icons-dropdown-button">
 						{% for item in publicationCategoryRepository.findAll()|sort((a, b) => a.slug < b.slug ? -1 : 1) %}
 							<li>
 								<a href="{{ path("app_publication_show_all_category", {slug:item.slug, page:null})}}" class="flex items-center text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500 group">

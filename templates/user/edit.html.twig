@@ -8,7 +8,7 @@
 	<turbo-frame id="profil_up">
 
 		{{ form_start(editUserForm, { attr: {'data-turbo-frame':'_top','action':path("app_user_edit", {"username" : app.user.username})}}) }}
-		<div class=" w-5/6 mx-auto">
+		<div class=" w-6/6 mx-auto">
 			<div class="grid grid-cols-3  relative mb-10">
 				<div class="flex justify-center order-first md:order-first text-2xl mt-20 md:mt-0 gap-x-5"></div>
 				<label class="absolute mr-32 cursor-pointer font-semibold" for="pbg">
@@ -16,7 +16,8 @@
 						<span class="material-symbols-outlined">
 							wallpaper
 						</span>
-						Modifier le fond d'écran</p>
+						<span class="hidden md:inline">Modifier le fond d'écran</span>
+					</p>
 				</label>
 				<div class="relative grid grid-cols-1  order-2">
 					<label for="pp" class="cursor-pointer">
@@ -35,8 +36,8 @@
 
 			</div>
 		</div>
-		<div class="bg-white rounded bg-opacity-80 w-5/6 mx-auto p-10 pb-0 ring-1 ring-gray-300 mt-14">
-			<div class="grid grid-cols-2 gap-6 pt-0">
+		<div class="bg-white rounded bg-opacity-80 w-6/6 md:w-5/6 mx-auto p-10 pb-0 ring-1 ring-gray-300 -mt-14 md:mt-14 ">
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-0">
 				<div>
 					{{ form_label(editUserForm.nickname) }}
 					<div class="relative mb-6">

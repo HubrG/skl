@@ -39,23 +39,23 @@
 			<div class="grid grid-cols-3  relative mb-10">
 				&nbsp;
 				<div class="relative grid grid-cols-1  order-2">
-					<div class="w-48 h-48 mx-auto rounded-full absolute inset-x-0 top-5 -mt-24 flex items-center justify-center text-indigo-500">
+					<div class="w-48 h-48 mx-auto rounded-full absolute inset-x-0 top-5 -mt-24 -ml-5 md:ml-auto flex items-center justify-center text-indigo-500">
 						<img class="w-40 h-40 p-1 rounded-full object-fill dark:ring-gray-500" src="{{userInfo.profilPicture ? userInfo.profilPicture : "https://via.placeholder.com/500/500"}}">
 					</div>
 				</div>
 				<div class="order-3 text-center">
 					{% if app.user and app.user.id == userInfo.id %}
-						<a href="{{ path('app_user_edit', {'username': app.user.username}) }}" class="  sm:text-xs lg:text-sm  absolute -mt-[5.6rem] -mr-2 lg:-ml-1 lg:-mt-16 right-0 font-medium  p-2 px-3 rounded-full bg-slate-300  text-slate-600 bg-opacity-20 hover:text-slate-900 hover:bg-opacity-60 border-[1px] border-slate-300">
+						<a href="{{ path('app_user_edit', {'username': app.user.username}) }}" class="  text-xs md:text-sm  absolute -mt-[5.6rem] -mr-2 md:-ml-1 md:-mt-16 right-0 font-medium  p-2 px-3 rounded-full bg-slate-300  text-slate-600 bg-opacity-20 hover:text-slate-900 hover:bg-opacity-60 border-[1px] border-slate-300">
 							<span class="material-symbols-outlined">auto_fix</span>
-							Modifier mon profil
+							<span class="hidden md:inline">Modifier mon profil</span>
 						</a>
 					{% endif %}
 				</div>
 			</div>
 			<div class="flex justify-center">
 				<div class="flex-grid grid-cols-1 w-6/6 justify-center mt-[3.1rem] text-center border-b border-b-slate-400">
-					<h1 class="text-3xl lg:text-4xl font-medium text-slate-700 font-serif">{{ userInfo.nickname }}</h1>
-					<p class="text-slate-700 mb-6 text-center {{ userInfo.profilBackground ? " md:pt-6" }}">{{ userInfo.about|nl2br }}</p>
+					<h1 class="text-3xl md:text-4xl font-medium text-slate-700 font-serif">{{ userInfo.nickname }}</h1>
+					<p class="text-slate-700 mb-10 text-center {{ userInfo.profilBackground ? " md:pt-6" }}">{{ userInfo.about|nl2br }}</p>
 					{% if userInfo.website or userInfo.twitter or userInfo.instagram or userInfo.facebook %}
 						<div class="flex justify-center order-first md:order-first text-2xl -mt-2 mb-2 -ml-2 gap-x-5">&nbsp;
 							{% if userInfo.website %}
@@ -92,14 +92,14 @@
 			</div>
 		</turbo-frame>
 	</section>
-	<section class="col-span-10 col-start-2">
+	<section class="col-span-12 md:col-span-10 md:col-start-2">
 		<h2 class="p-10 text-center text-2xl text-slate-800">
 			<span class="material-symbols-outlined">
 				menu_book
 			</span><br/>
 			{{pubInfo|length > 1 ? pubInfo|length ~ " récits publiés" : pubInfo|length == 0 ? "Aucun récit publié" : pubInfo|length ~ " récit publié"}}
 		</h2>
-		<div class="grid grid-cols-1 md:grid-cols-2 gap-7 mb-24">
+		<div class="grid grid-cols-1 sm:grid-cols-2 gap-7 mb-24">
 			{% for pub in pubInfo %}
 				<div class="flex flex-col justify-between h-full">
 					<h1 class="text-2xl font-medium text-slate-700 font-serif mb-4 text-center">

@@ -26,7 +26,7 @@ class UserParameterController extends AbstractController
         $this->userRepo = $userRepo;
     }
 
-    #[Route('/parameters/user/set', name: 'app_user_parameter')]
+    #[Route('/param/user/set', name: 'app_user_parameter')]
     public function index(Request $request): Response
     {
         $this->setParameters($request->get("param"), $request->get("value"));

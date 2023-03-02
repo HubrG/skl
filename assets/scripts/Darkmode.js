@@ -19,7 +19,7 @@ export function darkMode() {
 }
 function setDarkmode(dark) {
   const data = new FormData();
-  const url = "/parameters/user/set";
+  const url = "/param/user/set";
   data.append("param", "darkmode");
   data.append("value", dark);
   axios

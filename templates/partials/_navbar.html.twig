@@ -72,7 +72,7 @@
 						<li>
 							<button id="darkButton" class="text-gray-800 relative dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2  md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
 								<span class="material-symbols-outlined" id="darkMode">
-									{{app.user.userParameters.darkmode == true ? "wb_sunny" : "nightlight_badge" }}
+									{{app.user.userParameters ? app.user.userParameters.darkmode == true ? "wb_sunny" : "nightlight_badge" }}
 								</span>
 							</button>
 						</li>

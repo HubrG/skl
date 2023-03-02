@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\UserParameters;
 use App\Security\EmailVerifier;
 use App\Form\RegistrationFormType;
 use App\Security\AppAuthenticator;
@@ -35,6 +36,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
         $user = new User();
+        $userParameters = new UserParameters();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -48,6 +50,10 @@ class RegistrationController extends AbstractController
             $user->setNickname($form->get("username")->getData());
             $user->setJoinDate(new \DateTime('now'));
             $entityManager->persist($user);
+            $entityManager->flush();
+            // On crée une table UserParameters pour chaque utilisateur
+            $userParameters->setUser($user);
+            $entityManager->persist($userParameters);
             $entityManager->flush();
             // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation(

@@ -62,13 +62,11 @@
 			</div>
 		{% endif %}
 		{% if publication|length > 0 %}
-			<hr class="h-[0.4rem] bg-slate-200 rounded-t border-0 dark:bg-gray-700 mt-14">
+			<hr class="h-[0.4rem] bg-slate-200 dark:bg-slate-900 rounded-t border-0  mt-14">
 			<div class="relative overflow-x-auto h-auto  ">
 				<turbo-frame id="publication-frame">
-
-
 					<table class="w-full text-left text-gray-500 dark:text-gray-400 shadow-inner h-64 text-xs  ">
-						<thead class=" text-gray-700 font-semibold text-sm  bg-gray-50 dark:bg-gray-700 dark:text-gray-400 text-center border-b-[1px] border-b-slate-200">
+						<thead class=" text-slate-700 font-semibold text-sm  bg-gray-50 dark:bg-slate-900 dark:text-slate-300 text-center border-b-[1px] border-b-slate-200 dark:border-slate-900">
 							<tr>
 								<th data-tippy-content="Statut de la publication" scope="col" class=" text-center">
 									<a href="{{path("app_user_show_publications", {sort:"status", order:order})}}">
@@ -218,7 +216,7 @@
 
 						<tbody class="text-center items-center justify-items-center ">
 							{% for item in publication %}
-								<tr class="bg-white dark:bg-gray-800 text-sm dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 items-center">
+								<tr class="bg-white dark:bg-transparent text-sm dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-slate-700 items-center">
 									<td class="px-6 py-3  {{item.status < 2 ? " opacity-60"}}">
 										{% if item.status > 1 %}
 											<span data-tippy-content="Publié" class="flex w-3 h-3 mx-auto bg-green-500 rounded-full"></span>
@@ -335,7 +333,7 @@
 	<div class="modal micromodal-slide z-50" id="popup-confirm-delete" aria-hidden="true">
 		<div class="modal__overlay" tabindex="-1" data-micromodal-close>
 			<div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="popup-confirm-delete-title">
-				<div class="py-3 text-center w-42 bg-white rounded-2xl">
+				<div class="py-3 text-center w-42  rounded-2xl">
 					<div class="text-4xl mb-5 text-red-600">
 						<span class="material-symbols-outlined text-2xl">
 							delete
@@ -349,7 +347,7 @@
 						<button id="confirm-delete-button" data-micromodal-close type="button" class="text-white bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
 							Oui, je suis certain(e)
 						</button>
-						<button type="button" data-micromodal-close class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Non, j'annule</button>
+						<button type="button" data-micromodal-close class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10  dark:text-slate-800 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Non, j'annule</button>
 					</div>
 				</div>
 

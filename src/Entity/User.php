@@ -129,6 +129,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'from_user', targetEntity: Notification::class)]
     private Collection $UserFrom;
 
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?UserParameters $userParameters = null;
+
     public function __construct()
     {
         $this->publications = new ArrayCollection();
@@ -799,6 +802,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $userFrom->setFromUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUserParameters(): ?UserParameters
+    {
+        return $this->userParameters;
+    }
+
+    public function setUserParameters(?UserParameters $userParameters): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($userParameters === null && $this->userParameters !== null) {
+            $this->userParameters->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($userParameters !== null && $userParameters->getUser() !== $this) {
+            $userParameters->setUser($this);
+        }
+
+        $this->userParameters = $userParameters;
 
         return $this;
     }

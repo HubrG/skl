@@ -9,7 +9,7 @@
 
 {% block body %}
 	<div class="col-span-12 col-start-0 -mt-10 mb-10 ">
-		<nav class="flex py-3  justify-center  shadow-none border-slate-200 border-l-[1px] border-l-slate-100 border-r-[1px] border-r-slate-100  mb-10 bg-slate-50" aria-label="Breadcrumb">
+		<nav class="flex py-3  justify-center  shadow-none border-slate-200 border-l-[1px] border-l-slate-100 border-r-[1px] border-r-slate-100 dark:border-r-0 dark:border-l-0 dark:border-none dark:bg-slate-800 mb-10 bg-slate-50" aria-label="Breadcrumb">
 			<ol class="inline-flex items-center space-x-1 md:space-x-3">
 				<li class="inline-flex items-center">
 					<a href="{{path("app_user_show_publications")}}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
@@ -43,7 +43,7 @@
 	</div>
 	<aside class="relative col-span-7 col-start-4 pr-10 mb-14 lg:col-span-3 lg:mt-8">
 		{% if infoPub.cover == "" %}
-			<div id="hideNoCover" data-tippy-content="Cliquez ici pour ajouter une photo de couverture" class="shadow-md p-10 text-2xl flex h-80 bg-white rounded-md dark:bg-slate-500" for="publication_cover">
+			<div id="hideNoCover" data-tippy-content="Cliquez ici pour ajouter une photo de couverture" class="shadow-md p-10 text-2xl flex h-80 bg-white rounded-md dark:bg-slate-900" for="publication_cover">
 				<label for="publication_cover" class="cursor-pointer justify-center h-80">
 					<h2 class="m-auto text-center font-light shadow-slate-300 text-slate-600 dark:shadow-slate-900 mt-10 rounded-lg">
 						<span class="material-symbols-outlined">
@@ -70,21 +70,21 @@
 		<div class="mb-4  dark:border-gray-700  dark:bg-slate-800 pt-5  pb-[3px]z-40">
 			<ul class="flex justify-center -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
 				<li class="mr-2 text-xs lg:text-sm" role="presentation">
-					<button class="inline-block p-4 border-b-4  dark:bg-slate-900  text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
+					<button class="inline-block p-4 border-b-4  dark:bg-slate-800  text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
 						<span class="material-symbols-outlined">
 							info
 						</span>
 						Informations</button>
 				</li>
 				<li class="mr-2 text-xs lg:text-sm" role="presentation">
-					<button class="inline-block p-4 border-b-4  dark:bg-slate-900 text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="profile-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">
+					<button class="inline-block p-4 border-b-4  dark:bg-slate-800 text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="profile-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">
 						<span class="material-symbols-outlined">
 							auto_stories
 						</span>
 						Feuilles</button>
 				</li>
 				<li class="mr-2 text-xs lg:text-sm" role="presentation">
-					<button class="inline-block p-4 border-b-4  dark:bg-slate-900 text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="profile-tab" data-tabs-target="#statistiques" type="button" role="tab" aria-controls="statistiques" aria-selected="false">
+					<button class="inline-block p-4 border-b-4  dark:bg-slate-800 text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="profile-tab" data-tabs-target="#statistiques" type="button" role="tab" aria-controls="statistiques" aria-selected="false">
 						<span class="material-symbols-outlined">
 							monitoring
 						</span>
@@ -163,7 +163,7 @@
 						</li>
 					</ul>
 				{% endif %}
-				<div id="accordion-flush" data-accordion="open" data-active-classes="dark:bg-gray-900 text-gray-900 dark:text-white" class="list-group" data-inactive-classes="text-gray-500 dark:text-gray-400">
+				<div id="accordion-flush" data-accordion="open" data-active-classes="text-gray-900 dark:text-white" class="list-group" data-inactive-classes="text-gray-500 dark:text-gray-400">
 					<h2 id="accordion-flush-heading-1" class="border-b-[1px] border-b-slate-400  px-5 ">
 						<button type="button" class="flex items-center justify-between w-full py-5 font-medium text-left  dark:border-gray-700 dark:text-gray-400" data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
 							<span>
@@ -177,12 +177,12 @@
 						</button>
 					</h2>
 					<div id="accordion-flush-body-1" class="hidden" aria-labelledby="accordion-flush-heading-1">
-						<div id="itemsChap" class=" flex  justify-center flex-wrap gap-x-4">
+						<div id="itemsChap" class=" flex-col grid-cols-1 md:grid-cols-2 grid   justify-center gap-x-4">
 							{% if infoPub.publicationChapters|length == 0 %}
-								<div class="w-full text-center bg-slate-100 text-slate-600 rounded border-2 border-slate-300 border-dashed mt-3 opacity-60 hover:opacity-80" id="noPublication">
+								<div class="w-full text-center bg-slate-100 dark:bg-slate-900 dark:text-slate-100 text-slate-600 rounded border-2 border-slate-300 dark:border-slate-500 border-dashed mt-3 opacity-60 hover:opacity-80" id="noPublication">
 									<p>
-										<a class="block w-full h-full px-5 pt-5 font-medium leading-5" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}#first">
-											<span class="text-slate-900 text-base">
+										<a class="block w-full px-5 pt-5 font-medium leading-5" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}#first">
+											<span class="text-slate-900 dark:text-slate-100 text-base">
 												Cliquez ici pour éditer votre première feuille</span><br><br>
 											<span class="text-4xl">
 												<span class="material-symbols-outlined">
@@ -190,8 +190,8 @@
 												</span>
 											</span><br><br>
 											<hr>
-											<span class="text-xs font-normal block text-justify items-center text-slate-600">
-												<span class="material-symbols-outlined">
+											<span class="text-xs font-normal block text-justify items-center text-slate-600 dark:text-slate-100">
+												<span class="material-symbols-outlined dark:text-amber-400">
 													tips_and_updates
 												</span>
 												| Vous pouvez créer autant de feuilles que vous le souhaitez et les organiser selon vos besoins. Une feuille peut être considérée comme une simple feuille de texte, un copier/coller de tout un document PDF (tout un récit !), sinon comme un chapitre de votre récit. L'ordre dans lequel vous les placerez sera l'ordre dans lequel vos lecteurs les parcoureront au fil de leur lecture.</span><br>
@@ -206,7 +206,7 @@
 									{% endif %}
 								{% endfor %}
 								{% if var %}
-									<div class="w-full text-center bg-amber-100 text-amber-900 rounded border-2 border-amber-300 border-dashed mt-3 opacity-60" id="noPublication">
+									<div class="w-full text-center bg-amber-100 dark:bg-slate-700 text-amber-900 dark:text-amber-500 rounded border-2 dark:border-[1px] border-amber-300 dark:border-amber-400 border-dashed mt-3 opacity-60 dark:opacity-100" id="noPublication">
 										<p class="block w-full h-full px-5 pt-5 pb-5  font-medium leading-5" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}">
 											<span class=" text-base">
 												Vous venez de créer votre première feuille !
@@ -247,7 +247,7 @@
 					<div id="confettis"></div>
 					<div id="accordion-flush-body-2" class="hidden" aria-labelledby="accordion-flush-heading-2">
 
-						<div id="itemsChap2" class=" flex animate__animated  flex-wrap gap-x-4 justify-center  opacity-80">
+						<div id="itemsChap2" class=" animate__animated flex-col grid-cols-1 md:grid-cols-2 grid gap-x-4 justify-center  opacity-80">
 							{% include "publication/_partials/_edit_publication_show_chapters.html.twig" with {withStatus:1} %}
 						</div>
 					</div>
@@ -278,8 +278,8 @@
 				&nbsp;Enregistrer
 			{% endif %}
 		</button>
-		<div class="bg-slate-50 py-3 mb-5 mt-3 rounded-lg">
-			<div id="publishDiv" class="px-3 rounded-lg  w-full dark:bg-gray-800 mb-3 mt-2 flex hover:opacity-100 hover:grayscale-0" for="publishToggle">
+		<div class="bg-slate-50 dark:bg-slate-900 py-3 mb-5 mt-3 rounded-lg">
+			<div id="publishDiv" class="px-3 rounded-lg  w-full mb-3 mt-2 flex hover:opacity-100 hover:grayscale-0" for="publishToggle">
 				<label class="relative inline-flex  mr-5 cursor-pointer" data-modal-target="popup-modal" data-modal-toggle="popup-modal">
 					<input type="checkbox" id="publishButton" class="disabled sr-only peer" disabled {% if infoPub.status == 2 %} checked {% endif %}>
 					<div id="publishToggle" class="w-11 h-6 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 "></div>
@@ -289,7 +289,7 @@
 					</p>
 				</label>
 			</div>
-			<div class="px-3 rounded-lg  w-full dark:bg-gray-800 relative mb-3 flex hover:opacity-100 hover:grayscale-0">
+			<div class="px-3 rounded-lg  w-full relative mb-3 flex hover:opacity-100 hover:grayscale-0">
 				<label class="relative inline-flex items-center">
 					{% if infoPub.status < 2 %}
 						<input type="checkbox" value="" class="sr-only peer" id="togglePubAS" checked/>
@@ -305,7 +305,7 @@
 					</span>
 				</span>
 			</div>
-			<div class="px-3 rounded-lg  w-full dark:bg-gray-800 mb-3 flex hover:opacity-100 hover:grayscale-0">
+			<div class="px-3 rounded-lg  w-full mb-3 flex hover:opacity-100 hover:grayscale-0">
 				<label class="relative inline-flex items-center">
 					{% if infoPub.status < 2 %}
 						<input type="checkbox" value="" class="sr-only peer" id="" checked/>
@@ -323,7 +323,7 @@
 				</label>
 			</div>
 		</div>
-		<div class="p-4 rounded-lg bg-slate-50 w-full dark:bg-gray-800 mb-4 text-slate-800 dark:text-slate-400">
+		<div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-900 w-full  mb-4 text-slate-800 dark:text-slate-400">
 			<p class="text-xs mb-1">
 				<span class="material-symbols-outlined">
 					history_toggle_off
@@ -350,7 +350,7 @@
 				</span>
 			</p>
 		</div>
-		<div class="p-4 rounded-lg bg-slate-50 w-full dark:bg-gray-800 mb-4 text-slate-800 dark:text-slate-400">
+		<div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-900 w-full  mb-4 text-slate-800 dark:text-slate-400">
 			<p class="text-sm mb-1 font-semibold">
 
 				{% set slug = "recit-sans-titre" %}
@@ -382,7 +382,7 @@
 						</svg>
 						<span class="sr-only">Close modal</span>
 					</button>
-					<div class="p-6 text-center w-42 bg-white rounded-2xl">
+					<div class="p-6 text-center w-42 bg-white dark:bg-slate-900 rounded-2xl">
 						<svg aria-hidden="true" class="mx-auto mb-4 text-gray-400 w-14 h-14 dark:text-gray-200" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
 						</svg>

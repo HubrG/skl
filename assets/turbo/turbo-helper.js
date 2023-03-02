@@ -61,7 +61,6 @@ const TurboHelper = class {
         }
       }
       //!
-      darkMode();
       if (document.getElementById("hideIdPub")) {
         addKeyword();
         AxiosSavePublication();
@@ -83,6 +82,7 @@ const TurboHelper = class {
       Navbar();
       Comment();
       targetQuote();
+      darkMode();
       TippyC();
       Dropdown();
       DropdownMenu();
@@ -127,6 +127,8 @@ const TurboHelper = class {
       Navbar();
       Comment();
       DropdownMenu();
+      darkMode();
+
       Dropdown();
       User();
       if (document.querySelector(".list-group-item")) {

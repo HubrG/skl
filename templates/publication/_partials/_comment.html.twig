@@ -6,7 +6,7 @@
 	{% else %}
 		{% for itemLike in item.publicationCommentLikes %}
 			{% if itemLike.user.id == app.user.id %}
-				{% set class = "material-icons text-red-500 cursor-pointer likeButton " %}
+				{% set class = "material-icons text-red-500 cursor-pointer likeButton  dark:text-red-400" %}
 				{% set liked = true %}
 				{% set break = "" %}
 			{% else %}
@@ -14,18 +14,18 @@
 			{% endif %}
 		{% endfor %}
 		{% if liked is defined %}
-			{% set class = "material-symbols-outlined likeButton cursor-pointer " %}
+			{% set class = "material-symbols-outlined likeButton cursor-pointer dark:text-red-400" %}
 		{% endif %}
 		{% if class == "material-symbols-outlined" %}
-			{% set class = "material-symbols-outlined likeButton cursor-pointer " %}
+			{% set class = "material-symbols-outlined likeButton cursor-pointer dark:text-red-400 " %}
 		{% endif %}
 	{% endif %}
 {% else %}
-	{% set class = "material-symbols-outlined cursor-default text-slate-400" %}
+	{% set class = "material-symbols-outlined cursor-default text-slate-400  dark:text-red-400" %}
 {% endif %}
 {% set lastComment = n == 0 and userLogId == item.user.id and item.publishedAt > "now"|date_modify("-2 seconds") %}
 {% if n == 0 %}
-	<p>
+	<p class="dark:text-white">
 		<span class="material-symbols-outlined">
 			question_answer
 		</span>
@@ -46,15 +46,15 @@
 	</p>
 {% endif %}
 <div id="comment-{{item.id}}">
-	<div class="one-comment  {{ lastComment ? 'mb-3 animate__animated animate__fadeIn transition-colors duration-[1000ms] p-6 shadow-sm relative' : 'bg-white p-6 mb-3 shadow-sm relative' }}" {% if lastComment %} id="lastComment" {% endif %}>
+	<div class="one-comment rounded {{ lastComment ? 'mb-3 animate__animated animate__fadeIn transition-colors duration-[1000ms] p-6 shadow-sm relative' : 'bg-white dark:bg-slate-900 p-6 mb-3 shadow-sm relative' }}" {% if lastComment %} id="lastComment" {% endif %}>
 		<div class="flex items-start">
 			{% set profilPic = item.user.profilPicture ? item.user.profilPicture : 'https://picsum.photos/200/300' %}
 			<img class="w-12 h-12 rounded-full mr-4" src="{{ profilPic }}" alt="avatar">
 			<div class="flex-1">
-				<h4 class="font-medium text-sm">
-					<a href="{{ path("app_user", {username:item.user.username}) }}">{{ item.user.nickname }}</a>
+				<h4 class="font-medium text-sm dark:text-white">
+					<a href="{{ path("app_user", {username:item.user.username}) }}" class="hover:underline">{{ item.user.nickname }}</a>
 				</h4>
-				<p class="text-gray-600 text-xs">
+				<p class="text-slate-600 text-xs dark:text-white">
 					{{ item.publishedAt|since }}
 					<span class="text-gray-400 text-[0.70rem]">{{item.updatedAt ? "| modifié il y a " ~ item.updatedAt|since}}</span>
 				</p>
@@ -101,7 +101,7 @@
 			{% endif %}
 		</div>
 		<div id="updateCom-{{ item.id }}">
-			<p id="comShow-{{ item.id }}" class="chapterComment">
+			<p id="comShow-{{ item.id }}" class="chapterComment dark:text-slate-200">
 				{{ item.content|nl2br }}
 			</p>
 		</div>

@@ -7,10 +7,10 @@
 {% endblock %}
 
 {% block body %}
-	<section id="titleChapter" data-title="{{infoChap.title}}" class="sticky {{ infoChap.Publication.status < 2 ? " -mt-20 top-16" : " top-14" }} bg-white bg-transparent bg-opacity-50 backdrop-blur-sm">
+	<section id="titleChapter" data-title="{{infoChap.title}}" class="sticky {{ infoChap.Publication.status < 2 ? " -mt-20 top-16" : " top-14" }} bg-white dark:bg-slate-800 dark:bg-transparent dark:bg-opacity-50 bg-transparent bg-opacity-50 backdrop-blur-sm">
 		{% if infoChap.Publication.status < 2 %}
 			<div class="mb-0">
-				<div class="w-5/6 mx-auto -mt-2 h-10  bg-slate-100 ring-1 ring-slate-700 opacity-80 right-0 rounded-b-sm">
+				<div class="w-5/6 mx-auto -mt-2 h-10  bg-slate-100  ring-1 ring-slate-700 opacity-80 right-0 rounded-b-sm">
 					<p class="text-center p-2 font-medium text-xs flex justify-between px-5 text-slate-900">
 						<span>
 							<span class="material-symbols-outlined">
@@ -33,7 +33,7 @@
 			<h3 class="text-center md:text-left">
 				<a id="pubTitle" class="font-serif dark:text-white" href="{{ path("app_publication_show_one", {id:infoPub.id, slug:infoPub.slug}) }}">{{ infoPub.title }}</a>
 			</h3>
-			<div class="text-xs">
+			<div class="text-xs dark:text-white">
 				<small>par</small>
 				<span class="font-medium dark:text-white">
 					<a class="dark:text-white" href="{{ path("app_user", {username:infoPub.user.username}) }}">{{ infoPub.user.nickname }}</a>
@@ -117,7 +117,7 @@
 		{# On affiche uniquement si la publication est publiée #}
 		{% if infoChap.Publication.status > 1 %}
 			<div class="sticky bottom-10 -mt-16 flex ml-0 md:ml-5 justify-center place-content-center z-10  w-6/6 md:w-auto">
-				<div class="bg-white rounded-xl shadow p-3 py-4 flex justify-center gap-3 items-center text-xs md:text-sm ">
+				<div class="bg-white dark:bg-slate-900 rounded-xl shadow p-3 py-4 flex justify-center gap-3 items-center text-xs md:text-sm ">
 					<div data-tippy-content="Nombre de lecteurs" class="cursor-default">
 						<span class="material-symbols-outlined">
 							visibility

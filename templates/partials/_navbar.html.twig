@@ -3,7 +3,7 @@
 	{# !! lire, écrire, corriger #}
 	<nav class="z-index:9999999">
 		<div class="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto text-center z-100">
-			<a href="{{ path("app_home")}}" class="flex items-center  md:order-1 ">
+			<a href="{{ path("app_home")}}" target="_top" class="flex items-center  md:order-1 ">
 				<span id="logo" class="self-center text-3xl  whitespace-nowrap dark:text-white">
 					Scr<span class="relative">;</span>lab
 				</span>
@@ -67,6 +67,13 @@
 										{{ notificationRepository.findBy({"user":app.user.id,"ReadAt":null})|length }}
 									</div>
 								{% endif %}
+							</button>
+						</li>
+						<li>
+							<button id="darkButton" class="text-gray-800 relative dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2  md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+								<span class="material-symbols-outlined" id="darkMode">
+									{{app.user.userParameters.darkmode == true ? "wb_sunny" : "nightlight_badge" }}
+								</span>
 							</button>
 						</li>
 					</ul>
@@ -169,10 +176,10 @@
 					</div>
 				</div>
 			{% endif %}
-			<div id="mega-menu-icons-dropdown" class="absolute z-10 hidden w-auto text-sm  bg-white border border-gray-100 border-t-2  border-t-green-400 shadow-md dark:border-gray-700 md:grid-cols-3 dark:bg-gray-700">
-				<div class=" pt-0 pb-0 text-gray-900 md:pb-4 dark:text-white divide-y divide-gray-100">
-					<div aria-labelledby="mega-menu-icons-dropdown-button" class="w-full hover:bg-slate-50 border-b-[1px] border-b-slate-200">
-						<a class="block px-4 py-4 text-sm text-emerald-900   dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white  font-medium" href="{{ path("app_publication_show_all_category", {slug:null, page:null})}}">Tous les récits</a>
+			<div id="mega-menu-icons-dropdown" class="absolute z-10 hidden w-auto text-sm  bg-white  border-slate-100 border-t-2  border-t-green-400 shadow-md dark:border-b-none dark:border-l-none dark:border-r-none dark:border-t-green-400  md:grid-cols-3 dark:bg-slate-700 dark:shadow-2xl">
+				<div class=" pt-0 pb-0 text-slate-900 md:pb-4 dark:text-white divide-y divide-slate-100 dark:divide-slate-600">
+					<div aria-labelledby="mega-menu-icons-dropdown-button" class="w-full hover:bg-slate-50 border-b-[1px] border-b-slate-200 dark:border-b-slate-900 ">
+						<a class="block px-4 py-4 text-sm text-emerald-900    dark:bg-slate-800 dark:hover:bg-slate-900 dark:text-gray-200 dark:hover:text-white  font-medium" href="{{ path("app_publication_show_all_category", {slug:null, page:null})}}">Tous les récits</a>
 					</div>
 					<ul class="space-y-3 px-6 flex-col grid-rows-6 grid-flow-col gap-x-2 grid justify-items-start items-baseline py-3" aria-labelledby="mega-menu-icons-dropdown-button">
 						{% for item in publicationCategoryRepository.findAll()|sort((a, b) => a.slug < b.slug ? -1 : 1) %}

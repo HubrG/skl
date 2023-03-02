@@ -56,7 +56,7 @@
 	<section class=" before:bg-cover before:blur before:-z-[9999]  col-span-12 col-start-0 md:col-span-10 md:col-start-2 gap-10" id="test">
 		{% if pubShow.status < 2 %}
 			<div class="mb-0">
-				<div class="w-full -mt-10 mb-5 h-10 bg-slate-100 ring-1 ring-slate-700 opacity-80 right-0 rounded-b-sm">
+				<div class="w-full -mt-10 mb-5 h-10 bg-slate-100 ring-1 ring-slate-700 opacity-80 dark:opacity-100 right-0 rounded-b-sm">
 					<p class="text-center p-2 font-medium text-xs flex justify-between px-5 text-slate-900">
 						<span>
 							<span class="material-symbols-outlined">
@@ -78,7 +78,7 @@
 		<h1 class="text-center font-serif text-4xl bg-center text-slate-800" style="text-shadow: 0 0.5px 1px blanchedalmond;">{{ pubShow.title }}</h1>
 		<h2 class="text-center -mt-8">
 			<span class="font-medium font-serif">
-				<a href="{{ path("app_user", {username:pubShow.user.username}) }}" class="font-sans hover:underline">{{ pubShow.user.nickname }}</a>
+				<a href="{{ path("app_user", {username:pubShow.user.username}) }}" class="font-sans hover:underline dark:text-slate-200">{{ pubShow.user.nickname }}</a>
 			</span>
 		</h2>
 		<div class="flex justify-center">
@@ -87,7 +87,7 @@
 		<div class="flex gap-5 p-10 pt-0  items-center">
 			<div class="flex-1 text-center flex flex-col justify-center items-center justify-items-center origin-center">
 				<div class="md:flex w-5/6">
-					<p class="text-base font-serif text-justify italic text-slate-900 leading-7 mt-1">
+					<p class="text-base font-serif text-justify italic text-slate-900 dark:text-slate-200 dark:[text-shadow: 0 0.5px 1px blanchedalmond;] leading-7 mt-1">
 						{% if orderChap %}
 							{% if pubShow.summary %}
 								<span class="material-symbols-outlined">
@@ -104,13 +104,13 @@
 						{% endif %}
 					</p>
 				</div>
-				<a href="{{ path("app_chapter_show", {idChap:orderChap.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:orderChap.slug}) }}" class=" block mt-5 not-italic py-5 text-center w-full lg:w-3/6 px-10 bg-white bg-opacity-70 hover:bg-white text-slate-900 shadow hover:text-slate-900 hover:bg-opacity-100 rounded-lg">
+				<a href="{{ path("app_chapter_show", {idChap:orderChap.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:orderChap.slug}) }}" class=" block mt-5 not-italic py-5 text-center w-full lg:w-3/6 px-10 bg-white bg-opacity-70  hover:bg-white text-slate-900 shadow hover:text-slate-900 hover:bg-opacity-100 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-900 rounded-lg">
 					<span class="material-symbols-outlined">
 						local_library
 					</span>
 					<br/><span class="font-medium">Commencer la lecture</span>
 				</a>
-				<a target="_top" href="{{ path("app_publication_show_one", {id:pubShow.id, slug:"download"}) }}" class=" block mt-5 not-italic  text-center text-sm px-5  hover:underline text-slate-900 ">
+				<a target="_top" href="{{ path("app_publication_show_one", {id:pubShow.id, slug:"download"}) }}" class=" block mt-5 not-italic  text-center text-sm px-5  hover:underline text-slate-900 dark:text-slate-200">
 					<span class="material-symbols-outlined">
 						download
 					</span>
@@ -122,9 +122,9 @@
 	</section>
 	{% if orderChap %}
 		<section class="md:flex col-span-12 md:col-span-10 md:col-start-2  mt-6 justify-evenly min-h-[50vh] z-50">
-			<div class="absolute bg-white w-full min-h-[100%] left-0 right-0 -z-10  border-t-[1px] border-slate-200">&nbsp;</div>
+			<div class="absolute bg-white dark:bg-slate-800 w-full min-h-[100%] left-0 right-0 -z-10  border-t-[1px] border-slate-200 dark:border-slate-900">&nbsp;</div>
 			<div class="w-full lg:w-7/12 pt-10 z-50 order-2 lg:order-1 ">
-				<h3 class="text-2xl mb-5 lg:text-left text-center">
+				<h3 class="text-2xl mb-5 lg:text-left text-center dark:text-slate-100">
 					<span class="material-symbols-outlined">
 						format_list_bulleted
 					</span>
@@ -143,13 +143,13 @@
 					{% for chapter in chapShow %}
 						{% if chapter.status > 1 %}
 							{% set chapterSlug = chapter.slug ?: "feuille-n0" ~ (chapter.orderDisplay + 1) %}
-							<li class="inline-flex items-center gap-x-2 py-1 px-4 text-base font-medium text-slate-900 -mt-px dark:bg-gray-800 dark:text-white">
+							<li class="inline-flex items-center gap-x-2 py-1 px-4 text-base font-medium text-slate-900 -mt-px dark:bg-inherit dark:text-white">
 								<div class="flex justify-between w-full">
-									<a href="{{ path("app_chapter_show", {idChap:chapter.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:chapterSlug}) }}" class="h-full w-4/6 font-normal text-slate-900 text-lg hover:underline">
+									<a href="{{ path("app_chapter_show", {idChap:chapter.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:chapterSlug}) }}" class="h-full w-4/6 font-normal  text-lg hover:underline">
 										<span class="font-bold">{{ loop.index }}.</span>
 										{{ chapter.title|default("Feuille n°" ~ (chapter.orderDisplay + 1))|capitalize }}
 									</a>
-									<div class="w-2/6 justify-items-end opacity-80">
+									<div class="w-2/6 justify-items-end opacity-80 dark:opacity-100">
 										<div class="py-1 px-2 rounded-full flex justify-between text-xs text-slate-600 font-medium">
 											<div>
 												<span class="material-symbols-outlined">
@@ -187,16 +187,16 @@
 						{% endif %}
 					{% endfor %}
 				</ul>
-				<hr class="my-10 bg-slate-400 border-slate-400">
+				<hr class="my-10 bg-slate-400 border-slate-400 dark:border-slate-900">
 
 				<div class="w-full" id="publicationShowOneComment">
 
 					{% if app.user.id is defined %}
 						{{ form_start(formQuote, {attr:{"data-turbo-frame":"comment-section"}}) }}
 						<label for="publication_chapter_comment_content" class="sr-only">Votre commentaire</label>
-						<div class="flex items-center py-2 w-full rounded-lg dark:bg-gray-700">
+						<div class="flex items-center py-2 w-full rounded-lg ">
 							{{ form_widget(formQuote.content, {attr:{"class":"block -mt-5 p-2.5 w-full text-sm text-gray-900 resize-none bg-white pr-12 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"}}) }}
-							<button id="sendComment" type="submit" class="inline-flex justify-center p-2 text-slate-600 rounded-full cursor-pointer hover:bg-blue-100 hover:text-blue-500 dark:text-blue-500 dark:hover:bg-gray-600 -ml-10 mt-4">
+							<button id="sendComment" type="submit" class="inline-flex justify-center p-2 text-slate-600 rounded-full cursor-pointer  hover:text-blue-500 dark:text-sky-500 dark:hover:text-sky-400  -ml-10 mt-4">
 								<svg aria-hidden="true" class="w-6 h-6 -mt-8 rotate-45" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 									<path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
 								</svg>
@@ -220,9 +220,9 @@
 					</turbo-frame>
 				</div>
 			</div>
-			<div class="w-full  z-50 mt-5 pt-5 px-2 md:w-4/12  order-1 lg:order-2  shadow-slate-300 text-slate-900 border-slate-200 border-t-[1px] border-t-slate-200 lg:border-l-[1px] lg:border-t-0 ">
-				<ul class="opacity-60 flex flex-col  text-sm">
-					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+			<div class="w-full  z-50 mt-5 pt-5 px-2 md:w-4/12  order-1 lg:order-2  shadow-slate-300 text-slate-900 border-slate-200 border-t-[1px] border-t-slate-200 dark:border-slate-900 dark:border-t-slate-900 lg:border-l-[1px] lg:border-t-0 ">
+				<ul class="opacity-60 dark:opacity-100 flex flex-col  text-sm">
+					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px   dark:text-white">
 						<span class="font-medium">
 							<span class="material-symbols-outlined">
 								theater_comedy
@@ -246,7 +246,7 @@
 							<span>{{ slugName }}</span>
 						</a>
 					</li>
-					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px   dark:text-white">
 						<span class="font-medium">
 							<span class="material-symbols-outlined">
 								auto_stories
@@ -255,7 +255,7 @@
 						</span>
 						<span>{{ chapterStats.pages }}</span>
 					</li>
-					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:text-white">
 						<span class="font-medium">
 							<span class="material-symbols-outlined">
 								timer
@@ -264,7 +264,7 @@
 						</span>
 						<span>{{ pubShow.publicationChapters|chapter("rt", "ft") }}</span>
 					</li>
-					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:text-white">
 						<span class="font-medium">
 							<span class="material-symbols-outlined">
 								visibility
@@ -273,7 +273,7 @@
 						</span>
 						<span>{{chapterStats.views}}</span>
 					</li>
-					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px   dark:text-white">
 						<span class="font-medium">
 							<span class="material-symbols-outlined">
 								forum
@@ -288,7 +288,7 @@
 							{% endif %}
 						</span>
 					</li>
-					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px    dark:text-white">
 						<span class="font-medium">
 							<span class="material-symbols-outlined">
 								book
@@ -297,7 +297,7 @@
 						</span>
 						<span>{{chapterStats.bookmarks}}</span>
 					</li>
-					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px    dark:text-white">
 						<span class="font-medium">
 							<span class="material-symbols-outlined">
 								favorite
@@ -306,7 +306,7 @@
 						</span>
 						<span>{{chapterStats.likes}}</span>
 					</li>
-					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px    dark:text-white">
 						<span class="font-medium">
 							<span class="material-symbols-outlined">
 								downloading
@@ -322,7 +322,7 @@
 						{% set currentPopularity = pubShow.PublicationPopularities[0].popularity %}
 						{% set popularityChange = currentPopularity - lastPopularity %}
 					{% endif %}
-					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px dark:bg-gray-800 dark:text-white">
+					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:text-white">
 						<span class="font-medium">
 							<span class="material-symbols-outlined">
 								insights
@@ -347,15 +347,15 @@
 						</span>
 					</li>
 				</ul>
-				<ul class=" flex flex-col  text-sm border-t-[1px] border-t-slate-200 pt-5 mt-5">
-					<li class="inline-flex items-center justify-between gap-x-2 font-medium py-1 px-4 -mt-px  dark:bg-gray-800  dark:text-white">
+				<ul class=" flex flex-col  text-sm border-t-[1px] border-t-slate-200 dark:border-t-slate-900 pt-5 mt-5">
+					<li class="inline-flex items-center justify-between gap-x-2 font-medium py-1 px-4 -mt-px    dark:text-white">
 						{% for item in pubShow.publicationKeywords %}
-							<a href="{{path("app_publication_show_all_category", {keystring:item.keyword|lower, order:'desc', sortby:'published', page:1, slug:"all"})}}" class="hover:underline text-slate-800">#{{ item.keyword }}</a>
+							<a href="{{path("app_publication_show_all_category", {keystring:item.keyword|lower, order:'desc', sortby:'published', page:1, slug:"all"})}}" class="hover:underline text-slate-800 dark:text-white">#{{ item.keyword }}</a>
 						{% endfor %}
 					</li>
 				</ul>
-				<ul class=" flex flex-col opacity-60 text-sm border-t-[1px] border-t-slate-200 pt-5 mt-5">
-					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+				<ul class=" flex flex-col opacity-60 dark:opacity-100 text-sm border-t-[1px] border-t-slate-200 dark:border-t-slate-900 pt-5 mt-5">
+					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px    dark:text-white">
 						<span class="font-medium">
 							<span class="material-symbols-outlined">
 								newspaper
@@ -364,7 +364,7 @@
 						</span>
 						<span>{{ pubShow.publishedDate ? pubShow.publishedDate|since : "Jamais publié" }}</span>
 					</li>
-					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:bg-gray-800  dark:text-white">
+					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px    dark:text-white">
 						<span class="font-medium">
 							<span class="material-symbols-outlined">
 								auto_fix

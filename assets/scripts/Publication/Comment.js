@@ -71,6 +71,7 @@ export function Comment() {
           button.classList.add(
             "material-icons",
             "text-red-500",
+            "dark:text-red-400",
             "animate__heartBeat"
           );
           const nbLikes = document.getElementById(`nbLikes-${result}`);
@@ -142,10 +143,15 @@ export function Comment() {
       "animate__animated",
       "animate__flipInX",
       "bg-slate-50",
+      "dark:bg-slate-700",
       "text-slate-600"
     );
     setTimeout(() => {
-      lastComment.classList.remove("bg-slate-50", "text-slate-600");
+      lastComment.classList.remove(
+        "bg-slate-50",
+        "text-slate-600",
+        "dark:bg-slate-700"
+      );
     }, 2000);
   }
   // ! Fonction qui permet de modifeir la taille du textarea en fonction du contenu

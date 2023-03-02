@@ -141,11 +141,13 @@ class PublicationController extends AbstractController
                                 ->addPublication($publication);
                         }
                         // ... Sinon, on ne le recrée pas, mais on ne lui ajoute pas d'occurrence, on ajoute seulement le mot au ManyToMany
+
                         else {
                             $key = $keyExists->addPublication($publication);
                         }
                     }
                     // sinon, on crée le nouveau mot et on l'ajoute au ManyToMany de l'article et on setcount 1 (uniquement si l'article est publié).....
+
                     else {
                         $keykey = new PublicationKeyword();
                         $key = $keykey->setKeyword($value)
@@ -235,7 +237,9 @@ class PublicationController extends AbstractController
             if ($dataPublish) {
                 $return = 200;
                 $publication->setStatus(2);
-                $publication->setPublishedDate(new \DateTime('now'));
+                if ($publication->getPublishedDate() === null) {
+                    $publication->setPublishedDate(new \DateTime('now'));
+                }
                 $keywords = $publication->getPublicationKeywords();
                 foreach ($keywords as $key) {
                     $countKey = $key->getCount() + 1;
@@ -331,6 +335,7 @@ class PublicationController extends AbstractController
         //
         $dtTitle = $request->get("title");
         $dtSummary = $request->get("summary");
+        $dtFinished = $request->get("finished") == "true" ? true : false;
         $dtCategory = $request->get("category");
         $dtMature = $request->get("mature");
         $dtCover = $request->files->get("cover");
@@ -345,6 +350,7 @@ class PublicationController extends AbstractController
                 ->setSummary($dtSummary)
                 ->setCategory($category)
                 ->setMature($dtMature)
+                ->setFinished($dtFinished)
                 ->setUpdated(new \DateTime('now'));
 
             // * Traitement de l'image
@@ -360,6 +366,83 @@ class PublicationController extends AbstractController
         }
         return $this->json([
             "code" => 200 // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
+        ]);
+    }
+    #[Route('/publication/chart', name: 'app_publication_getchart', methods: "POST")]
+    public function Axios_GetChart(Request $request, PublicationRepository $pRepo): response
+    {
+        $idPub = $request->get("idPub");
+        $pub = $pRepo->find($idPub);
+        $chapters = $pub->getPublicationChapters();
+        $weekViews = [];
+        $weekBookmarks = [];
+        $weekLikes = [];
+        $monthViews = array();
+        for ($i = 1; $i <= 12; $i++) {
+            $monthViews[date('M', mktime(0, 0, 0, $i, 1))] = 0;
+            $monthBookmarks[date('M', mktime(0, 0, 0, $i, 1))] = 0;
+            $monthLikes[date('M', mktime(0, 0, 0, $i, 1))] = 0;
+            $monthComments[date('M', mktime(0, 0, 0, $i, 1))] = 0;
+        }
+        foreach ($chapters as $chapter) {
+            // On cherche les vues de chaque chapitre
+
+            $chapterView = $chapter->getPublicationChapterViews();
+            foreach ($chapterView as $view) {
+                $date = $view->getViewDate()->format("Y-m-d");
+                $month = date('M', strtotime($date));
+                // Stocker les vues par mois
+                $monthViews[$month] += 1;
+            }
+            // On cherche les bookmarks de chaque chapitre
+            $chapterBookmark = $chapter->getPublicationChapterBookmarks();
+            foreach ($chapterBookmark as $bookmark) {
+                // S'il n'y a pas de date de création de bookrmak, on passe au suivant
+                if (!$bookmark->getCreatedAt()) {
+                    continue;
+                }
+                $date = $bookmark->getCreatedAt()->format("Y-m-d");
+                $week = date('M', strtotime($date));
+                if (!isset($monthBookmarks[$week])) {
+                    $monthBookmarks[$week] = 0;
+                }
+                $monthBookmarks[$week] += 1;
+            }
+            // On cherche les likes de chaque chapitre
+            $chapterLike = $chapter->getPublicationChapterLikes();
+            foreach ($chapterLike as $like) {
+                // S'il n'y a pas de date de création de bookrmak, on passe au suivant
+                if (!$like->getCreatedAt()) {
+                    continue;
+                }
+                $date = $like->getCreatedAt()->format("Y-m-d");
+                $week = date('M', strtotime($date));
+                if (!isset($monthLikes[$week])) {
+                    $monthLikes[$week] = 0;
+                }
+                $monthLikes[$week] += 1;
+            }
+            // On cherche les commentaires de chaque publication
+            $comment = $pub->getPublicationComments();
+            foreach ($comment as $c) {
+                // S'il n'y a pas de date de création de bookrmak, on passe au suivant
+                if (!$c->getPublishedAt()) {
+                    continue;
+                }
+                $date = $c->getPublishedAt()->format("Y-m-d");
+                $week = date('M', strtotime($date));
+                if (!isset($monthComments[$week])) {
+                    $monthComments[$week] = 0;
+                }
+                $monthComments[$week] += 1;
+            }
+        }
+        return $this->json([
+            "code" => 200,
+            "views" => json_encode($monthViews),
+            "bookmarks" => json_encode($monthBookmarks),
+            "likes" => json_encode($monthLikes),
+            "comments" => json_encode($monthComments)
         ]);
     }
 }

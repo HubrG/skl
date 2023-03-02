@@ -63,8 +63,8 @@ class PublicationPopularity
         $pcom = count($this->pcomRepo->findBy(["publication" => $p])); // comments publication
 
         // Calculate time decay factor
-        $createdAt = $p->getCreated();
-        $timeSincePublication = ($createdAt !== null) ? (time() - strtotime($createdAt->format('Y-m-d H:i:s'))) : 0;
+        $publishedAt = $p->getPublishedDate();
+        $timeSincePublication = ($publishedAt !== null) ? (time() - strtotime($publishedAt->format('Y-m-d H:i:s'))) : 0;
         $decayFactor = exp(($timeSincePublication / (60 * 60 * 24 * 30))); // factor de décroissance (exprimé en jours)
 
         // Calculate popularity with time decay factor
@@ -77,12 +77,12 @@ class PublicationPopularity
         $this->em->flush();
 
         // * Update popularity in "PublicationPopularity" database
-        // * Si la dernière valeur de popularité présente dans la bdd est date de 7 jours d'après la date immuable "CreatedAt", on ajoute une nouvelle valeur
+        // * Si la dernière valeur de popularité présente dans la bdd est date de 7 jours d'après la date immuable "publishedAt", on ajoute une nouvelle valeur
 
-        $pp = $this->ppRepo->findOneBy(["publication" => $p], ["createdAt" => "DESC"]);
+        $pp = $this->ppRepo->findOneBy(["publication" => $p], ["publishedAt" => "DESC"]);
         if ($pp !== null) {
-            $createdAt = $pp->getCreatedAt();
-            $timeSincePublication = ($createdAt !== null) ? (time() - strtotime($createdAt->format('Y-m-d H:i:s'))) : 0;
+            $publishedAt = $pp->getCreatedAt();
+            $timeSincePublication = ($publishedAt !== null) ? (time() - strtotime($publishedAt->format('Y-m-d H:i:s'))) : 0;
             if ($timeSincePublication > 302400) { // 3,5 jours
                 $pp = new EntityPublicationPopularity;
                 $pp->setPublication($p);

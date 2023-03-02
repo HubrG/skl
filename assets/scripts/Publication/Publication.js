@@ -62,6 +62,7 @@ function AxiosPublication() {
   var title = document.getElementById("publication_title").value;
   var summary = document.getElementById("publication_summary").value;
   var category = document.getElementById("publication_category").value;
+  var finished = document.getElementById("publication_finished").checked;
   var mature = document.getElementById("publication_mature").value;
   var hideIdPub = document.getElementById("hideIdPub").value;
   // * Gestion de la photo (si changement de photo)
@@ -94,6 +95,7 @@ function AxiosPublication() {
   let data = new FormData();
   data.append("title", title);
   data.append("summary", summary);
+  data.append("finished", finished);
   data.append("category", category);
   data.append("mature", mature);
   data.append("idPub", hideIdPub);

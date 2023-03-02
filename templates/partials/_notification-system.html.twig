@@ -1,102 +1,105 @@
 {# Nouveau commentaire sur l'une de vos publications #}
-{% if item.type == 1 %}
-	<span class="material-symbols-outlined">
-		mark_unread_chat_alt
-	</span>
-	<span>
-		<a href="{{path("app_user", {username:item.fromUser.username})}}" class="text-sky-700 hover:underline font-medium">{{item.fromUser.nickname}}</a>
-		vient de rédiger un commentaire sur votre publication
-		<a href="{{path("app_publication_show_one", {id:item.comment.publication.id, slug:item.comment.publication.slug})}}" class="text-sky-700 hover:underline font-medium">{{item.comment.publication.title}}</a>
-		{# <p class="italic">{{item.comment.content|slice(0,100)}}{{item.comment.content|length > 100 ? "..."}}</p> #}
-		<p class="text-slate-400 text-xs">il y a
-			{{item.createdAt|since}}
-		</p>
-	</span>
-{% endif %}
-{# Nouveau commentaire sur l'un de vos chapitres #}
-{% if item.type == 2 %}
-	<span class="material-symbols-outlined">
-		mark_chat_unread
-	</span>
-	<span>
-		<a href="{{path("app_user", {username:item.fromUser.username})}}" class="text-sky-700 hover:underline font-medium">{{item.fromUser.nickname}}</a>
-		vient de rédiger un commentaire sur la feuille
-		<a href="{{path("app_chapter_show", {slugPub:item.comment.publication.slug,user:item.user.username,idChap:item.comment.chapter.id,slug:item.comment.chapter.slug})}}" class="text-sky-700 hover:underline font-medium">{{item.comment.chapter.title}}</a>
-		de votre récit
-		<a href="{{path("app_publication_show_one", {id:item.comment.publication.id, slug:item.comment.publication.slug})}}" class="text-sky-700 hover:underline font-medium">{{item.comment.publication.title}}</a>
-		{# <p class="italic">{{item.comment.content|slice(0,100)}}{{item.comment.content|length > 100 ? "..."}}</p> #}
-		<p class="text-slate-400 text-xs">il y a
-			{{item.createdAt|since}}
-		</p>
-	</span>
-{% endif %}
-{# Nouveau like sur l'un de vos commentaires #}
-{% if item.type == 3 %}
-	<span class="material-symbols-outlined">
-		favorite
-	</span>
-	<span>
-		<a href="{{path("app_user", {username:item.fromUser.username})}}" class="text-sky-700 hover:underline font-medium">{{item.fromUser.nickname}}</a>
-		vient d'aimer votre commentaire
-		{# la publication #}
-		{% if item.likeComment.comment.chapter %}
-			sur la feuille
-			<a href="{{path("app_chapter_show", {slugPub:item.likeComment.comment.chapter.slug,user:item.user.username,idChap:item.likeComment.comment.chapter.id,slug:item.likeComment.comment.chapter.slug})}}" class="text-sky-700 hover:underline font-medium">{{item.likeComment.comment.chapter.title}}</a>
-			du récit
-			<a href="{{path("app_publication_show_one", {id:item.likeComment.comment.publication.id, slug:item.likeComment.comment.publication.slug})}}" class="text-sky-700 hover:underline font-medium">{{item.likeComment.comment.publication.title}}</a>
-		{% else %}
-			sur le récit
-			<a href="{{path("app_publication_show_one", {id:item.likeComment.comment.publication.id, slug:item.likeComment.comment.publication.slug})}}" class="text-sky-700 hover:underline font-medium">{{item.likeComment.comment.publication.title}}</a>
-		{% endif %}
-		{# <p class="italic">{{item.likeComment.comment.content|slice(0,100)}}{{item.likeComment.comment.content|length > 100 ? "..."}}</p> #}
-		<p class="text-slate-400 text-xs">il y a
-			{{item.createdAt|since}}
-		</p>
-	</span>
-{% endif %}
-{# Nouveau bookmark sur l'un de vos chapitres #}
-{% if item.type == 4 %}
-	<span class="material-symbols-outlined">
-		bookmark_added
-	</span>
-	<span>
-		<a href="{{path("app_user", {username:item.fromUser.username})}}" class="text-sky-700 hover:underline font-medium">{{item.fromUser.nickname}}</a>
-		vient d'ajouter à ses favoris la feuille
-		<a href="{{path("app_chapter_show", {slugPub:item.chapterBookmark.chapter.publication.slug,user:item.user.username,idChap:item.chapterBookmark.chapter.id,slug:item.chapterBookmark.chapter.slug})}}" class="text-sky-700 hover:underline font-medium">{{item.chapterBookmark.chapter.title}}</a>
-		de votre récit
-		<a href="{{path("app_publication_show_one", {id:item.chapterBookmark.chapter.publication.id, slug:item.chapterBookmark.chapter.publication.slug})}}" class="text-sky-700 hover:underline font-medium">{{item.chapterBookmark.chapter.publication.title}}</a>
-		<p class="text-slate-400 text-xs">il y a
-			{{item.createdAt|since}}
-		</p>
-	</span>
-{% endif %}
-{# Nouveau téléchargement #}
-{% if item.type == 5 %}
-	<span class="material-symbols-outlined">
-		downloading
-	</span>
-	<span>
-		<a href="{{path("app_user", {username:item.fromUser.username})}}" class="text-sky-700 hover:underline font-medium">{{item.fromUser.nickname}}</a>
-		vient de télécharger la version PDF de votre récit
-		<a href="{{path("app_publication_show_one", {id:item.download.publication.id, slug:item.download.publication.slug})}}" class="text-sky-700 hover:underline font-medium">{{item.download.publication.title}}</a>
-		<p class="text-slate-400 text-xs">il y a
-			{{item.createdAt|since}}
-		</p>
-	</span>
-{% endif %}
-{# Nouveau like chapter #}
-{% if item.type == 6 %}
-	<span class="material-symbols-outlined">
-		thumb_up
-	</span>
-	<span>
-		<a href="{{path("app_user", {username:item.fromUser.username})}}" class="text-sky-700 hover:underline font-medium">{{item.fromUser.nickname}}</a>
-		vient d'aimer votre feuille
-		<a href="{{path("app_chapter_show", {slugPub:item.chapterLike.chapter.slug,user:item.user.username,idChap:item.chapterLike.chapter.id,slug:item.chapterLike.chapter.slug})}}" class="text-sky-700 hover:underline font-medium">{{item.chapterLike.chapter.title}}</a>
-		de votre récit
-		<a href="{{path("app_publication_show_one", {id:item.chapterLike.chapter.publication.id, slug:item.chapterLike.chapter.publication.slug})}}" class="text-sky-700 hover:underline font-medium">{{item.chapterLike.chapter.publication.title}}</a>
-		<p class="text-slate-400 text-xs">il y a
-			{{item.createdAt|since}}
-		</p>
-	</span>
-{% endif %}
+<div class="one-notification">
+	{% if item.type == 1 %}
+		<span class="material-symbols-outlined">
+			mark_unread_chat_alt
+		</span>
+		<span>
+			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+			vient de rédiger un commentaire sur votre publication
+			<a href="{{path("app_publication_show_one", {id:item.comment.publication.id, slug:item.comment.publication.slug})}}">
+				{{item.comment.publication.title}}
+			</a>
+			<p>il y a
+				{{item.createdAt|since}}
+			</p>
+		</span>
+	{% endif %}
+	{# Nouveau commentaire sur l'un de vos chapitres #}
+	{% if item.type == 2 %}
+		<span class="material-symbols-outlined">
+			mark_chat_unread
+		</span>
+		<span>
+			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+			vient de rédiger un commentaire sur la feuille
+			<a href="{{path("app_chapter_show", {slugPub:item.comment.publication.slug,user:item.user.username,idChap:item.comment.chapter.id,slug:item.comment.chapter.slug})}}">
+				{{item.comment.chapter.title}}
+			</a>
+			de votre récit
+			<a href="{{path("app_publication_show_one", {id:item.comment.publication.id, slug:item.comment.publication.slug})}}">{{item.comment.publication.title}}</a>
+			<p>il y a
+				{{item.createdAt|since}}
+			</p>
+		</span>
+	{% endif %}
+	{# Nouveau like sur l'un de vos commentaires #}
+	{% if item.type == 3 %}
+		<span class="material-symbols-outlined">
+			favorite
+		</span>
+		<span>
+			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+			vient d'aimer votre commentaire
+			{# la publication #}
+			{% if item.likeComment.comment.chapter %}
+				sur la feuille
+				<a href="{{path("app_chapter_show", {slugPub:item.likeComment.comment.chapter.slug,user:item.user.username,idChap:item.likeComment.comment.chapter.id,slug:item.likeComment.comment.chapter.slug})}}">{{item.likeComment.comment.chapter.title}}</a>
+				du récit
+				<a href="{{path("app_publication_show_one", {id:item.likeComment.comment.publication.id, slug:item.likeComment.comment.publication.slug})}}">{{item.likeComment.comment.publication.title}}</a>
+			{% else %}
+				sur le récit
+				<a href="{{path("app_publication_show_one", {id:item.likeComment.comment.publication.id, slug:item.likeComment.comment.publication.slug})}}">{{item.likeComment.comment.publication.title}}</a>
+			{% endif %}
+			<p>il y a
+				{{item.createdAt|since}}
+			</p>
+		</span>
+	{% endif %}
+	{# Nouveau bookmark sur l'un de vos chapitres #}
+	{% if item.type == 4 %}
+		<span class="material-symbols-outlined">
+			bookmark_added
+		</span>
+		<span>
+			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+			vient d'ajouter à ses favoris la feuille
+			<a href="{{path("app_chapter_show", {slugPub:item.chapterBookmark.chapter.publication.slug,user:item.user.username,idChap:item.chapterBookmark.chapter.id,slug:item.chapterBookmark.chapter.slug})}}">{{item.chapterBookmark.chapter.title}}</a>
+			de votre récit
+			<a href="{{path("app_publication_show_one", {id:item.chapterBookmark.chapter.publication.id, slug:item.chapterBookmark.chapter.publication.slug})}}">{{item.chapterBookmark.chapter.publication.title}}</a>
+			<p>il y a
+				{{item.createdAt|since}}
+			</p>
+		</span>
+	{% endif %}
+	{# Nouveau téléchargement #}
+	{% if item.type == 5 %}
+		<span class="material-symbols-outlined">
+			downloading
+		</span>
+		<span>
+			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+			vient de télécharger la version PDF de votre récit
+			<a href="{{path("app_publication_show_one", {id:item.download.publication.id, slug:item.download.publication.slug})}}">{{item.download.publication.title}}</a>
+			<p>il y a
+				{{item.createdAt|since}}
+			</p>
+		</span>
+	{% endif %}
+	{# Nouveau like chapter #}
+	{% if item.type == 6 %}
+		<span class="material-symbols-outlined">
+			thumb_up
+		</span>
+		<span>
+			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+			vient d'aimer votre feuille
+			<a href="{{path("app_chapter_show", {slugPub:item.chapterLike.chapter.slug,user:item.user.username,idChap:item.chapterLike.chapter.id,slug:item.chapterLike.chapter.slug})}}">{{item.chapterLike.chapter.title}}</a>
+			de votre récit
+			<a href="{{path("app_publication_show_one", {id:item.chapterLike.chapter.publication.id, slug:item.chapterLike.chapter.publication.slug})}}">{{item.chapterLike.chapter.publication.title}}</a>
+			<p>il y a
+				{{item.createdAt|since}}
+			</p>
+		</span>
+	{% endif %}
+</div>

@@ -11,6 +11,7 @@ import { TippyC } from "../scripts/Tippy";
 import { PublicationShow } from "../scripts/Publication/PublicationShow";
 import { User } from "../scripts/User/User";
 import { Dropdown } from "../scripts/Dropdown";
+import { Charts } from "../scripts/Charts";
 import { NotyDisplay } from "../scripts/Noty";
 import "../scripts/SymfonyFlash";
 import MicroModal from "micromodal"; // es6 module
@@ -36,6 +37,7 @@ import {
   targetQuote,
   DropdownMenu,
 } from "../scripts/Publication/ChapterShow";
+import axios from "axios";
 
 const TurboHelper = class {
   constructor() {
@@ -79,6 +81,7 @@ const TurboHelper = class {
       LazyLoad();
       ShowChapter();
       toggleDrawer();
+      Charts();
       Navbar();
       Comment();
       targetQuote();

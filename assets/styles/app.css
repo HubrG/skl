@@ -528,16 +528,24 @@ opacity: 0.4;
 .comment-up {
 	@apply -translate-y-[10rem] ;
   }
-  .one-comment {
-	@apply transition-all ease-in-out delay-150 duration-500;
-  }
+.one-comment {
+@apply transition-all ease-in-out delay-150 duration-500;
+}
+/* * Notifications Système */
+.one-notification a {
+	@apply text-sky-700 hover:underline font-medium dark:text-sky-200; 
+}
+.one-notification p {
+	@apply text-slate-400 text-xs; 
+}
+/* *  CGU */
 .cgu li {
 @apply mt-5;
   }
-  .cgu li h3 {
+.cgu li h3 {
 	@apply font-semibold text-left;
-	  }
-	  .cgu li p {
-		@apply my-5 text-sm;
-		  }
+}
+.cgu li p {
+@apply my-5 text-sm;
+	}
   

@@ -254,8 +254,10 @@
 				</div>
 			</div>
 			<div class="hidden p-4 rounded-lg  min-h-screen" id="statistiques" role="tabpanel" aria-labelledby="settings-tab">
-				<p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the
-					<strong class="font-medium text-gray-800 dark:text-white">Settings tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
+
+				<div class="w-full">
+					<canvas id="ChartNbrViews"></canvas>
+				</div>
 			</div>
 			<div class="hidden p-4 rounded-lg  min-h-screen" id="settings" role="tabpanel" aria-labelledby="settings-tab">
 				<p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the
@@ -307,11 +309,7 @@
 			</div>
 			<div class="px-3 rounded-lg  w-full mb-3 flex hover:opacity-100 hover:grayscale-0">
 				<label class="relative inline-flex items-center">
-					{% if infoPub.status < 2 %}
-						<input type="checkbox" value="" class="sr-only peer" id="" checked/>
-					{% else %}
-						<input type="checkbox" value="" class="sr-only peer" id="" disabled/>
-					{% endif %}
+					<input type="checkbox" value="" class="sr-only peer axiosPublication axiosPubAS axiosPubSpy" id="publication_finished" {{ infoPub.finished == 1 ? "checked" }}/>
 					<div class="w-11 h-6 bg-blue-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-blue-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
 					<span class="ml-3 text-sm dark:text-gray-300">Récit terminé&nbsp;&nbsp;
 						<span data-tippy-content="Cochez cette case pour informer vos lecteurs que votre récit est terminé et qu'aucune nouvelle feuille n'est à attendre.">

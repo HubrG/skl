@@ -7,8 +7,8 @@
 			<span data-chapter-status="{{items.status}}" id="chapter-sort-{{items.id}}" class="absolute {{ items.status < 2 ? " hidden" }} left-[0.0rem] -bottom-[0.1rem] inline-flex items-center justify-center w-5 h-5 text-xs font-semibold text-slate-50 bg-slate-700 dark:bg-slate-900 rounded-sm rounded-tl-none rounded-br-none chapter-number z-50">
 				{{items.orderDisplay + 1}}</span>
 			<turbo-frame id="{{ chapId }}">
-				<span class="material-symbols-outlined float-right item text-sm mr-2 mt-2 cursor-grab dark:text-slate-50">
-					drag_pan
+				<span class="material-symbols-outlined item text-sm mr-2 mt-2 absolute right-0 top-1 font-bold cursor-grab dark:text-slate-50">
+					drag_indicator
 				</span>
 				<div id="defaultTabContent{{ chapId }}">
 					<div class="hidden p-4 pt-3 bg-white rounded-lg md:p-8 md:pb-5 md:pt-3 dark:bg-slate-700" id="about{{ chapId }}" role="tabpanel" aria-labelledby="about-tab{{ chapId }}">

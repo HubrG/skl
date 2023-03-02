@@ -77,6 +77,9 @@ class Publication
     #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationRating::class, orphanRemoval: true)]
     private Collection $publicationRatings;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $finished = null;
+
     public function __construct()
     {
         $this->publicationChapters = new ArrayCollection();
@@ -454,6 +457,18 @@ class Publication
                 $publicationRating->setPublication(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isFinished(): ?bool
+    {
+        return $this->finished;
+    }
+
+    public function setFinished(?bool $finished): self
+    {
+        $this->finished = $finished;
 
         return $this;
     }

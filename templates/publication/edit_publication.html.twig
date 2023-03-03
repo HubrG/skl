@@ -153,8 +153,8 @@
 			<div class="hidden p-4 rounded-lg" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
 				{% if infoPub.publicationChapters|length > 0 %}
 					<ul>
-						<li class="button-classic button-slate text-center">
-							<a href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}" class="block w-full">
+						<li class="text-center">
+							<a href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}" class="block w-full button-classic button-slate " target="_top">
 								<span class="material-symbols-outlined">
 									add_notes
 								</span>
@@ -164,7 +164,7 @@
 					</ul>
 				{% endif %}
 				<div id="accordion-flush" data-accordion="open" data-active-classes="text-gray-900 dark:text-white" class="list-group" data-inactive-classes="text-gray-500 dark:text-gray-400">
-					<h2 id="accordion-flush-heading-1" class="border-b-[1px] border-b-slate-400  px-5 ">
+					<h2 id="accordion-flush-heading-1" class="border-b-[1px] border-b-slate-200 shadow  px-5  rounded mt-5 ">
 						<button type="button" class="flex items-center justify-between w-full py-5 font-medium text-left  dark:border-gray-700 dark:text-gray-400" data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
 							<span>
 								<span class="material-symbols-outlined">
@@ -181,7 +181,7 @@
 							{% if infoPub.publicationChapters|length == 0 %}
 								<div class="w-full text-center bg-slate-100 dark:bg-slate-900 dark:text-slate-100 text-slate-600 rounded border-2 border-slate-300 dark:border-slate-500 border-dashed mt-3 opacity-60 hover:opacity-80" id="noPublication">
 									<p>
-										<a class="block w-full px-5 pt-5 font-medium leading-5" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}#first">
+										<a class="block w-full px-5 pt-5 font-medium leading-5" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}#first" target="_top">
 											<span class="text-slate-900 dark:text-slate-100 text-base">
 												Cliquez ici pour éditer votre première feuille</span><br><br>
 											<span class="text-4xl">
@@ -232,8 +232,8 @@
 							{% include "publication/_partials/_edit_publication_show_chapters.html.twig" with {withStatus:2} %}
 						</div>
 					</div>
-					<h2 id="accordion-flush-heading-2" class="border-b-[1px] border-b-slate-400  px-5 ">
-						<button type="button" class="flex items-center justify-between w-full py-5 font-medium text-left text-gray-500  dark:border-gray-700 dark:text-gray-400" data-accordion-target="#accordion-flush-body-2" aria-expanded="true" aria-controls="accordion-flush-body-2">
+					<h2 id="accordion-flush-heading-2" class=" shadow shadow-red-50  px-5  rounded mt-5 bg-red-50 ring-red-200 dark:bg-orange-700 ring-1  dark:ring-orange-900 dark:shadow-orange-800 ">
+						<button type="button" class="flex items-center justify-between w-full py-5 font-medium text-left  dark:border-gray-700 text-red-900  dark:text-red-400" data-accordion-target="#accordion-flush-body-2" aria-expanded="true" aria-controls="accordion-flush-body-2">
 							<span>
 								<span class="material-symbols-outlined">
 									visibility_off
@@ -254,9 +254,9 @@
 				</div>
 			</div>
 			<div class="hidden p-4 rounded-lg  min-h-screen" id="statistiques" role="tabpanel" aria-labelledby="settings-tab">
-
-				<div class="w-full">
-					<canvas id="ChartNbrViews"></canvas>
+				<div id="legend-container" class="flex justify-evenly mb-5 text-xs"></div>
+				<div class="w-full  rounded p-5 dark:bg-slate-900">
+					<canvas id="chartStat" class="text-white"></canvas>
 				</div>
 			</div>
 			<div class="hidden p-4 rounded-lg  min-h-screen" id="settings" role="tabpanel" aria-labelledby="settings-tab">
@@ -302,7 +302,7 @@
 					<span class="ml-3 text-sm {{ infoPub.status > 1 ? " text-slate-400 cursor-default" : " cursor-pointer" }}  dark:text-gray-300 disabled" id="ASText">Sauvegarde auto.</span>
 				</label>
 				<span class="absolute right-0 mr-5 cursor-default" id="ASTooltip">
-					<span class="material-symbols-outlined opacity-30" data-tippy-content='<p class="text-justify tippy-tt p-2"><strong>La sauvegarde automatique est désactivée car votre récit est publié.</strong> Si vous souhaitez enregistrer les modifications apportées à votre récit, vous pouvez cliquer sur le bouton « Publier les modifications ».</p>'>
+					<span class="material-symbols-outlined opacity-30" data-tippy-content='<p class="text-center tippy-tt p-2"><strong><span class="material-symbols-outlined"> cloud_off </span><br>La sauvegarde automatique est désactivée car votre récit est publié.</strong><br><br>Si vous souhaitez enregistrer les modifications apportées à votre récit, veuillez cliquer sur le bouton ci-dessus, « Publier les modifications ».</p>'>
 						info
 					</span>
 				</span>
@@ -312,7 +312,7 @@
 					<input type="checkbox" value="" class="sr-only peer axiosPublication axiosPubAS axiosPubSpy" id="publication_finished" {{ infoPub.finished == 1 ? "checked" }}/>
 					<div class="w-11 h-6 bg-blue-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-blue-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
 					<span class="ml-3 text-sm dark:text-gray-300">Récit terminé&nbsp;&nbsp;
-						<span data-tippy-content="Cochez cette case pour informer vos lecteurs que votre récit est terminé et qu'aucune nouvelle feuille n'est à attendre.">
+						<span data-tippy-content="<strong>Si vous cochez la case</strong>, cela signifie que votre récit est terminé et qu'il n'y aura plus de nouvelles publications.<br><br><strong>Si vous ne cochez pas la case</strong>, vos lecteurs pourront s'abonner à votre récit et recevront des notifications si de nouvelles feuilles sont publiées.">
 							<span class="material-symbols-outlined">
 								help
 							</span>
@@ -395,6 +395,7 @@
 			</div>
 		</dialog>
 	</div>
+
 	<input type="hidden" value="{{ infoPub.id }}" id="hideIdPub"/>
 	<input type="hidden" id="hidePubStatus" value="{{ infoPub.status }}" id="hideId"/>
 {% endblock %}

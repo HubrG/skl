@@ -80,6 +80,14 @@ class Publication
     #[ORM\Column(nullable: true)]
     private ?bool $finished = null;
 
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationFollow::class, orphanRemoval: true)]
+    private Collection $publicationFollows;
+
+    #[ORM\OneToMany(mappedBy: 'publication_follow_add', targetEntity: Notification::class, orphanRemoval: true)]
+    private Collection $notifications;
+
+
+
     public function __construct()
     {
         $this->publicationChapters = new ArrayCollection();
@@ -89,6 +97,8 @@ class Publication
         $this->publicationComments = new ArrayCollection();
         $this->publicationBookmarks = new ArrayCollection();
         $this->publicationRatings = new ArrayCollection();
+        $this->publicationFollows = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -469,6 +479,66 @@ class Publication
     public function setFinished(?bool $finished): self
     {
         $this->finished = $finished;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationFollow>
+     */
+    public function getPublicationFollows(): Collection
+    {
+        return $this->publicationFollows;
+    }
+
+    public function addPublicationFollow(PublicationFollow $publicationFollow): self
+    {
+        if (!$this->publicationFollows->contains($publicationFollow)) {
+            $this->publicationFollows->add($publicationFollow);
+            $publicationFollow->setPublication($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationFollow(PublicationFollow $publicationFollow): self
+    {
+        if ($this->publicationFollows->removeElement($publicationFollow)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationFollow->getPublication() === $this) {
+                $publicationFollow->setPublication(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications->add($notification);
+            $notification->setPublicationFollowAdd($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getPublicationFollowAdd() === $this) {
+                $notification->setPublicationFollowAdd(null);
+            }
+        }
 
         return $this;
     }

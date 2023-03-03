@@ -3,11 +3,14 @@
 namespace App\Controller\Publication;
 
 use App\Entity\PublicationChapter;
+use App\Services\NotificationSystem;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
+use App\Repository\NotificationRepository;
 use App\Entity\PublicationChapterVersioning;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Repository\PublicationFollowRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -17,6 +20,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ChapterController extends AbstractController
 {
 
+    private $notificationSystem;
+
+    public function __construct(NotificationSystem $notificationSystem)
+    {
+        $this->notificationSystem = $notificationSystem;
+    }
 
     #[Route('/story/edit/{idPub}/chapter/{idChap?}', name: 'app_publication_edit_chapter')]
     public function EditChapter(PublicationRepository $pubRepo, PublicationChapterRepository $pcRepo, EntityManagerInterface $em, $idPub = null, $idChap = null): response
@@ -171,18 +180,36 @@ class ChapterController extends AbstractController
         ]);
     }
     #[Route('/story/chapter/publish', name: 'app_chapter_publish', methods: "POST")]
-    public function Axios_Publish(Request $request, EntityManagerInterface $em, PublicationChapterRepository $pcRepo): response
+    public function Axios_Publish(Request $request, EntityManagerInterface $em, NotificationRepository $nRepo, PublicationFollowRepository $pfRepo, PublicationChapterRepository $pcRepo): response
     {
         $idPub = $request->get("idChap");
         $dataPublish = $request->get("publish");
-        $chapitre = $pcRepo->find($idPub);
+        $chapter = $pcRepo->find($idPub);
         if ($dataPublish == "true") {
-            $chapitre->setStatus(2);
-            $chapitre->setPublished(new \DateTime('now'));
+            $chapter->setStatus(2);
+            $chapter->setPublished(new \DateTime('now'));
+            // * Envoi d'une notification aux abonnés de la publication
+            // Si le chapitre est publié et que la publication est publiée 
+            if ($chapter->getPublication()->getStatus() == 2) {
+                // On envoie une notification à tous les abonnés de la publication
+                $followers = $pfRepo->findBy(["publication" => $chapter->getPublication()]);
+                foreach ($followers as $follower) {
+                    $this->notificationSystem->addNotification(7, $follower->getUser(), $chapter->getPublication()->getUser(), $chapter);
+                }
+            }
+            //
         } else {
-            $chapitre->setStatus(1);
+            $chapter->setStatus(1);
+            // S'il y a des abonnées à la publication, on supprime les notifications qui leur ont été envoyées concernant le chapitre publié, désormais dépublié
+            if ($chapter->getPublication()->getStatus() == 2) {
+                // On cherche les notifications qui ont pour type 7 (chapitre publié) et pour publication la publication du chapitre
+                $notifications = $nRepo->findBy(["type" => 7, "publication_follow" => $chapter]);
+                foreach ($notifications as $notification) {
+                    $em->remove($notification);
+                }
+            }
         }
-        $em->persist($chapitre);
+        $em->persist($chapter);
         $em->flush();
         return $this->json([
             "code" => $dataPublish
@@ -211,17 +238,36 @@ class ChapterController extends AbstractController
         ]);
     }
     #[Route('/story/chapter/sort', name: 'app_chapter_sort', methods: "POST")]
-    public function Axios_ChapSort(Request $request, EntityManagerInterface $em, PublicationChapterRepository $pcRepo): response
+    public function Axios_ChapSort(Request $request, EntityManagerInterface $em, NotificationRepository $nRepo, PublicationChapterRepository $pcRepo, PublicationFollowRepository $pfRepo): response
     {
-        $idPub = $request->get("idChap");
+        $idChap = $request->get("idChap");
         $order = $request->get("order");
         $status = $request->get("status");
-        $chapter = $pcRepo->find($idPub);
+        //
+        $chapter = $pcRepo->find($idChap);
+        //
+        // * Envoi d'une notification aux abonnés de la publication
+        // Si le chapitre est dépublié, que le $status est sur 2 et que la publication est publiée 
+        if ($chapter->getStatus() == 1 && $status == 2 && $chapter->getPublication()->getStatus() == 2) {
+            // On envoie une notification à tous les abonnés de la publication
+            $followers = $pfRepo->findBy(["publication" => $chapter->getPublication()]);
+            foreach ($followers as $follower) {
+                $this->notificationSystem->addNotification(7, $follower->getUser(), $chapter->getPublication()->getUser(), $chapter);
+            }
+        } elseif ($chapter->getStatus() == 2 && $status == 1 && $chapter->getPublication()->getStatus() == 2) {
+            // S'il y a des abonnées à la publication, on supprime les notifications qui leur ont été envoyées concernant le chapitre publié, désormais dépublié
+            // On cherche les notifications qui ont pour type 7 (chapitre publié) et pour publication la publication du chapitre
+            $notifications = $nRepo->findBy(["type" => 7, "publication_follow" => $chapter]);
+            foreach ($notifications as $notification) {
+                $em->remove($notification);
+            }
+        }
+        //
         $chapter->setOrderDisplay($order)
             ->setStatus($status);
-
         $em->persist($chapter);
         $em->flush();
+
         return $this->json([
             "code" => 200, // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
             "order" => $chapter->getOrderDisplay() + 1, // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde

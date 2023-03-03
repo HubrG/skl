@@ -43,12 +43,6 @@ export function Sortables() {
       },
     });
   }
-  (function (c, a, n) {
-    var w = c.createElement(a),
-      s = c.getElementsByTagName(a)[0];
-    w.src = n;
-    s.parentNode.insertBefore(w, s);
-  })(document, "script", "https://sdk.canva.com/designbutton/v2/api.js");
 }
 function axiosGoSortable() {
   let nbr = 0;

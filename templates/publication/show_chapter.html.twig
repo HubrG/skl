@@ -31,12 +31,12 @@
 		{% endif %}
 		<div class="md:text-left text-base w-full text-center mb-10 mt-0 md:mt-3 ">
 			<h3 class="text-center md:text-left">
-				<a id="pubTitle" class="font-serif dark:text-white" href="{{ path("app_publication_show_one", {id:infoPub.id, slug:infoPub.slug}) }}">{{ infoPub.title }}</a>
+				<a id="pubTitle" class="font-serif hover:underline dark:text-white" href="{{ path("app_publication_show_one", {id:infoPub.id, slug:infoPub.slug}) }}">{{ infoPub.title }}</a>
 			</h3>
 			<div class="text-xs dark:text-white">
 				<small>par</small>
 				<span class="font-medium dark:text-white">
-					<a class="dark:text-white" href="{{ path("app_user", {username:infoPub.user.username}) }}">{{ infoPub.user.nickname }}</a>
+					<a class="dark:text-white hover:underline" href="{{ path("app_user", {username:infoPub.user.username}) }}">{{ infoPub.user.nickname }}</a>
 				</span>
 			</div>
 		</div>
@@ -143,7 +143,7 @@
 
 					<div class="{% if userLikesChapter %}hover:text-blue-600 cursor-pointer{% endif %} {% if app.user.id is not defined %}cursor-pointer{% endif %}" id="likeThisChapter" data-tippy-content="{{ likeTooltip }}" {% if app.user.id is not defined %} data-micromodal-trigger="popup-login" {% endif %} data-id="{{ infoChap.id }}">
 						<span class="material-{{ liked ? 'icons text-red-500' : 'symbols-outlined' }} " id="likeChapterThumb">
-							favorite
+							thumb_up
 						</span>
 						&nbsp;<span id="nbrLike">{{ infoChap.publicationChapterLikes|length }}</span>
 					</div>

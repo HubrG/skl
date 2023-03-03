@@ -31,12 +31,12 @@
 			{% set pic = " https://picsum.photos/200/" ~ random(300, 310) %}
 	{% endif %}
 	<style>
-		#test
+		#PublicationShowOneContent
 		{
 			position: inherit;
 			z-index: 1;
 		}
-		#test::before
+		#PublicationShowOneContent::before
 		{
 			content: "";
 			position: absolute;
@@ -53,7 +53,7 @@
 			background-position: center;
 		}
 	</style>
-	<section class=" before:bg-cover before:blur before:-z-[9999]  col-span-12 col-start-0 md:col-span-10 md:col-start-2 gap-10" id="test">
+	<section class=" before:bg-cover before:blur before:-z-[9999]  col-span-12 col-start-0 lg:col-span-10 lg:col-start-2 gap-10" id="PublicationShowOneContent">
 		{% if pubShow.status < 2 %}
 			<div class="mb-0">
 				<div class="w-full -mt-10 mb-5 h-10 bg-slate-100 ring-1 ring-slate-700 opacity-80 dark:opacity-100 right-0 rounded-b-sm">
@@ -86,7 +86,7 @@
 		</div>
 		<div class="flex gap-5 p-10 pt-0  items-center">
 			<div class="flex-1 text-center flex flex-col justify-center items-center justify-items-center origin-center">
-				<div class="md:flex w-5/6">
+				<div class="lg:flex w-5/6">
 					<p class="text-base font-serif text-justify italic text-slate-900 dark:text-slate-200 dark:[text-shadow: 0 0.5px 1px blanchedalmond;] leading-7 mt-1">
 						{% if orderChap %}
 							{% if pubShow.summary %}
@@ -121,10 +121,69 @@
 		</div>
 	</section>
 	{% if orderChap %}
-		<section class="md:flex col-span-12 md:col-span-10 md:col-start-2  mt-6 justify-evenly min-h-[50vh] z-50">
+		<section class="lg:flex  col-span-12 lg:col-span-10 lg:col-start-2  mt-6 justify-evenly min-h-[50vh] z-50">
 			<div class="absolute bg-white dark:bg-slate-800 w-full min-h-[100%] left-0 right-0 -z-10  border-t-[1px] border-slate-200 dark:border-slate-900">&nbsp;</div>
 			<div class="w-full lg:w-7/12 pt-10 z-50 order-2 lg:order-1 ">
-				<h3 class="text-2xl mb-5 lg:text-left text-center dark:text-slate-100">
+				<div class="flex justify-between  gap-x-5 -mt-5 mb-5">
+					{% if pubShow.finished == true %}
+						<div class="w-full text-center bg-emerald-50 p-3 gap-y-2 rounded cursor-default grid grid-flow-row  dark:bg-transparent text-emerald-700 dark:text-slate-300 ">
+							<button class="font-medium cursor-default">
+								<span class="material-symbols-outlined">
+									task_alt
+								</span>
+								Récit terminé
+							</button>
+							<span class="text-emerald-600 text-xs">
+								Ce récit est terminé, aucune nouvelle feuille n'est prévue.
+							</span>
+						</div>
+					{% elseif pubShow.finished == false and app.user and app.user.id != pubShow.user.id %}
+						{% set classFollowBtn = "follow-collection-buttons" %}
+						{% for item in pubShow.PublicationFollows %}
+							{% if item.user.id == app.user.id %}
+								{% set classFollowBtn = "follow-collection-buttons-ok" %}
+							{% endif %}
+						{% endfor %}
+						<div id="followBtn" data-href="{{path("app_publication_follow", {id:pubShow.id})}}" class="{{classFollowBtn}}">
+							<button class="font-medium">
+								<span id="followIcon" class="material-symbols-outlined">
+									{{classFollowBtn == "follow-collection-buttons-ok" ? "label_off" : "loyalty" }}
+								</span>
+								<span id="followTitle">
+									{{classFollowBtn == "follow-collection-buttons-ok" ? "Ne plus suivre ce récit" : "Suivre ce récit" }}
+								</span>
+							</button>
+							<span id="followInfo" class="text-xs">
+								{{classFollowBtn == "follow-collection-buttons-ok" ? "Vous ne recevrez plus de notification à chaque nouvelle feuille publiée." : "Vous recevrez une notification à chaque nouvelle feuille publiée." }}
+							</span>
+						</div>
+					{% elseif not app.user %}
+						<div class="follow-collection-buttons cursor-pointer" onclick="MicroModal.show('popup-login')">
+							<button class="font-medium">
+								<span class="material-symbols-outlined">
+									loyalty
+								</span>
+								Suivre ce récit
+							</button>
+							<span class="text-slate-500 text-xs">
+								Vous recevrez une notification à chaque nouvelle feuille publiée.
+							</span>
+						</div>
+					{% endif %}
+					<div class="w-full text-center bg-slate-50  p-3 gap-y-2 rounded cursor-pointer  grid grid-flow-row hover:bg-slate-100 dark:bg-transparent text-slate-700 dark:text-slate-300 dark:hover:text-amber-500">
+						<button class="font-medium">
+							<span class="material-symbols-outlined">
+								bookmark_add
+							</span>
+							Ajouter à ma collection
+						</button>
+						<span class="text-slate-500 text-xs">
+							Ajoutez ce récit à votre collection personnelle.
+						</span>
+					</div>
+				</div>
+				<hr>
+				<h3 class="text-2xl mb-5 lg:text-left text-center mt-5 dark:text-slate-100">
 					<span class="material-symbols-outlined">
 						format_list_bulleted
 					</span>
@@ -153,7 +212,7 @@
 										<div class="py-1 px-2 rounded-full flex justify-between text-xs text-slate-600 font-medium">
 											<div>
 												<span class="material-symbols-outlined">
-													favorite
+													thumb_up
 												</span>
 												{{ chapter.publicationChapterLikes|length }}
 												{% set chapterStats = chapterStats|merge({'likes': chapterStats.likes + chapter.publicationChapterLikes|length}) %}
@@ -187,14 +246,12 @@
 						{% endif %}
 					{% endfor %}
 				</ul>
-				<hr class="my-10 bg-slate-400 border-slate-400 dark:border-slate-900">
-
 				<div class="w-full" id="publicationShowOneComment">
-
+					<hr>
 					{% if app.user.id is defined %}
 						{{ form_start(formQuote, {attr:{"data-turbo-frame":"comment-section"}}) }}
 						<label for="publication_chapter_comment_content" class="sr-only">Votre commentaire</label>
-						<div class="flex items-center py-2 w-full rounded-lg ">
+						<div class="flex items-center w-full rounded-lg ">
 							{{ form_widget(formQuote.content, {attr:{"class":"block -mt-5 p-2.5 w-full text-sm text-gray-900 resize-none bg-white pr-12 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"}}) }}
 							<button id="sendComment" type="submit" class="inline-flex justify-center p-2 text-slate-600 rounded-full cursor-pointer  hover:text-blue-500 dark:text-sky-500 dark:hover:text-sky-400  -ml-10 mt-4">
 								<svg aria-hidden="true" class="w-6 h-6 -mt-8 rotate-45" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -205,9 +262,8 @@
 						</div>
 						<input type="hidden" name="quote" id="drawerNoteQuote">
 						{{ form_end(formQuote) }}
-						<hr class="mb-5 shadow bg-slate-50 border-slate-50">
+						<hr>
 					{% endif %}
-
 					<turbo-frame id="comment-section">
 						{% set n = 0 %}
 						{% for item in pCom %}
@@ -220,9 +276,34 @@
 					</turbo-frame>
 				</div>
 			</div>
-			<div class="w-full  z-50 mt-5 pt-5 px-2 md:w-4/12  order-1 lg:order-2  shadow-slate-300 text-slate-900 border-slate-200 border-t-[1px] border-t-slate-200 dark:border-slate-900 dark:border-t-slate-900 lg:border-l-[1px] lg:border-t-0 ">
+			<div class="w-full  z-50 mt-0 pt-5 px-2 lg:w-4/12  order-1 lg:order-2  shadow-slate-300 text-slate-900 border-slate-200 border-t-[1px] border-t-slate-200 dark:border-slate-900 dark:border-t-slate-900 lg:border-l-[1px] lg:border-t-0 ">
 				<ul class="opacity-60 dark:opacity-100 flex flex-col  text-sm">
-					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px   dark:text-white">
+					<li class="inline-flex items-center  gap-x-2 mt-0 px-4 font-normal justify-center   dark:text-white">
+						<div class="flex items-center">
+							<svg aria-hidden="true" class="text-yellow-400 w-7 h-7" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+								<title>First star</title>
+								<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+							</svg>
+							<svg aria-hidden="true" class="text-yellow-400 w-7 h-7" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+								<title>Second star</title>
+								<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+							</svg>
+							<svg aria-hidden="true" class="text-yellow-400 w-7 h-7" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+								<title>Third star</title>
+								<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+							</svg>
+							<svg aria-hidden="true" class="text-yellow-400 w-7 h-7" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+								<title>Fourth star</title>
+								<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+							</svg>
+							<svg aria-hidden="true" class="text-gray-300 w-7 h-7 dark:text-gray-500" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+								<title>Fifth star</title>
+								<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+							</svg>
+						</div>
+					</li>
+					<hr>
+					<li class="inline-flex items-center justify-between gap-x-2  px-4 font-normal dark:text-white">
 						<span class="font-medium">
 							<span class="material-symbols-outlined">
 								theater_comedy
@@ -300,7 +381,7 @@
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px    dark:text-white">
 						<span class="font-medium">
 							<span class="material-symbols-outlined">
-								favorite
+								thumb_up
 							</span>
 							&nbsp;&nbsp;&nbsp;J'aime
 						</span>
@@ -347,13 +428,14 @@
 						</span>
 					</li>
 				</ul>
-				<ul class=" flex flex-col  text-sm border-t-[1px] border-t-slate-200 dark:border-t-slate-900 pt-5 mt-5">
-					<li class="inline-flex items-center justify-between gap-x-2 font-medium py-1 px-4 -mt-px    dark:text-white">
-						{% for item in pubShow.publicationKeywords %}
+				<ul class="flex flex-wrap justify-between p-2 text-sm border-t-[1px] gap-x-5 gap-y-5 grid-cols-4 border-t-slate-200 dark:border-t-slate-900 pt-5 mt-5">
+					{% for item in pubShow.publicationKeywords %}
+						<li class="font-medium dark:text-white">
 							<a href="{{path("app_publication_show_all_category", {keystring:item.keyword|lower, order:'desc', sortby:'published', page:1, slug:"all"})}}" class="hover:underline text-slate-800 dark:text-white">#{{ item.keyword }}</a>
-						{% endfor %}
-					</li>
+						</li>
+					{% endfor %}
 				</ul>
+
 				<ul class=" flex flex-col opacity-60 dark:opacity-100 text-sm border-t-[1px] border-t-slate-200 dark:border-t-slate-900 pt-5 mt-5">
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px    dark:text-white">
 						<span class="font-medium">

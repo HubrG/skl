@@ -3,68 +3,87 @@ import { ReadTimeFunction } from "./ChapterStats";
 // !
 // ! Fonction permettant de gérer la sauvegarde et la publication du chapitre
 // !
-export function AxiosSaveChapter() {
-  if (document.getElementById("selectChapVersion")) {
-    // ! Variables
-    var toggleAS = document.getElementById("toggleAS");
-    var title = document.getElementById("title");
-    var editor = document.getElementById("editor");
-    var selectChapVersion = document.getElementById("selectChapVersion");
-    var saveChapter = document.getElementById("saveChapter");
-    var axiosChapterAS = document.querySelectorAll(".axiosChapterAS");
-    var togglePublish = document.getElementById("togglePublish");
-    var spinAS = document.getElementById("spinAS");
-    // !
-    onload = () => {
-      title.setSelectionRange(title.value.length, title.value.length);
-      title.focus();
-    };
-    // ! EventListener sur l'auto save
-    toggleAS.addEventListener("change", () => {
-      toggleASfunc();
-    });
-    // ! Changement de version et stop de l'autosave (qui sera réactivé si la publication est dépubliée et que le bouton de sauvegarde est cliqué)
-    selectChapVersion.addEventListener("change", () => {
-      // * on toggle l'autosave sur "off"
-      toggleAS.checked = false;
-      // * On désactive l'autosave par l'appel de la fonction
-      toggleASfunc();
-      // * On récupère la version sélectionnée
-      AxiosGetVersion(selectChapVersion.value);
-    });
-    // ! Sauvegarde du chapitre au bouton
-    saveChapter.addEventListener("click", () => {
-      AxiosChapter();
-    });
-    // ! Publication du chapitre
-    togglePublish.addEventListener("change", () => {
-      if (togglePublish.checked == true) {
-        publishChapter(true);
-      } else {
-        publishChapter(false);
-      }
-    });
-    // ! Autosave
-    //  * Selection de tous les champs qui ont la classe axiosChapter et execution d'axios
-    let timeout;
-    axiosChapterAS.forEach(function (row) {
-      row.addEventListener("keyup", () => {
-        if (row.classList.contains("axiosChapterAS")) {
-          spinAS.classList.remove("hidden");
-          clearTimeout(timeout);
-          timeout = setTimeout(() => {
-            AxiosChapter();
-            spinAS.classList.add("hidden");
-          }, 30000);
-        }
-      });
-    });
+export function axiosSaveChapter() {
+  const selectChapVersion = document.getElementById("selectChapVersion");
+  if (!selectChapVersion) return;
+
+  // Variables
+  const toggleAS = document.getElementById("toggleAS");
+  const title = document.getElementById("title");
+  const editor = document.getElementById("editor");
+  const saveChapter = document.getElementById("saveChapter");
+  const axiosChapterAS = document.querySelectorAll(".axiosChapterAS");
+  const togglePublish = document.getElementById("togglePublish");
+  const spinAS = document.getElementById("spinAS");
+
+  // Initialisation
+  onload = () => {
+    title.setSelectionRange(title.value.length, title.value.length);
+    title.focus();
+  };
+
+  // Event listeners
+  toggleAS.addEventListener("change", toggleASfunc);
+  selectChapVersion.addEventListener("change", handleVersionChange);
+  saveChapter.addEventListener("click", handleChapterSave);
+  togglePublish.addEventListener("change", handleChapterPublish);
+
+  // Autosave
+  const AUTOSAVE_DELAY = 30000;
+  let autosaveTimeout;
+  axiosChapterAS.forEach((row) => {
+    if (row.classList.contains("axiosChapterAS")) {
+      row.addEventListener("keyup", handleAutosave);
+    }
+  });
+
+  // Functions
+  function toggleASfunc() {
+    if (toggleAS.checked) {
+      startAutosave();
+    } else {
+      stopAutosave();
+    }
+  }
+
+  function startAutosave() {
+    autosaveTimeout = setTimeout(() => {
+      axiosChapter();
+      spinAS.classList.add("hidden");
+    }, AUTOSAVE_DELAY);
+    spinAS.classList.remove("hidden");
+  }
+
+  function stopAutosave() {
+    clearTimeout(autosaveTimeout);
+    spinAS.classList.add("hidden");
+  }
+
+  function handleVersionChange() {
+    toggleAS.checked = false;
+    stopAutosave();
+    AxiosGetVersion(selectChapVersion.value);
+  }
+
+  function handleChapterSave() {
+    axiosChapter();
+  }
+
+  function handleChapterPublish() {
+    stopAutosave();
+    const isPublished = togglePublish.checked;
+    publishChapter(isPublished);
+  }
+
+  function handleAutosave() {
+    stopAutosave();
+    startAutosave();
   }
 }
 // !
 // ! Fonction de sauvegarde
 // !
-function AxiosChapter() {
+function axiosChapter() {
   const url = "/story/chapter/autosave";
   // * récupération des éléments
   let quill = document.getElementById("editor").__quill;
@@ -127,7 +146,7 @@ function publishChapter(publish) {
         var notyText =
           "<span class='text-base font-medium'>Feuille publié</span><br />Votre feuille est désormais visible par vos lecteurs";
         hideChapStatus.value = 2;
-        AxiosChapter();
+        axiosChapter();
       } else {
         var notyText =
           "<span class='text-base font-medium'>Feuille dépublié</span><br />Votre feuille n'est plus visible par vos lecteurs";
@@ -210,6 +229,4 @@ function toggleASfunc() {
     });
   }
 }
-if (document.getElementById("editorHTML")) {
-  AxiosSaveChapter();
-}
+axiosSaveChapter();

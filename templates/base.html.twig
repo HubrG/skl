@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html id="html" lang="fr" class="scroll-smooth {{app.user.userParameters ? app.user.userParameters.darkmode == true ? " dark"}}">
+<html id="html" lang="fr" class="scroll-smooth {{app.user  ? app.user.userParameters is defined ? app.user.userParameters.darkmode == true ? " dark"}}">
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,25 +23,8 @@
 		{% block javascripts %}{% endblock %}
 		<!-- Google tag (gtag.js) -->
 		<script async src="https://www.googletagmanager.com/gtag/js?id=G-2DX7NLM4HX"></script>
-		<script>
-			window.dataLayer = window.dataLayer || [];
-function gtag()
-{
-
-
-
-
-
-dataLayer.push( arguments );
-
-
-
-
-
-}
-gtag( 'js', new Date() );
-gtag( 'config', 'G-2DX7NLM4HX' );
-		</script>
+		{% include "/partials/_google-analytics.html.twig" %}
+		<script></script>
 	</head>
 	<body>
 		{% include "partials/_navbar.html.twig" %}

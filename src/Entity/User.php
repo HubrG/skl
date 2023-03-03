@@ -132,6 +132,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?UserParameters $userParameters = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationFollow::class)]
+    private Collection $publicationFollows;
+
     public function __construct()
     {
         $this->publications = new ArrayCollection();
@@ -147,6 +150,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->publicationBookmarkCollections = new ArrayCollection();
         $this->notifications = new ArrayCollection();
         $this->UserFrom = new ArrayCollection();
+        $this->publicationFollows = new ArrayCollection();
     }
 
 
@@ -824,6 +828,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->userParameters = $userParameters;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationFollow>
+     */
+    public function getPublicationFollows(): Collection
+    {
+        return $this->publicationFollows;
+    }
+
+    public function addPublicationFollow(PublicationFollow $publicationFollow): self
+    {
+        if (!$this->publicationFollows->contains($publicationFollow)) {
+            $this->publicationFollows->add($publicationFollow);
+            $publicationFollow->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationFollow(PublicationFollow $publicationFollow): self
+    {
+        if ($this->publicationFollows->removeElement($publicationFollow)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationFollow->getUser() === $this) {
+                $publicationFollow->setUser(null);
+            }
+        }
 
         return $this;
     }

@@ -3,6 +3,7 @@
 
 namespace App\Controller\Publication;
 
+use App\Entity\PublicationFollow;
 use App\Form\PublicationCommentType;
 use App\Services\NotificationSystem;
 use App\Entity\PublicationCommentLike;
@@ -10,8 +11,10 @@ use App\Services\PublicationPopularity;
 use App\Services\PublicationDownloadPDF;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
+use App\Repository\NotificationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Repository\PublicationFollowRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
 use App\Repository\PublicationCommentRepository;
@@ -305,98 +308,68 @@ class PublicationShowController extends AbstractController
 		});
 		return $keywords;
 	}
-	#[Route('/recit/publication/comment/del', name: 'app_publication_del_comment', methods: ['POST'])]
-	public function delComment(Request $request, EntityManagerInterface $em, PublicationCommentRepository $pcomRepo): response
+
+	#[Route('/recit/follow/{id}', name: 'app_publication_follow', methods: ['POST'])]
+	public function followPublication(Request $request, PublicationRepository $pRepo, NotificationRepository $nRepo, EntityManagerInterface $em, $id): response
 	{
-		$dtIdCom = $request->get("idCom");
-		$comment = $pcomRepo->find($dtIdCom);
-		if ($comment and $comment->getUser() == $this->getUser()) {
-			$em->remove($comment);
-			$em->flush();
-			// * On met à jour la popularité de la publication
-			$this->publicationPopularity->PublicationPopularity($comment->getPublication());
-			//
-			// On renvoie sur la page précédente
-			// return $this->redirectToRoute('app_publication_show_one', ['slug' => $comment->getPublication()->getSlug(), 'id' => $comment->getPublication()->getId()]);
-			return $this->json([
-				'code' => 200,
-				'message' => 'Votre commentaire a bien été supprimé.',
-			], 200);
-		} else {
-			return $this->json([
-				'code' => 403,
-				'message' => 'Vous ne pouvez pas supprimer ce commentaire.',
-			], 403);
-			// return $this->redirectToRoute('app_publication_show_one', ['slug' => $comment->getPublication()->getSlug(), 'id' => $comment->getPublication()->getId()]);
-		}
-	}
-	#[Route('/recit/publication/comment/like', name: 'app_publication_like_comment', methods: ['POST'])]
-	public function likeComment(Request $request, PublicationCommentRepository $pcomRepo, EntityManagerInterface $em): response
-	{
-		$dtIdCom = $request->get("idCom");
-		// * On récupère le commentaire
-		$comment = $pcomRepo->find($dtIdCom);
-		// * Si le commentaire existe et que l'auteur du commentaire n'est pas l'auteur du like
-		if ($comment and $comment->getUser() != $this->getUser()) {
-			// * On vérifie que le commentaire n'a pas déjà été liké par l'utilisateur
-			$like = $comment->getPublicationCommentLikes()->filter(function ($like) {
-				return $like->getUser() == $this->getUser();
+		// * On récupère la publication
+		$pub = $pRepo->find($id);
+		// * Si la publication existe et que l'auteur du follow n'est pas l'auteur de la publication
+		if ($pub and $pub->getUser() != $this->getUser()) {
+			// * On vérifie que la publication n'a pas déjà été follow par l'utilisateur
+			$follow = $pub->getPublicationFollows()->filter(function ($follow) {
+				return $follow->getUser() == $this->getUser();
 			})->first();
-			// * Si le commentaire a déjà été liké, on supprime le like
-			if ($like) {
-				$em->remove($like);
+			// * Si le follower existe déjà, on le supprime
+			if ($follow) {
+				$em->remove($follow);
 				$em->flush();
-				// * On met à jour la popularité de la publication
-				// $this->publicationPopularity->PublicationPopularity($comment->getChapter()->getPublication());
+				// On supprime les notifications de type 8 avec l'user $this->getUser() qui concerne la publication $pub
+				$notifications = $nRepo->findBy(["type" => 8, "from_user" => $this->getUser(), "publication_follow_add" => $pub]);
+				foreach ($notifications as $n) {
+					$em->remove($n);
+					$em->flush();
+				}
 				//
 				return $this->json([
 					'code' => 200,
-					'message' => 'Le like a bien été supprimé.'
+					'message' => '
+					<span class="material-symbols-outlined">
+					label_off
+					</span>
+					<strong>Vous ne suivez plus ce récit</strong><br>
+					Vous ne recevrez plus de notification à chaque nouvelle feuille publiée'
 				], 200);
 			}
-			// * Sinon, on ajoute le like
-			$like = new PublicationCommentLike();
-			$like->setUser($this->getUser())
-				->setComment($comment)
+			// * Sinon, on ajoute le follower
+			$follow = new PublicationFollow();
+			$follow->setUser($this->getUser())
+				->setPublication($pub)
 				->setCreatedAt(new \DateTimeImmutable());
-			$em->persist($like);
+			$em->persist($follow);
 			$em->flush();
+
 			// * On met à jour la popularité de la publication
 			// $this->publicationPopularity->PublicationPopularity($comment->getChapter()->getPublication());
 			//
 		} else {
 			return $this->json([
 				'code' => 403,
-				'message' => 'Vous n\'avez pas les droits pour modifier ce commentaire.',
+				'message' => 'Vous n\'avez pas le droit de suivre ce récit',
 			], 403);
 		}
-		//
-		return $this->json([
-			'code' => 201,
-			'message' => 'Le like a bien été ajouté.'
-		], 200);
-	}
-	#[Route('/recit/publication/comment/up', name: 'app_publication_up_comment', methods: ['POST'])]
-	public function upComment(Request $request, PublicationCommentRepository $pccRepo, EntityManagerInterface $em): response
-	{
-		$dtIdCom = $request->get("idCom");
-		$dtNewCom = $request->get("newCom");
-		$comment = $pccRepo->find($dtIdCom);
-		if ($comment and $comment->getUser() == $this->getUser()) {
-			$comment->setContent($dtNewCom);
-			$em->persist($comment);
-			$em->flush();
-		} else {
-			return $this->json([
-				'code' => 403,
-				'message' => 'Vous n\'avez pas les droits pour modifier ce commentaire.',
-			], 403);
-		}
+		// * Ajout d'une notification
+		$this->notificationSystem->addNotification(8, $pub->getUser(), $this->getUser(), $pub);
 		//
 		return $this->json([
 			'code' => 200,
-			'message' => 'Le commentaire a bien été modifié.',
-			'comment' => $comment->getContent()
+			'message' => '
+			<span class="material-symbols-outlined">
+				loyalty
+			</span>
+			<strong>Vous suivez ce récit</strong><br>
+			 Vous recevrez une notification à chaque nouvelle feuille publiée'
+
 		], 200);
 	}
 }

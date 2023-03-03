@@ -1,5 +1,5 @@
 {# Nouveau commentaire sur l'une de vos publications #}
-<div class="one-notification">
+<div class="one-notification  p-3 text-sm text-left flex gap-3">
 	{% if item.type == 1 %}
 		<span class="material-symbols-outlined">
 			mark_unread_chat_alt
@@ -97,6 +97,36 @@
 			<a href="{{path("app_chapter_show", {slugPub:item.chapterLike.chapter.slug,user:item.user.username,idChap:item.chapterLike.chapter.id,slug:item.chapterLike.chapter.slug})}}">{{item.chapterLike.chapter.title}}</a>
 			de votre récit
 			<a href="{{path("app_publication_show_one", {id:item.chapterLike.chapter.publication.id, slug:item.chapterLike.chapter.publication.slug})}}">{{item.chapterLike.chapter.publication.title}}</a>
+			<p>il y a
+				{{item.createdAt|since}}
+			</p>
+		</span>
+	{% endif %}
+	{# Nouvelle feuille publiée sur une suivie de publication #}
+	{% if item.type == 7 %}
+		<span class="material-symbols-outlined">
+			history_edu
+		</span>
+		<span>
+			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+			vient de publier une nouvelle feuille sur le récit que vous suivez
+			<a href="{{path("app_publication_show_one", {id:item.publicationFollow.publication.id, slug:item.publicationFollow.publication.slug})}}">{{item.publicationFollow.publication.title}}</a>
+			—
+			<a href="{{path("app_chapter_show", {slugPub:item.publicationFollow.slug,user:item.user.username,idChap:item.publicationFollow.id,slug:item.publicationFollow.slug})}}">{{item.publicationFollow.title}}</a>
+			<p>il y a
+				{{item.createdAt|since}}
+			</p>
+		</span>
+	{% endif %}
+	{# Nouvel abonnement à une de vos publications #}
+	{% if item.type == 8 %}
+		<span class="material-symbols-outlined">
+			loyalty
+		</span>
+		<span>
+			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+			vient de s'abonner à votre récit
+			<a href="{{path("app_publication_show_one", {id:item.publicationFollowAdd.id, slug:item.publicationFollowAdd.slug})}}">{{item.publicationFollowAdd.title}}</a>
 			<p>il y a
 				{{item.createdAt|since}}
 			</p>

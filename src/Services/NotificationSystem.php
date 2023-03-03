@@ -42,6 +42,10 @@ class NotificationSystem extends AbstractController
      * 5 : Noueau téléchargement d'une publication
      * 
      * 6 : Nouveau like sur un chapitre
+     * 
+     * 7 : Nouvelle feuille sur une publication que vous suivez
+     * 
+     * 8 : Nouvel abonnement à votre publication
      * @param $user type
      * @param $message string
      * @param $fromUser type
@@ -84,6 +88,14 @@ class NotificationSystem extends AbstractController
             $notification->setChapterLike($idLink);
             // $email->text('Vous avez reçu un nouveau like sur un de vos chapitres')->subject('Nouveau like');
         }
+        if ($type === 7) {
+            $notification->setPublicationFollow($idLink);
+            // $email->text('Vous avez reçu un nouveau like sur un de vos chapitres')->subject('Nouveau like');
+        }
+        if ($type === 8) {
+            $notification->setPublicationFollowAdd($idLink);
+            // $email->text('Vous avez reçu un nouveau like sur un de vos chapitres')->subject('Nouveau like');
+        }
         $this->em->persist($notification);
         $this->em->flush();
         //
@@ -93,5 +105,16 @@ class NotificationSystem extends AbstractController
     {
         $notifications = $this->notificationRepo->findBy(['user' => $this->getUser()]);
         return $notifications;
+    }
+    public function deleteNotification($type, $id)
+    {
+        if ($type === 7) {
+            $notification = $this->notificationRepo->find($id);
+        }
+        if ($type === 8) {
+            $notification = $this->notificationRepo->find($id);
+        }
+        $this->em->remove($notification);
+        $this->em->flush();
     }
 }

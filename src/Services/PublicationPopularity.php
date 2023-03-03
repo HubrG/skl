@@ -79,7 +79,7 @@ class PublicationPopularity
         // * Update popularity in "PublicationPopularity" database
         // * Si la dernière valeur de popularité présente dans la bdd est date de 7 jours d'après la date immuable "publishedAt", on ajoute une nouvelle valeur
 
-        $pp = $this->ppRepo->findOneBy(["publication" => $p], ["publishedAt" => "DESC"]);
+        $pp = $this->ppRepo->findOneBy(["publication" => $p], ["createdAt" => "DESC"]);
         if ($pp !== null) {
             $publishedAt = $pp->getCreatedAt();
             $timeSincePublication = ($publishedAt !== null) ? (time() - strtotime($publishedAt->format('Y-m-d H:i:s'))) : 0;

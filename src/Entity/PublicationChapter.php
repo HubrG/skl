@@ -59,11 +59,14 @@ class PublicationChapter
     #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationChapterBookmark::class, orphanRemoval: true)]
     private Collection $publicationChapterBookmarks;
 
-    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationComment::class)]
+    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationComment::class, orphanRemoval: true)]
     private Collection $publicationComments;
 
-    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationBookmark::class)]
+    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationBookmark::class, orphanRemoval: true)]
     private Collection $publicationBookmarks;
+
+    #[ORM\OneToMany(mappedBy: 'publication_follow', targetEntity: Notification::class, orphanRemoval: true)]
+    private Collection $notifications;
 
     public function __construct()
     {
@@ -74,6 +77,7 @@ class PublicationChapter
         $this->publicationChapterBookmarks = new ArrayCollection();
         $this->publicationComments = new ArrayCollection();
         $this->publicationBookmarks = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
 
@@ -398,6 +402,36 @@ class PublicationChapter
             // set the owning side to null (unless already changed)
             if ($publicationBookmark->getChapter() === $this) {
                 $publicationBookmark->setChapter(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications->add($notification);
+            $notification->setPublicationFollow($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getPublicationFollow() === $this) {
+                $notification->setPublicationFollow(null);
             }
         }
 

@@ -68,8 +68,7 @@
 									</div>
 								{% endif %}
 							</button>
-						</li>
-						<li>
+
 							<button id="darkButton" class="text-gray-800 relative dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2  md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
 								<span class="material-symbols-outlined" id="darkMode">
 									{{app.user.userParameters ? app.user.userParameters.darkmode == true ? "wb_sunny" : "nightlight_badge" }}
@@ -162,7 +161,7 @@
 							{% endif %}
 							{% set n = 1 %}
 							{% for item in notificationRepository.findBy({"user":app.user.id})|sort((a, b) => a.id > b.id ? -1 : 1) %}
-								<li class="notification-one p-3 text-sm text-left flex gap-3 {{item.readAt is null ? " opacity-100" : " opacity-60 grayscale"}}">
+								<li class="notification-one {{item.readAt is null ? " opacity-100" : " opacity-60 grayscale"}}">
 									{% include "partials/_notification-system.html.twig" with {item:item} %}
 								</li>
 								{% if notificationRepository.findBy({"user":app.user.id})|length > n %}

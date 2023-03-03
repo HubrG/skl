@@ -1,6 +1,6 @@
 import { addKeyword } from "../scripts/Publication/AddKeyword";
 import { Comment } from "../scripts/Publication/Comment";
-import { AxiosSaveChapter } from "../scripts/Publication/Chapter";
+import { axiosSaveChapter } from "../scripts/Publication/Chapter";
 import { AxiosSavePublication } from "../scripts/Publication/Publication";
 import { darkMode } from "../scripts/Darkmode";
 import { ReadTime } from "../scripts/Publication/ChapterStats";
@@ -13,7 +13,7 @@ import { User } from "../scripts/User/User";
 import { Dropdown } from "../scripts/Dropdown";
 import { Charts } from "../scripts/Charts";
 import { NotyDisplay } from "../scripts/Noty";
-import "../scripts/SymfonyFlash";
+import { PublicationShowOne } from "../scripts/Publication/PublicationShowOne";
 import MicroModal from "micromodal"; // es6 module
 MicroModal.init();
 // ! Flashes
@@ -43,6 +43,7 @@ const TurboHelper = class {
   constructor() {
     document.addEventListener("turbo:before-cache", () => {});
     document.addEventListener("turbo:render", () => {
+      PublicationShowOne();
       // ! Flashes
       if (document.getElementById("flashbag-success")) {
         if (
@@ -69,7 +70,6 @@ const TurboHelper = class {
       }
       if (document.getElementById("editorHTML")) {
         ReadTime();
-        AxiosSaveChapter();
         quillEditor();
       }
       if (document.querySelector(".list-group-item")) {
@@ -131,7 +131,7 @@ const TurboHelper = class {
       Comment();
       DropdownMenu();
       darkMode();
-
+      PublicationShowOne();
       Dropdown();
       User();
       if (document.querySelector(".list-group-item")) {

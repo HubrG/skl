@@ -374,10 +374,11 @@ class PublicationController extends AbstractController
         $idPub = $request->get("idPub");
         $pub = $pRepo->find($idPub);
         $chapters = $pub->getPublicationChapters();
-        $weekViews = [];
-        $weekBookmarks = [];
-        $weekLikes = [];
+        $monthViews = [];
+        $monthBookmarks = [];
+        $monthLikes = [];
         $monthViews = array();
+        $monthPop = array();
         for ($i = 1; $i <= 12; $i++) {
             $monthViews[date('M', mktime(0, 0, 0, $i, 1))] = 0;
             $monthBookmarks[date('M', mktime(0, 0, 0, $i, 1))] = 0;
@@ -436,13 +437,27 @@ class PublicationController extends AbstractController
                 }
                 $monthComments[$week] += 1;
             }
+            // On cherche la popularité 
+            $pop = $pub->getPublicationPopularities();
+            foreach ($pop as $c) {
+                // S'il n'y a pas de date de création de bookrmak, on passe au suivant
+                if (!$c->getPopularity()) {
+                    continue;
+                }
+                $date = $c->getCreatedAt()->format("Y-m-d");
+                $week = date('d-m', strtotime($date));
+                if (!isset($monthPop[$week])) {
+                    $monthPop[$week] = round($c->getPopularity(), 3);
+                }
+            }
         }
         return $this->json([
             "code" => 200,
             "views" => json_encode($monthViews),
             "bookmarks" => json_encode($monthBookmarks),
             "likes" => json_encode($monthLikes),
-            "comments" => json_encode($monthComments)
+            "comments" => json_encode($monthComments),
+            "popularity" => json_encode($monthPop)
         ]);
     }
 }

@@ -2,10 +2,11 @@ import Chart from "chart.js/auto";
 import axios from "axios";
 export function Charts() {
   // On fait un requête post avec Axios
-  const hideIdPub = document.getElementById("hideIdPub");
-  if (!hideIdPub) {
+  const legendContainer = document.getElementById("legend-container");
+  if (!legendContainer) {
     return;
   }
+  const hideIdPub = document.getElementById("hideIdPub");
   const data = new FormData();
   data.append("idPub", hideIdPub.value);
   console.log(hideIdPub.value);
@@ -20,6 +21,8 @@ export function Charts() {
       const nbrBookmark = JSON.parse(response.data.bookmarks);
       const nbrLikes = JSON.parse(response.data.likes);
       const nbrComments = JSON.parse(response.data.comments);
+      const popularity = JSON.parse(response.data.popularity);
+      console.log(popularity);
       // On map
       let n = 0;
       const respView = Object.keys(nbrView);
@@ -28,6 +31,16 @@ export function Charts() {
         datasViews.push({
           week: key,
           count: nbrView[key],
+        });
+      });
+      // On map
+      n = 0;
+      const respPop = Object.keys(popularity);
+      var datasPop = [];
+      respPop.forEach((key) => {
+        datasPop.push({
+          week: key,
+          count: popularity[key],
         });
       });
       // On map
@@ -63,12 +76,22 @@ export function Charts() {
       //
       var today = new Date();
       var currentMonth = today.getMonth();
-
       var labels = [];
       for (var i = 0; i <= currentMonth; i++) {
         labels.push(
           new Date(2000, i).toLocaleString("default", { month: "short" })
         );
+      }
+      //
+      //
+      // Utilisation de la fonction pour obtenir le numéro de la semaine actuelle
+      const today2 = new Date();
+      const currentWeek2 = getWeekNumber(today);
+
+      // Création d'un tableau de noms de semaine
+      const labels2 = [];
+      for (let i = 1; i <= currentWeek2; i++) {
+        labels2.push("Semaine " + i);
       }
       //
       const getOrCreateLegendList = (chart, id) => {
@@ -241,7 +264,69 @@ export function Charts() {
       });
 
       //
+      // * Chart
+      new Chart(document.getElementById("chartStat2"), {
+        type: "line",
+        data: {
+          labels: Object.keys(popularity),
+          datasets: [
+            {
+              label: "Popularité",
+              data: datasPop.map((row) => row.count),
+              borderColor: "rgb(255, 99, 132)",
+              backgroundColor: "rgba(255, 99, 132, 0.2)",
+              borderWidth: 1,
+              pointStyle: "circle",
+              cubicInterpolationMode: "monotone",
+              // Nouvelle propriété pour définir la couleur de fond de la forme de point
+            },
+          ],
+        },
+        options: {
+          indexAxis: "y",
+          plugins: {
+            legend: {
+              display: false,
+            },
+          },
+          scales: {
+            x: {
+              grid: {
+                display: false,
+              },
+              position: "right",
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+            y: {
+              grid: {
+                display: false,
+              },
+            },
+          },
+          elements: {
+            point: {
+              pointStyle: "circle",
+            },
+          },
+          animations: {
+            radius: {},
+          },
+        },
+      });
+
+      //
     });
   //
 }
+// Fonction pour obtenir le numéro de la semaine à partir d'une date donnée
+function getWeekNumber(date) {
+  const oneJan = new Date(date.getFullYear(), 0, 1);
+  const millisecsInDay = 86400000; // Nombre de millisecondes en un jour
+  return Math.ceil(
+    ((date - oneJan) / millisecsInDay + oneJan.getDay() + 1) / 7
+  );
+}
+
 Charts();

@@ -24,6 +24,7 @@ export function Sortables() {
         evt.newIndex; // most likely why this event is used is to get the dragging element's current index
         if (document.getElementById("noPublication")) {
           document.getElementById("noPublication").remove();
+          document.getElementById("noPublication2").remove();
         }
         // same properties as onEnd
       },
@@ -34,9 +35,15 @@ export function Sortables() {
       group: "shared", // set both lists to same group
       handle: ".item",
       animation: 300,
-
       swapClass: "dropdown-sort-swap", // The class applied to the hovered swap item
       ghostClass: "ghost",
+      onChange: function (/**Event*/ evt) {
+        document.getElementById("noChapUnpublished").remove();
+        document
+          .getElementById("itemsChap2")
+          .classList.remove("md:grid-cols-1");
+        document.getElementById("itemsChap2").classList.add("md:grid-cols-2");
+      },
       onEnd: function (/**Event*/ evt) {
         var itemEl = evt.item; // dragged HTMLElement
         axiosGoSortable();

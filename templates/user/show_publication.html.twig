@@ -62,7 +62,7 @@
 			</div>
 		{% endif %}
 		{% if publication|length > 0 %}
-			<hr class="h-[0.4rem] bg-slate-200 dark:bg-slate-900 rounded-t border-0  mt-14">
+			<hr class="h-[0.4rem] bg-slate-200 dark:bg-slate-900 rounded-t border-0  mt-14 mb-0">
 			<div class="relative overflow-x-auto h-auto  ">
 				<turbo-frame id="publication-frame">
 					<table class="w-full text-left text-gray-500 dark:text-gray-400 shadow-inner h-64 text-xs  ">
@@ -238,7 +238,7 @@
 									</th>
 
 									<td class="px-6 py-3 relative">
-										<a data-tippy-content="Éditer ce récit" href="{{ path("app_publication_edit", {id:item.id}) }}" class="w-full text-sky-600">
+										<a data-tippy-content="Éditer ce récit (paramétrage, édition, statistiques approfondies...)" href="{{ path("app_publication_edit", {id:item.id}) }}" class="w-full text-sky-600">
 											<span class="material-symbols-outlined">
 												edit_note
 											</span>
@@ -287,18 +287,18 @@
 										{{item.PublicationDownloads|length}}
 									</td>
 									<td class="px-6 py-3 flex gap-x-2  {{item.status < 2 ? " opacity-60"}}">
-										{% set popularityChange = 0 %}
+										{% set lastPopularity = 0 %}
 										{% if item.PublicationPopularities|length > 1 %}
-											{% set lastPopularity = item.PublicationPopularities[1].popularity %}
-											{% set currentPopularity = item.PublicationPopularities[0].popularity %}
-											{% set popularityChange = currentPopularity - lastPopularity %}
+											{% set nbr = item.PublicationPopularities|length %}
+											{% set nbr = nbr - 1 %}
+											{% set lastPopularity = item.PublicationPopularities[nbr].popularity %}
 										{% endif %}
 										{{item.pop}}
-										{% if popularityChange > 0 %}
+										{% if item.pop < lastPopularity %}
 											<span class="material-icons  text-red-700">
 												arrow_circle_down
 											</span>
-										{% elseif popularityChange == 0 %}
+										{% elseif item.pop == lastPopularity %}
 											<span class="material-symbols-outlined">
 												equal
 											</span>

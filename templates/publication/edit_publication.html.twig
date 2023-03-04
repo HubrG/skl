@@ -154,7 +154,7 @@
 				{% if infoPub.publicationChapters|length > 0 %}
 					<ul>
 						<li class="text-center">
-							<a href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}" class="block w-full button-classic button-slate " target="_top">
+							<a href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}" class="block w-full button-classic  button-yellow" target="_top">
 								<span class="material-symbols-outlined">
 									add_notes
 								</span>
@@ -164,7 +164,7 @@
 					</ul>
 				{% endif %}
 				<div id="accordion-flush" data-accordion="open" data-active-classes="text-gray-900 dark:text-white" class="list-group" data-inactive-classes="text-gray-500 dark:text-gray-400">
-					<h2 id="accordion-flush-heading-1" class="border-b-[1px] border-b-slate-200 shadow  px-5  rounded mt-5 ">
+					<h2 id="accordion-flush-heading-1" class="border-b-[1px] border-b-slate-200 shadow  px-5  rounded mt-5 dark:border-b-slate-900  dark:bg-slate-700">
 						<button type="button" class="flex items-center justify-between w-full py-5 font-medium text-left  dark:border-gray-700 dark:text-gray-400" data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
 							<span>
 								<span class="material-symbols-outlined">
@@ -179,24 +179,27 @@
 					<div id="accordion-flush-body-1" class="hidden" aria-labelledby="accordion-flush-heading-1">
 						<div id="itemsChap" class=" flex-col grid-cols-1 md:grid-cols-2 grid   justify-center gap-x-4">
 							{% if infoPub.publicationChapters|length == 0 %}
-								<div class="w-full text-center bg-slate-100 dark:bg-slate-900 dark:text-slate-100 text-slate-600 rounded border-2 border-slate-300 dark:border-slate-500 border-dashed mt-3 opacity-60 hover:opacity-80" id="noPublication">
-									<p>
-										<a class="block w-full px-5 pt-5 font-medium leading-5" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}#first" target="_top">
-											<span class="text-slate-900 dark:text-slate-100 text-base">
-												Cliquez ici pour éditer votre première feuille</span><br><br>
+								<div class="w-full text-center bg-slate-100 dark:bg-slate-900 items-center justify-center justify-items-center flex-cols dark:text-slate-100 text-slate-600 rounded border-2 border-slate-300 dark:border-slate-500 border-dashed mt-3 opacity-80 hover:opacity-100" id="noPublication">
+									<p class="w-full h-full px-5 pt-5 grid-rows-1 grid-cols-1 grid pb-5 items-center justify-items-center place-items-center font-medium leading-5">
+										<a class="  px-5 pt-5 grid-rows-2 grid-cols-1 grid pb-5 items-center justify-items-center place-items-center font-medium leading-5" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}#first" target="_top">
+											<span class="text-slate-900 dark:text-slate-100 text-base items-end">
+												Cliquez ici pour éditer votre première feuille
+											</span>
 											<span class="text-4xl">
 												<span class="material-symbols-outlined">
 													add_notes
 												</span>
-											</span><br><br>
-											<hr>
-											<span class="text-xs font-normal block text-justify items-center text-slate-600 dark:text-slate-100">
-												<span class="material-symbols-outlined dark:text-amber-400">
-													tips_and_updates
-												</span>
-												| Vous pouvez créer autant de feuilles que vous le souhaitez et les organiser selon vos besoins. Une feuille peut être considérée comme une simple feuille de texte, un copier/coller de tout un document PDF (tout un récit !), sinon comme un chapitre de votre récit. L'ordre dans lequel vous les placerez sera l'ordre dans lequel vos lecteurs les parcoureront au fil de leur lecture.</span><br>
+											</span>
 										</a>
 									</p>
+								</div>
+								<div class="mt-5">
+									<span class="text-xs font-normal block text-justify items-center text-slate-600 dark:text-slate-100">
+										<span class="material-symbols-outlined text-yellow-400 dark:text-amber-400">
+											tips_and_updates
+										</span>
+										— Vous avez la possibilité de créer un nombre illimité de feuilles et de les organiser selon vos préférences. Chaque feuille peut être considérée comme une simple page de texte, une copie intégrale d'un document PDF (tel qu'un récit entier) ou comme un chapitre de votre histoire. L'ordre dans lequel vous les organisez déterminera l'ordre dans lequel vos lecteurs les liront.
+									</span>
 								</div>
 							{% elseif infoPub.publicationChapters|length > 0 %}
 								{% set var = true %}
@@ -206,34 +209,41 @@
 									{% endif %}
 								{% endfor %}
 								{% if var %}
-									<div class="w-full text-center bg-amber-100 dark:bg-slate-700 text-amber-900 dark:text-amber-500 rounded border-2 dark:border-[1px] border-amber-300 dark:border-amber-400 border-dashed mt-3 opacity-60 dark:opacity-100" id="noPublication">
-										<p class="block w-full h-full px-5 pt-5 pb-5  font-medium leading-5" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}">
-											<span class=" text-base">
+									<div class="w-full text-center bg-amber-100 dark:bg-slate-700 text-amber-900 dark:text-amber-500 rounded border-2 dark:border-[1px] border-amber-300 dark:border-amber-400 border-dashed mt-3 opacity-80 hover:opacity-100" id="noPublication">
+										<p class=" w-full h-full px-5 pt-5 grid-rows-2 grid-cols-1 grid pb-5 items-center justify-items-center place-items-center font-medium leading-5" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}">
+											<span class=" text-base items-end">
 												Vous venez de créer votre première feuille !
-											</span><br><br>
+											</span>
 											<span class="text-4xl">
 												<span class="material-symbols-outlined">
 													cheer
 												</span>
-											</span><br/><br/>
-											<span class="text-xs font-normal block text-justify items-center">
-												<span class="material-symbols-outlined">
-													tips_and_updates
-												</span>
-												| Celle-ci est dépubliée et se trouve dans la section ci-dessous. Vous pouvez la publier en la déposant dans cet espace
-												<span class="material-symbols-outlined">
-													open_with
-												</span>. Vous pourrez également modifier l'ordre d'affichage des feuilles publiées. Cet ordre sera celui par lequel vos lecteurs parcoureront vos feuilles.
 											</span>
 										</p>
+									</div>
+									<div class="mt-5">
+										<span class="text-xs font-normal block text-justify items-center text-slate-600 dark:text-slate-100" id="noPublication2">
+											<span class="material-symbols-outlined text-yellow-400 dark:text-amber-400">
+												tips_and_updates
+											</span>
+											—
+											<strong>
+												Votre feuille est dépubliée et se trouve dans la section ci-dessous. Vous pouvez la publier en la glissant dans cet espace
+											</strong>
+											<span class="material-symbols-outlined">
+												open_with
+											</span>.<br><br>
+											Vous pouvez également modifier l'ordre dans lequel les feuilles publiées sont affichées. Cet ordre déterminera la façon dont vos lecteurs parcourront vos feuilles.
+										</span>
+
 									</div>
 								{% endif %}
 							{% endif %}
 							{% include "publication/_partials/_edit_publication_show_chapters.html.twig" with {withStatus:2} %}
 						</div>
 					</div>
-					<h2 id="accordion-flush-heading-2" class=" shadow shadow-red-50  px-5  rounded mt-5 bg-red-50 ring-red-200 dark:bg-orange-700 ring-1  dark:ring-orange-900 dark:shadow-orange-800 ">
-						<button type="button" class="flex items-center justify-between w-full py-5 font-medium text-left  dark:border-gray-700 text-red-900  dark:text-red-400" data-accordion-target="#accordion-flush-body-2" aria-expanded="true" aria-controls="accordion-flush-body-2">
+					<h2 id="accordion-flush-heading-2" class=" border-b-[1px] border-b-slate-200 shadow  px-5  rounded mt-5 dark:border-b-slate-900  dark:bg-slate-700">
+						<button type="button" class="flex items-center justify-between w-full py-5 font-medium text-left   dark:border-gray-700 dark:text-gray-400" data-accordion-target="#accordion-flush-body-2" aria-expanded="true" aria-controls="accordion-flush-body-2">
 							<span>
 								<span class="material-symbols-outlined">
 									visibility_off
@@ -244,20 +254,39 @@
 							</svg>
 						</button>
 					</h2>
-					<div id="confettis"></div>
 					<div id="accordion-flush-body-2" class="hidden" aria-labelledby="accordion-flush-heading-2">
-
-						<div id="itemsChap2" class=" animate__animated flex-col grid-cols-1 md:grid-cols-2 grid gap-x-4 justify-center  opacity-80">
+						{% if infoPub.publicationChapters|filter(c => c.status == 1)|length == 0 %}
+							{% set noChapUnpublished = true %}
+						{% else %}
+							{% set noChapUnpublished = false %}
+						{% endif %}
+						<div id="itemsChap2" class=" animate__animated flex-col  grid-cols-1 {{noChapUnpublished == false ? " md:grid-cols-2" : " md:grid-cols-1"}} grid gap-x-4 justify-center  opacity-80">
 							{% include "publication/_partials/_edit_publication_show_chapters.html.twig" with {withStatus:1} %}
+							{% if noChapUnpublished == true %}
+								<div id="noChapUnpublished" class="rounded p-5 text-center border-dashed border-2 dark:border-slate-900 border-slate-300 mt-5 dark:text-slate-200 text-slate-700">Aucune feuille dépubliée</div>
+							{% endif %}
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="hidden p-4 rounded-lg  min-h-screen" id="statistiques" role="tabpanel" aria-labelledby="settings-tab">
-				<div id="legend-container" class="flex justify-evenly mb-5 text-xs"></div>
-				<div class="w-full  rounded p-5 dark:bg-slate-900">
-					<canvas id="chartStat" class="text-white"></canvas>
-				</div>
+				{% if infoPub.publicationPopularities|length > 0 %}
+					<div id="legend-container" class="flex justify-evenly mb-5 text-xs"></div>
+					<div class="w-full  rounded p-5 dark:bg-slate-900">
+						<canvas id="chartStat" class="text-white"></canvas>
+					</div>
+					<hr class="mb-5">
+					<h2 class="font-medium dark:text-slate-300 mb-5 mt-0 text-slate-700">
+						<span class="material-symbols-outlined">
+							insights
+						</span>
+						Évolution de la popularité de votre récit</h2>
+					<div class="w-full  rounded p-5 dark:bg-slate-900">
+						<canvas id="chartStat2" class="text-white"></canvas>
+					</div>
+				{% else %}
+					<p class="text-center my-5">Aucune statistique à afficher pour le moment !</p>
+				{% endif %}
 			</div>
 			<div class="hidden p-4 rounded-lg  min-h-screen" id="settings" role="tabpanel" aria-labelledby="settings-tab">
 				<p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the

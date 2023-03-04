@@ -53,7 +53,7 @@
 			background-position: center;
 		}
 	</style>
-	<section class=" before:bg-cover before:blur before:-z-[9999]  col-span-12 col-start-0 lg:col-span-10 lg:col-start-2 gap-10" id="PublicationShowOneContent">
+	<section class=" before:bg-cover before:blur before:-z-[9999]  col-span-12 col-start-0 lg:col-span-10 lg:col-start-2 gap-10 " id="PublicationShowOneContent">
 		{% if pubShow.status < 2 %}
 			<div class="mb-0">
 				<div class="w-full -mt-10 mb-5 h-10 bg-slate-100 ring-1 ring-slate-700 opacity-80 dark:opacity-100 right-0 rounded-b-sm">
@@ -397,12 +397,14 @@
 						<span>{{pubShow.PublicationDownloads|length}}</span>
 					</li>
 					{# Progression #}
-					{% set popularityChange = 0 %}
+					{% set lastPopularity = 0 %}
 					{% if pubShow.PublicationPopularities|length > 1 %}
-						{% set lastPopularity = pubShow.PublicationPopularities[1].popularity %}
-						{% set currentPopularity = pubShow.PublicationPopularities[0].popularity %}
-						{% set popularityChange = currentPopularity - lastPopularity %}
+						{% set nbr = pubShow.PublicationPopularities|length %}
+						{% set nbr = nbr - 1 %}
+						{% set lastPopularity = pubShow.PublicationPopularities[nbr].popularity %}
 					{% endif %}
+
+
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:text-white">
 						<span class="font-medium">
 							<span class="material-symbols-outlined">
@@ -412,11 +414,12 @@
 							<span class="font-light text-xs">(7 jours)</span>
 						</span>
 						<span>
-							{% if popularityChange > 0 %}
+							{{pubShow.pop}}
+							{% if pubShow.pop < lastPopularity %}
 								<span class="material-icons  text-red-700">
 									arrow_circle_down
 								</span>
-							{% elseif popularityChange == 0 %}
+							{% elseif pubShow.pop == lastPopularity %}
 								<span class="material-symbols-outlined">
 									equal
 								</span>

@@ -41,7 +41,14 @@ class PublicationPopularity
     }
     /**
      * @param $publication
-     * Cette fonction permet de calculer la popularité d'une publication
+     * type
+     * 
+     * Cette fonction calcule la popularité d'une publication à partir des données relatives à la publication et de certaines de ses caractéristiques telles que le nombre de vues, de mentions "j'aime", de téléchargements, de signets et de commentaires.
+     * 
+     * La popularité est calculée en utilisant un facteur de décroissance basé sur le temps écoulé depuis la date de publication. Plus la date de publication est éloignée, plus la valeur de la popularité est réduite.
+     * 
+     * La popularité est ensuite mise à jour dans la base de données de la publication ainsi que dans une base de données séparée pour stocker l'historique de popularité. Si la dernière valeur de popularité dans la base de données de l'historique de popularité date de plus de 3,5 jours, une nouvelle entrée est créée avec la popularité mise à jour. Sinon, l'entrée existante est mise à jour avec la nouvelle valeur de popularité.
+     * 
      * @return void
      */
     public function PublicationPopularity($publication)

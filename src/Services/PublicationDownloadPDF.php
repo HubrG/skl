@@ -33,9 +33,10 @@ class PublicationDownloadPDF extends AbstractController
         $this->notificationSystem = $notificationSystem;
     }
     /**
-     * @param $publication
-     * Cette fonction permet de calculer la popularité d'une publication
-     * @return void
+     * @param $id
+     * type
+     * 
+     * Cette fonction permet de télécharger une publication au format PDF.
      */
     public function PublicationDownloadPDF($id)
     {
@@ -163,7 +164,7 @@ class PublicationDownloadPDF extends AbstractController
     {
         $pdRepo = $this->pdRepo;
         $pdRepo = $pdRepo->findOneBy(["publication" => $publication, "user" => $this->getUser()]);
-        if ($pdRepo == null && $this->getUser() != $publication->getUser()) {
+        if ($pdRepo == null && $this->getUser() != $publication->getUser() && $this->getUser() != null) {
             $pd = new PublicationDownload();
             $pd->setPublication($publication);
             $pd->setUser($this->getUser());

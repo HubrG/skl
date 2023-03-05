@@ -22,6 +22,7 @@ use App\Repository\PublicationKeywordRepository;
 use App\Repository\PublicationCategoryRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Gzip;
 
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PublicationShowController extends AbstractController
@@ -41,9 +42,8 @@ class PublicationShowController extends AbstractController
 	}
 
 	#[Route('/recits/{slug?}/{page<\d+>?}/{sortby?}/{order?}/{keystring?}', name: 'app_publication_show_all_category')]
-	public function show_all(PublicationCategoryRepository $pcRepo, PublicationKeywordRepository $kwRepo, PublicationRepository $pRepo, $sortby = "p.pop", $page = 1, $slug = "all", $keystring = null, $order = "desc"): Response
+	public function show_all(SessionInterface $session, PublicationCategoryRepository $pcRepo, PublicationKeywordRepository $kwRepo, PublicationRepository $pRepo, $sortby = "p.pop", $page = 1, $slug = "all", $keystring = null, $order = "desc"): Response
 	{
-
 		// $p = $pRepo->findAll();
 		// for ($i = 0; $i <h2 count($p); $i++) {
 		// 	$pp = new Publication();

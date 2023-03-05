@@ -17,15 +17,23 @@
 	<link rel="canonical" href="https://www.scrilab.com/recits">
 {% endblock %}
 {% block body %}
-	<section class="col-span-12 md:mt-1 -mt-8">
-		<h1 class="text-center font-serif">{{ slugCatName }}</h1>
+	<section class="col-span-12 md:mt-1 -mt-8 flex gap-x-2 justify-center">
+		{% if slugCat != "all" %}
+			<span class="relative flex h-3 w-3">
+				<span class="animate-ping absolute inline-flex h-full w-full rounded-full catColorDot-{{category.color}} opacity-75"></span>
+				<span class="relative inline-flex rounded-full h-3 w-3 catColorDot-{{category.color}}"></span>
+			</span>
+		{% endif %}
+		<h1 class="text-center font-serif">
+			{{ slugCatName }}
+		</h1>
 	</section>
 	{# ! Séparateur de mots clés dans l'URL & page #}
 	{% set separator = "—" %}
 	{% set separator_d = "——" %}
 	{% set pageAct = app.request.get('_route_params')['page'] is defined ? app.request.get('_route_params')['page'] : null %}
 	{% set random = random(0,999) %}
-	<turbo-frame id="pagination-{{random}}" class="grid grid-cols-2 grid-rows-auto gap-4 col-span-full xl:gap-x-10 container -mt-12 xl:-mt-12 ">
+	<turbo-frame id="pagination-{{random}}" class="grid {% if pubShowKw %}grid-cols-2 {% else %}grid-cols-1{% endif %}  grid-rows-auto gap-4 col-span-full xl:gap-x-10 container -mt-12 xl:-mt-12 ">
 		{% if pubShowKw %}
 			<aside class="{{kwString ? " md:bg-inherit dark:bg-slate-900 md:dark:bg-inherit" }} row-span-12 -mt-5 rounded-lg dark:p-1 col-span-12 xl:col-span-5 xl:row-span-5 mb-10 xl:mb-0 {{kwString ? " order-1 md:border-b-0 border-b-4 border-slate-400 dark:border-slate-800 " : " order-2" }} xl:order-1 snap-y ">
 				<hr class="xl:hidden mb-5 h-[0.3rem] bg-slate-400 dark:bg-slate-800 dark:border-none hidden"/>
@@ -41,29 +49,31 @@
 					</p>
 					<hr class="my-2 dark:bg-slate-900 dark:border-slate-900">
 				{% endif %}
-				<div class="flex flex-wrap gap-x-1 justify-evenly flex-row">
+				<div class="flex flex-wrap  justify-evenly flex-row">
 					{% include "publication/_partials/_show_all_keywords.html.twig"  %}
 				</div>
 			</aside>
 		{% endif %}
 		{# ! Affichage des récits #}
-		<section class="row-span-12 col-span-12 xl:col-span-7 xl:row-span-7{% if pubShowKw %} {% else %}col-start-0 xl:col-start-4 {% endif %}  order-1 xl:order-2 justify-around -mt-5 grayscale-[2px]" style="--animate-duration: 1s;">
+		<section class="{% if not pubShowKw %}col-start-0 xl:col-start-1 col-span-12 {% else %}row-span-12 col-span-12 xl:col-span-7 xl:row-span-7{% endif %} order-1 xl:order-2 justify-around -mt-5 grayscale-[2px]" style="--animate-duration: 1s;">
 			<div class="flex mb-10 justify-between">
 				<h4 class="w-3/6 mb-5 ml-2  font-light text-lg text-slate-500 dark:text-slate-300">
 					{% set recount = count == 1 ? "1 récit" : count == 0 ? "Aucun récit" : count ~ " récits" %}
 					{{ recount | default('Aucun récit.') }}
 					{% if count == 0 and app.user %}
-						|
-						<a href="{{ path("app_publication_add") }}" class="text-blue-500">N'hésitez pas à publier le vôtre !</a>
+						<span class="hidden lg:inline">|</span>
+						<span class="block md:hidden"></span>
+						<a href="{{ path("app_publication_add") }}" class="text-sky-800 dark:text-sky-400 font-medium hover:underline">N'hésitez pas à publier le vôtre !</a>
 					{% elseif count == 0 and not app.user %}
 						<span class="hidden lg:inline">|</span>
-						<button data-micromodal-trigger="popup-register" class="text-blue-500 text-left">N'hésitez pas à publier le vôtre !</button>
+						<span class="block md:hidden"></span>
+						<button data-micromodal-trigger="popup-register" class="text-blue-800 dark:text-sky-400 hover:underline text-left">N'hésitez pas à publier le vôtre !</button>
 					{% endif %}
 				</h4>
 				<div class="-mt-3 w-auto  xl:w-auto">
-					<button id="sortButton" data-dropdown-toggle="sortHover" class="flex items-center ring-1 {{ querySortby == 'pop' ? 'ring-sky-600 hover:bg-sky-50  text-sky-800 focus:ring-sky-300 dark:text-sky-500 dark:ring-sky-400 dark:hover:bg-sky-100 dark:hover:ring-sky-500' : 'ring-amber-600 hover:bg-amber-50  text-amber-800 focus:ring-amber-300 dark:text-amber-500 dark:ring-amber-400 dark:hover:bg-amber-100 dark:hover:ring-amber-500'}}   bg-none  focus:ring-4 focus:outline-none font-medium rounded-lg text-xs lg:text-sm lg:mt-0 mt-2 px-4 py-2.5 text-center inline-flex " type="button">
-						{% set popIcon = '<span class="material-symbols-outlined text-sky-600">thumb_up</span> ' %}
-						{% set newIcon = '<span class="material-symbols-outlined text-amber-500">tips_and_updates</span> ' %}
+					<button id="sortButton" data-dropdown-toggle="sortHover" class="flex items-center ring-1 bg-none  focus:ring-4 focus:outline-none font-medium rounded-2xl text-xs lg:text-sm lg:mt-0 mt-2 px-4 py-2.5 text-center {{ querySortby == 'pop' ? 'ring-sky-600 hover:bg-sky-50  text-sky-800 focus:ring-sky-300 dark:text-sky-500 dark:hover:text-sky-400 dark:ring-sky-400 dark:hover:bg-sky-900 dark:hover:ring-sky-500' : 'ring-yellow-600 hover:bg-yellow-50  text-yellow-800 focus:ring-amber-300 dark:text-yellow-400 dark:ring-yellow-400 dark:hover:bg-yellow-900 dark:hover:text-yellow-400 dark:hover:ring-yellow-500'}}    " type="button">
+						{% set popIcon = '<span class="material-symbols-outlined text-sky-600 dark:text-sky-500">thumb_up</span> ' %}
+						{% set newIcon = '<span class="material-symbols-outlined text-yellow-600 dark:text-yellow-100">tips_and_updates</span> ' %}
 						{% set sortText = 
 						querySortby == 'pop' ? popIcon|raw ~ " &nbsp;&nbsp;Les plus populaires d'abord" :
 						querySortby == 'published'  ? newIcon|raw ~ " &nbsp;&nbsp;Les nouveautés d'abord" %}
@@ -92,9 +102,9 @@
 							},
 							
 						] %}
-						<ul class="text-sm  text-slate-700 " aria-labelledby="sortButton">
+						<ul class="text-sm  text-slate-700 shadow-2xl rounded-lg" aria-labelledby="sortButton">
 							{% for option in options %}
-								{% set activeClass = option.order == orderSort and option.sortby == querySortby ? 'bg-slate-100 hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-800' : 'hover:bg-slate-200 dark:hover:bg-slate-600' %}
+								{% set activeClass = option.order == orderSort and option.sortby == querySortby ? 'bg-slate-100 hover:bg-slate-100 dark:bg-slate-900 dark:hover:bg-slate-900' : 'hover:bg-slate-200 dark:bg-slate-600 dark:hover:bg-slate-700' %}
 								<li class="py-2 {{ option.class }} {{ activeClass }} ">
 									<a href="{{ path("app_publication_show_all_category", {slug: slugCat, keystring: queryKeystring, page: page, order: option.order, sortby: option.sortby}) }}" target="_self" class="block px-4 py-2 hover:text-slate-700 dark:text-slate-50">
 										{{ option.icon|raw }}
@@ -112,171 +122,30 @@
 			</div>
 			<div class="animate__animated animate__fadeIn grid grid-cols-1 grid-rows-1  gap-5 xl:grid-cols-2" id="PublicationShowContent">
 				{% for item in pubShow %}
-					<div class=" rounded-lg dark:border-slate-700 flex row-span-2 transition duration-500  xl:row-span-1 " id="publication-{{item.id}}">
-						<div class="w-2/6  h-auto rounded-lg">
-							<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}">
-								{% set pic = item.cover %}
-								<img class="rounded object-cover w-full lazy animate-pulse animate__animated bg-slate-300" width="529" height="793" loading="lazy" src="" data-src="{% if pic %}{{pic}}{% else %}{{ "https://via.placeholder.com/529x793" }} {% endif %}" alt=""/>
-							</a>
-						</div>
-						<div class="p-5 -mt-7 w-4/6 relative place-content-baseline items-baseline">
-							<small class="font-light">
-								<a href="{{ path("app_user", {username:item.user.username}) }}" class="hover:underline dark:text-slate-200">{{ item.user.nickname }}</a>
-							</small>
-							<h5 class="mb-2 text-base text-slate-600 font-medium tracking-tight pr-2">
-								<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" class=" text-slate-600  dark:text-white text-base leading-5 font-medium hover:underline">{{ item.title }}</a>
-							</h5>
-							<span class="material-symbols-outlined absolute right-3 top-11 cursor-zoom-in  float-right opacity-40 hover:opacity-80 text-slate-500  publication-button" data-popover-target="popover-info-{{item.id}}" data-popover-trigger="hover" data-popover-placement="bottom-end" id="info-{{item.id}}">
-								info
-							</span>
-							{# popover #}
-							<div data-popover id="popover-info-{{item.id}}" role="tooltip" class="absolute z-10 invisible  text-sm font-light text-gray-500 transition-opacity duration-300 bg-white  rounded-lg  opacity-0 w-[90%] dark:bg-slate-800 dark:border-gray-600 dark:text-gray-400">
-								{% set pch = item.publicationChapters %}
-								<div class="pb-10 space-y-2">
-									<ul class="opacity-90 dark:opacity-100 flex flex-col  text-sm  py-2 gap-2 ">
-										<li class="inline-flex items-center justify-between font-normal -mt-px    dark:text-white">
-											<span class="font-medium">
-												<span class="material-symbols-outlined">
-													format_list_bulleted
-												</span>
-												&nbsp;Nombre de feuilles
-											</span>
-											<span>{{ pch|chapter("nbr", "st") }}</span>
-										</li>
-										<li class="inline-flex items-center justify-between  font-normal -mt-px    dark:text-white">
-											<span class="font-medium">
-												<span class="material-symbols-outlined">
-													timer
-												</span>
-												&nbsp;Temps de lecture
-											</span>
-											<span>{{ item.publicationChapters|chapter("rt", "ft") }}</span>
-										</li>
-										<li class="inline-flex items-center justify-between  font-normal -mt-px    dark:text-white">
-											<span class="font-medium">
-												<span class="material-symbols-outlined">
-													visibility
-												</span>
-												&nbsp;Nombre de lecteurs
-											</span>
-											{% set totalViews = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterViews|length, 0) %}
-											<span>{{ totalViews }}</span>
-										</li>
-										<li class="inline-flex items-center justify-between font-normal -mt-px    dark:text-white">
-											<span class="font-medium">
-												<span class="material-symbols-outlined">
-													forum
-												</span>
-												&nbsp;Commentaires
-											</span>
-											<span>
-												{% set totalComments = item.publicationComments|length %}
-												{% if totalComments > 0 %}
-													{{totalComments}}
-												{% else %}
-													Aucun
-												{% endif %}
-											</span>
-										</li>
-										<li class="inline-flex items-center justify-between font-normal -mt-px   dark:text-white">
-											<span class="font-medium">
-												<span class="material-symbols-outlined">
-													thumb_up
-												</span>
-												&nbsp;J'aime
-											</span>
-											{% set totalLikes = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterLikes|length, 0) %}
-											<span>{{totalLikes}}</span>
-										</li>
-										<li class="inline-flex items-center justify-between font-normal -mt-px   dark:text-white">
-											<span class="font-medium">
-												<span class="material-symbols-outlined">
-													downloading
-												</span>
-												&nbsp;Téléchargements
-											</span>
-											<span>{{item.PublicationDownloads|length}}</span>
-										</li>
-									</ul>
-								</div>
-								<div data-popper-arrow></div>
-							</div>
-							{# popver end #}
-							<p class="mb-3 font-normal text-slate-600 text-xs leading-[1.4rem] dark:text-slate-400 line-clamp-[6] md:line-clamp-[10] lg:line-clamp-[6] text-justify">
-								{% if item.summary %}
-									{{ item.summary}}
-								{% else %}
-									{% set nbr = 0 %}
-									{% for chap in item.publicationChapters %}
-										{% if nbr == 0 %}
-											{{ chap.content|regex_replace('/<p.*?>/i', ' ')|striptags }}
-											{% set nbr = nbr + 1 %}
-										{% endif %}
-									{% endfor %}
-								{% endif %}
-								<br/>
-							</p>
-							<p class=" text-cyan-600">
-								{% if slugCat == "all" %}
-									<a href="{{ path("app_publication_show_all_category", {slug:item.category.slug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:queryKeystring}) }}">
-										<span class="font-normal catColor-{{item.category.color}} catTag text-xs font-semibold ">{{ item.category.name|lower }}</span>
-									</a>
-
-								{% endif %}
-								{% for pubKeyw in item.publicationKeywords %}
-									<a href="{{ path("app_publication_show_all_category", {slug:querySlug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:pubKeyw.keyword|lower}) }}" target="_self">
-										<span class="kwTag">{{ pubKeyw.keyword|lower }}
-											{% if not loop.last %}{% endif %}
-										</span>
-									</a>
-								{% endfor %}
-							</p>
-						</div>
-					</div>
+					{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item} %}
 				{% endfor %}
-				{% set placeholderimg = "https://via.placeholder.com/200x300" %}
+				{# {% include "publication/_partials/_show_all-fake-publication.html.twig" %} #}
 				{% if kwString is null and page == 1 and count < limit %}
 					{% for i in count..limit - 1 %}
-						<div class="relative rounded-lg dark:border-slate-700 flex place-content-start opacity-80">
-							<p class="absolute z-50 ml-[40%] mt-[23%] shadow-lg">
-								{% if not app.user %}
-									<button data-micromodal-trigger="popup-register" class="text-slate-900 rounded ring-1 ring-slate-900 px-4 bg-white dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-900 p-3 font-medium hover:bg-slate-50 shadow">
-										<span class="material-symbols-outlined ">
-											history_edu
-										</span>
-										&nbsp;Publier mon récit</button>
-								{% else %}
-									<a href="{{ path("app_publication_add") }}" class="text-slate-900 rounded ring-1 ring-slate-900 px-4 bg-white dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-900 p-3 font-medium hover:bg-slate-50 shadow">
-										<span class="material-symbols-outlined ">
-											history_edu
-										</span>
-										&nbsp;Publier mon récit
-									</a>
-								{% endif %}
-							</p>
-							<div class="w-2/6 h-auto rounded-lg">
-								<a href="{{ path("app_publication_add") }}">
-									<img class="rounded object-cover w-full shaow-md lazy animate-pulse animate__animated bg-slate-300 grayscale-0 blur-[2px]" width="529" height="793" loading="lazy" src="" data-src="{{ placeholderimg }}" alt="">
-								</a>
-							</div>
-							<div class="p-5 -mt-7 w-4/6 place-content-baseline items-baseline blur-[2px]">
-								<small class="font-light">
-									<a href="{{ path("app_publication_add") }}">
-										{% if app.user.id is defined %}
-											{{ app.user.nickname }}
-										{% else %}
-											{{ "name"|faker(4) }}
-										{% endif %}
-									</a>
-								</small>
-								<h5 class="mb-2 font-bold tracking-tight text-base blur-[2px]">
-									<a href="{{ path("app_publication_add") }}" class="text-slate-700 dark:text-white">{{ "title"|faker(4) }}</a>
-								</h5>
-								<p class="mb-3 font-normal text-slate-400 text-sm text-justify dark:text-slate-400 blur-[2px]">
-									Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Curabitur aliquet quam. Quisque velit nisi, pretium ut lacinia in, elementum id enim.
-								</p>
-							</div>
-						</div>
+						{% if not app.user %}
+							<button data-micromodal-trigger="popup-register" class="write-and-publish">
+								<span class="text-4xl">
+									<span class="material-symbols-outlined">
+										history_edu
+									</span>
+								</span>
+								<span>Écrire et publier mon récit</span>
+							</button>
+						{% else %}
+							<a href="{{path("app_publication_add")}}" class="write-and-publish">
+								<span class="text-5xl">
+									<span class="material-symbols-outlined">
+										history_edu
+									</span>
+								</span>
+								<span>Écrire et publier mon récit</span>
+							</a>
+						{% endif %}
 					{% endfor %}
 				{% endif %}
 			</div>

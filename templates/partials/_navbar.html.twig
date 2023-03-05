@@ -131,17 +131,19 @@
 						</span>
 						Connexion
 					</button>
-				{% endif %}
-				{% if not app.user %}
-					<button data-micromodal-trigger="popup-register" class="button-classic button-sky border-none ring-0">
+					<button data-micromodal-trigger="popup-register" class="button-classic button-sky border-none">
 						<span class="material-symbols-outlined">
 							person_add
 						</span>
-						Inscription</button>
+						Inscription
+					</button>
+					<button id="darkButtonSession" class="text-gray-800 ml-5 relative dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2  md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+						<span class="material-symbols-outlined" id="darkModeSession">
+							{{ app.session.get('darkmode') and app.session.get('darkmode') == true ? "wb_sunny" : "nightlight_badge"}}
+						</span>
+					</button>
 				{% endif %}
-				<button id="darkButton" type="button" data-tooltip-target="tooltip-dm" data-tooltip-placement="bottom" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800 hidden">
-					<i class="fa-solid fa-circle-half-stroke text-black dark:text-slate-200"></i>
-				</button>
+
 				<div id="tooltip-dm" role="tooltip" class=" absolute z-10 invisible px-3 py-2 text-xs font-normal text-white bg-slate-700 rounded-lg opacity-0 tooltip dark:bg-gray-700">
 					Passer en mode
 					<span id="darkMode"></span>
@@ -149,7 +151,7 @@
 				</div>
 			</div>
 			{% if app.user %}
-				<div id="notification-menu" class="absolute z-10 hidden text-sm bg-white border border-gray-100 border-t-2 border-t-sky-400 shadow-md max-h-[25rem] overflow-y-auto dark:border-slate-700 md:grid-cols-3 dark:bg-slate-700 w-96">
+				<div id="notification-menu" class="absolute z-10 top-2 hidden text-sm bg-white border  border-t-2 border-t-blue-400 shadow-md max-h-[25rem] overflow-y-auto dark:border-t-sky-700 dark:border-slate-700 md:grid-cols-3 dark:bg-slate-700 w-96">
 					<div class="pt-0 pb-0 text-gray-900 md:pb-4 dark:text-white divide-y divide-gray-100">
 						<ul class="space-y-3 px-3 gap-x-2 flex flex-col pt-3" aria-labelledby="notification-menu-button">
 							{% if notificationRepository.findBy({"user":app.user.id})|length == 0 %}

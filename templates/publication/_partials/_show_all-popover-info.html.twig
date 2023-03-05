@@ -1,0 +1,76 @@
+{# popover #}
+<span class="material-symbols-outlined absolute right-3 top-11 cursor-zoom-in  float-right opacity-40 hover:opacity-80 text-slate-500  publication-button" data-popover-target="popover-info-{{item.id}}" data-popover-trigger="hover" data-popover-placement="bottom-end" id="info-{{item.id}}">
+	info
+</span>
+<div data-popover id="popover-info-{{item.id}}" role="tooltip" class="absolute z-10 invisible  text-sm font-light text-gray-500 transition-opacity duration-300 bg-white  rounded-lg  opacity-0 w-[90%] dark:bg-slate-800 dark:border-gray-600 dark:text-gray-400">
+	{% set pch = item.publicationChapters %}
+	<div class="pb-10 space-y-2">
+		<ul class="opacity-90 dark:opacity-100 flex flex-col  text-sm  py-2 gap-2 ">
+			<li class="inline-flex items-center justify-between font-normal -mt-px    dark:text-white">
+				<span class="font-medium">
+					<span class="material-symbols-outlined">
+						format_list_bulleted
+					</span>
+					&nbsp;Nombre de feuilles
+				</span>
+				<span>{{ pch|chapter("nbr", "st") }}</span>
+			</li>
+			<li class="inline-flex items-center justify-between  font-normal -mt-px    dark:text-white">
+				<span class="font-medium">
+					<span class="material-symbols-outlined">
+						timer
+					</span>
+					&nbsp;Temps de lecture
+				</span>
+				<span>{{ item.publicationChapters|chapter("rt", "ft") }}</span>
+			</li>
+			<li class="inline-flex items-center justify-between  font-normal -mt-px    dark:text-white">
+				<span class="font-medium">
+					<span class="material-symbols-outlined">
+						visibility
+					</span>
+					&nbsp;Nombre de lecteurs
+				</span>
+				{% set totalViews = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterViews|length, 0) %}
+				<span>{{ totalViews }}</span>
+			</li>
+			<li class="inline-flex items-center justify-between font-normal -mt-px    dark:text-white">
+				<span class="font-medium">
+					<span class="material-symbols-outlined">
+						forum
+					</span>
+					&nbsp;Commentaires
+				</span>
+				<span>
+					{% set totalComments = item.publicationComments|length %}
+					{% if totalComments > 0 %}
+						{{totalComments}}
+					{% else %}
+						Aucun
+					{% endif %}
+				</span>
+			</li>
+			<li class="inline-flex items-center justify-between font-normal -mt-px   dark:text-white">
+				<span class="font-medium">
+					<span class="material-symbols-outlined">
+						thumb_up
+					</span>
+					&nbsp;J'aime
+				</span>
+				{% set totalLikes = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterLikes|length, 0) %}
+				<span>{{totalLikes}}</span>
+			</li>
+			<li class="inline-flex items-center justify-between font-normal -mt-px   dark:text-white">
+				<span class="font-medium">
+					<span class="material-symbols-outlined">
+						downloading
+					</span>
+					&nbsp;Téléchargements
+				</span>
+				<span>{{item.PublicationDownloads|length}}</span>
+			</li>
+		</ul>
+	</div>
+	<div data-popper-arrow></div>
+</div>
+{# popver end #}

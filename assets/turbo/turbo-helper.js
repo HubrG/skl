@@ -43,6 +43,7 @@ const TurboHelper = class {
   constructor() {
     document.addEventListener("turbo:before-cache", () => {});
     document.addEventListener("turbo:render", () => {
+      darkMode();
       PublicationShowOne();
       // ! Flashes
       if (document.getElementById("flashbag-success")) {
@@ -85,7 +86,6 @@ const TurboHelper = class {
       Navbar();
       Comment();
       targetQuote();
-      darkMode();
       TippyC();
       Dropdown();
       DropdownMenu();

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html id="html" lang="fr" class="scroll-smooth {{app.user  ? app.user.userParameters is defined ? app.user.userParameters.darkmode == true ? " dark"}}">
+<html id="html" lang="fr" class="scroll-smooth {{app.user ? app.user.userParameters is defined ? app.user.userParameters.darkmode == true ? " dark"}}{{ app.session.get('darkmode') and not app.user ? app.session.get('darkmode') == true ? " dark"}}">
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">

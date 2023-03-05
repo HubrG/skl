@@ -22,7 +22,10 @@ export function Sortables() {
       },
       onChange: function (/**Event*/ evt) {
         evt.newIndex; // most likely why this event is used is to get the dragging element's current index
-        if (document.getElementById("noPublication")) {
+        if (
+          document.getElementById("noPublication") ||
+          document.getElementById("noPublication2")
+        ) {
           document.getElementById("noPublication").remove();
           document.getElementById("noPublication2").remove();
         }

@@ -8,6 +8,7 @@ use App\Repository\UserParametersRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class UserParameterController extends AbstractController
@@ -26,15 +27,33 @@ class UserParameterController extends AbstractController
         $this->userRepo = $userRepo;
     }
 
-    #[Route('/param/user/set', name: 'app_user_parameter')]
-    public function index(Request $request): Response
+    #[Route('/param/user/set', name: 'app_user_parameter', methods: ['POST'])]
+    public function index(Request $request, SessionInterface $session): Response
     {
-        $this->setParameters($request->get("param"), $request->get("value"));
-        // On retourne en json
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'value' => $request->get("value"),
-        ], 200);
+        // * SESSIONS
+        if (!$this->getUser()) {
+            // DARKMODE SESSION
+            if ($request->get("param") == "darkmode" && $request->get("value") == 1) {
+                $session->set('darkmode', true);
+                $message = "Darkmode activé";
+            } else {
+                $session->remove('darkmode');
+                $message = "Darkmode désactivé";
+            }
+            return $this->json([
+                'message' => $message,
+                'value' => $request->get("value"),
+            ], 200);
+        }
+        // * LOGGED
+        else {
+            $this->setParameters($request->get("param"), $request->get("value"));
+            // On retourne en json
+            return $this->json([
+                'message' => 'Welcome to your new controller!',
+                'value' => $request->get("value"),
+            ], 200);
+        }
     }
     private function setParameters($param, $value)
     {

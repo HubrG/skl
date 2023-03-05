@@ -16,6 +16,23 @@ export function darkMode() {
         }
       });
   }
+  if (document.getElementById("darkButtonSession")) {
+    console.log("ok");
+    document
+      .getElementById("darkButtonSession")
+      .addEventListener("click", function () {
+        let html = document.getElementById("html");
+        html.classList.toggle("dark");
+        let dm = document.getElementById("darkModeSession");
+        if (html.classList.contains("dark")) {
+          dm.innerHTML = "wb_sunny";
+          setDarkmode(1);
+        } else {
+          dm.innerHTML = "nightlight_badge";
+          setDarkmode(0);
+        }
+      });
+  }
 }
 function setDarkmode(dark) {
   const data = new FormData();
@@ -29,7 +46,7 @@ function setDarkmode(dark) {
       },
     })
     .then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
     });
 }
 darkMode();

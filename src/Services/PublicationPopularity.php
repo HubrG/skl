@@ -73,7 +73,7 @@ class PublicationPopularity
         // Calculate time decay factor
         $publishedAt = $p->getPublishedDate();
         $timeSincePublication = ($publishedAt !== null) ? (time() - strtotime($publishedAt->format('Y-m-d H:i:s'))) : 0;
-        $decayFactor = exp(($timeSincePublication / (60 * 60 * 24 * 30))); // factor de décroissance (exprimé en jours)
+        $decayFactor = exp(($timeSincePublication / (60 * 60 * 24 * 15))); // factor de décroissance (exprimé en jours)
 
         // Calculate popularity with time decay factor
         $popularity = ($pcv * $priorityPcv) + ($pcom * $priorityPcom) + ($pcl * $priorityPcl)  + ($pcb * $priorityBmC)  + ($pb * $priorityBm) + ($pdl * $priorityDl);

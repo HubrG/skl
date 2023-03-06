@@ -29,7 +29,6 @@ export function Sortables() {
           document.getElementById("noPublication").remove();
           document.getElementById("noPublication2").remove();
         }
-        // same properties as onEnd
       },
     });
     // List with handle
@@ -41,7 +40,9 @@ export function Sortables() {
       swapClass: "dropdown-sort-swap", // The class applied to the hovered swap item
       ghostClass: "ghost",
       onChange: function (/**Event*/ evt) {
-        document.getElementById("noChapUnpublished").remove();
+        if (document.getElementById("noChapUnpublished")) {
+          document.getElementById("noChapUnpublished").remove();
+        }
         document
           .getElementById("itemsChap2")
           .classList.remove("md:grid-cols-1");
@@ -55,7 +56,13 @@ export function Sortables() {
   }
 }
 function axiosGoSortable() {
+  const taskPublish = document.getElementById("taskPublish");
+  const taskCategory = document.getElementById("taskCategory");
+  const task = document.getElementById("task");
+  //
   let nbr = 0;
+  var nbrTask = 0;
+  //
   let url = "/story/chapter/sort";
   var parent1 = document.querySelector("#itemsChap");
   var parent2 = document.querySelector("#itemsChap2");
@@ -94,8 +101,38 @@ function axiosGoSortable() {
         } else {
           chapterNumber.classList.add("hidden");
         }
+        //!SECTION
+        var chapterNumber = document.querySelectorAll(".chapter-number");
+        let countWithClass = 0;
+        let countWithoutClass = 0;
+        for (let i = 0; i < chapterNumber.length; i++) {
+          if (chapterNumber[i].classList.contains("hidden")) {
+            countWithClass++;
+          } else {
+            countWithoutClass++;
+          }
+        }
+        if (countWithoutClass == 0) {
+          if (taskPublish.classList.contains("hidden")) {
+            taskPublish.classList.remove("hidden");
+          }
+          if (taskCategory.classList.contains("hidden")) {
+            task.classList.remove("hidden");
+          }
+        } else {
+          if (!taskPublish.classList.contains("hidden")) {
+            taskPublish.classList.add("hidden");
+          }
+          if (taskCategory.classList.contains("hidden")) {
+            task.classList.add("hidden");
+          }
+        }
+        //!
       });
     nbr++;
   });
+  //
+
+  //
 }
 Sortables();

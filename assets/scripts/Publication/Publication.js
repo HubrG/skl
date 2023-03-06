@@ -11,6 +11,7 @@ export function AxiosSavePublication() {
     var coverShow = document.getElementById("cover");
     var spinCover = document.getElementById("spinCover");
     var cover = document.getElementById("publication_cover");
+    var publishDiv = document.getElementById("publishDiv");
     // ! Checkboxes change values
     pubMature.addEventListener("change", () => {
       if (pubMature.checked) {
@@ -25,6 +26,34 @@ export function AxiosSavePublication() {
     });
     // ! Si on est sur la page de publication
     if (document.getElementById("hidePubStatus")) {
+      // ! Gestion des "tasks" de publication
+      const task = document.getElementById("task");
+      const taskCategory = document.getElementById("taskCategory");
+      const taskPublish = document.getElementById("taskPublish");
+
+      const publicationCategory = document.getElementById(
+        "publication_category"
+      );
+      publicationCategory.addEventListener("change", () => {
+        if (publicationCategory.value) {
+          taskCategory.classList.add("animate__fadeOut");
+          setTimeout(() => {
+            taskCategory.classList.add("hidden");
+            taskCategory.classList.remove("animate__fadeOut");
+            if (taskPublish.classList.contains("hidden")) {
+              task.classList.add("hidden");
+            }
+          }, 1500);
+        } else {
+          taskCategory.classList.add("animate__fadeIn");
+          if (taskPublish.classList.contains("hidden")) {
+            task.classList.remove("hidden");
+          }
+          setTimeout(() => {
+            taskCategory.classList.remove("hidden");
+          }, 1500);
+        }
+      });
       // ! Publish
       publish.addEventListener("click", publishPublication);
       publishPublication("init"); //  On initialise la publication

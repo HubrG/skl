@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\PublicationCategoryRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use App\Repository\PublicationCategoryRepository;
 
 #[ORM\Entity(repositoryClass: PublicationCategoryRepository::class)]
 class PublicationCategory
@@ -18,7 +18,7 @@ class PublicationCategory
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Publication::class)]
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Publication::class, orphanRemoval: true)]
     private Collection $publications;
 
     #[ORM\Column(length: 255, nullable: true)]

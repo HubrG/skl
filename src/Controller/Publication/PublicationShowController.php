@@ -4,6 +4,7 @@
 namespace App\Controller\Publication;
 
 use App\Entity\PublicationFollow;
+use App\Entity\PublicationBookmark;
 use App\Form\PublicationCommentType;
 use App\Services\NotificationSystem;
 use App\Entity\PublicationCommentLike;
@@ -90,7 +91,6 @@ class PublicationShowController extends AbstractController
 				$publicationKw = $this->keyw_sort($publicationsAll);
 			}
 			// * Sinon, on renvoie tous les keywords de la base de données
-
 			else {
 				$publicationKw = $this->keyw_sort($publicationsAll);
 			}
@@ -142,7 +142,6 @@ class PublicationShowController extends AbstractController
 				$keywString = null;
 			}
 			//  Si il y a des keywords dans l'url, on renvoie toutes les publications qui ont au moins un des keywords
-
 			else {
 				// * On récupère les keywords dans l'url et on les transforme en tableau
 				$keyw = explode("—", $keystring);
@@ -274,8 +273,8 @@ class PublicationShowController extends AbstractController
 					'slug' => $publication->getSlug()
 				]);
 			}
-			$comments =  $pcomRepo->findBy(["publication" => $publication, "chapter" => null], ["published_at" => "DESC"]);
-			$nbrComments =  count($comments);
+			$comments = $pcomRepo->findBy(["publication" => $publication, "chapter" => null], ["published_at" => "DESC"]);
+			$nbrComments = count($comments);
 			return $this->render('publication/show_one.html.twig', [
 				'pubShow' => $publication,
 				'orderChap' => $orderChap,
@@ -369,6 +368,62 @@ class PublicationShowController extends AbstractController
 			</span>
 			<strong>Vous suivez ce récit</strong><br>
 			 Vous recevrez une notification à chaque nouvelle feuille publiée'
+
+		], 200);
+	}
+	#[Route('/recit/addcollection/{id}', name: 'app_publication_add_collection', methods: ['POST'])]
+	public function addPublicationCollection(Request $request, PublicationRepository $pRepo, NotificationRepository $nRepo, EntityManagerInterface $em, $id): response
+	{
+		// * On récupère la publication
+		$pub = $pRepo->find($id);
+		// * Si la publication existe et que l'auteur de l'ajout à la collection n'est pas l'auteur de la publication
+		if ($pub and $pub->getUser() != $this->getUser()) {
+			// * On vérifie que la publication n'a pas déjà été follow par l'utilisateur
+			$collection = $pub->getPublicationBookmarks()->filter(function ($collection) {
+				return $collection->getUser() == $this->getUser() && $collection->getChapter() === NULL;
+			})->first();
+			// * Si le collectionneur existe déjà, on le supprime (uniquement si l'entrée n'a pas de "chapter_id" de renseigné)
+			if ($collection) {
+
+				$em->remove($collection);
+				$em->flush();
+
+				return $this->json([
+					'code' => 200,
+					'message' => '
+					<span class="material-symbols-outlined">
+					label_off
+					</span>
+					<strong>Récit retiré de votre collection</strong>'
+				], 200);
+			}
+			// * Sinon, on ajoute le collectionneur
+			$collection = new PublicationBookmark();
+			$collection->setUser($this->getUser())
+				->setPublication($pub)
+				->setCreatedAt(new \DateTimeImmutable());
+			$em->persist($collection);
+			$em->flush();
+
+			// * On met à jour la popularité de la publication
+			$this->publicationPopularity->PublicationPopularity($pub);
+			//
+		} else {
+			return $this->json([
+				'code' => 403,
+				'message' => 'Vous n\'avez pas le droit de suivre ce récit',
+			], 403);
+		}
+		// * Ajout d'une notification
+		$this->notificationSystem->addNotification(4, $pub->getUser(), $this->getUser(), $collection);
+		//
+		return $this->json([
+			'code' => 200,
+			'message' => '
+			<span class="material-symbols-outlined">
+				loyalty
+			</span>
+			<strong>Récit ajouté à votre collection</strong>'
 
 		], 200);
 	}

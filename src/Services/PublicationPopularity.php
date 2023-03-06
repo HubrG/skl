@@ -6,11 +6,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
 use App\Repository\PublicationChapterRepository;
 use App\Repository\PublicationCommentRepository;
+use App\Repository\PublicationBookmarkRepository;
 use App\Repository\PublicationDownloadRepository;
 use App\Repository\PublicationPopularityRepository;
 use App\Repository\PublicationChapterLikeRepository;
 use App\Repository\PublicationChapterViewRepository;
-use App\Repository\PublicationChapterBookmarkRepository;
 use App\Entity\PublicationPopularity as EntityPublicationPopularity;
 
 class PublicationPopularity
@@ -21,19 +21,19 @@ class PublicationPopularity
     private $pcvRepo;
     private $pcomRepo;
     private $pclRepo;
-    private $pcbRepo;
+    private $pbRepo;
     private $pdRepo;
     private $ppRepo;
 
     private $em;
 
-    public function __construct(PublicationCommentRepository $pcomRepo, PublicationPopularityRepository $ppRepo, PublicationDownloadRepository $pdRepo, EntityManagerInterface $em, PublicationRepository $pRepo, PublicationChapterRepository $pchRepo,  PublicationChapterViewRepository $pcvRepo, PublicationChapterLikeRepository $pclRepo, PublicationChapterBookmarkRepository $pcbRepo)
+    public function __construct(PublicationCommentRepository $pcomRepo, PublicationPopularityRepository $ppRepo, PublicationDownloadRepository $pdRepo, EntityManagerInterface $em, PublicationRepository $pRepo, PublicationChapterRepository $pchRepo,  PublicationChapterViewRepository $pcvRepo, PublicationChapterLikeRepository $pclRepo, PublicationBookmarkRepository $pbRepo)
     {
         $this->pRepo = $pRepo;
         $this->pchRepo = $pchRepo;
         $this->pcvRepo = $pcvRepo;
         $this->pclRepo = $pclRepo;
-        $this->pcbRepo = $pcbRepo;
+        $this->pbRepo = $pbRepo;
         $this->em = $em;
         $this->pdRepo = $pdRepo;
         $this->ppRepo = $ppRepo;
@@ -56,8 +56,8 @@ class PublicationPopularity
         $priorityPcv = 0.01; // views chapter
         $priorityPcl = 0.050; // likes chapter
         $priorityDl = 0.060; // Downloads chapter
-        $priorityBm = 0.070; // Bookmarks chapter
-        $priorityBm = 0.070; // Bookmarks chapter
+        $priorityBmC = 0.060; // Bookmarks chapter
+        $priorityBm = 0.070; // Bookmarks publication
         $priorityPcom = 0.030; // Comments publication
 
         $p = $this->pRepo->find($publication);
@@ -65,7 +65,8 @@ class PublicationPopularity
         //
         $pcv = count($this->pcvRepo->findBy(["chapter" => $pch])); // views chapter
         $pcl = count($this->pclRepo->findBy(["chapter" => $pch])); // likes chapter
-        $pcb = count($this->pcbRepo->findBy(["chapter" => $pch])); // bookmarks chapter
+        $pcb = count($this->pbRepo->findBy(["chapter" => $pch])); // bookmarks chapter
+        $pb = count($this->pbRepo->findBy(["publication" => $p])); // bookmarks publication
         $pdl = count($this->pdRepo->findBy(["publication" => $p])); // downloads chapter
         $pcom = count($this->pcomRepo->findBy(["publication" => $p])); // comments publication
 
@@ -75,7 +76,7 @@ class PublicationPopularity
         $decayFactor = exp(($timeSincePublication / (60 * 60 * 24 * 30))); // factor de décroissance (exprimé en jours)
 
         // Calculate popularity with time decay factor
-        $popularity = ($pcv * $priorityPcv) + ($pcom * $priorityPcom) + ($pcl * $priorityPcl)  + ($pcb * $priorityBm) + ($pdl * $priorityDl);
+        $popularity = ($pcv * $priorityPcv) + ($pcom * $priorityPcom) + ($pcl * $priorityPcl)  + ($pcb * $priorityBmC)  + ($pb * $priorityBm) + ($pdl * $priorityDl);
         $popularity = $popularity * $decayFactor;
 
         // * Update popularity in "Publication" database

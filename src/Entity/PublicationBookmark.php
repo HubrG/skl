@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\PublicationBookmarkRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use App\Repository\PublicationBookmarkRepository;
 
 #[ORM\Entity(repositoryClass: PublicationBookmarkRepository::class)]
 class PublicationBookmark
@@ -27,6 +29,14 @@ class PublicationBookmark
 
     #[ORM\ManyToOne(inversedBy: 'publicationBookmarks')]
     private ?PublicationBookmarkCollection $collection = null;
+
+    #[ORM\OneToMany(mappedBy: 'publication_bookmark', targetEntity: Notification::class, orphanRemoval: true)]
+    private Collection $notifications;
+
+    public function __construct()
+    {
+        $this->notifications = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -89,6 +99,36 @@ class PublicationBookmark
     public function setCollection(?PublicationBookmarkCollection $collection): self
     {
         $this->collection = $collection;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications->add($notification);
+            $notification->setPublicationBookmark($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getPublicationBookmark() === $this) {
+                $notification->setPublicationBookmark(null);
+            }
+        }
 
         return $this;
     }

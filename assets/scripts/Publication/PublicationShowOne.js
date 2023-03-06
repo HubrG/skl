@@ -3,7 +3,7 @@ import { NotyDisplay } from "../Noty";
 export function PublicationShowOne() {
   const pubContent = document.getElementById("PublicationShowOneContent");
   if (!pubContent) return;
-  //!SECTION
+  //!SECTION - SUIVRE UN RÉCIT
   const followBtn = document.getElementById("followBtn");
   if (followBtn) {
     followBtn.addEventListener("click", (e) => {
@@ -34,6 +34,45 @@ export function PublicationShowOne() {
               followTitle.innerHTML = "Ne plus suivre ce récit";
               followInfo.innerHTML =
                 "Vous ne recevrez plus de notification à chaque nouvelle feuille publiée.";
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+  }
+  //!SECTION - AJOUTER À MA COLLECTION
+  const addBtn = document.getElementById("btnCollection");
+  if (addBtn) {
+    addBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const url = addBtn.getAttribute("data-href");
+      axios
+        .post(url)
+        .then((response) => {
+          if (response.data.code == 200) {
+            let addIcon = document.getElementById("iconCollection");
+            let addInfo = document.getElementById("infoCollection");
+            let addTitle = document.getElementById("titleCollection");
+            //
+            NotyDisplay(response.data.message, "success", 2000);
+            if (addBtn.classList.contains("follow-collection-buttons-ok")) {
+              addBtn.classList.remove("follow-collection-buttons-ok");
+              addBtn.classList.add("follow-collection-buttons");
+              //
+              addIcon.innerHTML = "bookmark_add";
+              addTitle.innerHTML = "Ajouter à ma collection";
+              addInfo.innerHTML =
+                "Vous pourrez retrouver ce récit dans votre collection.";
+            } else {
+              addBtn.classList.remove("follow-collection-buttons");
+              addBtn.classList.add("follow-collection-buttons-ok");
+              //
+              addIcon.innerHTML = "bookmark_added";
+              addTitle.innerHTML = "Retirer de ma collection";
+              addInfo.innerHTML =
+                "Vous ne pourrez plus retrouver ce récit dans votre collection.";
             }
           }
         })

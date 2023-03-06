@@ -10,15 +10,16 @@ export function ShowChapter() {
     let nav = document.querySelector("nav");
     let stickyDiv = document.querySelector("#titleChapter");
     let sidebarScroll = document.getElementById("sidebar");
-
-    if (nav.getBoundingClientRect().top < 0) {
-      stickyDiv.style.position = "sticky";
-      stickyDiv.style.top = "0";
-      sidebarScroll.style.paddingTop = "1rem";
-    } else {
-      stickyDiv.style.position = "sticky";
-      stickyDiv.style.top = "3.5rem";
-      sidebarScroll.style.paddingTop = "5rem";
+    if (stickyDiv) {
+      if (nav.getBoundingClientRect().top < 0) {
+        stickyDiv.style.position = "sticky";
+        stickyDiv.style.top = "0";
+        sidebarScroll.style.paddingTop = "1rem";
+      } else {
+        stickyDiv.style.position = "sticky";
+        stickyDiv.style.top = "3.5rem";
+        sidebarScroll.style.paddingTop = "5rem";
+      }
     }
   });
   if (document.getElementById("insightQuote")) {

@@ -56,21 +56,37 @@
 			</p>
 		</span>
 	{% endif %}
-	{# Nouveau bookmark sur l'un de vos chapitres #}
+	{# Nouveau bookmark s #}
 	{% if item.type == 4 %}
-		<span class="material-symbols-outlined">
-			bookmark_added
-		</span>
-		<span>
-			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			vient d'ajouter à ses favoris la feuille
-			<a href="{{path("app_chapter_show", {slugPub:item.chapterBookmark.chapter.publication.slug,user:item.user.username,idChap:item.chapterBookmark.chapter.id,slug:item.chapterBookmark.chapter.slug})}}">{{item.chapterBookmark.chapter.title}}</a>
-			de votre récit
-			<a href="{{path("app_publication_show_one", {id:item.chapterBookmark.chapter.publication.id, slug:item.chapterBookmark.chapter.publication.slug})}}">{{item.chapterBookmark.chapter.publication.title}}</a>
-			<p>il y a
-				{{item.createdAt|since}}
-			</p>
-		</span>
+		{# Si le bookmark concerne une publication propre #}
+		{% if item.publicationBookmark.chapter != null %}
+			<span class="material-symbols-outlined">
+				bookmark_added
+			</span>
+			<span>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vient d'ajouter à sa collection la feuille
+				<a href="{{path("app_chapter_show", {slugPub:item.publicationBookmark.chapter.publication.slug,user:item.user.username,idChap:item.publicationBookmark.chapter.id,slug:item.publicationBookmark.chapter.slug})}}">{{item.publicationBookmark.chapter.title}}</a>
+				de votre récit
+				<a href="{{path("app_publication_show_one", {id:item.publicationBookmark.chapter.publication.id, slug:item.publicationBookmark.chapter.publication.slug})}}">{{item.publicationBookmark.chapter.publication.title}}</a>
+				<p>il y a
+					{{item.createdAt|since}}
+				</p>
+			</span>
+		{% else %}
+			{# Si le bookmark concerne un chapitre #}
+			<span class="material-symbols-outlined">
+				bookmark_added
+			</span>
+			<span>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vient d'ajouter à sa collection votre récit
+				<a href="{{path("app_publication_show_one", {id:item.publicationBookmark.publication.id, slug:item.publicationBookmark.publication.slug})}}">{{item.publicationBookmark.publication.title}}</a>
+				<p>il y a
+					{{item.createdAt|since}}
+				</p>
+			</span>
+		{% endif %}
 	{% endif %}
 	{# Nouveau téléchargement #}
 	{% if item.type == 5 %}

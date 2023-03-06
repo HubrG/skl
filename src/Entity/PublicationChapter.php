@@ -56,8 +56,6 @@ class PublicationChapter
     #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationChapterLike::class, orphanRemoval: true)]
     private Collection $publicationChapterLikes;
 
-    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationChapterBookmark::class, orphanRemoval: true)]
-    private Collection $publicationChapterBookmarks;
 
     #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationComment::class, orphanRemoval: true)]
     private Collection $publicationComments;
@@ -74,7 +72,6 @@ class PublicationChapter
         $this->publicationChapterViews = new ArrayCollection();
         $this->publicationChapterNotes = new ArrayCollection();
         $this->publicationChapterLikes = new ArrayCollection();
-        $this->publicationChapterBookmarks = new ArrayCollection();
         $this->publicationComments = new ArrayCollection();
         $this->publicationBookmarks = new ArrayCollection();
         $this->notifications = new ArrayCollection();
@@ -318,35 +315,6 @@ class PublicationChapter
         return $this;
     }
 
-    /**
-     * @return Collection<int, PublicationChapterBookmark>
-     */
-    public function getPublicationChapterBookmarks(): Collection
-    {
-        return $this->publicationChapterBookmarks;
-    }
-
-    public function addPublicationChapterBookmark(PublicationChapterBookmark $publicationChapterBookmark): self
-    {
-        if (!$this->publicationChapterBookmarks->contains($publicationChapterBookmark)) {
-            $this->publicationChapterBookmarks->add($publicationChapterBookmark);
-            $publicationChapterBookmark->setChapter($this);
-        }
-
-        return $this;
-    }
-
-    public function removePublicationChapterBookmark(PublicationChapterBookmark $publicationChapterBookmark): self
-    {
-        if ($this->publicationChapterBookmarks->removeElement($publicationChapterBookmark)) {
-            // set the owning side to null (unless already changed)
-            if ($publicationChapterBookmark->getChapter() === $this) {
-                $publicationChapterBookmark->setChapter(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, PublicationComment>

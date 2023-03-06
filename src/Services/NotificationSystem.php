@@ -77,7 +77,7 @@ class NotificationSystem extends AbstractController
             // $email->text('Vous avez reçu un nouveau like sur un de vos commentaires')->subject('Nouveau like');
         }
         if ($type === 4) {
-            $notification->setChapterBookmark($idLink);
+            $notification->setPublicationBookmark($idLink);
             // $email->text('Vous avez reçu un nouveau bookmark sur un de vos chapitres')->subject('Nouveau bookmark');
         }
         if ($type === 5) {

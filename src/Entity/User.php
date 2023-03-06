@@ -92,8 +92,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterLike::class, orphanRemoval: true)]
     private Collection $publicationChapterLikes;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterBookmark::class, orphanRemoval: true)]
-    private Collection $publicationChapterBookmarks;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationDownload::class, orphanRemoval: true)]
     private Collection $publicationDownloads;
@@ -141,7 +139,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->publicationChapterViews = new ArrayCollection();
         $this->publicationChapterNotes = new ArrayCollection();
         $this->publicationChapterLikes = new ArrayCollection();
-        $this->publicationChapterBookmarks = new ArrayCollection();
         $this->publicationDownloads = new ArrayCollection();
         $this->publicationComments = new ArrayCollection();
         $this->publicationBookmarks = new ArrayCollection();
@@ -501,35 +498,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, PublicationChapterBookmark>
-     */
-    public function getPublicationChapterBookmarks(): Collection
-    {
-        return $this->publicationChapterBookmarks;
-    }
-
-    public function addPublicationChapterBookmark(PublicationChapterBookmark $publicationChapterBookmark): self
-    {
-        if (!$this->publicationChapterBookmarks->contains($publicationChapterBookmark)) {
-            $this->publicationChapterBookmarks->add($publicationChapterBookmark);
-            $publicationChapterBookmark->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removePublicationChapterBookmark(PublicationChapterBookmark $publicationChapterBookmark): self
-    {
-        if ($this->publicationChapterBookmarks->removeElement($publicationChapterBookmark)) {
-            // set the owning side to null (unless already changed)
-            if ($publicationChapterBookmark->getUser() === $this) {
-                $publicationChapterBookmark->setUser(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, PublicationDownload>

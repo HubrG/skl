@@ -133,7 +133,7 @@
 								</span>
 								Récit terminé
 							</button>
-							<span class="text-emerald-600 text-xs">
+							<span class="opacity-60 text-xs">
 								Ce récit est terminé, aucune nouvelle feuille n'est prévue.
 							</span>
 						</div>
@@ -153,7 +153,7 @@
 									{{classFollowBtn == "follow-collection-buttons-ok" ? "Ne plus suivre ce récit" : "Suivre ce récit" }}
 								</span>
 							</button>
-							<span id="followInfo" class="text-xs">
+							<span id="followInfo" class="opacity-60 text-xs">
 								{{classFollowBtn == "follow-collection-buttons-ok" ? "Vous ne recevrez plus de notification à chaque nouvelle feuille publiée." : "Vous recevrez une notification à chaque nouvelle feuille publiée." }}
 							</span>
 						</div>
@@ -165,24 +165,48 @@
 								</span>
 								Suivre ce récit
 							</button>
-							<span class="text-slate-500 text-xs">
+							<span class="opacity-60 text-xs">
 								Vous recevrez une notification à chaque nouvelle feuille publiée.
 							</span>
 						</div>
 					{% endif %}
-					<div class="w-full text-center bg-slate-50  p-3 gap-y-2 rounded cursor-pointer  grid grid-flow-row hover:bg-slate-100 dark:bg-transparent text-slate-700 dark:text-slate-300 dark:hover:text-amber-500">
-						<button class="font-medium">
-							<span class="material-symbols-outlined">
-								bookmark_add
+					{% if app.user and app.user.id != pubShow.user.id %}
+						{% set classCollectionBtn = "follow-collection-buttons" %}
+						{% for item in pubShow.PublicationBookmarks %}
+							{% if app.user and item.user.id == app.user.id %}
+								{% set classCollectionBtn = "follow-collection-buttons-ok" %}
+							{% endif %}
+						{% endfor %}
+						<div id="btnCollection" data-href="{{path("app_publication_add_collection", {id:pubShow.id})}}" class="{{classCollectionBtn}}">
+							<button class="font-medium">
+								<span class="material-symbols-outlined" id="iconCollection">
+									{{classCollectionBtn == "follow-collection-buttons-ok" ? "bookmark_added" : "bookmark_add" }}
+								</span>
+								<span id="titleCollection">
+									{{classCollectionBtn == "follow-collection-buttons-ok" ? "Retirer de ma collection" : "Ajouter à ma collection" }}
+								</span>
+							</button>
+							<span class="opacity-60 text-xs" id="infoCollection">
+								Ajoutez ce récit à votre collection personnelle.
 							</span>
-							Ajouter à ma collection
-						</button>
-						<span class="text-slate-500 text-xs">
-							Ajoutez ce récit à votre collection personnelle.
-						</span>
-					</div>
+						</div>
+					{% elseif not app.user %}
+						<div class="follow-collection-buttons cursor-pointer" onclick="MicroModal.show('popup-login')">
+							<button class="font-medium">
+								<span class="material-symbols-outlined">
+									bookmark_add
+								</span>
+								Ajouter à ma collection
+							</button>
+							<span class="opacity-60 text-xs">
+								Ajoutez ce récit à votre collection personnelle.
+							</span>
+						</div>
+					{% endif %}
 				</div>
-				<hr>
+				{% if not app.user or pubShow.finished == true %}
+					<hr>
+				{% endif %}
 				<h3 class="text-2xl mb-5 lg:text-left text-center mt-5 dark:text-slate-100">
 					<span class="material-symbols-outlined">
 						format_list_bulleted
@@ -221,8 +245,8 @@
 												<span class="material-symbols-outlined">
 													bookmarks
 												</span>
-												{{ chapter.publicationChapterBookmarks|length }}
-												{% set chapterStats = chapterStats|merge({'bookmarks': chapterStats.bookmarks + chapter.publicationChapterBookmarks|length}) %}
+												{{ chapter.publicationBookmarks|length }}
+												{% set chapterStats = chapterStats|merge({'bookmarks': chapterStats.bookmarks + chapter.publicationBookmarks|length}) %}
 											</div>
 											<div>
 												<span class="material-symbols-outlined">
@@ -276,8 +300,8 @@
 					</turbo-frame>
 				</div>
 			</div>
-			<div class="w-full  z-50 mt-0 pt-5 px-2 lg:w-4/12  order-1 lg:order-2  shadow-slate-300 text-slate-900 border-slate-200 border-t-[1px] border-t-slate-200 dark:border-slate-900 dark:border-t-slate-900 lg:border-l-[1px] lg:border-t-0 ">
-				<ul class="opacity-60 dark:opacity-100 flex flex-col  text-sm">
+			<div class="w-full opacity-60 dark:opacity-100  z-50 mt-0 pt-5 px-2 lg:w-4/12  order-1 lg:order-2  shadow-slate-300 text-slate-900 border-slate-200 border-t-[1px] border-t-slate-200 dark:border-slate-900 dark:border-t-slate-900 lg:border-l-[1px] lg:border-t-0 ">
+				<ul class="flex flex-col  text-sm">
 					<li class="inline-flex items-center  gap-x-2 mt-0 px-4 font-normal justify-center   dark:text-white">
 						<div class="flex items-center">
 							<svg aria-hidden="true" class="text-yellow-400 w-7 h-7" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">

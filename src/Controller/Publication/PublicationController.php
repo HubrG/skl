@@ -387,7 +387,6 @@ class PublicationController extends AbstractController
         }
         foreach ($chapters as $chapter) {
             // On cherche les vues de chaque chapitre
-
             $chapterView = $chapter->getPublicationChapterViews();
             foreach ($chapterView as $view) {
                 $date = $view->getViewDate()->format("Y-m-d");
@@ -396,7 +395,7 @@ class PublicationController extends AbstractController
                 $monthViews[$month] += 1;
             }
             // On cherche les bookmarks de chaque chapitre
-            $chapterBookmark = $chapter->getPublicationChapterBookmarks();
+            $chapterBookmark = $chapter->getPublicationBookmarks();
             foreach ($chapterBookmark as $bookmark) {
                 // S'il n'y a pas de date de création de bookrmak, on passe au suivant
                 if (!$bookmark->getCreatedAt()) {
@@ -409,6 +408,8 @@ class PublicationController extends AbstractController
                 }
                 $monthBookmarks[$week] += 1;
             }
+
+
             // On cherche les likes de chaque chapitre
             $chapterLike = $chapter->getPublicationChapterLikes();
             foreach ($chapterLike as $like) {

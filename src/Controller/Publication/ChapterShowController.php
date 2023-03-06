@@ -2,6 +2,7 @@
 
 namespace App\Controller\Publication;
 
+use App\Entity\PublicationBookmark;
 use App\Form\PublicationCommentType;
 use App\Services\NotificationSystem;
 use App\Entity\PublicationChapterLike;
@@ -10,7 +11,6 @@ use App\Entity\PublicationChapterView;
 use App\Services\PublicationPopularity;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
-use App\Entity\PublicationChapterBookmark;
 use App\Form\PublicationChapterCommentType;
 use App\Entity\PublicationChapterCommentLike;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,11 +18,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
 use App\Repository\PublicationCommentRepository;
+use App\Repository\PublicationBookmarkRepository;
 use App\Repository\PublicationChapterLikeRepository;
 use App\Repository\PublicationChapterNoteRepository;
 use App\Repository\PublicationChapterViewRepository;
 use App\Repository\PublicationChapterCommentRepository;
-use App\Repository\PublicationChapterBookmarkRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ChapterShowController extends AbstractController
@@ -415,18 +415,17 @@ class ChapterShowController extends AbstractController
     }
 
     #[Route('/recit/chapter/bm', name: 'app_chapter_bm', methods: ['POST'])]
-    public function Axios_ChapterBm(Request $request, PublicationChapterRepository $pchRepo, PublicationChapterBookmarkRepository $pcbRepo, EntityManagerInterface $em): response
+    public function Axios_ChapterBm(Request $request, PublicationChapterRepository $pchRepo, PublicationBookmarkRepository $pbRepo, EntityManagerInterface $em): response
     {
         $pch = $pchRepo->find($request->get("idChapter"));
         if (!$pch || !$this->getUser() || $pch->getPublication()->getUser() == $this->getUser()) {
             return $this->json([
                 'code' => 200,
-                'nbrBm' => $pcbRepo->count(['chapter' => $pch]),
+                'nbrBm' => $pbRepo->count(['chapter' => $pch]),
                 'message' => 'Non autorisé.',
             ], 200);
         }
-
-        $bm = $pcbRepo->findOneBy(['chapter' => $pch, 'user' => $this->getUser()]);
+        $bm = $pbRepo->findOneBy(['chapter' => $pch, 'user' => $this->getUser()]);
         if ($bm) {
             $em->remove($bm);
             $em->flush();
@@ -436,12 +435,12 @@ class ChapterShowController extends AbstractController
             return $this->json([
                 'code' => 200,
                 'resp' => false,
-                'nbrBm' => $pcbRepo->count(['chapter' => $pch]),
+                'nbrBm' => $pbRepo->count(['chapter' => $pch]),
                 'message' => 'Le chapitre a bien été supprimée des bookmarks.',
             ], 200);
         }
 
-        $bm = new PublicationChapterBookmark();
+        $bm = new PublicationBookmark();
         $bm->setChapter($pch);
         $bm->setUser($this->getUser());
         $bm->setCreatedAt(new \DateTimeImmutable('now'));
@@ -450,12 +449,12 @@ class ChapterShowController extends AbstractController
         // * On met à jour la popularité de la publication
         $this->publicationPopularity->PublicationPopularity($pch->getPublication());
         // * Envoi d'une notification
-        $this->notificationSystem->addNotification(4, $bm->getChapter()->getPublication()->getUser(), $this->getUser(), $bm);
+        $this->notificationSystem->addNotification(4, $pch->getPublication()->getUser(), $this->getUser(), $bm);
         //
         return $this->json([
             'code' => 200,
             'resp' => true,
-            'nbrBm' => $pcbRepo->count(['chapter' => $pch]),
+            'nbrBm' => $pbRepo->count(['chapter' => $pch]),
             'message' => 'Le chapitre a bien été ajouté aux bookmarks',
         ], 200);
     }

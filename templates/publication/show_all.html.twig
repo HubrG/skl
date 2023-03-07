@@ -127,25 +127,33 @@
 				{# {% include "publication/_partials/_show_all-fake-publication.html.twig" %} #}
 				{% if kwString is null and page == 1 and count < limit %}
 					{% for i in count..limit - 1 %}
-						{% if not app.user %}
-							<button data-micromodal-trigger="popup-register" class="write-and-publish">
-								<span class="text-4xl">
-									<span class="material-symbols-outlined">
-										history_edu
+						<div class="flex ">
+							{% if not app.user %}
+								<div data-micromodal-trigger="popup-register" class="item-fake">
+									<span class="write-and-publish w-2/6"></span>
+									<span class=" w-4/6 items-center flex flex-col justify-center text-slate-700 dark:text-slate-400">
+										<span class="text-4xl">
+											<span class="material-symbols-outlined">
+												history_edu
+											</span>
+										</span>
+										<span>Écrire et publier mon récit</span>
 									</span>
-								</span>
-								<span>Écrire et publier mon récit</span>
-							</button>
-						{% else %}
-							<a href="{{path("app_publication_add")}}" class="write-and-publish">
-								<span class="text-5xl">
-									<span class="material-symbols-outlined">
-										history_edu
+								</div>
+							{% else %}
+								<a href="{{path("app_publication_add")}}" class="item-fake">
+									<span class="write-and-publish w-2/6"></span>
+									<span class=" w-4/6 items-center flex flex-col justify-center text-slate-700 dark:text-slate-400">
+										<span class="text-4xl">
+											<span class="material-symbols-outlined">
+												history_edu
+											</span>
+										</span>
+										<span>Écrire et publier mon récit</span>
 									</span>
-								</span>
-								<span>Écrire et publier mon récit</span>
-							</a>
-						{% endif %}
+								</a>
+							{% endif %}
+						</div>
 					{% endfor %}
 				{% endif %}
 			</div>

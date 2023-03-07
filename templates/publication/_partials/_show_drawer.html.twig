@@ -25,20 +25,23 @@
 	{% endif %}
 	<turbo-frame id="comment-section">
 		{% if pCom|length == 0 %}
-			<p class="mb-3 text-center text-lg font-semibold">
-				<span class="material-symbols-outlined">
-					comments_disabled
-				</span>
-			</p>
-			<p class="mb-5 text-center font-bold">
-				Aucun commentaire pour le moment
-			</p>
-			{% if not app.user %}
-				<hr class="mb-5">
-				<p class="text-center font-medium">
-					<button data-micromodal-trigger="popup-login" class="hover:underline">Connectez-vous pour commenter !</button>
+			<hr class=" bg-slate-50 border-slate-50">
+			<div class="text-slate-300">
+				<p class="mb-3 text-center text-lg font-semibold">
+					<span class="material-symbols-outlined">
+						comments_disabled
+					</span>
 				</p>
-			{% endif %}
+				<p class="mb-5 text-center font-bold">
+					Aucun commentaire pour le moment
+				</p>
+				{% if not app.user %}
+					<hr class="mb-5">
+					<p class="text-center font-medium">
+						<button data-micromodal-trigger="popup-login" class="hover:underline">Connectez-vous pour commenter !</button>
+					</p>
+				{% endif %}
+			</div>
 		{% endif %}
 		{% set n = 0 %}
 		{% for item in pCom %}

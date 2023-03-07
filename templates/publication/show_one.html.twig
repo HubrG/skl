@@ -104,7 +104,7 @@
 						{% endif %}
 					</p>
 				</div>
-				<a href="{{ path("app_chapter_show", {idChap:orderChap.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:orderChap.slug}) }}" class=" block mt-5 not-italic py-5 text-center w-full lg:w-3/6 px-10 bg-white bg-opacity-70  hover:bg-white text-slate-900 shadow hover:text-slate-900 hover:bg-opacity-100 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-900 rounded-lg">
+				<a href="{{ path("app_chapter_show", {idChap:orderChap.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:orderChap.slug}) }}" class=" block mt-5 not-italic py-5 text-center w-full lg:w-3/6 px-10 bg-white bg-opacity-70 dark:bg-opacity-60  hover:bg-white text-slate-900 shadow hover:text-slate-900 hover:bg-opacity-100 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-900 rounded-lg">
 					<span class="material-symbols-outlined">
 						local_library
 					</span>
@@ -121,12 +121,12 @@
 		</div>
 	</section>
 	{% if orderChap %}
-		<section class="lg:flex  col-span-12 lg:col-span-10 lg:col-start-2  mt-6 justify-evenly min-h-[50vh] z-50">
+		<section class="lg:flex  col-span-12 lg:col-span-10 lg:col-start-2  mt-6 justify-evenly min-h-[50vh] z-50 dark:opacity-80">
 			<div class="absolute bg-white dark:bg-slate-800 w-full min-h-[100%] left-0 right-0 -z-10  border-t-[1px] border-slate-200 dark:border-slate-900">&nbsp;</div>
 			<div class="w-full lg:w-7/12 pt-10 z-50 order-2 lg:order-1 ">
 				<div class="flex justify-between  gap-x-5 -mt-5 mb-5">
 					{% if pubShow.finished == true %}
-						<div class="w-full text-center bg-emerald-50 p-3 gap-y-2 rounded cursor-default grid grid-flow-row  dark:bg-transparent text-emerald-700 dark:text-slate-300 ">
+						<div class="w-full text-center bg-emerald-50 p-3 gap-y-2 rounded cursor-default grid grid-flow-row  dark:bg-transparent text-emerald-700 dark:text-emerald-300 ">
 							<button class="font-medium cursor-default">
 								<span class="material-symbols-outlined">
 									task_alt

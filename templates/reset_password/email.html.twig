@@ -1,9 +1,7 @@
-<h1>Bonjour !</h1>
+<h1>Scrilabeur(se),</h1>
 
-<p>Pour réinitialiser votre mot de passe, veuillez cliquer sur le lien suivant :</p>
-{# traduction #}
-
-<a href="{{app.request.getSchemeAndHttpHost()}}{{ path('app_reset_password', {token: resetToken.token}) }}">réinitialiser mon mot de passe</a>.
+<p>Pour réinitialiser votre mot de passe, veuillez cliquer sur le lien suivant :
+	<a href="{{app.request.getSchemeAndHttpHost()}}{{ path('app_reset_password', {token: resetToken.token}) }}">réinitialiser mon mot de passe</a>.</p>
 
 <p>Ce lien expirera dans
 	{{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>

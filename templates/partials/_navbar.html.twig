@@ -8,16 +8,16 @@
 					Scr<span class="relative">;</span>lab
 				</span>
 			</a>
-			<button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
+			<button data-collapse-toggle="navbar-default" type="button" class=" dark:opacity-90 inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
 				<span class="sr-only">Open main menu</span>
 				<svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 					<path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
 				</svg>
 			</button>
 			<div id="navbar-default" class="items-center justify-between hidden w-full text-sm md:flex md:w-auto md:order-1">
-				<ul class="flex flex-col mt-4 font-medium md:flex-row  gap-y-5 md:mt-0">
+				<ul class="flex flex-col mt-4 font-medium md:flex-row  gap-y-5 md:mt-0  ">
 					<li>
-						<button id="mega-menu-icons-dropdown-button" data-dropdown-toggle="mega-menu-icons-dropdown" type="button" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+						<button id="mega-menu-icons-dropdown-button" data-dropdown-toggle="mega-menu-icons-dropdown" type="button" class="text-slate-800 dark:text-slate-50 hover:bg-slate-50 focus:ring-4 focus:ring-slate-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-slate-700 focus:outline-none dark:focus:ring-slate-800">
 							<span class="material-symbols-outlined">
 								auto_stories
 							</span>
@@ -26,7 +26,7 @@
 					</li>
 					{% if app.user %}
 						<li>
-							<a href="{{ path("app_publication_add")}}" type="button" data-action="dropdown#toggle click@window->dropdown#hide" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2  md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+							<a href="{{ path("app_publication_add")}}" type="button" data-action="dropdown#toggle click@window->dropdown#hide" class="text-slate-800 dark:text-slate-50 hover:bg-slate-50 focus:ring-4 focus:ring-slate-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-slate-700 focus:outline-none dark:focus:ring-slate-800">
 								<span class="material-symbols-outlined">
 									draw
 								</span>
@@ -35,7 +35,7 @@
 						</li>
 					{% else %}
 						<li>
-							<button data-micromodal-trigger="popup-register" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2  md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+							<button data-micromodal-trigger="popup-register" class="text-slate-800 dark:text-slate-50 hover:bg-slate-50 focus:ring-4 focus:ring-slate-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-slate-700 focus:outline-none dark:focus:ring-slate-800">
 								<span class="material-symbols-outlined">
 									draw
 								</span>
@@ -125,19 +125,19 @@
 						</div>
 					</div>
 				{% else %}
-					<button data-micromodal-trigger="popup-login" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+					<button data-micromodal-trigger="popup-login" class="text-slate-800 dark:text-slate-50 hover:bg-slate-50 focus:ring-4 focus:ring-slate-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-slate-700 focus:outline-none dark:focus:ring-slate-800">
 						<span class="material-symbols-outlined">
 							login
 						</span>
 						Connexion
 					</button>
-					<button data-micromodal-trigger="popup-register" class="button-classic button-sky border-none">
+					<button data-micromodal-trigger="popup-register" class="px-5 bg-blue-100 text-blue-900 rounded-lg hover:bg-blue-200 focus:ring-2 ring-blue-500 dark:ring-sky-500 dark:bg-sky-700 dark:text-sky-100 dark:hover:bg-sky-900 border-none">
 						<span class="material-symbols-outlined">
 							person_add
 						</span>
 						Inscription
 					</button>
-					<button id="darkButtonSession" class="text-gray-800 ml-5 relative dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2  md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+					<button id="darkButtonSession" class="ml-5 text-slate-800 dark:text-slate-50 hover:bg-slate-50 focus:ring-4 focus:ring-slate-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-slate-700 focus:outline-none dark:focus:ring-slate-800">
 						<span class="material-symbols-outlined" id="darkModeSession">
 							{{ app.session.get('darkmode') and app.session.get('darkmode') == true ? "wb_sunny" : "nightlight_badge"}}
 						</span>
@@ -178,7 +178,7 @@
 			<div id="mega-menu-icons-dropdown" class="absolute z-10 hidden w-auto text-sm  bg-white  border-slate-100 border-t-2  border-t-green-400 shadow-md dark:border-b-none dark:border-l-none dark:border-r-none dark:border-t-blue-500  md:grid-cols-3 dark:bg-slate-700 dark:shadow-2xl">
 				<div class=" pt-0 pb-0 text-slate-900 md:pb-4 dark:text-white divide-y divide-slate-100 dark:divide-slate-600">
 					<div aria-labelledby="mega-menu-icons-dropdown-button" class="w-full hover:bg-slate-50 border-b-[1px] border-b-slate-200 dark:border-b-slate-900 ">
-						<a class="block px-4 py-4 text-sm text-emerald-900    dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-gray-200 dark:hover:text-white  font-medium" href="{{ path("app_publication_show_all_category", {slug:null, page:null})}}">
+						<a class=" opacity-100 block px-4 py-4 text-sm text-emerald-900    dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-gray-200 dark:hover:text-white  font-medium" href="{{ path("app_publication_show_all_category", {slug:null, page:null})}}">
 							Afficher tous les récits
 						</a>
 					</div>

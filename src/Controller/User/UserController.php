@@ -237,4 +237,11 @@ class UserController extends AbstractController
 			'passwordForm' => $pwForm
 		]);
 	}
+	#[Route('/collection', name: 'app_user_collection')]
+	public function collection(): Response
+	{
+		return $this->render('user/my_collection.html.twig', [
+			'controller_name' => 'MyCollectionController',
+		]);
+	}
 }

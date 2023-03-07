@@ -1,5 +1,9 @@
 {% extends "base.html.twig" %}
-
+{% set pic = pubShow.cover %}
+{% if pic %}
+	{% else %}
+		{% set pic = " https://picsum.photos/200/" ~ random(300, 310) %}
+{% endif %}
 {% block title %}
 	Récit |
 	{{ pubShow.title }}
@@ -23,13 +27,11 @@
 {% block metatags %}
 	<meta name="description" content="{{ summary|trim }}">
 	<meta name="author" content="{{ pubShow.user.nickname }}">
+	<meta property="og:image" content="{{pic}}">
+	<meta property="og:image:width" content="529">
+	<meta property="og:image:height" content="730">
 {% endblock %}
 {% block body %}
-	{% set pic = pubShow.cover %}
-	{% if pic %}
-		{% else %}
-			{% set pic = " https://picsum.photos/200/" ~ random(300, 310) %}
-	{% endif %}
 	<style>
 		#PublicationShowOneContent
 		{

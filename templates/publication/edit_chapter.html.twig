@@ -60,7 +60,7 @@
 		<div class="items-baseline mb-0 pb-0 relative grid grid-cols-12 auto-rows-auto">
 			<input type="text" id="title" name="title" class="dark:bg-transparent dark:text-slate-200 col-span-12 lg:col-span-8  order-2 lg:order-1 active:caret-none focus:ring-0  font-normal text-slate-600 text-4xl overflow-hidden h-16 [font-family:'Merriweather'] mt-0 lg:mt-10 border-0  mb-0 pb-0 border-b-2 border-b-slate-600 dark:border-b-slate-600 {% if (infoPub.status < 2 or infoChap.status < 2) %}axiosChapterAS{% endif %} axiosSpy" value="{{ infoChap.title }}" placeholder="Titre de la feuille">
 			<div class=" col-span-12 lg:col-span-4 order-1 lg:order-2 pt-5 lg:pt-0 justify-center lg:justify-end  flex">
-				<button type="button" class="button-classic button-green" id="saveChapter">
+				<button type="button" class="button-classic button-emerald" id="saveChapter">
 					{% if (infoPub.status < 2 or infoChap.status < 2) %}
 						<span class="material-symbols-outlined">
 							save

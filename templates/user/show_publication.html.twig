@@ -267,7 +267,7 @@
 											{% set slug = "all" %}
 										{% endif %}
 										<a href="{{path("app_publication_show_all_category", {slug:slug})}}">
-											<span class="text-xs catTag catColor-{{item.category.color is defined ? item.category.color : 11}}">{{item.category.name is defined ? item.category.name : "Aucune"}}</a>
+											<span {% if item.category %} {% if item.category.name|length > 9 %} data-tippy-content="{{item.category.name}}" {% endif %} {% endif %} class="text-xs catTag catColor-{{item.category.color is defined ? item.category.color : 11}} ">{{item.category.name is not defined ? "Aucune" : item.category.name|length > 9 ? item.category.name|slice(0,9) ~ "..." : item.category.name }}</a>
 										</td>
 									</td>
 									<td class="px-6 py-3  {{item.status < 2 ? " opacity-60"}}">

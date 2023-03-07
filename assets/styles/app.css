@@ -58,14 +58,14 @@
 	@apply font-sans;
 	font-display: swap;
 	transition: color 0.1s ease-in-out, background-color 0.1s ease-in-out;
-
+	
 }
 body {
 	@apply bg-white dark:bg-slate-800 h-screen grid col-span-12;
 }
 
 body.turbo-loading, body.turbo-loaded {
-	opacity: .0.5;
+	opacity: 0.5;
 	@apply dark:bg-slate-800
 }
 .dark {
@@ -161,13 +161,13 @@ form input[type=checkbox] {
 	@apply bg-slate-600
 }
 form input[type=text],input[type=email],input[type=password], .input    {
-		@apply mt-5  z-0    text-sm h-12    block w-full border-slate-600 pl-10 p-2.5 bg-white dark:bg-slate-900 dark:border-slate-700 rounded border   focus:outline-none focus:border-blue-500 dark:text-slate-300 ;
+		@apply mt-5  z-0    text-sm h-12    block w-full border-slate-600 pl-10 p-2.5 bg-white dark:bg-slate-700 dark:border-slate-700 rounded border   focus:outline-none focus:border-blue-500 dark:text-slate-300 ;
 }
 form textarea {
-	@apply mt-5  rounded   z-0 text-justify    border border-slate-600   focus:outline-none focus:border-blue-500  text-sm  block w-full p-2.5 pb-5   dark:bg-slate-900 dark:border-slate-700 dark:placeholder-gray-400  dark:text-slate-300;
+	@apply mt-5  rounded   z-0 text-justify    border border-slate-600  dark:bg-slate-700 focus:outline-none focus:border-blue-500  text-sm  block w-full p-2.5 pb-5    dark:border-slate-700 dark:placeholder-gray-400  dark:text-slate-300;
 }
 form select, .select {
-	@apply mt-5  rounded   z-0 text-justify    border border-slate-600   text-sm h-12 focus:border-blue-500   block w-full pl-10 p-2.5   dark:bg-slate-900 dark:border-slate-700 dark:placeholder-gray-400 dark:text-slate-300 ;
+	@apply mt-5  rounded   z-0 text-justify    border border-slate-600  dark:bg-slate-700 text-sm h-12 focus:border-blue-500   block w-full pl-10 p-2.5    dark:border-slate-700 dark:placeholder-gray-400 dark:text-slate-300 ;
 }
 form input.icon-desc {
 		@apply rounded-none rounded-r-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5   dark:bg-slate-900 dark:border-slate-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
@@ -514,7 +514,7 @@ opacity: 0.4;
 	@apply bg-rose-300 dark:bg-rose-300;
 }
 .button-classic {
-@apply  rounded-2xl ring-1 text-sm  px-3 py-2 hover:grayscale-[90%] active:border-b active:py-[0.48rem] font-medium transition ease-in duration-75;
+@apply  rounded-xl ring-1 text-sm  px-3 py-2  hover:contrast-125 active:border-b active:py-[0.48rem] font-medium transition ease-in duration-75;
 }
 .button-violet {
 	@apply   bg-violet-50 text-violet-900 ring-violet-600 border-violet-600 dark:bg-violet-900 dark:text-violet-50 dark:ring-violet-600 dark:border-violet-400;
@@ -631,4 +631,7 @@ opacity: 0.4;
  }
  .item-fake:hover .write-and-publish {
     @apply dark:bg-slate-700;
+}
+.no-cover {
+	@apply p-10 text-2xl flex h-80 bg-white shadow-md rounded-md dark:bg-slate-700  text-slate-500 hover:text-slate-900  dark:text-slate-400 dark:hover:text-slate-200;
 }

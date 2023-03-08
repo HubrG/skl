@@ -24,7 +24,7 @@
 								Feuille n°{{ items.orderDisplay + 1 }}
 							{% endif %}
 						</h2>
-						<p class="mb-3 text-gray-500 text-sm dark:text-gray-400 line-clamp-5">{% set content = items.content %}{{ content|regex_replace('/<p.*?>/i', ' ')|striptags|trim|capitalize }}...</p>
+						<p class="mb-3 text-gray-500 text-xs dark:text-gray-400 line-clamp-5">{% set content = items.content %}{{ content|regex_replace('/<p.*?>/i', ' ')|striptags|trim|capitalize }}...</p>
 						<a href="{{ path("app_publication_edit_chapter", { idPub:infoPub.id, idChap:items.id }) }}" data-turbo-frame="_top" class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 dark:text-blue-500 dark:hover:text-blue-700">
 							Éditer
 							<svg class="w-6 h-6 ml-1" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">

@@ -9,10 +9,10 @@
 
 {% block body %}
 	<div class="col-span-12 col-start-0 -mt-10 mb-10 ">
-		<nav class="flex py-3  justify-center  shadow-none border-slate-200 border-l-[1px] border-l-slate-100 border-r-[1px] border-r-slate-100 dark:border-r-0 dark:border-l-0 dark:border-none dark:bg-slate-800 mb-10 bg-slate-50" aria-label="Breadcrumb">
-			<ol class="inline-flex items-center space-x-1 md:space-x-3">
+		<nav class="flex py-3  justify-center  shadow-none   border-b-slate-200 dark:border-b-slate-700 dark:bg-slate-800 mb-10 -mt-5 md:-mt-0" aria-label="Breadcrumb">
+			<ol class="inline-flex items-center space-x-1 md:space-x-3 text-xs">
 				<li class="inline-flex items-center">
-					<a href="{{path("app_user_show_publications")}}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+					<a href="{{path("app_user_show_publications")}}" class="inline-flex items-center font-medium text-slate-700 hover:text-blue-600 dark:text-slate-400 dark:hover:text-white">
 						Mes récits</a>
 				</li>
 				<li aria-current="page">
@@ -20,7 +20,7 @@
 						<svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 							<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
 						</svg>
-						<span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Édition d'un récit |
+						<span class="ml-1 font-medium text-slate-500 md:ml-2 dark:text-slate-400">Édition d'un récit &nbsp;&nbsp;
 							<span class=" cursor-pointer" data-modal-target="popup-modal" data-modal-toggle="popup-modal">
 								{% if (infoPub.status > 1) %}
 									<span id="badgePubStatus" class="badge">Publié</span>
@@ -164,7 +164,7 @@
 					</ul>
 				{% endif %}
 				<div id="accordion-flush" data-accordion="open" data-active-classes="text-gray-900 dark:text-white" class="list-group" data-inactive-classes="text-gray-500 dark:text-gray-400">
-					<h2 id="accordion-flush-heading-1" class="border-b-[1px] border-b-slate-200 shadow  px-5  rounded mt-5 dark:border-b-slate-900  dark:bg-transparent dark:shadow-lg ">
+					<h2 id="accordion-flush-heading-1" class="border-b-[1px] border-b-slate-200 shadow  px-5  rounded mt-5 dark:border-b-slate-900  dark:bg-slate-700 dark:shadow-lg ">
 						<button type="button" class="flex items-center justify-between w-full py-5 font-medium text-left  dark:border-gray-700 dark:text-gray-400" data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
 							<span class="opacity-80">
 								<span class="material-symbols-outlined">
@@ -275,7 +275,7 @@
 							{% include "publication/_partials/_edit_publication_show_chapters.html.twig" with {withStatus:2} %}
 						</div>
 					</div>
-					<h2 id="accordion-flush-heading-2" class=" border-b-[1px] border-b-slate-200 shadow  px-5  rounded mt-5 dark:border-b-slate-900  dark:bg-slate-800   dark:bg-transparent dark:shadow-lg">
+					<h2 id="accordion-flush-heading-2" class=" border-b-[1px] border-b-slate-200 shadow  px-5  rounded mt-5 dark:border-b-slate-900  dark:bg-slate-700 dark:shadow-lg">
 						<button type="button" class="flex items-center justify-between w-full py-5 font-medium text-left   dark:border-slate-700 dark:text-slate-400" data-accordion-target="#accordion-flush-body-2" aria-expanded="true" aria-controls="accordion-flush-body-2">
 							<span class="opacity-80">
 								<span class="material-symbols-outlined">
@@ -374,7 +374,7 @@
 					<input type="checkbox" value="" class="sr-only peer axiosPublication axiosPubAS axiosPubSpy" id="publication_finished" {{ infoPub.finished == 1 ? "checked" }}/>
 					<div class="w-11 h-6 bg-blue-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-blue-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
 					<span class="ml-3 text-sm dark:text-gray-300">Récit terminé&nbsp;&nbsp;
-						<span data-tippy-content="<strong>Si vous cochez la case</strong>, cela signifie que votre récit est terminé et qu'il n'y aura plus de nouvelle feuille publiée.<br><br><strong>Si vous ne cochez pas la case</strong>, vos lecteurs pourront s'abonner à votre récit et recevront des notifications si de nouvelles feuilles sont publiées.">
+						<span data-tippy-content="<strong>Si vous activez cette option</strong>, cela signifie que votre récit est terminé et qu'il n'y aura plus de nouvelle feuille publiée.<br><br><strong>Si vous désactivez cette option</strong>, vos lecteurs pourront s'abonner à votre récit et recevront des notifications si de nouvelles feuilles sont publiées.">
 							<span class="material-symbols-outlined">
 								help
 							</span>
@@ -437,7 +437,7 @@
 				{% endif %}
 			</p>
 		</div>
-		<div id="task" class="p-4 rounded-lg bg-yellow-50 text-yellow-800 dark:bg-slate-900 w-full  mb-4  dark:text-slate-400">
+		<div id="task" class="{{infoPub.publicationChapters|filter(c => c.status == 2)|length > 0 and infoPub.category ? " hidden" : " " }} p-4 rounded-lg bg-yellow-50 text-yellow-800 dark:bg-slate-900 w-full mb-4 dark:text-slate-400">
 			<p class="text-sm mb-1 font-semibold">
 				Vous devriez :
 				<ul class="text-xs mt-2">
@@ -451,7 +451,6 @@
 							»
 						</span>
 					</li>
-
 					<li class="mt-3 flex  gap-x-2 animate__animated  {{infoPub.publicationChapters|filter(c => c.status == 2)|length > 0 ? " hidden" : " " }}" id="taskPublish">
 						<span class="material-symbols-outlined">
 							visibility

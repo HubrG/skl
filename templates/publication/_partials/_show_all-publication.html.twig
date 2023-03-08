@@ -7,7 +7,7 @@
 		{% endif %}
 		<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}">
 			{% set pic = item.cover %}
-			<img class=" rounded-2xl  w-full h-full object-cover lazy animate-pulse animate__animated bg-slate-300 {% if not pic %} blur-2xl {% endif %}" width="529" height="793" loading="lazy" src="" data-src="{% if pic %}{{pic}}{% else %}{{ "https://via.placeholder.com/529x793" }} {% endif %}" alt=""/>
+			<img class=" rounded-2xl  w-full h-full object-cover lazy animate-pulse animate__animated bg-slate-300  {% if not pic %}  dark:blur-none dark:bg-slate-900 {% endif %}" width="529" height="793" loading="lazy" src="" data-src="{% if pic %}{{pic}}{% else %}{{ "https://via.placeholder.com/529x793" }} {% endif %}" alt=""/>
 		</a>
 	</div>
 	<div class="pl-5 pr-3 w-4/6 relative">

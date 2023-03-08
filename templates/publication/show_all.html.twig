@@ -15,6 +15,7 @@
 {% endblock %}
 {% block metatags %}
 	<link rel="canonical" href="https://www.scrilab.com/recits">
+	<meta name="description" content="Publiez et lisez des romans, des nouvelles, de la poésie et plus encore sur notre plateforme littéraire en ligne. Rejoignez une communauté passionnée de littérature et découvrez de nouveaux talents dès aujourd'hui.">
 {% endblock %}
 {% block body %}
 	<section class="col-span-12 md:mt-1 -mt-8 flex gap-x-2 justify-center">
@@ -72,8 +73,8 @@
 				</h4>
 				<div class="-mt-3 w-auto  xl:w-auto">
 					<button id="sortButton" data-dropdown-toggle="sortHover" class="flex items-center ring-1 bg-none  focus:ring-4 focus:outline-none font-medium rounded-2xl text-xs lg:text-sm lg:mt-0 mt-2 px-4 py-2.5 text-center {{ querySortby == 'pop' ? 'ring-sky-600 hover:bg-sky-50  text-sky-800 focus:ring-sky-300 dark:text-sky-500 dark:hover:text-sky-400 dark:ring-sky-400 dark:hover:bg-sky-900 dark:hover:ring-sky-500' : 'ring-yellow-600 hover:bg-yellow-50  text-yellow-800 focus:ring-amber-300 dark:text-yellow-400 dark:ring-yellow-400 dark:hover:bg-yellow-900 dark:hover:text-yellow-400 dark:hover:ring-yellow-500'}}    " type="button">
-						{% set popIcon = '<span class="material-symbols-outlined text-sky-600 dark:text-sky-500">thumb_up</span> ' %}
-						{% set newIcon = '<span class="material-symbols-outlined text-yellow-600 dark:text-yellow-100">tips_and_updates</span> ' %}
+						{% set popIcon = '<span class="material-symbols-outlined text-sky-800 dark:text-sky-500">thumb_up</span> ' %}
+						{% set newIcon = '<span class="material-symbols-outlined text-yellow-800 dark:text-yellow-100">tips_and_updates</span> ' %}
 						{% set sortText = 
 						querySortby == 'pop' ? popIcon|raw ~ " &nbsp;&nbsp;Les plus populaires d'abord" :
 						querySortby == 'published'  ? newIcon|raw ~ " &nbsp;&nbsp;Les nouveautés d'abord" %}
@@ -131,7 +132,7 @@
 							{% if not app.user %}
 								<div data-micromodal-trigger="popup-register" class="item-fake">
 									<span class="write-and-publish w-2/6"></span>
-									<span class=" w-4/6 items-center flex flex-col justify-center text-slate-700 dark:text-slate-400">
+									<span class=" w-4/6 items-center flex flex-col justify-center text-slate-800 dark:text-slate-400">
 										<span class="text-4xl">
 											<span class="material-symbols-outlined">
 												history_edu
@@ -143,7 +144,7 @@
 							{% else %}
 								<a href="{{path("app_publication_add")}}" class="item-fake">
 									<span class="write-and-publish w-2/6"></span>
-									<span class=" w-4/6 items-center flex flex-col justify-center text-slate-700 dark:text-slate-400">
+									<span class=" w-4/6 items-center flex flex-col justify-center text-slate-800 dark:text-slate-400">
 										<span class="text-4xl">
 											<span class="material-symbols-outlined">
 												history_edu

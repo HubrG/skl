@@ -91,7 +91,11 @@ function AxiosPublication() {
   var title = document.getElementById("publication_title").value;
   var summary = document.getElementById("publication_summary").value;
   var category = document.getElementById("publication_category").value;
-  var finished = document.getElementById("publication_finished").checked;
+  if (document.getElementById("publication_finished")) {
+    var finished = document.getElementById("publication_finished").checked;
+  } else {
+    var finished = 0;
+  }
   var mature = document.getElementById("publication_mature").value;
   var hideIdPub = document.getElementById("hideIdPub").value;
   // * Gestion de la photo (si changement de photo)

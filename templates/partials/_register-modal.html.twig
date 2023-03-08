@@ -18,7 +18,7 @@
 						Rejoindre Scrilab
 					</h3>
 					<hr class="mb-5">
-					<button data-micromodal-trigger="popup-login" onclick='MicroModal.show("popup-login");document.getElementById("popup-register").classList.add("animate__animated","animate__fadeOut","animate__faster");MicroModal.close("popup-register");document.getElementById("popup-register").classList.remove("animate__animated","animate__fadeOut")' class="text-center w-full text-sm text-blue-700 dark:text-sky-500 font-medium hover:underline">J'ai déjà un compte</button>
+					<button data-micromodal-trigger="popup-login" onclick='MicroModal.show("popup-login");document.getElementById("popup-register").classList.add("animate__animated","animate__fadeOut","animate__faster");MicroModal.close("popup-register");document.getElementById("popup-register").classList.remove("animate__animated","animate__fadeOut")' class="text-center w-full text-sm text-blue-700 dark:text-sky-400 font-medium hover:underline">J'ai déjà un compte</button>
 					<hr>
 					<div class="text-left">
 						{{ render(controller('App\\Controller\\RegistrationController::register')) }}

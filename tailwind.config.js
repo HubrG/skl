@@ -12,7 +12,6 @@ module.exports = {
     "./src/**/*.js",
   ],
   theme: {
-    
     extend: {
       keyframes: {
         "fade-in": {
@@ -24,8 +23,8 @@ module.exports = {
         "fade-in": "fade-in 0.2s ease-in-out",
       },
       fontFamily: {
-        sans: ["Open Sans", "sans-serif"],
-        serif: ["Playfair Display", "serif"],
+        sans: ["ui-sans-serif", "sans-serif"],
+        serif: ["Gilda Display", "serif"],
       },
       fontSize: {
         xs: "0.85rem", // 12px

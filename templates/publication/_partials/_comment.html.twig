@@ -46,7 +46,7 @@
 	</p>
 {% endif %}
 <div id="comment-{{item.id}}">
-	<div class="one-comment rounded {{ lastComment ? 'mb-3 animate__animated animate__fadeIn transition-colors duration-[1000ms] p-6 shadow-sm relative' : 'bg-white dark:bg-slate-900 p-6 mb-3 shadow-sm relative' }}" {% if lastComment %} id="lastComment" {% endif %}>
+	<div class="one-comment rounded {{ lastComment ? 'mb-3 animate__animated animate__fadeIn transition-colors duration-[1000ms] p-6 shadow-sm relative' : 'bg-white dark:bg-transparent dark:shadow-2xl p-6 mb-3 shadow-sm relative' }}" {% if lastComment %} id="lastComment" {% endif %}>
 		<div class="flex items-start">
 			{% set profilPic = item.user.profilPicture ? item.user.profilPicture : 'https://picsum.photos/200/300' %}
 			<img class="w-12 h-12 rounded-full mr-4" src="{{ profilPic }}" alt="avatar">

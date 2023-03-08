@@ -4,9 +4,9 @@
 @import '~animate.css/animate.css';
 @import "~noty/lib/noty.css";
 @import "~noty/lib/themes/semanticui.css";
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Solitreo&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
-@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import url('https://fonts.googleapis.com/css2?family=Gilda+Display&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Solitreo&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons&display=swap');
 @import url('modal.css');
 
 .material-symbols-outlined {
@@ -118,7 +118,7 @@ hr {
 	@apply font-semibold text-slate-900 dark:text-white flex font-serif
 }
 #logo span {
-	@apply font-[Solitreo] text-5xl -mt-[0.4rem] ml-1 block text-slate-700 dark:text-slate-200;
+	@apply font-[Solitreo] text-5xl -mt-[0.6rem] ml-1 block text-slate-700 dark:text-slate-200;
 }
 #logo:hover span {
 	@apply text-sky-500 dark:text-sky-500;

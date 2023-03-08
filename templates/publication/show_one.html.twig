@@ -93,7 +93,7 @@
 		<div class="flex gap-5 p-10 pt-0  items-center">
 			<div class="flex-1 text-center flex flex-col justify-center items-center justify-items-center origin-center">
 				<div class="lg:flex w-5/6">
-					<p class="text-base font-serif text-justify italic text-slate-900 dark:text-slate-200 dark:[text-shadow: 0 0.5px 1px blanchedalmond;] leading-7 mt-1">
+					<p class="text-base font-serif font-light text-justify italic text-slate-900 dark:text-slate-200 dark:[text-shadow: 0 0.5px 1px blanchedalmond;] leading-7 mt-1">
 						{% if orderChap %}
 							{% if pubShow.summary %}
 								<span class="material-symbols-outlined">
@@ -239,29 +239,29 @@
 										{{ chapter.title|default("Feuille n°" ~ (chapter.orderDisplay + 1))|capitalize }}
 									</a>
 									<div class="w-2/6 justify-items-end opacity-80 dark:opacity-100">
-										<div class="py-1 px-2 rounded-full flex justify-between text-xs text-slate-600 font-medium">
-											<div>
+										<div class="py-1 px-2 rounded-full flex justify-between md:text-xs text-[0.65rem] text-slate-500 font-medium">
+											<div class=" flex flex-col md:flex-row items-center">
 												<span class="material-symbols-outlined">
 													thumb_up
 												</span>
 												{{ chapter.publicationChapterLikes|length }}
 												{% set chapterStats = chapterStats|merge({'likes': chapterStats.likes + chapter.publicationChapterLikes|length}) %}
 											</div>
-											<div>
+											<div class=" flex flex-col md:flex-row items-center">
 												<span class="material-symbols-outlined">
 													bookmarks
 												</span>
 												{{ chapter.publicationBookmarks|length }}
 												{% set chapterStats = chapterStats|merge({'bookmarks': chapterStats.bookmarks + chapter.publicationBookmarks|length}) %}
 											</div>
-											<div>
+											<div class=" flex flex-col md:flex-row items-center">
 												<span class="material-symbols-outlined">
 													visibility
 												</span>
 												{{ chapter.publicationChapterViews|length }}
 												{% set chapterStats = chapterStats|merge({'views': chapterStats.views + chapter.publicationChapterViews|length}) %}
 											</div>
-											<div>
+											<div class=" flex flex-col md:flex-row items-center">
 												<span class="material-symbols-outlined">
 													forum
 												</span>
@@ -294,7 +294,17 @@
 						{{ form_end(formQuote) }}
 						<hr>
 					{% endif %}
-					<turbo-frame id="comment-section">
+					<ul>
+						<li class="text-center mb-5 -mt-3 block lg:hidden" onclick="let commentSection = document.getElementById('comment-section').classList; commentSection.toggle('hidden');if (commentSection.contains('hidden')) { document.getElementById('showComMd').innerHTML = 'Afficher' } else {  document.getElementById('showComMd').innerHTML = 'Masquer' }">
+							<button class="text-base text-slate-300 font-medium hover:underline">
+								<span id="showComMd">Afficher</span>
+								les
+								{{nbrCom}}
+								{{nbrCom > 1 ? "commentaires" : "commentaire" }}
+							</button>
+						</li>
+					</ul>
+					<turbo-frame id="comment-section" class=" hidden lg:block">
 						{% set n = 0 %}
 						{% for item in pCom %}
 							{% include "publication/_partials/_comment.html.twig" with { item:item, n:n, pcom:nbrCom} %}
@@ -306,7 +316,7 @@
 					</turbo-frame>
 				</div>
 			</div>
-			<div class="w-full opacity-60 dark:opacity-100  z-50 mt-0 pt-5 px-2 lg:w-4/12  order-1 lg:order-2  shadow-slate-300 text-slate-900 border-slate-200 border-t-[1px] border-t-slate-200 dark:border-slate-900 dark:border-t-slate-900 lg:border-l-[1px] lg:border-t-0 ">
+			<div class="w-full opacity-60 dark:opacity-100  text-xs  z-50 mt-0 pt-5 px-2 lg:w-4/12  order-1 lg:order-2  shadow-slate-300 text-slate-900 border-slate-200 border-t-[1px] border-t-slate-200 dark:border-slate-900 dark:border-t-slate-900 lg:border-l-[1px] lg:border-t-0 ">
 				<ul class="flex flex-col  text-sm">
 					<li class="inline-flex items-center  gap-x-2 mt-0 px-4 font-normal justify-center   dark:text-white">
 						<div class="flex items-center">
@@ -333,12 +343,12 @@
 						</div>
 					</li>
 					<hr>
-					<li class="inline-flex items-center justify-between gap-x-2  px-4 font-normal dark:text-white">
+					<li class="inline-flex items-center justify-between gap-x-2 px-4 font-normal dark:text-white">
 						<span class="font-medium">
 							<span class="material-symbols-outlined">
 								theater_comedy
 							</span>
-							&nbsp;&nbsp;Genre
+							&nbsp;Genre
 						</span>
 						{% if pubShow.category.slug is defined %}
 							{% set slug = pubShow.category.slug %}
@@ -362,7 +372,7 @@
 							<span class="material-symbols-outlined">
 								auto_stories
 							</span>
-							&nbsp;&nbsp;Nombre de pages (pdf)
+							&nbsp;Nombre de pages (pdf)
 						</span>
 						<span>{{ chapterStats.pages }}</span>
 					</li>
@@ -371,7 +381,7 @@
 							<span class="material-symbols-outlined">
 								timer
 							</span>
-							&nbsp;&nbsp;Temps de lecture
+							&nbsp;Temps de lecture
 						</span>
 						<span>{{ pubShow.publicationChapters|chapter("rt", "ft") }}</span>
 					</li>
@@ -380,7 +390,7 @@
 							<span class="material-symbols-outlined">
 								visibility
 							</span>
-							&nbsp;&nbsp;Nombre de lecteurs
+							&nbsp;Nombre de lecteurs
 						</span>
 						<span>{{chapterStats.views}}</span>
 					</li>
@@ -404,7 +414,7 @@
 							<span class="material-symbols-outlined">
 								book
 							</span>
-							&nbsp;&nbsp;&nbsp;Pages marquées
+							&nbsp;Pages marquées
 						</span>
 						<span>{{chapterStats.bookmarks}}</span>
 					</li>
@@ -413,7 +423,7 @@
 							<span class="material-symbols-outlined">
 								thumb_up
 							</span>
-							&nbsp;&nbsp;&nbsp;J'aime
+							&nbsp;J'aime
 						</span>
 						<span>{{chapterStats.likes}}</span>
 					</li>
@@ -422,7 +432,7 @@
 							<span class="material-symbols-outlined">
 								downloading
 							</span>
-							&nbsp;&nbsp;&nbsp;Téléchargements
+							&nbsp;Téléchargements
 						</span>
 						<span>{{pubShow.PublicationDownloads|length}}</span>
 					</li>
@@ -433,20 +443,18 @@
 						{% set nbr = nbr - 1 %}
 						{% set lastPopularity = pubShow.PublicationPopularities[nbr].popularity %}
 					{% endif %}
-
-
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:text-white">
 						<span class="font-medium">
 							<span class="material-symbols-outlined">
 								insights
 							</span>
-							&nbsp;&nbsp;&nbsp;Popularité
+							&nbsp;Popularité
 							<span class="font-light text-xs">(7 jours)</span>
 						</span>
-						<span>
+						<span class="flex items-end gap-x-1">
 							{{pubShow.pop}}
 							{% if pubShow.pop < lastPopularity %}
-								<span class="material-icons  text-red-700">
+								<span class="material-icons  text-red-700 dark:text-red-500">
 									arrow_circle_down
 								</span>
 							{% elseif pubShow.pop == lastPopularity %}
@@ -454,7 +462,7 @@
 									equal
 								</span>
 							{% else %}
-								<span class="material-icons text-green-700">
+								<span class="material-icons text-green-700 dark:text-emerald-500">
 									arrow_circle_up
 								</span>
 							{% endif %}

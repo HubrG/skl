@@ -296,12 +296,16 @@
 					{% endif %}
 					<ul>
 						<li class="text-center mb-5 -mt-3 block lg:hidden" onclick="let commentSection = document.getElementById('comment-section').classList; commentSection.toggle('hidden');if (commentSection.contains('hidden')) { document.getElementById('showComMd').innerHTML = 'Afficher' } else {  document.getElementById('showComMd').innerHTML = 'Masquer' }">
-							<button class="text-base text-slate-300 font-medium hover:underline">
-								<span id="showComMd">Afficher</span>
-								les
-								{{nbrCom}}
-								{{nbrCom > 1 ? "commentaires" : "commentaire" }}
-							</button>
+							{% if nbrCom > 0 %}
+								<button class="text-base text-slate-300 font-medium hover:underline">
+									<span id="showComMd">Afficher</span>
+									les
+									{{nbrCom}}
+									{{nbrCom > 1 ? "commentaires" : "commentaire" }}
+								</button>
+							{% else %}
+								Aucun commentaire
+							{% endif %}
 						</li>
 					</ul>
 					<turbo-frame id="comment-section" class=" hidden lg:block">

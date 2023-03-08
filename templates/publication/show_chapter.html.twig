@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block body %}
-	<section id="titleChapter" data-title="{{infoChap.title}}" class="sticky {{ infoChap.Publication.status < 2 ? " -mt-20 top-16" : " top-14" }} min-h-[50vh] bg-white dark:bg-slate-800 dark:bg-transparent dark:bg-opacity-50 bg-transparent bg-opacity-50 backdrop-blur-sm">
+	<section id="titleChapter" data-title="{{infoChap.title}}" class="sticky {{ infoChap.Publication.status < 2 ? " -mt-20 top-16" : " top-14" }}  bg-white dark:bg-slate-800 dark:bg-transparent dark:bg-opacity-50 bg-transparent bg-opacity-50 backdrop-blur-sm">
 		{% if infoChap.Publication.status < 2 %}
 			<div class="mb-0">
 				<div class="w-5/6 mx-auto -mt-2 h-10  bg-slate-100 dark:bg-slate-700 dark:text-slate-200  ring-1 ring-slate-700 opacity-80 right-0 rounded-b-sm">

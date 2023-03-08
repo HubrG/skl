@@ -224,17 +224,17 @@ function publishPublication(ev) {
   if (ev == "init") {
     if (publishButton.checked) {
       PublicationPublishModalText.innerHTML =
-        "Êtes-vous certain(e) de vouloir annuler la publication de votre récit ?";
+        "Êtes-vous certain(e) de vouloir <span class='text-red-500 dark:text-red-500'>dépublier</span> de votre récit ?";
       publishToggle.classList.add("peer-checked:bg-red-600");
-      publish.classList.add("bg-red-600", "hover:bg-red-800");
+      publish.classList.add("button-red");
       badgePubStatus.classList.toggle("badge-published");
     } else {
       PublicationPublishModalText.innerHTML =
-        "Êtes-vous certain(e) de vouloir publier votre récit ?";
+        "Êtes-vous certain(e) de vouloir <span class='text-emerald-500 dark:text-emerald-500'>publier</span> votre récit ?";
       publishToggle.classList.add("peer-checked:bg-slate-600", "bg-slate-200");
-      publish.classList.add("bg-slate-600", "hover:bg-slate-800");
       publishDateText.classList.add("hidden");
       ASTooltip.classList.add("hidden");
+      publish.classList.add("button-emerald");
       badgePubStatus.classList.toggle("badge-unpublished");
     }
   } else {
@@ -243,11 +243,11 @@ function publishPublication(ev) {
       publishDateTextSpan.innerHTML = "quelques instants";
       publishText.innerHTML = "Dépublier le récit";
       PublicationPublishModalText.innerHTML =
-        "Êtes-vous certain(e) de vouloir annuler la publication de votre récit ?";
+        "Êtes-vous certain(e) de vouloir <span class='text-red-500 dark:text-red-500'>dépublier</span> de votre récit ?";
       publishToggle.classList.remove("peer-checked:bg-slate-600");
+      publish.classList.add("button-red");
+      publish.classList.remove("button-emerald");
       publishToggle.classList.add("peer-checked:bg-red-600");
-      publish.classList.remove("bg-slate-600", "hover:bg-slate-800");
-      publish.classList.add("bg-red-600", "hover:bg-red-800");
       ASTooltip.classList.remove("hidden");
       ASText.classList.add("cursor-default", "text-slate-400");
       ASText.classList.remove("cursor-pointer");
@@ -259,10 +259,9 @@ function publishPublication(ev) {
       publishButton.checked = false;
       publishText.innerHTML = "Publier le récit";
       PublicationPublishModalText.innerHTML =
-        "Êtes-vous certain(e) de vouloir publier votre récit ?";
+        "Êtes-vous certain(e) de vouloir <span class='text-emerald-500 dark:text-emerald-500'>publier</span> votre récit ?";
       publishToggle.classList.remove("peer-checked:bg-red-600");
       publishToggle.classList.add("bg-slate-200", "peer-checked:bg-slate-600");
-      publish.classList.add("bg-slate-600", "hover:bg-slate-800");
       ASTooltip.classList.add("hidden");
       ASText.classList.remove("cursor-default", "text-slate-400");
       ASText.classList.add("cursor-pointer");
@@ -270,6 +269,8 @@ function publishPublication(ev) {
       badgePubStatus.classList.toggle("badge-published");
       badgePubStatus.innerHTML = "Dépublié";
       publishDateText.classList.add("hidden");
+      publish.classList.remove("button-red");
+      publish.classList.add("button-emerald");
     }
     // *
     // * Envoi en BDD

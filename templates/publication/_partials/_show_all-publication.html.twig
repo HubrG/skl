@@ -1,7 +1,7 @@
 <div class=" rounded-xl  shadow-slate-300  dark:ring-slate-800 ring-0 ring-slate-500 flex  transition duration-500  xl:row-span-1 " id="publication-{{item.id}}">
 	<div class="w-2/6 h-auto  relative border-slate-700 dark:border-slate-900">
 		{% if slugCat == "all" %}
-			<a class="absolute z-50  top-0]" href="{{ path("app_publication_show_all_category", {slug:item.category.slug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:queryKeystring}) }}">
+			<a class="absolute z-50  -top-[0.09rem]" href="{{ path("app_publication_show_all_category", {slug:item.category.slug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:queryKeystring}) }}">
 				<span class="catColor-{{item.category.color}} rounded rounded-bl-none rounded-tr-none p-1 px-2 text-xs font-normal">{{ item.category.name|lower }}</span>
 			</a>
 		{% endif %}

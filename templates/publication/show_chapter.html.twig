@@ -7,11 +7,11 @@
 {% endblock %}
 
 {% block body %}
-	<section id="titleChapter" data-title="{{infoChap.title}}" class="sticky {{ infoChap.Publication.status < 2 ? " -mt-20 top-16" : " top-14" }} bg-white dark:bg-slate-800 dark:bg-transparent dark:bg-opacity-50 bg-transparent bg-opacity-50 backdrop-blur-sm">
+	<section id="titleChapter" data-title="{{infoChap.title}}" class="sticky {{ infoChap.Publication.status < 2 ? " -mt-20 top-16" : " top-14" }} min-h-[50vh] bg-white dark:bg-slate-800 dark:bg-transparent dark:bg-opacity-50 bg-transparent bg-opacity-50 backdrop-blur-sm">
 		{% if infoChap.Publication.status < 2 %}
 			<div class="mb-0">
-				<div class="w-5/6 mx-auto -mt-2 h-10  bg-slate-100  ring-1 ring-slate-700 opacity-80 right-0 rounded-b-sm">
-					<p class="text-center p-2 font-medium text-xs flex justify-between px-5 text-slate-900">
+				<div class="w-5/6 mx-auto -mt-2 h-10  bg-slate-100 dark:bg-slate-700 dark:text-slate-200  ring-1 ring-slate-700 opacity-80 right-0 rounded-b-sm">
+					<p class="text-center p-2 font-medium text-xs flex justify-between px-5">
 						<span>
 							<span class="material-symbols-outlined">
 								preview
@@ -29,9 +29,9 @@
 				</div>
 			</div>
 		{% endif %}
-		<div class="md:text-left text-base w-full text-center mb-10 mt-0 md:mt-3 ">
-			<h3 class="text-center md:text-left">
-				<a id="pubTitle" class="font-serif hover:underline dark:text-white" href="{{ path("app_publication_show_one", {id:infoPub.id, slug:infoPub.slug}) }}">{{ infoPub.title }}</a>
+		<div class="md:text-left  w-full text-center mb-10 mt-0 md:mt-3 ">
+			<h3 class="text-center md:text-left text-lg">
+				<a id="pubTitle" class="font-serif  hover:underline dark:text-white" href="{{ path("app_publication_show_one", {id:infoPub.id, slug:infoPub.slug}) }}">{{ infoPub.title }}</a>
 			</h3>
 			<div class="text-xs dark:text-white">
 				<small>par</small>
@@ -52,7 +52,7 @@
 			{% for item in infoPub.publicationChapters|sort((a, b) => a.orderDisplay < b.orderDisplay ? -1 : 1) %}
 				{% if item.status > 1 %}
 					<div>
-						<a href="{{ path("app_chapter_show", {idChap:item.id, slugPub:infoPub.slug, user:infoPub.user.username, slug:item.slug}) }}" class="block px-4 py-4 text-sm text-gray-700 {% if item.id == infoChap.id %}bg-slate-50{% endif %} hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+						<a href="{{ path("app_chapter_show", {idChap:item.id, slugPub:infoPub.slug, user:infoPub.user.username, slug:item.slug}) }}" class="block px-4 py-4 text-sm text-gray-700 {% if item.id == infoChap.id %}bg-slate-50 dark:bg-slate-900{% endif %} hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
 							{% if item.id == infoChap.id %}
 								<span class="material-symbols-outlined">
 									document_scanner

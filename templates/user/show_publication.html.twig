@@ -238,7 +238,7 @@
 									</th>
 
 									<td class="px-6 py-3 relative">
-										<a data-tippy-content="Éditer ce récit (paramétrage, édition, statistiques approfondies...)" href="{{ path("app_publication_edit", {id:item.id}) }}" class="w-full text-sky-600">
+										<a data-tippy-content="Éditer ce récit (paramétrage, édition, statistiques approfondies...)" href="{{ path("app_publication_edit", {id:item.id}) }}" class="w-full text-sky-600 dark:text-slate-300">
 											<span class="material-symbols-outlined">
 												edit_note
 											</span>
@@ -247,7 +247,7 @@
 									<td class="px-6 py-3 relative">
 
 
-										<span data-pub-id="{{ path("app_publication_delete", {id:item.id}) }}" data-tippy-content="Supprimer ce récit" class="delete-pub  material-symbols-outlined cursor-pointer text-red-500" data-url-delete="" data-micromodal-trigger="popup-confirm-delete">
+										<span data-pub-id="{{ path("app_publication_delete", {id:item.id}) }}" data-tippy-content="Supprimer ce récit" class="delete-pub  material-symbols-outlined cursor-pointer text-red-500 dark:text-red-300" data-url-delete="" data-micromodal-trigger="popup-confirm-delete">
 											delete
 										</span>
 
@@ -334,20 +334,20 @@
 		<div class="modal__overlay" tabindex="-1" data-micromodal-close>
 			<div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="popup-confirm-delete-title">
 				<div class="py-3 text-center w-42  rounded-2xl">
-					<div class="text-4xl mb-5 text-red-600">
+					<div class="text-4xl mb-5 text-red-600 dark:text-red-400">
 						<span class="material-symbols-outlined text-2xl">
 							delete
 						</span>
 					</div>
-					<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Êtes-vous certain(e) de vouloir supprimer<br/>
+					<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-slate-300">Êtes-vous certain(e) de vouloir supprimer<br/>
 						ce récit ?</h3>
 					<p class="text-center text-red-500 font-normal">
 						Cette action est irréversible.</p>
-					<div class="mt-10">
-						<button id="confirm-delete-button" data-micromodal-close type="button" class="text-white bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+					<div class="mt-10 flex justify-center gap-x-3">
+						<button id="confirm-delete-button" data-micromodal-close type="button" class="button-classic button-red">
 							Oui, je suis certain(e)
 						</button>
-						<button type="button" data-micromodal-close class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10  dark:text-slate-800 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Non, j'annule</button>
+						<button type="button" data-micromodal-close class="button-classic button-slate">Non, j'annule</button>
 					</div>
 				</div>
 

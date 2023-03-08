@@ -6,7 +6,6 @@
 {% block body %}
 
 	<turbo-frame id="profil_up">
-
 		{{ form_start(editUserForm, { attr: {'data-turbo-frame':'_top','action':path("app_user_edit", {"username" : app.user.username})}}) }}
 		<div class=" w-6/6 mx-auto">
 			<div class="grid grid-cols-3  relative mb-10">
@@ -36,7 +35,7 @@
 
 			</div>
 		</div>
-		<div class="bg-white dark:bg-slate-700 rounded bg-opacity-80 w-6/6 md:w-5/6 mx-auto p-10 pb-0 ring-1 ring-gray-300 dark:ring-slate-800 -mt-14 md:mt-14 ">
+		<div class="bg-white dark:bg-slate-800 shadow-lg rounded bg-opacity-80 w-6/6 md:w-5/6 mx-auto p-10 pb-0 ring-1 ring-gray-300 dark:ring-slate-800 -mt-14 md:mt-14 ">
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-0">
 				<div>
 					{{ form_label(editUserForm.nickname) }}

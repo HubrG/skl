@@ -574,10 +574,10 @@ opacity: 0.4;
 	@apply   bg-sky-50 text-sky-900 ring-sky-400 border-sky-600 dark:bg-sky-900 dark:text-sky-50 dark:ring-sky-400 dark:border-sky-600;
 }
 .tippy-box {
-	@apply bg-slate-800 dark:bg-slate-900 text-center py-1 px-1 w-full text-sm;
+	@apply bg-slate-800 dark:bg-slate-700 text-center py-1 px-1 w-full text-xs;
 }
 .tippy-arrow {
-	@apply bg-slate-800 dark:bg-slate-900 text-slate-900;
+	@apply bg-slate-800 dark:bg-slate-700 text-slate-900 dark:text-slate-700;
 }
 .dropdown-sort-swap {
 	@apply  opacity-25;

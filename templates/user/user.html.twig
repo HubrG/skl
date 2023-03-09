@@ -12,7 +12,7 @@
 
 	<section class="col-span-12 md:col-span-10 md:col-start-2">
 		<turbo-frame id="up_profil" class="w-full md:flex pt-5 gap-x-5">
-			<div class="w-full md:w-3/12 first:p-2 text-center">
+			<div class="w-full md:w-3/12 py-10 px-5 text-center bg-slate-100 dark:bg-slate-900 mb-10 rounded-lg">
 				<img class="w-40 h-40 mx-auto rounded-full shadow-lg object-fill dark:ring-gray-500 {{ not userInfo.profilPicture ? " grayscale"}}" src="{{userInfo.profilPicture ? userInfo.profilPicture : "https://via.placeholder.com/500/500"}}">
 				<h1 class="text-3xl md:text-xl font-medium text-center mb-0 mt-5 py-2 px-2 rounded text-slate-700 font-sans">{{ userInfo.nickname }}</h1>
 
@@ -60,7 +60,7 @@
 					<hr class="block mt-10 md:hidden">
 				{% endif %}
 			</div>
-			<div class="w-full md:w-9/12 parent border-l-0 md:border-l-[1px] pl-0 md:pl-10 dark:border-slate-700">
+			<div class="w-full md:w-9/12 parent border-l-0  pl-0 md:pl-10 dark:border-slate-700">
 				<h2 class="{{pubInfo|length > 1 ? "text-left" : "text-center"}} text-left text-4xl text-slate-800 dark:text-slate-300 child flex items-center gap-x-5">
 					<span class="material-symbols-outlined">
 						menu_book

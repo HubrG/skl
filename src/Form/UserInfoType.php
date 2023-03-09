@@ -20,7 +20,7 @@ class UserInfoType extends AbstractType
         $builder
             ->add('nickname', TextType::class, [
                 'required' => false,
-                'label' => 'Quel est votre nom d\'auteur ?',
+                'label' => 'Votre nom d\'auteur ?',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Vous devez entrer un nom',
@@ -28,23 +28,23 @@ class UserInfoType extends AbstractType
                 ]
             ])
             ->add('about', TextareaType::class, [
-                'label' => 'Comment vous présenteriez-vous ?',
+                'label' => 'Présentation',
                 'required' => false
             ])
             ->add('facebook', UrlType::class, [
-                'label' => 'Collez ici l\'adresse de votre profil Facebook',
+                'label' => 'Adresse de votre profil Facebook',
                 'required' => false
             ])
             ->add('twitter', UrlType::class, [
-                'label' => 'Collez ici l\'adresse de votre profil Twitter',
+                'label' => 'Adresse de votre profil Twitter',
                 'required' => false
             ])
             ->add('website', UrlType::class, [
-                'label' => 'Collez ici l\'adresse de votre site web personnel',
+                'label' => 'Adresse de votre site web personnel',
                 'required' => false
             ])
             ->add('instagram', UrlType::class, [
-                'label' => 'Collez ici l\'adresse de votre profil Instagram',
+                'label' => 'Adresse de votre profil  Instagram',
                 'required' => false
             ]);
     }

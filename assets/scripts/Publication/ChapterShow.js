@@ -103,6 +103,17 @@ export function ShowChapter() {
     let selectedTextContext = "";
     let selectedTextP = "";
 
+    //*ANCHOR - partage sur les réseaux sociaux
+    const twitterB = document.querySelectorAll(".shareTwitter");
+    twitterB.forEach(handleClick(() => shareNw("twitter")));
+
+    const fbB = document.querySelectorAll(".shareFb");
+    fbB.forEach(handleClick(() => shareNw("facebook")));
+
+    const lkB = document.querySelectorAll(".shareLk");
+    lkB.forEach(handleClick(() => shareNw("linkedin")));
+    //*
+
     chapArticle.addEventListener("mouseup", (e) => {
       if (window.getSelection().toString().length > 0) {
         tooltip.classList.remove("hidden");
@@ -115,16 +126,7 @@ export function ShowChapter() {
       if (!selection.toString()) {
         return;
       }
-      //*ANCHOR - partage sur les réseaux sociaux
-      const twitterB = document.querySelectorAll(".shareTwitter");
-      twitterB.forEach(handleClick(() => shareNw("twitter")));
 
-      const fbB = document.querySelectorAll(".shareFb");
-      fbB.forEach(handleClick(() => shareNw("facebook")));
-
-      const lkB = document.querySelectorAll(".shareLk");
-      lkB.forEach(handleClick(() => shareNw("linkedin")));
-      //*
       const startNode = selection.anchorNode;
       const startOffset = selection.anchorOffset;
       const endNode = selection.focusNode;

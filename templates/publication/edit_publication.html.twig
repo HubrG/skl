@@ -164,7 +164,7 @@
 					</ul>
 				{% endif %}
 				<div id="accordion-flush" data-accordion="open" data-active-classes="text-gray-900 dark:text-white" class="list-group" data-inactive-classes="text-gray-500 dark:text-gray-400">
-					<h2 id="accordion-flush-heading-1" class="border-b-[1px] border-b-slate-200 shadow  px-5  rounded mt-5 dark:border-b-slate-900  dark:bg-slate-700 dark:shadow-lg ">
+					<h2 id="accordion-flush-heading-1" class="border-b-[1px] border-b-slate-200 shadow  px-5  rounded mt-5 dark:border-b-slate-900  dark:bg-transparent dark:shadow-lg ">
 						<button type="button" class="flex items-center justify-between w-full py-5 font-medium text-left  dark:border-gray-700 dark:text-gray-400" data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
 							<span class="opacity-80">
 								<span class="material-symbols-outlined">
@@ -180,7 +180,7 @@
 					<div id="accordion-flush-body-1" class="hidden" aria-labelledby="accordion-flush-heading-1">
 						<div id="itemsChap" class=" flex-col grid-cols-1 md:grid-cols-2 grid justify-center gap-x-5">
 							{% if infoPub.publicationChapters|length == 0 %}
-								<div class="w-full text-center bg-slate-100 dark:bg-slate-700 items-center justify-center justify-items-center flex-cols dark:text-slate-100 text-slate-600 rounded  mt-3 opacity-80 hover:opacity-100" id="noPublication">
+								<div class="w-full text-center bg-slate-100 dark:bg-slate-700 items-center justify-center justify-items-center flex-cols dark:text-slate-100 text-slate-600 rounded  mt-3 opacity-80 hover:opacity-100 border-2 border-slate-200 dark:border-slate-900" id="noPublication">
 									<p class="w-full h-full flex-row grid-cols-1 grid items-center justify-items-center place-items-center font-medium leading-5">
 										<a class="h-full px-5 py-0 grid-rows-2 grid-cols-1 grid items-center justify-items-center place-items-center font-medium leading-5" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}#first" target="_top">
 											<span class="flex justify-items-end text-slate-900 dark:text-slate-100 text-base self-end">
@@ -206,7 +206,7 @@
 										</span>
 									</p>
 									<p class="text-xs flex font-normal gap-x-2 opacity-70">
-										<span class="material-symbols-outlined">
+										<span class="material-symbols-outlined  text-white">
 											receipt_long
 										</span>
 										<span>
@@ -215,7 +215,7 @@
 										</span>
 									</p>
 									<p class="text-xs  font-normal flex gap-x-2  opacity-70">
-										<span class="material-symbols-outlined">
+										<span class="material-symbols-outlined  text-white">
 											numbers
 										</span>
 										<span>
@@ -233,7 +233,7 @@
 									{% endif %}
 								{% endfor %}
 								{% if var %}
-									<div class="w-full text-center bg-emerald-500 dark:bg-amber-200 dark:opacity-70 rounded items-center justify-center justify-items-center flex-colsrounded  border-dashed mt-3 " id="noPublication">
+									<div class="w-full text-center bg-emerald-500 dark:bg-amber-200 dark:opacity-70 rounded items-center justify-center justify-items-center flex-colsrounded  mt-3 " id="noPublication">
 										<p class="w-full h-full px-5 pt-5 grid-rows-1 grid-cols-1 grid pb-5 items-center justify-items-center place-items-center font-medium leading-5">
 											<span class="text-emerald-50 dark:text-amber-900 text-base  px-5 pt-5 grid-rows-2 grid-cols-1 grid pb-5 items-center justify-items-center place-items-center font-medium leading-5" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}#first" target="_top">
 												<span class="">
@@ -257,13 +257,13 @@
 											</span>
 										</p>
 										<p class="text-xs flex font-normal gap-x-2  text-slate-600 dark:text-slate-400">
-											<span class="material-symbols-outlined items-center">
+											<span class="material-symbols-outlined items-center text-white">
 												open_with
 											</span>
 											Vous pouvez la publier en la glissant dans cet espace
 										</p>
 										<p class="text-xs flex font-normal gap-x-2  text-slate-600 dark:text-slate-400">
-											<span class="material-symbols-outlined items-center">
+											<span class="material-symbols-outlined items-center text-white">
 												numbers
 											</span>
 											Vous pouvez également modifier l'ordre par lequel les feuilles publiées sont affichées. Cet ordre déterminera la façon dont vos lecteurs parcourront vos feuilles.
@@ -275,7 +275,7 @@
 							{% include "publication/_partials/_edit_publication_show_chapters.html.twig" with {withStatus:2} %}
 						</div>
 					</div>
-					<h2 id="accordion-flush-heading-2" class=" border-b-[1px] border-b-slate-200 shadow  px-5  rounded mt-5 dark:border-b-slate-900  dark:bg-slate-700 dark:shadow-lg">
+					<h2 id="accordion-flush-heading-2" class=" border-b-[1px] border-b-slate-200 shadow  px-5  rounded mt-5 dark:border-b-slate-900  dark:bg-transparent dark:shadow-lg">
 						<button type="button" class="flex items-center justify-between w-full py-5 font-medium text-left   dark:border-slate-700 dark:text-slate-400" data-accordion-target="#accordion-flush-body-2" aria-expanded="true" aria-controls="accordion-flush-body-2">
 							<span class="opacity-80">
 								<span class="material-symbols-outlined">

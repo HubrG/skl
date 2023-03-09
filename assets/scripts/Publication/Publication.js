@@ -249,7 +249,11 @@ function publishPublication(ev) {
       publish.classList.remove("button-emerald");
       publishToggle.classList.add("peer-checked:bg-red-600");
       ASTooltip.classList.remove("hidden");
-      ASText.classList.add("cursor-default", "text-slate-400");
+      ASText.classList.add(
+        "cursor-default",
+        "text-slate-400",
+        "dark:text-slate-600"
+      );
       ASText.classList.remove("cursor-pointer");
       badgePubStatus.classList.toggle("badge-unpublished");
       badgePubStatus.classList.toggle("badge-published");
@@ -263,7 +267,11 @@ function publishPublication(ev) {
       publishToggle.classList.remove("peer-checked:bg-red-600");
       publishToggle.classList.add("bg-slate-200", "peer-checked:bg-slate-600");
       ASTooltip.classList.add("hidden");
-      ASText.classList.remove("cursor-default", "text-slate-400");
+      ASText.classList.remove(
+        "cursor-default",
+        "text-slate-400",
+        "dark:text-slate-600"
+      );
       ASText.classList.add("cursor-pointer");
       badgePubStatus.classList.toggle("badge-unpublished");
       badgePubStatus.classList.toggle("badge-published");

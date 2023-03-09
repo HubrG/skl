@@ -4,7 +4,7 @@
 @import '~animate.css/animate.css';
 @import "~noty/lib/noty.css";
 @import "~noty/lib/themes/semanticui.css";
-@import url('https://fonts.googleapis.com/css2?family=Gilda+Display&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Solitreo&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gilda+Display&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&family=Solitreo&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons&display=swap');
 @import url('modal.css');
@@ -57,7 +57,7 @@
 * {
 	@apply font-sans;
 	font-display: swap;
-	transition: color 0.1s ease-in-out, background-color 0.1s ease-in-out;
+	transition: color .1s ease, background-color .1s ease;
 	
 }
 body {
@@ -67,10 +67,6 @@ body {
 body.turbo-loading, body.turbo-loaded {
 	opacity: 0.5;
 	@apply dark:bg-slate-800
-}
-.dark {
-	transition: color 5s ease-in-out, background-color 5s ease-in-out;
-
 }
 footer {
 	@apply shadow-2xl  border-slate-600 z-10;
@@ -137,10 +133,7 @@ hr {
 a {
   transition: all 0.3s ease-in-out;
 }
-form label.required:after {
-		content: " *";
-		@apply text-pink-500
-}
+
 form label+ul>li, .form-error {
 		@apply text-rose-500 text-sm -mt-2 mb-2;
 }
@@ -151,7 +144,7 @@ form hr {
 	@apply h-px my-8 bg-gray-200 border-0 dark:bg-gray-700
 }
 form label {
-		@apply block -mb-2 font-medium text-slate-800 dark:text-white  text-sm;
+		@apply block -mb-2 font-semibold text-slate-800 dark:text-white  text-sm;
 }
 form input[type=checkbox] {
 	@apply w-4 h-4 cursor-pointer rounded focus:ring-green-500 dark:focus:ring-green-600 text-green-500 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600
@@ -633,4 +626,13 @@ opacity: 0.4;
 }
 .no-cover {
 	@apply p-10 text-2xl flex h-80 bg-white shadow-md rounded-md dark:bg-slate-700  text-slate-500 hover:text-slate-900  dark:text-slate-400 dark:hover:text-slate-200;
+}
+.item-user-menu {
+	@apply w-full gap-x-2 border-t-4 border-opacity-50 border-t-slate-400 items-center  shadow-inner  dark:hover:shadow-inner dark:shadow-slate-900  dark:border-t-slate-700   font-semibold p-5 h-16 bg-slate-50 text-slate-600 dark:text-slate-300 hover:bg-white hover:text-slate-900  dark:bg-slate-900 dark:hover:bg-slate-800  flex justify-center;
+}
+.item-user-menu-selected {
+	@apply bg-white dark:bg-slate-800 shadow-none  dark:shadow-inner;
+}
+.li-user-menu {
+	@apply flex-1 text-sm;
 }

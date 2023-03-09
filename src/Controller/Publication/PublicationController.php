@@ -322,7 +322,7 @@ class PublicationController extends AbstractController
 
             $em->remove($publication);
             $em->flush();
-            $this->addFlash("success", "Le récit a bien été supprimée.");
+            $this->addFlash("success", "Le récit a bien été supprimé.");
         } else {
             return $this->redirectToRoute("app_home");
         }

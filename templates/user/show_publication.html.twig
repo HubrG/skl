@@ -1,9 +1,3 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Mes publications
-{% endblock %}
-
-
 {% set route_params = app.request.attributes.get('_route_params') %}
 {% set order = route_params.order|default('desc') %}
 {% set sort = route_params.sort|default("published_date") %}
@@ -14,322 +8,295 @@
 	{% set order = "asc" %}
 	{% set chevron = "<span class='material-icons  text-slate-600 font-bold'>expand_more</span>" %}
 {% endif %}
+{% extends 'base.html.twig' %}
 
+{% block title %}
+	Mes récits
+																										—
+	{{ parent() }}
+
+{% endblock %}
 {% block body %}
-	<style>
-		#section_profil
-		{
-			position: inherit;
-			z-index: 1;
-		}
-		#section_profil::before
-		{
-			content: "";
-			position: absolute;
-			display: inline;
-			top: 0;
-			left: 0;
-			right: 0;
-			width: 100%;
-			min-height: 30vh;
-			height: 36vh;
-			opacity: 0.1;
-			z-index: -99999999999;
-			background-position: center;
-			background-image: url('{{app.user.profilBackground}}');
-
-		}
-	</style>
-	<section class="col-span-12 min-h-screen mt-[1.3rem] md:mt-[0.6rem] before:bg-cover before:-z-[9999] {{ app.user.profilBackground ? " before:border-b-[1px]" }} before:border-b-black" id="section_profil">
-		<h1 class="text-center font-serif">
-			<span class="material-symbols-outlined">
-				auto_stories
-			</span><br/>
-			Mes récits
-		</h1>
-		{% if publication|length == 0 %}
-			<div class="flex flex-col items-center justify-center mt-[6.8rem] border-t border-t-slate-300 pt-10">
-				<span class="material-symbols-outlined text-5xl">
-					cloud_off
+	{% include "user/_partials/_top.html.twig" %}
+	{% if publication|length == 0 %}
+		<div class="flex flex-col items-center justify-center mt-[6.8rem] border-t border-t-slate-300 pt-10">
+			<span class="material-symbols-outlined text-5xl">
+				cloud_off
+			</span>
+			<h2 class="text-2xl ">Vous n'avez pas encore publié de récit</h2>
+			<a href="{{path("app_publication_add")}}" class="btn btn-primary mt-5 hover:underline">Publier un récit
+				<span class="material-icons">
+					redo
 				</span>
-				<h2 class="text-2xl ">Vous n'avez pas encore publié de récit</h2>
-				<a href="{{path("app_publication_add")}}" class="btn btn-primary mt-5 hover:underline">Publier un récit
-					<span class="material-icons">
-						redo
-					</span>
-				</a>
+			</a>
+		</div>
+	{% endif %}
+	{% if publication|length > 0 %}
+		<div class=" overflow-x-auto h-auto relative lg:absolute lg:flex-1 justify-center w-full left-0">
+			<turbo-frame id="publication-frame">
+				<table class="w-full text-left text-slate-500 dark:text-slate-400  h-64 text-xs -mt-3  ">
+					<thead class=" text-slate-700 font-semibold text-sm   dark:text-slate-300 text-center border-b-2 border-b-slate-200 dark:border-slate-700">
+						<tr>
+							<th data-tippy-content="Statut de la publication" scope="col" class=" text-center">
+								<a href="{{path("app_user_show_publications", {sort:"status", order:order})}}">
+									<span class="material-{{sort == 'status' ? 'icons' : 'symbols-outlined'}}">
+										cloud_upload
+									</span>
+									{% if sort == "status" %}
+										{{chevron|raw}}
+									{% else %}
+										<span class="material-symbols-outlined opacity-50">
+											unfold_more
+										</span>
+									{% endif %}
+								</a>
+							</th>
+							<th data-tippy-content="Statut de la publication" scope="col" class="px-6 text-center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+							<th scope="col" class="px-6 py-3 font-normal">
+								<a href="{{path("app_user_show_publications", {sort:"title", order:order})}}" class="{{sort == 'title' ? 'font-semibold'}}">
+									Récits
+									{% if sort == "title" %}
+										{{chevron|raw}}
+									{% else %}
+										<span class="material-symbols-outlined opacity-50">
+											unfold_more
+										</span>
+									{% endif %}
+								</a>
+							</th>
+							<th scope="col" class="px-6 py-3"></th>
+							<th scope="col" class="px-6 py-3"></th>
+							<th data-tippy-content="Crée il y a..." scope="col" class="py-3 pl-2 text-center">
+								<a href="{{path("app_user_show_publications", {sort:"created", order:order})}}">
+									<span class="material-{{sort == 'created' ? 'icons' : 'symbols-outlined'}}">
+										calendar_today
+									</span>
+									{% if sort == "created" %}
+										{{chevron|raw}}
+									{% else %}
+										<span class="material-symbols-outlined opacity-50">
+											unfold_more
+										</span>
+									{% endif %}
+								</a>
+							</th>
+							<th data-tippy-content="Nombre de feuilles publiées" scope="col" class="py-3 pl-2 text-center">
+								<a href="{{path("app_user_show_publications", {sort:"chapters", order:order})}}">
+									<span class="material-{{sort == 'chapters' ? 'icons' : 'symbols-outlined'}}">
+										format_list_bulleted
+									</span>
+									{% if sort == "chapters" %}
+										{{chevron|raw}}
+									{% else %}
+										<span class="material-symbols-outlined opacity-50">
+											unfold_more
+										</span>
+									{% endif %}
+								</a>
+							</th>
+							<th data-tippy-content="Catégorie" scope="col" class="py-3 pl-2">
+								<a href="{{path("app_user_show_publications", {sort:"category", order:order})}}">
+									<span class="material-{{sort == 'category' ? 'icons' : 'symbols-outlined'}}">
+										category
+									</span>
+									{% if sort == "category" %}
+										{{chevron|raw}}
+									{% else %}
+										<span class="material-symbols-outlined opacity-50">
+											unfold_more
+										</span>
+									{% endif %}
+								</a>
+							</th>
 
-			</div>
-		{% endif %}
-		{% if publication|length > 0 %}
-			<hr class="h-[0.4rem] bg-slate-200 dark:bg-slate-900 rounded-t border-0  mt-14 mb-0">
-			<div class="relative overflow-x-auto h-auto  ">
-				<turbo-frame id="publication-frame">
-					<table class="w-full text-left text-gray-500 dark:text-gray-400 shadow-inner h-64 text-xs  ">
-						<thead class=" text-slate-700 font-semibold text-sm  bg-gray-50 dark:bg-slate-900 dark:text-slate-300 text-center border-b-[1px] border-b-slate-200 dark:border-slate-900">
-							<tr>
-								<th data-tippy-content="Statut de la publication" scope="col" class=" text-center">
-									<a href="{{path("app_user_show_publications", {sort:"status", order:order})}}">
-										<span class="material-{{sort == 'status' ? 'icons' : 'symbols-outlined'}}">
-											cloud_upload
+							<th data-tippy-content="Nombre de lecteurs" scope="col" class="py-3 pl-2">
+								<a href="{{path("app_user_show_publications", {sort:"views", order:order})}}">
+									<span class="material-{{sort == 'views' ? 'icons' : 'symbols-outlined'}}">
+										visibility
+									</span>
+									{% if sort == "views" %}
+										{{chevron|raw}}
+									{% else %}
+										<span class="material-symbols-outlined opacity-50">
+											unfold_more
 										</span>
-										{% if sort == "status" %}
-											{{chevron|raw}}
-										{% else %}
-											<span class="material-symbols-outlined opacity-50">
-												unfold_more
-											</span>
-										{% endif %}
-									</a>
-								</th>
-								<th data-tippy-content="Statut de la publication" scope="col" class="px-6 text-center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-								<th scope="col" class="px-6 py-3 font-normal">
-									<a href="{{path("app_user_show_publications", {sort:"title", order:order})}}" class="{{sort == 'title' ? 'font-semibold'}}">
-										Récits
-										{% if sort == "title" %}
-											{{chevron|raw}}
-										{% else %}
-											<span class="material-symbols-outlined opacity-50">
-												unfold_more
-											</span>
-										{% endif %}
-									</a>
-								</th>
-								<th scope="col" class="px-6 py-3"></th>
-								<th scope="col" class="px-6 py-3"></th>
-								<th data-tippy-content="Crée il y a..." scope="col" class="py-3 pl-2 text-center">
-									<a href="{{path("app_user_show_publications", {sort:"created", order:order})}}">
-										<span class="material-{{sort == 'created' ? 'icons' : 'symbols-outlined'}}">
-											calendar_today
+									{% endif %}
+								</a>
+							</th>
+
+							<th data-tippy-content="Nombre de commentaires" scope="col" class="py-3 pl-2">
+								<a href="{{path("app_user_show_publications", {sort:"comments", order:order})}}">
+									<span class="material-{{sort == 'comments' ? 'icons' : 'symbols-outlined'}}">
+										forum
+									</span>
+									{% if sort == "comments" %}
+										{{chevron|raw}}
+									{% else %}
+										<span class="material-symbols-outlined opacity-50">
+											unfold_more
 										</span>
-										{% if sort == "created" %}
-											{{chevron|raw}}
-										{% else %}
-											<span class="material-symbols-outlined opacity-50">
-												unfold_more
-											</span>
-										{% endif %}
-									</a>
-								</th>
-								<th data-tippy-content="Nombre de feuilles publiées" scope="col" class="py-3 pl-2 text-center">
-									<a href="{{path("app_user_show_publications", {sort:"chapters", order:order})}}">
-										<span class="material-{{sort == 'chapters' ? 'icons' : 'symbols-outlined'}}">
-											format_list_bulleted
+									{% endif %}
+								</a>
+							</th>
+							<th data-tippy-content="Nombre de j'aime" scope="col" class="py-3 pl-2 flex">
+								<a href="{{path("app_user_show_publications", {sort:"likes", order:order})}}">
+									<span class="material-{{sort == 'likes' ? 'icons' : 'symbols-outlined'}}">
+										thumb_up
+									</span>
+									{% if sort == "likes" %}
+										{{chevron|raw}}
+									{% else %}
+										<span class="material-symbols-outlined opacity-50">
+											unfold_more
 										</span>
-										{% if sort == "chapters" %}
-											{{chevron|raw}}
-										{% else %}
-											<span class="material-symbols-outlined opacity-50">
-												unfold_more
-											</span>
-										{% endif %}
-									</a>
-								</th>
-								<th data-tippy-content="Catégorie" scope="col" class="py-3 pl-2">
-									<a href="{{path("app_user_show_publications", {sort:"category", order:order})}}">
-										<span class="material-{{sort == 'category' ? 'icons' : 'symbols-outlined'}}">
-											category
+									{% endif %}
+								</a>
+							</th>
+							<th data-tippy-content="Nombre de téléchargements" scope="col" class=" py-3 pl-2">
+								<a href="{{path("app_user_show_publications", {sort:"downloads", order:order})}}">
+									<span class="material-{{sort == 'downloads' ? 'icons' : 'symbols-outlined'}}">
+										download
+									</span>
+									{% if sort == "downloads" %}
+										{{chevron|raw}}
+									{% else %}
+										<span class="material-symbols-outlined opacity-50">
+											unfold_more
 										</span>
-										{% if sort == "category" %}
-											{{chevron|raw}}
-										{% else %}
-											<span class="material-symbols-outlined opacity-50">
-												unfold_more
-											</span>
-										{% endif %}
-									</a>
+									{% endif %}
+								</a>
+							</th>
+							<th data-tippy-content="Popularité" scope="col" class="px-6 py-3 pl-2">
+								<a href="{{path("app_user_show_publications", {sort:"pop", order:order})}}">
+									<span class="material-{{sort == 'pop' ? 'icons' : 'symbols-outlined'}}">
+										insights
+									</span>
+									{% if sort == "pop" %}
+										{{chevron|raw}}
+									{% else %}
+										<span class="material-symbols-outlined opacity-50">
+											unfold_more
+										</span>
+									{% endif %}
+								</a>
+							</th>
+						</tr>
+					</thead>
+
+					<tbody class="text-center items-center justify-items-center ">
+						{% for item in publication %}
+							<tr class="bg-white dark:bg-transparent text-sm dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-slate-700 items-center">
+								<td class="px-6 py-3  {{item.status < 2 ? " opacity-60"}}">
+									{% if item.status > 1 %}
+										<span data-tippy-content="Publié" class="flex w-3 h-3 mx-auto bg-green-500 rounded-full"></span>
+									{% else %}
+										<span data-tippy-content="Dépublié" class="flex w-3 h-3 mx-auto bg-red-500 rounded-full"></span>
+
+									{% endif %}
+								</td>
+
+								<td class="px-6 py-3  {{item.status < 2 ? " opacity-60"}}">
+									<img src="{{item.cover ? item.cover : "https://via.placeholder.com/150"}}" class="rounded-full  h-6 w-6 block">
+								</td>
+
+								<th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white flex  {{item.status < 2 ? " opacity-60"}}">
+
+
+									<a {% if item.title|length > 30 %} data-tippy-content="{{item.title}}" {% endif %} href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug} ) }}" class=" hover:underline">{{ item.title|slice(0,30) }}{{item.title|length > 30 ? "..."}}</a>
+
 								</th>
 
-								<th data-tippy-content="Nombre de lecteurs" scope="col" class="py-3 pl-2">
-									<a href="{{path("app_user_show_publications", {sort:"views", order:order})}}">
-										<span class="material-{{sort == 'views' ? 'icons' : 'symbols-outlined'}}">
-											visibility
+								<td class="px-6 py-3 relative">
+									<a data-tippy-content="Éditer ce récit (paramétrage, édition, statistiques approfondies...)" href="{{ path("app_publication_edit", {id:item.id}) }}" class="w-full text-sky-600 dark:text-slate-300">
+										<span class="material-symbols-outlined">
+											edit_note
 										</span>
-										{% if sort == "views" %}
-											{{chevron|raw}}
-										{% else %}
-											<span class="material-symbols-outlined opacity-50">
-												unfold_more
-											</span>
-										{% endif %}
 									</a>
-								</th>
+								</td>
+								<td class="px-6 py-3 relative">
 
-								<th data-tippy-content="Nombre de commentaires" scope="col" class="py-3 pl-2">
-									<a href="{{path("app_user_show_publications", {sort:"comments", order:order})}}">
-										<span class="material-{{sort == 'comments' ? 'icons' : 'symbols-outlined'}}">
-											forum
+
+									<span data-pub-id="{{ path("app_publication_delete", {id:item.id}) }}" data-tippy-content="Supprimer ce récit" class="delete-pub  material-symbols-outlined cursor-pointer text-red-500 dark:text-red-300" data-url-delete="" data-micromodal-trigger="popup-confirm-delete">
+										delete
+									</span>
+
+								</td>
+
+								<td class="px-6 py-3 text-[0.7rem] {{item.status < 2 ? " opacity-60"}}">
+									{{item.created|since()}}
+								</td>
+								<td class="px-6 py-3  {{item.status < 2 ? " opacity-60"}}">
+									{% set filteredChapters = item.publicationChapters|filter(chapter => chapter.status == 2) %}
+									<span>{{filteredChapters|length}}</span>
+								</td>
+								<td class="px-6 py-3  {{item.status < 2 ? " opacity-60"}}">
+									{% if item.category.slug is defined %}
+										{% set slug = item.category.slug %}
+									{% else %}
+										{% set slug = "all" %}
+									{% endif %}
+									<a href="{{path("app_publication_show_all_category", {slug:slug})}}">
+										<span {% if item.category %} {% if item.category.name|length > 9 %} data-tippy-content="{{item.category.name}}" {% endif %} {% endif %} class="text-xs catTag catColor-{{item.category.color is defined ? item.category.color : 11}} ">{{item.category.name is not defined ? "Aucune" : item.category.name|length > 9 ? item.category.name|slice(0,9) ~ "..." : item.category.name }}</a>
+									</td>
+								</td>
+								<td class="px-6 py-3  {{item.status < 2 ? " opacity-60"}}">
+									{% set totalViews = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterViews|length, 0) %}
+									{{totalViews}}
+								</td>
+								<td class="px-6 py-3  {{item.status < 2 ? " opacity-60"}}">
+
+									{{item.publicationComments|length}}
+
+								</td>
+								<td class="px-6 py-3  {{item.status < 2 ? " opacity-60"}}">
+									{% set totalLikes = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterLikes|length, 0) %}
+									{{totalLikes}}
+								</td>
+								<td class="px-6 py-3  {{item.status < 2 ? " opacity-60"}}">
+									{{item.PublicationDownloads|length}}
+								</td>
+								<td class="px-6 py-3 flex gap-x-2  {{item.status < 2 ? " opacity-60"}}">
+									{% set lastPopularity = 0 %}
+									{% if item.PublicationPopularities|length > 1 %}
+										{% set nbr = item.PublicationPopularities|length %}
+										{% set nbr = nbr - 1 %}
+										{% set lastPopularity = item.PublicationPopularities[nbr].popularity %}
+									{% endif %}
+									{{item.pop}}
+									{% if item.pop < lastPopularity %}
+										<span class="material-icons  text-red-700">
+											arrow_circle_down
 										</span>
-										{% if sort == "comments" %}
-											{{chevron|raw}}
-										{% else %}
-											<span class="material-symbols-outlined opacity-50">
-												unfold_more
-											</span>
-										{% endif %}
-									</a>
-								</th>
-								<th data-tippy-content="Nombre de j'aime" scope="col" class="py-3 pl-2 flex">
-									<a href="{{path("app_user_show_publications", {sort:"likes", order:order})}}">
-										<span class="material-{{sort == 'likes' ? 'icons' : 'symbols-outlined'}}">
-											thumb_up
+									{% elseif item.pop == lastPopularity %}
+										<span class="material-symbols-outlined">
+											equal
 										</span>
-										{% if sort == "likes" %}
-											{{chevron|raw}}
-										{% else %}
-											<span class="material-symbols-outlined opacity-50">
-												unfold_more
-											</span>
-										{% endif %}
-									</a>
-								</th>
-								<th data-tippy-content="Nombre de téléchargements" scope="col" class=" py-3 pl-2">
-									<a href="{{path("app_user_show_publications", {sort:"downloads", order:order})}}">
-										<span class="material-{{sort == 'downloads' ? 'icons' : 'symbols-outlined'}}">
-											download
+									{% else %}
+										<span class="material-icons text-green-700">
+											arrow_circle_up
 										</span>
-										{% if sort == "downloads" %}
-											{{chevron|raw}}
-										{% else %}
-											<span class="material-symbols-outlined opacity-50">
-												unfold_more
-											</span>
-										{% endif %}
-									</a>
-								</th>
-								<th data-tippy-content="Popularité" scope="col" class="px-6 py-3 pl-2">
-									<a href="{{path("app_user_show_publications", {sort:"pop", order:order})}}">
-										<span class="material-{{sort == 'pop' ? 'icons' : 'symbols-outlined'}}">
-											insights
-										</span>
-										{% if sort == "pop" %}
-											{{chevron|raw}}
-										{% else %}
-											<span class="material-symbols-outlined opacity-50">
-												unfold_more
-											</span>
-										{% endif %}
-									</a>
-								</th>
+									{% endif %}
+								</td>
 							</tr>
-						</thead>
 
-						<tbody class="text-center items-center justify-items-center ">
-							{% for item in publication %}
-								<tr class="bg-white dark:bg-transparent text-sm dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-slate-700 items-center">
-									<td class="px-6 py-3  {{item.status < 2 ? " opacity-60"}}">
-										{% if item.status > 1 %}
-											<span data-tippy-content="Publié" class="flex w-3 h-3 mx-auto bg-green-500 rounded-full"></span>
-										{% else %}
-											<span data-tippy-content="Dépublié" class="flex w-3 h-3 mx-auto bg-red-500 rounded-full"></span>
-
-										{% endif %}
-									</td>
-
-									<td class="px-6 py-3  {{item.status < 2 ? " opacity-60"}}">
-										<img src="{{item.cover ? item.cover : "https://via.placeholder.com/150"}}" class="rounded-full  h-6 w-6 block">
-									</td>
-
-									<th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white flex  {{item.status < 2 ? " opacity-60"}}">
-
-
-										<a {% if item.title|length > 30 %} data-tippy-content="{{item.title}}" {% endif %} href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug} ) }}" class=" hover:underline">{{ item.title|slice(0,30) }}{{item.title|length > 30 ? "..."}}</a>
-
-									</th>
-
-									<td class="px-6 py-3 relative">
-										<a data-tippy-content="Éditer ce récit (paramétrage, édition, statistiques approfondies...)" href="{{ path("app_publication_edit", {id:item.id}) }}" class="w-full text-sky-600 dark:text-slate-300">
-											<span class="material-symbols-outlined">
-												edit_note
-											</span>
-										</a>
-									</td>
-									<td class="px-6 py-3 relative">
-
-
-										<span data-pub-id="{{ path("app_publication_delete", {id:item.id}) }}" data-tippy-content="Supprimer ce récit" class="delete-pub  material-symbols-outlined cursor-pointer text-red-500 dark:text-red-300" data-url-delete="" data-micromodal-trigger="popup-confirm-delete">
-											delete
-										</span>
-
-									</td>
-
-									<td class="px-6 py-3 text-[0.7rem] {{item.status < 2 ? " opacity-60"}}">
-										{{item.created|since()}}
-									</td>
-									<td class="px-6 py-3  {{item.status < 2 ? " opacity-60"}}">
-										{% set filteredChapters = item.publicationChapters|filter(chapter => chapter.status == 2) %}
-										<span>{{filteredChapters|length}}</span>
-									</td>
-									<td class="px-6 py-3  {{item.status < 2 ? " opacity-60"}}">
-										{% if item.category.slug is defined %}
-											{% set slug = item.category.slug %}
-										{% else %}
-											{% set slug = "all" %}
-										{% endif %}
-										<a href="{{path("app_publication_show_all_category", {slug:slug})}}">
-											<span {% if item.category %} {% if item.category.name|length > 9 %} data-tippy-content="{{item.category.name}}" {% endif %} {% endif %} class="text-xs catTag catColor-{{item.category.color is defined ? item.category.color : 11}} ">{{item.category.name is not defined ? "Aucune" : item.category.name|length > 9 ? item.category.name|slice(0,9) ~ "..." : item.category.name }}</a>
-										</td>
-									</td>
-									<td class="px-6 py-3  {{item.status < 2 ? " opacity-60"}}">
-										{% set totalViews = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterViews|length, 0) %}
-										{{totalViews}}
-									</td>
-									<td class="px-6 py-3  {{item.status < 2 ? " opacity-60"}}">
-
-										{{item.publicationComments|length}}
-
-									</td>
-									<td class="px-6 py-3  {{item.status < 2 ? " opacity-60"}}">
-										{% set totalLikes = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterLikes|length, 0) %}
-										{{totalLikes}}
-									</td>
-									<td class="px-6 py-3  {{item.status < 2 ? " opacity-60"}}">
-										{{item.PublicationDownloads|length}}
-									</td>
-									<td class="px-6 py-3 flex gap-x-2  {{item.status < 2 ? " opacity-60"}}">
-										{% set lastPopularity = 0 %}
-										{% if item.PublicationPopularities|length > 1 %}
-											{% set nbr = item.PublicationPopularities|length %}
-											{% set nbr = nbr - 1 %}
-											{% set lastPopularity = item.PublicationPopularities[nbr].popularity %}
-										{% endif %}
-										{{item.pop}}
-										{% if item.pop < lastPopularity %}
-											<span class="material-icons  text-red-700">
-												arrow_circle_down
-											</span>
-										{% elseif item.pop == lastPopularity %}
-											<span class="material-symbols-outlined">
-												equal
-											</span>
-										{% else %}
-											<span class="material-icons text-green-700">
-												arrow_circle_up
-											</span>
-										{% endif %}
-									</td>
-								</tr>
-
-							{% endfor %}
-							<tr>
-								<th>&nbsp;</th>
-							</tr>
-							<tr>
-								<th>&nbsp;</th>
-							</tr>
-							<tr>
-								<th>&nbsp;</th>
-							</tr>
-							<tr>
-								<th>&nbsp;</th>
-							</tr>
-						</tbody>
-					</table>
-				</turbo-frame>
-			</div>
-
-		{% endif %}
-	</section>
+						{% endfor %}
+						<tr>
+							<th>&nbsp;</th>
+						</tr>
+						<tr>
+							<th>&nbsp;</th>
+						</tr>
+						<tr>
+							<th>&nbsp;</th>
+						</tr>
+						<tr>
+							<th>&nbsp;</th>
+						</tr>
+					</tbody>
+				</table>
+			</turbo-frame>
+		</div>
+	{% endif %}
 	<div class="modal micromodal-slide z-50" id="popup-confirm-delete" aria-hidden="true">
 		<div class="modal__overlay" tabindex="-1" data-micromodal-close>
 			<div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="popup-confirm-delete-title">
@@ -354,5 +321,5 @@
 			</div>
 		</div>
 	</div>
-
+	{% include "user/_partials/_bottom.html.twig" %}
 {% endblock %}

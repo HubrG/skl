@@ -1,44 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modification du profil
+{% block title %}
+	Mes récits
+																								—
+	{{ parent() }}
+
 {% endblock %}
-
 {% block body %}
-	<style>
-		#section_profil
-		{
-			position: inherit;
-			z-index: 1;
-		}
-		#section_profil::before
-		{
-			content: "";
-			position: absolute;
-			display: inline;
-			top: 0;
-			left: 0;
-			right: 0;
-			width: 100%;
-			min-height: 30vh;
-			height: 36vh;
-			opacity: 0.1;
-			z-index: -99999999999;
-			background-position: center;
-			background-image: url('{{app.user.profilBackground}}');
-
-		}
-	</style>
-
-	<div class="col-span-10 col-start-2">
-		<h1 class="text-center font-serif block">
-			<span class="material-symbols-outlined">
-				manage_accounts
-			</span><br/>
-			Mon compte
-		</h1>
-	</div>
-
-	<section class="col-span-10 col-start-2 mt-5 flex gap-x-6 before:bg-cover before:-z-[9999] {{ app.user.profilBackground ? " before:border-b-[1px]" }} before:border-b-black" id="section_profil">
+	{% include "user/_partials/_top.html.twig" %}
+	<div class="flex">
 		<div class="w-3/6  bg-white  rounded border dark:border-slate-900 dark:bg-slate-700">
 			<div class="w-full  p-5 rounded-t border-b-[1px] bg-slate-50 dark:bg-slate-800  border-b-[#dee4e1] dark:border-b-slate-900 ">
 				<h2 class="text-xl text-center mt-2 font-medium text-[#00473e] dark:text-slate-100">
@@ -58,8 +28,6 @@
 				{% include "./partials/_form-row.html.twig" with {'form': form.country, 'icon':"public"} %}
 				{% include "./partials/_form-row.html.twig" with {'form': form.city, 'icon':"location_city"} %}
 				{% include "./partials/_form-row.html.twig" with {'form': form.birth, 'icon':"cake"} %}
-
-
 				<div class="flex justify-center">
 					<button type="submit" class="button-classic button-slate">
 						<span class="material-symbols-outlined">
@@ -96,7 +64,9 @@
 						{{ form_end(passwordForm) }}
 					</div>
 				</div>
-			</section>
+			</div>
+		</div>
+	</div>
+	{% include "user/_partials/_bottom.html.twig" %}
 
-
-		{% endblock %}
+{% endblock %}

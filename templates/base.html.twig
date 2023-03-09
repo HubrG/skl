@@ -26,7 +26,7 @@
 		{% include "/partials/_google-analytics.html.twig" %}
 		<script></script>
 	</head>
-	<body>
+	<body data-turbo-track="reload">
 		{% include "partials/_navbar.html.twig" %}
 		{# FLASHES #}
 		{% include "partials/_notif.html.twig" %}
@@ -35,7 +35,6 @@
 			{% block body %}{% endblock %}
 		</main>
 		{% include "partials/_footer.html.twig" %}
-		<script></script>
 	</body>
 
 </html>

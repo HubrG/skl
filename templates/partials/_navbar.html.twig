@@ -3,7 +3,7 @@
 	{# !! lire, écrire, corriger #}
 	<nav class="z-index:9999999">
 		<div class="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto text-center z-100">
-			<a href="{{ path("app_home")}}" target="_top" class="flex items-center  md:order-1 ">
+			<a href="{{ path("app_home")}}" target="_self" class="flex items-center  md:order-1 ">
 				<span id="logo" class="self-center text-3xl  whitespace-nowrap dark:text-white">
 					Scr<span class="relative">;</span>lab
 				</span>
@@ -35,7 +35,7 @@
 						</li>
 					{% else %}
 						<li>
-							<button data-micromodal-trigger="popup-register" class="text-slate-800 dark:text-slate-50 hover:bg-slate-50 focus:ring-4 focus:ring-slate-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-slate-700 focus:outline-none dark:focus:ring-slate-800">
+							<button data-micromodal-trigger="popup-register" target="_self" class="text-slate-800 dark:text-slate-50 hover:bg-slate-50 focus:ring-4 focus:ring-slate-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-slate-700 focus:outline-none dark:focus:ring-slate-800">
 								<span class="material-symbols-outlined">
 									draw
 								</span>
@@ -54,7 +54,8 @@
 									</span>
 								{% endif %}
 								<span id="username_login">
-									{{ app.user.username|length > 10 ? app.user.username|slice(0, 10) ~ '...' : app.user.username }}</span>
+									{{ app.user.username|length > 10 ? app.user.username|slice(0, 10) ~ '...' : app.user.username }}
+								</span>
 							</button>
 						</li>
 						<li>

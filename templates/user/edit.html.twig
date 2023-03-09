@@ -1,41 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modification du profil
+{% block title %}
+	Profil de
+	{{ userInfo.nickname }}
+	—
+	{{ parent() }}
+
 {% endblock %}
-
 {% block body %}
-
+	{% include "user/_partials/_top.html.twig" %}
 	<turbo-frame id="profil_up">
 		{{ form_start(editUserForm, { attr: {'data-turbo-frame':'_top','action':path("app_user_edit", {"username" : app.user.username})}}) }}
 		<div class=" w-6/6 mx-auto">
 			<div class="grid grid-cols-3  relative mb-10">
 				<div class="flex justify-center order-first md:order-first text-2xl mt-20 md:mt-0 gap-x-5"></div>
-				<label class="absolute mr-32 cursor-pointer font-semibold" for="pbg">
-					<p class="text-center text-indigo-600 bg-indigo-300 p-3 border-[1px] border-indigo-400 rounded-full bg-opacity-20 hover:text-indigo-900 hover:bg-opacity-40">
+				<label class="mx-auto cursor-pointer font-semibold" for="pbg">
+					<p class="button-classic button-sky mt-3">
 						<span class="material-symbols-outlined">
 							wallpaper
 						</span>
-						<span class="hidden md:inline">Modifier le fond d'écran</span>
+						<span>Modifier le fond d'écran</span>
 					</p>
 				</label>
-				<div class="relative grid grid-cols-1  order-2">
-					<label for="pp" class="cursor-pointer">
-						<div class="w-48 h-48 mx-auto rounded-full absolute inset-x-0 top-5 -mt-24 flex items-center justify-center text-indigo-500">
-							<img class="w-40 h-40 p-1 ring-4  ring-slate-200 rounded-full object-fill dark:ring-gray-500" id="profil_picture" src="{{app.user.profilPicture ? app.user.profilPicture : "https://via.placeholder.com/500/500"}}">
-							<div class="absolute inset-0 mt-[37%] ml-[38%] text-2xl">
-								<span class="material-symbols-outlined bg-white bg-opacity-30 p-2 rounded-full hover:bg-opacity-60 text-slate-900">
-									edit_square
-								</span>
-							</div>
-						</div>
-					</label>
-				</div>
 				<input type="file" class="hidden" id="pp" name="pp">
 				<input type="file" class="hidden" id="pbg" name="pbg">
-
 			</div>
+			<hr>
 		</div>
-		<div class="bg-white dark:bg-slate-800 shadow-lg rounded bg-opacity-80 w-6/6 md:w-5/6 mx-auto p-10 pb-0 ring-1 ring-gray-300 dark:ring-slate-800 -mt-14 md:mt-14 ">
+		<div class=" rounded  mx-auto px-10 pb-0 -mt-14 md:mt-14 ">
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-0">
 				<div>
 					{{ form_label(editUserForm.nickname) }}
@@ -113,4 +105,5 @@
 		<hr>
 
 	</turbo-frame>
+	{% include "user/_partials/_bottom.html.twig" %}
 {% endblock %}

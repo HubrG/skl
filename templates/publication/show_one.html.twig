@@ -96,9 +96,7 @@
 					<p class="text-base font-serif font-light text-justify italic text-slate-900 dark:text-slate-200 dark:[text-shadow: 0 0.5px 1px blanchedalmond;] leading-7 mt-1">
 						{% if orderChap %}
 							{% if pubShow.summary %}
-								<span class="material-symbols-outlined">
-									format_quote
-								</span>&nbsp;
+
 								{{ pubShow.summary }}... &nbsp;&nbsp;
 								<div class="mt-5"></div>
 							{% endif %}
@@ -110,11 +108,11 @@
 						{% endif %}
 					</p>
 				</div>
-				<a href="{{ path("app_chapter_show", {idChap:orderChap.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:orderChap.slug}) }}" class=" block mt-5 not-italic py-5 text-center w-full lg:w-3/6 px-10 bg-white   hover:bg-white text-slate-900 shadow hover:text-slate-900 bg-opacity-50 dark:bg-opacity-50 hover:bg-opacity-100 dark:bg-slate-800 dark:text-slate-100  dark:hover:bg-slate-900 rounded-lg">
+				<a href="{{ path("app_chapter_show", {idChap:orderChap.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:orderChap.slug}) }}" class=" block mt-5 not-italic py-5 text-center w-full lg:w-3/6 px-10 bg-white   hover:bg-white text-slate-800 shadow hover:text-slate-800 bg-opacity-50 dark:bg-opacity-50 hover:bg-opacity-100 dark:bg-slate-800 dark:text-slate-100  dark:hover:bg-slate-900 rounded-lg">
 					<span class="material-symbols-outlined">
 						local_library
 					</span>
-					<br/><span class="font-medium">Commencer la lecture</span>
+					<br/><span class="font-semibold">Commencer la lecture</span>
 				</a>
 				<a target="_top" href="{{ path("app_publication_show_one", {id:pubShow.id, slug:"download"}) }}" class=" block mt-5 not-italic  text-center text-sm px-5  hover:underline text-slate-900 dark:text-slate-200">
 					<span class="material-symbols-outlined">

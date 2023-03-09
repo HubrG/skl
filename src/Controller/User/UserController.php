@@ -54,7 +54,7 @@ class UserController extends AbstractController
 			->andWhere("p.user = :user")
 			->setParameter("user", $userInfo);
 		$pubInfo = $qb->getQuery()->getResult();
-		return $this->render('user/user.html.twig', [
+		return $this->render('user/user_test.html.twig', [
 			'userInfo' => $userInfo,
 			'pubInfo' => $pubInfo
 		]);
@@ -82,7 +82,9 @@ class UserController extends AbstractController
 			return $this->redirectToRoute("app_user", ["username" => $user->getUsername()], Response::HTTP_SEE_OTHER);
 		}
 		return $this->render('user/edit.html.twig', [
-			'editUserForm' => $form
+			'editUserForm' => $form,
+			'userInfo' => $this->getUser()
+
 		]);
 	}
 	#[Route('user/publications/show/{sort?}/{order?}', name: 'app_user_show_publications')]
@@ -187,7 +189,8 @@ class UserController extends AbstractController
 		}
 
 		return $this->render('user/show_publication.html.twig', [
-			'publication' => $publications
+			'publication' => $publications,
+			'userInfo' => $this->getUser()
 		]);
 	}
 	#[Route('update/user/update_picture', name: 'app_user_update_picture')]
@@ -234,7 +237,8 @@ class UserController extends AbstractController
 
 		return $this->render('user/account.html.twig', [
 			'form' => $form,
-			'passwordForm' => $pwForm
+			'passwordForm' => $pwForm,
+			'userInfo' => $this->getUser()
 		]);
 	}
 	#[Route('/collection', name: 'app_user_collection')]
@@ -242,6 +246,8 @@ class UserController extends AbstractController
 	{
 		return $this->render('user/my_collection.html.twig', [
 			'controller_name' => 'MyCollectionController',
+			'userInfo' => $this->getUser()
+
 		]);
 	}
 }

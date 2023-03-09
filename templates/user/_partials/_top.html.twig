@@ -27,9 +27,9 @@
 	<turbo-frame id="profil_up" class="pt-5 flex-col flex justify-center items-starts gap-y-5">
 		{% if app.request.attributes.get('_route') == 'app_user_edit' %}
 			<label for="pp" class="cursor-pointer relative ">
-				<img class="w-40 h-40 mx-auto rounded-full opacity-90 dark:opacity-60 object-fill dark:ring-slate-500 ring-4  ring-slate-500 " id="profil_picture" src="{{app.user.profilPicture ? app.user.profilPicture : "https://via.placeholder.com/500/500"}}">
+				<img class="w-40 h-40 mx-auto rounded opacity-90 dark:opacity-60 object-fill dark:ring-sky-500 ring-4  ring-sky-500 " id="profil_picture" src="{{app.user.profilPicture ? app.user.profilPicture : "https://via.placeholder.com/500/500"}}">
 				<div class="absolute inset-0 mt-[22%] ml-[39%] text-2xl">
-					<span data-tippy-content="Modifier votre photo de profil" class="material-icons bg-white bg-opacity-30 p-2 rounded-full hover:bg-opacity-60 text-slate-900">
+					<span data-tippy-content="Modifier votre photo de profil" class="material-icons bg-white bg-opacity-30 p-2 rounded hover:bg-opacity-60 text-slate-900">
 						edit_square
 					</span>
 				</div>
@@ -76,47 +76,52 @@
 <turbo-frame id="frame-user" class="col-span-12 lg:col-span-10 lg:col-start-2  mt-14 justify-evenly min-h-[50vh] z-50 ">
 	<div class="absolute bg-white dark:bg-slate-800 w-full min-h-[100%] left-0 right-0 -z-10  ">&nbsp;</div>
 	<div class="w-full bg-transparent">
-		<ul class="flex-row absolute justify-center items-center h-16 left-0 flex w-full ">
-			<li class="li-user-menu">
-				<a href="{{ path("app_user", { username : app.user.username}) }}" target="_self" class="item-user-menu {{ app.request.attributes.get('_route') == 'app_user' or app.request.attributes.get('_route') == 'app_user_edit' ? " item-user-menu-selected"}}">
-					<span class="material-symbols-outlined">
-						face_2
-					</span>
-					<span class="hidden   md:inline">Profil public</span>
-				</a>
-			</li>
-			<li class="li-user-menu">
-				<a href="{{ path("app_user_show_publications") }}" target="_self" class="item-user-menu {{ app.request.attributes.get('_route') == 'app_user_show_publications' ? " item-user-menu-selected"}}">
-					<span class="material-symbols-outlined">
-						auto_stories
-					</span>
-					<span class="hidden   md:inline">Mes récits</span>
-				</a>
-			</li>
-			<li class="li-user-menu">
-				<a href="{{ path("app_user_collection")}}" target="_self" class="item-user-menu {{ app.request.attributes.get('_route') == 'app_user_collection' ? " item-user-menu-selected"}}">
-					<span class="material-symbols-outlined">
-						collections_bookmark
-					</span>
-					<span class="hidden    md:inline">Ma collection</span>
-				</a>
-			</li>
-			<li class="li-user-menu">
-				<a href="{{ path("app_user_account") }}" target="_self" class="item-user-menu {{ app.request.attributes.get('_route') == 'app_user_account' ? " item-user-menu-selected"}}">
-					<span class="material-symbols-outlined">
-						manage_accounts
-					</span>
-					<span class="hidden    md:inline">Mon compte</span>
-				</a>
-			</li>
-			{# <li class="li-user-menu">
-																																																				<a href="#" class="item-user-menu">
-																																																					<span class="material-symbols-outlined">
-																																																						archive
-																																																					</span>
-																																																					<span class="hidden    md:inline">Messagerie</span>
-																																																				</a>
-																																																			</li> #}
-		</ul>
-	</div>
-	<div class=" mt-20 text-slate-200">
+		{% if app.user and app.user.id == userInfo.id %}
+			<ul class="flex-row absolute justify-center items-center h-16 left-0 flex w-full ">
+				<li class="li-user-menu">
+					<a href="{{ path("app_user", { username : app.user.username}) }}" target="_self" class="item-user-menu {{ app.request.attributes.get('_route') == 'app_user' or app.request.attributes.get('_route') == 'app_user_edit' ? " item-user-menu-selected"}}">
+						<span class="material-symbols-outlined">
+							face_2
+						</span>
+						<span class="hidden   md:inline">Profil public</span>
+					</a>
+				</li>
+				<li class="li-user-menu">
+					<a href="{{ path("app_user_show_publications") }}" target="_self" class="item-user-menu {{ app.request.attributes.get('_route') == 'app_user_show_publications' ? " item-user-menu-selected"}}">
+						<span class="material-symbols-outlined">
+							auto_stories
+						</span>
+						<span class="hidden   md:inline">Mes récits</span>
+					</a>
+				</li>
+				<li class="li-user-menu">
+					<a href="{{ path("app_user_collection")}}" target="_self" class="item-user-menu {{ app.request.attributes.get('_route') == 'app_user_collection' ? " item-user-menu-selected"}}">
+						<span class="material-symbols-outlined">
+							collections_bookmark
+						</span>
+						<span class="hidden    md:inline">Ma collection</span>
+					</a>
+				</li>
+				<li class="li-user-menu">
+					<a href="{{ path("app_user_account") }}" target="_self" class="item-user-menu {{ app.request.attributes.get('_route') == 'app_user_account' ? " item-user-menu-selected"}}">
+						<span class="material-symbols-outlined">
+							manage_accounts
+						</span>
+						<span class="hidden    md:inline">Mon compte</span>
+					</a>
+				</li>
+				{# <li class="li-user-menu">
+																																																																																<a href="#" class="item-user-menu">
+																																																																																	<span class="material-symbols-outlined">
+																																																																																		archive
+																																																																																	</span>
+																																																																																	<span class="hidden    md:inline">Messagerie</span>
+																																																																																</a>
+																																																																															</li> #}
+			</ul>
+		</div>
+		<div class="mt-20 text-slate-200">
+	{% else %}
+		</div>
+		<div class="mt-5 text-slate-200">
+		{% endif %}

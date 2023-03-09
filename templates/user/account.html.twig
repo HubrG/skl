@@ -2,14 +2,14 @@
 
 {% block title %}
 	Mes récits
-																																—
+																																				—
 	{{ parent() }}
 
 {% endblock %}
 {% block body %}
 	{% include "user/_partials/_top.html.twig" %}
 	<div class="block md:flex">
-		<div class="w-full md:w-3/6  bg-white  rounded border dark:border-slate-900 dark:bg-slate-700">
+		<div class="w-full md:w-3/6   rounded">
 			<div class="w-full  p-5 rounded-t border-b-[1px] bg-slate-50 dark:bg-slate-800  border-b-[#dee4e1] dark:border-b-slate-900 ">
 				<h2 class="text-xl text-center mt-2 font-medium text-[#00473e] dark:text-slate-100">
 					<span class="material-symbols-outlined">
@@ -38,7 +38,7 @@
 				{{ form_end(form) }}
 			</div>
 		</div>
-		<div class="w-full md:w-3/6 rounded h-auto border dark:border-slate-900 dark:bg-slate-700">
+		<div class="w-full md:w-3/6 rounded h-auto ">
 			<div class="w-full p-5 rounded-t border-b-[1px] border-b-[#dee4e1] bg-slate-50 dark:bg-slate-800 dark:border-b-slate-900 ">
 				<h2 class="text-xl text-center mt-2 font-medium text-slate-700 dark:text-slate-100">
 					<span class="material-symbols-outlined">

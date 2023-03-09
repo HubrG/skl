@@ -48,7 +48,9 @@
 							</a>
 						{% endif %}
 					</div>
-					<hr class="mb-10 mt-10">
+					{% if app.user and app.user.id == userInfo.id %}
+						<hr class="mb-10 mt-10">
+					{% endif %}
 				{% endif %}
 				{% if app.user and app.user.id == userInfo.id %}
 					<a href="{{ path('app_user_edit', {'username': app.user.username}) }}" data-turbo-frame="up_profil" class="button-classic order-start md:order-start button-slate mx-auto w-full">

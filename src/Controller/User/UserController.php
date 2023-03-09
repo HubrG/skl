@@ -54,7 +54,7 @@ class UserController extends AbstractController
 			->andWhere("p.user = :user")
 			->setParameter("user", $userInfo);
 		$pubInfo = $qb->getQuery()->getResult();
-		return $this->render('user/user_test.html.twig', [
+		return $this->render('user/user.html.twig', [
 			'userInfo' => $userInfo,
 			'pubInfo' => $pubInfo
 		]);

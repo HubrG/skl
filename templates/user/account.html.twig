@@ -2,26 +2,24 @@
 
 {% block title %}
 	Mes récits
-																								—
+																																—
 	{{ parent() }}
 
 {% endblock %}
 {% block body %}
 	{% include "user/_partials/_top.html.twig" %}
-	<div class="flex">
-		<div class="w-3/6  bg-white  rounded border dark:border-slate-900 dark:bg-slate-700">
+	<div class="block md:flex">
+		<div class="w-full md:w-3/6  bg-white  rounded border dark:border-slate-900 dark:bg-slate-700">
 			<div class="w-full  p-5 rounded-t border-b-[1px] bg-slate-50 dark:bg-slate-800  border-b-[#dee4e1] dark:border-b-slate-900 ">
 				<h2 class="text-xl text-center mt-2 font-medium text-[#00473e] dark:text-slate-100">
 					<span class="material-symbols-outlined">
 						frame_person
 					</span>
 					<br>Informations générales
-
 				</h2>
-
 			</div>
 			<div class="w-full rounded-b p-5 pb-2">
-				{{ form_start(form) }}
+				{{ form_start(form, {attr:{"data-turbo-frame":"_top"}}) }}
 				{% include "./partials/_form-row.html.twig" with {'form': form.email, 'icon':"mail"} %}
 				{% include "./partials/_form-row.html.twig" with {'form': form.username, 'icon':"alternate_email"} %}
 				<hr>
@@ -40,7 +38,7 @@
 				{{ form_end(form) }}
 			</div>
 		</div>
-		<div class="w-3/6 rounded h-auto border dark:border-slate-900 dark:bg-slate-700">
+		<div class="w-full md:w-3/6 rounded h-auto border dark:border-slate-900 dark:bg-slate-700">
 			<div class="w-full p-5 rounded-t border-b-[1px] border-b-[#dee4e1] bg-slate-50 dark:bg-slate-800 dark:border-b-slate-900 ">
 				<h2 class="text-xl text-center mt-2 font-medium text-slate-700 dark:text-slate-100">
 					<span class="material-symbols-outlined">
@@ -49,7 +47,7 @@
 					<br>Modification de votre mot de passe</h2>
 			</div>
 			<div class="w-full  rounded-b p-5 pb-2">
-				{{ form_start(passwordForm) }}
+				{{ form_start(passwordForm, {attr:{"data-turbo-frame":"_top"}}) }}
 				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.oldPassword, 'icon':"password"} %}
 				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.plainPassword.first, 'icon':"enhanced_encryption"} %}
 				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.plainPassword.second, 'icon':"enhanced_encryption"} %}

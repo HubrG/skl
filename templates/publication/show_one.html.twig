@@ -65,7 +65,7 @@
 				<div class="w-full -mt-10 mb-5 h-10 bg-slate-100 ring-1 ring-slate-500 dark:bg-slate-700 dark:shadow dark:text-slate-200 opacity-80 dark:opacity-100 right-0 rounded-b-sm">
 					<p class="text-center p-2 font-medium text-xs flex justify-between px-5 ">
 						<span>
-							<span class="material-symbols-outlined">
+							<span class="material-icons-outlined">
 								preview
 							</span>
 							Aperçu de votre récit (<span class="material-icons text-red-600">
@@ -109,13 +109,13 @@
 					</p>
 				</div>
 				<a href="{{ path("app_chapter_show", {idChap:orderChap.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:orderChap.slug}) }}" class=" block mt-5 not-italic py-5 text-center w-full lg:w-3/6 px-10 bg-white   hover:bg-white text-slate-800 shadow hover:text-slate-800 bg-opacity-50 dark:bg-opacity-50 hover:bg-opacity-100 dark:bg-slate-800 dark:text-slate-100  dark:hover:bg-slate-900 rounded-lg">
-					<span class="material-symbols-outlined">
+					<span class="material-icons-outlined">
 						local_library
 					</span>
 					<br/><span class="font-semibold">Commencer la lecture</span>
 				</a>
 				<a target="_top" href="{{ path("app_publication_show_one", {id:pubShow.id, slug:"download"}) }}" class=" block mt-5 not-italic  text-center text-sm px-5  hover:underline text-slate-900 dark:text-slate-200">
-					<span class="material-symbols-outlined">
+					<span class="material-icons-outlined">
 						download
 					</span>
 					<span class="font-medium">
@@ -132,7 +132,7 @@
 					{% if pubShow.finished == true %}
 						<div class="w-full text-center bg-emerald-50 p-3 gap-y-2 rounded cursor-default grid grid-flow-row  dark:bg-transparent text-emerald-700 dark:text-emerald-300 ">
 							<button class="font-medium cursor-default">
-								<span class="material-symbols-outlined">
+								<span class="material-icons-outlined">
 									task_alt
 								</span>
 								Récit terminé
@@ -150,7 +150,7 @@
 						{% endfor %}
 						<div id="followBtn" data-href="{{path("app_publication_follow", {id:pubShow.id})}}" class="{{classFollowBtn}}">
 							<button class="font-medium">
-								<span id="followIcon" class="material-symbols-outlined">
+								<span id="followIcon" class="material-icons-outlined">
 									{{classFollowBtn == "follow-collection-buttons-ok" ? "label_off" : "loyalty" }}
 								</span>
 								<span id="followTitle">
@@ -164,7 +164,7 @@
 					{% elseif not app.user %}
 						<div class="follow-collection-buttons cursor-pointer" onclick="MicroModal.show('popup-login')">
 							<button class="font-medium">
-								<span class="material-symbols-outlined">
+								<span class="material-icons-outlined">
 									loyalty
 								</span>
 								Suivre ce récit
@@ -183,7 +183,7 @@
 						{% endfor %}
 						<div id="btnCollection" data-href="{{path("app_publication_add_collection", {id:pubShow.id})}}" class="{{classCollectionBtn}}">
 							<button class="font-medium">
-								<span class="material-symbols-outlined" id="iconCollection">
+								<span class="material-icons-outlined" id="iconCollection">
 									{{classCollectionBtn == "follow-collection-buttons-ok" ? "bookmark_added" : "bookmark_add" }}
 								</span>
 								<span id="titleCollection">
@@ -197,7 +197,7 @@
 					{% elseif not app.user %}
 						<div class="follow-collection-buttons cursor-pointer" onclick="MicroModal.show('popup-login')">
 							<button class="font-medium">
-								<span class="material-symbols-outlined">
+								<span class="material-icons-outlined">
 									bookmark_add
 								</span>
 								Ajouter à ma collection
@@ -212,7 +212,7 @@
 					<hr>
 				{% endif %}
 				<h3 class="text-2xl mb-5 lg:text-left text-center mt-5 dark:text-slate-100">
-					<span class="material-symbols-outlined">
+					<span class="material-icons-outlined">
 						format_list_bulleted
 					</span>
 					&nbsp;
@@ -239,28 +239,28 @@
 									<div class="w-2/6 justify-items-end opacity-80 dark:opacity-100">
 										<div class="py-1 px-2 rounded-full flex justify-between md:text-xs text-[0.65rem] text-slate-500 font-medium">
 											<div class=" flex flex-col md:flex-row items-center">
-												<span class="material-symbols-outlined">
+												<span class="material-icons-outlined">
 													thumb_up
 												</span>
 												{{ chapter.publicationChapterLikes|length }}
 												{% set chapterStats = chapterStats|merge({'likes': chapterStats.likes + chapter.publicationChapterLikes|length}) %}
 											</div>
 											<div class=" flex flex-col md:flex-row items-center">
-												<span class="material-symbols-outlined">
+												<span class="material-icons-outlined">
 													bookmarks
 												</span>
 												{{ chapter.publicationBookmarks|length }}
 												{% set chapterStats = chapterStats|merge({'bookmarks': chapterStats.bookmarks + chapter.publicationBookmarks|length}) %}
 											</div>
 											<div class=" flex flex-col md:flex-row items-center">
-												<span class="material-symbols-outlined">
+												<span class="material-icons-outlined">
 													visibility
 												</span>
 												{{ chapter.publicationChapterViews|length }}
 												{% set chapterStats = chapterStats|merge({'views': chapterStats.views + chapter.publicationChapterViews|length}) %}
 											</div>
 											<div class=" flex flex-col md:flex-row items-center">
-												<span class="material-symbols-outlined">
+												<span class="material-icons-outlined">
 													forum
 												</span>
 												{{ chapter.publicationComments|length }}
@@ -369,7 +369,7 @@
 							</li>
 							<li>
 								<button data-tippy-content="Copier le lien" id="copyLink" target="_blank" class="text-lg">
-									<span class="material-symbols-outlined">
+									<span class="material-icons-outlined">
 										link
 									</span>
 								</button>
@@ -379,7 +379,7 @@
 					<hr class="mb-5">
 					<li class="inline-flex items-center justify-between gap-x-2 px-4 font-normal dark:text-white">
 						<span class="font-medium">
-							<span class="material-symbols-outlined">
+							<span class="material-icons-outlined">
 								theater_comedy
 							</span>
 							&nbsp;Genre
@@ -403,7 +403,7 @@
 					</li>
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px   dark:text-white">
 						<span class="font-medium">
-							<span class="material-symbols-outlined">
+							<span class="material-icons-outlined">
 								auto_stories
 							</span>
 							&nbsp;Nombre de pages (pdf)
@@ -412,7 +412,7 @@
 					</li>
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:text-white">
 						<span class="font-medium">
-							<span class="material-symbols-outlined">
+							<span class="material-icons-outlined">
 								timer
 							</span>
 							&nbsp;Temps de lecture
@@ -421,7 +421,7 @@
 					</li>
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:text-white">
 						<span class="font-medium">
-							<span class="material-symbols-outlined">
+							<span class="material-icons-outlined">
 								visibility
 							</span>
 							&nbsp;Nombre de lecteurs
@@ -430,7 +430,7 @@
 					</li>
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px   dark:text-white">
 						<span class="font-medium">
-							<span class="material-symbols-outlined">
+							<span class="material-icons-outlined">
 								forum
 							</span>
 							&nbsp;Commentaires
@@ -445,7 +445,7 @@
 					</li>
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px    dark:text-white">
 						<span class="font-medium">
-							<span class="material-symbols-outlined">
+							<span class="material-icons-outlined">
 								book
 							</span>
 							&nbsp;Pages marquées
@@ -454,7 +454,7 @@
 					</li>
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px    dark:text-white">
 						<span class="font-medium">
-							<span class="material-symbols-outlined">
+							<span class="material-icons-outlined">
 								thumb_up
 							</span>
 							&nbsp;J'aime
@@ -463,7 +463,7 @@
 					</li>
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px    dark:text-white">
 						<span class="font-medium">
-							<span class="material-symbols-outlined">
+							<span class="material-icons-outlined">
 								downloading
 							</span>
 							&nbsp;Téléchargements
@@ -479,7 +479,7 @@
 					{% endif %}
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:text-white">
 						<span class="font-medium">
-							<span class="material-symbols-outlined">
+							<span class="material-icons-outlined">
 								insights
 							</span>
 							&nbsp;Popularité
@@ -492,7 +492,7 @@
 									arrow_circle_down
 								</span>
 							{% elseif pubShow.pop == lastPopularity %}
-								<span class="material-symbols-outlined">
+								<span class="material-icons-outlined">
 									equal
 								</span>
 							{% else %}
@@ -514,7 +514,7 @@
 				<ul class=" flex flex-col opacity-60 dark:opacity-100 text-sm border-t-[1px] border-t-slate-200 dark:border-t-slate-900 pt-5 mt-5">
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px    dark:text-white">
 						<span class="font-medium">
-							<span class="material-symbols-outlined">
+							<span class="material-icons-outlined">
 								newspaper
 							</span>
 							&nbsp;&nbsp;Publié depuis
@@ -523,7 +523,7 @@
 					</li>
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px    dark:text-white">
 						<span class="font-medium">
-							<span class="material-symbols-outlined">
+							<span class="material-icons-outlined">
 								auto_fix
 							</span>
 							&nbsp;&nbsp;Modifié il y a

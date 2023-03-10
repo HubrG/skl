@@ -42,7 +42,7 @@
 				{% if kwString %}
 					<p class="text-center text-md md:mt-0">
 						<a href="{{ path("app_publication_show_all_category", {slug:slugCat, page:1, order:orderSort, sortby:querySortby}) }}" class="text-slate-600 dark:text-slate-100 text-sm font-medium">
-							<span class="material-symbols-outlined">
+							<span class="material-icons-outlined">
 								backspace
 							</span>
 							<span class="hover:underline">Réinitialiser</span>
@@ -73,8 +73,8 @@
 				</h4>
 				<div class="-mt-3 w-auto  xl:w-auto">
 					<button id="sortButton" data-dropdown-toggle="sortHover" class="flex items-center ring-1 bg-none  focus:ring-4 focus:outline-none font-medium rounded-lg text-xs lg:text-sm lg:mt-0 mt-2 px-4 py-2.5 text-center {{ querySortby == 'pop' ? 'ring-sky-600 hover:bg-sky-50  text-sky-800 focus:ring-sky-300 dark:text-sky-500 dark:hover:text-sky-400 dark:ring-sky-400 dark:hover:bg-sky-900 dark:hover:ring-sky-500' : 'ring-yellow-600 hover:bg-yellow-50  text-yellow-800 focus:ring-amber-300 dark:text-yellow-400 dark:ring-yellow-400 dark:hover:bg-yellow-900 dark:hover:text-yellow-400 dark:hover:ring-yellow-500'}}    " type="button">
-						{% set popIcon = '<span class="material-symbols-outlined text-sky-800 dark:text-sky-500">thumb_up</span> ' %}
-						{% set newIcon = '<span class="material-symbols-outlined text-yellow-800 dark:text-yellow-400">tips_and_updates</span> ' %}
+						{% set popIcon = '<span class="material-icons-outlined text-sky-800 dark:text-sky-500">thumb_up</span> ' %}
+						{% set newIcon = '<span class="material-icons-outlined text-yellow-800 dark:text-yellow-400">tips_and_updates</span> ' %}
 						{% set sortText = 
 						querySortby == 'pop' ? popIcon|raw ~ " &nbsp;&nbsp;Les plus populaires d'abord" :
 						querySortby == 'published'  ? newIcon|raw ~ " &nbsp;&nbsp;Les nouveautés d'abord" %}
@@ -142,7 +142,7 @@
 									<span class="write-and-publish w-2/6"></span>
 									<span class=" w-4/6 items-center flex flex-col justify-center text-slate-800 dark:text-slate-400">
 										<span class="text-4xl">
-											<span class="material-symbols-outlined">
+											<span class="material-icons-outlined">
 												auto_stories
 											</span>
 										</span>
@@ -154,7 +154,7 @@
 									<span class="write-and-publish w-2/6"></span>
 									<span class=" w-4/6 items-center flex flex-col justify-center text-slate-800 dark:text-slate-400">
 										<span class="text-4xl">
-											<span class="material-symbols-outlined">
+											<span class="material-icons-outlined">
 												auto_stories
 											</span>
 										</span>

@@ -54,7 +54,7 @@
 				{% endif %}
 				{% if app.user and app.user.id == userInfo.id %}
 					<a href="{{ path('app_user_edit', {'username': app.user.username}) }}" data-turbo-frame="up_profil" class="button-classic order-start md:order-start button-slate mx-auto w-full">
-						<span class="material-symbols-outlined">
+						<span class="material-icons-outlined">
 							contact_emergency
 						</span>
 						Modifier mon profil
@@ -64,7 +64,7 @@
 			</div>
 			<div class="w-full md:w-9/12 parent border-l-0  pl-0 md:pl-10 dark:border-slate-700">
 				<h2 class="{{pubInfo|length > 1 ? "text-left" : "text-center"}} text-left text-4xl text-slate-800 dark:text-slate-300 child flex items-center gap-x-5">
-					<span class="material-symbols-outlined">
+					<span class="material-icons-outlined">
 						menu_book
 					</span>
 					{{pubInfo|length > 1 ? pubInfo|length ~ " récits publiés" : pubInfo|length == 0 ? "Aucun récit publié" : pubInfo|length ~ " récit publié"}}

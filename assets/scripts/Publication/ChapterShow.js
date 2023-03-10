@@ -608,11 +608,11 @@ function likeChapterData(likeChapterId) {
   data.append("idChapter", likeChapterId);
   axios.post(url, data).then((response) => {
     if (response.data.resp) {
-      likeChapter.classList.remove("material-symbols-outlined");
+      likeChapter.classList.remove("material-icons-outlined");
       likeChapter.classList.add("material-icons", "text-red-500");
       nbrLike.innerHTML = response.data.nbrLike;
     } else {
-      likeChapter.classList.add("material-symbols-outlined");
+      likeChapter.classList.add("material-icons-outlined");
       likeChapter.classList.remove("material-icons", "text-red-500");
       nbrLike.innerHTML = response.data.nbrLike;
     }
@@ -628,11 +628,11 @@ function bmChapterData(bmChapterId) {
   data.append("idChapter", bmChapterId);
   axios.post(url, data).then((response) => {
     if (response.data.resp) {
-      bmChapter.classList.remove("material-symbols-outlined");
+      bmChapter.classList.remove("material-icons-outlined");
       bmChapter.classList.add("material-icons", "text-blue-500");
       nbrBm.innerHTML = response.data.nbrBm;
     } else {
-      bmChapter.classList.add("material-symbols-outlined");
+      bmChapter.classList.add("material-icons-outlined");
       bmChapter.classList.remove("material-icons", "text-blue-500");
       nbrBm.innerHTML = response.data.nbrBm;
     }

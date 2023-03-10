@@ -2,7 +2,7 @@
 
 {% block title %}
 	Création d'un nouveau récit
-																																																																																-
+																																																																																	-
 	{{ parent() }}
 {% endblock %}
 {# TODO: sur l'affichage des textes, faire un module de surlignage, mise en favoris, commentaire etc sur la selection #}
@@ -24,7 +24,7 @@
 		<div class="col-span-6 -mt-12">
 			<hr class="mb-5">
 			<button type="button" onclick="document.getElementById('submitAdd').click()" class="button-classic button-slate ">
-				<span class="material-symbols-outlined">
+				<span class="material-icons-outlined">
 					emoji_food_beverage
 				</span>
 				&nbsp;Je renseignerai ces informations plus tard &nbsp;
@@ -38,7 +38,7 @@
 			<div id="hideNoCover" data-tippy-content="Cliquez ici pour ajouter une photo de couverture" class="no-cover" for="publication_cover">
 				<label for="publication_cover" class="cursor-pointer justify-center h-80">
 					<h2 class="m-auto text-center font-light shadow-slate-300  dark:shadow-slate-900 mt-10 rounded-lg">
-						<span class="material-symbols-outlined">
+						<span class="material-icons-outlined">
 							add_photo_alternate
 						</span><br/><br/>Ajouter une couverture
 					</h2>
@@ -68,7 +68,7 @@
 		{{ form_label(form.title) }}
 		<div class="relative mb-6">
 			<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
-				<span class="material-symbols-outlined">
+				<span class="material-icons-outlined">
 					package
 				</span>
 			</div>
@@ -81,7 +81,7 @@
 		{{ form_label(form.category) }}
 		<div class="relative mb-6">
 			<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
-				<span class="material-symbols-outlined">
+				<span class="material-icons-outlined">
 					category
 				</span>
 			</div>
@@ -90,7 +90,7 @@
 		<label>En quelques mots, quelles sont les grandes thématiques de votre récit ?</label>
 		<div class="relative mb-6">
 			<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
-				<span class="material-symbols-outlined">
+				<span class="material-icons-outlined">
 					sell
 				</span>
 			</div>
@@ -101,7 +101,7 @@
 				{% for k in pub.publicationKeywords %}
 					<div id="keyw_{{ k.keyword|upper }}">{{ k.keyword }}
 						&nbsp;<a href="{{path("app_publication_del_keyword", {value:k.keyword, pub:pub.id, mode:"add"})}}">
-							<span class="material-symbols-outlined hover:text-red-400">
+							<span class="material-icons-outlined hover:text-red-400">
 								backspace
 							</span>
 						</a>
@@ -118,7 +118,7 @@
 		<hr class="mt-3">
 		<div class="mt-5">
 			<button type="submit" id="submitAdd" class="w-full button-classic button-sky">Passer à la rédaction
-				<span class="material-symbols-outlined">
+				<span class="material-icons-outlined">
 					history_edu
 				</span>
 			</button>

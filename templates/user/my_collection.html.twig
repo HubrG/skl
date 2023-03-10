@@ -11,7 +11,7 @@
 		<ul class="w-full">
 			<li>
 				<h1 class="text-center text-2xl font-medium">
-					<span class="material-symbols-outlined">
+					<span class="material-icons-outlined">
 						collections_bookmark
 					</span>Mes récits favoris</h1>
 			</li>
@@ -29,7 +29,7 @@
 								{% for chapters in item.publication.publicationChapters %}
 									{% for bookchapter in chapters.publicationBookmarks %}
 										<li>
-											<span class="material-symbols-outlined">
+											<span class="material-icons-outlined">
 												subdirectory_arrow_right
 											</span>
 											<a href="{{path("app_chapter_show", {idChap:bookchapter.chapter.id,slugPub:bookchapter.chapter.publication.slug,user:bookchapter.chapter.publication.user.username})}}" class="hover:underline">{{bookchapter.chapter.title}}</a>
@@ -51,7 +51,7 @@
 		<ul class="w-full">
 			<li>
 				<h1 class="text-center text-2xl font-medium">
-					<span class="material-symbols-outlined">
+					<span class="material-icons-outlined">
 						book
 					</span>Mes marque-pages</h1>
 			</li>
@@ -78,7 +78,7 @@
 		<ul class="w-full">
 			<li>
 				<h1 class="text-center text-2xl font-medium">
-					<span class="material-symbols-outlined">
+					<span class="material-icons-outlined">
 						thumb_up
 					</span>
 					Les feuilles que j'aime</h1>

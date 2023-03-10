@@ -1,7 +1,7 @@
 {# Nouveau commentaire sur l'une de vos publications #}
 <div class="one-notification  p-3 text-sm text-left flex gap-3">
 	{% if item.type == 1 %}
-		<span class="material-symbols-outlined">
+		<span class="material-icons-outlined">
 			mark_unread_chat_alt
 		</span>
 		<span>
@@ -17,7 +17,7 @@
 	{% endif %}
 	{# Nouveau commentaire sur l'un de vos chapitres #}
 	{% if item.type == 2 %}
-		<span class="material-symbols-outlined">
+		<span class="material-icons-outlined">
 			mark_chat_unread
 		</span>
 		<span>
@@ -35,7 +35,7 @@
 	{% endif %}
 	{# Nouveau like sur l'un de vos commentaires #}
 	{% if item.type == 3 %}
-		<span class="material-symbols-outlined">
+		<span class="material-icons-outlined">
 			favorite
 		</span>
 		<span>
@@ -60,7 +60,7 @@
 	{% if item.type == 4 %}
 		{# Si le bookmark concerne une publication propre #}
 		{% if item.publicationBookmark.chapter != null %}
-			<span class="material-symbols-outlined">
+			<span class="material-icons-outlined">
 				bookmark_added
 			</span>
 			<span>
@@ -75,7 +75,7 @@
 			</span>
 		{% else %}
 			{# Si le bookmark concerne un chapitre #}
-			<span class="material-symbols-outlined">
+			<span class="material-icons-outlined">
 				bookmark_added
 			</span>
 			<span>
@@ -90,7 +90,7 @@
 	{% endif %}
 	{# Nouveau téléchargement #}
 	{% if item.type == 5 %}
-		<span class="material-symbols-outlined">
+		<span class="material-icons-outlined">
 			downloading
 		</span>
 		<span>
@@ -104,7 +104,7 @@
 	{% endif %}
 	{# Nouveau like chapter #}
 	{% if item.type == 6 %}
-		<span class="material-symbols-outlined">
+		<span class="material-icons-outlined">
 			thumb_up
 		</span>
 		<span>
@@ -120,7 +120,7 @@
 	{% endif %}
 	{# Nouvelle feuille publiée sur une suivie de publication #}
 	{% if item.type == 7 %}
-		<span class="material-symbols-outlined">
+		<span class="material-icons-outlined">
 			history_edu
 		</span>
 		<span>
@@ -136,7 +136,7 @@
 	{% endif %}
 	{# Nouvel abonnement à une de vos publications #}
 	{% if item.type == 8 %}
-		<span class="material-symbols-outlined">
+		<span class="material-icons-outlined">
 			loyalty
 		</span>
 		<span>

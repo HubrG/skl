@@ -30,7 +30,7 @@
 			<ul class="flex-row absolute justify-center items-center h-16 left-0 flex w-full ">
 				<li class="li-user-menu">
 					<a href="{{ path("app_user", { username : app.user.username}) }}" target="_self" class="item-user-menu {{ app.request.attributes.get('_route') == 'app_user' or app.request.attributes.get('_route') == 'app_user_edit' ? " item-user-menu-selected"}}">
-						<span class="material-symbols-outlined">
+						<span class="material-icons-outlined">
 							face_2
 						</span>
 						<span class="hidden   md:inline">Profil public</span>
@@ -38,7 +38,7 @@
 				</li>
 				<li class="li-user-menu">
 					<a href="{{ path("app_user_show_publications") }}" target="_self" class="item-user-menu {{ app.request.attributes.get('_route') == 'app_user_show_publications' ? " item-user-menu-selected"}}">
-						<span class="material-symbols-outlined">
+						<span class="material-icons-outlined">
 							auto_stories
 						</span>
 						<span class="hidden   md:inline">Mes récits</span>
@@ -46,7 +46,7 @@
 				</li>
 				<li class="li-user-menu">
 					<a href="{{ path("app_user_collection")}}" target="_self" class="item-user-menu {{ app.request.attributes.get('_route') == 'app_user_collection' ? " item-user-menu-selected"}}">
-						<span class="material-symbols-outlined">
+						<span class="material-icons-outlined">
 							collections_bookmark
 						</span>
 						<span class="hidden    md:inline">Ma collection</span>
@@ -54,20 +54,20 @@
 				</li>
 				<li class="li-user-menu">
 					<a href="{{ path("app_user_account") }}" target="_self" class="item-user-menu {{ app.request.attributes.get('_route') == 'app_user_account' ? " item-user-menu-selected"}}">
-						<span class="material-symbols-outlined">
+						<span class="material-icons-outlined">
 							manage_accounts
 						</span>
 						<span class="hidden    md:inline">Mon compte</span>
 					</a>
 				</li>
 				{# <li class="li-user-menu">
-																																																																																																																																																																																																																																<a href="#" class="item-user-menu">
-																																																																																																																																																																																																																																	<span class="material-symbols-outlined">
-																																																																																																																																																																																																																																		archive
-																																																																																																																																																																																																																																	</span>
-																																																																																																																																																																																																																																	<span class="hidden    md:inline">Messagerie</span>
-																																																																																																																																																																																																																																</a>
-																																																																																																																																																																																																																															</li> #}
+																																																																																																																																																																																																																																				<a href="#" class="item-user-menu">
+																																																																																																																																																																																																																																					<span class="material-icons-outlined">
+																																																																																																																																																																																																																																						archive
+																																																																																																																																																																																																																																					</span>
+																																																																																																																																																																																																																																					<span class="hidden    md:inline">Messagerie</span>
+																																																																																																																																																																																																																																				</a>
+																																																																																																																																																																																																																																			</li> #}
 			</ul>
 		</div>
 		<div class="mt-20">

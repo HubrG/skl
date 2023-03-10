@@ -11,7 +11,7 @@ export function darkMode() {
           dm.innerHTML = "wb_sunny";
           setDarkmode(1);
         } else {
-          dm.innerHTML = "sleep";
+          dm.innerHTML = "dark_mode";
           setDarkmode(0);
         }
       });
@@ -28,7 +28,7 @@ export function darkMode() {
           dm.innerHTML = "wb_sunny";
           setDarkmode(1);
         } else {
-          dm.innerHTML = "sleep";
+          dm.innerHTML = "dark_mode";
           setDarkmode(0);
         }
       });

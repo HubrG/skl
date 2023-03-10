@@ -12,7 +12,7 @@
 
 {% block title %}
 	Mes récits
-																										—
+																													—
 	{{ parent() }}
 
 {% endblock %}
@@ -20,7 +20,7 @@
 	{% include "user/_partials/_top.html.twig" %}
 	{% if publication|length == 0 %}
 		<div class="flex flex-col items-center justify-center mt-[6.8rem] border-t border-t-slate-300 pt-10">
-			<span class="material-symbols-outlined text-5xl">
+			<span class="material-icons-outlined text-5xl">
 				cloud_off
 			</span>
 			<h2 class="text-2xl ">Vous n'avez pas encore publié de récit</h2>
@@ -39,13 +39,13 @@
 						<tr>
 							<th data-tippy-content="Statut de la publication" scope="col" class=" text-center">
 								<a href="{{path("app_user_show_publications", {sort:"status", order:order})}}">
-									<span class="material-{{sort == 'status' ? 'icons' : 'symbols-outlined'}}">
+									<span class="material-{{sort == 'status' ? 'icons' : 'icons-outlined'}}">
 										cloud_upload
 									</span>
 									{% if sort == "status" %}
 										{{chevron|raw}}
 									{% else %}
-										<span class="material-symbols-outlined opacity-50">
+										<span class="material-icons-outlined opacity-50">
 											unfold_more
 										</span>
 									{% endif %}
@@ -58,7 +58,7 @@
 									{% if sort == "title" %}
 										{{chevron|raw}}
 									{% else %}
-										<span class="material-symbols-outlined opacity-50">
+										<span class="material-icons-outlined opacity-50">
 											unfold_more
 										</span>
 									{% endif %}
@@ -68,13 +68,13 @@
 							<th scope="col" class="px-6 py-3"></th>
 							<th data-tippy-content="Crée il y a..." scope="col" class="py-3 pl-2 text-center">
 								<a href="{{path("app_user_show_publications", {sort:"created", order:order})}}">
-									<span class="material-{{sort == 'created' ? 'icons' : 'symbols-outlined'}}">
+									<span class="material-{{sort == 'created' ? 'icons' : 'icons-outlined'}}">
 										calendar_today
 									</span>
 									{% if sort == "created" %}
 										{{chevron|raw}}
 									{% else %}
-										<span class="material-symbols-outlined opacity-50">
+										<span class="material-icons-outlined opacity-50">
 											unfold_more
 										</span>
 									{% endif %}
@@ -82,13 +82,13 @@
 							</th>
 							<th data-tippy-content="Nombre de feuilles publiées" scope="col" class="py-3 pl-2 text-center">
 								<a href="{{path("app_user_show_publications", {sort:"chapters", order:order})}}">
-									<span class="material-{{sort == 'chapters' ? 'icons' : 'symbols-outlined'}}">
+									<span class="material-{{sort == 'chapters' ? 'icons' : 'icons-outlined'}}">
 										format_list_bulleted
 									</span>
 									{% if sort == "chapters" %}
 										{{chevron|raw}}
 									{% else %}
-										<span class="material-symbols-outlined opacity-50">
+										<span class="material-icons-outlined opacity-50">
 											unfold_more
 										</span>
 									{% endif %}
@@ -96,13 +96,13 @@
 							</th>
 							<th data-tippy-content="Catégorie" scope="col" class="py-3 pl-2">
 								<a href="{{path("app_user_show_publications", {sort:"category", order:order})}}">
-									<span class="material-{{sort == 'category' ? 'icons' : 'symbols-outlined'}}">
+									<span class="material-{{sort == 'category' ? 'icons' : 'icons-outlined'}}">
 										category
 									</span>
 									{% if sort == "category" %}
 										{{chevron|raw}}
 									{% else %}
-										<span class="material-symbols-outlined opacity-50">
+										<span class="material-icons-outlined opacity-50">
 											unfold_more
 										</span>
 									{% endif %}
@@ -111,13 +111,13 @@
 
 							<th data-tippy-content="Nombre de lecteurs" scope="col" class="py-3 pl-2">
 								<a href="{{path("app_user_show_publications", {sort:"views", order:order})}}">
-									<span class="material-{{sort == 'views' ? 'icons' : 'symbols-outlined'}}">
+									<span class="material-{{sort == 'views' ? 'icons' : 'icons-outlined'}}">
 										visibility
 									</span>
 									{% if sort == "views" %}
 										{{chevron|raw}}
 									{% else %}
-										<span class="material-symbols-outlined opacity-50">
+										<span class="material-icons-outlined opacity-50">
 											unfold_more
 										</span>
 									{% endif %}
@@ -126,13 +126,13 @@
 
 							<th data-tippy-content="Nombre de commentaires" scope="col" class="py-3 pl-2">
 								<a href="{{path("app_user_show_publications", {sort:"comments", order:order})}}">
-									<span class="material-{{sort == 'comments' ? 'icons' : 'symbols-outlined'}}">
+									<span class="material-{{sort == 'comments' ? 'icons' : 'icons-outlined'}}">
 										forum
 									</span>
 									{% if sort == "comments" %}
 										{{chevron|raw}}
 									{% else %}
-										<span class="material-symbols-outlined opacity-50">
+										<span class="material-icons-outlined opacity-50">
 											unfold_more
 										</span>
 									{% endif %}
@@ -140,13 +140,13 @@
 							</th>
 							<th data-tippy-content="Nombre de j'aime" scope="col" class="py-3 pl-2 flex">
 								<a href="{{path("app_user_show_publications", {sort:"likes", order:order})}}">
-									<span class="material-{{sort == 'likes' ? 'icons' : 'symbols-outlined'}}">
+									<span class="material-{{sort == 'likes' ? 'icons' : 'icons-outlined'}}">
 										thumb_up
 									</span>
 									{% if sort == "likes" %}
 										{{chevron|raw}}
 									{% else %}
-										<span class="material-symbols-outlined opacity-50">
+										<span class="material-icons-outlined opacity-50">
 											unfold_more
 										</span>
 									{% endif %}
@@ -154,13 +154,13 @@
 							</th>
 							<th data-tippy-content="Nombre de téléchargements" scope="col" class=" py-3 pl-2">
 								<a href="{{path("app_user_show_publications", {sort:"downloads", order:order})}}">
-									<span class="material-{{sort == 'downloads' ? 'icons' : 'symbols-outlined'}}">
+									<span class="material-{{sort == 'downloads' ? 'icons' : 'icons-outlined'}}">
 										download
 									</span>
 									{% if sort == "downloads" %}
 										{{chevron|raw}}
 									{% else %}
-										<span class="material-symbols-outlined opacity-50">
+										<span class="material-icons-outlined opacity-50">
 											unfold_more
 										</span>
 									{% endif %}
@@ -168,13 +168,13 @@
 							</th>
 							<th data-tippy-content="Popularité" scope="col" class="px-6 py-3 pl-2">
 								<a href="{{path("app_user_show_publications", {sort:"pop", order:order})}}">
-									<span class="material-{{sort == 'pop' ? 'icons' : 'symbols-outlined'}}">
+									<span class="material-{{sort == 'pop' ? 'icons' : 'icons-outlined'}}">
 										insights
 									</span>
 									{% if sort == "pop" %}
 										{{chevron|raw}}
 									{% else %}
-										<span class="material-symbols-outlined opacity-50">
+										<span class="material-icons-outlined opacity-50">
 											unfold_more
 										</span>
 									{% endif %}
@@ -208,7 +208,7 @@
 
 								<td class="px-6 py-3 relative">
 									<a data-tippy-content="Éditer ce récit (paramétrage, édition, statistiques approfondies...)" href="{{ path("app_publication_edit", {id:item.id}) }}" class="w-full text-sky-600 dark:text-slate-300">
-										<span class="material-symbols-outlined">
+										<span class="material-icons-outlined">
 											edit_note
 										</span>
 									</a>
@@ -216,7 +216,7 @@
 								<td class="px-6 py-3 relative">
 
 
-									<span data-pub-id="{{ path("app_publication_delete", {id:item.id}) }}" data-tippy-content="Supprimer ce récit" class="delete-pub  material-symbols-outlined cursor-pointer text-red-500 dark:text-red-300" data-url-delete="" data-micromodal-trigger="popup-confirm-delete">
+									<span data-pub-id="{{ path("app_publication_delete", {id:item.id}) }}" data-tippy-content="Supprimer ce récit" class="delete-pub  material-icons-outlined cursor-pointer text-red-500 dark:text-red-300" data-url-delete="" data-micromodal-trigger="popup-confirm-delete">
 										delete
 									</span>
 
@@ -268,7 +268,7 @@
 											arrow_circle_down
 										</span>
 									{% elseif item.pop == lastPopularity %}
-										<span class="material-symbols-outlined">
+										<span class="material-icons-outlined">
 											equal
 										</span>
 									{% else %}
@@ -302,7 +302,7 @@
 			<div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="popup-confirm-delete-title">
 				<div class="py-3 text-center w-42  rounded-2xl">
 					<div class="text-4xl mb-5 text-red-600 dark:text-red-400">
-						<span class="material-symbols-outlined text-2xl">
+						<span class="material-icons-outlined text-2xl">
 							delete
 						</span>
 					</div>

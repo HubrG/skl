@@ -2,7 +2,7 @@
 
 {% block title %}
 	Mes récits
-																																						—
+																																							—
 	{{ parent() }}
 
 {% endblock %}
@@ -12,7 +12,7 @@
 		<div class="w-full md:w-3/6   rounded">
 			<div class="w-full  p-5 rounded-t border-b-[1px]  border-b-[#dee4e1] dark:border-b-slate-900 ">
 				<h2 class="text-xl text-center mt-2 font-medium text-[#00473e] dark:text-slate-100">
-					<span class="material-symbols-outlined">
+					<span class="material-icons-outlined">
 						frame_person
 					</span>
 					<br>Informations générales
@@ -28,7 +28,7 @@
 				{% include "./partials/_form-row.html.twig" with {'form': form.birth, 'icon':"cake"} %}
 				<div class="flex justify-center">
 					<button type="submit" class="button-classic button-slate">
-						<span class="material-symbols-outlined">
+						<span class="material-icons-outlined">
 							check_circle
 						</span>
 						Enregistrer les informations
@@ -41,7 +41,7 @@
 		<div class="w-full md:w-3/6 rounded h-auto ">
 			<div class="w-full p-5 rounded-t border-b-[1px] border-b-[#dee4e1] dark:border-b-slate-900 ">
 				<h2 class="text-xl text-center mt-2 font-medium text-slate-700 dark:text-slate-100">
-					<span class="material-symbols-outlined">
+					<span class="material-icons-outlined">
 						lock_reset
 					</span>
 					<br>Modification de votre mot de passe</h2>
@@ -53,7 +53,7 @@
 				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.plainPassword.second, 'icon':"enhanced_encryption"} %}
 				<div class="flex justify-center">
 					<button type="submit" class="button-classic button-slate">
-						<span class="material-symbols-outlined">
+						<span class="material-icons-outlined">
 							check_circle
 						</span>
 						Modifier mon mot de passe

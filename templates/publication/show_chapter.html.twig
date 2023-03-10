@@ -13,7 +13,7 @@
 				<div class="w-5/6 mx-auto -mt-2 h-10  bg-slate-100 dark:bg-slate-700 dark:text-slate-200  ring-1 ring-slate-700 opacity-80 right-0 rounded-b-sm">
 					<p class="text-center p-2 font-medium text-xs flex justify-between px-5">
 						<span>
-							<span class="material-symbols-outlined">
+							<span class="material-icons-outlined">
 								preview
 							</span>
 							Aperçu de votre récit (<span class="material-icons text-red-600">
@@ -42,7 +42,7 @@
 		</div>
 		<div class="flex pl-10 justify-center mt-14 md:-mt-6">
 			<button class="text-base md:text-2xl font-serif -mt-[4rem] text-slate-800 dark:text-white" id="chapListButton" data-dropdown-toggle="dropdownChapter">{{ infoChap.title }}
-				<span class="material-symbols-outlined">
+				<span class="material-icons-outlined">
 					expand_more
 				</span>
 			</button>
@@ -54,11 +54,11 @@
 					<div>
 						<a href="{{ path("app_chapter_show", {idChap:item.id, slugPub:infoPub.slug, user:infoPub.user.username, slug:item.slug}) }}" class="block px-4 py-4 text-sm text-gray-700 {% if item.id == infoChap.id %}bg-slate-50 dark:bg-slate-900{% endif %} hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
 							{% if item.id == infoChap.id %}
-								<span class="material-symbols-outlined">
+								<span class="material-icons-outlined">
 									document_scanner
 								</span>
 							{% else %}
-								<span class="material-symbols-outlined">
+								<span class="material-icons-outlined">
 									article
 								</span>
 							{% endif %}
@@ -73,7 +73,7 @@
 		{% if previousChap %}
 			<div class="fixed top-0 w-10 bottom-0 left-0 hidden md:flex items-center justify-start  ml-8 lg:ml-56 z-10" id="arrowPrevious">
 				<a href="{{ path("app_chapter_show", {idChap:previousChap.id, slugPub:infoPub.slug, user:infoPub.user.username, slug:previousChap.slug}) }}" class="text-slate-600  text-4xl">
-					<span class="material-symbols-outlined">
+					<span class="material-icons-outlined">
 						arrow_back
 					</span>
 				</a>
@@ -87,7 +87,7 @@
 		{% if nextChap %}
 			<div class="fixed top-0 bottom-0 right-0 hidden md:flex items-center justify-end mr-8 lg:mr-56 " id="arrowNext">
 				<a href="{{ path("app_chapter_show", {idChap:nextChap.id, slugPub:infoPub.slug, user:infoPub.user.username, slug:nextChap.slug}) }}" class="text-slate-600 text-4xl  z-10">
-					<span class="material-symbols-outlined">
+					<span class="material-icons-outlined">
 						arrow_forward
 					</span>
 				</a>
@@ -97,7 +97,7 @@
 			<div class="z-50">
 				{% if previousChap %}
 					<a href="{{ path("app_chapter_show", {idChap:previousChap.id, slugPub:infoPub.slug, user:infoPub.user.username, slug:previousChap.slug}) }}" class="flex justify-around button-classic button-slate w-full md:w-auto">
-						<span class="material-symbols-outlined">
+						<span class="material-icons-outlined">
 							arrow_back
 						</span>
 					</a>
@@ -107,7 +107,7 @@
 				{% if nextChap %}
 					<a href="{{ path("app_chapter_show", {idChap:nextChap.id, slugPub:infoPub.slug, user:infoPub.user.username, slug:nextChap.slug}) }}" class="flex justify-around button-classic button-slate">
 
-						<span class="material-symbols-outlined">
+						<span class="material-icons-outlined">
 							arrow_forward
 						</span>
 					</a>
@@ -119,14 +119,14 @@
 			<div class="sticky bottom-10 -mt-16 flex ml-0 md:ml-5 justify-center place-content-center z-10  w-6/6 md:w-auto">
 				<div class="bg-white dark:bg-slate-900 rounded-xl shadow p-3 py-4 flex justify-center gap-3 items-center text-xs md:text-sm ">
 					<div data-tippy-content="Nombre de lecteurs" class="cursor-default">
-						<span class="material-symbols-outlined">
+						<span class="material-icons-outlined">
 							visibility
 						</span>
 						&nbsp;{{ infoChap.publicationChapterViews|length }}
 					</div>
 					|
 					<div data-tippy-content="Afficher les commentaires" class="hover:text-blue-600 cursor-pointer">
-						<span class="material-symbols-outlined toggleSidebar">
+						<span class="material-icons-outlined toggleSidebar">
 							forum
 						</span>&nbsp;
 						<span id="nbrComSmall" class="toggleSidebar nbr-com nbr-com-let" data-nbr-com="{{infoChap.publicationComments|length}}">{{ infoChap.publicationComments|length }}</span>
@@ -142,15 +142,15 @@
 					{% set bmTooltip = app.user.id is not defined ? "Connectez-vous pour marquer cette feuille !" : infoPub.user.id == app.user.id ? 'Vous ne pouvez pas marquer votre feuille.' : bm ? "Retirer cette feuille de ma collection" : "Ajouter cette feuille à ma collection" %}
 
 					<div class="{% if userLikesChapter %}hover:text-blue-600 cursor-pointer{% endif %} {% if app.user.id is not defined %}cursor-pointer{% endif %}" id="likeThisChapter" data-tippy-content="{{ likeTooltip }}" {% if app.user.id is not defined %} data-micromodal-trigger="popup-login" {% endif %} data-id="{{ infoChap.id }}">
-						<span class="material-{{ liked ? 'icons text-red-500' : 'symbols-outlined' }} " id="likeChapterThumb">
+						<span class="material-{{ liked ? 'icons text-red-500' : 'icons-outlined' }} " id="likeChapterThumb">
 							thumb_up
 						</span>
 						&nbsp;<span id="nbrLike">{{ infoChap.publicationChapterLikes|length }}</span>
 					</div>
 					|
 					<div class="{% if userCanBookmark %}hover:text-blue-600 cursor-pointer{% endif %} {% if app.user.id is not defined %}cursor-pointer{% endif %}" id="bmThisChapter" data-tippy-content="{{ bmTooltip }}" {% if app.user.id is not defined %} data-micromodal-trigger="popup-login" {% endif %} data-id="{{ infoChap.id }}">
-						<span class="material-{{ bm ? 'icons text-blue-500' : 'symbols-outlined' }}" id="bmChapter">
-							bookmark
+						<span class="material-{{ bm ? 'icons text-blue-500' : 'icons-outlined' }}" id="bmChapter">
+							bookmark_added
 						</span>
 						&nbsp;<span id="nbrBm">{{ infoChap.publicationBookmarks|length }}</span>
 					</div>
@@ -179,7 +179,7 @@
 				</li>
 				<li class="text-slate-400">|</li>
 				<li class="commentQuote">
-					<span data-tippy-content="Commenter ce passage" class="material-symbols-outlined toggleSidebar">
+					<span data-tippy-content="Commenter ce passage" class="material-icons-outlined toggleSidebar">
 						reviews
 					</span>
 				</li>
@@ -212,7 +212,7 @@
 				</li>
 				<li class="text-slate-400">|</li>
 				<li class="commentAlreadyQuote">
-					<span data-tippy-content="Commenter ce passage" class="material-symbols-outlined toggleSidebar cursor-pointer">
+					<span data-tippy-content="Commenter ce passage" class="material-icons-outlined toggleSidebar cursor-pointer">
 						reviews
 					</span>
 				</li>

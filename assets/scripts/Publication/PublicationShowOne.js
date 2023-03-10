@@ -3,6 +3,16 @@ import { NotyDisplay } from "../Noty";
 export function PublicationShowOne() {
   const pubContent = document.getElementById("PublicationShowOneContent");
   if (!pubContent) return;
+  const copyLink = document.getElementById("copyLink");
+  copyLink.addEventListener("click", (e) => {
+    var currentPageUrl = window.location.href;
+    navigator.clipboard.writeText(currentPageUrl);
+    NotyDisplay(
+      '<span class="material-symbols-outlined">link</span> Lien copié dans votre presse-papier',
+      "info",
+      2000
+    );
+  });
   //!SECTION - SUIVRE UN RÉCIT
   const followBtn = document.getElementById("followBtn");
   if (followBtn) {

@@ -31,7 +31,7 @@
 				<li class="li-user-menu">
 					<a href="{{ path("app_user", { username : app.user.username}) }}" target="_self" class="item-user-menu {{ app.request.attributes.get('_route') == 'app_user' or app.request.attributes.get('_route') == 'app_user_edit' ? " item-user-menu-selected"}}">
 						<span class="material-icons-outlined">
-							face_2
+							face
 						</span>
 						<span class="hidden   md:inline">Profil public</span>
 					</a>
@@ -61,13 +61,13 @@
 					</a>
 				</li>
 				{# <li class="li-user-menu">
-																																																																																																																																																																																																																																				<a href="#" class="item-user-menu">
-																																																																																																																																																																																																																																					<span class="material-icons-outlined">
-																																																																																																																																																																																																																																						archive
-																																																																																																																																																																																																																																					</span>
-																																																																																																																																																																																																																																					<span class="hidden    md:inline">Messagerie</span>
-																																																																																																																																																																																																																																				</a>
-																																																																																																																																																																																																																																			</li> #}
+																																																																																																																																																																																																																																								<a href="#" class="item-user-menu">
+																																																																																																																																																																																																																																									<span class="material-icons-outlined">
+																																																																																																																																																																																																																																										archive
+																																																																																																																																																																																																																																									</span>
+																																																																																																																																																																																																																																									<span class="hidden    md:inline">Messagerie</span>
+																																																																																																																																																																																																																																								</a>
+																																																																																																																																																																																																																																							</li> #}
 			</ul>
 		</div>
 		<div class="mt-20">

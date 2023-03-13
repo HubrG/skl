@@ -30,7 +30,7 @@
 								<span class="material-icons-outlined">
 									draw
 								</span>
-								Écrire & publier
+								Écrire
 							</a>
 						</li>
 					{% else %}
@@ -39,10 +39,19 @@
 								<span class="material-icons-outlined">
 									draw
 								</span>
-								Écrire & publier
+								Écrire
 							</button>
 						</li>
 					{% endif %}
+					<li class="hidden">
+						<button id="mega-menu-full-services-button" data-dropdown-toggle="mega-menu-full-services" type="button" class="text-slate-800 dark:text-slate-50 hover:bg-slate-50 focus:ring-4 focus:ring-slate-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-slate-700 focus:outline-none dark:focus:ring-slate-800">
+							<span class="material-icons-outlined">
+								handyman
+							</span>
+							&nbsp;Services éditoriaux
+						</button>
+					</li>
+
 					{% if app.user %}
 						<li class="flex justify-center md:flex-none md:justify-self-auto">
 							<button type="button" id="dropdownInformationButton" data-dropdown-toggle="dropdownInformation" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800 flex gap-x-2 ">
@@ -82,7 +91,7 @@
 							<li>
 								<a href="{{ path("app_user", { username : app.user.username}) }}" class=" hover:bg-gray-100 text-gray-900 dark:text-slate-200 dark:hover:bg-slate-600 block px-4 py-3 text-sm">
 									<span class="material-icons-outlined">
-										face_2
+										face
 									</span>
 									&nbsp;Mon profil</a>
 							</li>
@@ -195,6 +204,60 @@
 					</ul>
 				</div>
 			</div>
+		</div>
+		<div id="mega-menu-full-services" class="mt-10 border-t-2 border-t-sky-400 bg-white hidden absolute w-full shadow-lg  dark:bg-slate-700 dark:border-gray-600">
+			<div class="grid grid-cols-1 col-span-5  grid-rows-1 lg:grid-cols-2  gap-x-5 justify-center max-w-screen-xl px-4 py-5 mx-auto text-gray-900 dark:text-white sm:grid-cols-2 md:px-6 ">
+				<ul aria-labelledby="mega-menu-full-services-button" class="flex-col h-full items-start  space-y-2">
+					<li class="flex gap-x-2 items-center">
+						<span class="material-icons-outlined">
+							draw
+						</span>
+						<a href="{{path("app_service_copywriting")}}" class="block p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-300 dark:hover:bg-opacity-20">
+							<div class="font-semibold">Rédaction de contenu</div>
+							<span class="text-sm font-light text-slate-500 dark:text-slate-300">Améliorez votre visibilité en ligne et attirez un trafic qualifié sur votre site web grâce à notre service de rédaction de contenu optimisé pour vos besoins.</span>
+						</a>
+					</li>
+					<li class="flex gap-x-2 items-center">
+						<span class="material-icons-outlined">
+							spellcheck
+						</span>
+						<a href="#" class="block p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-300 dark:hover:bg-opacity-20">
+							<div class="font-semibold">Correction</div>
+							<span class="text-sm font-light text-slate-500 dark:text-slate-300">Ne laissez pas des erreurs de grammaire et d'orthographe ternir votre image. Notre service de correction professionnel vous garantit des textes impeccables.</span>
+						</a>
+					</li>
+				</ul>
+				<ul aria-labelledby="mega-menu-full-services-button" class="flex-col h-full items-start  space-y-2">
+					<li class="flex gap-x-2 items-center">
+						<span class="material-icons-outlined">
+							translate
+						</span>
+						<a href="#" class="block p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-300 dark:hover:bg-opacity-20">
+							<div class="font-semibold">Traduction</div>
+							<span class="text-sm font-light text-slate-500 dark:text-slate-300">Augmentez votre portée mondiale en toute confiance grâce à notre service de traduction.</span>
+						</a>
+					</li>
+					<li class="flex gap-x-2 items-center">
+						<span class="material-icons-outlined">
+							local_library
+						</span>
+						<a href="#" class="block p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-300 dark:hover:bg-opacity-20">
+							<div class="font-semibold">Relecture et retours</div>
+							<span class="text-sm font-light text-slate-500 dark:text-slate-300">Obtenez des retours personnalisés pour améliorer la qualité de vos écrits. Nos professionnels vous conseillent sur la structure, le style et la clarté de votre texte.</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<ul class="p-5 bg-slate-100 dark:bg-slate-900 shadow-2xl ">
+				<li class="text-center">
+					<span class="text-slate-500 dark:text-slate-300 text-xs">Vous souhaitez proposer l'un de ces services ?</span><br>
+					<a href="" class="font-medium hover:underline text-slate-900 dark:text-slate-100">
+						Rejoignez notre équipe en deux clics !</a>
+					<span class="material-icons-outlined  dark:text-slate-100">
+						handshake
+					</span>
+				</li>
+			</ul>
 		</div>
 	</nav>
 </div>

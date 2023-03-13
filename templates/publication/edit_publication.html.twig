@@ -101,7 +101,7 @@
 				<div class="relative mb-6">
 					<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
 						<span class="material-icons-outlined">
-							package
+							title
 						</span>
 					</div>
 					{{ form_widget(formPub.title, {attr:{"class":"axiosPublication axiosPubAS axiosPubSpy", "onkeydown":"if(this.value == '' && event.keyCode==32) return false;", "onkeyup":"if(this.value.charAt(0) == ' ') { this.value = this.value.trim() } if (!this.value) { document.getElementById('pubTitle').innerHTML='Récit sans titre' } else { document.getElementById('pubTitle').innerHTML=this.value.charAt(0).toUpperCase() + this.value.substring(1).toLowerCase()}"}}) }}
@@ -182,13 +182,13 @@
 							{% if infoPub.publicationChapters|length == 0 %}
 								<div class="w-full text-center bg-slate-100 dark:bg-slate-700 items-center justify-center justify-items-center flex-cols dark:text-slate-100 text-slate-600 rounded  mt-3 opacity-80 hover:opacity-100 border-2 border-slate-200 dark:border-slate-900" id="noPublication">
 									<p class="w-full h-full flex-row grid-cols-1 grid items-center justify-items-center place-items-center font-medium leading-5">
-										<a class="h-full px-5 py-0 grid-rows-2 grid-cols-1 grid items-center justify-items-center place-items-center font-medium leading-5" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}#first" target="_top">
+										<a class="h-full px-5 space-y-5 py-0 grid-rows-2 grid-cols-1 grid items-center justify-items-center place-items-center font-medium leading-5" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}#first" target="_top">
 											<span class="flex justify-items-end text-slate-900 dark:text-slate-100 text-base self-end">
 												Cliquez ici pour éditer votre première feuille
 											</span>
 											<span class="text-4xl flex justify-items-start self-start">
 												<span class="material-icons-outlined">
-													add_notes
+													post_add
 												</span>
 											</span>
 										</a>
@@ -241,7 +241,7 @@
 												</span>
 												<span class="text-4xl">
 													<span class="material-icons-outlined">
-														cheer
+														handshake
 													</span>
 												</span>
 											</span>

@@ -133,6 +133,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationFollow::class)]
     private Collection $publicationFollows;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $customer_name = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $provider_name = null;
+
     public function __construct()
     {
         $this->publications = new ArrayCollection();
@@ -826,6 +832,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $publicationFollow->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCustomerName(): ?string
+    {
+        return $this->customer_name;
+    }
+
+    public function setCustomerName(?string $customer_name): self
+    {
+        $this->customer_name = $customer_name;
+
+        return $this;
+    }
+
+    public function getProviderName(): ?string
+    {
+        return $this->provider_name;
+    }
+
+    public function setProviderName(?string $provider_name): self
+    {
+        $this->provider_name = $provider_name;
 
         return $this;
     }

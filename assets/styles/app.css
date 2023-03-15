@@ -135,7 +135,7 @@ hr {
 	@apply font-medium text-slate-700 dark:text-white flex font-serif
 }
 .logo span {
-	@apply font-[Alegreya] text-sky-500 text-5xl -ml-[0.1rem] mr-[0.1rem] -mt-[1.05rem] tracking-tight block  ;
+	@apply font-[Alegreya] text-sky-500 text-[3rem] -ml-[0.1rem] mr-[0.1rem] -mt-[0.84rem] tracking-tight block  ;
 }
 .logo:hover span {
 	@apply text-sky-400;

@@ -12,7 +12,7 @@
 
 {% block title %}
 	Mes récits
-																													—
+																																			—
 	{{ parent() }}
 
 {% endblock %}
@@ -166,7 +166,7 @@
 									{% endif %}
 								</a>
 							</th>
-							<th data-tippy-content="Popularité" scope="col" class="px-6 py-3 pl-2">
+							<th data-tippy-content="Popularité" scope="col" class="px-6 py-3 text-left pl-5">
 								<a href="{{path("app_user_show_publications", {sort:"pop", order:order})}}">
 									<span class="material-{{sort == 'pop' ? 'icons' : 'icons-outlined'}}">
 										insights

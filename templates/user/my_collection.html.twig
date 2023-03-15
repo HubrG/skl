@@ -3,17 +3,19 @@
 {% block title %}
 	Mes récits —
 	{{ parent() }}
-
 {% endblock %}
+
 {% block body %}
-	{% include "user/_partials/_top.html.twig" %}
+	{% include 'user/_partials/_top.html.twig' %}
 	<div class="flex gap-x-5 gap-y-5 w-full grid-cols-3 pt-10">
 		<ul class="w-full">
 			<li>
 				<h1 class="text-center text-2xl font-medium">
 					<span class="material-icons-outlined">
 						collections_bookmark
-					</span>Mes récits favoris</h1>
+					</span>
+					Mes récits favoris
+				</h1>
 			</li>
 			<ul>
 				{% set n = 0 %}
@@ -21,47 +23,82 @@
 				{% for item in app.user.publicationBookmarks %}
 					{% if item.publication %}
 						<li>
-							<a href="{{path("app_publication_show_one", {id:item.publication.id,slug:item.publication.slug})}}" class="hover:underline font-medium text-xl">{{ item.publication.title }}</a>
+							<a href="{{ path('app_publication_show_one', {'id': item.publication.id, 'slug': item.publication.slug}) }}" class="hover:underline font-medium text-xl">{{ item.publication.title }}</a>
 						</li>
 						{% if item.publication.publicationChapters|length > 0 %}
 							<ul>
-
-								{% for chapters in item.publication.publicationChapters %}
-									{% for bookchapter in chapters.publicationBookmarks %}
-										<li>
-											<span class="material-icons-outlined">
-												subdirectory_arrow_right
-											</span>
-											<a href="{{path("app_chapter_show", {idChap:bookchapter.chapter.id,slugPub:bookchapter.chapter.publication.slug,user:bookchapter.chapter.publication.user.username})}}" class="hover:underline">{{bookchapter.chapter.title}}</a>
-										</li>
+								{% for chapter in item.publication.publicationChapters %}
+									{% for bookchapter in chapter.publicationBookmarks %}
+										{% if bookchapter.chapter %}
+											<li>
+												<span class="material-icons-outlined">
+													subdirectory_arrow_right
+												</span>
+												<a href="{{ path('app_chapter_show', {'idChap': bookchapter.chapter.id, 'slugPub': bookchapter.chapter.publication.slug, 'user': bookchapter.chapter.publication.user.username}) }}" class="hover:underline">{{ bookchapter.chapter.title }}</a>
+											</li>
+										{% endif %}
 									{% endfor %}
 								{% endfor %}
 							</ul>
 						{% endif %}
 					{% endif %}
 				{% endfor %}
+
 				{% if n == 0 %}
 					<li class="text-center dark:text-slate-500">
 						Aucune feuille
 					</li>
 				{% endif %}
-
 			</ul>
 		</ul>
+
 		<ul class="w-full">
 			<li>
 				<h1 class="text-center text-2xl font-medium">
 					<span class="material-icons-outlined">
 						book
-					</span>Mes marque-pages</h1>
+					</span>
+					Mes marque-pages
+				</h1>
 			</li>
 			<ul>
 				{% set n = 0 %}
 				{% for item in app.user.publicationBookmarks %}
 					{% if item.chapter %}
 						<li>
-							<a href="{{path("app_chapter_show", {idChap:item.chapter.id,slugPub:item.chapter.publication.slug,user:item.chapter.publication.user.username})}}" class="hover:underline">{{ item.chapter.title }}</a>
-							<a href="{{path("app_publication_show_one", {id:item.chapter.publication.id,slug:item.chapter.publication.slug})}}">
+							<a href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'slugPub': item.chapter.publication.slug, 'user': item.chapter.publication.user.username}) }}" class="hover:underline">{{ item.chapter.title }}</a>
+							<a href="{{ path('app_publication_show_one', {'id': item.chapter.publication.id, 'slug': item.chapter.publication.slug}) }}">
+								<span class="opacity-20 text-xs">{{ item.chapter.publication.title }}</span>
+							</a>
+						</li>
+						{% set n = n + 1 %}
+					{% endif %}
+				{% endfor %}
+
+				{% if n == 0 %}
+					<li class="text-center dark:text-slate-500">
+						Aucune feuille
+					</li>
+				{% endif %}
+			</ul>
+		</ul>
+
+		<ul class="w-full">
+			<li>
+				<h1 class="text-center text-2xl font-medium">
+					<span class="material-icons-outlined">
+						thumb_up
+					</span>
+					Les feuilles que j'aime
+				</h1>
+			</li>
+			<ul>
+				{% set n = 0 %}
+				{% for item in app.user.publicationChapterLikes %}
+					{% if item.chapter %}
+						<li>
+							<a href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'slugPub': item.chapter.publication.slug, 'user': item.chapter.publication.user.username}) }}" class="hover:underline">{{ item.chapter.title }}</a>
+							<a href="{{ path('app_publication_show_one', {'id': item.chapter.publication.id, 'slug': item.chapter.publication.slug}) }}">
 								<span class="opacity-20 text-xs">{{ item.chapter.publication.title }}</span>
 							</a>
 						</li>
@@ -75,34 +112,7 @@
 				{% endif %}
 			</ul>
 		</ul>
-		<ul class="w-full">
-			<li>
-				<h1 class="text-center text-2xl font-medium">
-					<span class="material-icons-outlined">
-						thumb_up
-					</span>
-					Les feuilles que j'aime</h1>
-			</li>
-			<ul>
-				{% set n = 0 %}
-				{% for item in app.user.publicationChapterLikes %}
-					<li>
-						<a href="{{path("app_chapter_show", {idChap:item.chapter.id,slugPub:item.chapter.publication.slug,user:item.chapter.publication.user.username})}}" class="hover:underline">{{ item.chapter.title }}</a>
-						<a href="{{path("app_publication_show_one", {id:item.chapter.publication.id,slug:item.chapter.publication.slug})}}">
-							<span class="opacity-20 text-xs">{{ item.chapter.publication.title }}</span>
-						</a>
-					</li>
-					{% set n = n + 1 %}
-				{% endfor %}
-				{% if n == 0 %}
-					<li class="text-center dark:text-slate-500">
-						Aucune feuille
-					</li>
-				{% endif %}
-
-			</ul>
-		</ul>
 	</div>
-	{% include "user/_partials/_bottom.html.twig" %}
 
+	{% include 'user/_partials/_bottom.html.twig' %}
 {% endblock %}

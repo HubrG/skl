@@ -71,7 +71,6 @@
 							Aperçu de votre récit (<span class="material-icons text-red-600">
 								fiber_manual_record
 							</span>dépublié)</span>
-
 						<a href="{{ path("app_publication_edit", {id:pubShow.id}) }}" class="hover:underline">Revenir à l'édition
 							<span class="material-icons">
 								redo
@@ -83,7 +82,7 @@
 		{% endif %}
 		<h1 class="text-center text-4xl bg-center text-slate-800" style="text-shadow: 0 0.5px 1px blanchedalmond;">{{ pubShow.title }}</h1>
 		<h2 class="text-center -mt-8">
-			<span class="font-medium">
+			<span class="font-light">
 				<a href="{{ path("app_user", {username:pubShow.user.username}) }}" class="font-sans hover:underline dark:text-slate-200">{{ pubShow.user.nickname }}</a>
 			</span>
 		</h2>
@@ -93,7 +92,7 @@
 		<div class="flex gap-5 p-10 pt-0  items-center">
 			<div class="flex-1 text-center flex flex-col justify-center items-center justify-items-center origin-center">
 				<div class="lg:flex w-5/6">
-					<p class="text-base  font-light text-justify italic text-slate-900 dark:text-slate-200 dark:[text-shadow: 0 0.5px 1px blanchedalmond;] leading-7 mt-1">
+					<p class="text-base  font-light text-justify text-slate-900 dark:text-slate-200 dark:[text-shadow: 0 0.5px 1px blanchedalmond;] leading-7 mt-1">
 						{% if orderChap %}
 							{% if pubShow.summary %}
 
@@ -118,7 +117,7 @@
 					<span class="material-icons-outlined">
 						download
 					</span>
-					<span class="font-medium">
+					<span class="font-light">
 						Télécharger au format pdf</span>
 				</a>
 			</div>
@@ -334,7 +333,7 @@
 			{% set url = app.request.schemeAndHttpHost ~ app.request.requestUri %}
 			{% set text = "« " ~ pubShow.title ~ " » #" ~ pubShow.category.name ~ " " ~ hashtag %}
 			{% set via = "ScrilabEditions" %}
-			<div class="w-full opacity-60 dark:opacity-100  text-xs  z-50 mt-0 pt-5 px-2 lg:w-4/12  order-1 lg:order-2  shadow-slate-300 text-slate-900 border-slate-200 border-t-[1px] border-t-slate-200 dark:border-slate-900 dark:border-t-slate-900 lg:border-l-[1px] lg:border-t-0 ">
+			<div class="w-full opacity-70 dark:opacity-100  text-xs  z-50 mt-0 pt-5 px-2 lg:w-4/12  order-1 lg:order-2  shadow-slate-300 text-slate-900 border-slate-200 border-t-[1px] border-t-slate-200 dark:border-slate-900 dark:border-t-slate-900 lg:border-l-[1px] lg:border-t-0 ">
 				<ul class="flex flex-col  text-sm">
 					<li class="inline-flex items-center  gap-x-2 mt-0 px-4 font-normal justify-center dark:text-white">
 						<ul class="flex-row flex justify-between w-full">
@@ -378,7 +377,7 @@
 					</li>
 					<hr class="mb-5">
 					<li class="inline-flex items-center justify-between gap-x-2 px-4 font-normal dark:text-white">
-						<span class="font-medium">
+						<span class="font-light">
 							<span class="material-icons-outlined">
 								theater_comedy
 							</span>
@@ -402,7 +401,7 @@
 						</a>
 					</li>
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px   dark:text-white">
-						<span class="font-medium">
+						<span class="font-light">
 							<span class="material-icons-outlined">
 								auto_stories
 							</span>
@@ -411,7 +410,7 @@
 						<span>{{ chapterStats.pages }}</span>
 					</li>
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:text-white">
-						<span class="font-medium">
+						<span class="font-light">
 							<span class="material-icons-outlined">
 								timer
 							</span>
@@ -420,7 +419,7 @@
 						<span>{{ pubShow.publicationChapters|chapter("rt", "ft") }}</span>
 					</li>
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:text-white">
-						<span class="font-medium">
+						<span class="font-light">
 							<span class="material-icons-outlined">
 								visibility
 							</span>
@@ -429,7 +428,7 @@
 						<span>{{chapterStats.views}}</span>
 					</li>
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px   dark:text-white">
-						<span class="font-medium">
+						<span class="font-light">
 							<span class="material-icons-outlined">
 								forum
 							</span>
@@ -444,7 +443,7 @@
 						</span>
 					</li>
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px    dark:text-white">
-						<span class="font-medium">
+						<span class="font-light">
 							<span class="material-icons-outlined">
 								book
 							</span>
@@ -453,7 +452,7 @@
 						<span>{{chapterStats.bookmarks}}</span>
 					</li>
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px    dark:text-white">
-						<span class="font-medium">
+						<span class="font-light">
 							<span class="material-icons-outlined">
 								thumb_up
 							</span>
@@ -462,7 +461,7 @@
 						<span>{{chapterStats.likes}}</span>
 					</li>
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px    dark:text-white">
-						<span class="font-medium">
+						<span class="font-light">
 							<span class="material-icons-outlined">
 								downloading
 							</span>
@@ -478,7 +477,7 @@
 						{% set lastPopularity = pubShow.PublicationPopularities[nbr].popularity %}
 					{% endif %}
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:text-white">
-						<span class="font-medium">
+						<span class="font-light">
 							<span class="material-icons-outlined">
 								insights
 							</span>
@@ -513,7 +512,7 @@
 
 				<ul class=" flex flex-col opacity-60 dark:opacity-100 text-sm border-t-[1px] border-t-slate-200 dark:border-t-slate-900 pt-5 mt-5">
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px    dark:text-white">
-						<span class="font-medium">
+						<span class="font-light">
 							<span class="material-icons-outlined">
 								newspaper
 							</span>
@@ -522,7 +521,7 @@
 						<span>{{ pubShow.publishedDate ? pubShow.publishedDate|since : "Jamais publié" }}</span>
 					</li>
 					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px    dark:text-white">
-						<span class="font-medium">
+						<span class="font-light">
 							<span class="material-icons-outlined">
 								auto_fix
 							</span>

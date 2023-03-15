@@ -83,7 +83,7 @@
 	
 }
 body {
-	@apply bg-white dark:bg-slate-800 h-screen grid col-span-12 ;
+	@apply bg-white dark:bg-slate-800 h-screen grid col-span-12;
 }
 
 body.turbo-loading, body.turbo-loaded {
@@ -132,7 +132,7 @@ hr {
 	@apply my-10 mt-5 bg-slate-200 border-slate-200 dark:border-slate-700;
 }
 .logo {
-	@apply font-semibold text-slate-700 dark:text-white flex font-sans
+	@apply font-medium text-slate-700 dark:text-white flex font-serif
 }
 .logo span {
 	@apply font-[Alegreya] text-sky-500 text-5xl -ml-[0.1rem] mr-[0.1rem] -mt-[1.05rem] tracking-tight block  ;

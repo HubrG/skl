@@ -81,9 +81,9 @@
 				</div>
 			</div>
 		{% endif %}
-		<h1 class="text-center font-serif text-4xl bg-center text-slate-800" style="text-shadow: 0 0.5px 1px blanchedalmond;">{{ pubShow.title }}</h1>
+		<h1 class="text-center text-4xl bg-center text-slate-800" style="text-shadow: 0 0.5px 1px blanchedalmond;">{{ pubShow.title }}</h1>
 		<h2 class="text-center -mt-8">
-			<span class="font-medium font-serif">
+			<span class="font-medium">
 				<a href="{{ path("app_user", {username:pubShow.user.username}) }}" class="font-sans hover:underline dark:text-slate-200">{{ pubShow.user.nickname }}</a>
 			</span>
 		</h2>
@@ -93,7 +93,7 @@
 		<div class="flex gap-5 p-10 pt-0  items-center">
 			<div class="flex-1 text-center flex flex-col justify-center items-center justify-items-center origin-center">
 				<div class="lg:flex w-5/6">
-					<p class="text-base font-serif font-light text-justify italic text-slate-900 dark:text-slate-200 dark:[text-shadow: 0 0.5px 1px blanchedalmond;] leading-7 mt-1">
+					<p class="text-base  font-light text-justify italic text-slate-900 dark:text-slate-200 dark:[text-shadow: 0 0.5px 1px blanchedalmond;] leading-7 mt-1">
 						{% if orderChap %}
 							{% if pubShow.summary %}
 

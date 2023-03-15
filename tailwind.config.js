@@ -24,7 +24,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ["Open Sans", "sans-serif"],
-        serif: ["Gilda Display", "serif"],
+        serif: ["Noto Serif Lao", "serif"],
       },
       fontSize: {
         xs: "0.85rem", // 12px

@@ -4,7 +4,7 @@
 @import '~animate.css/animate.css';
 @import "~noty/lib/noty.css";
 @import "~noty/lib/themes/semanticui.css";
-@import url('https://fonts.googleapis.com/css2?family=Gilda+Display&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&family=Solitreo&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alegreya:wght@400&family=Noto+Serif+Lao:wght@100;200;300;400;500;600;700&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
 @import url('modal.css');
 
@@ -131,14 +131,15 @@ h1 {
 hr {
 	@apply my-10 mt-5 bg-slate-200 border-slate-200 dark:border-slate-700;
 }
-#logo {
-	@apply font-semibold text-slate-900 dark:text-white flex font-serif
+.logo {
+	@apply font-semibold text-slate-700 dark:text-white flex font-sans
 }
-#logo span {
-	@apply font-[Solitreo] text-5xl -mt-[0.6rem] ml-1 block text-slate-700 dark:text-slate-200;
+.logo span {
+	@apply font-[Alegreya] text-sky-500 text-5xl -ml-[0.1rem] mr-[0.1rem] -mt-[1.05rem] tracking-tight block  ;
 }
-#logo:hover span {
-	@apply text-sky-500 dark:text-sky-500;
+.logo:hover span {
+	@apply text-sky-400;
+
 }
 .alert, .alert-danger {
 	@apply text-rose-500 text-sm -mt-2 mb-2;

@@ -1,3 +1,6 @@
 {
-    "explorer.enableUndo": true
+    "explorer.enableUndo": true,
+    "prettier.bracketSameLine": true,
+    "editor.formatOnSaveMode": "file",
+    "editor.formatOnSave": true
 }

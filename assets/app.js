@@ -5,9 +5,24 @@
  * (and its CSS file) in your base layout (base.html.twig).
  */
 // any CSS you import will output into a single css file (app.css in this case)
-import "./styles/app.css";
-window.axios = require("axios");
-import "./turbo/turbo-helper";
+import "@glidejs/glide/dist/css/glide.core.min.css";
 import "./bootstrap";
+import "./styles/app.css";
+import "./turbo/turbo-helper";
+window.axios = require("axios");
 // TODO: refaire cette fonction
+import Glide from "@glidejs/glide";
 import "./scripts/Noty";
+var glide = new Glide(".glide", {
+  type: 'carousel',
+  perView: 1,
+  breakpoints: {
+    1024: {
+      perView: 1,
+    },
+    600: {
+      perView: 1,
+    },
+  },
+});
+glide.mount();

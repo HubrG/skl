@@ -1,20 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!
+{% block title %}Scrilab | Web-éditeur
 {% endblock %}
 {% block stylesheets %}{% endblock %}
 {% block javascripts %}{% endblock %}
 {% block body %}
-
-	<section class="col-span-12 content-evently">
-
-		<div style="width: 800px;">
-			<canvas id="acquisitions"></canvas>
+	<div class="col-span-12 h-[45vh]">
+		<div class="glide absolute top-10 left-0">
+			<div data-glide-el="track" class="glide__track">
+				<div class="glide__slides">
+					<div class="glide__slide">
+						<div class="w-full h-[45vh] bg-slate-100  rounded-lg p-10">
+							<h1>Scrilab</h1>
+						</div>
+					</div>
+					<div class="glide__slide">ss</div>
+					<div class="glide__slide">ddd</div>
+				</div>
+			</div>
+			<div class="glide__arrows" data-glide-el="controls">
+				<button class="glide__arrow glide__arrow--left" data-glide-dir="&lt;">
+					<span class="material-icons-outlined">
+						arrow_back_ios
+					</span>
+				</button>
+				<button class="glide__arrow glide__arrow--right" data-glide-dir="&gt;">
+					<span class="material-icons-outlined">
+						arrow_forward_ios
+					</span>
+				</button>
+			</div>
+			<div class="glide__bullets" data-glide-el="controls[nav]">
+				<button class="glide__bullet" data-glide-dir="=0"></button>
+				<button class="glide__bullet" data-glide-dir="=1"></button>
+				<button class="glide__bullet" data-glide-dir="=2"></button>
+			</div>
 		</div>
-		<ul>
-			<li>Derniers commentaires</li>
-			<li>Top semaine</li>
-			<li>Top rédaction...</li>
-		</ul>
-	</section>
-</section>{% endblock %}
+	</div>
+	<div class="col-span-12">
+		Coucou
+	</div>
+{% endblock %}

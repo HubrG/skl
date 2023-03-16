@@ -1,3 +1,0 @@
-nucleos_sitemap:
-    resource: '@NucleosSitemapBundle/Resources/config/routing/sitemap.yml'
-    prefix: /

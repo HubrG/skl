@@ -26,7 +26,7 @@
 						</span>
 					</button>
 					<hr>
-					<div id="loginframe" class="w-full">
+					<turbo-frame id="loginframe" class="w-full">
 						<form method="post" action="{{ path("app_login") }}" target="_top" class="w-full">
 							{% if error is defined %}
 								{% if error %}
@@ -80,7 +80,7 @@
 								</span>
 								Connexion</button>
 						</form>
-					</div>
+					</turbo-frame>
 				</div>
 			</div>
 		</div>

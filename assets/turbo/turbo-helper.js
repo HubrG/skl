@@ -42,6 +42,9 @@ import axios from "axios";
 const TurboHelper = class {
   constructor() {
     document.addEventListener("turbo:before-cache", () => {});
+    document.addEventListener("turbo:frame-missing", () => {
+      window.top.location.href = "/";
+    });
     document.addEventListener("turbo:render", () => {
       darkMode();
       PublicationShowOne();

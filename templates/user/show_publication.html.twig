@@ -12,7 +12,7 @@
 
 {% block title %}
 	Mes récits
-																																						—
+																																							—
 	{{ parent() }}
 
 {% endblock %}
@@ -202,7 +202,7 @@
 								<th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white flex  {{item.status < 2 ? " opacity-60"}}">
 
 
-									<a {% if item.title|length > 30 %} data-tippy-content="{{item.title}}" {% endif %} href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug} ) }}" class=" hover:underline">{{ item.title|slice(0,30) }}{{item.title|length > 30 ? "..."}}</a>
+									<a target="_top" {% if item.title|length > 30 %} data-tippy-content="{{item.title}}" {% endif %} href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug} ) }}" class=" hover:underline">{{ item.title|slice(0,30) }}{{item.title|length > 30 ? "..."}}</a>
 
 								</th>
 

@@ -41,7 +41,7 @@
 				<h2 class="{{kwString ? "hidden " }} my-5 xl:hidden text-center font-bold dark:text-slate-100">Mots-clés</h2>
 				{% if kwString %}
 					<p class="text-center text-md md:mt-0">
-						<a data-turbo-frame="_self" href="{{ path("app_publication_show_all_category", {slug:slugCat, page:1, order:orderSort, sortby:querySortby}) }}" class="text-slate-600 dark:text-slate-100 text-sm font-medium">
+						<a target="_self" href="{{ path("app_publication_show_all_category", {slug:slugCat, page:1, order:orderSort, sortby:querySortby}) }}" class="text-slate-600 dark:text-slate-100 text-sm font-medium">
 							<span class="material-icons-outlined">
 								backspace
 							</span>

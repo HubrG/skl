@@ -34,7 +34,7 @@
 	{% set separator_d = "——" %}
 	{% set pageAct = app.request.get('_route_params')['page'] is defined ? app.request.get('_route_params')['page'] : null %}
 	{% set random = random(0,999) %}
-	<div id="pagination-{{random}}" class="grid {% if pubShowKw %}grid-cols-2 {% else %}grid-cols-1{% endif %}  grid-rows-auto gap-4 col-span-full xl:gap-x-10 container -mt-12 xl:-mt-12 ">
+	<turbo-frame id="pagination-{{random}}" class="grid {% if pubShowKw %}grid-cols-2 {% else %}grid-cols-1{% endif %}  grid-rows-auto gap-4 col-span-full xl:gap-x-10 container -mt-12 xl:-mt-12 ">
 		{% if pubShowKw %}
 			<aside class="{{kwString ? " md:bg-inherit dark:bg-slate-900 md:dark:bg-inherit" }} row-span-12 -mt-5 rounded-lg dark:p-1 col-span-12 xl:col-span-5 xl:row-span-5 mb-10 xl:mb-0 {{kwString ? " order-1 md:border-b-0 border-b-4 border-slate-400 dark:border-slate-800 " : " order-2" }} xl:order-1 snap-y ">
 				<hr class="xl:hidden mb-5 h-[0.3rem] bg-slate-400 dark:bg-slate-800 dark:border-none hidden"/>
@@ -64,7 +64,7 @@
 					{% if count == 0 and app.user %}
 						<span class="hidden lg:inline">|</span>
 						<span class="block md:hidden"></span>
-						<a href="{{ path("app_publication_add") }}" class="text-sky-800 dark:text-sky-400 font-medium hover:underline">N'hésitez pas à publier le vôtre !</a>
+						<a href="{{ path("app_publication_add") }}" target="_top" class="text-sky-800 dark:text-sky-400 font-medium hover:underline">N'hésitez pas à publier le vôtre !</a>
 					{% elseif count == 0 and not app.user %}
 						<span class="hidden lg:inline">|</span>
 						<span class="block md:hidden"></span>
@@ -150,7 +150,7 @@
 									</span>
 								</div>
 							{% else %}
-								<a href="{{path("app_publication_add")}}" class="item-fake">
+								<a href="{{path("app_publication_add")}}" target="_top" class="item-fake">
 									<span class="write-and-publish w-2/6"></span>
 									<span class=" w-4/6 items-center flex flex-col justify-center text-slate-800 dark:text-slate-400">
 										<span class="text-4xl">
@@ -172,5 +172,5 @@
 				{% include "publication/_partials/_show_all_pagination.html.twig" with {'type': "bottom"}  %}
 			{% endif %}
 		</div>
-	</div>
+	</turbo-frame>
 {% endblock %}

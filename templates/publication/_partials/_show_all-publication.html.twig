@@ -5,20 +5,20 @@
 				<span class="catColor-{{item.category.color}} rounded rounded-bl-none rounded-tr-none p-1 px-2 text-xs font-normal">{{ item.category.name|lower }}</span>
 			</a>
 		{% endif %}
-		<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}">
+		<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" target="_top">
 			{% set pic = item.cover %}
 			<img class=" rounded  w-full h-full object-cover lazy animate-pulse animate__animated bg-slate-300  {% if not pic %}  dark:blur-none dark:bg-slate-900 {% endif %}" width="529" height="793" loading="lazy" src="" data-src="{% if pic %}{{pic}}{% else %}{{ "https://via.placeholder.com/529x793" }} {% endif %}" alt=""/>
 		</a>
 	</div>
 	<div class="pl-5 pr-3 w-4/6 relative">
 		<h5 class="text-base text-slate-600 font-medium tracking-tight pr-2">
-			<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" class=" text-slate-600  dark:text-slate-300 text-base leading-5 font-medium hover:underline">{{ item.title }}</a>
+			<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" target="_top" class=" text-slate-600  dark:text-slate-300 text-base leading-5 font-medium hover:underline">{{ item.title }}</a>
 		</h5>
 		<small class="font-light text-md dark:text-slate-200">
 			<span class="material-icons-outlined">
 				subdirectory_arrow_right
 			</span>
-			<a href="{{ path("app_user", {username:item.user.username}) }}" class="hover:underline">{{ item.user.nickname }}</a>
+			<a href="{{ path("app_user", {username:item.user.username}) }}" class="hover:underline" target="_top">{{ item.user.nickname }}</a>
 		</small>
 		{# popover info publication #}
 		{# {% include "publication/_partials/_show_all-popover-info.html.twig" %} #}
@@ -38,7 +38,7 @@
 		</p>
 		<p class=" text-cyan-600 flex flex-wrap justify-start">
 			{% for pubKeyw in item.publicationKeywords %}
-				<a href="{{ path("app_publication_show_all_category", {slug:querySlug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:pubKeyw.keyword|lower}) }}" target="_self">
+				<a href="{{ path("app_publication_show_all_category", {slug:querySlug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:pubKeyw.keyword|lower}) }}" data-turbo-frame="_self">
 					<span class="kwTag">{{ pubKeyw.keyword|lower }}
 						{% if not loop.last %}{% endif %}
 					</span>

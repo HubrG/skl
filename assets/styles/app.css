@@ -95,7 +95,7 @@ footer {
 	@apply shadow-2xl  border-slate-600 z-10;
 }
 nav {
-	@apply  bg-white  shadow-sm border-b border-b-slate-300 px-2 md:px-4 py-2.5 dark:bg-slate-800 dark:border-b-slate-700
+	@apply  bg-white  shadow-lg  border-b border-b-slate-300 px-2 md:px-4 py-2.5 dark:bg-slate-800 dark:border-b-slate-700
 }
 main {
 	@apply  grid grid-rows-none grid-cols-12   items-start mx-auto md:p-10 p-3 pt-14 md:w-9/12 z-50  ;

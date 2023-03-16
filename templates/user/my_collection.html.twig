@@ -23,7 +23,7 @@
 				{% for item in app.user.publicationBookmarks %}
 					{% if item.publication %}
 						<li>
-							<a href="{{ path('app_publication_show_one', {'id': item.publication.id, 'slug': item.publication.slug}) }}" class="hover:underline font-medium text-xl">{{ item.publication.title }}</a>
+							<a target="_top" href="{{ path('app_publication_show_one', {'id': item.publication.id, 'slug': item.publication.slug}) }}" class="hover:underline font-medium text-xl">{{ item.publication.title }}</a>
 						</li>
 						{% if item.publication.publicationChapters|length > 0 %}
 							<ul>
@@ -34,7 +34,7 @@
 												<span class="material-icons-outlined">
 													subdirectory_arrow_right
 												</span>
-												<a href="{{ path('app_chapter_show', {'idChap': bookchapter.chapter.id, 'slugPub': bookchapter.chapter.publication.slug, 'user': bookchapter.chapter.publication.user.username}) }}" class="hover:underline">{{ bookchapter.chapter.title }}</a>
+												<a target="_top" href="{{ path('app_chapter_show', {'idChap': bookchapter.chapter.id, 'slugPub': bookchapter.chapter.publication.slug, 'user': bookchapter.chapter.publication.user.username}) }}" class="hover:underline">{{ bookchapter.chapter.title }}</a>
 											</li>
 										{% endif %}
 									{% endfor %}
@@ -66,8 +66,8 @@
 				{% for item in app.user.publicationBookmarks %}
 					{% if item.chapter %}
 						<li>
-							<a href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'slugPub': item.chapter.publication.slug, 'user': item.chapter.publication.user.username}) }}" class="hover:underline">{{ item.chapter.title }}</a>
-							<a href="{{ path('app_publication_show_one', {'id': item.chapter.publication.id, 'slug': item.chapter.publication.slug}) }}">
+							<a target="_top" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'slugPub': item.chapter.publication.slug, 'user': item.chapter.publication.user.username}) }}" class="hover:underline">{{ item.chapter.title }}</a>
+							<a target="_top" href="{{ path('app_publication_show_one', {'id': item.chapter.publication.id, 'slug': item.chapter.publication.slug}) }}">
 								<span class="opacity-20 text-xs">{{ item.chapter.publication.title }}</span>
 							</a>
 						</li>
@@ -97,8 +97,8 @@
 				{% for item in app.user.publicationChapterLikes %}
 					{% if item.chapter %}
 						<li>
-							<a href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'slugPub': item.chapter.publication.slug, 'user': item.chapter.publication.user.username}) }}" class="hover:underline">{{ item.chapter.title }}</a>
-							<a href="{{ path('app_publication_show_one', {'id': item.chapter.publication.id, 'slug': item.chapter.publication.slug}) }}">
+							<a target="_top" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'slugPub': item.chapter.publication.slug, 'user': item.chapter.publication.user.username}) }}" class="hover:underline">{{ item.chapter.title }}</a>
+							<a target="_top" href="{{ path('app_publication_show_one', {'id': item.chapter.publication.id, 'slug': item.chapter.publication.slug}) }}">
 								<span class="opacity-20 text-xs">{{ item.chapter.publication.title }}</span>
 							</a>
 						</li>

@@ -4,6 +4,11 @@
 {% endblock %}
 
 {% block body %}
+	<turbo-frame id="loginframe">
+		<script>
+			window.top.location.href ="{{ path('app_home') }}"
+		</script>
+	</turbo-frame>
 	<section class="col-span-6 col-start-4">
 		<h1 class="text-center">Connexion</h1>
 		<form method="post">

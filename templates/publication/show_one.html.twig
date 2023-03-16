@@ -229,36 +229,36 @@
 					{% for chapter in chapShow %}
 						{% if chapter.status > 1 %}
 							{% set chapterSlug = chapter.slug ?: "feuille-n0" ~ (chapter.orderDisplay + 1) %}
-							<li class="inline-flex items-center gap-x-2 py-1 px-4 text-base font-medium text-slate-900 -mt-px dark:bg-inherit dark:text-white">
+							<li class="inline-flex items-center gap-x-2 py-1 px-4 font-medium text-slate-900 -mt-px dark:bg-inherit dark:text-white">
 								<div class="flex justify-between w-full">
 									<a href="{{ path("app_chapter_show", {idChap:chapter.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:chapterSlug}) }}" class="h-full w-4/6 font-normal  text-lg hover:underline">
 										<span class="font-bold">{{ loop.index }}.</span>
 										{{ chapter.title|default("Feuille n°" ~ (chapter.orderDisplay + 1))|capitalize }}
 									</a>
 									<div class="w-2/6 justify-items-end opacity-80 dark:opacity-100">
-										<div class="py-1 px-2 rounded-full flex justify-between md:text-xs text-[0.65rem] text-slate-500 font-medium">
-											<div class=" flex flex-col md:flex-row items-center">
+										<div class="py-1 px-2 rounded-full flex justify-between items-center mt-0 md:-mt-2 md:text-[0.65rem] text-[0.65rem] text-slate-500 font-medium opacity-80 dark:opacity-100 dark:text-slate-400">
+											<div class=" flex flex-col md:flex-col items-center gap-x-1">
 												<span class="material-icons-outlined">
 													thumb_up
 												</span>
 												{{ chapter.publicationChapterLikes|length }}
 												{% set chapterStats = chapterStats|merge({'likes': chapterStats.likes + chapter.publicationChapterLikes|length}) %}
 											</div>
-											<div class=" flex flex-col md:flex-row items-center">
+											<div class=" flex flex-col md:flex-col items-center gap-x-1">
 												<span class="material-icons-outlined">
 													bookmarks
 												</span>
 												{{ chapter.publicationBookmarks|length }}
 												{% set chapterStats = chapterStats|merge({'bookmarks': chapterStats.bookmarks + chapter.publicationBookmarks|length}) %}
 											</div>
-											<div class=" flex flex-col md:flex-row items-center">
+											<div class=" flex flex-col md:flex-col items-center gap-x-1">
 												<span class="material-icons-outlined">
 													visibility
 												</span>
 												{{ chapter.publicationChapterViews|length }}
 												{% set chapterStats = chapterStats|merge({'views': chapterStats.views + chapter.publicationChapterViews|length}) %}
 											</div>
-											<div class=" flex flex-col md:flex-row items-center">
+											<div class=" flex flex-col md:flex-col items-center gap-x-1">
 												<span class="material-icons-outlined">
 													forum
 												</span>

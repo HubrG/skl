@@ -27,7 +27,7 @@
 					</button>
 					<hr>
 					<turbo-frame id="loginframe" class="w-full">
-						<form method="post" action="{{ path("app_login") }}" class="w-full">
+						<form method="post" action="{{ path("app_login") }}" target="_self" class="w-full">
 							{% if error is defined %}
 								{% if error %}
 									<div class="flex justify-center items-center font-bold mt-10">

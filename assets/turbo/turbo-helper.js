@@ -43,7 +43,7 @@ const TurboHelper = class {
   constructor() {
     document.addEventListener("turbo:before-cache", () => {});
     document.addEventListener("turbo:frame-missing", () => {
-      window.top.location.href = "/";
+      window.top.location.reload();
     });
     document.addEventListener("turbo:render", () => {
       darkMode();

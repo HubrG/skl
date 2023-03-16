@@ -60,8 +60,8 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
             // Rediriger vers une page par défaut si l'URL de la page précédente n'est pas disponible
             return new RedirectResponse($this->urlGenerator->generate('app_home'), Response::HTTP_SEE_OTHER);
         }
-
-        return new RedirectResponse($targetPath);
+        return new RedirectResponse($this->urlGenerator->generate('app_home'), Response::HTTP_SEE_OTHER);
+        // return new RedirectResponse($targetPath);
     }
 
     protected function getLoginUrl(Request $request): string

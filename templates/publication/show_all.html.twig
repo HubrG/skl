@@ -41,7 +41,7 @@
 				<h2 class="{{kwString ? "hidden " }} my-5 xl:hidden text-center font-bold dark:text-slate-100">Mots-clés</h2>
 				{% if kwString %}
 					<p class="text-center text-md md:mt-0">
-						<a href="{{ path("app_publication_show_all_category", {slug:slugCat, page:1, order:orderSort, sortby:querySortby}) }}" class="text-slate-600 dark:text-slate-100 text-sm font-medium">
+						<a data-turbo-frame="_self" href="{{ path("app_publication_show_all_category", {slug:slugCat, page:1, order:orderSort, sortby:querySortby}) }}" class="text-slate-600 dark:text-slate-100 text-sm font-medium">
 							<span class="material-icons-outlined">
 								backspace
 							</span>
@@ -115,7 +115,7 @@
 									{% set activeClass = "hover:bg-slate-200 dark:bg-slate-500 dark:hover:bg-slate-700 dark:text-slate-300 grayscale" %}
 								{% endif %}
 								<li class="py-2 {{ option.class }} {{ activeClass }} ">
-									<a href="{{ path("app_publication_show_all_category", {slug: slugCat, keystring: queryKeystring, page: page, order: option.order, sortby: option.sortby}) }}" target="_self" class="block px-4 py-2 ">
+									<a href="{{ path("app_publication_show_all_category", {slug: slugCat, keystring: queryKeystring, page: page, order: option.order, sortby: option.sortby}) }}" data-turbo-frame="_self" class="block px-4 py-2 ">
 										{{ option.icon|raw }}
 										&nbsp;{{ option.text }}</a>
 								</li>

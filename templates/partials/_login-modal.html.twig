@@ -26,8 +26,8 @@
 						</span>
 					</button>
 					<hr>
-					<form method="post" action="{{ path("app_login") }}" data-turbo-frame="loginframe" class="w-full">
-						<turbo-frame id="loginframe" class="w-full">
+					<turbo-frame id="loginframe" class="w-full">
+						<form method="post" action="{{ path("app_login") }}" class="w-full">
 							{% if error is defined %}
 								{% if error %}
 									<div class="flex justify-center items-center font-bold mt-10">
@@ -79,8 +79,8 @@
 									login
 								</span>
 								Connexion</button>
-						</turbo-frame>
-					</form>
+						</form>
+					</turbo-frame>
 				</div>
 			</div>
 		</div>

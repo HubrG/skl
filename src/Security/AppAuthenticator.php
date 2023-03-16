@@ -56,11 +56,11 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
 
         //
         //
-        if (!$targetPath) {
-            // Rediriger vers une page par défaut si l'URL de la page précédente n'est pas disponible
-            return (new RedirectResponse($this->urlGenerator->generate('app_home')))
-                ->setContent('<a href="' . $this->urlGenerator->generate('app_home') . '" target="_top">Redirection en cours...</a>');
-        }
+        // if (!$targetPath) {
+        //     // Rediriger vers une page par défaut si l'URL de la page précédente n'est pas disponible
+        //     return (new RedirectResponse($this->urlGenerator->generate('app_home')))
+        //         ->setContent('<a href="' . $this->urlGenerator->generate('app_home') . '" target="_top">Redirection en cours...</a>');
+        // }
         $url = $targetPath;
 
         return new Response(

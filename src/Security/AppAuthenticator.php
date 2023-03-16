@@ -58,11 +58,27 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
         //
         if (!$targetPath) {
             // Rediriger vers une page par défaut si l'URL de la page précédente n'est pas disponible
-            return (new RedirectResponse($$this->urlGenerator->generate('app_home')))
+            return (new RedirectResponse($this->urlGenerator->generate('app_home')))
                 ->setContent('<a href="' . $this->urlGenerator->generate('app_home') . '" target="_top">Redirection en cours...</a>');
         }
-        return (new RedirectResponse($targetPath))
-            ->setContent('<a href="' . $targetPath . '" target="_top">Redirection en cours...</a>');
+        $url = $targetPath;
+
+        return new Response(
+            '<!DOCTYPE html>' .
+                '<html>' .
+                '<head>' .
+                '<meta charset="UTF-8">' .
+                '<title>Redirection</title>' .
+                '<script>' .
+                'window.top.location.href = "' . addslashes($url) . '";' .
+                '</script>' .
+                '</head>' .
+                '<body>' .
+                '</body>' .
+                '</html>',
+            Response::HTTP_OK,
+            ['Content-Type' => 'text/html']
+        );
     }
 
     protected function getLoginUrl(Request $request): string

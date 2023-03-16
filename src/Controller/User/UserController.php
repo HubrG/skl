@@ -244,6 +244,10 @@ class UserController extends AbstractController
 	#[Route('/collection', name: 'app_user_collection')]
 	public function collection(): Response
 	{
+		if (!$this->getUser()) {
+			return $this->redirectToRoute("app_home");
+		}
+
 		return $this->render('user/my_collection.html.twig', [
 			'controller_name' => 'MyCollectionController',
 			'userInfo' => $this->getUser()

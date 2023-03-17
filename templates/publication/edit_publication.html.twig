@@ -182,7 +182,7 @@
 							{% if infoPub.publicationChapters|length == 0 %}
 								<div class="w-full text-center bg-slate-100 dark:bg-slate-700 items-center justify-center justify-items-center flex-cols dark:text-slate-100 text-slate-600 rounded  mt-3 opacity-80 hover:opacity-100 border-2 border-slate-200 dark:border-slate-900" id="noPublication">
 									<p class="w-full h-full flex-row grid-cols-1 grid items-center justify-items-center place-items-center font-medium leading-5">
-										<a class="h-full px-5 space-y-5 py-0 grid-rows-2 grid-cols-1 grid items-center justify-items-center place-items-center font-medium leading-5" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}#first" target="_top">
+										<a class="h-full px-5 space-y-5 py-0 grid-rows-2 grid-cols-1 grid items-center justify-items-center place-items-center font-medium leading-5 pb-10" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}#first" target="_top">
 											<span class="flex justify-items-end text-slate-900 dark:text-slate-100 text-base self-end">
 												Cliquez ici pour éditer votre première feuille
 											</span>
@@ -206,7 +206,7 @@
 										</span>
 									</p>
 									<p class="text-xs flex font-normal gap-x-2 opacity-70">
-										<span class="material-icons-outlined  text-white">
+										<span class="material-icons-outlined text-salte-400 dark:text-white">
 											receipt_long
 										</span>
 										<span>
@@ -215,7 +215,7 @@
 										</span>
 									</p>
 									<p class="text-xs  font-normal flex gap-x-2  opacity-70">
-										<span class="material-icons-outlined  text-white">
+										<span class="material-icons-outlined text-salte-400 dark:text-white">
 											numbers
 										</span>
 										<span>
@@ -257,13 +257,13 @@
 											</span>
 										</p>
 										<p class="text-xs flex font-normal gap-x-2  text-slate-600 dark:text-slate-400">
-											<span class="material-icons-outlined items-center text-white">
+											<span class="material-icons-outlined text-salte-400 dark:text-white">
 												open_with
 											</span>
 											Vous pouvez la publier en la glissant dans cet espace
 										</p>
 										<p class="text-xs flex font-normal gap-x-2  text-slate-600 dark:text-slate-400">
-											<span class="material-icons-outlined items-center text-white">
+											<span class="material-icons-outlined text-salte-400 dark:text-white">
 												numbers
 											</span>
 											Vous pouvez également modifier l'ordre par lequel les feuilles publiées sont affichées. Cet ordre déterminera la façon dont vos lecteurs parcourront vos feuilles.

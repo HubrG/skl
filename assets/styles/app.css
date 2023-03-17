@@ -136,10 +136,10 @@ hr {
 	@apply font-medium text-slate-700 dark:text-white flex font-serif
 }
 .logo span {
-	@apply font-[Alegreya] text-sky-500 text-[3rem] -ml-[0.1rem] mr-[0.1rem] -mt-[0.77rem] tracking-tight block  ;
+	@apply font-[Alegreya] text-indigo-500 text-[3rem] -ml-[0.1rem] mr-[0.1rem] -mt-[0.77rem] tracking-tight block  ;
 }
 .logo:hover span {
-	@apply text-sky-400;
+	@apply text-indigo-400;
 
 }
 .alert, .alert-danger {

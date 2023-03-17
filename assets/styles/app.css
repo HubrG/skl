@@ -658,10 +658,10 @@ opacity: 0.4;
 	@apply bg-white dark:bg-slate-800 shadow-none  dark:shadow-inner;
 }
 .li-user-menu {
-	@apply flex-1 text-sm;
+	@apply flex-1 text-sm cursor-default;
 }
 a.slide-card {
-	@apply block max-w-sm p-5  rounded-b-lg lg:hover:shadow-2xl hover:shadow-lg   dark:hover:bg-slate-900;
+	@apply block max-w-sm p-5 cursor-default rounded-b-lg lg:hover:shadow-2xl hover:shadow-lg   dark:hover:bg-slate-900;
 }
 .slide-card h5 {
 	@apply mb-2  font-semibold text-base text-center tracking-tight text-slate-700 dark:text-white;

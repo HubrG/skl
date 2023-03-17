@@ -7,17 +7,17 @@
 {% block body %}
 	<div class="bg-home dark:hidden opacity-50 -z-50 left-0 fixed h-screen w-full bg-repeat"></div>
 	<section class="col-span-12">
-		<ul class="text-base flex flex-row justify-between mb-16 lg:mb-14 -mt-8 lg:mt-0 space-x-5 z-50 text-slate-900 dark:text-indigo-300">
+		<ul class="text-base flex flex-row justify-between -mt-8 lg:-mt-4 mb-8 lg:mb-0 space-x-5 z-50 text-slate-900 dark:text-indigo-300">
 			<li class="flex gap-x-2 flex-col lg:flex-row items-center">
 				{% if app.user %}
-					<span class="material-icons-outlined">
+					<span class="material-icons-outlined text-red-400">
 						auto_stories
 					</span>
-					<a href="{{path("app_publication_add")}}" class="hover:underline">
+					<a href="{{path("app_publication_add")}}" class="hover:underline ">
 						Publiez votre roman
 					</a>
 				{% else %}
-					<span class="material-icons-outlined">
+					<span class="material-icons-outlined text-red-400">
 						auto_stories
 					</span>
 					<button data-micromodal-trigger="popup-register" class="hover:underline">
@@ -27,13 +27,13 @@
 			</li>
 			<li class="flex gap-x-2 flex-col lg:flex-row items-center">
 				{% if app.user %}
-					<span class="material-icons-outlined">
+					<span class="material-icons-outlined text-emerald-500">
 						rss_feed
 					</span>
 					<a href="" class="hover:underline">
 						Créez votre blog</a>
 				{% else %}
-					<span class="material-icons-outlined">
+					<span class="material-icons-outlined text-emerald-500">
 						rss_feed
 					</span>
 					<button data-micromodal-trigger="popup-register" class="hover:underline">
@@ -43,14 +43,14 @@
 			</li>
 			<li class="flex gap-x-2 flex-col lg:flex-row items-center">
 				{% if app.user %}
-					<span class="material-icons-outlined">
+					<span class="material-icons-outlined text-purple-500">
 						air
 					</span>
 					<a href="" class="hover:underline">
 						Clamez votre poésie
 					</a>
 				{% else %}
-					<span class="material-icons-outlined">
+					<span class="material-icons-outlined text-purple-500">
 						air
 					</span>
 					<button data-micromodal-trigger="popup-register" class="hover:underline">
@@ -59,7 +59,7 @@
 				{% endif %}
 			</li>
 			<li class="flex gap-x-2 flex-col lg:flex-row items-center text-center">
-				<span class="material-icons-outlined">
+				<span class="material-icons-outlined text-yellow-500">
 					visibility
 				</span>
 				<a href="{{path("app_publication_show_all_category")}}" class="hover:underline">
@@ -67,6 +67,7 @@
 				</a>
 			</li>
 		</ul>
+		<hr>
 		<div class="glide-top glide -mt-10 lg:-mt-5  left-0 -z-50">
 			<div data-glide-el="track" class="glide__track rounded-lg ring-0 dark:ring-slate-600">
 				<div class="glide__slides min-h-[40vh] relative">

@@ -5,8 +5,69 @@
 {% block stylesheets %}{% endblock %}
 {% block javascripts %}{% endblock %}
 {% block body %}
+	<div class="bg-home dark:hidden opacity-50 -z-50 left-0 fixed h-screen w-full bg-repeat"></div>
 	<section class="col-span-12">
-		<div class="glide-top glide -mt-10 lg:-mt-5  left-0">
+		<ul class="text-base flex flex-row justify-between mb-16 lg:mb-14 -mt-8 lg:mt-0 space-x-5 z-50 text-slate-900 dark:text-indigo-300">
+			<li class="flex gap-x-2 flex-col lg:flex-row items-center">
+				{% if app.user %}
+					<span class="material-icons-outlined">
+						auto_stories
+					</span>
+					<a href="{{path("app_publication_add")}}" class="hover:underline">
+						Publiez votre roman
+					</a>
+				{% else %}
+					<span class="material-icons-outlined">
+						auto_stories
+					</span>
+					<button data-micromodal-trigger="popup-register" class="hover:underline">
+						Publiez votre roman
+					</button>
+				{% endif %}
+			</li>
+			<li class="flex gap-x-2 flex-col lg:flex-row items-center">
+				{% if app.user %}
+					<span class="material-icons-outlined">
+						rss_feed
+					</span>
+					<a href="" class="hover:underline">
+						Créez votre blog</a>
+				{% else %}
+					<span class="material-icons-outlined">
+						rss_feed
+					</span>
+					<button data-micromodal-trigger="popup-register" class="hover:underline">
+						Créez votre blog
+					</button>
+				{% endif %}
+			</li>
+			<li class="flex gap-x-2 flex-col lg:flex-row items-center">
+				{% if app.user %}
+					<span class="material-icons-outlined">
+						air
+					</span>
+					<a href="" class="hover:underline">
+						Clamez votre poésie
+					</a>
+				{% else %}
+					<span class="material-icons-outlined">
+						air
+					</span>
+					<button data-micromodal-trigger="popup-register" class="hover:underline">
+						Clamez votre poésie
+					</button>
+				{% endif %}
+			</li>
+			<li class="flex gap-x-2 flex-col lg:flex-row items-center text-center">
+				<span class="material-icons-outlined">
+					visibility
+				</span>
+				<a href="{{path("app_publication_show_all_category")}}" class="hover:underline">
+					Lisez des tas de récit
+				</a>
+			</li>
+		</ul>
+		<div class="glide-top glide -mt-10 lg:-mt-5  left-0 -z-50">
 			<div data-glide-el="track" class="glide__track rounded-lg ring-0 dark:ring-slate-600">
 				<div class="glide__slides min-h-[40vh] relative">
 					{% for item in publications %}
@@ -216,6 +277,6 @@
 	</section>
 	<div class="col-span-12 -mt-20">
 		<hr>
-		<h1 class="text-center">Publiez des romans, de la poésie ; créez des blogs</h1>
+		{# <h1 class="text-center">Publiez des romans, de la poésie ; créez des blogs</h1> #}
 	</div>
 {% endblock %}

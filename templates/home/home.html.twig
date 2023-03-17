@@ -5,14 +5,40 @@
 {% block stylesheets %}{% endblock %}
 {% block javascripts %}{% endblock %}
 {% block body %}
-	<div
+	<section class="col-span-12">
+		<div class="glide-top glide -mt-10 lg:-mt-5  left-0">
+			<div data-glide-el="track" class="glide__track rounded-lg ring-0 dark:ring-slate-600">
+				<div class="glide__slides min-h-[40vh] relative">
+					{% for item in publications %}
+						<a href="{{path("app_publication_show_one", {id:item.id, slug:item.slug})}}" class="bg-cover bg-center grayscale-[30%] dark:grayscale-[80%] " style="background-image:url('{{item.cover}};')">
+							<div class="glide__slide backdrop-blur-xl p-10">
+								<div class="backdrop-blur-xl flex flex-col items-center justify-center">
+									<h1 class="text-white text-center pt-20" style="text-shadow: 1px 1px 0px #000">{{ item.title }}</h1>
+									<h2 class="-mt-5 text-base font-bold text-white text-opacity-80">par
+										{{item.user.nickname}}
+									</h2>
+								</div>
+							</div>
+						</a>
+					{% endfor %}
+				</div>
+			</div>
+			<div class="glide__bullets" data-glide-el="controls[nav]">
+				{% set n = 0 %}
+				{% for item in publications %}
+					<button class="glide__bullet" data-glide-dir="={{n}}"></button>
+					{% set n = n + 1 %}
+				{% endfor %}
+			</div>
+		</div>
+	</section>
+	<section
 		class="col-span-12">
 		{# <div class="h-40 bg-cover w-full -mt-20" style="background-image:url('/images/presta.jpg')"></div> #}
-		<hr class="mb-10 mt-0 border-2 border-slate-400 dark:border-slate-900 ">
-		<div class="glide -mt-20 left-0">
+		<div class="glide-market glide -mt-10 left-0">
 			<div data-glide-el="track" class="glide__track mx-16">
 				<div class="glide__slides">
-					<div class="glide__slide  w-full mb-10 mt-10 md:mt-0 p-0 md:p-10  rounded-lg ">
+					<div class="glide__slide  w-full mb-10 mt-10 lg:mt-0 p-0 lg:p-10  rounded-lg ">
 						<h1 class="hidden">Confort d'écriture</h1>
 						<div class="grid flex-col lg:flex-row grid-cols-1 lg:grid-cols-4 gap-y-5 lg:gap-y-0 gap-x-0 lg:gap-x-5 justify-center mx-auto">
 							<a href="#" class="slide-card">
@@ -61,7 +87,7 @@
 							</a>
 						</div>
 					</div>
-					<div class="glide__slide w-full  mb-10 mt-10 md:mt-0 p-0 md:p-10  rounded-lg ">
+					<div class="glide__slide w-full  mb-10 mt-10 lg:mt-0 p-0 lg:p-10  rounded-lg ">
 						<h1 class="hidden">Confort de lecture</h1>
 						<div class="grid flex-col lg:flex-row grid-cols-1 lg:grid-cols-4 gap-y-5 lg:gap-y-0 gap-x-0 lg:gap-x-5 justify-center mx-auto">
 							<a href="#" class="slide-card">
@@ -110,7 +136,7 @@
 							</a>
 						</div>
 					</div>
-					<div class="glide__slide  mb-10 mt-10 md:mt-0 p-0 md:p-10  rounded-lg ">
+					<div class="glide__slide  mb-10 mt-10 lg:mt-0 p-0 lg:p-10  rounded-lg ">
 						<h1 class="hidden">Confort de lecture</h1>
 						<div class="grid flex-col lg:flex-row grid-cols-1 lg:grid-cols-4 gap-y-5 lg:gap-y-0 gap-x-0 lg:gap-x-5 justify-center mx-auto">
 							<a href="#" class="slide-card">
@@ -187,7 +213,7 @@
 			</div>
 		</div>
 
-	</div>
+	</section>
 
 	<div class="col-span-12">
 		Coucou

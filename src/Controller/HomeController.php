@@ -31,11 +31,19 @@ class HomeController extends AbstractController
     }
 
     #[Route('/', name: 'app_home')]
-    public function index(Request $request, MailerInterface $mailer, PublicationRepository $pRepo, SluggerInterface $slugger, EntityManagerInterface $em): Response
+    public function index(PublicationRepository $pRepo): Response
     {
+
+        // On récupère les publications qui ont le status 2 (publié) et un chapitre publié
+
+        $qb = $pRepo->createQueryBuilder("p")
+            ->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
+            ->where("p.status = 2");
+        $publications = $qb->getQuery()->getResult();
+
         return  $this->render('home/home.html.twig', [
             'controller_name' => "d",
-            "test" =>  "d",
+            "publications" =>  $publications,
         ]);
     }
 

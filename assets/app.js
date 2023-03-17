@@ -13,7 +13,7 @@ window.axios = require("axios");
 // TODO: refaire cette fonction
 import Glide from "@glidejs/glide";
 import "./scripts/Noty";
-var glide = new Glide(".glide", {
+var glideMarket = new Glide(".glide-market", {
   type: "slider",
   autoplay: false,
   hoverpause: true,
@@ -27,4 +27,19 @@ var glide = new Glide(".glide", {
     },
   },
 });
-glide.mount();
+var glideTop = new Glide(".glide-top", {
+  type: "slider",
+  autoplay: 5000,
+  hoverpause: true,
+  perView: 1,
+  breakpoints: {
+    1024: {
+      perView: 1,
+    },
+    600: {
+      perView: 1,
+    },
+  },
+});
+glideMarket.mount();
+glideTop.mount();

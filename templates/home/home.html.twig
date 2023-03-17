@@ -10,6 +10,7 @@
 			<div data-glide-el="track" class="glide__track rounded-lg ring-0 dark:ring-slate-600">
 				<div class="glide__slides min-h-[40vh] relative">
 					{% for item in publications %}
+
 						<a href="{{path("app_publication_show_one", {id:item.id, slug:item.slug})}}" class="bg-cover bg-center grayscale-[30%] dark:grayscale-[80%] " style="background-image:url('{{item.cover}};')">
 							<div class="glide__slide backdrop-blur-xl p-10">
 								<div class="backdrop-blur-xl flex flex-col items-center justify-center">
@@ -215,7 +216,7 @@
 
 	</section>
 
-	<div class="col-span-12">
-		Coucou
+	<div
+		class="col-span-12">{# Coucou #}
 	</div>
 {% endblock %}

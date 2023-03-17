@@ -5,21 +5,166 @@
 {% block stylesheets %}{% endblock %}
 {% block javascripts %}{% endblock %}
 {% block body %}
-	<div class="col-span-12 h-[45vh]">
-		<div class="glide absolute top-10 left-0">
-			<div data-glide-el="track" class="glide__track">
+	<div
+		class="col-span-12">
+		{# <div class="h-40 bg-cover w-full -mt-20" style="background-image:url('/images/presta.jpg')"></div> #}
+		<hr class="mb-10 mt-0 border-2 border-slate-400 ">
+		<div class="glide -mt-20 left-0">
+			<div data-glide-el="track" class="glide__track mx-16">
 				<div class="glide__slides">
-					<div class="glide__slide">
-						<div class="w-full h-[45vh] bg-slate-100  rounded-lg p-10">
-							<h1>Scrilab</h1>
+					<div class="glide__slide  w-full mb-10 mt-10 md:mt-0 p-0 md:p-10  rounded-lg ">
+						<h1 class="hidden">Confort d'écriture</h1>
+						<div class="grid flex-col lg:flex-row grid-cols-1 lg:grid-cols-4 gap-y-5 lg:gap-y-0 gap-x-0 lg:gap-x-5 justify-center mx-auto">
+							<a href="#" class="slide-card">
+								<h5>
+									<span class="material-icons-two-tone">
+										draw
+									</span><br>
+									Éditeur de texte avancé
+								</h5>
+								<p>
+									Libérez votre créativité  grâce à notre éditeur de texte avancé. Sauvegarde automatique, système de révision, création illimitée.
+								</p>
+							</a>
+							<a href="#" class="slide-card">
+								<h5>
+									<span class="material-icons-two-tone">
+										verified
+									</span><br>
+									Textes protégés
+								</h5>
+								<p>
+									Vos texte sont votre propriété intellectuelle et sont systématiquement protégés grâce à des certifications inviolables.
+								</p>
+							</a>
+							<a href="#" class="slide-card">
+								<h5>
+									<span class="material-icons-two-tone">
+										open_with
+									</span><br>
+									Organisation flexible
+								</h5>
+								<p>
+									Organisez efficacement le contenu de vos histoires pour une lecture fluide et agréable, grâce à nos outils de structuration et de mise en page.
+								</p>
+							</a>
+							<a href="#" class="slide-card">
+								<h5>
+									<span class="material-icons-two-tone">
+										insights
+									</span><br>
+									Mesure de popularité
+								</h5>
+								<p>
+									Mesurez l'impact de vos textes grâce à nos outils statistiques qui vous permettent de suivre leur popularité.
+								</p>
+							</a>
 						</div>
 					</div>
-					<div class="glide__slide">ss</div>
-					<div class="glide__slide">ddd</div>
+					<div class="glide__slide w-full  mb-10 mt-10 md:mt-0 p-0 md:p-10  rounded-lg ">
+						<h1 class="hidden">Confort de lecture</h1>
+						<div class="grid flex-col lg:flex-row grid-cols-1 lg:grid-cols-4 gap-y-5 lg:gap-y-0 gap-x-0 lg:gap-x-5 justify-center mx-auto">
+							<a href="#" class="slide-card">
+								<h5>
+									<span class="material-icons-two-tone">
+										highlight
+									</span><br>
+									Des textes mis en valeur
+								</h5>
+								<p>
+									Notre interface épurée met en valeur les histoires et offre à nos lecteurs une expérience de lecture immersive.
+								</p>
+							</a>
+							<a href="#" class="slide-card">
+								<h5>
+									<span class="material-icons-two-tone">
+										chair
+									</span><br>
+									Confort de lecture
+								</h5>
+								<p>
+									Nos lecteurs jouissent d'une expérience de lecture optimale grâce à notre mode sombre, qui réduit la fatigue oculaire et offre un confort de lecture accru.
+								</p>
+							</a>
+							<a href="#" class="slide-card">
+								<h5>
+									<span class="material-icons-two-tone">
+										collections_bookmark
+									</span><br>
+									Collection de textes
+								</h5>
+								<p>
+									Nos outils de citation, de surlignage, d'annotation, de commentaire et de partage vous permettent de mettre de l'ordre dans ce que vous lisez.
+								</p>
+							</a>
+							<a href="#" class="slide-card">
+								<h5>
+									<span class="material-icons-two-tone">
+										picture_as_pdf
+									</span><br>
+									Suivi et notifications
+								</h5>
+								<p>
+									Abonnez-vous à un blog ou à n'importe quel récit pour êtes notifié de la publication d'un nouveau billet ou d'un nouveau chapitre.
+								</p>
+							</a>
+						</div>
+					</div>
+					<div class="glide__slide  mb-10 mt-10 md:mt-0 p-0 md:p-10  rounded-lg ">
+						<h1 class="hidden">Confort de lecture</h1>
+						<div class="grid flex-col lg:flex-row grid-cols-1 lg:grid-cols-4 gap-y-5 lg:gap-y-0 gap-x-0 lg:gap-x-5 justify-center mx-auto">
+							<a href="#" class="slide-card">
+								<h5>
+									<span class="material-icons-two-tone">
+										share
+									</span><br>
+									Un grand réseau de distribution
+								</h5>
+								<p>
+									Scrilab garanti la diffusion de vos récits sur tous les media à sa disposition, ce qui vous permet de toucher un public plus large et diversifié.
+								</p>
+							</a>
+							<a href="#" class="slide-card">
+								<h5>
+									<span class="material-icons-two-tone">
+										local_library
+									</span><br>
+									Percer en librairie
+								</h5>
+								<p>
+									Attirez l'attention des maisons d'édition traditionnelles. Vous avez ainsi l'opportunité de saisir des connexions précieuses et de voir vos œuvres publiées en librairie.
+								</p>
+							</a>
+							<a href="#" class="slide-card">
+								<h5>
+									<span class="material-icons-two-tone">
+										screen_search_desktop
+									</span><br>
+									Un référencement optimisé
+								</h5>
+								<p>
+									Nous optimisons votre contenu pour les moteurs de recherche, pour vous permettre d'atteindre un public plus large et mieux ciblé.
+								</p>
+							</a>
+							<a href="#" class="slide-card">
+								<h5>
+									<span class="material-icons-two-tone">
+										coronavirus
+									</span><br>
+									Une viralité maximale
+								</h5>
+								<p>
+									Nos outils de partage et de recommandation de contenus favorisent la propagation rapide de vos histoires sur les réseaux sociaux.
+								</p>
+							</a>
+						</div>
+					</div>
 				</div>
+				{# MD 1 by 1 #}
+
 			</div>
 			<div class="glide__arrows" data-glide-el="controls">
-				<button class="glide__arrow glide__arrow--left" data-glide-dir="&lt;">
+				<button class="glide__arrow glide__arrow--left mr-10" data-glide-dir="&lt;">
 					<span class="material-icons-outlined">
 						arrow_back_ios
 					</span>
@@ -30,13 +175,20 @@
 					</span>
 				</button>
 			</div>
-			<div class="glide__bullets" data-glide-el="controls[nav]">
+			<div class="glide__bullets hidden" data-glide-el="controls[nav]">
 				<button class="glide__bullet" data-glide-dir="=0"></button>
 				<button class="glide__bullet" data-glide-dir="=1"></button>
 				<button class="glide__bullet" data-glide-dir="=2"></button>
+				<button class="glide__bullet" data-glide-dir="=3"></button>
+				<button class="glide__bullet" data-glide-dir="=4"></button>
+				<button class="glide__bullet" data-glide-dir="=5"></button>
+				<button class="glide__bullet" data-glide-dir="=6"></button>
+				<button class="glide__bullet" data-glide-dir="=7"></button>
 			</div>
 		</div>
+
 	</div>
+
 	<div class="col-span-12">
 		Coucou
 	</div>

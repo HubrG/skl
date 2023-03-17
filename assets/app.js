@@ -14,7 +14,9 @@ window.axios = require("axios");
 import Glide from "@glidejs/glide";
 import "./scripts/Noty";
 var glide = new Glide(".glide", {
-  type: 'carousel',
+  type: "slider",
+  autoplay: false,
+  hoverpause: true,
   perView: 1,
   breakpoints: {
     1024: {

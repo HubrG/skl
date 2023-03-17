@@ -95,7 +95,7 @@ footer {
 	@apply shadow-2xl  border-slate-600 z-10;
 }
 nav {
-	@apply  bg-white  shadow-lg  border-b border-b-slate-300 px-2 md:px-4 py-2.5 dark:bg-slate-800 dark:border-b-slate-700
+	@apply  bg-white  shadow  border-b border-b-slate-300 px-2 md:px-4 py-2.5 dark:bg-slate-800 dark:border-b-slate-700
 }
 main {
 	@apply  grid grid-rows-none grid-cols-12   items-start mx-auto md:p-10 p-3 pt-14 md:w-9/12 z-50  ;
@@ -659,6 +659,15 @@ opacity: 0.4;
 }
 .li-user-menu {
 	@apply flex-1 text-sm;
+}
+a.slide-card {
+	@apply block max-w-sm p-5  rounded-b-lg lg:hover:shadow-2xl hover:shadow-lg dark:bg-slate-700  dark:hover:bg-slate-900;
+}
+.slide-card h5 {
+	@apply mb-2 text-sm font-semibold text-center tracking-tight text-gray-900 dark:text-white;
+}
+.slide-card p {
+	@apply font-normal text-xs text-center  text-slate-600 dark:text-slate-400;
 }
 .carousel-cell {
 	width: 100%;

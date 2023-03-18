@@ -91,8 +91,8 @@
 		</div>
 		<div class="flex gap-5 p-10 pt-0  items-center">
 			<div class="flex-1 text-center flex flex-col justify-center items-center justify-items-center origin-center">
-				<div class="lg:flex w-5/6">
-					<p class="text-base   text-justify text-slate-900 dark:text-slate-200 dark:[text-shadow: 0 0.5px 1px blanchedalmond;] leading-7 mt-1">
+				<div class="lg:flex w-6/6 md:w-4/6">
+					<p class="text-sm indent-4 font-serif text-justify text-slate-900 opacity-80 dark:text-slate-200 dark:[text-shadow: 0 0.5px 1px blanchedalmond;] leading-7 mt-1">
 						{% if orderChap %}
 							{% if pubShow.summary %}
 
@@ -108,17 +108,14 @@
 					</p>
 				</div>
 				<a href="{{ path("app_chapter_show", {idChap:orderChap.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:orderChap.slug}) }}" class=" block mt-5 not-italic py-5 text-center w-full lg:w-3/6 px-10 bg-white   hover:bg-white text-slate-800 shadow hover:text-slate-800 bg-opacity-50 dark:bg-opacity-50 hover:bg-opacity-100 dark:bg-slate-800 dark:text-slate-100  dark:hover:bg-slate-900 rounded-lg">
-					<span class="material-icons-outlined">
-						local_library
-					</span>
+					<i class="fa-regular fa-book-open-reader"></i>
 					<br/><span class="font-semibold">Commencer la lecture</span>
 				</a>
 				<a target="_top" href="{{ path("app_publication_show_one", {id:pubShow.id, slug:"download"}) }}" class=" block mt-5 not-italic  text-center text-sm px-5  hover:underline text-slate-900 dark:text-slate-200">
-					<span class="material-icons-outlined">
-						download
-					</span>
+					<i class="fa-duotone fa-file-pdf"></i>
 					<span class="font-light">
-						Télécharger au format pdf</span>
+						Télécharger au format pdf
+					</span>
 				</a>
 			</div>
 		</div>
@@ -210,18 +207,17 @@
 				{% if not app.user or pubShow.finished == true %}
 					<hr>
 				{% endif %}
-				<h3 class="text-2xl mb-5 lg:text-left text-center mt-5 dark:text-slate-100">
-					<span class="material-icons-outlined">
-						format_list_bulleted
+				<h3 class="text-2xl mb-5 flex flex-row gap-x-3 items-center lg:text-left text-center mt-5 dark:text-slate-100">
+					<i class="fa-duotone fa-list-ol"></i>
+					<span>
+						{% set count = 0 %}
+						{% for chapter in pubShow.publicationChapters %}
+							{% if chapter.status == 2 %}
+								{% set count = count + 1 %}
+							{% endif %}
+						{% endfor %}
+						{{ count > 1 ? count ~ " feuilles" : count ~ " feuille"}}
 					</span>
-					&nbsp;
-					{% set count = 0 %}
-					{% for chapter in pubShow.publicationChapters %}
-						{% if chapter.status == 2 %}
-							{% set count = count + 1 %}
-						{% endif %}
-					{% endfor %}
-					{{ count > 1 ? count ~ " feuilles" : count ~ " feuille"}}
 				</h3>
 				<ul class="flex flex-col">
 					{% set nbrPages = 0 %}
@@ -333,55 +329,47 @@
 			{% set url = app.request.schemeAndHttpHost ~ app.request.requestUri %}
 			{% set text = "« " ~ pubShow.title ~ " » #" ~ pubShow.category.name ~ " " ~ hashtag %}
 			{% set via = "ScrilabEditions" %}
-			<div class="w-full opacity-70 dark:opacity-100  text-xs  z-50 mt-0 pt-5 px-2 lg:w-4/12  order-1 lg:order-2  shadow-slate-300 text-slate-900 border-slate-200 border-t-[1px] border-t-slate-200 dark:border-slate-900 dark:border-t-slate-900 lg:border-l-[1px] lg:border-t-0 ">
-				<ul class="flex flex-col  text-sm">
-					<li class="inline-flex items-center  gap-x-2 mt-0 px-4 font-normal justify-center dark:text-white">
+			<div class="w-full opacity-100 dark:opacity-100  text-xs  z-50 mt-0 pt-5 px-2 lg:w-4/12  order-1 lg:order-2  shadow-slate-300 text-slate-900 border-slate-200 border-t-[1px] border-t-slate-200 dark:border-slate-900 dark:border-t-slate-900 lg:border-l-[1px] lg:border-t-0 ">
+				<ul class="flex flex-col space-y-4 text-sm pb-5">
+					<li class="inline-flex items-center  gap-x-2 mt-0 px-4 pb-5 pt-5 font-normal justify-center dark:text-white">
 						<ul class="flex-row flex justify-between w-full">
 							<li>
-								<a href="https://twitter.com/share?url={{url}}&text={{text|url_encode}}&via={{via}}" target="_blank">
-									<svg data-tippy-content="Partager sur Twitter" class="w-6 h-6 fill-[#1da1f2]" fill="currentColor" viewbox="0 0 24 24" aria-hidden="true">
-										<path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path>
-									</svg>
+								<a data-tippy-content="Partager sur Twitter" href="https://twitter.com/share?url={{url}}&text={{text|url_encode}}&via={{via}}" target="_blank">
+									<i class="fa-brands fa-twitter text-[#1DA1F2] text-2xl"></i>
 								</a>
 							</li>
 							<li>
-								<a href="https://www.facebook.com/sharer/sharer.php?u={{url}}&title={{pubShow.title}}&description={{hashtag}}&picture={{pic}}" target="_blank">
-									<svg data-tippy-content="Partager sur Facebook" class="w-6 h-6 fill-[#1877f2]" fill="currentColor" viewbox="0 0 24 24" aria-hidden="true">
-										<path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"></path>
-									</svg>
+								<a data-tippy-content="Partager sur Facebook" href="https://www.facebook.com/sharer/sharer.php?u={{url}}&title={{pubShow.title}}&description={{hashtag}}&picture={{pic}}" target="_blank">
+									<i class="fa-brands fa-facebook text-[#4267B2] text-2xl"></i>
 								</a>
 							</li>
 							<li class="w-5 h-5">
 								<a data-tippy-content="Partager sur Pinterest" href="https://www.pinterest.com/pin/create/button/?url={{url}}&media={{pic}}&description={{text|url_encode}}" target="_blank">
-									<img src="https://cdn-icons-png.flaticon.com/512/145/145808.png" class="w-full mt-[0.15rem]">
+									<i class="fa-brands fa-pinterest text-[#E60023] text-2xl"></i>
 								</a>
 							</li>
 							<li class="w-5 h-5">
 								<a data-tippy-content="Partager sur Linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url={{url}}&title={{pubShow.title|url_encode}}&summary={{text|url_encode}}" target="_blank">
-									<img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" class="w-full mt-[0.15rem]">
+									<i class="fa-brands fa-linkedin text-[#0e76a8] text-2xl"></i>
 								</a>
 							</li>
 							<li class="w-5 h-5">
 								<a data-tippy-content="Partager sur Whatsapp" href="whatsapp://send?text={{text|url_encode}}%20{{url}}" target="_blank">
-									<img src="https://cdn-icons-png.flaticon.com/512/174/174879.png" class="w-full mt-[0.15rem]">
+									<i class="fa-brands fa-whatsapp text-[#25D366] text-2xl"></i>
 								</a>
 							</li>
 							<li>
 								<button data-tippy-content="Copier le lien" id="copyLink" target="_blank" class="text-lg">
-									<span class="material-icons-outlined">
-										link
-									</span>
+									<i class="fa-regular fa-link text-xl"></i>
 								</button>
 							</li>
 						</ul>
 					</li>
-					<hr class="mb-5">
-					<li class="inline-flex items-center justify-between gap-x-2 px-4 font-normal dark:text-white">
-						<span class="font-light">
-							<span class="material-icons-outlined">
-								theater_comedy
-							</span>
-							&nbsp;Genre
+					<hr class="my-10">
+					<li class="show-one-details pt-5">
+						<span>
+							<i class="fa-regular fa-masks-theater"></i>
+							Genre
 						</span>
 						{% if pubShow.category.slug is defined %}
 							{% set slug = pubShow.category.slug %}
@@ -400,39 +388,31 @@
 							<span>{{ slugName }}</span>
 						</a>
 					</li>
-					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px   dark:text-white">
-						<span class="font-light">
-							<span class="material-icons-outlined">
-								auto_stories
-							</span>
-							&nbsp;Nombre de pages (pdf)
+					<li class="show-one-details">
+						<span>
+							<i class="fa-regular fa-scroll"></i>
+							Nombre de pages (pdf)
 						</span>
 						<span>{{ chapterStats.pages }}</span>
 					</li>
-					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:text-white">
-						<span class="font-light">
-							<span class="material-icons-outlined">
-								timer
-							</span>
-							&nbsp;Temps de lecture
+					<li class="show-one-details">
+						<span>
+							<i class="fa-regular fa-timer"></i>
+							Temps de lecture
 						</span>
 						<span>{{ pubShow.publicationChapters|chapter("rt", "ft") }}</span>
 					</li>
-					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:text-white">
-						<span class="font-light">
-							<span class="material-icons-outlined">
-								visibility
-							</span>
-							&nbsp;Nombre de lecteurs
+					<li class="show-one-details">
+						<span>
+							<i class="fa-regular fa-eye"></i>
+							Nombre de lecteurs
 						</span>
 						<span>{{chapterStats.views}}</span>
 					</li>
-					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px   dark:text-white">
-						<span class="font-light">
-							<span class="material-icons-outlined">
-								forum
-							</span>
-							&nbsp;Commentaires
+					<li class="show-one-details">
+						<span>
+							<i class="fa-regular fa-comments"></i>
+							Commentaires
 						</span>
 						<span class="nbr-com-let nbr-com" data-nbr-com="{{chapterStats.comments + nbrCom}}">
 							{% if (chapterStats.comments  + nbrCom)> 0 %}
@@ -442,30 +422,24 @@
 							{% endif %}
 						</span>
 					</li>
-					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px    dark:text-white">
-						<span class="font-light">
-							<span class="material-icons-outlined">
-								book
-							</span>
-							&nbsp;Pages marquées
+					<li class="show-one-details">
+						<span>
+							<i class="fa-regular fa-bookmark"></i>
+							Pages marquées
 						</span>
 						<span>{{chapterStats.bookmarks}}</span>
 					</li>
-					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px    dark:text-white">
-						<span class="font-light">
-							<span class="material-icons-outlined">
-								thumb_up
-							</span>
-							&nbsp;J'aime
+					<li class="show-one-details">
+						<span>
+							<i class="fa-regular fa-thumbs-up"></i>
+							J'aime
 						</span>
 						<span>{{chapterStats.likes}}</span>
 					</li>
-					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px    dark:text-white">
-						<span class="font-light">
-							<span class="material-icons-outlined">
-								downloading
-							</span>
-							&nbsp;Téléchargements
+					<li class="show-one-details">
+						<span>
+							<i class="fa-regular fa-download"></i>
+							Téléchargements
 						</span>
 						<span>{{pubShow.PublicationDownloads|length}}</span>
 					</li>
@@ -476,12 +450,10 @@
 						{% set nbr = nbr - 1 %}
 						{% set lastPopularity = pubShow.PublicationPopularities[nbr].popularity %}
 					{% endif %}
-					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px  dark:text-white">
-						<span class="font-light">
-							<span class="material-icons-outlined">
-								insights
-							</span>
-							&nbsp;Popularité
+					<li class="show-one-details">
+						<span>
+							<i class="fa-regular fa-fire"></i>
+							Popularité
 							<span class="font-light text-xs">(7 jours)</span>
 						</span>
 						<span class="flex items-end gap-x-1">
@@ -509,23 +481,18 @@
 						</li>
 					{% endfor %}
 				</ul>
-
-				<ul class=" flex flex-col opacity-60 dark:opacity-100 text-sm border-t-[1px] border-t-slate-200 dark:border-t-slate-900 pt-5 mt-5">
-					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px    dark:text-white">
-						<span class="font-light">
-							<span class="material-icons-outlined">
-								newspaper
-							</span>
-							&nbsp;&nbsp;Publié depuis
+				<ul class=" flex flex-col gap-y-5 opacity-80 dark:opacity-100 text-sm border-t-[1px] border-t-slate-200 dark:border-t-slate-900 pt-5 mt-5">
+					<li class="show-one-details">
+						<span>
+							<i class="fa-regular fa-cloud-arrow-up"></i>
+							Publié depuis
 						</span>
 						<span>{{ pubShow.publishedDate ? pubShow.publishedDate|since : "Jamais publié" }}</span>
 					</li>
-					<li class="inline-flex items-center justify-between gap-x-2 py-2 px-4 font-normal -mt-px    dark:text-white">
-						<span class="font-light text-left">
-							<span class="material-icons-outlined">
-								auto_fix_high
-							</span>
-							&nbsp;&nbsp;Modifié il y a
+					<li class="show-one-details">
+						<span>
+							<i class="fa-regular fa-square-pen"></i>
+							Modifié il y a
 						</span>
 						<span>{{ pubShow.updated|since }}</span>
 					</li>

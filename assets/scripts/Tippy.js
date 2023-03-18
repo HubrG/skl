@@ -14,7 +14,7 @@ export function TippyC() {
     arrow: true,
     // show arrow
     // arrow type
-    delay: [1000, 0],
+    delay: [500, 0],
 
     // animate the fill color
     // delay before showing/hiding tooltip

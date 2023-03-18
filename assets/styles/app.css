@@ -98,7 +98,10 @@ nav {
 	@apply  bg-white  shadow-sm  border-b border-b-slate-300 px-2 md:px-4 py-2.5 dark:bg-slate-800 dark:border-b-slate-700
 }
 .navbar-button {
-	@apply  w-full flex gap-x-2 justify-center items-center text-slate-800 dark:text-slate-50 hover:bg-slate-50 focus:ring-4 focus:ring-slate-300 font-medium rounded-lg  px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-slate-700 focus:outline-none dark:focus:ring-slate-800;
+	@apply  w-full flex gap-x-2 justify-center cursor-pointer items-center text-slate-800 dark:text-slate-50 hover:bg-slate-50 focus:ring-4 focus:ring-slate-300 font-medium rounded-lg  px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-slate-700 focus:outline-none dark:focus:ring-slate-800;
+}
+.navbar-button-home {
+	@apply flex flex-col md:flex-row justify-center font-semibold md:font-normal gap-y-2 text-sm md:text-base;
 }
 .navbar-dropdown {
 	@apply border-t-4 bg-white divide-y divide-gray-100 rounded-b-lg shadow-md w-full  dark:bg-slate-700 dark:divide-gray-600;
@@ -141,6 +144,12 @@ dialog h1,h2,h3 {
 }
 .modal-header i  {
 	@apply text-4xl;
+}
+.show-one-details {
+	@apply inline-flex items-center justify-between gap-x-2 px-4 font-normal dark:text-white;
+}
+.show-one-details span:first-child {
+	@apply flex gap-x-3 items-center opacity-100 font-light;
 }
 h1 {
 		font-weight: normal;
@@ -573,7 +582,7 @@ opacity: 0.4;
 	@apply   bg-green-50 text-green-900 ring-green-400 border-green-600 dark:bg-green-900 dark:text-green-50  dark:border-green-400;
 }
 .button-slate {
-	@apply   bg-slate-700 dark:bg-slate-900 text-slate-100   dark:text-slate-50 ring-slate-900;
+	@apply   bg-slate-700 dark:bg-slate-900 text-slate-100   dark:text-slate-50 ring-slate-500;
 }
 .button-gray {
 	@apply   bg-gray-50 text-gray-900 ring-gray-400 border-gray-600 dark:bg-gray-900 dark:text-gray-50  dark:border-gray-400;
@@ -603,10 +612,10 @@ opacity: 0.4;
 	@apply   bg-amber-50 text-amber-900 ring-amber-400 border-amber-600 dark:bg-amber-900 dark:text-amber-50  dark:border-amber-400;
 }
 .button-emerald {
-	@apply   bg-emerald-700 text-emerald-100  dark:bg-emerald-900 dark:text-emerald-50  ring-emerald-900;
+	@apply   bg-emerald-700 text-emerald-100  dark:bg-emerald-900 dark:text-emerald-50  ring-emerald-500;
 }
 .button-sky {
-	@apply   bg-sky-700 text-sky-100  dark:bg-sky-900 dark:text-sky-50  ring-sky-900;
+	@apply   bg-sky-700 text-sky-100  dark:bg-sky-900 dark:text-sky-50  ring-sky-500;
 }
 .tippy-box {
 	@apply bg-slate-800 dark:bg-slate-700 text-center py-1 px-1 w-full text-xs;

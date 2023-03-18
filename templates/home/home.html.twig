@@ -7,53 +7,52 @@
 {% block body %}
 	<div class="bg-home dark:hidden opacity-50 -z-50 left-0 fixed h-screen w-full bg-repeat"></div>
 	<section class="col-span-12">
-		<ul class="text-base flex flex-row justify-between -mt-8 lg:-mt-4 mb-8 lg:mb-0 space-x-5 z-50 text-slate-900 dark:text-indigo-300">
-			<li class="flex gap-x-2 flex-col lg:flex-row items-center text-center">
+		<ul class="text-base shadow dark:shadow-xl rounded-lg flex flex-row justify-between items-start -mt-8 lg:-mt-4 mb-8 lg:mb-0 space-x-5 z-50 text-slate-900 dark:text-indigo-300">
+			<li class="rounded-r-0 navbar-button navbar-button-home ">
 				{% if app.user %}
-					<i class="fa-duotone fa-book text-blue-400"></i>
+					<i class="fa-duotone fa-book text-blue-400  text-3xl md:text-xl"></i>
 					<a href="{{path("app_publication_add")}}" class="hover:underline ">
 						Publiez votre roman
 					</a>
 				{% else %}
-					<i class="fa-duotone fa-book text-blue-400"></i>
-					<button data-micromodal-trigger="popup-register" class="hover:underline">
+					<i class="fa-duotone fa-book text-blue-400 text-3xl md:text-xl"></i>
+					<button data-micromodal-trigger="popup-register">
 						Publiez votre roman
 					</button>
 				{% endif %}
 			</li>
-			<li class="flex gap-x-2 flex-col lg:flex-row items-center text-center">
+			<li class="navbar-button navbar-button-home">
 				{% if app.user %}
-					<i class="fa-duotone fa-square-rss text-emerald-500"></i>
-					<a href="" class="hover:underline">
+					<i class="fa-duotone fa-square-rss text-emerald-500  text-3xl md:text-xl"></i>
+					<a href="">
 						Créez votre blog</a>
 				{% else %}
-					<i class="fa-duotone fa-square-rss text-emerald-500"></i>
-					<button data-micromodal-trigger="popup-register" class="hover:underline">
+					<i class="fa-duotone fa-square-rss text-emerald-500  text-3xl md:text-xl"></i>
+					<button data-micromodal-trigger="popup-register">
 						Créez votre blog
 					</button>
 				{% endif %}
 			</li>
-			<li class="flex gap-x-2 flex-col lg:flex-row items-center text-center">
-				<i class="fa-duotone fa-comment-music text-purple-500"></i>
+			<li class="navbar-button navbar-button-home">
+				<i class="fa-duotone fa-comment-music text-purple-500  text-3xl md:text-xl"></i>
 				{% if app.user %}
-					<a href="" class="hover:underline">
+					<a href="">
 						Déclamez votre poésie
 					</a>
 				{% else %}
-					<button data-micromodal-trigger="popup-register" class="hover:underline">
+					<button data-micromodal-trigger="popup-register">
 						Déclamez votre poésie
 					</button>
 				{% endif %}
 			</li>
-			<li class="flex gap-x-2 flex-col lg:flex-row items-center text-center">
-				<i class="fa-duotone fa-book-open-reader text-teal-500"></i>
-				<a href="{{path("app_publication_show_all_category")}}" class="hover:underline">
+			<li class="navbar-button navbar-button-home">
+				<i class="fa-duotone fa-book-open-reader text-teal-500  text-3xl md:text-xl"></i>
+				<a class="text-center" href="{{path("app_publication_show_all_category")}}">
 					Lisez des tas de récits
 				</a>
 			</li>
 		</ul>
-		<hr>
-		<div class="glide-top glide -mt-10 lg:-mt-5  left-0 -z-50">
+		<div class="glide-top glide mt-5  left-0 -z-50">
 			<div data-glide-el="track" class="glide__track rounded-lg ring-0 dark:ring-slate-600">
 				<div class="glide__slides min-h-[40vh] relative">
 					{% for item in publications %}

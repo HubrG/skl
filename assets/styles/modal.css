@@ -16,7 +16,7 @@
   }
   
   .modal__overlay {
-    @apply backdrop-blur-sm bg-white bg-opacity-25;
+    @apply backdrop-blur-sm backdrop-grayscale bg-white bg-opacity-25;
 	position: fixed;
 	top: 0;
 	left: 0;

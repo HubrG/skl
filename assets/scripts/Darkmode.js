@@ -8,10 +8,12 @@ export function darkMode() {
         html.classList.toggle("dark");
         let dm = document.getElementById("darkMode");
         if (html.classList.contains("dark")) {
-          dm.innerHTML = "wb_sunny";
+          dm.classList.remove("fa-moon-stars");
+          dm.classList.add("fa-sun");
           setDarkmode(1);
         } else {
-          dm.innerHTML = "dark_mode";
+          dm.classList.remove("fa-sun");
+          dm.classList.add("fa-moon-stars");
           setDarkmode(0);
         }
       });
@@ -25,10 +27,12 @@ export function darkMode() {
         html.classList.toggle("dark");
         let dm = document.getElementById("darkModeSession");
         if (html.classList.contains("dark")) {
-          dm.innerHTML = "wb_sunny";
+          dm.classList.remove("fa-moon-stars");
+          dm.classList.add("fa-sun");
           setDarkmode(1);
         } else {
-          dm.innerHTML = "dark_mode";
+          dm.classList.remove("fa-sun");
+          dm.classList.add("fa-moon-stars");
           setDarkmode(0);
         }
       });

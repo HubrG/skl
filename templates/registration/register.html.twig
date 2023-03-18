@@ -1,8 +1,8 @@
 <turbo-frame id="register-frame">
 	{{ form_start(registrationForm, {attr: {'novalidate': 'novalidate','action':path("app_register")}}) }}
-	{% include "./partials/_form-row.html.twig" with {'form': registrationForm.username, 'icon':"face"} %}
-	{% include "./partials/_form-row.html.twig" with {'form': registrationForm.email, 'icon':"email"} %}
-	{% include "./partials/_form-row.html.twig" with {'form': registrationForm.plainPassword, 'icon':"lock"} %}
+	{% include "./partials/_form-row.html.twig" with {'form': registrationForm.username, 'icon':"fa-user-vneck"} %}
+	{% include "./partials/_form-row.html.twig" with {'form': registrationForm.email, 'icon':"fa-envelope"} %}
+	{% include "./partials/_form-row.html.twig" with {'form': registrationForm.plainPassword, 'icon':"fa-lock-keyhole"} %}
 	{% include "./partials/_form-row.html.twig" with {'form': registrationForm.agreeTerms, 'icon':"", check:true, checkText:"J'accepte les <button onclick='MicroModal.show(\"popup-cgu\")' type='button' class='hover:underline font-bold'>CGU</button> de Scrilab", class:"text-xs"} %}
 	<button type="submit" class="button-classic w-full flex justify-center button-sky mt-5">
 		<span>

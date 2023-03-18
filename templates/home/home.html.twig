@@ -8,20 +8,20 @@
 	<div class="bg-home dark:hidden opacity-50 -z-50 left-0 fixed h-screen w-full bg-repeat"></div>
 	<section class="col-span-12">
 		<ul class="text-base flex flex-row justify-between -mt-8 lg:-mt-4 mb-8 lg:mb-0 space-x-5 z-50 text-slate-900 dark:text-indigo-300">
-			<li class="flex gap-x-2 flex-col lg:flex-row items-center">
+			<li class="flex gap-x-2 flex-col lg:flex-row items-center text-center">
 				{% if app.user %}
-					<i class="fa-duotone fa-book text-red-400"></i>
+					<i class="fa-duotone fa-book text-orange-400"></i>
 					<a href="{{path("app_publication_add")}}" class="hover:underline ">
 						Publiez votre roman
 					</a>
 				{% else %}
-					<i class="fa-duotone fa-book text-red-400"></i>
+					<i class="fa-duotone fa-book text-orange-400"></i>
 					<button data-micromodal-trigger="popup-register" class="hover:underline">
 						Publiez votre roman
 					</button>
 				{% endif %}
 			</li>
-			<li class="flex gap-x-2 flex-col lg:flex-row items-center">
+			<li class="flex gap-x-2 flex-col lg:flex-row items-center text-center">
 				{% if app.user %}
 					<i class="fa-duotone fa-square-rss text-emerald-500"></i>
 					<a href="" class="hover:underline">
@@ -33,7 +33,7 @@
 					</button>
 				{% endif %}
 			</li>
-			<li class="flex gap-x-2 flex-col lg:flex-row items-center">
+			<li class="flex gap-x-2 flex-col lg:flex-row items-center text-center">
 				{% if app.user %}
 					<i class="fa-duotone fa-wind text-purple-500"></i>
 					<a href="" class="hover:underline">
@@ -47,7 +47,7 @@
 				{% endif %}
 			</li>
 			<li class="flex gap-x-2 flex-col lg:flex-row items-center text-center">
-				<i class="fa-duotone fa-book-open-reader text-yellow-500"></i>
+				<i class="fa-duotone fa-book-open-reader text-teal-500"></i>
 				<a href="{{path("app_publication_show_all_category")}}" class="hover:underline">
 					Lisez des tas de récits
 				</a>

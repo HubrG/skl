@@ -7,6 +7,6 @@
 	{{ form_start(requestForm, {attr:{'action':path("app_forgot_password_request")}}) }}
 	<p class="text-slate-500 text-sm text-justify mb-5 dark:text-slate-200">Renseignez votre adresse e-mail et nous vous enverrons un lien de modification de mot de passe.</p>
 	{% include "./partials/_form-row.html.twig" with {'form': requestForm.email, 'icon':"fa-envelope"} %}
-	<button type="submit" class="button-classic button-sky w-full">Envoyer l'email de réinitialisation</button>
+	<button type="submit" class="button-classic button-slate w-full">Envoyer l'email de réinitialisation</button>
 	{{ form_end(requestForm) }}
 {% endif %}

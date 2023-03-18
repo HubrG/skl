@@ -10,16 +10,12 @@
 		<ul class="text-base flex flex-row justify-between -mt-8 lg:-mt-4 mb-8 lg:mb-0 space-x-5 z-50 text-slate-900 dark:text-indigo-300">
 			<li class="flex gap-x-2 flex-col lg:flex-row items-center">
 				{% if app.user %}
-					<span class="material-icons-outlined text-red-400">
-						auto_stories
-					</span>
+					<i class="fa-duotone fa-book text-red-400"></i>
 					<a href="{{path("app_publication_add")}}" class="hover:underline ">
 						Publiez votre roman
 					</a>
 				{% else %}
-					<span class="material-icons-outlined text-red-400">
-						auto_stories
-					</span>
+					<i class="fa-duotone fa-book text-red-400"></i>
 					<button data-micromodal-trigger="popup-register" class="hover:underline">
 						Publiez votre roman
 					</button>
@@ -27,15 +23,11 @@
 			</li>
 			<li class="flex gap-x-2 flex-col lg:flex-row items-center">
 				{% if app.user %}
-					<span class="material-icons-outlined text-emerald-500">
-						rss_feed
-					</span>
+					<i class="fa-duotone fa-square-rss text-emerald-500"></i>
 					<a href="" class="hover:underline">
 						Créez votre blog</a>
 				{% else %}
-					<span class="material-icons-outlined text-emerald-500">
-						rss_feed
-					</span>
+					<i class="fa-duotone fa-square-rss text-emerald-500"></i>
 					<button data-micromodal-trigger="popup-register" class="hover:underline">
 						Créez votre blog
 					</button>
@@ -43,27 +35,21 @@
 			</li>
 			<li class="flex gap-x-2 flex-col lg:flex-row items-center">
 				{% if app.user %}
-					<span class="material-icons-outlined text-purple-500">
-						air
-					</span>
+					<i class="fa-duotone fa-wind text-purple-500"></i>
 					<a href="" class="hover:underline">
-						Clamez votre poésie
+						Déclamez votre poésie
 					</a>
 				{% else %}
-					<span class="material-icons-outlined text-purple-500">
-						air
-					</span>
+					<i class="fa-duotone fa-wind text-purple-500"></i>
 					<button data-micromodal-trigger="popup-register" class="hover:underline">
 						Clamez votre poésie
 					</button>
 				{% endif %}
 			</li>
 			<li class="flex gap-x-2 flex-col lg:flex-row items-center text-center">
-				<span class="material-icons-outlined text-yellow-500">
-					visibility
-				</span>
+				<i class="fa-duotone fa-book-open-reader text-yellow-500"></i>
 				<a href="{{path("app_publication_show_all_category")}}" class="hover:underline">
-					Lisez des tas de récit
+					Lisez des tas de récits
 				</a>
 			</li>
 		</ul>
@@ -106,9 +92,7 @@
 						<div class="grid flex-col lg:flex-row grid-cols-1 lg:grid-cols-4 gap-y-5 lg:gap-y-0 gap-x-0 lg:gap-x-5 justify-center mx-auto">
 							<a href="#" class="slide-card">
 								<h5>
-									<span class="material-icons-outlined">
-										draw
-									</span><br>
+									<i class="fa-duotone fa-pen-swirl"></i><br>
 									Éditeur de texte avancé
 								</h5>
 								<p>
@@ -117,9 +101,7 @@
 							</a>
 							<a href="#" class="slide-card">
 								<h5>
-									<span class="material-icons-outlined">
-										verified
-									</span><br>
+									<i class="fa-duotone fa-badge-check"></i><br>
 									Textes protégés
 								</h5>
 								<p>
@@ -128,9 +110,7 @@
 							</a>
 							<a href="#" class="slide-card">
 								<h5>
-									<span class="material-icons-outlined">
-										open_with
-									</span><br>
+									<i class="fa-duotone fa-up-down-left-right"></i><br>
 									Organisation flexible
 								</h5>
 								<p>
@@ -139,9 +119,7 @@
 							</a>
 							<a href="#" class="slide-card">
 								<h5>
-									<span class="material-icons-outlined">
-										insights
-									</span><br>
+									<i class="fa-duotone fa-fire"></i><br>
 									Mesure de popularité
 								</h5>
 								<p>
@@ -155,9 +133,7 @@
 						<div class="grid flex-col lg:flex-row grid-cols-1 lg:grid-cols-4 gap-y-5 lg:gap-y-0 gap-x-0 lg:gap-x-5 justify-center mx-auto">
 							<a href="#" class="slide-card">
 								<h5>
-									<span class="material-icons-outlined">
-										highlight
-									</span><br>
+									<i class="fa-duotone fa-lightbulb-on"></i><br>
 									Des textes mis en valeur
 								</h5>
 								<p>
@@ -166,9 +142,7 @@
 							</a>
 							<a href="#" class="slide-card">
 								<h5>
-									<span class="material-icons-outlined">
-										chair
-									</span><br>
+									<i class="fa-duotone fa-couch"></i><br>
 									Confort de lecture
 								</h5>
 								<p>
@@ -177,9 +151,7 @@
 							</a>
 							<a href="#" class="slide-card">
 								<h5>
-									<span class="material-icons-outlined">
-										collections_bookmark
-									</span><br>
+									<i class="fa-duotone fa-folder-bookmark"></i><br>
 									Collection de textes
 								</h5>
 								<p>
@@ -188,9 +160,7 @@
 							</a>
 							<a href="#" class="slide-card">
 								<h5>
-									<span class="material-icons-outlined">
-										notifications
-									</span><br>
+									<i class="fa-duotone fa-bell"></i><br>
 									Suivi et notifications
 								</h5>
 								<p>
@@ -204,9 +174,7 @@
 						<div class="grid flex-col lg:flex-row grid-cols-1 lg:grid-cols-4 gap-y-5 lg:gap-y-0 gap-x-0 lg:gap-x-5 justify-center mx-auto">
 							<a href="#" class="slide-card">
 								<h5>
-									<span class="material-icons-outlined">
-										share
-									</span><br>
+									<i class="fa-duotone fa-chart-network"></i><br>
 									Un grand réseau de distribution
 								</h5>
 								<p>
@@ -215,9 +183,7 @@
 							</a>
 							<a href="#" class="slide-card">
 								<h5>
-									<span class="material-icons-outlined">
-										local_library
-									</span><br>
+									<i class="fa-duotone fa-store"></i><br>
 									Percer en librairie
 								</h5>
 								<p>
@@ -226,9 +192,7 @@
 							</a>
 							<a href="#" class="slide-card">
 								<h5>
-									<span class="material-icons-outlined">
-										screen_search_desktop
-									</span><br>
+									<i class="fa-brands fa-google"></i><br>
 									Un référencement optimisé
 								</h5>
 								<p>
@@ -237,9 +201,7 @@
 							</a>
 							<a href="#" class="slide-card">
 								<h5>
-									<span class="material-icons-outlined">
-										coronavirus
-									</span><br>
+									<i class="fa-duotone fa-viruses"></i><br>
 									Une viralité maximale
 								</h5>
 								<p>

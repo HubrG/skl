@@ -136,7 +136,7 @@ hr {
 	@apply font-medium text-slate-700 dark:text-white flex font-serif
 }
 .logo span {
-	@apply font-[Alegreya] text-indigo-500 text-[3rem] -ml-[0.1rem] mr-[0.1rem] -mt-[0.77rem] tracking-tight block  ;
+	@apply font-[Alegreya] text-indigo-500 dark:text-indigo-300 -mt-[0.2rem] tracking-tight block  ;
 }
 .logo:hover span {
 	@apply text-indigo-400;

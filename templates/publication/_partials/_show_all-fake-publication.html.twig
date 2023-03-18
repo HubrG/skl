@@ -1,41 +1,23 @@
-{% set placeholderimg = "https://via.placeholder.com/200x300" %}
-<div class="relative rounded-lg dark:border-slate-700 flex place-content-start opacity-80">
-	<p class="absolute z-50 ml-[40%] mt-[23%] shadow-lg">
-		{% if not app.user %}
-			<button data-micromodal-trigger="popup-register" class="text-slate-900 rounded ring-1 ring-slate-900 px-4 bg-white dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-900 p-3 font-medium hover:bg-slate-50 shadow">
-				<span class="material-icons-outlined ">
-					history_edu
+<div class="flex ">
+	{% if not app.user %}
+		<div data-micromodal-trigger="popup-register" class="item-fake">
+			<span class="write-and-publish w-2/6"></span>
+			<span class=" w-4/6 items-center flex flex-col justify-center text-slate-800 dark:text-slate-400">
+				<span class="text-4xl">
+					<i class="fa-duotone fa-feather"></i>
 				</span>
-				&nbsp;Publier mon récit</button>
-		{% else %}
-			<a href="{{ path("app_publication_add") }}" class="text-slate-900 rounded ring-1 ring-slate-900 px-4 bg-white dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-900 p-3 font-medium hover:bg-slate-50 shadow">
-				<span class="material-icons-outlined ">
-					history_edu
+				<span class="text-lg">Écrire et publier mon récit</span>
+			</span>
+		</div>
+	{% else %}
+		<a href="{{path("app_publication_add")}}" target="_top" class="item-fake">
+			<span class="write-and-publish w-2/6"></span>
+			<span class=" w-4/6 items-center flex flex-col justify-center text-slate-800 dark:text-slate-400">
+				<span class="text-4xl">
+					<i class="fa-duotone fa-feather"></i>
 				</span>
-				&nbsp;Publier mon récit
-			</a>
-		{% endif %}
-	</p>
-	<div class="w-2/6 h-auto rounded-lg">
-		<a href="{{ path("app_publication_add") }}">
-			<img class="rounded object-cover w-full shaow-md lazy animate-pulse animate__animated bg-slate-300 grayscale-0 blur-[2px]" width="529" height="793" loading="lazy" src="" data-src="{{ placeholderimg }}" alt="">
+				<span class="text-lg">Écrire et publier mon récit</span>
+			</span>
 		</a>
-	</div>
-	<div class="p-5 -mt-7 w-4/6 place-content-baseline items-baseline blur-[2px]">
-		<small class="font-light">
-			<a href="{{ path("app_publication_add") }}">
-				{% if app.user.id is defined %}
-					{{ app.user.nickname }}
-				{% else %}
-					{{ "name"|faker(4) }}
-				{% endif %}
-			</a>
-		</small>
-		<h5 class="mb-2 font-bold tracking-tight text-base blur-[2px]">
-			<a href="{{ path("app_publication_add") }}" class="text-slate-700 dark:text-white">{{ "title"|faker(4) }}</a>
-		</h5>
-		<p class="mb-3 font-normal text-slate-400 text-sm text-justify dark:text-slate-400 blur-[2px]">
-			Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Curabitur aliquet quam. Quisque velit nisi, pretium ut lacinia in, elementum id enim.
-		</p>
-	</div>
+	{% endif %}
 </div>

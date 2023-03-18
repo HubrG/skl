@@ -10,12 +10,12 @@
 		<ul class="text-base flex flex-row justify-between -mt-8 lg:-mt-4 mb-8 lg:mb-0 space-x-5 z-50 text-slate-900 dark:text-indigo-300">
 			<li class="flex gap-x-2 flex-col lg:flex-row items-center text-center">
 				{% if app.user %}
-					<i class="fa-duotone fa-book text-orange-400"></i>
+					<i class="fa-duotone fa-book text-blue-400"></i>
 					<a href="{{path("app_publication_add")}}" class="hover:underline ">
 						Publiez votre roman
 					</a>
 				{% else %}
-					<i class="fa-duotone fa-book text-orange-400"></i>
+					<i class="fa-duotone fa-book text-blue-400"></i>
 					<button data-micromodal-trigger="popup-register" class="hover:underline">
 						Publiez votre roman
 					</button>
@@ -34,15 +34,14 @@
 				{% endif %}
 			</li>
 			<li class="flex gap-x-2 flex-col lg:flex-row items-center text-center">
+				<i class="fa-duotone fa-comment-music text-purple-500"></i>
 				{% if app.user %}
-					<i class="fa-duotone fa-wind text-purple-500"></i>
 					<a href="" class="hover:underline">
 						Déclamez votre poésie
 					</a>
 				{% else %}
-					<i class="fa-duotone fa-wind text-purple-500"></i>
 					<button data-micromodal-trigger="popup-register" class="hover:underline">
-						Clamez votre poésie
+						Déclamez votre poésie
 					</button>
 				{% endif %}
 			</li>

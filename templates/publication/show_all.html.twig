@@ -133,36 +133,9 @@
 				{% for item in pubShow %}
 					{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item} %}
 				{% endfor %}
-				{# {% include "publication/_partials/_show_all-fake-publication.html.twig" %} #}
 				{% if kwString is null and page == 1 and count < limit %}
 					{% for i in count..limit - 1 %}
-						<div class="flex ">
-							{% if not app.user %}
-								<div data-micromodal-trigger="popup-register" class="item-fake">
-									<span class="write-and-publish w-2/6"></span>
-									<span class=" w-4/6 items-center flex flex-col justify-center text-slate-800 dark:text-slate-400">
-										<span class="text-4xl">
-											<span class="material-icons-outlined">
-												auto_stories
-											</span>
-										</span>
-										<span>Écrire et publier mon récit</span>
-									</span>
-								</div>
-							{% else %}
-								<a href="{{path("app_publication_add")}}" target="_top" class="item-fake">
-									<span class="write-and-publish w-2/6"></span>
-									<span class=" w-4/6 items-center flex flex-col justify-center text-slate-800 dark:text-slate-400">
-										<span class="text-4xl">
-											<span class="material-icons-outlined">
-												auto_stories
-											</span>
-										</span>
-										<span>Écrire et publier mon récit</span>
-									</span>
-								</a>
-							{% endif %}
-						</div>
+						{% include "publication/_partials/_show_all-fake-publication.html.twig" %}
 					{% endfor %}
 				{% endif %}
 			</div>

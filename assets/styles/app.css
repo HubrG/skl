@@ -95,7 +95,7 @@ footer {
 	@apply shadow-2xl  border-slate-600 z-10;
 }
 nav {
-	@apply  bg-white  shadow  border-b border-b-slate-300 px-2 md:px-4 py-2.5 dark:bg-slate-800 dark:border-b-slate-700
+	@apply  bg-white  shadow-sm  border-b border-b-slate-300 px-2 md:px-4 py-2.5 dark:bg-slate-800 dark:border-b-slate-700
 }
 .navbar-button {
 	@apply  w-full flex gap-x-2 justify-center items-center text-slate-800 dark:text-slate-50 hover:bg-slate-50 focus:ring-4 focus:ring-slate-300 font-medium rounded-lg  px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-slate-700 focus:outline-none dark:focus:ring-slate-800;
@@ -136,6 +136,12 @@ dialog h1,h2,h3 {
 }.modal-register-login-button {
 	@apply text-center w-full text-sm text-white dark:text-indigo-50  dark:bg-indigo-500 bg-indigo-500 p-3 rounded my-6 dark:hover:bg-indigo-600 hover:bg-indigo-600 font-semibold;
 }
+.modal-header {
+	@apply text-xl font-semibold text-slate-900 dark:text-white flex flex-col gap-y-3 justify-center items-center;
+}
+.modal-header i  {
+	@apply text-4xl;
+}
 h1 {
 		font-weight: normal;
 		@apply  text-4xl text-slate-700 mb-10 dark:text-slate-100 md:text-5xl;
@@ -147,10 +153,10 @@ hr {
 	@apply font-medium text-slate-700 dark:text-white flex font-serif
 }
 .logo span {
-	@apply font-[Alegreya] text-indigo-500 dark:text-indigo-300 -mt-[0.2rem] tracking-tight block  ;
+	@apply font-[Alegreya] text-indigo-600 dark:text-indigo-200 -mt-[0.2rem] tracking-tight block  ;
 }
 .logo:hover span {
-	@apply text-indigo-400;
+	@apply text-indigo-900 dark:text-indigo-400;
 
 }
 .alert, .alert-danger {
@@ -168,7 +174,9 @@ hr {
 a {
   transition: all 0.3s ease-in-out;
 }
-
+.help-text {
+	@apply dark:text-slate-400;
+}
 form label+ul>li, .form-error {
 		@apply text-rose-500 text-sm -mt-2 mb-2;
 }
@@ -541,7 +549,7 @@ opacity: 0.4;
 	@apply bg-rose-300 dark:bg-rose-300;
 }
 .button-classic {
-@apply  rounded-xl ring-1 text-sm  px-3 py-2  hover:opacity-80 active:border-b active:py-[0.53rem] border-b-2 font-medium transition ease-in duration-75 border-opacity-50 ring-opacity-50;
+@apply  rounded-md text-sm  px-3 py-3 text-center hover:opacity-80  active:ring-2  border-none font-medium transition ease-in duration-75;
 }
 .button-violet {
 	@apply   bg-violet-50 text-violet-900 ring-violet-400 border-violet-600 dark:bg-violet-900 dark:text-violet-50  dark:border-violet-400;
@@ -565,7 +573,7 @@ opacity: 0.4;
 	@apply   bg-green-50 text-green-900 ring-green-400 border-green-600 dark:bg-green-900 dark:text-green-50  dark:border-green-400;
 }
 .button-slate {
-	@apply   bg-slate-50 text-slate-900 ring-slate-400 border-slate-600 dark:bg-slate-600 dark:text-slate-50  dark:border-slate-400 ;
+	@apply   bg-slate-900 text-slate-100  dark:bg-slate-900 dark:text-slate-50 ring-slate-900;
 }
 .button-gray {
 	@apply   bg-gray-50 text-gray-900 ring-gray-400 border-gray-600 dark:bg-gray-900 dark:text-gray-50  dark:border-gray-400;
@@ -595,10 +603,10 @@ opacity: 0.4;
 	@apply   bg-amber-50 text-amber-900 ring-amber-400 border-amber-600 dark:bg-amber-900 dark:text-amber-50  dark:border-amber-400;
 }
 .button-emerald {
-	@apply   bg-emerald-50 text-emerald-900 ring-emerald-400 border-emerald-600 dark:bg-emerald-900 dark:text-emerald-50  dark:border-emerald-400;
+	@apply   bg-emerald-900 text-emerald-100  dark:bg-emerald-900 dark:text-emerald-50  ring-emerald-900;
 }
 .button-sky {
-	@apply   bg-sky-50 text-sky-900 ring-sky-400 border-sky-600 dark:bg-sky-900 dark:text-sky-50 dark:ring-sky-400 dark:border-sky-600;
+	@apply   bg-sky-900 text-sky-100  dark:bg-sky-900 dark:text-sky-50  ring-sky-900;
 }
 .tippy-box {
 	@apply bg-slate-800 dark:bg-slate-700 text-center py-1 px-1 w-full text-xs;

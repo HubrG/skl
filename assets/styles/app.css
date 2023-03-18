@@ -134,7 +134,7 @@ dialog h1,h2,h3 {
 	/* lié au dialogue */
 	@apply bg-opacity-10 
 }.modal-register-login-button {
-	@apply text-center w-full text-sm text-white dark:text-indigo-50  dark:bg-indigo-500 bg-indigo-500 p-3 rounded my-6 dark:hover:bg-indigo-600 hover:bg-indigo-600 font-semibold;
+	@apply text-center w-full text-xs text-white dark:text-indigo-50  dark:bg-indigo-500 bg-indigo-500 p-2 rounded my-6  hover:bg-indigo-600 font-semibold;
 }
 .modal-header {
 	@apply text-xl font-semibold text-slate-900 dark:text-white flex flex-col gap-y-3 justify-center items-center;
@@ -549,7 +549,7 @@ opacity: 0.4;
 	@apply bg-rose-300 dark:bg-rose-300;
 }
 .button-classic {
-@apply  rounded-md text-sm  px-3 py-3 text-center hover:opacity-80  active:ring-2  border-none font-medium transition ease-in duration-75;
+@apply  rounded-md text-sm flex flex-row gap-x-3 font-medium italic tracking-wide items-center justify-center  px-3 py-3 text-center opacity-90 hover:opacity-100  active:ring-2  border-none transition ease-in duration-75;
 }
 .button-violet {
 	@apply   bg-violet-50 text-violet-900 ring-violet-400 border-violet-600 dark:bg-violet-900 dark:text-violet-50  dark:border-violet-400;
@@ -573,7 +573,7 @@ opacity: 0.4;
 	@apply   bg-green-50 text-green-900 ring-green-400 border-green-600 dark:bg-green-900 dark:text-green-50  dark:border-green-400;
 }
 .button-slate {
-	@apply   bg-slate-900 text-slate-100  dark:bg-slate-900 dark:text-slate-50 ring-slate-900;
+	@apply   bg-slate-700 dark:bg-slate-900 text-slate-100   dark:text-slate-50 ring-slate-900;
 }
 .button-gray {
 	@apply   bg-gray-50 text-gray-900 ring-gray-400 border-gray-600 dark:bg-gray-900 dark:text-gray-50  dark:border-gray-400;
@@ -603,10 +603,10 @@ opacity: 0.4;
 	@apply   bg-amber-50 text-amber-900 ring-amber-400 border-amber-600 dark:bg-amber-900 dark:text-amber-50  dark:border-amber-400;
 }
 .button-emerald {
-	@apply   bg-emerald-900 text-emerald-100  dark:bg-emerald-900 dark:text-emerald-50  ring-emerald-900;
+	@apply   bg-emerald-700 text-emerald-100  dark:bg-emerald-900 dark:text-emerald-50  ring-emerald-900;
 }
 .button-sky {
-	@apply   bg-sky-900 text-sky-100  dark:bg-sky-900 dark:text-sky-50  ring-sky-900;
+	@apply   bg-sky-700 text-sky-100  dark:bg-sky-900 dark:text-sky-50  ring-sky-900;
 }
 .tippy-box {
 	@apply bg-slate-800 dark:bg-slate-700 text-center py-1 px-1 w-full text-xs;

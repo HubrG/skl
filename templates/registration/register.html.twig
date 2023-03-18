@@ -5,12 +5,10 @@
 	{% include "./partials/_form-row.html.twig" with {'form': registrationForm.plainPassword, 'icon':"fa-lock-keyhole"} %}
 	{% include "./partials/_form-row.html.twig" with {'form': registrationForm.agreeTerms, 'icon':"", check:true, checkText:"J'accepte les <button onclick='MicroModal.show(\"popup-cgu\")' type='button' class='hover:underline font-bold'>CGU</button> de Scrilab", class:"text-xs"} %}
 	<button type="submit" class="button-classic w-full flex justify-center button-slate mt-5">
-		<span>
-			<span class="material-symbols-outlined ">
-				login
-			</span>
-			C'est parti !
-		</span>
+
+		<i class="fa-duotone fa-user-plus"></i>
+		C'est parti !
+
 	</button>
 	{{ form_end(registrationForm) }}
 </turbo-frame>

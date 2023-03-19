@@ -1,49 +1,106 @@
-<div class=" rounded-xl  shadow-slate-300  dark:ring-slate-800 ring-0 ring-slate-500 flex  transition duration-500  xl:row-span-1 " id="publication-{{item.id}}">
-	<div class="w-2/6 h-auto  relative border-slate-700 dark:border-slate-900">
-		{% if slugCat == "all" %}
-			<a class="absolute z-50 -top-[0.03rem]" href="{{ path("app_publication_show_all_category", {slug:item.category.slug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:queryKeystring}) }}" target="_self">
-				<span class="catColor-{{item.category.color}} rounded rounded-bl-none rounded-tr-none p-1 px-2 text-xs font-normal">{{ item.category.name|lower }}</span>
-			</a>
-		{% endif %}
-		<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" target="_top">
-			{% set pic = item.cover %}
-			<img class=" rounded  w-full h-full object-cover lazy animate-pulse animate__animated bg-slate-300  {% if not pic %}  dark:blur-none dark:bg-slate-900 {% endif %}" width="529" height="793" loading="lazy" src="" data-src="{% if pic %}{{pic}}{% else %}{{ "https://via.placeholder.com/529x793" }} {% endif %}" alt=""/>
-		</a>
-	</div>
-	<div class="pl-5 pr-3 w-4/6 relative">
-		<h5 class="text-lg  mb-2 leading-tight font-medium tracking-tight dark:text-white  flex flex-row gap-x-2 items-center">
-			<i class="fa-regular fa-book text-xs"></i>
-			<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" target="_top" class=" text-slate-800  dark:text-slate-300 leading-5 font-medium hover:underline">{{ item.title }}</a>
-		</h5>
-		<small class=" text-md dark:text-slate-200 flex flex-row gap-x-2 items-center">
-			<i class="fa-regular fa-user"></i>
-			<a href="{{ path("app_user", {username:item.user.username}) }}" class="hover:underline" target="_top">{{ item.user.nickname }}</a>
-		</small>
-		<hr class="my-2">
+<div class=" rounded-lg bg-slate-50 rounded-tl-none rounded-tr-2xl  dark:bg-slate-700  shadow-slate-300 dark:shadow-lg  dark:ring-slate-800 ring-0 ring-slate-500 flex  transition duration-500  xl:row-span-1 " id="publication-{{item.id}}">
+	<div class=" w-6/6   ">
+		<div class="flex w-full flex-row bg-white dark:bg-slate-900  rounded-t-lg rounded-tr-2xl rounded-tl-none  p-3 pl-5   border-b-[1px] border-slate-200 dark:border-slate-800">
+			<div class="w-10/12">
+				<h5 class="text-xl  mb-2 leading-tight font-medium tracking-tight dark:text-white  flex flex-row gap-x-2 items-center">
+					<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" target="_top" class=" text-slate-800  dark:text-slate-300 leading-5 font-medium hover:underline">{{ item.title }}</a>
+				</h5>
+				<small class=" text-sm text-slate-500 dark:text-slate-400 flex flex-row gap-x-2 items-center">
+					<i class="fa-duotone fa-feather-pointed opacity-50"></i>
+					<a href="{{ path("app_user", {username:item.user.username}) }}" class="hover:underline" target="_top">{{ item.user.nickname }}</a>
+				</small>
+			</div>
+			<div class="w-2/12  opacity-100">
+				<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" target="_top" class="button-classic button-slate">
+					<i class="fa-duotone fa-book-open-reader"></i>
+					Lire</a>
+			</div>
+		</div>
+		<div class="flex w-full flex-row divide-solid opacity-75 bg-white text-xs dark:bg-slate-600 dark:text-slate-300 px-2 items-center py-1 justify-between border-b-[1px] border-slate-200 dark:border-slate-800">
+			{% if slugCat == "all" %}
+				<a class=" z-50 " href="{{ path("app_publication_show_all_category", {slug:item.category.slug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:queryKeystring}) }}" target="_self">
+					<span class="catColor-{{item.category.color}} kwTag">{{ item.category.name|lower }}</span>
+				</a>
+			{% endif %}
+			{% set filteredChapters = item.publicationChapters|filter(chapter => chapter.status == 2) %}
+			<span class="flex gap-x-1 items-center ">
+				<i class="fa-duotone fa-list-ol"></i>
+				{{filteredChapters|length}}
+			</span>
+			{% set totalViews = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterViews|length, 0) %}
+			<span class="flex gap-x-1 items-center ">
+				<i class="fa-duotone fa-eye"></i>
+				{{totalViews}}
+			</span>
+			{% set totalLikes = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterLikes|length, 0) %}
+			<span class="flex gap-x-1 items-center ">
+				<i class="fa-duotone fa-thumbs-up"></i>
+				{{totalLikes}}
+			</span>
+			<span class="flex gap-x-1 items-center ">
+				<i class="fa-duotone fa-comments"></i>
+				{{item.publicationComments|length}}
+			</span>
+			<span class="flex gap-x-1 items-center ">
+				<i class="fa-duotone fa-bookmark"></i>
+				{{item.publicationBookmarks|length}}
+			</span>
+			<span class="flex gap-x-1 items-center ">
+				{% set lastPopularity = 0 %}
+				{% if item.PublicationPopularities|length > 1 %}
+					{% set nbr = item.PublicationPopularities|length %}
+					{% set nbr = nbr - 1 %}
+					{% set lastPopularity = item.PublicationPopularities[nbr].popularity %}
+				{% endif %}
+				{% if item.pop < lastPopularity %}
+					<i class="fa-duotone fa-circle-arrow-down  text-lg text-red-700 dark:text-red-500"></i>
+				{% elseif item.pop == lastPopularity %}
+					<i class="fa-duotone fa-equals text-lg"></i>
+				{% else %}
+					<i class="fa-duotone fa-circle-arrow-up   text-lg text-green-700 dark:text-emerald-500"></i>
+				{% endif %}
+			</span>
+
+
+		</div>
 		{# popover info publication #}
 		{# {% include "publication/_partials/_show_all-popover-info.html.twig" %} #}
 		{# popover info publication end #}
-			<p class="mb-3 font-normal text-slate-600 text-sm leading-[1.4rem] dark:text-slate-400 line-clamp-[6] md:line-clamp-[10] lg:line-clamp-[6] text-justify"> {% if item.summary %}
-				{{ item.summary}}
-			{% else %}
-				{% set nbr = 0 %}
-				{% for chap in item.publicationChapters %}
-					{% if nbr == 0 %}
-						{{ chap.content|regex_replace('/<p.*?>/i', ' ')|striptags }}
-						{% set nbr = nbr + 1 %}
+			<div class="p-4  rounded-b-lg"> <div class="flex flex-row gap-x-2">
+				<div class="h-auto w-2/6 relative border-slate-700 dark:border-slate-900">
+
+					<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" target="_top">
+						{% set pic = item.cover %}
+						<img class="grayscale-[50%] rounded  w-full h-full object-cover lazy animate-pulse animate__animated bg-slate-300  {% if not pic %}  dark:blur-none dark:bg-slate-900 {% endif %}" width="529" height="793" loading="lazy" src="" data-src="{% if pic %}{{pic}}{% else %}{{ "https://via.placeholder.com/529x793" }} {% endif %}" alt=""/>
+					</a>
+				</div>
+
+				<p class="px-2 w-4/6  font-normal text-slate-600 text-sm leading-[1.5rem] dark:text-slate-400 line-clamp-[6] md:line-clamp-[11] lg:line-clamp-[7] text-justify">
+					{% if item.summary %}
+						{{ item.summary}}
+					{% else %}
+						{% set nbr = 0 %}
+						{% for chap in item.publicationChapters %}
+							{% if nbr == 0 %}
+								{{ chap.content|regex_replace('/<p.*?>/i', ' ')|striptags }}
+								{% set nbr = nbr + 1 %}
+							{% endif %}
+						{% endfor %}
 					{% endif %}
+					<br/>
+				</p>
+			</div>
+
+			<p class=" text-cyan-600 flex flex-wrap justify-center mt-2">
+
+				{% for pubKeyw in item.publicationKeywords %}
+					<a href="{{ path("app_publication_show_all_category", {slug:querySlug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:pubKeyw.keyword|lower}) }}" target="_self">
+						<span class="kwTag">{{ pubKeyw.keyword|lower }}
+							{% if not loop.last %}{% endif %}
+						</span>
+					</a>
 				{% endfor %}
-			{% endif %}
-			<br/>
-		</p>
-		<p class=" text-cyan-600 flex flex-wrap justify-start">
-			{% for pubKeyw in item.publicationKeywords %}
-				<a href="{{ path("app_publication_show_all_category", {slug:querySlug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:pubKeyw.keyword|lower}) }}" target="_self">
-					<span class="kwTag">{{ pubKeyw.keyword|lower }}
-						{% if not loop.last %}{% endif %}
-					</span>
-				</a>
-			{% endfor %}
-		</p>
+			</p>
+		</div>
 	</div>
 </div>

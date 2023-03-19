@@ -6,11 +6,7 @@ export function addKeyword() {
     const inputKey = document.getElementById("keyValue");
     const inputPost = document.getElementById("hideId");
     inputKey.addEventListener("keydown", (event) => {
-      if (
-        event.code === "Space" ||
-        event.code === "KeyM" ||
-        event.code === "Comma"
-      ) {
+      if (event.code === "KeyM" || event.code === "Comma") {
         if (!document.getElementById("keyw_" + inputKey.value.toUpperCase())) {
           const url =
             "/story/add_key/" + inputPost.value + "/" + inputKey.value;
@@ -35,7 +31,7 @@ export function addKeyword() {
               inputPost.value +
               "/" +
               result +
-              '"><span class="material-symbols-outlined hover:text-red-400">backspace</span></a>';
+              '"><i class="fa-duotone fa-delete-left hover:text-red-200 text-sm"></i>';
             inputKey.value = "";
           });
         } else {
@@ -44,7 +40,7 @@ export function addKeyword() {
       }
     });
     inputKey.addEventListener("keyup", (event) => {
-      if (event.code === "Space") {
+      if (event.code === "KeyM" || event.code === "Comma") {
         inputKey.value = "";
       }
     });

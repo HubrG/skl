@@ -65,16 +65,12 @@
 				<div class="w-full -mt-10 mb-5 h-10 bg-slate-100 ring-1 ring-slate-500 dark:bg-slate-700 dark:shadow dark:text-slate-200 opacity-80 dark:opacity-100 right-0 rounded-b-sm">
 					<p class="text-center p-2 font-medium text-xs flex justify-between px-5 ">
 						<span>
-							<span class="material-icons-outlined">
-								preview
-							</span>
-							Aperçu de votre récit (<span class="material-icons text-red-600">
-								fiber_manual_record
-							</span>dépublié)</span>
+							<i class="fa-duotone fa-eye"></i>
+							— Aperçu de votre récit &nbsp;&nbsp;[<i class="fa-duotone fa-circle text-red-500"></i>
+							&nbsp;<span class="font-semibold">dépublié</span>]
+						</span>
 						<a href="{{ path("app_publication_edit", {id:pubShow.id}) }}" class="hover:underline">Revenir à l'édition
-							<span class="material-icons">
-								redo
-							</span>
+							<i class="fa-duotone fa-rotate-right"></i>
 						</a>
 					</p>
 				</div>
@@ -127,10 +123,8 @@
 				<div class="flex justify-between  gap-x-5 -mt-5 mb-5">
 					{% if pubShow.finished == true %}
 						<div class="w-full text-center bg-emerald-50 p-3 gap-y-2 rounded cursor-default grid grid-flow-row  dark:bg-transparent text-emerald-700 dark:text-emerald-300 ">
-							<button class="font-medium cursor-default">
-								<span class="material-icons-outlined">
-									task_alt
-								</span>
+							<button class="font-medium cursor-default flex-row flex gap-x-3 justify-center items-center">
+								<i class="fa-duotone fa-circle-check"></i>
 								Récit terminé
 							</button>
 							<span class="opacity-60 text-xs">
@@ -145,10 +139,8 @@
 							{% endif %}
 						{% endfor %}
 						<div id="followBtn" data-href="{{path("app_publication_follow", {id:pubShow.id})}}" class="{{classFollowBtn}}">
-							<button class="font-medium">
-								<span id="followIcon" class="material-icons-outlined">
-									{{classFollowBtn == "follow-collection-buttons-ok" ? "label_off" : "loyalty" }}
-								</span>
+							<button class="font-medium flex flex-row gap-x-3 justify-center items-center">
+								<i id="followIcon" class="fa-duotone {{classFollowBtn == 'follow-collection-buttons-ok' ? " fa-bell-slash" : " fa-bell" }}"></i>
 								<span id="followTitle">
 									{{classFollowBtn == "follow-collection-buttons-ok" ? "Ne plus suivre ce récit" : "Suivre ce récit" }}
 								</span>
@@ -159,10 +151,8 @@
 						</div>
 					{% elseif not app.user %}
 						<div class="follow-collection-buttons cursor-pointer" onclick="MicroModal.show('popup-login')">
-							<button class="font-medium">
-								<span class="material-icons-outlined">
-									loyalty
-								</span>
+							<button class="font-medium  flex flex-row gap-x-3 justify-center items-center">
+								<i class="fa-duotone fa-tags"></i>
 								Suivre ce récit
 							</button>
 							<span class="opacity-60 text-xs">
@@ -178,10 +168,8 @@
 							{% endif %}
 						{% endfor %}
 						<div id="btnCollection" data-href="{{path("app_publication_add_collection", {id:pubShow.id})}}" class="{{classCollectionBtn}}">
-							<button class="font-medium">
-								<span class="material-icons-outlined" id="iconCollection">
-									{{classCollectionBtn == "follow-collection-buttons-ok" ? "bookmark_added" : "bookmark_add" }}
-								</span>
+							<button class="font-medium  flex flex-row gap-x-3 justify-center items-center">
+								<i id="iconCollection" class="fa-duotone {{classCollectionBtn == 'follow-collection-buttons-ok' ? " fa-bookmark-slash" : " fa-bookmark" }}"></i>
 								<span id="titleCollection">
 									{{classCollectionBtn == "follow-collection-buttons-ok" ? "Retirer de ma collection" : "Ajouter à ma collection" }}
 								</span>
@@ -192,10 +180,8 @@
 						</div>
 					{% elseif not app.user %}
 						<div class="follow-collection-buttons cursor-pointer" onclick="MicroModal.show('popup-login')">
-							<button class="font-medium">
-								<span class="material-icons-outlined">
-									bookmark_add
-								</span>
+							<button class="font-medium  flex flex-row gap-x-3 justify-center items-center">
+								<i class="fa-duotone fa-bookmark"></i>
 								Ajouter à ma collection
 							</button>
 							<span class="opacity-60 text-xs">
@@ -232,32 +218,24 @@
 										{{ chapter.title|default("Feuille n°" ~ (chapter.orderDisplay + 1))|capitalize }}
 									</a>
 									<div class="w-2/6 justify-items-end opacity-80 dark:opacity-100">
-										<div class="py-1 px-2 rounded-full flex justify-between items-center mt-0 md:-mt-2 md:text-[0.65rem] text-[0.65rem] text-slate-500 font-medium opacity-80 dark:opacity-100 dark:text-slate-400">
+										<div class="py-1 px-2 rounded-full flex justify-between items-center mt-0 md:-mt-2 text-xs text-slate-500 font-medium opacity-80 dark:opacity-100 dark:text-slate-400">
 											<div class=" flex flex-col md:flex-col items-center gap-x-1">
-												<span class="material-icons-outlined">
-													thumb_up
-												</span>
+												<i class="fa-light fa-thumbs-up"></i>
 												{{ chapter.publicationChapterLikes|length }}
 												{% set chapterStats = chapterStats|merge({'likes': chapterStats.likes + chapter.publicationChapterLikes|length}) %}
 											</div>
 											<div class=" flex flex-col md:flex-col items-center gap-x-1">
-												<span class="material-icons-outlined">
-													bookmarks
-												</span>
+												<i class="fa-light fa-bookmark"></i>
 												{{ chapter.publicationBookmarks|length }}
 												{% set chapterStats = chapterStats|merge({'bookmarks': chapterStats.bookmarks + chapter.publicationBookmarks|length}) %}
 											</div>
 											<div class=" flex flex-col md:flex-col items-center gap-x-1">
-												<span class="material-icons-outlined">
-													visibility
-												</span>
+												<i class="fa-light fa-eye"></i>
 												{{ chapter.publicationChapterViews|length }}
 												{% set chapterStats = chapterStats|merge({'views': chapterStats.views + chapter.publicationChapterViews|length}) %}
 											</div>
 											<div class=" flex flex-col md:flex-col items-center gap-x-1">
-												<span class="material-icons-outlined">
-													forum
-												</span>
+												<i class="fa-light fa-comments"></i>
 												{{ chapter.publicationComments|length }}
 												{% set chapterStats = chapterStats|merge({'comments': chapterStats.comments + chapter.publicationComments|length}) %}
 											</div>
@@ -456,20 +434,14 @@
 							Popularité
 							<span class="font-light text-xs">(7 jours)</span>
 						</span>
-						<span class="flex items-end gap-x-1">
+						<span class="flex justify-end gap-x-2 text-xs items-center">
 							{{pubShow.pop}}
 							{% if pubShow.pop < lastPopularity %}
-								<span class="material-icons  text-red-700 dark:text-red-500">
-									arrow_circle_down
-								</span>
+								<i class="fa-duotone fa-circle-arrow-down  text-lg text-red-700 dark:text-red-500"></i>
 							{% elseif pubShow.pop == lastPopularity %}
-								<span class="material-icons-outlined">
-									equal
-								</span>
+								<i class="fa-duotone fa-equals text-lg"></i>
 							{% else %}
-								<span class="material-icons text-green-700 dark:text-emerald-500">
-									arrow_circle_up
-								</span>
+								<i class="fa-duotone fa-circle-arrow-up   text-lg text-green-700 dark:text-emerald-500"></i>
 							{% endif %}
 						</span>
 					</li>

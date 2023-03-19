@@ -13,12 +13,11 @@
 				<div class="w-5/6 mx-auto -mt-2 h-10  bg-slate-100 dark:bg-slate-700 dark:text-slate-200  ring-1 ring-slate-700 opacity-80 right-0 rounded-b-sm">
 					<p class="text-center p-2 font-medium text-xs flex justify-between px-5">
 						<span>
-							<span class="material-icons-outlined">
-								preview
-							</span>
-							Aperçu de votre récit (<span class="material-icons text-red-600">
-								fiber_manual_record
-							</span>dépublié)</span>
+
+							<i class="fa-duotone fa-eye"></i>
+							— Aperçu de votre récit &nbsp;&nbsp;[<i class="fa-duotone fa-circle text-red-500"></i>
+							&nbsp;<span class="font-semibold">dépublié</span>]
+						</span>
 
 						<a href="{{ path("app_publication_edit", {id:infoPub.id}) }}" class="hover:underline">Revenir à l'édition
 							<span class="material-icons">

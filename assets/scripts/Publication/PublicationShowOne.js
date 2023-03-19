@@ -32,7 +32,8 @@ export function PublicationShowOne() {
               followBtn.classList.remove("follow-collection-buttons-ok");
               followBtn.classList.add("follow-collection-buttons");
               //
-              followIcon.innerHTML = "loyalty";
+              followIcon.classList.add("fa-bell");
+              followIcon.classList.remove("fa-bell-slash");
               followTitle.innerHTML = "Suivre ce récit";
               followInfo.innerHTML =
                 "Vous recevrez une notification à chaque nouvelle feuille publiée.";
@@ -40,7 +41,8 @@ export function PublicationShowOne() {
               followBtn.classList.remove("follow-collection-buttons");
               followBtn.classList.add("follow-collection-buttons-ok");
               //
-              followIcon.innerHTML = "label_off";
+              followIcon.classList.remove("fa-bell");
+              followIcon.classList.add("fa-bell-slash");
               followTitle.innerHTML = "Ne plus suivre ce récit";
               followInfo.innerHTML =
                 "Vous ne recevrez plus de notification à chaque nouvelle feuille publiée.";
@@ -71,7 +73,8 @@ export function PublicationShowOne() {
               addBtn.classList.remove("follow-collection-buttons-ok");
               addBtn.classList.add("follow-collection-buttons");
               //
-              addIcon.innerHTML = "bookmark_add";
+              addIcon.classList.add("fa-bookmark");
+              addIcon.classList.remove("fa-bookmark-slash");
               addTitle.innerHTML = "Ajouter à ma collection";
               addInfo.innerHTML =
                 "Vous pourrez retrouver ce récit dans votre collection.";
@@ -79,7 +82,8 @@ export function PublicationShowOne() {
               addBtn.classList.remove("follow-collection-buttons");
               addBtn.classList.add("follow-collection-buttons-ok");
               //
-              addIcon.innerHTML = "bookmark_added";
+              addIcon.classList.remove("fa-bookmark");
+              addIcon.classList.add("fa-bookmark-slash");
               addTitle.innerHTML = "Retirer de ma collection";
               addInfo.innerHTML =
                 "Vous ne pourrez plus retrouver ce récit dans votre collection.";

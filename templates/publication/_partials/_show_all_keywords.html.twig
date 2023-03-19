@@ -26,10 +26,9 @@
 			{% endif %}
 			{# * affichage des keywords #}
 			<a href="{{ path("app_publication_show_all_category", {slug:slugCat, keystring:kwStringNew, page:1, order:orderSort, sortby:querySortby}) }}" target="_self" class="  w-full justify-items-between text-center kwTag bg-slate-900 hover:text-slate-800  text-slate-700 text-sm font-semibold ">
-				<span class=" leading-[1.7rem]   dark:text-slate-300">{{item.keyword}}
-					<span class="material-icons hover:text-slate-900 float-right pt-[0.37rem]">
-						backspace
-					</span>
+				<span class=" leading-[1.7rem]   dark:text-slate-300 flex-row flex justify-between">
+					{{item.keyword}}
+					<i class="fa-duotone fa-delete-left hover:text-slate-900 pt-[0.37rem]"></i>
 				</span>
 			</a>
 		{% endif %}

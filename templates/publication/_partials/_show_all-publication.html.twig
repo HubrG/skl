@@ -11,15 +11,15 @@
 		</a>
 	</div>
 	<div class="pl-5 pr-3 w-4/6 relative">
-		<h5 class="text-base text-slate-600 font-medium tracking-tight pr-2">
-			<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" target="_top" class=" text-slate-800  dark:text-slate-300 text-lg leading-5 font-medium hover:underline">{{ item.title }}</a>
+		<h5 class="text-lg  mb-2 leading-tight font-medium tracking-tight dark:text-white  flex flex-row gap-x-2 items-center">
+			<i class="fa-regular fa-book text-xs"></i>
+			<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" target="_top" class=" text-slate-800  dark:text-slate-300 leading-5 font-medium hover:underline">{{ item.title }}</a>
 		</h5>
-		<small class=" text-md dark:text-slate-200">
-			<span class="material-icons-outlined">
-				subdirectory_arrow_right
-			</span>
+		<small class=" text-md dark:text-slate-200 flex flex-row gap-x-2 items-center">
+			<i class="fa-regular fa-user"></i>
 			<a href="{{ path("app_user", {username:item.user.username}) }}" class="hover:underline" target="_top">{{ item.user.nickname }}</a>
 		</small>
+		<hr class="my-2">
 		{# popover info publication #}
 		{# {% include "publication/_partials/_show_all-popover-info.html.twig" %} #}
 		{# popover info publication end #}

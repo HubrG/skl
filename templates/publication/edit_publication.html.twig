@@ -46,9 +46,7 @@
 			<div id="hideNoCover" data-tippy-content="Cliquez ici pour ajouter une photo de couverture" class="no-cover" for="publication_cover">
 				<label for="publication_cover" class="cursor-pointer justify-center h-80">
 					<h2 class="m-auto text-center font-light shadow-slate-300  dark:shadow-slate-900 mt-10 rounded-lg">
-						<span class="material-icons-outlined">
-							add_photo_alternate
-						</span><br/><br/>Ajouter une couverture
+						<i class="fa-duotone fa-images text-6xl"></i><br/><br/>Ajouter une couverture
 					</h2>
 				</label>
 			</div>
@@ -100,9 +98,7 @@
 				{{ form_label(formPub.title) }}
 				<div class="relative mb-6">
 					<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
-						<span class="material-icons-outlined">
-							title
-						</span>
+						<i class="fa-regular fa-heading"></i>
 					</div>
 					{{ form_widget(formPub.title, {attr:{"class":"axiosPublication axiosPubAS axiosPubSpy", "onkeydown":"if(this.value == '' && event.keyCode==32) return false;", "onkeyup":"if(this.value.charAt(0) == ' ') { this.value = this.value.trim() } if (!this.value) { document.getElementById('pubTitle').innerHTML='Récit sans titre' } else { document.getElementById('pubTitle').innerHTML=this.value.charAt(0).toUpperCase() + this.value.substring(1).toLowerCase()}"}}) }}
 				</div>
@@ -113,30 +109,30 @@
 				{{ form_label(formPub.category) }}
 				<div class="relative mb-6" id="publication_category_div">
 					<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
-						<span class="material-icons-outlined">
-							category
-						</span>
+						<i class="fa-regular fa-masks-theater"></i>
 					</div>
 					{{ form_widget(formPub.category, {attr:{"class":"axiosPublication axiosPubAS axiosPubSpy"}}) }}
 				</div>
 				<label>En quelques mots, quelles sont les grandes thématiques de votre récit ?</label>
 				<div class="relative mb-6">
 					<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
-						<span class="material-icons-outlined">
-							sell
-						</span>
+						<i class="fa-regular fa-tags"></i>
 					</div>
 					<input type="text" value="" id="keyValue"/>
+				</div>
+				<div class="help-text pt-2">Séparez vos mots-clés par une virgule
+					<kbd class="px-2 py-0.5 text-xs font-semibold text-slate-800 bg-slate-100 border border-slate-200 rounded-lg dark:bg-slate-600 dark:text-slate-100 dark:border-slate-500">,</kbd>
+					ou un point-virgule
+					<kbd class="px-2 py-0.5 text-xs font-semibold text-slate-800 bg-slate-100 border border-slate-200 rounded-lg dark:bg-slate-600 dark:text-slate-100 dark:border-slate-500">;</kbd>
 				</div>
 				<div class="hidden" id="editPage"></div>
 				<turbo-frame id="keyroute">
 					<div id="keyList" class="items-center">
 						{% for k in infoPub.publicationKeywords %}
-							<div id="keyw_{{ k.keyword|upper }}">{{ k.keyword }}
-								&nbsp;<a href="{{path("app_publication_del_keyword", {value:k.keyword, pub:infoPub.id, mode:"edit"})}}">
-									<span class="material-icons-outlined hover:text-red-200">
-										backspace
-									</span>
+							<div id="keyw_{{ k.keyword|upper }}" class="flex flex-row justify-between gap-x-2">
+								<span>{{ k.keyword }}</span>
+								<a href="{{path("app_publication_del_keyword", {value:k.keyword, pub:infoPub.id, mode:"edit"})}}">
+									<i class="fa-duotone fa-delete-left hover:text-red-200 text-sm"></i>
 								</a>
 							</div>
 						{% endfor %}

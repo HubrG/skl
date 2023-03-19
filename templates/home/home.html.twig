@@ -11,7 +11,7 @@
 			<li class="rounded-r-0 navbar-button navbar-button-home ">
 				{% if app.user %}
 					<i class="fa-duotone fa-book text-blue-400  text-3xl md:text-xl"></i>
-					<a href="{{path("app_publication_add")}}" class="hover:underline ">
+					<a href="{{path("app_publication_add")}}">
 						Publiez votre roman
 					</a>
 				{% else %}
@@ -24,7 +24,7 @@
 			<li class="navbar-button navbar-button-home">
 				{% if app.user %}
 					<i class="fa-duotone fa-square-rss text-emerald-500  text-3xl md:text-xl"></i>
-					<a href="">
+					<a href="{{path("app_publication_add")}}">
 						Créez votre blog</a>
 				{% else %}
 					<i class="fa-duotone fa-square-rss text-emerald-500  text-3xl md:text-xl"></i>
@@ -36,7 +36,7 @@
 			<li class="navbar-button navbar-button-home">
 				<i class="fa-duotone fa-comment-music text-purple-500  text-3xl md:text-xl"></i>
 				{% if app.user %}
-					<a href="">
+					<a href="{{path("app_publication_add")}}">
 						Déclamez votre poésie
 					</a>
 				{% else %}
@@ -52,16 +52,15 @@
 				</a>
 			</li>
 		</ul>
-		<div class="glide-top glide mt-5  left-0 -z-50">
+		<div class="glide-top glide mt-5  left-0 z-50">
 			<div data-glide-el="track" class="glide__track rounded-lg ring-0 dark:ring-slate-600">
 				<div class="glide__slides min-h-[40vh] relative">
 					{% for item in publications %}
-
 						<a href="{{path("app_publication_show_one", {id:item.id, slug:item.slug})}}" class="bg-cover bg-center grayscale-[30%] dark:grayscale-[80%] " style="background-image:url('{{item.cover}};')">
 							<div class="glide__slide backdrop-blur-xl p-10">
-								<div class="backdrop-blur-xl flex flex-col items-center justify-center">
-									<h1 class="text-white text-center pt-20" style="text-shadow: 1px 1px 0px #000">{{ item.title }}</h1>
-									<h2 class="-mt-5 text-base font-bold text-white text-opacity-80">par
+								<div class="backdrop-blur-xl flex flex-col items-center justify-center {{item.cover ? " text-white" : " dark:text-slate-100 text-slate-900"}}" {% if item.cover %} style="text-shadow: 1px 1px 0px #000" {% endif %}>
+									<h1 class=" text-center pt-20 {{item.cover ? " text-white" : " text-slate-900"}}">{{ item.title }}</h1>
+									<h2 class="-mt-5 text-base font-bold ">par
 										{{item.user.nickname}}
 									</h2>
 								</div>
@@ -79,9 +78,7 @@
 			</div>
 		</div>
 	</section>
-	<section
-		class="col-span-12">
-		{# <div class="h-40 bg-cover w-full -mt-20" style="background-image:url('/images/presta.jpg')"></div> #}
+	<section class="col-span-12 z-10">
 		<div class="glide-market glide -mt-10 left-0">
 			<div data-glide-el="track" class="glide__track mx-16">
 				<div class="glide__slides">

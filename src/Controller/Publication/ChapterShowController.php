@@ -23,6 +23,7 @@ use App\Repository\PublicationChapterLikeRepository;
 use App\Repository\PublicationChapterNoteRepository;
 use App\Repository\PublicationChapterViewRepository;
 use App\Repository\PublicationChapterCommentRepository;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ChapterShowController extends AbstractController
@@ -207,7 +208,18 @@ class ChapterShowController extends AbstractController
     public function viewChapter($chapter)
     {
         $view = new PublicationChapterView();
-        // * Si l'utilisateur est connecté
+        // * SESSIONS
+        if (!$this->getUser()) {
+            $session = new \Symfony\Component\HttpFoundation\Session\Session();
+            if (!$session->get('view_' . $chapter->getId())) {
+                $session->set('view_' . $chapter->getId(), true);
+                $view->setChapter($chapter);
+                $view->setViewDate(new \DateTime('now'));
+                $this->em->persist($view);
+                $this->em->flush();
+            }
+        }
+        // * LOGGED
         if ($this->getUser()) {
             // * Si l'utilisateur n'est pas l'auteur du chapitre
             if ($this->getUser() != $chapter->getPublication()->getUser()) {
@@ -246,8 +258,6 @@ class ChapterShowController extends AbstractController
             // * On met à jour la popularité de la publication
             $this->publicationPopularity->PublicationPopularity($chapter->getPublication());
             //
-        } else {
-            return;
         }
     }
     public function formatChapter($chapter)

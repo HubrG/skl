@@ -26,29 +26,29 @@
 				</a>
 			{% endif %}
 			{% set filteredChapters = item.publicationChapters|filter(chapter => chapter.status == 2) %}
-			<span class="flex gap-x-1 items-center ">
+			<span class="flex gap-x-1 items-center " data-tippy-content="Nombre de feuilles">
 				<i class="fa-light fa-list-ol"></i>
 				{{filteredChapters|length}}
 			</span>
 			{% set totalViews = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterViews|length, 0) %}
-			<span class="flex gap-x-1 items-center ">
+			<span class="flex gap-x-1 items-center " data-tippy-content="Nombre de lecteurs">
 				<i class="fa-light fa-eye"></i>
 				{{totalViews}}
 			</span>
 			{% set totalLikes = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterLikes|length, 0) %}
-			<span class="flex gap-x-1 items-center ">
+			<span class="flex gap-x-1 items-center " data-tippy-content="Nombre de j'aime">
 				<i class="fa-light fa-thumbs-up"></i>
 				{{totalLikes}}
 			</span>
-			<span class="flex gap-x-1 items-center ">
+			<span class="flex gap-x-1 items-center " data-tippy-content="Nombre de commentaires">
 				<i class="fa-light fa-comments"></i>
 				{{item.publicationComments|length}}
 			</span>
-			<span class="flex gap-x-1 items-center ">
+			<span class="flex gap-x-1 items-center " data-tippy-content="Nombre de pages marquées">
 				<i class="fa-light fa-bookmark"></i>
 				{{item.publicationBookmarks|length}}
 			</span>
-			<span class="flex gap-x-1 items-center ">
+			<span class="flex gap-x-1 items-center " data-tippy-content="Indicateur de popularité">
 				{% set lastPopularity = 0 %}
 				{% if item.PublicationPopularities|length > 1 %}
 					{% set nbr = item.PublicationPopularities|length %}
@@ -56,11 +56,11 @@
 					{% set lastPopularity = item.PublicationPopularities[nbr].popularity %}
 				{% endif %}
 				{% if item.pop < lastPopularity %}
-					<i class="fa-duotone fa-circle-arrow-down  text-lg text-red-700 dark:text-red-500"></i>
+					<i class="fa-regular fa-circle-arrow-down  text-lg text-red-700 dark:text-red-500"></i>
 				{% elseif item.pop == lastPopularity %}
-					<i class="fa-duotone fa-equals text-lg"></i>
+					<i class="fa-regular fa-equals text-lg"></i>
 				{% else %}
-					<i class="fa-duotone fa-circle-arrow-up   text-lg text-green-700 dark:text-emerald-500"></i>
+					<i class="fa-regular fa-circle-arrow-up   text-lg text-green-700 dark:text-emerald-500"></i>
 				{% endif %}
 			</span>
 		</div>

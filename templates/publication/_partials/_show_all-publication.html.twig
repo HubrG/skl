@@ -11,9 +11,12 @@
 				</small>
 			</div>
 			<div class="w-2/12  opacity-100">
-				<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" target="_top" class="button-classic button-slate">
-					<i class="fa-duotone fa-book-open-reader"></i>
-					Lire</a>
+				<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" target="_top" class="button-classic button-indigo">
+					<span class="text-xs md:text-sm">
+						<i class="fa-duotone fa-book-open-reader"></i>
+						Lire
+					</span>
+				</a>
 			</div>
 		</div>
 		<div class="flex w-full flex-row divide-solid opacity-75 bg-white text-xs dark:bg-slate-600 dark:text-slate-300 px-2 items-center py-1 justify-between border-b-[1px] border-slate-200 dark:border-slate-800">
@@ -24,25 +27,25 @@
 			{% endif %}
 			{% set filteredChapters = item.publicationChapters|filter(chapter => chapter.status == 2) %}
 			<span class="flex gap-x-1 items-center ">
-				<i class="fa-duotone fa-list-ol"></i>
+				<i class="fa-light fa-list-ol"></i>
 				{{filteredChapters|length}}
 			</span>
 			{% set totalViews = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterViews|length, 0) %}
 			<span class="flex gap-x-1 items-center ">
-				<i class="fa-duotone fa-eye"></i>
+				<i class="fa-light fa-eye"></i>
 				{{totalViews}}
 			</span>
 			{% set totalLikes = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterLikes|length, 0) %}
 			<span class="flex gap-x-1 items-center ">
-				<i class="fa-duotone fa-thumbs-up"></i>
+				<i class="fa-light fa-thumbs-up"></i>
 				{{totalLikes}}
 			</span>
 			<span class="flex gap-x-1 items-center ">
-				<i class="fa-duotone fa-comments"></i>
+				<i class="fa-light fa-comments"></i>
 				{{item.publicationComments|length}}
 			</span>
 			<span class="flex gap-x-1 items-center ">
-				<i class="fa-duotone fa-bookmark"></i>
+				<i class="fa-light fa-bookmark"></i>
 				{{item.publicationBookmarks|length}}
 			</span>
 			<span class="flex gap-x-1 items-center ">
@@ -60,8 +63,6 @@
 					<i class="fa-duotone fa-circle-arrow-up   text-lg text-green-700 dark:text-emerald-500"></i>
 				{% endif %}
 			</span>
-
-
 		</div>
 		{# popover info publication #}
 		{# {% include "publication/_partials/_show_all-popover-info.html.twig" %} #}

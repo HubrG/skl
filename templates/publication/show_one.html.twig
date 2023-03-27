@@ -1,8 +1,10 @@
 {% extends "base.html.twig" %}
 {% set pic = pubShow.cover %}
+
 {% if pic %}
-	{% else %}
-		{% set pic = " https://picsum.photos/200/" ~ random(300, 310) %}
+	{% set pic_bg = pic|replace({'/upload/': '/upload/e_vectorize:colors:3,'}) %}
+{% else %}
+	{% set pic = " https://picsum.photos/200/" ~ random(300, 310) %}
 {% endif %}
 {% block title %}
 	Récit |
@@ -53,13 +55,13 @@
 			width: 100%;
 			min-height: 100vh;
 			height: 150vh;
-			opacity: .1;
+			opacity: 0.1;
 			z-index: -99999999999;
-			background-image: url('{{ pic }}');
+			background-image: url('{{ pic_bg }}');
 			background-position: center;
 		}
 	</style>
-	<section class=" before:bg-cover before:blur before:-z-[9999]  col-span-12 col-start-0 lg:col-span-10 lg:col-start-2 gap-10 " id="PublicationShowOneContent">
+	<section class=" before:bg-cover before:-z-[9999]  col-span-12 col-start-0 lg:col-span-10 lg:col-start-2 gap-10 " id="PublicationShowOneContent">
 		{% if pubShow.status < 2 %}
 			<div class="mb-0">
 				<div class="w-full -mt-10 mb-5 h-10 bg-slate-100 ring-1 ring-slate-500 dark:bg-slate-700 dark:shadow dark:text-slate-200 opacity-80 dark:opacity-100 right-0 rounded-b-sm">
@@ -76,16 +78,17 @@
 				</div>
 			</div>
 		{% endif %}
-		<h1 class="text-center text-4xl bg-center text-slate-800" style="text-shadow: 0 0.5px 1px blanchedalmond;">{{ pubShow.title }}</h1>
+		<h1 class="text-center text-4xl font-semibold bg-center text-slate-700" style="text-shadow: 0 0.5px 1px blanchedalmond;">{{ pubShow.title }}</h1>
 		<h2 class="text-center -mt-8">
 			<span class="font-light">
 				<a href="{{ path("app_user", {username:pubShow.user.username}) }}" class="font-sans hover:underline dark:text-slate-200">{{ pubShow.user.nickname }}</a>
 			</span>
 		</h2>
 		<div class="flex justify-center">
-			<img class=" rounded-full mt-6 object-cover w-40 h-40 justify-center  mb-5  pb-1 shaow-md  grayscale-[50%]" src="{{pic}}" alt=""/>
+			<img class=" rounded mt-6 object-cover w-40 h-50 justify-center  mb-5  pb-1 shaow-md  grayscale-[50%]" src="{{pic}}" alt=""/>
 		</div>
 		<div class="flex gap-5 p-10 pt-0  items-center">
+
 			<div class="flex-1 text-center flex flex-col justify-center items-center justify-items-center origin-center">
 				<div class="lg:flex w-6/6 md:w-4/6">
 					<p class="text-sm indent-4 font-serif text-justify text-slate-900 opacity-80 dark:text-slate-200 dark:[text-shadow: 0 0.5px 1px blanchedalmond;] leading-7 mt-1">

@@ -56,9 +56,12 @@
 			<div data-glide-el="track" class="glide__track rounded-lg ring-0 dark:ring-slate-600">
 				<div class="glide__slides min-h-[40vh] relative">
 					{% for item in publications %}
-						<a href="{{path("app_publication_show_one", {id:item.id, slug:item.slug})}}" class="bg-cover bg-center grayscale-[30%] dark:grayscale-[80%] {{ not item.cover ? " bg-slate-50 dark:bg-slate-900"}}" {% if item.cover %} style="background-image:url('{{item.cover}};')" {% endif %}>
-							<div class="glide__slide backdrop-blur-xl p-10">
-								<div class="backdrop-blur-xl flex flex-col items-center justify-center {{item.cover ? " text-white" : " dark:text-slate-100 text-slate-900"}}" {% if item.cover %} style="text-shadow: 1px 1px 0px #000" {% endif %}>
+						{% if item.cover %}
+							{% set cover = item.cover|replace({'/upload/': '/upload/e_vectorize:colors:3,'}) %}
+						{% endif %}
+						<a href="{{path("app_publication_show_one", {id:item.id, slug:item.slug})}}" class="bg-cover bg-center grayscale-[30%] dark:grayscale-[80%] {{ not item.cover ? " bg-slate-50 dark:bg-slate-900"}}" {% if item.cover %} style="background-image:url('{{cover}};')" {% endif %} {{ item.cover ? "backdrop-blur-md" : "" }}>
+							<div class="glide__slide p-10">
+								<div class=" flex flex-col items-center justify-center {{item.cover ? " text-white" : " dark:text-slate-100 text-slate-900"}}" {% if item.cover %} style="text-shadow: 1px 1px 0px #000" {% endif %}>
 									<h1 class=" text-center pt-20 {{item.cover ? " text-white" : " text-slate-900"}}">{{ item.title }}</h1>
 									<h2 class="-mt-5 text-base font-bold ">par
 										{{item.user.nickname}}
@@ -235,6 +238,7 @@
 	</section>
 	<div class="col-span-12 -mt-20">
 		<hr>
+
 		{# <h1 class="text-center">Publiez des romans, de la poésie ; créez des blogs</h1> #}
 	</div>
 {% endblock %}

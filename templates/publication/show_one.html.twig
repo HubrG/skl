@@ -94,8 +94,8 @@
 				<a href="{{ path("app_user", {username:pubShow.user.username}) }}" class="font-sans hover:underline dark:text-slate-200">{{ pubShow.user.nickname }}</a>
 			</span>
 		</h2>
-		<div class="flex justify-center">
-			<img class=" rounded mt-6 object-cover w-40 h-50 justify-center  mb-5  pb-1    grayscale-[50%]" src="{{pic}}" alt=""/>
+		<div class="flex rounnded justify-center">
+			<img class="rounded mt-6 object-cover w-40 h-50 justify-center  mb-5  pb-1  dark:grayscale-[50%]" src="{{pic}}" alt=""/>
 		</div>
 		<div class="flex gap-5 p-10 pt-0  items-center">
 
@@ -350,7 +350,7 @@
 								</a>
 							</li>
 							<li>
-								<button data-tippy-content="Copier le lien" id="copyLink" target="_blank" class="text-lg">
+								<button data-tippy-content="Copier le lien" id="copyLink" target="_blank" class="text-lg mt-1">
 									<i class="fa-regular fa-link text-xl"></i>
 								</button>
 							</li>

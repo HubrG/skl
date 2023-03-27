@@ -81,7 +81,7 @@
 						<img class="grayscale-[50%] rounded  w-full h-full object-cover lazy animate-pulse animate__animated bg-slate-300  {% if not pic %}  dark:blur-none dark:bg-slate-300 {% endif %}" width="529" height="793" loading="lazy" src="" data-src="{% if pic %}{{pic}}{% else %}{{ "/images/no-cover.png" }} {% endif %}" alt=""/>
 					</a>
 				</div>
-				<p class="px-2 w-4/6  font-normal text-slate-600 text-sm leading-[1.5rem] dark:text-slate-400 line-clamp-[6] md:line-clamp-[11] lg:line-clamp-[7] text-justify">
+				<p class="px-2 w-4/6  font-normal text-slate-600 font-sans text-sm leading-[1.5rem] dark:text-slate-400 line-clamp-[6] md:line-clamp-[11] lg:line-clamp-[7] text-left">
 					{% if item.summary %}
 						{{ item.summary}}
 					{% else %}

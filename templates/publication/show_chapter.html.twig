@@ -47,7 +47,7 @@
 			</button>
 		</div>
 
-		<div id="dropdownChapter" class="z-10 hidden overflow-y-auto max-h-48 bg-white divide-y divide-gray-100 shadow w-5/6 sm:w-2/6 dark:bg-gray-700 dark:divide-gray-600">
+		<div id="dropdownChapter" class="z-[99999] hidden overflow-y-auto max-h-48 bg-white divide-y divide-gray-100 shadow w-5/6 sm:w-2/6 dark:bg-gray-700 dark:divide-gray-600">
 			{% for item in infoPub.publicationChapters|sort((a, b) => a.orderDisplay < b.orderDisplay ? -1 : 1) %}
 				{% if item.status > 1 %}
 					<div>

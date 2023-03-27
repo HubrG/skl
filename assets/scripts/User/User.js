@@ -77,13 +77,13 @@ function UpdateProfilPicture(file, type) {
               response.data.cloudinary;
           }
         } else if (type === "pbg") {
+          let bgPic = response.data.cloudinary;
+          bgPic = bgPic.replace("/upload/", "/upload/e_vectorize:colors:3,");
           var notyText =
             "<span class='text-base font-medium'>Photo de couverture mise à jour</span>";
           const newStyle = document.createElement("style");
           newStyle.innerHTML =
-            '#section_profil::before { background-image:url("' +
-            response.data.cloudinary +
-            '") }';
+            '#section_profil::before { background-image:url("' + bgPic + '") }';
           document.body.appendChild(newStyle);
         }
         var notyTimeout = 3500;

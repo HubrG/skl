@@ -4,7 +4,17 @@
 {% if pic %}
 	{% set pic_bg = pic|replace({'/upload/': '/upload/e_vectorize:colors:3,'}) %}
 {% else %}
-	{% set pic = " https://picsum.photos/200/" ~ random(300, 310) %}
+	{% set pic_bg = "/images/no-cover-bg.png" %}
+	{% if app.user and app.user.userParameters is defined and app.user.userParameters.darkmode == true %}
+		{% set pic = "/images/no-cover-dark.png" %}
+	{% else %}
+		{% set pic = "/images/no-cover.png" %}
+	{% endif %}
+	{% if app.session.get('darkmode') and not app.user  and app.session.get('darkmode') == true %}
+		{% set pic = "/images/no-cover-dark.png" %}
+	{% else %}
+		{% set pic = "/images/no-cover.png" %}
+	{% endif %}
 {% endif %}
 {% block title %}
 	Récit |
@@ -85,7 +95,7 @@
 			</span>
 		</h2>
 		<div class="flex justify-center">
-			<img class=" rounded mt-6 object-cover w-40 h-50 justify-center  mb-5  pb-1 shaow-md  grayscale-[50%]" src="{{pic}}" alt=""/>
+			<img class=" rounded mt-6 object-cover w-40 h-50 justify-center  mb-5  pb-1    grayscale-[50%]" src="{{pic}}" alt=""/>
 		</div>
 		<div class="flex gap-5 p-10 pt-0  items-center">
 

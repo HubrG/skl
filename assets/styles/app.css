@@ -698,7 +698,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 	@apply rounded-lg  shadow-md hover:shadow-xl rounded-tl-none rounded-tr-2xl  dark:bg-slate-700   dark:shadow-lg  dark:ring-slate-800   transition duration-100  xl:row-span-1 ;
 }
 .publication-card .publication-header {
-	@apply flex w-full flex-row bg-white dark:bg-slate-900   rounded-tr-2xl rounded-tl-none  p-3 pl-5   border-b-[1px] border-slate-200 dark:border-slate-100;
+	@apply flex w-full flex-row bg-white dark:bg-slate-900   rounded-tr-2xl rounded-tl-none  p-3 pl-5   border-b-[1px] border-slate-200 dark:border-slate-800;
 }
 .publication-header .left {
 	@apply w-10/12;
@@ -731,10 +731,10 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 	@apply  hidden;
 }
 .publications-container.small .publication-header img {
-	@apply block -ml-2 ;
+	@apply block -ml-2 dark:bg-slate-900;
 }
 .publication-card .publication-stats {
-	@apply flex w-full flex-row divide-solid opacity-75 bg-white text-xs dark:bg-slate-600 dark:text-slate-300 px-2  py-1 justify-between items-center dark:border-slate-800;
+	@apply flex w-full flex-row divide-solid opacity-75 bg-slate-100 border-b border-b-slate-300 text-xs dark:bg-slate-600 dark:text-slate-300 px-2  py-1 justify-between items-center dark:border-slate-800;
 }
 .publications-container.small .publication-card .publication-stats .card-stat.likes, 
 .publications-container.small .publication-card .publication-stats .card-stat.bookmarks,

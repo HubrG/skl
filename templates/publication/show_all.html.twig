@@ -59,7 +59,7 @@
 	{% set random = random(0,999) %}
 	<turbo-frame id="pagination-{{random}}" class="grid {% if pubShowKw %}grid-cols-2 {% else %}grid-cols-1{% endif %}  grid-rows-auto gap-4 col-span-full xl:gap-x-10 container -mt-12 xl:-mt-12 ">
 		{% if pubShowKw %}
-			<aside class="{{kwString ? " md:bg-inherit dark:bg-slate-900 md:dark:bg-inherit" }} row-span-12 -mt-5 rounded-lg dark:p-1 col-span-12 xl:col-span-5 xl:row-span-5 mb-10 xl:mb-0 {{kwString ? " order-1 md:border-b-0 border-b-4 border-slate-400 dark:border-slate-800 " : " order-2" }} xl:order-1 snap-y ">
+			<aside class="{{kwString ? " md:bg-inherit dark:bg-slate-900 md:dark:bg-inherit" }} row-span-12 border-r -mt-5 pr-5 dark:border-r-slate-700 dark:p-1 col-span-12 xl:col-span-5 xl:row-span-5 mb-10 xl:mb-0 {{kwString ? " order-1 md:border-b-0 border-b-4 border-slate-400 dark:border-slate-800 " : " order-2" }} xl:order-1 snap-y ">
 				<hr class="xl:hidden mb-5 h-[0.3rem] bg-slate-400 dark:bg-slate-800 dark:border-none hidden"/>
 				<h2 class="{{kwString ? "hidden " }} my-10 border-t pt-10 xl:hidden text-center font-bold dark:text-slate-100">Mots-clés</h2>
 				{% if kwString %}
@@ -107,17 +107,17 @@
 					</button>
 					<div class="flex flex-row rounded-md ">
 						{% if app.user %}
-							<button id="grid" type="button" class="button-grid-show-all left {{grid_button_left}} ">
+							<button data-tippy-content="Affichage détaillé" id="grid" type="button" class="button-grid-show-all left {{grid_button_left}} ">
 								<i class="fa-regular fa-table-cells-large"></i>
 							</button>
-							<button id="gridSmall" type="button" class="button-grid-show-all right  {{grid_button_right}}">
+							<button data-tippy-content="Affichage ressérré" id="gridSmall" type="button" class="button-grid-show-all right  {{grid_button_right}}">
 								<i class="fa-regular fa-table-cells"></i>
 							</button>
 						{% else %}
-							<button id="grid" type="button" class="button-grid-show-all left  {{grid_button_left}}">
+							<button data-tippy-content="Large détaillé" id="grid" type="button" class="button-grid-show-all left  {{grid_button_left}}">
 								<i class="fa-regular fa-table-cells-large"></i>
 							</button>
-							<button id="gridSmallSession" type="button" class="button-grid-show-all right  {{grid_button_right}}">
+							<button data-tippy-content="Affichage ressérré" id="gridSmallSession" type="button" class="button-grid-show-all right  {{grid_button_right}}">
 								<i class="fa-regular fa-table-cells"></i>
 							</button>
 						{% endif %}

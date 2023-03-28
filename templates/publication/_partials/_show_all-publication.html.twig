@@ -29,7 +29,7 @@
 			</div>
 		</div>
 		<div class="right">
-			<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" target="_top" class="button-classic button-indigo">
+			<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" target="_top" class="button-classic button-slate">
 				<span class="text-xs md:text-sm">
 					<i class="fa-duotone fa-book-open-reader"></i>
 					Lire
@@ -97,7 +97,7 @@
 		<div class="flex flex-row gap-x-2">
 			<div class="h-auto w-2/6 relative border-slate-700 dark:border-slate-900">
 				<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" target="_top">
-					<img class="grayscale-[50%] rounded  w-full h-full object-cover lazy animate-pulse animate__animated bg-white  {% if not pic %}  dark:blur-none  {% endif %}" width="529" height="793" loading="lazy" src="" data-src="{% if pic %}{{pic}}{% else %}{{ "/images/no-cover.png" }} {% endif %}" alt=""/>
+					<img class="grayscale-[50%] rounded  w-full h-full object-cover lazy animate-pulse animate__animated bg-white  {% if not pic %}  dark:bg-transparent  {% endif %}" width="529" height="793" loading="lazy" src="" data-src="{% if pic %}{{pic}}{% else %}{{ "/images/no-cover.png" }} {% endif %}" alt=""/>
 				</a>
 			</div>
 			<p class="px-2 w-4/6  font-normal text-slate-600 font-sans text-sm leading-[1.5rem] dark:text-slate-400 line-clamp-[6] md:line-clamp-[11] lg:line-clamp-[7] text-left">

@@ -1,111 +1,120 @@
-<div class=" rounded-lg  shadow-md  rounded-tl-none rounded-tr-2xl  dark:bg-slate-700  shadow-slate-300 dark:shadow-lg  dark:ring-slate-800 flex  transition duration-500  xl:row-span-1 " id="publication-{{item.id}}">
-	<div class=" w-6/6   ">
-		<div class="flex w-full flex-row bg-white dark:bg-slate-900   rounded-tr-2xl rounded-tl-none  p-3 pl-5   border-b-[1px] border-slate-200 dark:border-slate-800">
-			<div class="w-10/12">
-				<h5 class="text-xl  mb-2 leading-tight font-medium tracking-tight dark:text-white  flex flex-row gap-x-2 items-center">
+{% set pic_bg = item.cover|replace({'/upload/': '/upload/o_vectorize:colors:3,o_10,'}) %}
+{% set pic = item.cover %}
+{% set chap_content = "Aucun contenu" %}
+{% if item.summary %}
+	{% set chap_content = item.summary %}
+{% else %}
+	{% set nbr = 0 %}
+	{% for chap in item.publicationChapters %}
+		{% if nbr == 0 %}
+			{% set chap_content = chap.content|regex_replace('/<p.*?>/i', ' ')|striptags|slice(0,300) ~ "..." %}
+			{% set nbr = nbr + 1 %}
+		{% endif %}
+	{% endfor %}
+{% endif %}
+<div class="publication-card " id="publication-{{item.id}}">
+	<div class="publication-header bg-cover bg-center bg-none">
+		<div class="left flex flex-row">
+			<div class="left-1">
+				<img class="grayscale-[50%] rounded   object-cover lazy animate-pulse animate__animated bg-slate-300  {% if not pic %}  dark:blur-none dark:bg-slate-300 {% endif %}" width="529" height="793" loading="lazy" src="" data-src="{% if pic %}{{pic}}{% else %}{{ "/images/no-cover.png" }} {% endif %}" alt=""/>
+			</div>
+			<div class="left-2">
+				<h5 class="title">
 					<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" target="_top" class=" text-slate-800  dark:text-slate-300 leading-5 font-medium hover:underline">{{ item.title }}</a>
 				</h5>
-				<small class=" text-sm text-slate-500 dark:text-slate-400 flex flex-row gap-x-2 items-center">
-					<i class="fa-duotone fa-feather-pointed opacity-50"></i>
+				<small class="author">
+					<i class="fa-duotone fa-feather-pointed opacity-50 author-icon"></i>
 					<a href="{{ path("app_user", {username:item.user.username}) }}" class="hover:underline" target="_top">{{ item.user.nickname }}</a>
 				</small>
 			</div>
-			<div class="w-2/12  opacity-100">
-				<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" target="_top" class="button-classic button-indigo">
-					<span class="text-xs md:text-sm">
-						<i class="fa-duotone fa-book-open-reader"></i>
-						Lire
-					</span>
-				</a>
-			</div>
 		</div>
-		<div class="flex w-full flex-row divide-solid opacity-75 bg-white text-xs dark:bg-slate-600 dark:text-slate-300 px-2 items-center py-1 justify-between border-b-[1px] border-slate-200 dark:border-slate-800">
-			{% if slugCat == "all" %}
-				<a class=" z-50 " href="{{ path("app_publication_show_all_category", {slug:item.category.slug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:queryKeystring}) }}" target="_self">
-					<span class="catColor-{{item.category.color}} kwTag">{{ item.category.name|lower }}</span>
-				</a>
-			{% endif %}
-			{% set filteredChapters = item.publicationChapters|filter(chapter => chapter.status == 2) %}
-			<span class="flex gap-x-1 items-center " data-tippy-content="Nombre de feuilles">
-				<i class="fa-light fa-list-ol"></i>
-				{{filteredChapters|length}}
-			</span>
-			{% set totalViews = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterViews|length, 0) %}
-			<span class="flex gap-x-1 items-center " data-tippy-content="Nombre de lecteurs">
-				<i class="fa-light fa-eye"></i>
-				{{totalViews}}
-			</span>
-			{% set totalLikes = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterLikes|length, 0) %}
-			<span class="flex gap-x-1 items-center " data-tippy-content="Nombre de j'aime">
-				<i class="fa-light fa-thumbs-up"></i>
-				{{totalLikes}}
-			</span>
-			<span class="flex gap-x-1 items-center " data-tippy-content="Nombre de commentaires">
-				<i class="fa-light fa-comments"></i>
-				{{item.publicationComments|length}}
-			</span>
-			<span class="flex gap-x-1 items-center " data-tippy-content="Nombre de pages marquées">
-				<i class="fa-light fa-bookmark"></i>
-				{{item.publicationBookmarks|length}}
-			</span>
-			{% set lastPopularity = 0 %}
-			{% if item.PublicationPopularities|length > 1 %}
-				{% set nbr = item.PublicationPopularities|length %}
-				{% set nbr = nbr - 1 %}
-				{% set lastPopularity = item.PublicationPopularities[nbr].popularity %}
-			{% endif %}
+		<div class="right">
+			<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" target="_top" class="button-classic button-indigo">
+				<span class="text-xs md:text-sm">
+					<i class="fa-duotone fa-book-open-reader"></i>
+					Lire
+				</span>
+			</a>
+		</div>
+	</div>
+	<div class="publication-stats">
+		{% if slugCat == "all" %}
+			<a class=" z-50 " href="{{ path("app_publication_show_all_category", {slug:item.category.slug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:queryKeystring}) }}" target="_self">
+				<span class="catColor-{{item.category.color}} kwTag">{{ item.category.name|lower }}</span>
+			</a>
+		{% endif %}
+		<span class="summary card-stat font-medium cursor-pointer" data-tippy-content="{{chap_content}}">
+			<i class="fa-light fa-circle-info"></i>
+			<span class="hidden md:inline">&nbsp;voir le résumé</span>
+		</span>
+		{% set filteredChapters = item.publicationChapters|filter(chapter => chapter.status == 2) %}
+		<span class="card-stat chapters" data-tippy-content="Nombre de feuilles">
+			<i class="fa-light fa-list-ol"></i>
+			{{filteredChapters|length}}
+		</span>
+		{% set totalViews = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterViews|length, 0) %}
+		<span class="views card-stat" data-tippy-content="Nombre de lecteurs">
+			<i class="fa-light fa-eye"></i>
+			{{totalViews}}
+		</span>
+		{% set totalLikes = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterLikes|length, 0) %}
+		<span class="likes card-stat" data-tippy-content="Nombre de j'aime">
+			<i class="fa-light fa-thumbs-up"></i>
+			{{totalLikes}}
+		</span>
+		<span class="comments card-stat" data-tippy-content="Nombre de commentaires">
+			<i class="fa-light fa-comments"></i>
+			{{item.publicationComments|length}}
+		</span>
+		<span class="bookmarks card-stat" data-tippy-content="Nombre de pages marquées">
+			<i class="fa-light fa-bookmark"></i>
+			{{item.publicationBookmarks|length}}
+		</span>
+		{% set lastPopularity = 0 %}
+		{% if item.PublicationPopularities|length > 1 %}
+			{% set nbr = item.PublicationPopularities|length %}
+			{% set nbr = nbr - 1 %}
+			{% set lastPopularity = item.PublicationPopularities[nbr].popularity %}
+		{% endif %}
+		{% if item.pop < lastPopularity %}
+			{% set pop_text = "Popularité en baisse" %}
+		{% elseif item.pop == lastPopularity %}
+			{% set pop_text = "Popularité stagnante" %}
+		{% else %}
+			{% set pop_text = "Popularité en hausse" %}
+		{% endif %}
+		<span class="pop card-stat" data-tippy-content="{{pop_text}} ({{item.pop}})">
 			{% if item.pop < lastPopularity %}
-				{% set pop_text = "Popularité en baisse" %}
+				<i class="fa-regular fa-circle-arrow-down  text-lg text-red-700 dark:text-red-500"></i>
 			{% elseif item.pop == lastPopularity %}
-				{% set pop_text = "Popularité stagnante" %}
+				<i class="fa-regular fa-equals text-lg"></i>
 			{% else %}
-				{% set pop_text = "Popularité en hausse" %}
+				<i class="fa-regular fa-circle-arrow-up   text-lg text-green-700 dark:text-emerald-500"></i>
 			{% endif %}
-			<span class="flex gap-x-1 items-center " data-tippy-content="{{pop_text}} ({{item.pop}})">
-				{% if item.pop < lastPopularity %}
-					<i class="fa-regular fa-circle-arrow-down  text-lg text-red-700 dark:text-red-500"></i>
-				{% elseif item.pop == lastPopularity %}
-					<i class="fa-regular fa-equals text-lg"></i>
-				{% else %}
-					<i class="fa-regular fa-circle-arrow-up   text-lg text-green-700 dark:text-emerald-500"></i>
-				{% endif %}
-			</span>
-		</div>
-		{# popover info publication #}
-		{# {% include "publication/_partials/_show_all-popover-info.html.twig" %} #}
-		{# popover info publication end #}
-			<div class="p-4  rounded-b-lg"> <div class="flex flex-row gap-x-2">
-				<div class="h-auto w-2/6 relative border-slate-700 dark:border-slate-900">
-					<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" target="_top">
-						{% set pic = item.cover %}
-						<img class="grayscale-[50%] rounded  w-full h-full object-cover lazy animate-pulse animate__animated bg-slate-300  {% if not pic %}  dark:blur-none dark:bg-slate-300 {% endif %}" width="529" height="793" loading="lazy" src="" data-src="{% if pic %}{{pic}}{% else %}{{ "/images/no-cover.png" }} {% endif %}" alt=""/>
-					</a>
-				</div>
-				<p class="px-2 w-4/6  font-normal text-slate-600 font-sans text-sm leading-[1.5rem] dark:text-slate-400 line-clamp-[6] md:line-clamp-[11] lg:line-clamp-[7] text-left">
-					{% if item.summary %}
-						{{ item.summary}}
-					{% else %}
-						{% set nbr = 0 %}
-						{% for chap in item.publicationChapters %}
-							{% if nbr == 0 %}
-								{{ chap.content|regex_replace('/<p.*?>/i', ' ')|striptags }}
-								{% set nbr = nbr + 1 %}
-							{% endif %}
-						{% endfor %}
-					{% endif %}
-					<br/>
-				</p>
+		</span>
+	</div>
+	<div class="publication-content">
+		<div class="flex flex-row gap-x-2">
+			<div class="h-auto w-2/6 relative border-slate-700 dark:border-slate-900">
+				<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" target="_top">
+					<img class="grayscale-[50%] rounded  w-full h-full object-cover lazy animate-pulse animate__animated bg-slate-300  {% if not pic %}  dark:blur-none dark:bg-slate-300 {% endif %}" width="529" height="793" loading="lazy" src="" data-src="{% if pic %}{{pic}}{% else %}{{ "/images/no-cover.png" }} {% endif %}" alt=""/>
+				</a>
 			</div>
-			<hr class="mb-0 dark:border-slate-600">
-			<p class=" text-cyan-600 flex flex-wrap justify-center mt-2">
-				{% for pubKeyw in item.publicationKeywords %}
-					<a href="{{ path("app_publication_show_all_category", {slug:querySlug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:pubKeyw.keyword|lower}) }}" target="_self">
-						<span class="kwTag">{{ pubKeyw.keyword|lower }}
-							{% if not loop.last %}{% endif %}
-						</span>
-					</a>
-				{% endfor %}
+			<p class="px-2 w-4/6  font-normal text-slate-600 font-sans text-sm leading-[1.5rem] dark:text-slate-400 line-clamp-[6] md:line-clamp-[11] lg:line-clamp-[7] text-left">
+				{{chap_content}}
+				<br/>
 			</p>
 		</div>
+	</div>
+	<div class="publication-bottom ">
+		<ul class="text-cyan-600 flex flex-wrap px-3 mt-1 ">
+			{% for pubKeyw in item.publicationKeywords %}
+				<li>
+					<a href="{{ path("app_publication_show_all_category", {slug:querySlug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:pubKeyw.keyword|lower}) }}" target="_self">
+						<span class="kwTag">{{ pubKeyw.keyword|lower }}</span>
+					</a>
+				</li>
+			{% endfor %}
+		</ul>
 	</div>
 </div>

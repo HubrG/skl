@@ -19,6 +19,9 @@ class UserParameters
     #[ORM\Column(nullable: true)]
     private ?bool $darkmode = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $grid_show = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +47,18 @@ class UserParameters
     public function setDarkmode(?bool $darkmode): self
     {
         $this->darkmode = $darkmode;
+
+        return $this;
+    }
+
+    public function isGridShow(): ?bool
+    {
+        return $this->grid_show;
+    }
+
+    public function setGridShow(?bool $grid_show): self
+    {
+        $this->grid_show = $grid_show;
 
         return $this;
     }

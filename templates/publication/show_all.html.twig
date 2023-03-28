@@ -8,6 +8,29 @@
 {% set queryOrder = route_params.order|default('desc') %}
 {% set queryKeystring = route_params.keystring %}
 {% set querySortby = route_params.sortby|default('pop') %}
+{# Sessiosn #}
+{% if app.user %}
+	{% if app.user.userParameters is defined and app.user.userParameters.gridShow == true %}
+		{% set grid_status = "small" %}
+		{% set grid_button_left = null %}
+		{% set grid_button_right = "active" %}
+	{% else %}
+		{% set grid_status = null %}
+		{% set grid_button_left = "active" %}
+		{% set grid_button_right = null %}
+	{% endif %}
+{% else %}
+	{% if app.session.get('grid') and not app.user and app.session.get('grid') == true %}
+		{% set grid_status = "small" %}
+		{% set grid_button_left = null %}
+		{% set grid_button_right = "active" %}
+	{% else %}
+		{% set grid_status = null %}
+		{% set grid_button_left = "active" %}
+		{% set grid_button_right = null %}
+	{% endif %}
+{% endif %}
+{#  #}
 {% block title %}Récits |
 	{{ slugCatName }}
 	—
@@ -38,7 +61,7 @@
 		{% if pubShowKw %}
 			<aside class="{{kwString ? " md:bg-inherit dark:bg-slate-900 md:dark:bg-inherit" }} row-span-12 -mt-5 rounded-lg dark:p-1 col-span-12 xl:col-span-5 xl:row-span-5 mb-10 xl:mb-0 {{kwString ? " order-1 md:border-b-0 border-b-4 border-slate-400 dark:border-slate-800 " : " order-2" }} xl:order-1 snap-y ">
 				<hr class="xl:hidden mb-5 h-[0.3rem] bg-slate-400 dark:bg-slate-800 dark:border-none hidden"/>
-				<h2 class="{{kwString ? "hidden " }} my-5 xl:hidden text-center font-bold dark:text-slate-100">Mots-clés</h2>
+				<h2 class="{{kwString ? "hidden " }} my-10 border-t pt-10 xl:hidden text-center font-bold dark:text-slate-100">Mots-clés</h2>
 				{% if kwString %}
 					<p class="text-center text-md md:mt-0">
 						<a target="_self" href="{{ path("app_publication_show_all_category", {slug:slugCat, page:1, order:orderSort, sortby:querySortby}) }}" class="text-slate-600 dark:text-slate-100 text-sm font-medium">
@@ -70,7 +93,7 @@
 						<button data-micromodal-trigger="popup-register" class="text-blue-800 dark:text-sky-400 hover:underline text-left">N'hésitez pas à publier le vôtre !</button>
 					{% endif %}
 				</h4>
-				<div class="-mt-3 w-full md:w-auto">
+				<div class="-mt-3 w-full md:w-auto flex  gap-x-2">
 					<button id="sortButton" data-dropdown-toggle="sortHover" class="flex justify-center items-center ring-1 bg-none  focus:ring-4 focus:outline-none font-medium w-full text-center rounded-lg text-xs lg:text-sm lg:mt-0 mt-2 px-4 py-2.5  {{ querySortby == 'pop' ? 'ring-sky-600 hover:bg-sky-50  text-sky-800 focus:ring-sky-300 dark:text-sky-500 dark:hover:text-sky-400 dark:ring-sky-400 dark:hover:bg-sky-900 dark:hover:ring-sky-500' : 'ring-yellow-600 hover:bg-yellow-50  text-yellow-800 focus:ring-amber-300 dark:text-yellow-400 dark:ring-yellow-400 dark:hover:bg-yellow-900 dark:hover:text-yellow-400 dark:hover:ring-yellow-500'}}    " type="button">
 						{% set popIcon = '<i class="fa-duotone fa-fire text-sky-800 dark:text-sky-500"></i> ' %}
 						{% set newIcon = '<i class="fa-duotone fa-sparkles text-yellow-800 dark:text-yellow-400"></i>' %}
@@ -82,6 +105,23 @@
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
 						</svg>
 					</button>
+					<div class="flex flex-row rounded-md text-xs lg:text-sm">
+						{% if app.user %}
+							<button id="grid" type="button" class="button-grid-show-all left {{grid_button_left}} ">
+								<i class="fa-regular fa-table-cells-large"></i>
+							</button>
+							<button id="gridSmall" type="button" class="button-grid-show-all right  {{grid_button_right}}">
+								<i class="fa-regular fa-table-cells"></i>
+							</button>
+						{% else %}
+							<button id="grid" type="button" class="button-grid-show-all left  {{grid_button_left}}">
+								<i class="fa-regular fa-table-cells-large"></i>
+							</button>
+							<button id="gridSmallSession" type="button" class="button-grid-show-all right  {{grid_button_right}}">
+								<i class="fa-regular fa-table-cells"></i>
+							</button>
+						{% endif %}
+					</div>
 					<!-- Dropdown menu -->
 					<div id="sortHover" class="z-10 hidden bg-white divide-y divide-slate-100 rounded-lg shadow w-auto dark:bg-slate-700  ">
 						{% set options = [
@@ -122,14 +162,14 @@
 						</ul>
 					</div>
 				</div>
-				<hr class="block md:hidden mb-0">
+				<hr class="block md:hidden mb-5">
 				{% if countPage > 1 %}
 					<div class="-mt-5 -mr-5">
 						{% include "publication/_partials/_show_all_pagination.html.twig" with {'type': "top"}  %}
 					</div>
 				{% endif %}
 			</div>
-			<div class="animate__animated animate__fadeIn grid grid-cols-1 grid-rows-1 -mt-8 md:mt-0  gap-10 xl:grid-cols-2 " id="PublicationShowContent">
+			<div class="animate__animated animate__fadeIn publications-container {{grid_status}} " id="PublicationShowContent">
 				{% for item in pubShow %}
 					{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item} %}
 				{% endfor %}

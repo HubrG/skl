@@ -19,7 +19,6 @@ export function darkMode() {
       });
   }
   if (document.getElementById("darkButtonSession")) {
-    console.log("ok");
     document
       .getElementById("darkButtonSession")
       .addEventListener("click", function () {
@@ -37,6 +36,52 @@ export function darkMode() {
         }
       });
   }
+  if (document.getElementById("gridSmall")) {
+    var gridSmall = document.getElementById("gridSmall");
+    var grid = document.getElementById("grid");
+    var PublicationShowContent = document.getElementById(
+      "PublicationShowContent"
+    );
+    gridSmall.addEventListener("click", function () {
+      if (!PublicationShowContent.classList.contains("small")) {
+        PublicationShowContent.classList.add("small");
+        grid.classList.remove("active");
+        gridSmall.classList.add("active");
+        setGrid(1);
+      }
+    });
+    grid.addEventListener("click", function () {
+      if (PublicationShowContent.classList.contains("small")) {
+        PublicationShowContent.classList.remove("small");
+        grid.classList.add("active");
+        gridSmall.classList.remove("active");
+        setGrid(0);
+      }
+    });
+  }
+  if (document.getElementById("gridSmallSession")) {
+    var gridSmall = document.getElementById("gridSmallSession");
+    var grid = document.getElementById("grid");
+    var PublicationShowContent = document.getElementById(
+      "PublicationShowContent"
+    );
+    gridSmall.addEventListener("click", function () {
+      if (!PublicationShowContent.classList.contains("small")) {
+        PublicationShowContent.classList.add("small");
+        grid.classList.remove("active");
+        gridSmall.classList.add("active");
+        setGrid(1);
+      }
+    });
+    grid.addEventListener("click", function () {
+      if (PublicationShowContent.classList.contains("small")) {
+        PublicationShowContent.classList.remove("small");
+        grid.classList.add("active");
+        gridSmall.classList.remove("active");
+        setGrid(0);
+      }
+    });
+  }
 }
 function setDarkmode(dark) {
   const data = new FormData();
@@ -51,6 +96,21 @@ function setDarkmode(dark) {
     })
     .then((response) => {
       // console.log(response.data);
+    });
+}
+function setGrid(grid) {
+  const data = new FormData();
+  const url = "/param/user/set";
+  data.append("param", "grid");
+  data.append("value", grid);
+  axios
+    .post(url, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((response) => {
+      console.log(response.data);
     });
 }
 darkMode();

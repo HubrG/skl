@@ -36,9 +36,15 @@ class UserParameterController extends AbstractController
             if ($request->get("param") == "darkmode" && $request->get("value") == 1) {
                 $session->set('darkmode', true);
                 $message = "Darkmode activé";
-            } else {
+            } elseif ($request->get("param") == "darkmode" && $request->get("value") == 0) {
                 $session->remove('darkmode');
                 $message = "Darkmode désactivé";
+            } elseif ($request->get("param") == "grid" && $request->get("value") == 1) {
+                $session->set('grid', true);
+                $message = "Petite grille activée";
+            } elseif ($request->get("param") == "grid" && $request->get("value") == 0) {
+                $session->remove('grid');
+                $message = "Grande grille activée";
             }
             return $this->json([
                 'message' => $message,
@@ -50,7 +56,7 @@ class UserParameterController extends AbstractController
             $this->setParameters($request->get("param"), $request->get("value"));
             // On retourne en json
             return $this->json([
-                'message' => 'Welcome to your new controller!',
+                'message' => 'Paramètre modifié',
                 'value' => $request->get("value"),
             ], 200);
         }
@@ -61,6 +67,9 @@ class UserParameterController extends AbstractController
         $user = $this->userRepo->find($this->getUser());
         if ($param == "darkmode") {
             $user->getUserParameters()->setDarkMode($value);
+        }
+        if ($param == "grid") {
+            $user->getUserParameters()->setGridShow($value);
         }
         // On récupère la valeur de l'attribut
         // On sauvegarde

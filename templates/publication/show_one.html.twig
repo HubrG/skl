@@ -95,7 +95,7 @@
 			</span>
 		</h2>
 		<div class="flex rounnded justify-center">
-			<img class="rounded mt-6 object-cover w-40 h-50 justify-center  mb-5  pb-1  dark:grayscale-[50%]" src="{{pic}}" alt=""/>
+			<img class="rounded mt-6 object-cover w-40 h-50 justify-center bg-white shadow mb-5  pb-1  dark:grayscale-[50%]" src="{{pic}}" alt=""/>
 		</div>
 		<div class="flex gap-5 p-10 pt-0  items-center">
 
@@ -104,7 +104,6 @@
 					<p class="text-sm indent-4 font-serif text-justify text-slate-900 opacity-80 dark:text-slate-200 dark:[text-shadow: 0 0.5px 1px blanchedalmond;] leading-7 mt-1">
 						{% if orderChap %}
 							{% if pubShow.summary %}
-
 								{{ pubShow.summary }}... &nbsp;&nbsp;
 								<div class="mt-5"></div>
 							{% endif %}
@@ -129,9 +128,9 @@
 			</div>
 		</div>
 	</section>
-	{% if orderChap %}
-		<section class="lg:flex  col-span-12 lg:col-span-10 lg:col-start-2  mt-6 justify-evenly min-h-[50vh] z-50 dark:opacity-80">
-			<div class="absolute bg-white dark:bg-slate-800 w-full min-h-[100%] left-0 right-0 -z-10  border-t-[1px] border-slate-200 dark:border-slate-900">&nbsp;</div>
+	<section class="lg:flex  col-span-12 lg:col-span-10 lg:col-start-2  mt-6 justify-evenly min-h-[50vh] z-50 dark:opacity-80">
+		<div class="absolute bg-white dark:bg-slate-800 w-full min-h-[100%] left-0 right-0 -z-10  border-t-[1px] border-slate-200 dark:border-slate-900">&nbsp;</div>
+		{% if orderChap %}
 			<div class="w-full lg:w-7/12 pt-10 z-50 order-2 lg:order-1 ">
 				<div class="flex justify-between  gap-x-5 -mt-5 mb-5">
 					{% if pubShow.finished == true %}
@@ -304,59 +303,60 @@
 					</turbo-frame>
 				</div>
 			</div>
-			{# Partage sur Twitter #}
-			{% set twitterChar = 280 %}
-			{% set twitterChar = twitterChar - (app.request.schemeAndHttpHost|length + app.request.requestUri|length) - "@ScrilabEditions"|length - 6 - pubShow.title|length %}
-			{% set hashtags = [] %}
-
-			{% for item in pubShow.publicationKeywords %}
-				{% set hashtag = "#" ~ item.keyword %}
-				{% if twitterChar - hashtag|length >= 0 %}
-					{% set twitterChar = twitterChar - hashtag|length - 1 %}
-					{% set hashtags = hashtags|merge([hashtag]) %}
-				{% endif %}
-			{% endfor %}
-			{% set hashtag = hashtags|join(" ") %}
-			{% set url = app.request.schemeAndHttpHost ~ app.request.requestUri %}
-			{% set text = "« " ~ pubShow.title ~ " » #" ~ pubShow.category.name ~ " " ~ hashtag %}
-			{% set via = "ScrilabEditions" %}
 			<div class="w-full opacity-100 dark:opacity-100  text-xs  z-50 mt-0 pt-5 px-2 lg:w-4/12  order-1 lg:order-2  shadow-slate-300 text-slate-900 border-slate-200 border-t-[1px] border-t-slate-200 dark:border-slate-900 dark:border-t-slate-900 lg:border-l-[1px] lg:border-t-0 ">
 				<ul class="flex flex-col space-y-4 text-sm pb-5">
-					<li class="inline-flex items-center  gap-x-2 mt-0 px-4 pb-5 pt-5 font-normal justify-center dark:text-white">
-						<ul class="flex-row flex justify-between w-full">
-							<li>
-								<a data-tippy-content="Partager sur Twitter" href="https://twitter.com/share?url={{url}}&text={{text|url_encode}}&via={{via}}" target="_blank">
-									<i class="fa-brands fa-twitter text-[#1DA1F2] text-2xl"></i>
-								</a>
-							</li>
-							<li>
-								<a data-tippy-content="Partager sur Facebook" href="https://www.facebook.com/sharer/sharer.php?u={{url}}&title={{pubShow.title}}&description={{hashtag}}&picture={{pic}}" target="_blank">
-									<i class="fa-brands fa-facebook text-[#4267B2] text-2xl"></i>
-								</a>
-							</li>
-							<li class="w-5 h-5">
-								<a data-tippy-content="Partager sur Pinterest" href="https://www.pinterest.com/pin/create/button/?url={{url}}&media={{pic}}&description={{text|url_encode}}" target="_blank">
-									<i class="fa-brands fa-pinterest text-[#E60023] text-2xl"></i>
-								</a>
-							</li>
-							<li class="w-5 h-5">
-								<a data-tippy-content="Partager sur Linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url={{url}}&title={{pubShow.title|url_encode}}&summary={{text|url_encode}}" target="_blank">
-									<i class="fa-brands fa-linkedin text-[#0e76a8] text-2xl"></i>
-								</a>
-							</li>
-							<li class="w-5 h-5">
-								<a data-tippy-content="Partager sur Whatsapp" href="whatsapp://send?text={{text|url_encode}}%20{{url}}" target="_blank">
-									<i class="fa-brands fa-whatsapp text-[#25D366] text-2xl"></i>
-								</a>
-							</li>
-							<li>
-								<button data-tippy-content="Copier le lien" id="copyLink" target="_blank" class="text-lg mt-1">
-									<i class="fa-regular fa-link text-xl"></i>
-								</button>
-							</li>
-						</ul>
-					</li>
-					<hr class="my-10">
+					{% if pubShow.status > 2 %}
+						{# Partage sur Twitter #}
+						{% set twitterChar = 280 %}
+						{% set twitterChar = twitterChar - (app.request.schemeAndHttpHost|length + app.request.requestUri|length) - "@ScrilabEditions"|length - 6 - pubShow.title|length %}
+						{% set hashtags = [] %}
+						{% for item in pubShow.publicationKeywords %}
+							{% set hashtag = "#" ~ item.keyword %}
+							{% if twitterChar - hashtag|length >= 0 %}
+								{% set twitterChar = twitterChar - hashtag|length - 1 %}
+								{% set hashtags = hashtags|merge([hashtag]) %}
+							{% endif %}
+						{% endfor %}
+						{% set hashtag = hashtags|join(" ") %}
+						{% set url = app.request.schemeAndHttpHost ~ app.request.requestUri %}
+						{% set text = "« " ~ pubShow.title ~ " » #" ~ pubShow.category.name ~ " " ~ hashtag %}
+						{% set via = "ScrilabEditions" %}
+						<li class="inline-flex items-center  gap-x-2 mt-0 px-4 pb-5 pt-5 font-normal justify-center dark:text-white">
+							<ul class="flex-row flex justify-between w-full">
+								<li>
+									<a data-tippy-content="Partager sur Twitter" href="https://twitter.com/share?url={{url}}&text={{text|url_encode}}&via={{via}}" target="_blank">
+										<i class="fa-brands fa-twitter text-[#1DA1F2] text-2xl"></i>
+									</a>
+								</li>
+								<li>
+									<a data-tippy-content="Partager sur Facebook" href="https://www.facebook.com/sharer/sharer.php?u={{url}}&title={{pubShow.title}}&description={{hashtag}}&picture={{pic}}" target="_blank">
+										<i class="fa-brands fa-facebook text-[#4267B2] text-2xl"></i>
+									</a>
+								</li>
+								<li class="w-5 h-5">
+									<a data-tippy-content="Partager sur Pinterest" href="https://www.pinterest.com/pin/create/button/?url={{url}}&media={{pic}}&description={{text|url_encode}}" target="_blank">
+										<i class="fa-brands fa-pinterest text-[#E60023] text-2xl"></i>
+									</a>
+								</li>
+								<li class="w-5 h-5">
+									<a data-tippy-content="Partager sur Linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url={{url}}&title={{pubShow.title|url_encode}}&summary={{text|url_encode}}" target="_blank">
+										<i class="fa-brands fa-linkedin text-[#0e76a8] text-2xl"></i>
+									</a>
+								</li>
+								<li class="w-5 h-5">
+									<a data-tippy-content="Partager sur Whatsapp" href="whatsapp://send?text={{text|url_encode}}%20{{url}}" target="_blank">
+										<i class="fa-brands fa-whatsapp text-[#25D366] text-2xl"></i>
+									</a>
+								</li>
+								<li>
+									<button data-tippy-content="Copier le lien" id="copyLink" target="_blank" class="text-lg mt-1">
+										<i class="fa-regular fa-link text-xl"></i>
+									</button>
+								</li>
+							</ul>
+						</li>
+						<hr class="my-10">
+					{% endif %}
 					<li class="show-one-details pt-5">
 						<span>
 							<i class="fa-regular fa-masks-theater"></i>
@@ -483,6 +483,6 @@
 					</li>
 				</ul>
 			</div>
-		</section>
-	{% endif %}
+		{% endif %}
+	</section>
 {% endblock %}

@@ -105,7 +105,7 @@
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
 						</svg>
 					</button>
-					<div class="flex flex-row rounded-md text-xs lg:text-sm">
+					<div class="flex flex-row rounded-md ">
 						{% if app.user %}
 							<button id="grid" type="button" class="button-grid-show-all left {{grid_button_left}} ">
 								<i class="fa-regular fa-table-cells-large"></i>
@@ -173,6 +173,9 @@
 				{% for item in pubShow %}
 					{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item} %}
 				{% endfor %}
+				{% if grid_status == true %}
+					{% set limit = limit + 5 %}
+				{% endif %}
 				{% if kwString is null and page == 1 and count < limit %}
 					{% for i in count..limit - 1 %}
 						{% include "publication/_partials/_show_all-fake-publication.html.twig" %}

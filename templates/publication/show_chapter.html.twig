@@ -39,9 +39,7 @@
 		</div>
 		<div class="flex pl-10 justify-center mt-14 md:-mt-6">
 			<button class="text-base md:text-2xl font-serif -mt-[4rem] text-slate-800 dark:text-white" id="chapListButton" data-dropdown-toggle="dropdownChapter">{{ infoChap.title }}
-				<span class="material-icons-outlined">
-					expand_more
-				</span>
+				&nbsp;&nbsp;<i class="fa-solid fa-caret-down active:text-xl"></i>
 			</button>
 		</div>
 
@@ -51,15 +49,11 @@
 					<div>
 						<a href="{{ path("app_chapter_show", {idChap:item.id, slugPub:infoPub.slug, user:infoPub.user.username, slug:item.slug}) }}" class="block px-4 py-4 text-sm text-gray-700 {% if item.id == infoChap.id %}bg-slate-50 dark:bg-slate-900{% endif %} hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
 							{% if item.id == infoChap.id %}
-								<span class="material-icons-outlined">
-									document_scanner
-								</span>
+								<i class="fa-solid fa-file-lines"></i>
 							{% else %}
-								<span class="material-icons-outlined">
-									article
-								</span>
+								<i class="fa-light fa-file-lines"></i>
 							{% endif %}
-							{{ item.title }}
+							&nbsp;&nbsp;{{ item.title }}
 						</a>
 					</div>
 				{% endif %}
@@ -69,10 +63,8 @@
 	<section class="col-span-12 col-start-0 md:col-span-8 md:col-start-3 pt-10 row-start-2 backdrop:blur-sm" id="chapContent">
 		{% if previousChap %}
 			<div class="fixed top-0 w-10 bottom-0 left-0 hidden md:flex items-center justify-start  ml-8 lg:ml-56 z-10" id="arrowPrevious">
-				<a href="{{ path("app_chapter_show", {idChap:previousChap.id, slugPub:infoPub.slug, user:infoPub.user.username, slug:previousChap.slug}) }}" class="text-slate-600  text-4xl">
-					<span class="material-icons-outlined">
-						arrow_back
-					</span>
+				<a href="{{ path("app_chapter_show", {idChap:previousChap.id, slugPub:infoPub.slug, user:infoPub.user.username, slug:previousChap.slug}) }}" class="text-slate-600  text-6xl">
+					<i class="fa-thin fa-arrow-left"></i>
 				</a>
 			</div>
 		{% endif %}
@@ -83,10 +75,8 @@
 		</turbo-frame>
 		{% if nextChap %}
 			<div class="fixed top-0 bottom-0 right-0 hidden md:flex items-center justify-end mr-8 lg:mr-56 " id="arrowNext">
-				<a href="{{ path("app_chapter_show", {idChap:nextChap.id, slugPub:infoPub.slug, user:infoPub.user.username, slug:nextChap.slug}) }}" class="text-slate-600 text-4xl  z-10">
-					<span class="material-icons-outlined">
-						arrow_forward
-					</span>
+				<a href="{{ path("app_chapter_show", {idChap:nextChap.id, slugPub:infoPub.slug, user:infoPub.user.username, slug:nextChap.slug}) }}" class="text-slate-600 text-6xl  z-10">
+					<i class="fa-thin fa-arrow-right"></i>
 				</a>
 			</div>
 		{% endif %}
@@ -94,19 +84,14 @@
 			<div class="z-50">
 				{% if previousChap %}
 					<a href="{{ path("app_chapter_show", {idChap:previousChap.id, slugPub:infoPub.slug, user:infoPub.user.username, slug:previousChap.slug}) }}" class="flex justify-around button-classic button-slate w-full md:w-auto">
-						<span class="material-icons-outlined">
-							arrow_back
-						</span>
+						<i class="fa-solid fa-arrow-left"></i>
 					</a>
 				{% endif %}
 			</div>
 			<div class="z-50">
 				{% if nextChap %}
 					<a href="{{ path("app_chapter_show", {idChap:nextChap.id, slugPub:infoPub.slug, user:infoPub.user.username, slug:nextChap.slug}) }}" class="flex justify-around button-classic button-slate">
-
-						<span class="material-icons-outlined">
-							arrow_forward
-						</span>
+						<i class="fa-solid fa-arrow-right"></i>
 					</a>
 				{% endif %}
 			</div>
@@ -114,21 +99,17 @@
 		{# On affiche uniquement si la publication est publiée #}
 		{% if infoChap.Publication.status > 1 %}
 			<div class="sticky bottom-10 -mt-16 flex ml-0 md:ml-5 justify-center place-content-center z-10  w-6/6 md:w-auto">
-				<div class="bg-white dark:bg-slate-900 rounded-xl shadow p-3 py-4 flex justify-center gap-3 items-center text-xs md:text-sm ">
+				<div class="bg-white dark:bg-slate-900 rounded-xl shadow p-3 py-4 flex justify-center gap-3 items-center text-xs md:text-base ">
 					<div data-tippy-content="Nombre de lecteurs" class="cursor-default">
-						<span class="material-icons-outlined">
-							visibility
-						</span>
+						<i class="fa-duotone fa-eye"></i>
 						&nbsp;{{ infoChap.publicationChapterViews|length }}
 					</div>
-					|
+					<span class="dark:text-slate-500">|</span>
 					<div data-tippy-content="Afficher les commentaires" class="hover:text-blue-600 cursor-pointer">
-						<span class="material-icons-outlined toggleSidebar">
-							forum
-						</span>&nbsp;
+						<i class="fa-duotone fa-comments toggleSidebar"></i>&nbsp;
 						<span id="nbrComSmall" class="toggleSidebar nbr-com nbr-com-let" data-nbr-com="{{infoChap.publicationComments|length}}">{{ infoChap.publicationComments|length }}</span>
 					</div>
-					|
+					<span class="dark:text-slate-500">|</span>
 					{% set userLikesChapter = app.user and app.user.id != infoPub.user.id %}
 					{% set userCanBookmark = app.user and app.user.id != infoPub.user.id %}
 
@@ -139,16 +120,13 @@
 					{% set bmTooltip = app.user.id is not defined ? "Connectez-vous pour marquer cette feuille !" : infoPub.user.id == app.user.id ? 'Vous ne pouvez pas marquer votre feuille.' : bm ? "Retirer cette feuille de ma collection" : "Ajouter cette feuille à ma collection" %}
 
 					<div class="{% if userLikesChapter %}hover:text-blue-600 cursor-pointer{% endif %} {% if app.user.id is not defined %}cursor-pointer{% endif %}" id="likeThisChapter" data-tippy-content="{{ likeTooltip }}" {% if app.user.id is not defined %} data-micromodal-trigger="popup-login" {% endif %} data-id="{{ infoChap.id }}">
-						<span class="material-{{ liked ? 'icons text-red-500' : 'icons-outlined' }} " id="likeChapterThumb">
-							thumb_up
-						</span>
+						<i class="{{ liked ? 'fa-duotone text-rose-400' : 'fa-regular' }} fa-thumbs-up" id="likeChapterThumb"></i>
 						&nbsp;<span id="nbrLike">{{ infoChap.publicationChapterLikes|length }}</span>
 					</div>
-					|
+					<span class="dark:text-slate-500">|</span>
 					<div class="{% if userCanBookmark %}hover:text-blue-600 cursor-pointer{% endif %} {% if app.user.id is not defined %}cursor-pointer{% endif %}" id="bmThisChapter" data-tippy-content="{{ bmTooltip }}" {% if app.user.id is not defined %} data-micromodal-trigger="popup-login" {% endif %} data-id="{{ infoChap.id }}">
-						<span class="material-{{ bm ? 'icons text-blue-500' : 'icons-outlined' }}" id="bmChapter">
-							bookmark_added
-						</span>
+
+						<i class="{{ bm ? 'fa-duotone text-purple-400' : 'fa-regular' }} fa-folder-bookmark" id="bmChapter"></i>
 						&nbsp;<span id="nbrBm">{{ infoChap.publicationBookmarks|length }}</span>
 					</div>
 				</div>
@@ -160,74 +138,50 @@
 		<div id="tools" class="hidden">
 			<ul>
 				<li class="hl" data-color="1">
-					<span class="material-icons text-emerald-200">
-						bookmark
-					</span>
+					<i data-tippy-content="Surligner ce passage en vert" class="fa-solid fa-bookmark text-emerald-200"></i>
 				</li>
 				<li class="hl" data-color="2">
-					<span class="material-icons text-amber-200">
-						bookmark
-					</span>
+					<i data-tippy-content="Surligner ce passage en jaune" class="fa-solid fa-bookmark text-yellow-200"></i>
 				</li>
 				<li class="hl" data-color="3">
-					<span class="material-icons text-red-200">
-						bookmark
-					</span>
+					<i data-tippy-content="Surligner ce passage en rouge" class="fa-solid fa-bookmark text-red-200"></i>
 				</li>
 				<li class="text-slate-400">|</li>
 				<li class="commentQuote">
-					<span data-tippy-content="Commenter ce passage" class="material-icons-outlined toggleSidebar">
-						reviews
-					</span>
+					<i data-tippy-content="Commenter ce passage" class="fa-solid fa-comment-quote  toggleSidebar" style="--fa-secondary-color: #b6c5dd;"></i>
 				</li>
 				<li>|</li>
 				<li>
-					<svg data-tippy-content="Partager sur Twitter" class="w-6 h-6 shareTwitter fill-[#1da1f2]" fill="currentColor" viewbox="0 0 24 24" aria-hidden="true">
-						<path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path>
-					</svg>
+					<i data-tippy-content="Partager sur Twitter" class="fa-brands fa-twitter cursor-pointer" style="color:#1da1f2"></i>
 				</li>
 				<li>
-					<svg data-tippy-content="Partager sur Facebook" class="w-6 h-6 shareFb fill-[#1877f2]" fill="currentColor" viewbox="0 0 24 24" aria-hidden="true">
-						<path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"></path>
-					</svg>
+					<i data-tippy-content="Partager sur Facebook" class="fa-brands fa-facebook cursor-pointer" style="color:#1877f2"></i>
 				</li>
 				<li>
-					<span data-tippy-content="Copier le lien menant à cette selection" class="font-medium material-icons">
-						link
-					</span>
+					<i data-tippy-content="Copier le lien menant à cette selection" class="fa-regular fa-link"></i>
 				</li>
 			</ul>
 		</div>
 		<div id="highlighted-options" class="hidden">
 			<ul>
 				<li>
-					<div id="delete-hl">
-						<span data-tippy-content="Supprimer le marquage" class="material-icons">
-							close
-						</span>
+					<div id="delete-hl" class="bg-transparent">
+						<i data-tippy-content="Supprimer le surlignage" class="bg-none cursor-pointer fa-solid fa-square-minus"></i>
 					</div>
 				</li>
 				<li class="text-slate-400">|</li>
 				<li class="commentAlreadyQuote">
-					<span data-tippy-content="Commenter ce passage" class="material-icons-outlined toggleSidebar cursor-pointer">
-						reviews
-					</span>
+					<i data-tippy-content="Commenter ce passage" class="fa-solid fa-comment-quote cursor-pointer toggleSidebar" style="--fa-secondary-color: #b6c5dd;"></i>
 				</li>
 				<li class="text-slate-400">|</li>
 				<li>
-					<svg data-tippy-content="Partager sur Twitter" class="w-6 h-6 shareTwitter fill-[#1da1f2]" fill="currentColor" viewbox="0 0 24 24" aria-hidden="true">
-						<path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path>
-					</svg>
+					<i data-tippy-content="Partager sur Twitter" class="fa-brands fa-twitter cursor-pointer" style="color:#1da1f2"></i>
 				</li>
 				<li>
-					<svg data-tippy-content="Partager sur Facebook" class="w-6 h-6 shareFb fill-[#1877f2]" fill="currentColor" viewbox="0 0 24 24" aria-hidden="true">
-						<path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"></path>
-					</svg>
+					<i data-tippy-content="Partager sur Facebook" class="fa-brands fa-facebook cursor-pointer" style="color:#1877f2"></i>
 				</li>
 				<li>
-					<span data-tippy-content="Copier le lien menant à cette selection" class="font-medium material-icons">
-						link
-					</span>
+					<i data-tippy-content="Copier le lien menant à cette selection" class="fa-regular fa-link cursor-pointer"></i>
 				</li>
 			</ul>
 		</div>

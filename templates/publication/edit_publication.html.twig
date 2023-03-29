@@ -68,25 +68,22 @@
 		<div class="mb-4  dark:border-gray-700  dark:bg-slate-800 pt-5  pb-[3px]z-40">
 			<ul class="flex justify-center -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
 				<li class="mr-2 text-xs lg:text-sm" role="presentation">
-					<button class="inline-block p-4 border-b-4  dark:bg-slate-800  text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
-						<span class="material-icons-outlined">
-							info
-						</span>
-						Informations</button>
+					<button class=" p-4 border-b-4 flex-row-custom-gapx-3  dark:bg-slate-800  text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
+						<i class="fa-light fa-circle-info"></i>
+						<span>Informations</span>
+					</button>
 				</li>
 				<li class="mr-2 text-xs lg:text-sm" role="presentation">
-					<button class="inline-block p-4 border-b-4  dark:bg-slate-800 text-slate-500 hover:text-slate-900  focus:text-slate-900  rounded-t-lg" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">
-						<span class="material-icons-outlined">
-							auto_stories
-						</span>
-						Feuilles</button>
+					<button class="inline-block p-4 flex-row-custom-gapx-3 border-b-4  dark:bg-slate-800 text-slate-500 hover:text-slate-900  focus:text-slate-900  rounded-t-lg" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">
+						<i class="fa-light fa-list-ol"></i>
+						<span>Feuilles</span>
+					</button>
 				</li>
 				<li class="mr-2 text-xs lg:text-sm" role="presentation">
-					<button class="inline-block p-4 border-b-4  dark:bg-slate-800 text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="statistiques-tab" data-tabs-target="#statistiques" type="button" role="tab" aria-controls="statistiques" aria-selected="false">
-						<span class="material-icons-outlined">
-							trending_up
-						</span>
-						Statistiques</button>
+					<button class="inline-block p-4 flex-row-custom-gapx-3 border-b-4  dark:bg-slate-800 text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="statistiques-tab" data-tabs-target="#statistiques" type="button" role="tab" aria-controls="statistiques" aria-selected="false">
+						<i class="fa-light fa-chart-mixed"></i>
+						<span>Statistiques</span>
+					</button>
 				</li>
 			</ul>
 		</div>
@@ -150,11 +147,9 @@
 				{% if infoPub.publicationChapters|length > 0 %}
 					<ul>
 						<li class="text-center">
-							<a href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}" class="block w-full button-classic  button-slate" target="_top">
-								<span class="material-icons-outlined">
-									post_add
-								</span>
-								&nbsp;&nbsp;Ajouter une nouvelle feuille
+							<a href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}" class=" w-full button-classic  button-slate flex flex-row gap-x-5 justify-center items-center" target="_top">
+								<i class="fa-regular fa-file-circle-plus"></i>
+								<span>Ajouter une nouvelle feuille</span>
 							</a>
 						</li>
 					</ul>
@@ -162,11 +157,9 @@
 				<div id="accordion-flush" data-accordion="open" data-active-classes="text-gray-900 dark:text-white" class="list-group" data-inactive-classes="text-gray-500 dark:text-gray-400">
 					<h2 id="accordion-flush-heading-1" class="border-b-[1px] border-b-slate-200 shadow  px-5  rounded mt-5 dark:border-b-slate-900  dark:bg-transparent dark:shadow-lg ">
 						<button type="button" class="flex items-center justify-between w-full py-5 font-medium text-left  dark:border-gray-700 dark:text-gray-400" data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
-							<span class="opacity-80">
-								<span class="material-icons-outlined">
-									visibility
-								</span>
-								Feuilles publiées
+							<span class="flex-row-custom-gapx-3">
+								<i class="fa-regular fa-eye"></i>
+								<span>Feuilles publiées</span>
 							</span>
 							<svg data-accordion-icon class="w-6 h-6 rotate-180 shrink-0" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 								<path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
@@ -179,45 +172,32 @@
 								<div class="w-full text-center bg-slate-100 dark:bg-slate-700 items-center justify-center justify-items-center flex-cols dark:text-slate-100 text-slate-600 rounded  mt-3 opacity-80 hover:opacity-100 border-2 border-slate-200 dark:border-slate-900" id="noPublication">
 									<p class="w-full h-full flex-row grid-cols-1 grid items-center justify-items-center place-items-center font-medium leading-5">
 										<a class="h-full px-5 space-y-5 py-0 grid-rows-2 grid-cols-1 grid items-center justify-items-center place-items-center font-medium leading-5 pb-10" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}#first" target="_top">
-											<span class="flex justify-items-end text-slate-900 dark:text-slate-100 text-base self-end">
+											<span class="flex justify-items-end text-slate-900 dark:text-slate-100 text-xl leading-7 self-end">
 												Cliquez ici pour éditer votre première feuille
 											</span>
 											<span class="text-4xl flex justify-items-start self-start">
-												<span class="material-icons-outlined">
-													post_add
-												</span>
+												<i class="fa-duotone fa-file-circle-plus"></i>
 											</span>
 										</a>
 									</p>
 								</div>
-								<div class="mt-5 flex-row space-y-2 items-baseline   text-slate-700 dark:text-slate-300">
-									<p class="text-xs flex font-normal gap-x-2 items-start">
-										<span class="material-icons-outlined text-yellow-400 dark:text-amber-400">
-											tips_and_updates
-										</span>
-										<span>
-											<span class="font-medium text-xs">
-												Vous avez la possibilité de créer un nombre illimité de feuilles et de les organiser selon vos préférences.
-											</span>
+								<div class="mt-5 flex flex-col space-y-2 items-baseline gap-y-1 text-slate-700 dark:text-slate-300">
+									<p class="text-sm flex font-normal gap-x-2  items-start">
+										<i class="fa-regular fa-lightbulb-exclamation-on mt-1 text-yellow-400 dark:text-amber-400"></i>
+										<span class="font-medium">
+											Vous avez la possibilité de créer un nombre illimité de feuilles et de les organiser selon vos préférences.
 										</span>
 									</p>
-									<p class="text-xs flex font-normal gap-x-2 opacity-70">
-										<span class="material-icons-outlined text-salte-400 dark:text-white">
-											receipt_long
-										</span>
-										<span>
-											<span class="text-[0.8rem]">Chaque feuille peut être considérée comme une simple page de texte, une copie intégrale d'un document PDF (tel qu'un récit entier) ou comme un épisode, un chapitre de votre récit.
-											</span>
+									<p class="text-md flex font-normal gap-x-4 opacity-70">
+										<i class="fa-regular fa-file-lines mt-1"></i>
+										<span class="text-[0.8rem]">
+											Chaque feuille peut être considérée comme une simple page de texte, une copie intégrale d'un document PDF (tel qu'un récit entier) ou comme un épisode, un chapitre de votre récit.
 										</span>
 									</p>
-									<p class="text-xs  font-normal flex gap-x-2  opacity-70">
-										<span class="material-icons-outlined text-salte-400 dark:text-white">
-											numbers
-										</span>
-										<span>
-											<span class="text-[0.8rem]">
-												L'ordre par lequel vous les organisez déterminera l'ordre dans lequel vos lecteurs les liront.
-											</span>
+									<p class="text-sm flex font-normal gap-x-4 opacity-70">
+										<i class="fa-regular fa-hashtag"></i>
+										<span class="text-[0.8rem]">
+											L'ordre par lequel vous les organisez déterminera l'ordre dans lequel vos lecteurs les liront.
 										</span>
 									</p>
 								</div>
@@ -232,39 +212,34 @@
 									<div class="w-full text-center bg-emerald-500 dark:bg-amber-200 dark:opacity-70 rounded items-center justify-center justify-items-center flex-colsrounded  mt-3 " id="noPublication">
 										<p class="w-full h-full px-5 pt-5 grid-rows-1 grid-cols-1 grid pb-5 items-center justify-items-center place-items-center font-medium leading-5">
 											<span class="text-emerald-50 dark:text-amber-900 text-base  px-5 pt-5 grid-rows-2 grid-cols-1 grid pb-5 items-center justify-items-center place-items-center font-medium leading-5" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}#first" target="_top">
-												<span class="">
+												<span class="mt-10">
 													Vous venez de créer votre première feuille !
 												</span>
 												<span class="text-4xl">
-													<span class="material-icons-outlined">
-														handshake
-													</span>
+													<i class="fa-duotone fa-hands-clapping"></i>
 												</span>
 											</span>
 										</p>
 									</div>
-									<div class="mt-5 flex-row space-y-2 items-baseline" id="noPublication2">
-										<p class="text-xs  font-normal flex gap-x-2    text-slate-600 dark:text-slate-300">
-											<span class="material-icons-outlined text-amber-400 dark:text-amber-400">
-												tips_and_updates
-											</span>
-											<span class="font-medium text-xs">
+									<div class="mt-5 flex flex-col space-y-2 items-baseline gap-y-1 text-slate-700 dark:text-slate-300" id="noPublication2">
+										<p class="text-sm flex font-normal gap-x-2  items-start">
+											<i class="fa-regular fa-lightbulb-exclamation-on mt-1 text-yellow-400 dark:text-amber-400"></i>
+											<span class="font-medium">
 												Votre première feuille est dépubliée et se trouve dans la section ci-dessous.
 											</span>
 										</p>
-										<p class="text-xs flex font-normal gap-x-2  text-slate-600 dark:text-slate-400">
-											<span class="material-icons-outlined text-salte-400 dark:text-white">
-												open_with
+										<p class="text-md flex font-normal gap-x-3 opacity-70">
+											<i class="fa-regular fa-up-down-left-right mt-1"></i>
+											<span class="text-[0.8rem]">
+												Vous pouvez la publier en la glissant dans cet espace
 											</span>
-											Vous pouvez la publier en la glissant dans cet espace
 										</p>
-										<p class="text-xs flex font-normal gap-x-2  text-slate-600 dark:text-slate-400">
-											<span class="material-icons-outlined text-salte-400 dark:text-white">
-												numbers
+										<p class="text-md flex font-normal gap-x-3 opacity-70">
+											<i class="fa-regular fa-hashtag mt-1"></i>
+											<span class="text-[0.8rem]">
+												L'ordre par lequel vous les organisez déterminera l'ordre dans lequel vos lecteurs les liront.
 											</span>
-											Vous pouvez également modifier l'ordre par lequel les feuilles publiées sont affichées. Cet ordre déterminera la façon dont vos lecteurs parcourront vos feuilles.
 										</p>
-
 									</div>
 								{% endif %}
 							{% endif %}
@@ -273,11 +248,10 @@
 					</div>
 					<h2 id="accordion-flush-heading-2" class=" border-b-[1px] border-b-slate-200 shadow  px-5  rounded mt-5 dark:border-b-slate-900  dark:bg-transparent dark:shadow-lg">
 						<button type="button" class="flex items-center justify-between w-full py-5 font-medium text-left   dark:border-slate-700 dark:text-slate-400" data-accordion-target="#accordion-flush-body-2" aria-expanded="true" aria-controls="accordion-flush-body-2">
-							<span class="opacity-80">
-								<span class="material-icons-outlined">
-									visibility_off
-								</span>
-								Feuilles dépubliées, brouillons...</span>
+							<span class="opacity-80 flex-row-custom-gapx-3">
+								<i class="fa-regular fa-eye-slash"></i>
+								<span>Feuilles dépubliées, brouillons...</span>
+							</span>
 							<svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 								<path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
 							</svg>
@@ -305,11 +279,10 @@
 						<canvas id="chartStat" class="text-white"></canvas>
 					</div>
 					<hr class="mb-5">
-					<h2 class="font-medium dark:text-slate-300 mb-5 mt-0 text-slate-700">
-						<span class="material-icons-outlined">
-							insights
-						</span>
-						Évolution de la popularité de votre récit</h2>
+					<h2 class="font-medium dark:text-slate-300 mb-5 mt-0 text-slate-700 flex-row-custom-gapx-3 justify-center">
+						<i class="fa-duotone fa-fire"></i>
+						<span>Évolution de la popularité de votre récit</span>
+					</h2>
 					<div class="w-full  rounded p-5 dark:bg-slate-900">
 						<canvas id="chartStat2" class="text-white"></canvas>
 					</div>
@@ -327,14 +300,10 @@
 		<hr class="w-full col-span-12 lg:hidden">
 		<button type="button" class="button-classic button-emerald w-full mb-3" id="savePublication">
 			{% if infoPub.status > 1 %}
-				<span class="material-icons-outlined">
-					cloud_upload
-				</span>
+				<i class="fa-regular fa-cloud-arrow-up"></i>
 				&nbsp;Publier les modifications
 			{% else %}
-				<span class="material-icons-outlined">
-					save
-				</span>
+				<i class="fa-regular fa-floppy-disk"></i>
 				&nbsp;Enregistrer
 			{% endif %}
 		</button>
@@ -343,15 +312,15 @@
 				<label class="relative inline-flex  mr-5 cursor-pointer" data-micromodal-trigger="popup-modal">
 					<input type="checkbox" id="publishButton" class="disabled sr-only peer" disabled {% if infoPub.status == 2 %} checked {% endif %}>
 					<div id="publishToggle" class="w-11 h-6 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 "></div>
-					<p class="ml-3 text-sm font-normal dark:text-gray-300" id="publishText">
-						{% if infoPub.status > 1 %}Dépublier le récit{% else %}Publier le récit
-						{% endif %}
-						&nbsp;&nbsp;
-						<span data-tippy-content="<strong>Si vous activez cette option</strong>, votre récit sera accessible aux utilisateurs via son URL publique et apparaîtra sur nos pages (à condition que vous ayez publié au moins un chapitre et sélectionné une catégorie).<br><br><strong>Si vous désactivez cette option</strong>, votre récit devient absolument inacessible à tous, sauf pour vous.">
-							<span class="material-icons-outlined">
-								help
-							</span>
+					<p class="ml-3 text-sm font-normal dark:text-gray-300 flex flex-row justify-evenly gap-x-3" id="publishText">
+						<span>
+							{% if infoPub.status > 1 %}Dépublier le récit{% else %}Publier le récit
+							{% endif %}
 						</span>
+						<span data-tippy-content="<strong>Si vous activez cette option</strong>, votre récit sera accessible aux utilisateurs via son URL publique et apparaîtra sur nos pages (à condition que vous ayez publié au moins un chapitre et sélectionné une catégorie).<br><br><strong>Si vous désactivez cette option</strong>, votre récit devient absolument inacessible à tous, sauf pour vous.">
+							<i class="fa-duotone fa-comment-question"></i>
+						</span>
+
 					</p>
 				</label>
 			</div>
@@ -364,12 +333,10 @@
 					{% endif %}
 					<div class="w-11 h-6 bg-slate-200 cursor-pointer rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-blue-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
 					<span class="ml-3 dark:text-slate-300 text-sm {{ infoPub.status > 1 ? " text-slate-400 dark:text-slate-600 cursor-default" : " cursor-pointer" }}   disabled" id="ASText">Sauvegarde auto.</span>
-				</label>
-				<span class="absolute right-0 mr-5 cursor-default dark:text-white" id="ASTooltip">
-					<span class="material-icons-outlined opacity-30" data-tippy-content='<p class="text-center tippy-tt p-2"><strong><span class="material-icons-outlined"> cloud_off </span><br>La sauvegarde automatique est désactivée car votre récit est publié.</strong><br><br>Si vous souhaitez enregistrer les modifications apportées à votre récit, veuillez cliquer sur le bouton ci-dessus, « Publier les modifications ».</p>'>
-						info
+					<span class="ml-3 left-0 cursor-default dark:text-white" id="ASTooltip">
+						<i class="fa-duotone fa-comment-question" data-tippy-content='<p class="text-center tippy-tt p-2"><strong><i class="fa-duotone fa-cloud-slash"></i><br>La sauvegarde automatique est désactivée car votre récit est publié.</strong><br><br>Si vous souhaitez enregistrer les modifications apportées à votre récit, veuillez cliquer sur le bouton ci-dessus, « Publier les modifications ».</p>'></i>
 					</span>
-				</span>
+				</label>
 			</div>
 			<div class="px-3 rounded-lg  w-full mb-3 flex hover:opacity-100 cursor-pointer">
 				<label class="relative inline-flex items-center  cursor-pointer">
@@ -377,37 +344,29 @@
 					<div class="w-11 h-6 bg-blue-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-blue-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
 					<span class="ml-3 text-sm dark:text-gray-300">Récit terminé&nbsp;&nbsp;
 						<span data-tippy-content="<strong>Si vous activez cette option</strong>, cela signifie que votre récit est terminé et qu'il n'y aura plus de nouvelle feuille publiée.<br><br><strong>Si vous désactivez cette option</strong>, vos lecteurs pourront s'abonner à votre récit et recevront des notifications si de nouvelles feuilles sont publiées.">
-							<span class="material-icons-outlined">
-								help
-							</span>
+							<i class="fa-duotone fa-comment-question"></i>
 						</span>
 					</span>
 				</label>
 			</div>
 		</div>
 		<div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-900 w-full  mb-4 text-slate-800 dark:text-slate-400">
-			<p class="text-xs mb-1 flex gap-x-2">
-				<span class="material-icons-outlined">
-					history_toggle_off
-				</span>
+			<p class="text-xs mb-1 flex gap-x-3  items-center">
+				<i class="fa-regular fa-calendar-plus"></i>
 				<span>
 					Crée il y a
 					<span class="font-medium">{{ infoPub.created|since }}</span>
 				</span>
 			</p>
-			<p class="text-xs mb-1 flex gap-x-2">
-				<span class="material-icons-outlined">
-					update
-				</span>
+			<p class="text-xs mb-1 flex gap-x-3 items-center">
+				<i class="fa-regular fa-square-pen"></i>
 				<span>
 					Modifié il y a
 					<span class="font-medium">{{ infoPub.updated|since }}</span>
 				</span>
 			</p>
-			<p id="publishDateText" class="text-xs mb-1  flex gap-x-2">
-				<span class="material-icons-outlined">
-					cloud_upload
-				</span>
+			<p id="publishDateText" class="text-xs mb-1  flex gap-x-2  items-center">
+				<i class="fa-regular fa-cloud-arrow-up"></i>
 				<span>
 					Publié il y a
 					<span class="font-medium" id="publishDateTextSpan">
@@ -419,22 +378,16 @@
 			</p>
 		</div>
 		<div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-900 w-full  mb-4 text-slate-800 dark:text-slate-400">
-			<p class=" text-xs mb-1 font-medium flex gap-x-2">
-
+			<p class=" text-xs mb-1 font-semibold flex gap-x-2 items-center">
 				{% set slug = "recit-sans-titre" %}
 				{% if infoPub.slug %}
 					{% set slug = infoPub.slug %}
-
 				{% endif %}
 				{% if infoPub.status < 2 %}
-					<span class="material-icons-outlined">
-						preview
-					</span>
+					<i class="fa-regular fa-browser"></i>
 					<a href="{{ path("app_publication_show_one", {id:infoPub.id, slug:slug}) }}" class=" hover:underline" target="_blank">Voir un aperçu du récit</a>
 				{% else %}
-					<span class="material-icons-outlined">
-						preview
-					</span>
+					<i class="fa-regular fa-browser"></i>
 					<a href="{{ path("app_publication_show_one", {id:infoPub.id, slug:slug}) }}" class=" hover:underline" target="_blank">Voir le récit sur le site</a>
 				{% endif %}
 			</p>
@@ -443,27 +396,20 @@
 			<p class="text-sm mb-1 font-semibold">
 				Vous devriez :
 				<ul class="text-xs mt-2">
-
 					<li class="flex gap-x-2 animate__animated {{infoPub.category ? " hidden" : " " }}" id="taskCategory">
-						<span class="material-icons-outlined">
-							category
-						</span>
+						<i class="fa-regular fa-masks-theater"></i>
 						<span>Choisir une catégorie dans la section «
 							<button onclick="var pcd = document.getElementById('publication_category_div').classList; document.getElementById('profile-tab').click();pcd.add('animate__animated','animate__flash');setTimeout(function() {pcd.remove('animate__animated','animate__flash')},2000)" class="hover:underline font-medium" type="button">Informations</button>
 							»
 						</span>
 					</li>
-					<li class="mt-3 flex  gap-x-2 animate__animated  {{infoPub.publicationChapters|filter(c => c.status == 2)|length > 0 ? " hidden" : " " }}" id="taskPublish">
-						<span class="material-icons-outlined">
-							visibility
-						</span>
+					<li class="mt-3 flex  items-center gap-x-2 animate__animated  {{infoPub.publicationChapters|filter(c => c.status == 2)|length > 0 ? " hidden" : " " }}" id="taskPublish">
+						<i class="fa-regular fa-eye"></i>
 						Publier au moins une feuille
 					</li>
 					<li><hr class="mb-2 mt-2 border-yellow-400 bg-yellow-400 opacity-30"></li>
-					<li class="mt-3 flex opacity-50 text-[0.75rem]  gap-x-2 animate__animated">
-						<span class="material-icons-outlined">
-							info
-						</span>
+					<li class="mt-3 flex items-baseline opacity-50 text-[0.75rem]  gap-x-2 animate__animated">
+						<i class="fa-regular fa-circle-info"></i>
 						Réalisez ces tâches afin que votre récit soit visible par les autres utilisateurs lors de sa publication. Autrement, il ne se sera consultable que par accès direct (lien).
 					</li>
 
@@ -477,9 +423,7 @@
 				<div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="popup-confirm-delete-title">
 					<div class="py-3 text-center w-42  rounded-2xl">
 						<div class="text-4xl mb-5 text-slate-600 dark:text-slate-300">
-							<span class="material-icons-outlined">
-								gpp_maybe
-							</span>
+							<i class="fa-regular fa-cloud-exclamation"></i>
 						</div>
 						<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400" id="PublicationPublishModalText">
 							Êtes-vous certain(e) de vouloir publier votre récit ?

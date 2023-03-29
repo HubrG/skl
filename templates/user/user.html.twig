@@ -51,9 +51,7 @@
 				{% endif %}
 				{% if app.user and app.user.id == userInfo.id %}
 					<a href="{{ path('app_user_edit', {'username': app.user.username}) }}" data-turbo-frame="up_profil" class="button-classic order-start md:order-start button-slate mx-auto w-full">
-						<span class="material-icons-outlined">
-							contact_emergency
-						</span>
+						<i class="fa-duotone fa-user-pen"></i>
 						Modifier mon profil
 					</a>
 					<hr class="block mt-10 md:hidden">

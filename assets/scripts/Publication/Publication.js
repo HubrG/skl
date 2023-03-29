@@ -304,10 +304,7 @@ function publishPublication(ev) {
           hidePubStatus.value = 2;
           togglePubAS.checked = false;
           togglePubAS.disabled = true;
-          savePublication.innerHTML = `<span class="material-symbols-outlined">
-            cloud_upload
-          </span> &nbsp;Publier les modifications`;
-
+          savePublication.innerHTML = `<i class="fa-regular fa-cloud-arrow-up"></i> &nbsp;Publier les modifications`;
           togglePubASfunc();
         } else {
           var notyText =
@@ -315,9 +312,7 @@ function publishPublication(ev) {
           hidePubStatus.value = 1;
           togglePubAS.checked = true;
           togglePubAS.disabled = false;
-          savePublication.innerHTML = `<span class="material-symbols-outlined">
-            save
-          </span>  &nbsp;Enregistrer`;
+          savePublication.innerHTML = `<i class="fa-regular fa-floppy-disk"></i>  &nbsp;Enregistrer`;
           togglePubASfunc();
         }
         NotyDisplay(notyText, notyType, notyTimeout);

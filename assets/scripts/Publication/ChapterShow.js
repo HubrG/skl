@@ -284,10 +284,10 @@ function highlightedOptions(element, tooltiped) {
   tooltiped.style.left = `${rect.left + window.scrollX - 80}px`;
   tooltiped.style.top = `${rect.top + window.scrollY - 50}px`;
   const styles = {
-    "hl-1": ["bg-emerald-200", "text-emerald-400"],
-    "hl-2": ["bg-amber-200", "text-amber-400"],
-    "hl-3": ["bg-red-200", "text-red-400"],
-    default: ["bg-blue-200", "text-blue-400"],
+    "hl-1": ["text-emerald-400"],
+    "hl-2": ["text-amber-400"],
+    "hl-3": ["text-red-400"],
+    default: ["text-blue-400"],
   };
   deleteBtn.className = "";
   const classes =
@@ -608,12 +608,12 @@ function likeChapterData(likeChapterId) {
   data.append("idChapter", likeChapterId);
   axios.post(url, data).then((response) => {
     if (response.data.resp) {
-      likeChapter.classList.remove("material-icons-outlined");
-      likeChapter.classList.add("material-icons", "text-red-500");
+      likeChapter.classList.remove("fa-regular");
+      likeChapter.classList.add("fa-duotone", "text-rose-400");
       nbrLike.innerHTML = response.data.nbrLike;
     } else {
-      likeChapter.classList.add("material-icons-outlined");
-      likeChapter.classList.remove("material-icons", "text-red-500");
+      likeChapter.classList.add("fa-regular");
+      likeChapter.classList.remove("fa-duotone", "text-rose-400");
       nbrLike.innerHTML = response.data.nbrLike;
     }
   });
@@ -628,13 +628,25 @@ function bmChapterData(bmChapterId) {
   data.append("idChapter", bmChapterId);
   axios.post(url, data).then((response) => {
     if (response.data.resp) {
-      bmChapter.classList.remove("material-icons-outlined");
-      bmChapter.classList.add("material-icons", "text-blue-500");
+      bmChapter.classList.remove("fa-regular");
+      bmChapter.classList.add("fa-duotone", "text-purple-400");
       nbrBm.innerHTML = response.data.nbrBm;
+      NotyDisplay(
+        '<i class="fa-sharp fa-regular fa-circle-check"></i> &nbsp;&nbsp;Feuille ajoutée à votre collection',
+        "success",
+        2500
+      );
     } else {
-      bmChapter.classList.add("material-icons-outlined");
-      bmChapter.classList.remove("material-icons", "text-blue-500");
+      bmChapter.classList.add("fa-regular");
+      bmChapter.classList.remove("fa-duotone", "text-purple-400");
       nbrBm.innerHTML = response.data.nbrBm;
+      if (response.data.message != "Non autorisé.") {
+        NotyDisplay(
+          '<i class="fa-sharp fa-regular fa-circle-check"></i> &nbsp;&nbsp;Feuille retirée de votre collection',
+          "info",
+          2500
+        );
+      }
     }
   });
 }

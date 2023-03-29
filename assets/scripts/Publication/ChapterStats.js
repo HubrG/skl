@@ -26,9 +26,9 @@ export function ReadTimeFunction(div) {
   // * affichage du temps de lecture
   document.getElementById("readTime").innerHTML =
     minutes +
-    ` ${minutes > 1 ? "minutes" : "minute"} et ` +
+    ` ${minutes > 1 ? "mn" : "mn"} et ` +
     seconds +
-    ` ${seconds > 1 ? "secondes" : "seconde"}` +
+    ` ${seconds > 1 ? "sc" : "sc"}` +
     " de lecture";
   // * affichage du nombre de mots
   document.getElementById("wordCount").innerHTML =

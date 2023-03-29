@@ -5,75 +5,9 @@
 @import "~noty/lib/noty.css";
 @import "~noty/lib/themes/semanticui.css";
 @import url('https://fonts.googleapis.com/css2?family=Alegreya:wght@600&family=Lato:ital,wght@0,100;0,300;0,400;0,700;1,100;1,300;1,400;1,700&family=Noto+Serif+Lao:wght@100;200;300;400;500;600;700&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
 @import url('modal.css');
 @import url('glide.theme.css');
 
-.material-symbols-outlined {
-	@apply align-top text-[1.35em] mt-[0.1rem];
-  font-variation-settings:
-  'FILL' 0,
-  'wght' 200,
-  'GRAD' 0,
-  'opsz' 24
-}
-.material-symbols {
-	@apply align-top text-[1.35em] mt-[0.1rem];
-  font-variation-settings:
-  'FILL' 1,
-  'wght' 00,
-  'GRAD' 0,
-  'opsz' 24
-}
-.material-icons {
-	@apply align-top text-[1.35em] mt-[0.1rem];
-  font-family: 'Material Icons';
-  font-weight: thin;
-  font-style: normal;
-  display: inline-block;
-  line-height: 1;
-	stroke:black;
-  text-transform: none;
-  letter-spacing: normal;
-  word-wrap: normal;
-  white-space: nowrap;
-  direction: ltr;
-
-  /* Support for all WebKit browsers. */
-  -webkit-font-smoothing: antialiased;
-  /* Support for Safari and Chrome. */
-  text-rendering: optimizeLegibility;
-
-  /* Support for Firefox. */
-  -moz-osx-font-smoothing: grayscale;
-
-  /* Support for IE. */
-  font-feature-settings: 'liga';
-}
-.material-icons-outlined {
-	@apply align-top text-[1.35em] mt-[0.1rem] font-light;
-	font-family: 'Material Icons Outlined';
-	font-weight: thin;
-	font-style: normal;
-	display: inline-block;
-	line-height: 1;
-	text-transform: none;
-	letter-spacing: normal;
-	word-wrap: normal;
-	white-space: nowrap;
-	direction: ltr;
-  
-	/* Support for all WebKit browsers. */
-	-webkit-font-smoothing: antialiased;
-	/* Support for Safari and Chrome. */
-	text-rendering: optimizeLegibility;
-  
-	/* Support for Firefox. */
-	-moz-osx-font-smoothing: grayscale;
-  
-	/* Support for IE. */
-	font-feature-settings: 'liga';
-  }
 ::selection{
 	@apply bg-slate-700 text-slate-50 dark:bg-slate-700 px-2 font-light;
 }
@@ -379,7 +313,7 @@ opacity: 0.4;
 	@apply bg-emerald-100 hover:bg-emerald-200 dark:bg-emerald-800 text-emerald-900 dark:text-emerald-200;
 }
 #chapContent .hl-2 {
-	@apply bg-amber-100 hover:bg-amber-200 dark:bg-amber-800 text-amber-900 dark:text-amber-200;
+	@apply bg-yellow-100 hover:bg-yellow-200 dark:bg-yellow-800 text-yellow-900 dark:text-yellow-200;
 }
 #chapContent .hl-3 {
 	@apply bg-red-100 hover:bg-red-100 dark:bg-red-800 text-red-900 dark:text-red-200;
@@ -405,8 +339,11 @@ opacity: 0.4;
 #tools li {
 	@apply mx-[0.3rem] block cursor-pointer;
 }
+#tools, #highlighted-options {
+	@apply  text-xl;
+}
 #delete-hl {
-@apply rounded-full h-[1.3rem] w-[1.3rem] items-center flex justify-center cursor-pointer bg-opacity-50 dark:bg-opacity-30 dark:text-opacity-80;
+@apply  h-[1.3rem] w-[1.3rem] items-center flex justify-center cursor-pointer ;
 }
 #delete-hl:hover {
 	@apply  bg-opacity-100;
@@ -734,7 +671,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 	@apply block -ml-2 dark:bg-slate-900;
 }
 .publication-card .publication-stats {
-	@apply flex w-full flex-row divide-solid opacity-75 bg-slate-100 border-b border-b-slate-300 text-xs dark:bg-slate-600 dark:text-slate-300 px-2  py-1 justify-between items-center dark:border-slate-800;
+	@apply flex w-full flex-row divide-solid opacity-75  text-xs  dark:text-slate-300 px-2  py-1 justify-between items-center dark:border-slate-800;
 }
 .publications-container.small .publication-card .publication-stats .card-stat.likes, 
 .publications-container.small .publication-card .publication-stats .card-stat.bookmarks,
@@ -750,7 +687,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
  }
 
 .publication-card .publication-content {
-	@apply p-4  rounded-b-lg;
+	@apply p-4  rounded-b-lg  border-t border-t-slate-200 dark:border-t-slate-800;
 }
 .publication-card .publication-bottom {
 	@apply py-2 pt-1 border-t dark:border-t-slate-600 ;
@@ -769,6 +706,9 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 }
 .publication-container .publication-stats .card-stat {
 	@apply flex gap-x-1 items-center ;
+}
+.publication-container.small .publication-card .publication-stats {
+	@apply bg-transparent;
 }
 .publications-container .publication-header .left .left-2 .title {
 	@apply text-xl  mb-2 leading-tight font-medium tracking-tight dark:text-white  flex flex-row gap-x-2 items-center;
@@ -808,4 +748,22 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
  }
  .no-avatar {
 	@apply  bg-slate-800 text-slate-100 pt-2 mx-auto rounded-lg shadow-lg dark:ring-gray-500 grayscale;
+ }
+ .flex-row-custom-gapx-1 {
+	@apply flex flex-row gap-x-1 items-center;
+}
+ .flex-row-custom-gapx-2 {
+	@apply flex flex-row gap-x-2 items-center;
+}
+ .flex-row-custom-gapx-3 {
+	@apply flex flex-row gap-x-3 items-center;
+ }
+ .flex-row-custom-gapx-4 {
+	@apply flex flex-row gap-x-4 items-center;
+ }
+ .flex-row-custom-gapx-5 {
+	@apply flex flex-row gap-x-5 items-center;
+ }
+ .user-chevrons-sort-publications {
+	@apply flex flex-col opacity-50 text-[0.60rem];
  }

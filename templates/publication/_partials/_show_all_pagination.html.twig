@@ -20,7 +20,6 @@
 		{% set show_nbr_pages = 3 %}
 		{% for i in 1..countPage %}
 			{% if i < show_nbr_pages or i > countPage - show_nbr_pages + 1  %}
-
 				<li>
 					{% if pageAct == i or (pageAct == null and i == 1) %}
 						<span class="px-3 py-2 text-sm leading-tight  h-5  bg-slate-500 text-blue-100 border border-slate-600 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{ i }}</span>

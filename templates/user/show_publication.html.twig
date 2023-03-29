@@ -3,31 +3,24 @@
 {% set sort = route_params.sort|default("published_date") %}
 {% if order == "asc" %}
 	{% set order = "desc" %}
-	{% set chevron = "<span class='material-icons text-slate-600 font-bold'>expand_less</span>" %}
+	{% set chevron = '<i class="fa-regular fa-chevron-up"></i>' %}
 {% else %}
 	{% set order = "asc" %}
-	{% set chevron = "<span class='material-icons  text-slate-600 font-bold'>expand_more</span>" %}
+	{% set chevron = '<i class="fa-regular fa-chevron-down"></i>' %}
 {% endif %}
 {% extends 'base.html.twig' %}
-
 {% block title %}
-	Mes récits
-																																											—
+	Mes récits —
 	{{ parent() }}
-
 {% endblock %}
 {% block body %}
 	{% include "user/_partials/_top.html.twig" %}
 	{% if publication|length == 0 %}
 		<div class="flex flex-col items-center justify-center mt-[6.8rem] border-t border-t-slate-300 pt-10">
-			<span class="material-icons-outlined text-5xl">
-				cloud_off
-			</span>
+			<i class="fa-duotone fa-cloud-slash  text-5xl"></i>
 			<h2 class="text-2xl ">Vous n'avez pas encore publié de récit</h2>
 			<a href="{{path("app_publication_add")}}" target="_top" class="btn btn-primary mt-5 hover:underline">Publier un récit
-				<span class="material-icons">
-					redo
-				</span>
+				<i class="fa-duotone fa-pen-to-square"></i>
 			</a>
 		</div>
 	{% endif %}
@@ -38,145 +31,137 @@
 					<thead class=" text-slate-700 font-semibold text-sm   dark:text-slate-300 text-center border-b-2 border-b-slate-200 dark:border-slate-700">
 						<tr>
 							<th data-tippy-content="Statut de la publication" scope="col" class=" text-center">
-								<a href="{{path("app_user_show_publications", {sort:"status", order:order})}}">
-									<span class="material-{{sort == 'status' ? 'icons' : 'icons-outlined'}}">
-										cloud_upload
-									</span>
+								<a class="flex justify-center items-center gap-x-2" href="{{path("app_user_show_publications", {sort:"status", order:order})}}">
+									<i class="fa-{{sort == 'status' ? 'solid' : 'regular'}} fa-cloud-arrow-up"></i>
 									{% if sort == "status" %}
 										{{chevron|raw}}
 									{% else %}
-										<span class="material-icons-outlined opacity-50">
-											unfold_more
-										</span>
+										<div class="user-chevrons-sort-publications">
+											<i class="fa-regular fa-chevron-up"></i>
+											<i class="fa-regular fa-chevron-down"></i>
+										</div>
 									{% endif %}
 								</a>
 							</th>
 							<th data-tippy-content="Statut de la publication" scope="col" class="px-6 text-center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
 							<th scope="col" class="px-6 py-3 font-normal">
-								<a href="{{path("app_user_show_publications", {sort:"title", order:order})}}" class="{{sort == 'title' ? 'font-semibold'}}">
+								<a class="flex justify-left items-center gap-x-2" href="{{path("app_user_show_publications", {sort:"title", order:order})}}" class="{{sort == 'title' ? 'font-semibold'}}">
 									Récits
 									{% if sort == "title" %}
 										{{chevron|raw}}
 									{% else %}
-										<span class="material-icons-outlined opacity-50">
-											unfold_more
-										</span>
+										<div class="user-chevrons-sort-publications">
+											<i class="fa-regular fa-chevron-up"></i>
+											<i class="fa-regular fa-chevron-down"></i>
+										</div>
 									{% endif %}
 								</a>
 							</th>
 							<th scope="col" class="px-6 py-3"></th>
 							<th scope="col" class="px-6 py-3"></th>
 							<th data-tippy-content="Crée il y a..." scope="col" class="py-3 pl-2 text-center">
-								<a href="{{path("app_user_show_publications", {sort:"created", order:order})}}">
-									<span class="material-{{sort == 'created' ? 'icons' : 'icons-outlined'}}">
-										calendar_today
-									</span>
+								<a class="flex justify-center items-center gap-x-2" href="{{path("app_user_show_publications", {sort:"created", order:order})}}">
+									<i class="fa-{{sort == 'created' ? 'solid' : 'regular'}} fa-calendar"></i>
 									{% if sort == "created" %}
 										{{chevron|raw}}
 									{% else %}
-										<span class="material-icons-outlined opacity-50">
-											unfold_more
-										</span>
+										<div class="user-chevrons-sort-publications">
+											<i class="fa-regular fa-chevron-up"></i>
+											<i class="fa-regular fa-chevron-down"></i>
+										</div>
 									{% endif %}
 								</a>
 							</th>
 							<th data-tippy-content="Nombre de feuilles publiées" scope="col" class="py-3 pl-2 text-center">
-								<a href="{{path("app_user_show_publications", {sort:"chapters", order:order})}}">
-									<span class="material-{{sort == 'chapters' ? 'icons' : 'icons-outlined'}}">
-										format_list_bulleted
-									</span>
+								<a class="flex justify-center items-center gap-x-2" href="{{path("app_user_show_publications", {sort:"chapters", order:order})}}">
+									<i class="fa-{{sort == 'chapters' ? 'solid' : 'regular'}} fa-list-ol"></i>
 									{% if sort == "chapters" %}
 										{{chevron|raw}}
 									{% else %}
-										<span class="material-icons-outlined opacity-50">
-											unfold_more
-										</span>
+										<div class="user-chevrons-sort-publications">
+											<i class="fa-regular fa-chevron-up"></i>
+											<i class="fa-regular fa-chevron-down"></i>
+										</div>
 									{% endif %}
 								</a>
 							</th>
 							<th data-tippy-content="Catégorie" scope="col" class="py-3 pl-2">
-								<a href="{{path("app_user_show_publications", {sort:"category", order:order})}}">
-									<span class="material-{{sort == 'category' ? 'icons' : 'icons-outlined'}}">
-										category
-									</span>
+								<a class="flex justify-center items-center gap-x-2" href="{{path("app_user_show_publications", {sort:"category", order:order})}}">
+									<i class="fa-{{sort == 'category' ? 'solid' : 'regular'}} fa-masks-theater"></i>
 									{% if sort == "category" %}
 										{{chevron|raw}}
 									{% else %}
-										<span class="material-icons-outlined opacity-50">
-											unfold_more
-										</span>
+										<div class="user-chevrons-sort-publications">
+											<i class="fa-regular fa-chevron-up"></i>
+											<i class="fa-regular fa-chevron-down"></i>
+										</div>
 									{% endif %}
 								</a>
 							</th>
 
 							<th data-tippy-content="Nombre de lecteurs" scope="col" class="py-3 pl-2">
-								<a href="{{path("app_user_show_publications", {sort:"views", order:order})}}">
-									<span class="material-{{sort == 'views' ? 'icons' : 'icons-outlined'}}">
-										visibility
-									</span>
+								<a class="flex justify-center items-center gap-x-2" href="{{path("app_user_show_publications", {sort:"views", order:order})}}">
+									<i class="fa-{{sort == 'views' ? 'solid' : 'regular'}} fa-eye"></i>
 									{% if sort == "views" %}
 										{{chevron|raw}}
 									{% else %}
-										<span class="material-icons-outlined opacity-50">
-											unfold_more
-										</span>
+										<div class="user-chevrons-sort-publications">
+											<i class="fa-regular fa-chevron-up"></i>
+											<i class="fa-regular fa-chevron-down"></i>
+										</div>
 									{% endif %}
 								</a>
 							</th>
 
 							<th data-tippy-content="Nombre de commentaires" scope="col" class="py-3 pl-2">
-								<a href="{{path("app_user_show_publications", {sort:"comments", order:order})}}">
-									<span class="material-{{sort == 'comments' ? 'icons' : 'icons-outlined'}}">
-										forum
-									</span>
+								<a class="flex justify-center items-center gap-x-2" href="{{path("app_user_show_publications", {sort:"comments", order:order})}}">
+									<i class="fa-{{sort == 'comments' ? 'solid' : 'regular'}} fa-comments"></i>
 									{% if sort == "comments" %}
 										{{chevron|raw}}
 									{% else %}
-										<span class="material-icons-outlined opacity-50">
-											unfold_more
-										</span>
+										<div class="user-chevrons-sort-publications">
+											<i class="fa-regular fa-chevron-up"></i>
+											<i class="fa-regular fa-chevron-down"></i>
+										</div>
 									{% endif %}
 								</a>
 							</th>
 							<th data-tippy-content="Nombre de j'aime" scope="col" class="py-3 pl-2 flex">
-								<a href="{{path("app_user_show_publications", {sort:"likes", order:order})}}">
-									<span class="material-{{sort == 'likes' ? 'icons' : 'icons-outlined'}}">
-										thumb_up
-									</span>
+								<a class="flex justify-center items-center gap-x-2" href="{{path("app_user_show_publications", {sort:"likes", order:order})}}">
+									<i class="fa-{{sort == 'likes' ? 'solid' : 'regular'}} fa-thumbs-up"></i>
 									{% if sort == "likes" %}
 										{{chevron|raw}}
 									{% else %}
-										<span class="material-icons-outlined opacity-50">
-											unfold_more
-										</span>
+										<div class="user-chevrons-sort-publications">
+											<i class="fa-regular fa-chevron-up"></i>
+											<i class="fa-regular fa-chevron-down"></i>
+										</div>
 									{% endif %}
 								</a>
 							</th>
 							<th data-tippy-content="Nombre de téléchargements" scope="col" class=" py-3 pl-2">
-								<a href="{{path("app_user_show_publications", {sort:"downloads", order:order})}}">
-									<span class="material-{{sort == 'downloads' ? 'icons' : 'icons-outlined'}}">
-										download
-									</span>
+								<a class="flex justify-center items-center gap-x-2" href="{{path("app_user_show_publications", {sort:"downloads", order:order})}}">
+									<i class="fa-{{sort == 'downloads' ? 'solid' : 'regular'}} fa-download "></i>
 									{% if sort == "downloads" %}
 										{{chevron|raw}}
 									{% else %}
-										<span class="material-icons-outlined opacity-50">
-											unfold_more
-										</span>
+										<div class="user-chevrons-sort-publications">
+											<i class="fa-regular fa-chevron-up"></i>
+											<i class="fa-regular fa-chevron-down"></i>
+										</div>
 									{% endif %}
 								</a>
 							</th>
 							<th data-tippy-content="Popularité" scope="col" class="px-6 py-3 pl-5 text-left">
-								<a href="{{path("app_user_show_publications", {sort:"pop", order:order})}}">
-									<span class="material-{{sort == 'pop' ? 'icons' : 'icons-outlined'}}">
-										insights
-									</span>
+								<a class="flex justify-left items-center gap-x-2" href="{{path("app_user_show_publications", {sort:"pop", order:order})}}">
+									<i class="fa-{{sort == 'pop' ? 'solid' : 'regular'}} fa-fire"></i>
 									{% if sort == "pop" %}
 										{{chevron|raw}}
 									{% else %}
-										<span class="material-icons-outlined opacity-50">
-											unfold_more
-										</span>
+										<div class="user-chevrons-sort-publications">
+											<i class="fa-regular fa-chevron-up"></i>
+											<i class="fa-regular fa-chevron-down"></i>
+										</div>
 									{% endif %}
 								</a>
 							</th>
@@ -207,19 +192,12 @@
 								</th>
 
 								<td class="px-6 py-3 relative">
-									<a data-tippy-content="Éditer ce récit (paramétrage, édition, statistiques approfondies...)" href="{{ path("app_publication_edit", {id:item.id}) }}" target="_top" class="w-full text-sky-600 dark:text-slate-300">
-										<span class="material-icons-outlined">
-											edit_note
-										</span>
+									<a data-tippy-content="Éditer ce récit" href="{{ path("app_publication_edit", {id:item.id}) }}" target="_top" class="w-full text-sky-600 dark:text-slate-300">
+										<i class="fa-duotone fa-pen-to-square"></i>
 									</a>
 								</td>
 								<td class="px-6 py-3 relative">
-
-
-									<span data-pub-id="{{ path("app_publication_delete", {id:item.id}) }}" data-tippy-content="Supprimer ce récit" class="delete-pub  material-icons-outlined cursor-pointer text-red-500 dark:text-red-300" data-url-delete="" data-micromodal-trigger="popup-confirm-delete">
-										delete
-									</span>
-
+									<i data-pub-id="{{ path("app_publication_delete", {id:item.id}) }}" data-tippy-content="Supprimer ce récit" class="fa-duotone fa-trash delete-pub cursor-pointer text-red-500 dark:text-red-300" data-url-delete="" data-micromodal-trigger="popup-confirm-delete"></i>
 								</td>
 
 								<td class="px-6 py-3 text-[0.7rem] {{item.status < 2 ? " opacity-60"}}">
@@ -255,26 +233,21 @@
 								<td class="px-6 py-3  {{item.status < 2 ? " opacity-60"}}">
 									{{item.PublicationDownloads|length}}
 								</td>
-								<td class="px-6 py-3 flex gap-x-2  {{item.status < 2 ? " opacity-60"}}">
+								<td class="px-6 py-3 flex justify-left text-center gap-x-2  {{item.status < 2 ? " opacity-60"}}">
 									{% set lastPopularity = 0 %}
 									{% if item.PublicationPopularities|length > 1 %}
 										{% set nbr = item.PublicationPopularities|length %}
 										{% set nbr = nbr - 1 %}
 										{% set lastPopularity = item.PublicationPopularities[nbr].popularity %}
 									{% endif %}
-									{{item.pop}}
+									<span>{{item.pop}}</span>
 									{% if item.pop < lastPopularity %}
-										<span class="material-icons  text-red-700">
-											arrow_circle_down
-										</span>
+
+										<i class="fa-regular fa-circle-down text-red-700"></i>
 									{% elseif item.pop == lastPopularity %}
-										<span class="material-icons-outlined">
-											equal
-										</span>
+										<i class="fa-solid fa-equals"></i>
 									{% else %}
-										<span class="material-icons text-green-700">
-											arrow_circle_up
-										</span>
+										<i class="fa-regular fa-circle-up text-green-700"></i>
 									{% endif %}
 								</td>
 							</tr>
@@ -302,9 +275,7 @@
 			<div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="popup-confirm-delete-title">
 				<div class="py-3 text-center w-42  rounded-2xl">
 					<div class="text-4xl mb-5 text-red-600 dark:text-red-400">
-						<span class="material-icons-outlined text-2xl">
-							delete
-						</span>
+						<i class="fa-duotone fa-trash"></i>
 					</div>
 					<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-slate-300">Êtes-vous certain(e) de vouloir supprimer<br/>
 						ce récit ?</h3>

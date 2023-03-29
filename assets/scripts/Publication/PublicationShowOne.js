@@ -8,7 +8,7 @@ export function PublicationShowOne() {
     var currentPageUrl = window.location.href;
     navigator.clipboard.writeText(currentPageUrl);
     NotyDisplay(
-      '<span class="material-symbols-outlined">link</span> Lien copié dans votre presse-papier',
+      '<i class="fa-duotone fa-copy"></i> Lien copié dans votre presse-papier',
       "info",
       2000
     );

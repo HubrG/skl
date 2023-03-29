@@ -2,7 +2,7 @@
 
 {% block title %}
 	Mes récits
-																																							—
+																																																										—
 	{{ parent() }}
 
 {% endblock %}
@@ -11,26 +11,22 @@
 	<div class="block md:flex">
 		<div class="w-full md:w-3/6   rounded">
 			<div class="w-full  p-5 rounded-t border-b-[1px]  border-b-[#dee4e1] dark:border-b-slate-900 ">
-				<h2 class="text-xl text-center mt-2 font-medium text-[#00473e] dark:text-slate-100">
-					<span class="material-icons-outlined">
-						frame_person
-					</span>
-					<br>Informations générales
+				<h2 class="text-2xl flex flex-col text-center mt-2 font-semibold text-[#00473e] dark:text-slate-100">
+					<i class="fa-regular fa-image-polaroid-user"></i>
+					<span>Informations générales</span>
 				</h2>
 			</div>
 			<div class="w-full rounded-b p-5 pb-2">
 				{{ form_start(form, {attr:{"data-turbo-frame":"_top"}}) }}
-				{% include "./partials/_form-row.html.twig" with {'form': form.email, 'icon':"mail"} %}
-				{% include "./partials/_form-row.html.twig" with {'form': form.username, 'icon':"alternate_email"} %}
+				{% include "./partials/_form-row.html.twig" with {'form': form.email, 'icon':"fa-envelope"} %}
+				{% include "./partials/_form-row.html.twig" with {'form': form.username, 'icon':"fa-user-vneck"} %}
 				<hr>
-				{% include "./partials/_form-row.html.twig" with {'form': form.country, 'icon':"public"} %}
-				{% include "./partials/_form-row.html.twig" with {'form': form.city, 'icon':"location_city"} %}
-				{% include "./partials/_form-row.html.twig" with {'form': form.birth, 'icon':"cake"} %}
+				{% include "./partials/_form-row.html.twig" with {'form': form.country, 'icon':"fa-earth-europe"} %}
+				{% include "./partials/_form-row.html.twig" with {'form': form.city, 'icon':"fa-city"} %}
+				{% include "./partials/_form-row.html.twig" with {'form': form.birth, 'icon':"fa-cake-candles"} %}
 				<div class="flex justify-center">
 					<button type="submit" class="button-classic button-slate">
-						<span class="material-icons-outlined">
-							check_circle
-						</span>
+						<i class="fa-regular fa-circle-check"></i>
 						Enregistrer les informations
 					</button>
 				</div>
@@ -40,22 +36,19 @@
 		</div>
 		<div class="w-full md:w-3/6 rounded h-auto ">
 			<div class="w-full p-5 rounded-t border-b-[1px] border-b-[#dee4e1] dark:border-b-slate-900 ">
-				<h2 class="text-xl text-center mt-2 font-medium text-slate-700 dark:text-slate-100">
-					<span class="material-icons-outlined">
-						lock_reset
-					</span>
-					<br>Modification de votre mot de passe</h2>
+				<h2 class="text-2xl flex flex-col text-center mt-2 font-semibold text-[#00473e] dark:text-slate-100">
+					<i class="fa-regular fa-key-skeleton"></i>
+					<span>Modification de votre mot de passe</span>
+				</h2>
 			</div>
 			<div class="w-full  rounded-b p-5 pb-2">
 				{{ form_start(passwordForm, {attr:{"data-turbo-frame":"_top"}}) }}
-				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.oldPassword, 'icon':"password"} %}
-				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.plainPassword.first, 'icon':"enhanced_encryption"} %}
-				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.plainPassword.second, 'icon':"enhanced_encryption"} %}
+				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.oldPassword, 'icon':"fa-key"} %}
+				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.plainPassword.first, 'icon':"fa-lock-keyhole"} %}
+				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.plainPassword.second, 'icon':"fa-lock-keyhole"} %}
 				<div class="flex justify-center">
 					<button type="submit" class="button-classic button-slate">
-						<span class="material-icons-outlined">
-							check_circle
-						</span>
+						<i class="fa-regular fa-circle-check"></i>
 						Modifier mon mot de passe
 					</button>
 					<div>

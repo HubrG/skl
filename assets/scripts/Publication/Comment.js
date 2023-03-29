@@ -1,3 +1,5 @@
+import axios from "axios";
+
 import { NotyDisplay } from "../Noty";
 export function Comment() {
   const commentDiv = document.getElementById("comment-section");
@@ -64,13 +66,10 @@ export function Comment() {
       })
       .then((response) => {
         if (response.data.code === 201) {
-          button.classList.remove(
-            "material-symbols-outlined",
-            "animate__jello"
-          );
+          button.classList.remove("fa-regular", "animate__jello");
           button.classList.add(
-            "material-icons",
-            "text-red-500",
+            "fa-solid",
+            "text-red-400",
             "dark:text-red-400",
             "animate__heartBeat"
           );
@@ -78,11 +77,11 @@ export function Comment() {
           nbLikes.innerHTML = Number(nbLikes.innerHTML) + 1;
         } else if (response.data.code === 200) {
           button.classList.remove(
-            "material-icons",
-            "text-red-500",
+            "fa-solid",
+            "text-red-400",
             "animate__heartBeat"
           );
-          button.classList.add("material-symbols-outlined", "animate__jello");
+          button.classList.add("fa-regular", "animate__jello");
           const nbLikes = document.getElementById(`nbLikes-${result}`);
           nbLikes.innerHTML = Number(nbLikes.innerHTML) - 1;
         }
@@ -101,10 +100,8 @@ export function Comment() {
 
       inner.innerHTML = `
          <textarea id='comShow-${result}' class='chapterCommentEdit'>${com.textContent.trim()}</textarea>
-         <button id='validCom-${result}' class='chapterCommentEditValidButton'><span class="material-symbols-outlined">check_circle</span> &nbsp;Valider</button>
-         <button id='cancelCom-${result}' class='chapterCommentEditCancelButton toggleSidebar' data-tippy-content="Annuler la modification"><span class="material-symbols-outlined toggleSidebar">
-         cancel
-         </span></button>
+         <button id='validCom-${result}' class='chapterCommentEditValidButton'><i class="fa-light fa-circle-check"></i> &nbsp;Valider</button>
+         <button id='cancelCom-${result}' class="chapterCommentEditCancelButton toggleSidebar" data-tippy-content="Annuler la modification"><i class="fa-duotone fa-xmark  toggleSidebar"></i></button>
        `;
 
       const buttonValid = document.getElementById(`validCom-${result}`);

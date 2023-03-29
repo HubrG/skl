@@ -44,7 +44,7 @@ class ChapterShowController extends AbstractController
     }
 
     #[Route('/recit-{slugPub}/{user}/{idChap}/{slug?}/{nbrShowCom?}', name: 'app_chapter_show')]
-    public function showChapter(Request $request, PublicationCommentRepository $pcomRepo, PublicationChapterRepository $pchRepo, EntityManagerInterface $em, PublicationChapterNoteRepository $pcnRepo, PublicationRepository $pRepo, $slug = null, $idChap = null, $nbrShowCom = null): response
+    public function showChapter(Request $request, PublicationCommentRepository $pcomRepo, PublicationChapterRepository $pchRepo, EntityManagerInterface $em, PublicationChapterNoteRepository $pcnRepo, PublicationRepository $pRepo, $slugPub = null, $slug = null, $idChap = null, $user = null, $nbrShowCom = null): response
     {
         if (!$nbrShowCom) {
             $nbrShowCom = 10;
@@ -126,6 +126,7 @@ class ChapterShowController extends AbstractController
             "nbrShowCom" => $nbrShowCom,
             "nbrCom" => $nbrCom,
             "chapterContent" => $chapterContent,
+            "canonicalUrl" => $this->generateUrl('app_chapter_show', ["slugPub" => $slugPub, "user" => $user, "idChap" => $idChap, "slug" => $slug], true)
         ]);
     }
 

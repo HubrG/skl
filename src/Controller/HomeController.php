@@ -40,10 +40,10 @@ class HomeController extends AbstractController
             ->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
             ->where("p.status = 2");
         $publications = $qb->getQuery()->getResult();
-
         return  $this->render('home/home.html.twig', [
             'controller_name' => "d",
             "publications" =>  $publications,
+            "canonicalUrl" => $this->generateUrl('app_home', array(), true)
         ]);
     }
 

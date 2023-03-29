@@ -2,7 +2,9 @@
 
 {% block title %}Scrilab | Web-éditeur
 {% endblock %}
-{% block stylesheets %}{% endblock %}
+{% block stylesheets %}
+	<link rel="canonical" href="https://www.scrilab.com{{ canonicalUrl }}"/>
+{% endblock %}
 {% block javascripts %}{% endblock %}
 {% block body %}
 	<div class="bg-home dark:hidden opacity-50 -z-50 left-0 fixed h-screen w-full bg-repeat"></div>

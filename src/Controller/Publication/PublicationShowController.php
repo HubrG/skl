@@ -218,7 +218,9 @@ class PublicationShowController extends AbstractController
 				'countPage' => $countPage, // Retourne le nombre de pages
 				'page' => $page, // Retourne la page actuelle
 				'orderSort' => $order, // Retourne l'ordre d'affichage
-				'limit' => $nbr_by_page // Retourne l'ordre d'affichage
+				'limit' => $nbr_by_page, // Retourne l'ordre d'affichage
+				"canonicalUrl" => $this->generateUrl('app_publication_show_all_category', array(), true)
+
 			]);
 		}
 	}
@@ -282,7 +284,8 @@ class PublicationShowController extends AbstractController
 				'formQuote' => $form,
 				'pCom' => $comments,
 				'nbrCom' => $nbrComments,
-				'nbrShowCom' => $nbrShowCom
+				'nbrShowCom' => $nbrShowCom,
+				"canonicalUrl" => $this->generateUrl('app_publication_show_one', ["id" => $id, "slug" => $slug], true)
 			]);
 		}
 	}

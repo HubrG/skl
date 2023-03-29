@@ -15,10 +15,10 @@
 			{% endif %}
 		{% endfor %}
 		{# {% if liked is defined and liked == true %}
-											{% set class = "fa-regular fa-heart likeButton cursor-pointer dark:text-slate-400" %}
-										{% else %}
-											{% set class = "fa-solid fa-heart likeButton cursor-pointer text-red-400  dark:text-slate-400" %}
-										{% endif %} #}
+																	{% set class = "fa-regular fa-heart likeButton cursor-pointer dark:text-slate-400" %}
+																{% else %}
+																	{% set class = "fa-solid fa-heart likeButton cursor-pointer text-red-400  dark:text-slate-400" %}
+																{% endif %} #}
 		{% if class == "fa-regular fa-heart" %}
 			{% set class = "fa-regular fa-heart likeButton cursor-pointer  dark:text-red-400 " %}
 		{% endif %}
@@ -62,7 +62,7 @@
 			</div>
 			{% if userLogId is not null %}
 				<div class="dropdown">
-					<button class="text-gray-600 hover:text-gray-900   focus:outline-none focus:text-gray-900">
+					<button aria-label="Afficher les options du commentaire de {{item.user.nickname}} — numéro {{item.id}}" class="text-gray-600 hover:text-gray-900   focus:outline-none focus:text-gray-900">
 						<svg class="w-6 h-6 dropdown-button " fill="currentColor" viewbox="0 0 20 20" id="ddb-{{ item.id }}">
 							<path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
 						</svg>
@@ -106,7 +106,7 @@
 			</blockquote>
 		{% endif %}
 		<div class="mt-4 flex items-center justify-end">
-			<i class="{{ class }} animate__animated" id="likeButton-{{ item.id }}" data-like-path="{{path("app_comment_like")}}"></i>
+			<i class="{{ class }} animate__animated" id="likeButton-{{ item.id }}" aria-label="Aimer ce commentaire" data-like-path="{{path("app_comment_like")}}"></i>
 			<span class="ml-2 font-medium text-gray-600">
 				<span id="nbLikes-{{ item.id }}">{{ item.publicationCommentLikes|length }}</span>
 			</span>

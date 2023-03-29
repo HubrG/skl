@@ -24,7 +24,16 @@ export function ShowChapter() {
   });
   if (document.getElementById("insightQuote")) {
     // ! On vérifie que l'utilisateur est connecté
-
+    const copyLink = document.getElementById("copyLink");
+    copyLink.addEventListener("click", (e) => {
+      var currentPageUrl = window.location.href;
+      navigator.clipboard.writeText(currentPageUrl);
+      NotyDisplay(
+        '<i class="fa-duotone fa-copy"></i> Lien copié dans votre presse-papier',
+        "info",
+        2000
+      );
+    });
     //!SECTION — Click sur le bouton "like" du chapitre
     const likeChapter = document.getElementById("likeThisChapter");
     if (likeChapter) {

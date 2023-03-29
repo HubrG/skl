@@ -16,18 +16,19 @@ export function quillEditor() {
       toolbar: toolbarOptions,
       clipboard: {
         matchVisual: false,
-        formats: [
-          "bold",
-          "italic",
-          "underline",
-          "align",
-          "link",
-          "header",
-          "list",
-        ],
+        formats: ["bold", "italic", "underline", "align", "link", "header"],
       },
     },
-    formats: ["bold", "italic", "underline", "link", "header", "list", "align"],
+    formats: [
+      "bold",
+      "italic",
+      "underline",
+      "link",
+      "header",
+      "list",
+      "align",
+      "list",
+    ],
   };
   if (document.getElementById("editor")) {
     const quill = new Quill("#editor", options);

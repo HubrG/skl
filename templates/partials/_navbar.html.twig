@@ -51,9 +51,7 @@
 								{% if app.user.profilPicture %}
 									<img id="profil_picture_navbar" class="h-5 w-5  rounded-full" src="{{app.user.profilPicture}}" alt="Photo de profil">
 								{% else %}
-									<span class="material-icons-outlined">
-										account_circle
-									</span>
+									<i class="fa-duotone fa-circle-user"></i>
 								{% endif %}
 								<span id="username_login">
 									{{ app.user.username|length > 10 ? app.user.username|slice(0, 10) ~ '...' : app.user.username }}

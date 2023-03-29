@@ -188,7 +188,7 @@
 								</span>
 							</button>
 							<span class="opacity-60 text-xs" id="infoCollection">
-								Ajoutez ce récit à votre collection personnelle.
+								{{ classCollectionBtn == "follow-collection-buttons-ok" ? "Vous pourrez retrouver ce récit dans votre collection personnelle." : "Vous ne pourrez plus retrouver ce récit dans votre collection personnelle."  }}
 							</span>
 						</div>
 					{% elseif not app.user %}
@@ -198,7 +198,7 @@
 								Ajouter à ma collection
 							</button>
 							<span class="opacity-60 text-xs">
-								Ajoutez ce récit à votre collection personnelle.
+								Vous pourrez retrouver ce récit dans votre collection personnelle.
 							</span>
 						</div>
 					{% endif %}

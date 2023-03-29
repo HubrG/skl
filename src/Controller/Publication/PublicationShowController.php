@@ -336,9 +336,7 @@ class PublicationShowController extends AbstractController
 				return $this->json([
 					'code' => 200,
 					'message' => '
-					<span class="material-symbols-outlined">
-					label_off
-					</span>
+					<i class="fa-regular fa-tag"></i>
 					<strong>Vous ne suivez plus ce récit</strong><br>
 					Vous ne recevrez plus de notification à chaque nouvelle feuille publiée'
 				], 200);
@@ -366,9 +364,7 @@ class PublicationShowController extends AbstractController
 		return $this->json([
 			'code' => 200,
 			'message' => '
-			<span class="material-symbols-outlined">
-				loyalty
-			</span>
+			<i class="fa-regular fa-light fa-tags"></i>
 			<strong>Vous suivez ce récit</strong><br>
 			 Vous recevrez une notification à chaque nouvelle feuille publiée'
 
@@ -394,9 +390,7 @@ class PublicationShowController extends AbstractController
 				return $this->json([
 					'code' => 200,
 					'message' => '
-					<span class="material-symbols-outlined">
-					label_off
-					</span>
+					<i class="fa-regular fa-folder-bookmark"></i>
 					<strong>Récit retiré de votre collection</strong>'
 				], 200);
 			}
@@ -423,9 +417,7 @@ class PublicationShowController extends AbstractController
 		return $this->json([
 			'code' => 200,
 			'message' => '
-			<span class="material-symbols-outlined">
-				loyalty
-			</span>
+			<i class="fa-duotone fa-folder-bookmark"></i>
 			<strong>Récit ajouté à votre collection</strong>'
 
 		], 200);

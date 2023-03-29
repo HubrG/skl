@@ -696,7 +696,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 	@apply grid grid-cols-1 -mt-8 md:mt-0  gap-10 xl:grid-cols-2;
 }
 .publications-container.small {
-	@apply grid-cols-2 xl:grid-cols-3 gap-y-10 gap-x-3 mx-1;
+	@apply grid-cols-2 xl:grid-cols-3 gap-y-16 gap-x-5 mx-1;
 }
 .publications-container.small .publication-card .publication-content {
 	@apply hidden;
@@ -704,10 +704,10 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 .publications-container.small .publication-card .publication-bottom {
 	@apply border-none;
 }
-.publication-container .publication-stats .card-stat {
+.publications-container .publication-stats .card-stat {
 	@apply flex gap-x-1 items-center ;
 }
-.publication-container.small .publication-card .publication-stats {
+.publications-container.small .publication-card .publication-stats {
 	@apply bg-transparent;
 }
 .publications-container .publication-header .left .left-2 .title {

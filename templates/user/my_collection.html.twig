@@ -208,7 +208,7 @@
 							</span>
 							<span class="pl-5 flex flex-row gap-x-2 items-center text-slate-500 dark:text-slate-400">
 								<i class="fa-regular fa-book text-xs"></i>
-								<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug}) }}">
+								<a target="_top" class="hover:underline" href="{{ path('app_publication_show_one', {'id':item.chapter.publication.id, 'slug': item.chapter.publication.slug}) }}">
 									<span class=" text-xs">{{ item.chapter.publication.title }}</span>
 								</a>
 							</span>

@@ -75,7 +75,7 @@
 			<div class="glide__bullets" data-glide-el="controls[nav]">
 				{% set n = 0 %}
 				{% for item in publications %}
-					<button class="glide__bullet" data-glide-dir="={{n}}"></button>
+					<button class="glide__bullet" aria-label="Afficher la diapositive numéro {{n}}" data-glide-dir="={{n}}"></button>
 					{% set n = n + 1 %}
 				{% endfor %}
 			</div>
@@ -213,22 +213,12 @@
 
 			</div>
 			<div class="glide__arrows text-xl" data-glide-el="controls">
-				<button class="glide__arrow glide__arrow--left mr-10" data-glide-dir="&lt;">
+				<button class="glide__arrow glide__arrow--left mr-10" aria-label="Passer à la diapositive précédente" data-glide-dir="&lt;">
 					<i class="fa-regular fa-arrow-left"></i>
 				</button>
-				<button class="glide__arrow glide__arrow--right" data-glide-dir="&gt;">
+				<button class="glide__arrow glide__arrow--right" aria-label="Passer à la diapositive suivante" data-glide-dir="&gt;">
 					<i class="fa-regular fa-arrow-right"></i>
 				</button>
-			</div>
-			<div class="glide__bullets hidden" data-glide-el="controls[nav]">
-				<button class="glide__bullet" data-glide-dir="=0"></button>
-				<button class="glide__bullet" data-glide-dir="=1"></button>
-				<button class="glide__bullet" data-glide-dir="=2"></button>
-				<button class="glide__bullet" data-glide-dir="=3"></button>
-				<button class="glide__bullet" data-glide-dir="=4"></button>
-				<button class="glide__bullet" data-glide-dir="=5"></button>
-				<button class="glide__bullet" data-glide-dir="=6"></button>
-				<button class="glide__bullet" data-glide-dir="=7"></button>
 			</div>
 		</div>
 	</section>

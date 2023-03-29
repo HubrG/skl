@@ -8,7 +8,7 @@
 					</span>lab
 				</span>
 			</a>
-			<button data-collapse-toggle="navbar-default" type="button" class=" dark:opacity-90 inline-flex items-center p-2 ml-3  text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
+			<button data-collapse-toggle="navbar-default" type="button" class=" dark:opacity-90 inline-flex items-center p-2 ml-3  text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-label="Ouvrir le menu" aria-controls="navbar-default" aria-expanded="false">
 				<span class="sr-only">Open main menu</span>
 				<svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 					<path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
@@ -17,21 +17,21 @@
 			<div id="navbar-default" class="items-center justify-between hidden w-full  md:flex md:w-auto md:order-1">
 				<ul class="flex flex-col mt-4 font-semibold md:flex-row  gap-y-5 space-x-2 md:mt-0 text-md ">
 					<li>
-						<button id="mega-menu-icons-dropdown-button" data-dropdown-toggle="mega-menu-icons-dropdown" type="button" class="navbar-button">
+						<button id="mega-menu-icons-dropdown-button" aria-label="Lire" data-dropdown-toggle="mega-menu-icons-dropdown" type="button" class="navbar-button">
 							<i class="fa-duotone fa-book-open-reader"></i>
 							Lire
 						</button>
 					</li>
 					{% if app.user %}
 						<li>
-							<a href="{{ path("app_publication_add")}}" type="button" data-action="dropdown#toggle click@window->dropdown#hide" class="navbar-button">
+							<a href="{{ path("app_publication_add")}}" type="button" aria-label="Publier" data-action="dropdown#toggle click@window->dropdown#hide" class="navbar-button">
 								<i class="fa-duotone fa-pen-to-square"></i>
 								Publier
 							</a>
 						</li>
 					{% else %}
 						<li>
-							<button data-micromodal-trigger="popup-register" target="_self" class="navbar-button">
+							<button data-micromodal-trigger="popup-register" target="_self" aria-label="Publier" class="navbar-button">
 								<i class="fa-duotone fa-pen-to-square"></i>
 								Publier
 							</button>
@@ -45,7 +45,6 @@
 							&nbsp;Services éditoriaux
 						</button>
 					</li>
-
 					{% if app.user %}
 						<li class="flex justify-center md:flex-none md:justify-self-auto">
 							<button type="button" id="dropdownInformationButton" data-dropdown-toggle="dropdownInformation" class="navbar-button">
@@ -62,7 +61,7 @@
 							</button>
 						</li>
 						<li>
-							<button id="notification-menu-button" data-tippy-content="Notifications" data-dropdown-toggle="notification-menu" type="button" class="text-gray-800 relative dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-semibold rounded-lg  px-4 py-2  md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+							<button id="notification-menu-button" aria-label="Afficher les notifications" data-tippy-content="Notifications" data-dropdown-toggle="notification-menu" type="button" class="text-gray-800 relative dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-semibold rounded-lg  px-4 py-2  md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
 								<i class="fa-duotone fa-bell text-lg"></i>
 								{% if notificationRepository.findBy({"user":app.user.id,"ReadAt":null})|length > 0 %}
 									<div id="nbr-notification" class="absolute inline-flex items-center justify-center w-4 h-4 text-[0.5rem] text-white bg-red-500 border-2 border-white rounded-full top-2 right-2 dark:border-gray-900">
@@ -70,7 +69,7 @@
 									</div>
 								{% endif %}
 							</button>
-							<button data-tippy-content="Mode sombre / mode clair" id="darkButton" class="text-gray-800 relative dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-semibold rounded-lg  px-4 py-2  md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+							<button aria-label="Basculer en mode clair ou sombre" data-tippy-content="Mode sombre / mode clair" id="darkButton" class="text-gray-800 relative dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-semibold rounded-lg  px-4 py-2  md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
 								<i class="fa-duotone text-lg {{app.user.userParameters ? app.user.userParameters.darkmode == true ? " fa-sun" : " fa-moon-stars" }}" id="darkMode"></i>
 							</button>
 						</li>
@@ -113,17 +112,25 @@
 						</div>
 					</div>
 				{% else %}
-					<button data-micromodal-trigger="popup-login" class="navbar-button">
-						<i class="fa-duotone fa-right-to-bracket"></i>
-						Connexion
-					</button>
-					<button data-micromodal-trigger="popup-register" class="navbar-button">
-						<i class="fa-duotone fa-user-plus"></i>
-						Inscription
-					</button>
-					<button id="darkButtonSession" data-tippy-content="Mode sombre / mode clair" class="navbar-button">
-						<i class="fa-duotone  text-lg	{{ app.session.get('darkmode') and app.session.get('darkmode') == true ? " fa-sun" : " fa-moon-stars" }}" id="darkModeSession"></i>
-					</button>
+					<ul class="flex flex-col mt-4 font-semibold md:flex-row  gap-y-5 space-x-2 md:mt-0 text-md ">
+						<li>
+							<button data-micromodal-trigger="popup-login" class="navbar-button">
+								<i class="fa-duotone fa-right-to-bracket"></i>
+								Connexion
+							</button>
+						</li>
+						<li>
+							<button data-micromodal-trigger="popup-register" class="navbar-button">
+								<i class="fa-duotone fa-user-plus"></i>
+								Inscription
+							</button>
+						</li>
+						<li>
+							<button id="darkButtonSession" aria-label="Basculer en mode clair ou sombre" data-tippy-content="Mode sombre / mode clair" class="navbar-button">
+								<i class="fa-duotone  text-lg	{{ app.session.get('darkmode') and app.session.get('darkmode') == true ? " fa-sun" : " fa-moon-stars" }}" id="darkModeSession"></i>
+							</button>
+						</li>
+					</ul>
 				{% endif %}
 			</div>
 			{% if app.user %}
@@ -218,7 +225,7 @@
 			<ul class="p-5 bg-slate-100 dark:bg-slate-900 shadow-2xl ">
 				<li class="text-center">
 					<span class="text-slate-500 dark:text-slate-300 text-xs">Vous souhaitez proposer l'un de ces services ?</span><br>
-					<a href="" class="font-semibold hover:underline text-slate-900 dark:text-slate-100">
+					<a href="#" class="font-semibold hover:underline text-slate-900 dark:text-slate-100">
 						Rejoignez notre équipe en deux clics !</a>
 					<span class="material-icons-outlined  dark:text-slate-100">
 						handshake

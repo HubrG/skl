@@ -107,17 +107,17 @@
 					</button>
 					<div class="flex flex-row rounded-md ">
 						{% if app.user %}
-							<button data-tippy-content="Affichage détaillé" id="grid" type="button" class="button-grid-show-all left {{grid_button_left}} ">
+							<button aria-label="Affichage détaillé" data-tippy-content="Affichage détaillé" id="grid" type="button" class="button-grid-show-all left {{grid_button_left}} ">
 								<i class="fa-regular fa-table-cells-large"></i>
 							</button>
-							<button data-tippy-content="Affichage ressérré" id="gridSmall" type="button" class="button-grid-show-all right  {{grid_button_right}}">
+							<button aria-label="Affichage ressérré" data-tippy-content="Affichage ressérré" id="gridSmall" type="button" class="button-grid-show-all right  {{grid_button_right}}">
 								<i class="fa-regular fa-table-cells"></i>
 							</button>
 						{% else %}
-							<button data-tippy-content="Large détaillé" id="grid" type="button" class="button-grid-show-all left  {{grid_button_left}}">
+							<button aria-label="Affichage détaillé" data-tippy-content="Large détaillé" id="grid" type="button" class="button-grid-show-all left  {{grid_button_left}}">
 								<i class="fa-regular fa-table-cells-large"></i>
 							</button>
-							<button data-tippy-content="Affichage ressérré" id="gridSmallSession" type="button" class="button-grid-show-all right  {{grid_button_right}}">
+							<button aria-label="Affichage ressérré" data-tippy-content="Affichage ressérré" id="gridSmallSession" type="button" class="button-grid-show-all right  {{grid_button_right}}">
 								<i class="fa-regular fa-table-cells"></i>
 							</button>
 						{% endif %}

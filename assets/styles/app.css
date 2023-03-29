@@ -36,7 +36,7 @@ nav {
 	@apply  w-full flex gap-x-2 justify-center cursor-pointer items-center text-slate-800 dark:text-slate-50 hover:bg-slate-50 focus:ring-4 focus:ring-slate-300 font-medium rounded-lg  px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-slate-700 focus:outline-none dark:focus:ring-slate-800;
 }
 .navbar-button-home {
-	@apply flex flex-col md:flex-row justify-center font-semibold md:font-normal gap-y-2 text-sm md:text-base;
+	@apply flex flex-col md:flex-row justify-center md:justify-center text-center font-semibold md:font-normal gap-y-2 text-sm md:text-base;
 }
 .navbar-dropdown {
 	@apply border-t-4 bg-white divide-y divide-gray-100 rounded-b-lg shadow-md w-full  dark:bg-slate-700 dark:divide-gray-600;
@@ -723,7 +723,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 	@apply  gap-y-2 justify-center items-center  min-h-[25rem] dark:bg-slate-800 border-slate-300 text-slate-400 rounded-xl border-dashed border-2 dark:border-slate-700 dark:hover:text-slate-500 dark:text-slate-500 ;
  }
  .item-fake {
-	@apply flex w-full cursor-pointer text-center  opacity-50 hover:opacity-90 gap-x-1  text-sm md:text-xl;
+	@apply flex w-full cursor-pointer text-center  opacity-80 hover:opacity-90 gap-x-1  text-sm md:text-xl;
  }
  .item-fake:hover .write-and-publish {
     @apply dark:bg-slate-700;

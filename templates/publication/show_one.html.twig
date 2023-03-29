@@ -305,7 +305,7 @@
 			</div>
 			<div class="w-full opacity-100 dark:opacity-100  text-xs  z-50 mt-0 pt-5 px-2 lg:w-4/12  order-1 lg:order-2  shadow-slate-300 text-slate-900 border-slate-200 border-t-[1px] border-t-slate-200 dark:border-slate-900 dark:border-t-slate-900 lg:border-l-[1px] lg:border-t-0 ">
 				<ul class="flex flex-col space-y-4 text-sm pb-5">
-					{% if pubShow.status > 2 %}
+					{% if pubShow.status > 1 %}
 						{# Partage sur Twitter #}
 						{% set twitterChar = 280 %}
 						{% set twitterChar = twitterChar - (app.request.schemeAndHttpHost|length + app.request.requestUri|length) - "@ScrilabEditions"|length - 6 - pubShow.title|length %}

@@ -12,7 +12,7 @@
 	<section class="col-span-12 md:col-span-10 md:col-start-2">
 		<turbo-frame id="up_profil" class="w-full md:flex pt-10 gap-x-5">
 			<div class="w-full md:w-3/12 py-10 pt-0 px-5 text-center dark:shadow-2xl mb-10 rounded-lg">
-				<h1 class="text-3xl md:text-2xl -mt-14 font-semibold text-center mb-0 py-2 px-2 rounded text-slate-700 font-sans">{{ userInfo.nickname }}</h1>
+				<h1 class="text-3xl md:text-2xl mb-5 -mt-14 font-semibold text-center mb-0 py-2 px-2 rounded text-slate-700 font-sans">{{ userInfo.nickname }}</h1>
 				{% if userInfo.profilPicture %}
 					<img class="w-40 h-40 mx-auto rounded-lg shadow-lg object-fill dark:ring-gray-500" src="{{userInfo.profilPicture}}">
 				{% else %}
@@ -59,7 +59,7 @@
 			</div>
 			<div class="w-full md:w-9/12 parent border-l-0  pl-0 md:pl-10 dark:border-slate-700">
 				<h2 class="{{pubInfo|length > 1 ? "text-left" : "text-center"}} text-left text-4xl text-slate-800 dark:text-slate-300 child flex items-center gap-x-5">
-					<i class="fa-duotone fa-book-open-cover"></i>
+					<i class="fa-regular fa-book-open-cover"></i>
 					{{pubInfo|length > 1 ? pubInfo|length ~ " récits publiés" : pubInfo|length == 0 ? "Aucun récit publié" : pubInfo|length ~ " récit publié"}}
 				</h2>
 				<div class="grid grid-cols-1 sm:grid-cols-2 gap-7 gap-x-10 mb-24 mt-20">

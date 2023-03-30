@@ -49,11 +49,15 @@ class PublicationComment
     #[ORM\OneToMany(mappedBy: 'comment', targetEntity: Notification::class, orphanRemoval: true)]
     private Collection $notifications;
 
+    #[ORM\OneToMany(mappedBy: 'reply_comment', targetEntity: Notification::class, orphanRemoval: true)]
+    private Collection $notificationsReply;
+
     public function __construct()
     {
         $this->publicationCommentLikes = new ArrayCollection();
         $this->publicationComments = new ArrayCollection();
         $this->notifications = new ArrayCollection();
+        $this->notificationsReply = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -241,6 +245,36 @@ class PublicationComment
             // set the owning side to null (unless already changed)
             if ($notification->getComment() === $this) {
                 $notification->setComment(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotificationsReply(): Collection
+    {
+        return $this->notificationsReply;
+    }
+
+    public function addNotificationsReply(Notification $notificationsReply): self
+    {
+        if (!$this->notificationsReply->contains($notificationsReply)) {
+            $this->notificationsReply->add($notificationsReply);
+            $notificationsReply->setReplyComment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotificationsReply(Notification $notificationsReply): self
+    {
+        if ($this->notificationsReply->removeElement($notificationsReply)) {
+            // set the owning side to null (unless already changed)
+            if ($notificationsReply->getReplyComment() === $this) {
+                $notificationsReply->setReplyComment(null);
             }
         }
 

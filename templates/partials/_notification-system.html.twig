@@ -130,4 +130,23 @@
 			</p>
 		</span>
 	{% endif %}
+	{# Nouvelle réponse à un commentaire  #}
+	{% if item.type == 9 %}
+		<i class="fa-regular fa-comments"></i>
+		<span>
+			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+			vient de répondre à votre commentaire sur la publication
+			<a href="{{path("app_publication_show_one", {id:item.replyComment.publication.id, slug:item.replyComment.publication.slug})}}">
+				{{item.replyComment.publication.title}}
+			</a>
+			{% if item.replyComment.chapter %}
+				sur la feuille «
+				<a href="{{path("app_chapter_show", {slugPub:item.replyComment.publication.slug,user:item.user.username,idChap:item.replyComment.chapter.id,slug:item.replyComment.chapter.slug})}}">{{item.replyComment.chapter.title}}</a>
+				»
+			{% endif %}
+			<p>il y a
+				{{item.createdAt|since}}
+			</p>
+		</span>
+	{% endif %}
 </div>

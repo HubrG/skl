@@ -137,6 +137,8 @@ class CommentController extends AbstractController
                 ->setReplyTo($commentOrigin);
             $em->persist($comment);
             $em->flush();
+            // Envoi d'une notification
+            $this->notificationSystem->addNotification(9, $commentOrigin->getUser(), $this->getUser(), $comment);
         } else {
             return $this->json([
                 'code' => 403,

@@ -46,6 +46,8 @@ class NotificationSystem extends AbstractController
      * 7 : Nouvelle feuille sur une publication que vous suivez
      * 
      * 8 : Nouvel abonnement à votre publication
+     * 
+     * 9 : Nouvelle réponse à un commentaire
      * @param $user type
      * @param $message string
      * @param $fromUser type
@@ -94,6 +96,10 @@ class NotificationSystem extends AbstractController
         }
         if ($type === 8) {
             $notification->setPublicationFollowAdd($idLink);
+            // $email->text('Vous avez reçu un nouveau like sur un de vos chapitres')->subject('Nouveau like');
+        }
+        if ($type === 9) {
+            $notification->setReplyComment($idLink);
             // $email->text('Vous avez reçu un nouveau like sur un de vos chapitres')->subject('Nouveau like');
         }
         $this->em->persist($notification);

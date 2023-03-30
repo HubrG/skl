@@ -10,205 +10,220 @@ use App\Repository\NotificationRepository;
 class Notification
 {
 	#[ORM\Id]
-	#[ORM\GeneratedValue]
-	#[ORM\Column]
-	private ?int $id = null;
+         	#[ORM\GeneratedValue]
+         	#[ORM\Column]
+         	private ?int $id = null;
 
 	#[ORM\ManyToOne(inversedBy: 'notifications')]
-	private ?User $user = null;
+         	private ?User $user = null;
 
 	#[ORM\Column]
-	private ?\DateTimeImmutable $CreatedAt = null;
+         	private ?\DateTimeImmutable $CreatedAt = null;
 
 	#[ORM\Column(nullable: true)]
-	private ?\DateTimeImmutable $ReadAt = null;
+         	private ?\DateTimeImmutable $ReadAt = null;
 
 
 
 
 
 	#[ORM\Column(nullable: true)]
-	private ?int $type = null;
+         	private ?int $type = null;
 
 	#[ORM\ManyToOne(inversedBy: 'UserFrom')]
-	private ?User $from_user = null;
+         	private ?User $from_user = null;
 
 	#[ORM\ManyToOne(inversedBy: 'notifications')]
-	private ?PublicationComment $comment = null;
+         	private ?PublicationComment $comment = null;
 
 	#[ORM\ManyToOne(inversedBy: 'notifications')]
-	private ?PublicationCommentLike $like_comment = null;
+         	private ?PublicationCommentLike $like_comment = null;
 
 
 
 	#[ORM\ManyToOne(inversedBy: 'notifications')]
-	private ?PublicationDownload $download = null;
+         	private ?PublicationDownload $download = null;
 
 	#[ORM\ManyToOne(inversedBy: 'notifications')]
-	private ?PublicationChapterLike $chapter_like = null;
+         	private ?PublicationChapterLike $chapter_like = null;
 
 	#[ORM\ManyToOne(inversedBy: 'notifications')]
-	private ?PublicationChapter $publication_follow = null;
+         	private ?PublicationChapter $publication_follow = null;
 
 	#[ORM\ManyToOne(inversedBy: 'notifications')]
-	private ?Publication $publication_follow_add = null;
+         	private ?Publication $publication_follow_add = null;
 
 	#[ORM\ManyToOne(inversedBy: 'notifications')]
-	private ?PublicationBookmark $publication_bookmark = null;
+         	private ?PublicationBookmark $publication_bookmark = null;
+
+    #[ORM\ManyToOne(inversedBy: 'notificationsReply')]
+    private ?PublicationComment $reply_comment = null;
 
 
 
 
 	public function getId(): ?int
-	{
-		return $this->id;
-	}
+         	{
+         		return $this->id;
+         	}
 
 	public function getUser(): ?User
-	{
-		return $this->user;
-	}
+         	{
+         		return $this->user;
+         	}
 
 	public function setUser(?User $user): self
-	{
-		$this->user = $user;
-
-		return $this;
-	}
+         	{
+         		$this->user = $user;
+         
+         		return $this;
+         	}
 
 	public function getCreatedAt(): ?\DateTimeImmutable
-	{
-		return $this->CreatedAt;
-	}
+         	{
+         		return $this->CreatedAt;
+         	}
 
 	public function setCreatedAt(\DateTimeImmutable $CreatedAt): self
-	{
-		$this->CreatedAt = $CreatedAt;
-
-		return $this;
-	}
+         	{
+         		$this->CreatedAt = $CreatedAt;
+         
+         		return $this;
+         	}
 
 	public function getReadAt(): ?\DateTimeImmutable
-	{
-		return $this->ReadAt;
-	}
+         	{
+         		return $this->ReadAt;
+         	}
 
 	public function setReadAt(?\DateTimeImmutable $ReadAt): self
-	{
-		$this->ReadAt = $ReadAt;
-
-		return $this;
-	}
+         	{
+         		$this->ReadAt = $ReadAt;
+         
+         		return $this;
+         	}
 
 
 
 
 	public function getType(): ?int
-	{
-		return $this->type;
-	}
+         	{
+         		return $this->type;
+         	}
 
 	public function setType(?int $type): self
-	{
-		$this->type = $type;
-
-		return $this;
-	}
+         	{
+         		$this->type = $type;
+         
+         		return $this;
+         	}
 
 	public function getFromUser(): ?User
-	{
-		return $this->from_user;
-	}
+         	{
+         		return $this->from_user;
+         	}
 
 	public function setFromUser(?User $from_user): self
-	{
-		$this->from_user = $from_user;
-
-		return $this;
-	}
+         	{
+         		$this->from_user = $from_user;
+         
+         		return $this;
+         	}
 
 	public function getComment(): ?PublicationComment
-	{
-		return $this->comment;
-	}
+         	{
+         		return $this->comment;
+         	}
 
 	public function setComment(?PublicationComment $comment): self
-	{
-		$this->comment = $comment;
-
-		return $this;
-	}
+         	{
+         		$this->comment = $comment;
+         
+         		return $this;
+         	}
 
 	public function getLikeComment(): ?PublicationCommentLike
-	{
-		return $this->like_comment;
-	}
+         	{
+         		return $this->like_comment;
+         	}
 
 	public function setLikeComment(?PublicationCommentLike $like_comment): self
-	{
-		$this->like_comment = $like_comment;
-
-		return $this;
-	}
+         	{
+         		$this->like_comment = $like_comment;
+         
+         		return $this;
+         	}
 
 
 	public function getDownload(): ?PublicationDownload
-	{
-		return $this->download;
-	}
+         	{
+         		return $this->download;
+         	}
 
 	public function setDownload(?PublicationDownload $download): self
-	{
-		$this->download = $download;
-
-		return $this;
-	}
+         	{
+         		$this->download = $download;
+         
+         		return $this;
+         	}
 
 	public function getChapterLike(): ?PublicationChapterLike
-	{
-		return $this->chapter_like;
-	}
+         	{
+         		return $this->chapter_like;
+         	}
 
 	public function setChapterLike(?PublicationChapterLike $chapter_like): self
-	{
-		$this->chapter_like = $chapter_like;
-
-		return $this;
-	}
+         	{
+         		$this->chapter_like = $chapter_like;
+         
+         		return $this;
+         	}
 
 	public function getPublicationFollow(): ?PublicationChapter
-	{
-		return $this->publication_follow;
-	}
+         	{
+         		return $this->publication_follow;
+         	}
 
 	public function setPublicationFollow(?PublicationChapter $publication_follow): self
-	{
-		$this->publication_follow = $publication_follow;
-
-		return $this;
-	}
+         	{
+         		$this->publication_follow = $publication_follow;
+         
+         		return $this;
+         	}
 
 	public function getPublicationFollowAdd(): ?Publication
-	{
-		return $this->publication_follow_add;
-	}
+         	{
+         		return $this->publication_follow_add;
+         	}
 
 	public function setPublicationFollowAdd(?Publication $publication_follow_add): self
-	{
-		$this->publication_follow_add = $publication_follow_add;
-
-		return $this;
-	}
+         	{
+         		$this->publication_follow_add = $publication_follow_add;
+         
+         		return $this;
+         	}
 
 	public function getPublicationBookmark(): ?PublicationBookmark
-	{
-		return $this->publication_bookmark;
-	}
+         	{
+         		return $this->publication_bookmark;
+         	}
 
 	public function setPublicationBookmark(?PublicationBookmark $publication_bookmark): self
-	{
-		$this->publication_bookmark = $publication_bookmark;
+         	{
+         		$this->publication_bookmark = $publication_bookmark;
+         
+         		return $this;
+         	}
 
-		return $this;
-	}
+    public function getReplyComment(): ?PublicationComment
+    {
+        return $this->reply_comment;
+    }
+
+    public function setReplyComment(?PublicationComment $reply_comment): self
+    {
+        $this->reply_comment = $reply_comment;
+
+        return $this;
+    }
 }

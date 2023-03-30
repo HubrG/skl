@@ -7,46 +7,63 @@
 {% endblock %}
 {% block body %}
 	<section class="col-span-6 col-start-4">
-		<h1 class="text-center">Connexion</h1>
-		<form method="post">
-			{% if error %}
-				<div class="flex justify-center items-center font-bold">
+		<div class="px-6 py-6 lg:px-8 relative" style="width:100%">
 
-					<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-				</div>
-			{% endif %}
-			<div class="mb-3">
-				{% if app.user %}
-					Vous êtes connecté(e) en tant que
-					{{ app.user.userIdentifier }},
-					<a href="{{ path('app_logout') }}">Déconnexion</a>
-				</div>
-			{% else %}
-				<label for="inputEmail">Adresse email</label>
-				<div class="flex">
-					<span class="form-icon">
-						<i class="fa-regular fa-envelope"></i>
-					</span>
-					<input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control icon-desc" autocomplete="email" autofocus>
-				</div>
-				<label for="inputPassword">Mot de passe</label>
-				<div class="flex">
-					<span class="form-icon">
-						<i class="fa-solid fa-unlock-keyhole"></i>
-					</span>
-					<input type="password" name="password" id="inputPassword" class="form-control icon-desc" autocomplete="current-password">
-				</div>
-				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-				<div class="checkbox mb-3">
-					<label>
-						<input type="checkbox" name="_remember_me">
-						&nbsp;Se souvenir de moi
-					</label>
-				</div>
-				<button class="btn btn-lg btn-primary " type="submit">
-					Me connecter
-				</button>
-			{% endif %}
-		</form>
+			<h3 class="modal-header">
+				<i class="fa-duotone fa-right-to-bracket"></i>
+				Connexion sur Scrilab
+			</h3>
+			<hr class="mb-0">
+			<button tabindex="0" onclick='document.getElementById("popup-login").classList.add("animate__animated","animate__fadeOut","animate__faster");MicroModal.close("popup-login");document.getElementById("popup-login").classList.remove("animate__animated","animate__fadeOut")' data-micromodal-trigger="popup-register" class="modal-register-login-button">
+				Je n'ai pas encore de compte Scrilab&nbsp;&nbsp;&nbsp;<i class="fa-duotone fa-chevrons-right"></i>
+			</button>
+			<turbo-frame id="loginframe" class="w-full">
+				<form method="post" action="{{ path("app_login") }}" class="w-full">
+					{% if error is defined %}
+						{% if error %}
+							<div class="flex justify-center items-center font-bold mt-10">
+								<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+							</div>
+						{% endif %}
+					{% endif %}
+					<div>
+						<label tabindex="1" for="email" class="block text-sm text-left font-semibold text-slate-900 dark:text-white">Mon adresse email</label>
+						<div class="relative mb-6">
+							<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
+								<i class="fa-regular fa-envelope dark:text-slate-200"></i>
+							</div>
+							<input type="email" value="{% if last_username is defined %}{{ last_username }}{% endif %}" name="email" id="inputEmail" autofocus>
+						</div>
+					</div>
+					<div>
+						<label tabindex="3" for="password" class="block text-left text-sm font-semibold text-slate-900 dark:text-white">Mon mot de passe
+							<button tabindex="4" type="button" onclick='MicroModal.show("popup-forgotpw");document.getElementById("popup-login").classList.add("animate__animated","animate__fadeOut");MicroModal.close("popup-login");document.getElementById("popup-login").classList.remove("animate__animated","animate__fadeOut")' class="text-sm font-medium text-blue-600  dark:text-sky-400 float-right">
+								<i class="fa-sharp fa-regular fa-key-skeleton"></i>
+								&nbsp;&nbsp;<span class="hover:underline text-blue-600  dark:text-sky-400">oublié ?</span>
+							</button>
+						</label>
+						<div class="relative mb-6">
+							<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
+								<i class="fa-regular fa-lock-keyhole dark:text-slate-200"></i>
+							</div>
+							<input type="password" name="password" id="inputPassword">
+						</div>
+					</div>
+					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+					<div class="flex justify-between ">
+						<div class="flex items-start">
+							<div class="flex items-center h-5">
+								<input type="checkbox" id="remember" name="_remember_me">
+							</div>
+							<label for="remember" class="ml-2 text-sm font-semibold text-slate-900 dark:text-slate-300">Rester connecté(e)</label>
+						</div>
+					</div>
+
+					<button type="submit" class="button-classic w-full flex justify-center button-slate -mt-10">
+						<i class="fa-duotone fa-right-to-bracket"></i>
+						Connexion</button>
+				</form>
+			</turbo-frame>
+		</div>
 	</section>
 {% endblock %}

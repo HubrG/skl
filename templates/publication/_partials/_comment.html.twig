@@ -43,7 +43,7 @@
 		</p>
 	{% endif %}
 	<div id="comment-{{item.id}}">
-		<div class="one-comment border border-slate-200 dark:border-slate-700 rounded {{ lastComment ? 'mb-3 animate__animated animate__fadeIn transition-colors duration-[1000ms] p-6 shadow-sm relative' : 'bg-white dark:bg-transparent dark:shadow-2xl p-6 mb-3 shadow-sm relative' }}" {% if lastComment %} id="lastComment" {% endif %}>
+		<div class="one-comment border border-slate-200 dark:border-slate-700 rounded {{ lastComment ? 'mb-3 animate__animated animate__fadeIn transition-colors duration-[1000ms] p-6 shadow-sm relative' : 'bg-white dark:bg-transparent dark:shadow-xl p-6 mb-3 shadow-sm relative' }}" {% if lastComment %} id="lastComment" {% endif %}>
 			<div class="flex items-start">
 				{% set profilPic = item.user.profilPicture ? item.user.profilPicture : 'https://picsum.photos/200/300' %}
 				<img class="w-12 h-12 rounded-full mr-4" src="{{ profilPic }}" alt="avatar">
@@ -135,6 +135,31 @@
 			<turbo-frame id="comment-section-{{item.id}}" class="opacity-80">
 				{% set n = 0 %}
 				{% for reply in pCom %}
+					{# likes #}
+					{% set userLogId = app.user.id is defined ? app.user.id : null %}
+					{% set class = "fa-regular fa-heart" %}
+					{% if userLogId is not null %}
+						{% if reply.user.id == userLogId %}
+							{% set class = "fa-regular fa-heart  cursor-not-allowed text-slate-300 " %}
+						{% else %}
+							{% for itemLike in reply.publicationCommentLikes %}
+								{% if itemLike.user.id == app.user.id %}
+									{% set class = "fa-solid fa-heart text-red-400 cursor-pointer likeButton  dark:text-red-400" %}
+									{% set liked = false %}
+									{% set break = "" %}
+								{% else %}
+									{% set liked = true %}
+									{% set class = "fa-regular fa-heart  cursor-pointer likeButton  dark:text-red-400" %}
+								{% endif %}
+							{% endfor %}
+							{% if class == "fa-regular fa-heart" %}
+								{% set class = "fa-regular fa-heart likeButton cursor-pointer  dark:text-red-400 " %}
+							{% endif %}
+						{% endif %}
+					{% else %}
+						{% set class = "fa-regular fa-heart cursor-default text-slate-400  dark:text-red-400" %}
+					{% endif %}
+					{# endlikes #}
 					{% if reply.replyTo == item %}
 						{% set profilPic = reply.user.profilPicture ? reply.user.profilPicture : 'https://picsum.photos/200/300' %}
 						{% if n == 0 %}
@@ -142,7 +167,7 @@
 						{% else %}
 							<hr class="mb-5" id="hr-comment-{{reply.id}}">
 						{% endif %}
-						<div class="flex flex-row w-full justify-between items-center" id="comment-{{reply.id}}">
+						<div class="flex relative flex-row w-full justify-between items-center" id="comment-{{reply.id}}">
 							<span class="flex flex-col items-center justify-center w-3/12">
 								<img class="w-6 h-6  rounded-full" src="{{ profilPic }}" alt="avatar">
 								<span class="text-sm text-slate-600 text-center dark:text-slate-400">
@@ -153,7 +178,6 @@
 									<span class="text-gray-400 text-[0.70rem]">{{reply.updatedAt ? "modifié"}}</span>
 								</span>
 							</span>
-
 							<div id="updateCom-{{ reply.id }}" class=" w-8/12 h-full rounded flex items-center border-l dark:border-l-slate-700 pl-3">
 								<p id="comShow-{{ reply.id }}" class="chapterComment">
 									{{ reply.content|nl2br }}
@@ -193,6 +217,12 @@
 									</div>
 								</div>
 							{% endif %}
+							<span class="absolute right-0 bottom-[-1rem] text-xs">
+								<i class="{{ class }} animate__animated" id="likeButton-{{ reply.id }}" aria-label="Aimer ce commentaire" data-like-path="{{path("app_comment_like")}}"></i>
+								<span class="ml-1 font-medium text-slate-600 dark:text-slate-500">
+									<span id="nbLikes-{{ reply.id }}">{{ reply.publicationCommentLikes|length }}</span>
+								</span>
+							</span>
 						</div>
 						{% set n = n + 1 %}
 

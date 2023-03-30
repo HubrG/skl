@@ -224,7 +224,7 @@ form button:disabled {
 }
 .noty_theme__semanticui.noty_type__info,
 .noty_theme__semanticui.noty_type__information {
-	@apply bg-slate-200 text-slate-700 shadow-lg text-sm rounded-lg flex font-normal text-center h-auto justify-center items-center;
+	@apply bg-slate-200 dark:bg-slate-700 dark:text-slate-400 text-slate-700 shadow-lg text-sm rounded-lg flex font-normal text-center h-auto justify-center items-center;
 
 }  
 .noty_theme__semanticui.noty_bar {
@@ -351,32 +351,33 @@ opacity: 0.4;
 .dropdown {
 	position: relative;
 	display: inline-block;
+	z-index: 999999999999999999999999999999999;
 }
 
 .dropdown-content {
 	display: none;
 	position: absolute;
-	left: 0;
-	top: 100%;
+	left: -2.5rem;
+	top: -50%;
 	transform: translate(-80%, 0px);
-	z-index: 1;
+	z-index: 999999999999999999999999999999999;
 }
 .dropdown-chapter-content {
 	display: none;
 	position: absolute;
-	z-index: 1;
+	z-index: 999;
 }
 .show {
 	display: block;
 }
 .chapterComment {
-	@apply mt-4 text-gray-700 text-sm;
+	@apply py-5 text-slate-700 dark:text-slate-200;
 }
 .chapterCommentEdit {
-	@apply mt-5  z-0 h-28 text-sm    block w-full  p-2.5 bg-white rounded-lg border border-gray-400  focus:outline-none focus:border-blue-500 ;
+	@apply mt-5  z-0 h-28 text-sm    block w-full  p-2.5 dark:bg-slate-700 bg-slate-50 dark:text-slate-300 rounded-lg border border-slate-300 dark:border-slate-500  focus:outline-none focus:border-blue-500 ;
 }
 .chapterCommentEditValidButton {
-	@apply   z-50 bg-white   mr-1 font-sans  p-1 px-2 mt-1 mb-2 text-center text-sm rounded hover:text-emerald-600 ;
+	@apply   z-50 dark:text-slate-300 text-slate-800   mr-1 font-sans  p-1 px-2 mt-1 mb-2 text-center text-sm rounded hover:text-emerald-600 hover:dark:text-emerald-400 ;
 }
 .chapterCommentEditCancelButton {
 	@apply  float-right font-sans rounded-full -mt-[6.9rem] mr-[0.2rem]  px-1 text-slate-600  text-center text-xs ;
@@ -577,7 +578,7 @@ opacity: 0.4;
 	@apply -translate-y-[10rem] ;
   }
 .one-comment {
-@apply transition-all ease-in-out delay-150 duration-500;
+@apply transition-all -z-0 ease-in-out delay-150 duration-500;
 }
 /* * Notifications Système */
 .one-notification a {

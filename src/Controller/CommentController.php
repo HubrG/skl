@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\PublicationComment;
 use App\Services\NotificationSystem;
 use App\Entity\PublicationCommentLike;
 use App\Services\PublicationPopularity;
@@ -115,6 +116,37 @@ class CommentController extends AbstractController
         return $this->json([
             'code' => 200,
             'message' => 'Le commentaire a bien été modifié.',
+            'comment' => $comment->getContent()
+        ], 200);
+    }
+    #[Route('/comment/reply', name: 'app_comment_reply', methods: ['POST'])]
+    public function CommentReply(Request $request, PublicationCommentRepository $pcomRepo, EntityManagerInterface $em): response
+    {
+        $id = $request->get("id"); // ID du commentaire principal
+        $dtReplyContent = $request->get("replyContent"); // Contenu du commentaire
+        // * On cherche le commentaire principal
+        $commentOrigin = $pcomRepo->find($id);
+        // * Si le commentaire existe et que l'utilisateur est connecté
+        if ($commentOrigin and $this->getUser()) {
+            $comment = new PublicationComment();
+            $comment->setUser($this->getUser())
+                ->setPublication($commentOrigin->getPublication())
+                ->setPublishedAt(new \DateTimeImmutable())
+                ->setContent($dtReplyContent)
+                ->setChapter($commentOrigin->getChapter())
+                ->setReplyTo($commentOrigin);
+            $em->persist($comment);
+            $em->flush();
+        } else {
+            return $this->json([
+                'code' => 403,
+                'message' => 'Vous n\'avez pas les droits pour modifier ce commentaire.',
+            ], 403);
+        }
+        //
+        return $this->json([
+            'code' => 200,
+            'message' => 'La réponse au commentaire a bien été ajouté.',
             'comment' => $comment->getContent()
         ], 200);
     }

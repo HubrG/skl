@@ -4,6 +4,65 @@ import { NotyDisplay } from "../Noty";
 export function Comment() {
   const commentDiv = document.getElementById("comment-section");
   if (!commentDiv) return;
+  // ! Fonction de réponse à un commentaire
+  const replyButton = document.querySelectorAll(".replyButton");
+  replyButton.forEach((el) => {
+    el.addEventListener("click", function () {
+      const commentId = el.getAttribute("data-comment-id");
+      let replyButtonIcon = document.getElementById(
+        "reply-button-icon-" + commentId
+      );
+      if (replyButtonIcon.classList.contains("fa-comments")) {
+        el.innerHTML = "Fermer";
+        replyButtonIcon.classList.remove("fa-comments", "fa-flip-horizontal");
+        replyButtonIcon.classList.add("fa-circle-xmark");
+      } else {
+        el.innerHTML = "Répondre";
+        replyButtonIcon.classList.add("fa-comments", "fa-flip-horizontal");
+        replyButtonIcon.classList.remove("fa-circle-xmark");
+      }
+      //
+      let textareaReply = document.getElementById("reply-to-" + commentId);
+      let replyTo = document.getElementById("display-reply-to-" + commentId);
+      let replySend = document.getElementById("send-reply-to-" + commentId);
+      // Affichage de la zone de texte
+      replyTo.classList.toggle("hidden");
+      // Aggrandissement de la zone de texte
+      if (textareaReply) {
+        textareaReply.addEventListener("input", () => {
+          textareaReply.style.height = "";
+          textareaReply.style.height = `${textareaReply.scrollHeight}px`;
+        });
+      }
+      // Envoi du commentaire
+      replySend.addEventListener("click", () => {
+        console.log(commentId, textareaReply.value);
+        var replyPath = replySend.getAttribute("data-reply-path");
+        console.log(replyPath);
+        let data = new FormData();
+        let url = replyPath;
+        data.append("id", commentId);
+        data.append("replyContent", textareaReply.value);
+        axios
+          .post(url, data, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((response) => {
+            console.log(response.data);
+            if (response.status === 200) {
+              textareaReply.value = "";
+              replyTo.classList.add("hidden");
+              replyButtonIcon.classList.add("fa-reply", "fa-flip-horizontal");
+              replyButtonIcon.classList.remove("fa-circle-xmark");
+              el.innerHTML = "Répondre";
+            }
+          });
+      });
+    });
+  });
+
   // ! Fonction de suppression d'un commentaire
   const deleteComment = document.querySelectorAll(".deleteCommentButton");
   deleteComment.forEach((el) => {
@@ -22,6 +81,7 @@ export function Comment() {
         .then((response) => {
           if (response.status === 200) {
             const comment = document.getElementById("comment-" + commentId);
+            const hr = document.getElementById("hr-comment-" + commentId);
             const nbrCom = document.querySelectorAll(".nbr-com");
             nbrCom.forEach((nbr) => {
               nbr.innerHTML = Number(nbr.innerHTML) - 1;
@@ -34,9 +94,17 @@ export function Comment() {
             // réduire la hauteur de la div à 0px
             setTimeout(() => {
               comment.remove();
+              if (hr) {
+                hr.remove();
+              }
             }, 500);
 
-            NotyDisplay(response.data.message, "success", 2500);
+            NotyDisplay(
+              '<i class="fa-light fa-circle-check"></i>&nbsp;&nbsp;' +
+                response.data.message,
+              "info",
+              2500
+            );
           }
         })
         .catch((error) => {

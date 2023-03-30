@@ -1,115 +1,204 @@
-{% set userLogId = app.user.id is defined ? app.user.id : null %}
-{% set class = "fa-regular fa-heart" %}
-{% if userLogId is not null %}
-	{% if item.user.id == userLogId %}
-		{% set class = "fa-regular fa-heart  cursor-not-allowed text-slate-300 " %}
-	{% else %}
-		{% for itemLike in item.publicationCommentLikes %}
-			{% if itemLike.user.id == app.user.id %}
-				{% set class = "fa-solid fa-heart text-red-400 cursor-pointer likeButton  dark:text-red-400" %}
-				{% set liked = false %}
-				{% set break = "" %}
-			{% else %}
-				{% set liked = true %}
-				{% set class = "fa-regular fa-heart  cursor-pointer likeButton  dark:text-red-400" %}
-			{% endif %}
-		{% endfor %}
-		{# {% if liked is defined and liked == true %}
-																	{% set class = "fa-regular fa-heart likeButton cursor-pointer dark:text-slate-400" %}
-																{% else %}
-																	{% set class = "fa-solid fa-heart likeButton cursor-pointer text-red-400  dark:text-slate-400" %}
-																{% endif %} #}
-		{% if class == "fa-regular fa-heart" %}
-			{% set class = "fa-regular fa-heart likeButton cursor-pointer  dark:text-red-400 " %}
-		{% endif %}
-	{% endif %}
-{% else %}
-	{% set class = "fa-regular fa-heart cursor-default text-slate-400  dark:text-red-400" %}
-{% endif %}
-{% set lastComment = n == 0 and userLogId == item.user.id and item.publishedAt > "now"|date_modify("-2 seconds") %}
-{% if n == 0 %}
-	<p class="dark:text-white">
-		<i class="fa-duotone fa-comments"></i>
-		&nbsp;
-		{% set nbComment = pcom %}
-		{% if nbComment == 0 %}
-			Aucun commentaire
-			<span class="nbr-com" class="hidden">{{ nbComment }}</span>
+{% if item.replyTo is null %}
+	{% set userLogId = app.user.id is defined ? app.user.id : null %}
+	{% set class = "fa-regular fa-heart" %}
+	{% if userLogId is not null %}
+		{% if item.user.id == userLogId %}
+			{% set class = "fa-regular fa-heart  cursor-not-allowed text-slate-300 " %}
 		{% else %}
-			<span class="nbr-com" id="nbr-com">{{ nbComment }}</span>
-			{% if nbComment > 1 %}
-				commentaires
-			{% else %}
-				commentaire
+			{% for itemLike in item.publicationCommentLikes %}
+				{% if itemLike.user.id == app.user.id %}
+					{% set class = "fa-solid fa-heart text-red-400 cursor-pointer likeButton  dark:text-red-400" %}
+					{% set liked = false %}
+					{% set break = "" %}
+				{% else %}
+					{% set liked = true %}
+					{% set class = "fa-regular fa-heart  cursor-pointer likeButton  dark:text-red-400" %}
+				{% endif %}
+			{% endfor %}
+			{% if class == "fa-regular fa-heart" %}
+				{% set class = "fa-regular fa-heart likeButton cursor-pointer  dark:text-red-400 " %}
 			{% endif %}
 		{% endif %}
-		<br/><br/>
-	</p>
-{% endif %}
-<div id="comment-{{item.id}}">
-	<div class="one-comment rounded {{ lastComment ? 'mb-3 animate__animated animate__fadeIn transition-colors duration-[1000ms] p-6 shadow-sm relative' : 'bg-white dark:bg-transparent dark:shadow-2xl p-6 mb-3 shadow-sm relative' }}" {% if lastComment %} id="lastComment" {% endif %}>
-		<div class="flex items-start">
-			{% set profilPic = item.user.profilPicture ? item.user.profilPicture : 'https://picsum.photos/200/300' %}
-			<img class="w-12 h-12 rounded-full mr-4" src="{{ profilPic }}" alt="avatar">
-			<div class="flex-1">
-				<h4 class="font-medium text-sm dark:text-white">
-					<a href="{{ path("app_user", {username:item.user.username}) }}" class="hover:underline">{{ item.user.nickname }}</a>
-				</h4>
-				<p class="text-slate-600 text-xs dark:text-white">
-					{{ item.publishedAt|since }}
-					<span class="text-gray-400 text-[0.70rem]">{{item.updatedAt ? "| modifié il y a " ~ item.updatedAt|since}}</span>
+	{% else %}
+		{% set class = "fa-regular fa-heart cursor-default text-slate-400  dark:text-red-400" %}
+	{% endif %}
+	{% set lastComment = n == 0 and userLogId == item.user.id and item.publishedAt > "now"|date_modify("-2 seconds") %}
+	{% if n == 0 %}
+		<p class="dark:text-white">
+			<i class="fa-duotone fa-comments"></i>
+			&nbsp;
+			{% set nbComment = pcom %}
+			{% if nbComment == 0 %}
+				Aucun commentaire
+				<span class="nbr-com" class="hidden">{{ nbComment }}</span>
+			{% else %}
+				<span class="nbr-com" id="nbr-com">{{ nbComment }}</span>
+				{% if nbComment > 1 %}
+					commentaires
+				{% else %}
+					commentaire
+				{% endif %}
+			{% endif %}
+			<br/><br/>
+		</p>
+	{% endif %}
+	<div id="comment-{{item.id}}">
+		<div class="one-comment border border-slate-200 dark:border-slate-700 rounded {{ lastComment ? 'mb-3 animate__animated animate__fadeIn transition-colors duration-[1000ms] p-6 shadow-sm relative' : 'bg-white dark:bg-transparent dark:shadow-2xl p-6 mb-3 shadow-sm relative' }}" {% if lastComment %} id="lastComment" {% endif %}>
+			<div class="flex items-start">
+				{% set profilPic = item.user.profilPicture ? item.user.profilPicture : 'https://picsum.photos/200/300' %}
+				<img class="w-12 h-12 rounded-full mr-4" src="{{ profilPic }}" alt="avatar">
+				<div class="flex-1">
+					<h4 class="font-medium text-sm dark:text-white">
+						<a href="{{ path("app_user", {username:item.user.username}) }}" class="hover:underline">{{ item.user.nickname }}</a>
+					</h4>
+					<p class="text-slate-600 text-xs dark:text-white">
+						{{ item.publishedAt|since }}
+						<span class="text-gray-400 text-[0.70rem]">{{item.updatedAt ? "| modifié il y a " ~ item.updatedAt|since}}</span>
+					</p>
+				</div>
+				{% if userLogId is not null %}
+					<div class="dropdown">
+						<button aria-label="Afficher les options du commentaire de {{item.user.nickname}} — numéro {{item.id}}" class="text-gray-600 hover:text-gray-900   focus:outline-none focus:text-gray-900">
+							<svg class="w-6 h-6 dropdown-button dark:hover:fill-white hover:fill-slate-900" fill="currentColor" viewbox="0 0 20 20" id="ddb-{{ item.id }}">
+								<path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+							</svg>
+						</button>
+						<div id="ddm-{{ item.id }}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dropdown-content">
+							<ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+								{% if item.user.id == userLogId %}
+									<li>
+										<button type="button" data-update-path="{{path("app_comment_update")}}" id="updateButton-{{ item.id }}" class="updateButton w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+											<i class="fa-solid fa-pen-to-square"></i>
+											&nbsp;Modifier
+										</button>
+									</li>
+									<li>
+										<button data-delete-path="{{path("app_comment_delete")}}" data-comment-id="{{item.id}}" class="updateButton w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white deleteCommentButton">
+											<i class="fa-regular fa-trash-can"></i>
+											&nbsp;Supprimer
+										</button>
+									</li>
+								{% else %}
+									<li>
+										<a data-turbo-frame="_self" href="{{path("app_comment_delete")}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+											<i class="fa-regular fa-regular fa-flag"></i>
+											&nbsp;Signaler
+										</a>
+									</li>
+								{% endif %}
+							</ul>
+						</div>
+					</div>
+				{% endif %}
+			</div>
+			<div id="updateCom-{{ item.id }}" class="text-base">
+				<p id="comShow-{{ item.id }}" class="chapterComment dark:text-slate-200">
+					{{ item.content|nl2br }}
 				</p>
 			</div>
-			{% if userLogId is not null %}
-				<div class="dropdown">
-					<button aria-label="Afficher les options du commentaire de {{item.user.nickname}} — numéro {{item.id}}" class="text-gray-600 hover:text-gray-900   focus:outline-none focus:text-gray-900">
-						<svg class="w-6 h-6 dropdown-button " fill="currentColor" viewbox="0 0 20 20" id="ddb-{{ item.id }}">
-							<path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-						</svg>
-					</button>
-					<div id="ddm-{{ item.id }}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dropdown-content">
-						<ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
-							{% if item.user.id == userLogId %}
-								<li>
-									<button type="button" data-update-path="{{path("app_comment_update")}}" id="updateButton-{{ item.id }}" class="updateButton w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-										<i class="fa-solid fa-pen-to-square"></i>
-										&nbsp;Modifier
-									</button>
-								</li>
-								<li>
-									<button data-delete-path="{{path("app_comment_delete")}}" data-comment-id="{{item.id}}" class="updateButton w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white deleteCommentButton">
-										<i class="fa-regular fa-trash-can"></i>
-										&nbsp;Supprimer
-									</button>
-								</li>
-							{% else %}
-								<li>
-									<a data-turbo-frame="_self" href="{{path("app_comment_delete")}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-										<i class="fa-regular fa-regular fa-flag"></i>
-										&nbsp;Signaler
-									</a>
-								</li>
-							{% endif %}
-						</ul>
-					</div>
-				</div>
+			{% if item.quote %}
+				<blockquote class="mt-4 border-l-4 border-emerald-200 pl-4 italic text-slate-500">
+					<p class="font-serif quoteComment cursor-alias text-[0.85rem]">{{ item.quote }}</p>
+				</blockquote>
 			{% endif %}
-		</div>
-		<div id="updateCom-{{ item.id }}">
-			<p id="comShow-{{ item.id }}" class="chapterComment dark:text-slate-200">
-				{{ item.content|nl2br }}
-			</p>
-		</div>
-		{% if item.quote %}
-			<blockquote class="mt-4 border-l-4 border-emerald-200 pl-4 italic text-slate-500">
-				<p class="font-serif quoteComment cursor-alias text-[0.85rem]">{{ item.quote }}</p>
-			</blockquote>
-		{% endif %}
-		<div class="mt-4 flex items-center justify-end">
-			<i class="{{ class }} animate__animated" id="likeButton-{{ item.id }}" aria-label="Aimer ce commentaire" data-like-path="{{path("app_comment_like")}}"></i>
-			<span class="ml-2 font-medium text-gray-600">
-				<span id="nbLikes-{{ item.id }}">{{ item.publicationCommentLikes|length }}</span>
-			</span>
+			<div class="mt-4 flex items-center justify-between text-md dark:border-t-slate-700">
+				<div class="w-5/6">
+					<span class="w-4/6 flex-row flex items-center gap-x-2 text-sm">
+						<i id="reply-button-icon-{{item.id}}" class="fa-regular fa-comments fa-flip-horizontal text-slate-400 text-sm"></i>
+						{% if app.user %}
+							<button class="replyButton text-slate-400 hover:underline" data-comment-id="{{item.id}}">Répondre</button>
+						{% else %}
+							<button class="replyButton text-slate-400 hover:underline" data-micromodal-trigger="popup-login">Répondre</button>
+						{% endif %}
+					</span>
+				</div>
+				<span class="w-1/6 text-right">
+					<i class="{{ class }} animate__animated" id="likeButton-{{ item.id }}" aria-label="Aimer ce commentaire" data-like-path="{{path("app_comment_like")}}"></i>
+					<span class="ml-1 font-medium text-slate-600 dark:text-slate-500">
+						<span id="nbLikes-{{ item.id }}">{{ item.publicationCommentLikes|length }}</span>
+					</span>
+				</span>
+			</div>
+			<div class="flex items-center w-full rounded-lg mt-6 hidden" id="display-reply-to-{{item.id}}">
+				<textarea rows="1" placeholder="Votre réponse..." id="reply-to-{{item.id}}" class="block -mt-5 p-2.5 w-full text-sm text-gray-900 resize-none bg-white pr-12 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+				<button data-reply-path="{{path("app_comment_reply")}}" onclick="setTimeout(function() { document.getElementById('click-reply-{{item.id}}').click() },100)" id="send-reply-to-{{item.id}}" type="button" class="inline-flex justify-center p-2 text-slate-600 rounded-full cursor-pointer  hover:text-blue-500 dark:text-sky-500 dark:hover:text-sky-400  -ml-10 mt-4">
+					<svg aria-hidden="true" class="w-6 h-6 -mt-8 rotate-45" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+						<path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
+					</svg>
+					<span class="sr-only">Envoyer</span>
+				</button>
+				{% set currentRoute = app.request.attributes.get('_route') %}
+				{% set currentRouteParams = app.request.attributes.get('_route_params') %}
+				{% set currentPath = path(currentRoute, currentRouteParams) %}
+				<a href="{{currentPath}}" id="click-reply-{{item.id}}" data-turbo-frame="_self" class="hidden"></a>
+			</div>
+			<turbo-frame id="comment-section-{{item.id}}" class="opacity-80">
+				{% set n = 0 %}
+				{% for reply in pCom %}
+					{% if reply.replyTo == item %}
+						{% set profilPic = reply.user.profilPicture ? reply.user.profilPicture : 'https://picsum.photos/200/300' %}
+						{% if n == 0 %}
+							<hr class="mb-5 border-[1px] border-dashed border-slate-500 dark:border-slate-700 opacity-50" id="hr-comment-{{reply.id}}">
+						{% else %}
+							<hr class="mb-5" id="hr-comment-{{reply.id}}">
+						{% endif %}
+						<div class="flex flex-row w-full justify-between items-center" id="comment-{{reply.id}}">
+							<span class="flex flex-col items-center justify-center w-3/12">
+								<img class="w-6 h-6  rounded-full" src="{{ profilPic }}" alt="avatar">
+								<span class="text-sm text-slate-600 text-center dark:text-slate-400">
+									<a href="{{ path('app_user', {'username': reply.user.username}) }}" target="_top" class="hover:underline">{{ reply.user.nickname }}</a>
+								</span>
+								<span class="text-[0.70rem] text-slate-600 text-center dark:text-slate-400 flex flex-col">
+									{{ reply.publishedAt|since }}
+									<span class="text-gray-400 text-[0.70rem]">{{reply.updatedAt ? "modifié"}}</span>
+								</span>
+							</span>
+
+							<div id="updateCom-{{ reply.id }}" class=" w-8/12 h-full rounded flex items-center border-l dark:border-l-slate-700 pl-3">
+								<p id="comShow-{{ reply.id }}" class="chapterComment">
+									{{ reply.content|nl2br }}
+								</p>
+							</div>
+							{% if userLogId is not null %}
+								<div class="dropdown float-right">
+									<button aria-label="Afficher les options du commentaire de {{reply.user.nickname}} — numéro {{reply.id}}" class="text-gray-600 hover:text-gray-900   focus:outline-none focus:text-gray-900">
+										<svg class="w-4 h-4 dropdown-button fill-slate-400 dark:fill-slate-500 hover:fill-slate-900 hover:dark:fill-slate-200" fill="currentColor" viewbox="0 0 20 20" id="ddb-{{ reply.id }}">
+											<path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+										</svg>
+									</button>
+									<div id="ddm-{{ reply.id }}" class=" hidden z-50 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dropdown-content">
+										<ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+											{% if reply.user.id == userLogId %}
+												<li>
+													<button type="button" data-update-path="{{path("app_comment_update")}}" id="updateButton-{{ reply.id }}" class="updateButton w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+														<i class="fa-solid fa-pen-to-square"></i>
+														&nbsp;Modifier
+													</button>
+												</li>
+												<li>
+													<button data-delete-path="{{path("app_comment_delete")}}" data-comment-id="{{reply.id}}" class=" w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white deleteCommentButton deleteCommentButtonReply">
+														<i class="fa-regular fa-trash-can"></i>
+														&nbsp;Supprimer
+													</button>
+												</li>
+											{% else %}
+												<li>
+													<a data-turbo-frame="_self" href="{{path("app_comment_delete")}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+														<i class="fa-regular fa-regular fa-flag"></i>
+														&nbsp;Signaler
+													</a>
+												</li>
+											{% endif %}
+										</ul>
+									</div>
+								</div>
+							{% endif %}
+						</div>
+						{% set n = n + 1 %}
+
+					{% endif %}
+				{% endfor %}
+			</turbo-frame>
 		</div>
 	</div>
-</div>
+{% endif %}

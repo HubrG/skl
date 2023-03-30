@@ -158,7 +158,7 @@ class ResetPasswordController extends AbstractController
             ->from(new Address('hubert@scrilab.fr', 'Scrilab'))
             ->to($user->getEmail())
             ->subject('Votre requête de réinitialisation de mot de passe')
-            ->htmlTemplate('reset_password/email.html.twig')
+            ->htmlTemplate('emails/reset_password.html.twig')
             ->context([
                 'resetToken' => $resetToken,
             ]);

@@ -60,10 +60,10 @@ class RegistrationController extends AbstractController
                 'app_verify_email',
                 $user,
                 (new TemplatedEmail())
-                    ->from(new Address('hubert@scrilab.fr', 'Scrilab'))
+                    ->from(new Address('contact@scrilab.fr', 'Scrilab'))
                     ->to($user->getEmail())
-                    ->subject('Confirmez votre adresse email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
+                    ->subject('Confirmez votre adresse adresse email.')
+                    ->htmlTemplate('emails/valid_email.html.twig')
             );
             // do anything else you need here, like send an email
             $this->addFlash('success', 'Bienvenue ' . $form->get("username")->getData());

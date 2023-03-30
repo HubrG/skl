@@ -1,9 +1,0 @@
-<h1>Scrilabeur(se),</h1>
-
-<p>Pour réinitialiser votre mot de passe, veuillez cliquer sur le lien suivant :
-	<a href="https://www.scrilab.com{{ path('app_reset_password', {token: resetToken.token}) }}">réinitialiser mon mot de passe</a>.</p>
-
-<p>Ce lien expirera dans
-	{{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
-
-<p>À tout de suite ! :)</p>

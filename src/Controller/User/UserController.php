@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\MimeTypesInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\PublicationCommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -38,12 +39,10 @@ class UserController extends AbstractController
 			$userInfo = $userRepo->findOneBy(["email" => $this->getUser()]);
 		}
 		// Si le username n'est pas renseigné et que l'utilisateur n'est pas connecté, alors on le redirige
-
 		elseif ($username == "me" && !$this->getUser()) {
 			return $this->redirectToRoute("app_home");
 		}
 		// Si le username est renseigné alors on affiche la page du membre du username
-
 		else {
 			$userInfo = $userRepo->findOneBy(["username" => $username]);
 		}
@@ -207,7 +206,7 @@ class UserController extends AbstractController
 		}
 	}
 	#[Route('update/user/account', name: 'app_user_account')]
-	public function account(Request $request, EntityManagerInterface $em, UserRepository $userRepo,  UserPasswordHasherInterface $userPasswordHasher, $success = null): Response
+	public function account(Request $request, EntityManagerInterface $em, UserRepository $userRepo, UserPasswordHasherInterface $userPasswordHasher, $success = null): Response
 	{
 		if (!$this->getUser()) {
 			return $this->redirectToRoute("app_home");
@@ -253,5 +252,32 @@ class UserController extends AbstractController
 			'userInfo' => $this->getUser()
 
 		]);
+	}
+	#[Route('/delete-account', name: 'app_user_delete_account')]
+	public function deleteAccount(UserRepository $userRepo, EntityManagerInterface $em, PublicationCommentRepository $pcRepo): Response
+	{
+		// On supprime le compte de l'utilisateur connecté
+		$user = $userRepo->find($this->getUser());
+		// On recherche toutes les reply_to de PublicationComment lié à cet user
+		// $qb = $pcRepo->createQueryBuilder('p')
+		// 	->where('p.User = :user')
+		// 	->andWhere('p.replyTo IS NOT NULL')
+		// 	->setParameter('user', $user);
+		// $results = $qb->getQuery()->getResult();
+		// // S'il y a un restultat
+		// if ($results) {
+		// 	// On supprime les PublicationComment lié à cet user
+		// 	foreach ($results as $result) {
+		// 		$em->remove($result);
+		// 	}
+		// 	$em->flush();
+		// }
+		//
+		$em->remove($user);
+		$em->flush();
+		// On déconnecte l'utilisateur
+		//
+		$this->addFlash('success', "<i class=\"fa-duotone fa-user-slash\"></i>&nbsp;&nbsp;Votre compte a bien été supprimé. N'hésitez pas à nous rejoindre à nouveau !");
+		return $this->redirectToRoute("app_home");
 	}
 }

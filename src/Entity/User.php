@@ -76,24 +76,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $country = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Publication::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Publication::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publications;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $join_date = null;
 
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterView::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterView::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationChapterViews;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterNote::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterNote::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationChapterNotes;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterLike::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationChapterLike::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationChapterLikes;
 
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationDownload::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationDownload::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationDownloads;
 
     /**
@@ -106,31 +106,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $oldPassword;
 
-    #[ORM\OneToMany(mappedBy: 'User', targetEntity: PublicationComment::class)]
+    #[ORM\OneToMany(mappedBy: 'User', targetEntity: PublicationComment::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationComments;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationBookmark::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationBookmark::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationBookmarks;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationCommentLike::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationCommentLike::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationCommentLikes;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationRating::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationRating::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationRatings;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationBookmarkCollection::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationBookmarkCollection::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationBookmarkCollections;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Notification::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $notifications;
 
-    #[ORM\OneToMany(mappedBy: 'from_user', targetEntity: Notification::class)]
+    #[ORM\OneToMany(mappedBy: 'from_user', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $UserFrom;
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?UserParameters $userParameters = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationFollow::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationFollow::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationFollows;
 
     #[ORM\Column(length: 255, nullable: true)]

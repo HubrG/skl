@@ -7,23 +7,23 @@
 {% block body %}
 	{% include "user/_partials/_top.html.twig" %}
 
-	<div class="w-full xl:w-8/12 flex flex-col justify-center mx-auto">
+	<div class="w-full xl:w-8/12 flex flex-col justify-center mx-auto  -mt-7">
 		<div class="mb-4 border-b border-gray-200 dark:border-gray-700">
-			<ul class="flex flex-wrap justify-center -mb-px text-base font-semibold text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
+			<ul class="flex flex-wrap justify-center -mb-px text-md font-semibold text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
 				<li class="mr-2" role="presentation">
-					<button class=" p-4 flex flex-row gap-x-2 items-center border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">
+					<button class="p-4 border-b-4 flex-row-custom-gapx-3  dark:bg-slate-800  text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">
 						<i class="fa-regular fa-circle-user"></i>
 						<span>Compte</span>
 					</button>
 				</li>
 				<li class="mr-2" role="presentation">
-					<button class="flex flex-row gap-x-2 items-center p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">
+					<button class="p-4 border-b-4 flex-row-custom-gapx-3  dark:bg-slate-800  text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">
 						<i class="fa-regular fa-lock-keyhole"></i>
 						<span>Mot de passe</span>
 					</button>
 				</li>
 				<li role="notif-account">
-					<button class="flex flex-row gap-x-2 items-center p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="contacts-tab" data-tabs-target="#notif-account" type="button" role="tab" aria-controls="notif-account" aria-selected="false">
+					<button class="p-4 border-b-4 flex-row-custom-gapx-3  dark:bg-slate-800  text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="contacts-tab" data-tabs-target="#notif-account" type="button" role="tab" aria-controls="notif-account" aria-selected="false">
 						<i class="fa-regular fa-bell-exclamation"></i>
 						<span>Notifications</span>
 					</button>
@@ -32,7 +32,7 @@
 		</div>
 		<div id="myTabContent">
 
-			<div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+			<div class="hidden p-4 rounded-lg  dark:bg-gray-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
 
 				{{ form_start(form, {attr:{"data-turbo-frame":"_top"}}) }}
 				{% include "./partials/_form-row.html.twig" with {'form': form.email, 'icon':"fa-envelope"} %}
@@ -49,86 +49,115 @@
 				</div>
 
 				{{ form_end(form) }}
-			</div>
-			<div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-
-				{{ form_start(passwordForm, {attr:{"data-turbo-frame":"_top"}}) }}
-				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.oldPassword, 'icon':"fa-key"} %}
-				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.plainPassword.first, 'icon':"fa-lock-keyhole"} %}
-				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.plainPassword.second, 'icon':"fa-lock-keyhole"} %}
-				<div class="flex justify-center">
-					<button type="submit" class="button-classic button-slate">
-						<i class="fa-regular fa-circle-check"></i>
-						Modifier mon mot de passe
-					</button>
-					<div>
-						{{ form_end(passwordForm) }}
-					</div>
-				</div>
-			</div>
-			<div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="notif-account" role="tabpanel" aria-labelledby="contacts-tab">
-				<div class="flex flex-col gap-y-4 text-xs lg:text-sm">
-					<div class="flex flex-row text-base pb-5">
-						<div class="w-10/12 font-semibold">Type de notification</div>
-						<div class="w-1/12">
-							<i class="fa-duotone fa-envelope"></i>
-						</div>
-						<div class="w-1/12">
-							<i class="fa-duotone fa-bell"></i>
-						</div>
-					</div>
-					<div class="flex flex-row">
-						<div class="w-10/12">Nouveau commentaire sur l'un de vos récits</div>
-						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="1" type="checkbox" {{app.user.userParameters.notif1Mail is null or app.user.userParameters.notif1Mail == 1 ? "checked"}}></div>
-						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="1" type="checkbox" {{app.user.userParameters.notif1Web is null or app.user.userParameters.notif1Web == 1 ? "checked"}}></div>
-					</div>
-					<div class="flex flex-row">
-						<div class="w-10/12">Nouveau commentaire sur l'une de vos feuilles</div>
-						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="2" type="checkbox" {{app.user.userParameters.notif2Mail is null or app.user.userParameters.notif2Mail == 1 ? "checked"}}></div>
-						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="2" type="checkbox" {{app.user.userParameters.notif2Web is null or app.user.userParameters.notif2Web == 1 ? "checked"}}></div>
-					</div>
-					<div class="flex flex-row">
-						<div class="w-10/12">Nouveau like sur l'un de vos commentaires</div>
-						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="3" type="checkbox" {{app.user.userParameters.notif3Mail is null or app.user.userParameters.notif3Mail == 1 ? "checked"}}></div>
-						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="3" type="checkbox" {{app.user.userParameters.notif3Web is null or app.user.userParameters.notif3Web == 1 ? "checked"}}></div>
-					</div>
-					<div class="flex flex-row">
-						<div class="w-10/12">Nouvel ajout à une collection de l'un de vos chapitre</div>
-						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="4" type="checkbox" {{app.user.userParameters.notif4Mail is null or app.user.userParameters.notif4Mail == 1 ? "checked"}}></div>
-						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="4" type="checkbox" {{app.user.userParameters.notif4Web is null or app.user.userParameters.notif4Web == 1 ? "checked"}}></div>
-					</div>
-					<div class="flex flex-row">
-						<div class="w-10/12">Nouveau téléchargement d'une publication</div>
-						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="5" type="checkbox" {{app.user.userParameters.notif5Mail is null or app.user.userParameters.notif5Mail == 1 ? "checked"}}></div>
-						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="5" type="checkbox" {{app.user.userParameters.notif5Web is null or app.user.userParameters.notif5Web == 1 ? "checked"}}></div>
-					</div>
-					<div class="flex flex-row">
-						<div class="w-10/12">Nouveau « j'aime » sur un chapitre</div>
-						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="6" type="checkbox" {{app.user.userParameters.notif6Mail is null or app.user.userParameters.notif6Mail == 1 ? "checked"}}></div>
-						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="6" type="checkbox" {{app.user.userParameters.notif6Web is null or app.user.userParameters.notif6Web == 1 ? "checked"}}></div>
-					</div>
-					<div class="flex flex-row">
-						<div class="w-10/12">Nouvelle feuille sur une publication que vous suivez</div>
-						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="7" type="checkbox" {{app.user.userParameters.notif7Mail is null or app.user.userParameters.notif7Mail == 1 ? "checked"}}></div>
-						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="7" type="checkbox" {{app.user.userParameters.notif7Web is null or app.user.userParameters.notif7Web == 1 ? "checked"}}></div>
-					</div>
-					<div class="flex flex-row">
-						<div class="w-10/12">Nouvel abonnement à votre publication</div>
-						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="8" type="checkbox" {{app.user.userParameters.notif8Mail is null or app.user.userParameters.notif8Mail == 1 ? "checked"}}></div>
-						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="8" type="checkbox" {{app.user.userParameters.notif8Web is null or app.user.userParameters.notif8Web == 1 ? "checked"}}></div>
-					</div>
-					<div class="flex flex-row">
-						<div class="w-10/12">Nouvelle réponse à un commentaire</div>
-						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="9" type="checkbox" {{app.user.userParameters.notif9Mail is null or app.user.userParameters.notif9Mail == 1 ? "checked"}}></div>
-						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="9" type="checkbox" {{app.user.userParameters.notif9Web is null or app.user.userParameters.notif9Web == 1 ? "checked"}}></div>
-					</div>
-				</div>
-
-
+				<a href="{{ path('app_user_delete_account') }}" class="button-classic button-slate">
+					<i class="fa-regular fa-circle-exit"></i>
+					Suppression du compte</a>
 			</div>
 		</div>
+		<div class="hidden p-4 rounded-lg dark:bg-gray-800" id="settings" role="tabpanel" aria-labelledby="settings-tab">
 
+			{{ form_start(passwordForm, {attr:{"data-turbo-frame":"_top"}}) }}
+			{% include "./partials/_form-row.html.twig" with {'form': passwordForm.oldPassword, 'icon':"fa-key"} %}
+			{% include "./partials/_form-row.html.twig" with {'form': passwordForm.plainPassword.first, 'icon':"fa-lock-keyhole"} %}
+			{% include "./partials/_form-row.html.twig" with {'form': passwordForm.plainPassword.second, 'icon':"fa-lock-keyhole"} %}
+			<div class="flex justify-center">
+				<button type="submit" class="button-classic button-slate">
+					<i class="fa-regular fa-circle-check"></i>
+					Modifier mon mot de passe
+				</button>
+				<div>
+					{{ form_end(passwordForm) }}
+				</div>
+			</div>
+		</div>
+		<div class="hidden p-4 rounded-lg dark:bg-gray-800" id="notif-account" role="tabpanel" aria-labelledby="contacts-tab">
+			<div class="flex flex-col gap-y-4 text-xs lg:text-sm">
+				<div class="flex flex-row text-base pb-5">
+					<div class="w-10/12 font-semibold dark:text-slate-100">Type de notification</div>
+					<div class="w-1/12">
+						<i data-tippy-content="Notifications par email" class="fa-duotone fa-envelope dark:text-slate-100"></i>
+					</div>
+					<div class="w-1/12">
+						<i data-tippy-content="Notificatios web" class="fa-duotone fa-bell dark:text-slate-100"></i>
+					</div>
+				</div>
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-comment-quote"></i>
+						<span>Nouveau commentaire sur l'un de vos récits</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="1" type="checkbox" {{app.user.userParameters.notif1Mail is null or app.user.userParameters.notif1Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="1" type="checkbox" {{app.user.userParameters.notif1Web is null or app.user.userParameters.notif1Web == 1 ? "checked"}}></div>
+				</div>
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-message-quote"></i>
+						<span>Nouveau commentaire sur l'une de vos feuilles</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="2" type="checkbox" {{app.user.userParameters.notif2Mail is null or app.user.userParameters.notif2Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="2" type="checkbox" {{app.user.userParameters.notif2Web is null or app.user.userParameters.notif2Web == 1 ? "checked"}}></div>
+				</div>
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-comment-heart"></i>
+						<span>Nouveau like sur l'un de vos commentaires</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="3" type="checkbox" {{app.user.userParameters.notif3Mail is null or app.user.userParameters.notif3Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="3" type="checkbox" {{app.user.userParameters.notif3Web is null or app.user.userParameters.notif3Web == 1 ? "checked"}}></div>
+				</div>
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-folder-bookmark"></i>
+						<span>Nouvel ajout à une collection de l'un de vos chapitre</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="4" type="checkbox" {{app.user.userParameters.notif4Mail is null or app.user.userParameters.notif4Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="4" type="checkbox" {{app.user.userParameters.notif4Web is null or app.user.userParameters.notif4Web == 1 ? "checked"}}></div>
+				</div>
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-download"></i>
+						<span>Nouveau téléchargement d'une publication</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="5" type="checkbox" {{app.user.userParameters.notif5Mail is null or app.user.userParameters.notif5Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="5" type="checkbox" {{app.user.userParameters.notif5Web is null or app.user.userParameters.notif5Web == 1 ? "checked"}}></div>
+				</div>
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-thumbs-up"></i>
+						<span>Nouveau « j'aime » sur un chapitre</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="6" type="checkbox" {{app.user.userParameters.notif6Mail is null or app.user.userParameters.notif6Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="6" type="checkbox" {{app.user.userParameters.notif6Web is null or app.user.userParameters.notif6Web == 1 ? "checked"}}></div>
+				</div>
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-file"></i>
+						<span>Nouvelle feuille sur une publication que vous suivez</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="7" type="checkbox" {{app.user.userParameters.notif7Mail is null or app.user.userParameters.notif7Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="7" type="checkbox" {{app.user.userParameters.notif7Web is null or app.user.userParameters.notif7Web == 1 ? "checked"}}></div>
+				</div>
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-square-rss"></i>
+						<span>Nouvel abonnement à votre publication</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="8" type="checkbox" {{app.user.userParameters.notif8Mail is null or app.user.userParameters.notif8Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="8" type="checkbox" {{app.user.userParameters.notif8Web is null or app.user.userParameters.notif8Web == 1 ? "checked"}}></div>
+				</div>
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-comments"></i>
+						<span>Nouvelle réponse à un commentaire</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="9" type="checkbox" {{app.user.userParameters.notif9Mail is null or app.user.userParameters.notif9Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="9" type="checkbox" {{app.user.userParameters.notif9Web is null or app.user.userParameters.notif9Web == 1 ? "checked"}}></div>
+				</div>
+			</div>
+
+
+		</div>
 	</div>
-	{% include "user/_partials/_bottom.html.twig" %}
 
-{% endblock %}
+</div>
+{% include "user/_partials/_bottom.html.twig" %}{% endblock %}

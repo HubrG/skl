@@ -23,58 +23,58 @@ class UserParameters
     private ?bool $grid_show = null;
 
     #[ORM\Column(nullable: true, options: ['default' => true])]
-    private ?bool $notif_1_mail = null;
+    private ?bool $notif_1_mail = true;
 
     #[ORM\Column(nullable: true, options: ['default' => true])]
-    private ?bool $notif_1_web = null;
+    private ?bool $notif_1_web = true;
 
     #[ORM\Column(nullable: true, options: ['default' => true])]
-    private ?bool $notif_2_mail = null;
+    private ?bool $notif_2_mail = true;
 
     #[ORM\Column(nullable: true, options: ['default' => true])]
-    private ?bool $notif_2_web = null;
+    private ?bool $notif_2_web = true;
 
     #[ORM\Column(nullable: true, options: ['default' => true])]
-    private ?bool $notif_3_mail = null;
+    private ?bool $notif_3_mail = true;
 
     #[ORM\Column(nullable: true, options: ['default' => true])]
-    private ?bool $notif_3_web = null;
+    private ?bool $notif_3_web = true;
 
     #[ORM\Column(nullable: true, options: ['default' => true])]
-    private ?bool $notif_4_mail = null;
+    private ?bool $notif_4_mail = true;
 
     #[ORM\Column(nullable: true, options: ['default' => true])]
-    private ?bool $notif_4_web = null;
+    private ?bool $notif_4_web = true;
 
     #[ORM\Column(nullable: true, options: ['default' => true])]
-    private ?bool $notif_5_mail = null;
+    private ?bool $notif_5_mail = true;
 
     #[ORM\Column(nullable: true, options: ['default' => true])]
-    private ?bool $notif_5_web = null;
+    private ?bool $notif_5_web = true;
 
     #[ORM\Column(nullable: true, options: ['default' => true])]
-    private ?bool $notif_6_mail = null;
+    private ?bool $notif_6_mail = true;
 
     #[ORM\Column(nullable: true, options: ['default' => true])]
-    private ?bool $notif_6_web = null;
+    private ?bool $notif_6_web = true;
 
     #[ORM\Column(nullable: true, options: ['default' => true])]
-    private ?bool $notif_7_mail = null;
+    private ?bool $notif_7_mail = true;
 
     #[ORM\Column(nullable: true, options: ['default' => true])]
-    private ?bool $notif_7_web = null;
+    private ?bool $notif_7_web = true;
 
     #[ORM\Column(nullable: true, options: ['default' => true])]
-    private ?bool $notif_8_mail = null;
+    private ?bool $notif_8_mail = true;
 
     #[ORM\Column(nullable: true, options: ['default' => true])]
-    private ?bool $notif_8_web = null;
+    private ?bool $notif_8_web = true;
 
     #[ORM\Column(nullable: true, options: ['default' => true])]
-    private ?bool $notif_9_mail = null;
+    private ?bool $notif_9_mail = true;
 
     #[ORM\Column(nullable: true, options: ['default' => true])]
-    private ?bool $notif_9_web = null;
+    private ?bool $notif_9_web = true;
 
     public function getId(): ?int
     {

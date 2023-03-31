@@ -20,15 +20,18 @@ use App\Repository\PublicationCommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class UserController extends AbstractController
 {
+	private $tokenStorage;
 
 	private $uploadImage;
 
-	public function __construct(ImageService $uploadImage)
+	public function __construct(ImageService $uploadImage, TokenStorageInterface $tokenStorage)
 	{
 		$this->uploadImage = $uploadImage;
+		$this->tokenStorage = $tokenStorage;
 	}
 	#[Route('user/{username}', requirements: ["username" => "[^/]+"], name: 'app_user')]
 	public function index(UserRepository $userRepo, PublicationRepository $pRepo, $username = "me"): Response
@@ -258,26 +261,12 @@ class UserController extends AbstractController
 	{
 		// On supprime le compte de l'utilisateur connecté
 		$user = $userRepo->find($this->getUser());
-		// On recherche toutes les reply_to de PublicationComment lié à cet user
-		// $qb = $pcRepo->createQueryBuilder('p')
-		// 	->where('p.User = :user')
-		// 	->andWhere('p.replyTo IS NOT NULL')
-		// 	->setParameter('user', $user);
-		// $results = $qb->getQuery()->getResult();
-		// // S'il y a un restultat
-		// if ($results) {
-		// 	// On supprime les PublicationComment lié à cet user
-		// 	foreach ($results as $result) {
-		// 		$em->remove($result);
-		// 	}
-		// 	$em->flush();
-		// }
-		//
+		// On déconnecte l'utilisateur
+		$this->tokenStorage->setToken(null);
 		$em->remove($user);
 		$em->flush();
-		// On déconnecte l'utilisateur
-		//
-		$this->addFlash('success', "<i class=\"fa-duotone fa-user-slash\"></i>&nbsp;&nbsp;Votre compte a bien été supprimé. N'hésitez pas à nous rejoindre à nouveau !");
-		return $this->redirectToRoute("app_home");
+
+		$this->addFlash('success', "&nbsp;&nbsp;Votre compte a bien été supprimé. N'hésitez pas à nous rejoindre à nouveau !");
+		return $this->redirectToRoute("app_logout");
 	}
 }

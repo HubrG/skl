@@ -33,10 +33,21 @@ export function User() {
       });
     });
   }
-
+  // ! Suppression d'un utlisateur
+  // * Popup de confirmation de suppression
+  const popupConfirmUser = document.getElementById(
+    "popup-confirm-delete-account"
+  );
+  if (popupConfirmUser) {
+    var confirmDelete = document.getElementById(
+      "confirm-delete-account-button"
+    ); // Boutton de confirmation de suppression
+    confirmDelete.addEventListener("click", (event) => {
+      window.location.href = confirmDelete.getAttribute("data-url-delete");
+    });
+  }
   // ! Suppression d'un récit
   // * Popup de confirmation de suppression
-
   const popupConfirmPub = document.getElementById("popup-confirm-delete");
   if (popupConfirmPub) {
     let deleteDropdown = document.querySelectorAll(".delete-pub"); // Dropdown de suppression
@@ -53,7 +64,7 @@ export function User() {
       window.location.href = confirmDelete.getAttribute("data-url-delete");
     });
   }
-  // * Modification du background de la section profil et de la photo de profil
+  // ! Modification du background de la section profil et de la photo de profil
   // Si "pp" existe, on ajoute un event listener sur le bouton "pp" sinon on retourne rien
   const pp = document.getElementById("pp");
   const pbg = document.getElementById("pbg");

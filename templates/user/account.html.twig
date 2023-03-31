@@ -42,16 +42,17 @@
 				{% include "./partials/_form-row.html.twig" with {'form': form.city, 'icon':"fa-city"} %}
 				{% include "./partials/_form-row.html.twig" with {'form': form.birth, 'icon':"fa-cake-candles"} %}
 				<div class="flex justify-center">
-					<button type="submit" class="button-classic button-slate">
+					<button type="submit" class="button-classic button-slate w-full">
 						<i class="fa-regular fa-circle-check"></i>
 						Enregistrer les informations
 					</button>
 				</div>
-
 				{{ form_end(form) }}
-				<a href="{{ path('app_user_delete_account') }}" class="button-classic button-slate">
-					<i class="fa-regular fa-circle-exit"></i>
-					Suppression du compte</a>
+				<hr class="mb-5">
+				<button data-micromodal-trigger="popup-confirm-delete-account" class="button-classic button-red w-full">
+					<i class="fa-duotone fa-user-slash"></i>
+					Suppression du compte
+				</button>
 			</div>
 		</div>
 		<div class="hidden p-4 rounded-lg dark:bg-gray-800" id="settings" role="tabpanel" aria-labelledby="settings-tab">
@@ -61,7 +62,7 @@
 			{% include "./partials/_form-row.html.twig" with {'form': passwordForm.plainPassword.first, 'icon':"fa-lock-keyhole"} %}
 			{% include "./partials/_form-row.html.twig" with {'form': passwordForm.plainPassword.second, 'icon':"fa-lock-keyhole"} %}
 			<div class="flex justify-center">
-				<button type="submit" class="button-classic button-slate">
+				<button type="submit" class="button-classic button-slate w-full">
 					<i class="fa-regular fa-circle-check"></i>
 					Modifier mon mot de passe
 				</button>
@@ -154,10 +155,29 @@
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="9" type="checkbox" {{app.user.userParameters.notif9Web is null or app.user.userParameters.notif9Web == 1 ? "checked"}}></div>
 				</div>
 			</div>
-
+		</div>
+	</div>
+</div>
+<div class="modal micromodal-slide z-50" id="popup-confirm-delete-account" aria-hidden="true">
+	<div class="modal__overlay" tabindex="-1" data-micromodal-close>
+		<div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="popup-confirm-delete-account-title">
+			<div class="py-3 text-center w-42  rounded-2xl">
+				<div class="text-4xl mb-5 text-red-600 dark:text-red-400">
+					<i class="fa-duotone fa-user-slash"></i>
+				</div>
+				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-slate-300">Êtes-vous certain(e) de vouloir supprimer<br/>
+					votre compte ?</h3>
+				<p class="text-center text-red-500 font-normal">
+					Cette action est irréversible.<br>Vous perdrez l'intégralité de vos données.</p>
+				<div class="mt-10 flex justify-center gap-x-3">
+					<button id="confirm-delete-account-button" data-micromodal-close type="button" data-url-delete="{{path("app_user_delete_account")}}" class="button-classic button-red">
+						Oui, je suis certain(e)
+					</button>
+					<button type="button" data-micromodal-close class="button-classic button-slate">Non, j'annule</button>
+				</div>
+			</div>
 
 		</div>
 	</div>
-
 </div>
 {% include "user/_partials/_bottom.html.twig" %}{% endblock %}

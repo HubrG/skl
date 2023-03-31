@@ -2,21 +2,40 @@
 
 {% block title %}
 	Mes récits
-																																																										—
+																																																																																																																																																																																															—
 	{{ parent() }}
 
 {% endblock %}
 {% block body %}
 	{% include "user/_partials/_top.html.twig" %}
-	<div class="block md:flex">
-		<div class="w-full md:w-3/6   rounded">
-			<div class="w-full  p-5 rounded-t border-b-[1px]  border-b-[#dee4e1] dark:border-b-slate-900 ">
-				<h2 class="text-2xl flex flex-col text-center mt-2 font-semibold text-[#00473e] dark:text-slate-100">
-					<i class="fa-regular fa-image-polaroid-user"></i>
-					<span>Informations générales</span>
-				</h2>
-			</div>
-			<div class="w-full rounded-b p-5 pb-2">
+
+	<div class="w-full xl:w-8/12 flex flex-col justify-center mx-auto">
+		<div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+			<ul class="flex flex-wrap justify-center -mb-px text-base font-semibold text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
+				<li class="mr-2" role="presentation">
+					<button class=" p-4 flex flex-row gap-x-2 items-center border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">
+						<i class="fa-regular fa-circle-user"></i>
+						<span>Compte</span>
+					</button>
+				</li>
+				<li class="mr-2" role="presentation">
+					<button class="flex flex-row gap-x-2 items-center p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">
+						<i class="fa-regular fa-lock-keyhole"></i>
+						<span>Mot de passe</span>
+					</button>
+				</li>
+				<li role="notif-account">
+					<button class="flex flex-row gap-x-2 items-center p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="contacts-tab" data-tabs-target="#notif-account" type="button" role="tab" aria-controls="notif-account" aria-selected="false">
+						<i class="fa-regular fa-bell-exclamation"></i>
+						<span>Notifications</span>
+					</button>
+				</li>
+			</ul>
+		</div>
+		<div id="myTabContent">
+
+			<div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+
 				{{ form_start(form, {attr:{"data-turbo-frame":"_top"}}) }}
 				{% include "./partials/_form-row.html.twig" with {'form': form.email, 'icon':"fa-envelope"} %}
 				{% include "./partials/_form-row.html.twig" with {'form': form.username, 'icon':"fa-user-vneck"} %}
@@ -33,15 +52,8 @@
 
 				{{ form_end(form) }}
 			</div>
-		</div>
-		<div class="w-full md:w-3/6 rounded h-auto ">
-			<div class="w-full p-5 rounded-t border-b-[1px] border-b-[#dee4e1] dark:border-b-slate-900 ">
-				<h2 class="text-2xl flex flex-col text-center mt-2 font-semibold text-[#00473e] dark:text-slate-100">
-					<i class="fa-regular fa-key-skeleton"></i>
-					<span>Modification de votre mot de passe</span>
-				</h2>
-			</div>
-			<div class="w-full  rounded-b p-5 pb-2">
+			<div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+
 				{{ form_start(passwordForm, {attr:{"data-turbo-frame":"_top"}}) }}
 				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.oldPassword, 'icon':"fa-key"} %}
 				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.plainPassword.first, 'icon':"fa-lock-keyhole"} %}
@@ -56,7 +68,68 @@
 					</div>
 				</div>
 			</div>
+			<div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="notif-account" role="tabpanel" aria-labelledby="contacts-tab">
+				<div class="flex flex-col gap-y-4 text-xs lg:text-sm">
+					<div class="flex flex-row text-base pb-5">
+						<div class="w-10/12 font-semibold">Type de notification</div>
+						<div class="w-1/12">
+							<i class="fa-duotone fa-envelope"></i>
+						</div>
+						<div class="w-1/12">
+							<i class="fa-duotone fa-bell"></i>
+						</div>
+					</div>
+					<div class="flex flex-row">
+						<div class="w-10/12">Nouveau commentaire sur l'un de vos récits</div>
+						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="1" type="checkbox" {{app.user.userParameters.notif1Mail == null or app.user.userParameters.notif1Mail == 1 ? "checked"}}></div>
+						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="1" type="checkbox"></div>
+					</div>
+					<div class="flex flex-row">
+						<div class="w-10/12">Nouveau commentaire sur l'une de vos feuilles</div>
+						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="2" type="checkbox"></div>
+						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="2" type="checkbox"></div>
+					</div>
+					<div class="flex flex-row">
+						<div class="w-10/12">Nouveau like sur l'un de vos commentaires</div>
+						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="3" type="checkbox"></div>
+						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="3" type="checkbox"></div>
+					</div>
+					<div class="flex flex-row">
+						<div class="w-10/12">Nouvel ajout à une collection de l'un de vos chapitre</div>
+						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="4" type="checkbox"></div>
+						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="4" type="checkbox"></div>
+					</div>
+					<div class="flex flex-row">
+						<div class="w-10/12">Nouveau téléchargement d'une publication</div>
+						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="5" type="checkbox"></div>
+						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="5" type="checkbox"></div>
+					</div>
+					<div class="flex flex-row">
+						<div class="w-10/12">Nouveau « j'aime » sur un chapitre</div>
+						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="6" type="checkbox"></div>
+						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="6" type="checkbox"></div>
+					</div>
+					<div class="flex flex-row">
+						<div class="w-10/12">Nouvelle feuille sur une publication que vous suivez</div>
+						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="7" type="checkbox"></div>
+						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="7" type="checkbox"></div>
+					</div>
+					<div class="flex flex-row">
+						<div class="w-10/12">Nouvel abonnement à votre publication</div>
+						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="8" type="checkbox"></div>
+						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="8" type="checkbox"></div>
+					</div>
+					<div class="flex flex-row">
+						<div class="w-10/12">Nouvelle réponse à un commentaire</div>
+						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="9" type="checkbox"></div>
+						<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="9" type="checkbox"></div>
+					</div>
+				</div>
+
+
+			</div>
 		</div>
+
 	</div>
 	{% include "user/_partials/_bottom.html.twig" %}
 

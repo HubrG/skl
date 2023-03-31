@@ -76,4 +76,70 @@ class UserParameterController extends AbstractController
         $this->em->persist($user);
         $this->em->flush();
     }
+    #[Route('/param/user/set/notification', name: 'app_user_parameter_notification', methods: ['POST'])]
+    public function setNotification(Request $request, SessionInterface $session): Response
+    {
+        $type = $request->get("type");
+        $nb = $request->get("nb");
+        $value = $request->get("value");
+        if ($value == "true") {
+            $value = 1;
+        } else {
+            $value = 0;
+        }
+        //
+        $user = $this->userRepo->find($this->getUser());
+        if ($type == "mail") {
+            if ($nb == 1) {
+                $user->getUserParameters()->setNotif1Mail($value);
+            } elseif ($nb == 2) {
+                $user->getUserParameters()->setNotif2Mail($value);
+            } elseif ($nb == 3) {
+                $user->getUserParameters()->setNotif3Mail($value);
+            } elseif ($nb == 4) {
+                $user->getUserParameters()->setNotif4Mail($value);
+            } elseif ($nb == 5) {
+                $user->getUserParameters()->setNotif5Mail($value);
+            } elseif ($nb == 6) {
+                $user->getUserParameters()->setNotif6Mail($value);
+            } elseif ($nb == 7) {
+                $user->getUserParameters()->setNotif7Mail($value);
+            } elseif ($nb == 8) {
+                $user->getUserParameters()->setNotif8Mail($value);
+            } elseif ($nb == 9) {
+                $user->getUserParameters()->setNotif9Mail($value);
+            }
+        } else {
+            if ($nb == 1) {
+                $user->getUserParameters()->setNotif1Web($value);
+            } elseif ($nb == 2) {
+                $user->getUserParameters()->setNotif2Web($value);
+            } elseif ($nb == 3) {
+                $user->getUserParameters()->setNotif3Web($value);
+            } elseif ($nb == 4) {
+                $user->getUserParameters()->setNotif4Web($value);
+            } elseif ($nb == 5) {
+                $user->getUserParameters()->setNotif5Web($value);
+            } elseif ($nb == 6) {
+                $user->getUserParameters()->setNotif6Web($value);
+            } elseif ($nb == 7) {
+                $user->getUserParameters()->setNotif7Web($value);
+            } elseif ($nb == 8) {
+                $user->getUserParameters()->setNotif8Web($value);
+            } elseif ($nb == 9) {
+                $user->getUserParameters()->setNotif9Web($value);
+            }
+        }
+        // On récupère la valeur de l'attribut
+        // On sauvegarde
+        $this->em->persist($user);
+        $this->em->flush();
+        //
+        return $this->json([
+            'message' => 'Paramètre modifié',
+            'value' => $request->get("value"),
+            'type' => $request->get("type"),
+            'nb' => $request->get("nb"),
+        ], 200);
+    }
 }

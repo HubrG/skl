@@ -1,6 +1,39 @@
 import { NotyDisplay } from "../Noty";
 
 export function User() {
+  // ! Modification des paramètres de notifications
+
+  const notif = document.getElementById("notif-account");
+  if (notif) {
+    const notifCheckboxes = document.querySelectorAll(".notif-checkbox");
+    notifCheckboxes.forEach((checkbox) => {
+      checkbox.addEventListener("change", (event) => {
+        const data = new FormData();
+        const url = "/param/user/set/notification";
+        data.append("type", checkbox.getAttribute("data-notif-type"));
+        data.append("nb", checkbox.getAttribute("data-notif-nb"));
+        data.append("value", event.target.checked);
+        // console.log(event.target.getAttribute("data-notif-type"));
+        // console.log(event.target.getAttribute("data-notif-nb"));
+        // console.log(event.target.checked);
+        axios
+          .post(url, data, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((response) => {
+            if (response.status === 200) {
+              console.log("Paramètre de notification bien modifié");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
+    });
+  }
+
   // ! Suppression d'un récit
   // * Popup de confirmation de suppression
 

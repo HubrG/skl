@@ -12,7 +12,7 @@
 	<section class="col-span-12 md:col-span-10 md:col-start-2">
 		<turbo-frame id="up_profil" class="w-full md:flex pt-10 gap-x-5">
 			<div class="w-full md:w-3/12 py-10 pt-0 px-5 text-center dark:shadow-2xl mb-10 rounded-lg">
-				<h1 class="text-3xl md:text-2xl mb-5 -mt-14 font-semibold text-center py-2 px-2 rounded text-slate-700 font-sans">{{ userInfo.nickname }}</h1>
+				<h1 class="text-3xl md:text-2xl mb-5 md:-mt-14 mt-0  font-semibold text-center py-2 px-2 rounded text-slate-700 font-sans">{{ userInfo.nickname }}</h1>
 				{% if userInfo.profilPicture %}
 					<img class="w-40 h-40 mx-auto rounded-lg shadow-lg object-fill dark:ring-gray-500" src="{{userInfo.profilPicture}}">
 				{% else %}

@@ -309,8 +309,8 @@ class NotificationSystem extends AbstractController
                     ->context([
                         'content' => "<a href='https://www.scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
                      vient de répondre à votre commentaire " . $textChapter . $textPublication . "<br/>
-                     <blockquote style='font-style: italic;text-align:center;'><strong>Votre commentaire :</strong><br>« " . $notification->getReplyComment()->getContent() . " »</blockquote>
-                     <blockquote style='font-style: italic;text-align:center;'><strong>Nouveau commentaire :</strong><br>« " . $notification->getReplyComment()->getReplyTo()->getContent() . " »</blockquote>",
+                     <blockquote style='font-style: italic;text-align:center;'><strong>Votre commentaire :</strong><br>« " . $notification->getReplyComment()->getReplyTo()->getContent() . " »</blockquote>
+                     <blockquote style='font-style: italic;text-align:center;'><strong>Réponse à votre commentaire :</strong><br>« " . $notification->getReplyComment()->getContent() . " »</blockquote>",
                         'subject' => "Nouvelle réponse sous l'un de vos commentaires",
                     ]);
                 //

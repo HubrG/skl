@@ -9,7 +9,7 @@
 {% block body %}
 	<div class="bg-home dark:hidden opacity-50 -z-50 left-0 fixed h-screen w-full bg-repeat"></div>
 	<section class="col-span-12">
-		<ul class="text-base shadow dark:shadow-xl rounded-lg flex flex-row justify-between items-start -mt-8 lg:-mt-4 mb-8 lg:mb-0 space-x-5 z-50 text-slate-900 dark:text-indigo-300">
+		<ul class="text-base shadow dark:shadow-xl rounded-lg flex flex-row justify-between items-start -mt-8 xl:-mt-4 mb-8 xl:mb-0 space-x-5 z-50 text-slate-900 dark:text-indigo-300">
 			<li class="rounded-r-0 navbar-button navbar-button-home" {% if not app.user %} data-micromodal-trigger="popup-register" {% endif %}>
 				{% if app.user %}
 					<a href="{{path("app_publication_add")}}" class=" navbar-button-home items-center gap-x-2 w-full h-full">
@@ -88,9 +88,9 @@
 		<div class="glide-market glide -mt-10 left-0">
 			<div data-glide-el="track" class="glide__track mx-16">
 				<div class="glide__slides">
-					<div class="glide__slide  w-full mb-10 mt-10 lg:mt-0 p-0 lg:p-10  rounded-lg ">
+					<div class="glide__slide  w-full mb-10 mt-10 lg:mt-0 p-0 lg:p-10 mx-auto flex justify-center rounded-lg ">
 						<h1 class="hidden">Confort d'écriture</h1>
-						<div class="grid flex-col lg:flex-row grid-cols-1 lg:grid-cols-4 gap-y-5 lg:gap-y-0 gap-x-0 lg:gap-x-5 justify-center mx-auto">
+						<div class="grid flex-col mx-auto lg:flex-row grid-cols-1 lg:grid-cols-4 gap-y-5 lg:gap-y-0 gap-x-0 lg:gap-x-5 justify-center ">
 							<a href="#" class="slide-card">
 								<h5>
 									<i class="fa-duotone fa-pen-swirl"></i><br>

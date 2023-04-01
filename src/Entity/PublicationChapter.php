@@ -66,6 +66,9 @@ class PublicationChapter
     #[ORM\OneToMany(mappedBy: 'publication_follow', targetEntity: Notification::class, orphanRemoval: true)]
     private Collection $notifications;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $pdf = null;
+
     public function __construct()
     {
         $this->publicationChapterVersionings = new ArrayCollection();
@@ -402,6 +405,18 @@ class PublicationChapter
                 $notification->setPublicationFollow(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPdf(): ?string
+    {
+        return $this->pdf;
+    }
+
+    public function setPdf(?string $pdf): self
+    {
+        $this->pdf = $pdf;
 
         return $this;
     }

@@ -2,22 +2,13 @@
 
 namespace App\Controller;
 
-use Symfony\Component\Mime\Email;
-use App\Entity\PublicationComment;
-use App\Repository\UserRepository;
-use App\Form\PublicationCommentType;
+use Cloudinary\Cloudinary;
 use App\Services\NotificationSystem;
-use Symfony\Component\Mailer\Mailer;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
 use App\Repository\NotificationRepository;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\PublicationCommentRepository;
-use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\Mailer\Transport\Smtp\SmtpTransport;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
@@ -40,9 +31,9 @@ class HomeController extends AbstractController
             ->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
             ->where("p.status = 2");
         $publications = $qb->getQuery()->getResult();
-        return  $this->render('home/home.html.twig', [
+        return $this->render('home/home.html.twig', [
             'controller_name' => "d",
-            "publications" =>  $publications,
+            "publications" => $publications,
             "canonicalUrl" => $this->generateUrl('app_home', array(), true)
         ]);
     }
@@ -70,5 +61,33 @@ class HomeController extends AbstractController
             'success' => true,
             'message' => 'Notification lues.'
         ], 200);
+    }
+    #[Route('/test', name: 'app_test')]
+    public function test(NotificationRepository $notifRepo, EntityManagerInterface $em): Response
+    {
+        $cloudinary = new Cloudinary(
+            [
+                'cloud' => [
+                    'cloud_name' => 'djaro8nwk',
+                    'api_key'    => '716759172429212',
+                    'api_secret' => 'A35hPbZP0NsjnMKrE9pLR-EHwiU',
+                ],
+            ]
+        );
+        $test = $cloudinary->uploadApi()->upload(
+            "images/test.pdf",
+            ["ocr" => "adv_ocr"]
+        );
+        $tests = "";
+        foreach ($test['info']['ocr']['adv_ocr']['data'] as $item) {
+            $tests = $tests . $item["fullTextAnnotation"]['text'] . "<br><br>";
+        }
+        $tests = str_replace("\n\n", "<br><br>", $tests);
+        $tests = str_replace("\n", "<br><br>", $tests);
+        return $this->render('home/test.html.twig', [
+            'controller_name' => "d",
+            "canonicalUrl" => $this->generateUrl('app_home', array(), true),
+            "test" => $tests
+        ]);
     }
 }

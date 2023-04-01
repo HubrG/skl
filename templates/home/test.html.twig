@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Scrilab | Web-éditeur
+{% endblock %}
+{% block stylesheets %}
+	<link rel="canonical" href="https://www.scrilab.com{{ canonicalUrl }}"/>
+{% endblock %}
+{% block javascripts %}{% endblock %}
+{% block body %}
+	<div class="col-span-12">
+		{{test|raw}}
+	</div>
+{% endblock %}

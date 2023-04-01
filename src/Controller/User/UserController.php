@@ -3,22 +3,17 @@
 namespace App\Controller\User;
 
 use App\Form\UserInfoType;
-use Cloudinary\Cloudinary;
 use App\Form\UserAccountType;
 use App\Services\ImageService;
 use App\Repository\UserRepository;
 use App\Form\UserChangePasswordType;
-use Cloudinary\Transformation\Resize;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mime\MimeTypesInterface;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationCommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 

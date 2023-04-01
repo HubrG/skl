@@ -35,8 +35,14 @@
 				</ul>
 			</div>
 			<div>
-				<h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Legal</h2>
-				<ul class="text-gray-600 dark:text-gray-400">
+				<h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Divers</h2>
+				<ul class="text-gray-600 flex flex-col gap-y-4 dark:text-gray-400">
+					<li>
+						<a href="{{path("app_register_full")}}" class="hover:underline">Inscription</a>
+					</li>
+					<li>
+						<a href="{{path("app_login")}}" class="hover:underline">Connexion</a>
+					</li>
 					<li>
 						<button onclick='MicroModal.show("popup-cgu");' class="hover:underline">CGU</button>
 					</li>

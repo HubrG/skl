@@ -78,6 +78,56 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form,
         ]);
     }
+    #[Route('/register', name: 'app_register_full')]
+    public function registerFull(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, AppAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
+    {
+
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_home');
+        }
+        $user = new User();
+        $userParameters = new UserParameters();
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // encode the plain password
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+            $user->setNickname($form->get("username")->getData());
+            $user->setJoinDate(new \DateTime('now'));
+            $entityManager->persist($user);
+            $entityManager->flush();
+            // On crée une table UserParameters pour chaque utilisateur
+            $userParameters->setUser($user);
+            $entityManager->persist($userParameters);
+            $entityManager->flush();
+            // generate a signed url and email it to the user
+            $this->emailVerifier->sendEmailConfirmation(
+                'app_verify_email',
+                $user,
+                (new TemplatedEmail())
+                    ->from(new Address('contact@scrilab.fr', 'Scrilab'))
+                    ->to($user->getEmail())
+                    ->subject('Confirmez votre adresse adresse email.')
+                    ->htmlTemplate('emails/valid_email.html.twig')
+            );
+            // do anything else you need here, like send an email
+            $this->addFlash('success', 'Bienvenue ' . $form->get("username")->getData());
+            return $userAuthenticator->authenticateUser(
+                $user,
+                $authenticator,
+                $request
+            );
+        }
+
+        return $this->render('registration/register-full.html.twig', [
+            'registrationFormFull' => $form,
+        ]);
+    }
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, TranslatorInterface $translator): Response
     {

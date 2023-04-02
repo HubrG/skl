@@ -139,6 +139,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $provider_name = null;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private $googleId;
+
     public function __construct()
     {
         $this->publications = new ArrayCollection();
@@ -856,6 +859,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setProviderName(?string $provider_name): self
     {
         $this->provider_name = $provider_name;
+
+        return $this;
+    }
+
+    public function getGoogleId(): ?string
+    {
+        return $this->googleId;
+    }
+
+    public function setGoogleId(?string $googleId): self
+    {
+        $this->googleId = $googleId;
 
         return $this;
     }

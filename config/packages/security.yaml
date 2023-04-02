@@ -14,12 +14,16 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            provider: app_user_provider
             remember_me:
                 secret:   '%kernel.secret%' # required
                 lifetime: 604800
+                path: /
+                domain: ~
             lazy: true
-            provider: app_user_provider
-            custom_authenticator: App\Security\AppAuthenticator
+            custom_authenticators:
+                - App\Security\GoogleAuthenticator
+                - App\Security\AppAuthenticator
             logout:
                 path: app_logout
                 # where to redirect after logout

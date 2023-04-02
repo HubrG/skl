@@ -72,7 +72,7 @@ class GoogleAuthenticator extends OAuth2Authenticator
                     $existingUser->setGoogleId($googleUser->getId());
                     $existingUser->setPassword("");
                     $this->entityManager->persist($existingUser);
-                    //
+                    ////
                     $userParameters = new UserParameters();
                     // On crée une table UserParameters pour chaque utilisateur
                     $userParameters->setUser($existingUser);

@@ -5,12 +5,14 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\UserParameters;
 use App\Security\EmailVerifier;
+use Symfony\Component\Mime\Email;
 use App\Form\RegistrationFormType;
 use App\Security\AppAuthenticator;
 use Symfony\Component\Mime\Address;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -48,6 +50,7 @@ class RegistrationController extends AbstractController
                 )
             );
             $user->setNickname($form->get("username")->getData());
+            $user->setGoogleId("");
             $user->setJoinDate(new \DateTime('now'));
             $entityManager->persist($user);
             $entityManager->flush();

@@ -1,0 +1,8 @@
+runtime: php82
+
+env_variables:
+  DATABASE_URL: "mysql://user:password@ipaddress:port/database"
+  
+beta_settings:
+  cloud_sql_instances: "your-project-id:region:instance-id"
+

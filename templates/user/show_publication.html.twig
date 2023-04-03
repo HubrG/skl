@@ -16,7 +16,7 @@
 {% block body %}
 	{% include "user/_partials/_top.html.twig" %}
 	{% if publication|length == 0 %}
-		<div class="flex flex-col gap-y-5 items-center justify-center mt-[6.8rem] pt-10">
+		<div class="flex flex-col gap-y-5 items-center justify-center mt-[6.8rem] pt-10 dark:text-slate-300">
 			<i class="fa-duotone fa-cloud-slash  text-5xl"></i>
 			<h2 class="text-2xl ">Vous n'avez pas encore publié de récit</h2>
 			<a href="{{path("app_publication_add")}}" target="_top" class="btn btn-primary mt-5 hover:underline flex flex-row items-center gap-x-3">

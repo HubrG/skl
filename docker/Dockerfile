@@ -1,5 +1,7 @@
 FROM php:8.2-apache
 
+ENV CFLAGS=-Wno-error=format-truncation
+
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN sed -i 's/-msign-return-address=all//' /etc/apache2/conf-enabled/security.conf && \
@@ -35,6 +37,13 @@ RUN apt update && apt install -yqq curl && \
     rm -rf node_modules && \
     npm install --force && \
     npm run build
+
+
+
+RUN docker-php-ext-install pdo_mysql && \
+    docker-php-ext-enable pdo_mysql
+
+ENTRYPOINT ["bash", "./docker/docker.sh"]
 
 EXPOSE 80
 

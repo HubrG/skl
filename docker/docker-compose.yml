@@ -24,7 +24,7 @@ services:
       - mynetwork
 
   app:
-    image: a968b700aa36
+    image: scrilab:latest
     ports: 
       - "8080:80"
     networks:

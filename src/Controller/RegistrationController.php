@@ -126,7 +126,7 @@ class RegistrationController extends AbstractController
                 $request
             );
         }
-
+        // ok
         return $this->render('registration/register-full.html.twig', [
             'registrationFormFull' => $form,
         ]);

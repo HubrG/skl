@@ -68,6 +68,7 @@ class GoogleAuthenticator extends OAuth2Authenticator
                     $existingUser->setEmail($email);
                     $existingUser->setProfilPicture($googleUser->getAvatar());
                     $existingUser->setUsername(ucfirst($googleUser->getFirstName()) . ucfirst(substr($googleUser->getName(), 0, 1)) . rand(1, 999));
+                    $existingUser->setNickname(ucfirst($googleUser->getFirstName()) . ucfirst(substr($googleUser->getName(), 0, 1)) . rand(1, 999));
                     $existingUser->setIsVerified(1);
                     $existingUser->setGoogleId($googleUser->getId());
                     $existingUser->setPassword("");

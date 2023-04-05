@@ -1,7 +1,5 @@
-# Utilisation de l'image Distroless PHP8
+# Utilisez une image de base avec PHP et Nginx
 FROM php:8.2-fpm
-
-ARG TARGETPLATFORM
 
 # Installation des dépendances nécessaires
 RUN apt-get update && apt-get install -y \
@@ -11,6 +9,8 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     unzip \
     libpng-dev \
+    nginx \
+    gettext-base \
     && docker-php-ext-install -j$(nproc) intl pdo_mysql zip gd \
     && pecl install apcu \
     && docker-php-ext-enable apcu
@@ -32,10 +32,13 @@ RUN rm -rf node_modules/ && npm ci
 
 RUN npm run build
 
+# Copiez la configuration Nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf.template
+
 ENV PORT 8080
 ENV HOST 0.0.0.0
 
 EXPOSE ${PORT:-8080}
 
 # Définition de la commande pour démarrer l'application
-CMD ["php", "bin/console", "run", "--server=0.0.0.0:${PORT:-8080}", "apache-foreground"]
+CMD ["sh", "-c", "envsubst '$PORT' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && php-fpm & nginx -g 'daemon off;'"]

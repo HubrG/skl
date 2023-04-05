@@ -8,5 +8,6 @@ env_variables:
   APP_ENV: prod
   DATABASE_URL: mysql://hubert:iqMF&@E889zQBcsr@34.155.222.100/scrilab
 
+
 manual_scaling:
   instances: 1

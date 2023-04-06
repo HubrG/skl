@@ -3,10 +3,10 @@
 {% set sort = route_params.sort|default("published_date") %}
 {% if order == "asc" %}
 	{% set order = "desc" %}
-	{% set chevron = '<i class="fa-regular fa-chevron-up"></i>' %}
+	{% set chevron = '<i class="fa-duotone fa-sort-up"></i>' %}
 {% else %}
 	{% set order = "asc" %}
-	{% set chevron = '<i class="fa-regular fa-chevron-down"></i>' %}
+	{% set chevron = '<i class="fa-duotone fa-sort-down"></i>' %}
 {% endif %}
 {% extends 'base.html.twig' %}
 {% block title %}
@@ -37,10 +37,7 @@
 									{% if sort == "status" %}
 										{{chevron|raw}}
 									{% else %}
-										<div class="user-chevrons-sort-publications">
-											<i class="fa-regular fa-chevron-up"></i>
-											<i class="fa-regular fa-chevron-down"></i>
-										</div>
+										<i class="fa-thin fa-sort"></i>
 									{% endif %}
 								</a>
 							</th>
@@ -51,10 +48,7 @@
 									{% if sort == "title" %}
 										{{chevron|raw}}
 									{% else %}
-										<div class="user-chevrons-sort-publications">
-											<i class="fa-regular fa-chevron-up"></i>
-											<i class="fa-regular fa-chevron-down"></i>
-										</div>
+										<i class="fa-thin fa-sort"></i>
 									{% endif %}
 								</a>
 							</th>
@@ -66,10 +60,7 @@
 									{% if sort == "created" %}
 										{{chevron|raw}}
 									{% else %}
-										<div class="user-chevrons-sort-publications">
-											<i class="fa-regular fa-chevron-up"></i>
-											<i class="fa-regular fa-chevron-down"></i>
-										</div>
+										<i class="fa-thin fa-sort"></i>
 									{% endif %}
 								</a>
 							</th>
@@ -79,10 +70,7 @@
 									{% if sort == "chapters" %}
 										{{chevron|raw}}
 									{% else %}
-										<div class="user-chevrons-sort-publications">
-											<i class="fa-regular fa-chevron-up"></i>
-											<i class="fa-regular fa-chevron-down"></i>
-										</div>
+										<i class="fa-thin fa-sort"></i>
 									{% endif %}
 								</a>
 							</th>
@@ -92,10 +80,7 @@
 									{% if sort == "category" %}
 										{{chevron|raw}}
 									{% else %}
-										<div class="user-chevrons-sort-publications">
-											<i class="fa-regular fa-chevron-up"></i>
-											<i class="fa-regular fa-chevron-down"></i>
-										</div>
+										<i class="fa-thin fa-sort"></i>
 									{% endif %}
 								</a>
 							</th>
@@ -106,10 +91,7 @@
 									{% if sort == "views" %}
 										{{chevron|raw}}
 									{% else %}
-										<div class="user-chevrons-sort-publications">
-											<i class="fa-regular fa-chevron-up"></i>
-											<i class="fa-regular fa-chevron-down"></i>
-										</div>
+										<i class="fa-thin fa-sort"></i>
 									{% endif %}
 								</a>
 							</th>
@@ -120,10 +102,7 @@
 									{% if sort == "comments" %}
 										{{chevron|raw}}
 									{% else %}
-										<div class="user-chevrons-sort-publications">
-											<i class="fa-regular fa-chevron-up"></i>
-											<i class="fa-regular fa-chevron-down"></i>
-										</div>
+										<i class="fa-thin fa-sort"></i>
 									{% endif %}
 								</a>
 							</th>
@@ -133,10 +112,7 @@
 									{% if sort == "likes" %}
 										{{chevron|raw}}
 									{% else %}
-										<div class="user-chevrons-sort-publications">
-											<i class="fa-regular fa-chevron-up"></i>
-											<i class="fa-regular fa-chevron-down"></i>
-										</div>
+										<i class="fa-thin fa-sort"></i>
 									{% endif %}
 								</a>
 							</th>
@@ -146,10 +122,7 @@
 									{% if sort == "downloads" %}
 										{{chevron|raw}}
 									{% else %}
-										<div class="user-chevrons-sort-publications">
-											<i class="fa-regular fa-chevron-up"></i>
-											<i class="fa-regular fa-chevron-down"></i>
-										</div>
+										<i class="fa-thin fa-sort"></i>
 									{% endif %}
 								</a>
 							</th>
@@ -159,10 +132,7 @@
 									{% if sort == "pop" %}
 										{{chevron|raw}}
 									{% else %}
-										<div class="user-chevrons-sort-publications">
-											<i class="fa-regular fa-chevron-up"></i>
-											<i class="fa-regular fa-chevron-down"></i>
-										</div>
+										<i class="fa-thin fa-sort"></i>
 									{% endif %}
 								</a>
 							</th>

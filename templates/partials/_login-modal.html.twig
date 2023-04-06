@@ -21,7 +21,11 @@
 						<i class="fa-brands fa-google"></i>
 						<span>Me connecter avec Google</span>
 					</a>
-					<hr class="mb-5 mt-5">
+					<div class="flex flex-row items-center justify-center w-full">
+						<div><hr></div>
+						<span class="font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2 dark:text-white dark:bg-gray-900">ou me connecter avec Scrilab</span>
+						<hr>
+					</div>
 					<turbo-frame id="loginframe" class="w-full">
 						<form method="post" action="{{ path("app_login") }}" class="w-full">
 							{% if error is defined %}

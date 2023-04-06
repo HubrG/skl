@@ -49,7 +49,7 @@
 				<img class="w-12 h-12 rounded-full mr-4" src="{{ profilPic }}" alt="avatar">
 				<div class="flex-1">
 					<h4 class="font-medium text-sm dark:text-white">
-						<a href="{{ path("app_user", {username:item.user.username}) }}" class="hover:underline">{{ item.user.nickname }}</a>
+						<a href="{{ path("app_user", {username:item.user.username}) }}" target="_top" class="hover:underline">{{ item.user.nickname }}</a>
 					</h4>
 					<p class="text-slate-600 text-xs dark:text-white">
 						{{ item.publishedAt|since }}

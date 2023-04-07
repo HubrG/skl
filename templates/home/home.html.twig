@@ -12,26 +12,26 @@
 		<ul class=" shadow dark:shadow-xl rounded-lg flex flex-row justify-between items-start -mt-8 xl:-mt-4 mb-8 xl:mb-0 space-x-5 z-50 text-slate-900 dark:text-indigo-300">
 			<li class="navbar-home-item" {% if not app.user %} data-micromodal-trigger="popup-register" {% endif %}>
 				{% if app.user %}
-					<a href="{{path("app_publication_add")}}" class=" navbar-button-home items-center gap-x-2 w-full h-full">
-						<i class="fa-duotone fa-book text-blue-400  text-3xl md:text-xl"></i>
-						Publiez votre roman
+					<a href="{{path("app_publication_add")}}">
+						<i class="fa-duotone fa-book text-blue-400"></i>
+						<span>Publiez votre roman</span>
 					</a>
 				{% else %}
-					<button class=" navbar-button-home items-center gap-x-2 w-full h-full">
-						<i class="fa-duotone fa-book text-blue-400 text-3xl md:text-xl"></i>
+					<button>
+						<i class="fa-duotone fa-book text-blue-400"></i>
 						<span>Publiez votre roman</span>
 					</button>
 				{% endif %}
 			</li>
 			<li class="navbar-home-item" {% if not app.user %} data-micromodal-trigger="popup-register" {% endif %}>
 				{% if app.user %}
-					<a href="{{path("app_publication_add")}}" class=" navbar-button-home items-center gap-x-2 w-full h-full">
-						<i class="fa-duotone fa-square-rss text-emerald-500  text-3xl md:text-xl"></i>
+					<a href="{{path("app_publication_add")}}">
+						<i class="fa-duotone fa-square-rss text-emerald-500"></i>
 						<span>Créez votre blog</span>
 					</a>
 				{% else %}
-					<button class=" navbar-button-home items-center gap-x-2 w-full h-full">
-						<i class="fa-duotone fa-square-rss text-emerald-500  text-3xl md:text-xl"></i>
+					<button>
+						<i class="fa-duotone fa-square-rss text-emerald-500"></i>
 						<span>Créez votre blog</span>
 					</button>
 				{% endif %}
@@ -85,10 +85,12 @@
 			</div>
 		</div>
 	</section>
-	<section class="col-span-12 z-10 order-2 md:order-1 mt-20 md:mt-0">
-		<div class="my-special-hr block md:hidden">
+	<section class="col-span-12 z-10 order-2 md:order-1 mt-10 md:mt-0">
+		<div class="my-special-hr mt-12">
 			<hr>
-			<span>Pourquoi écrire sur Scrilab ?</span>
+			<span>
+				Pourquoi écrire sur Scrilab ?
+			</span>
 			<hr>
 		</div>
 		<div class="glide-market glide -mt-10 left-0">
@@ -244,6 +246,35 @@
 					{% include "publication/_partials/_show_all-fake-publication.html.twig" %}
 				{% endfor %}
 			{% endif %}
+		</div>
+		<div class="mt-10 text-right">
+			<a href="{{ path("app_publication_show_all_category", {slug:null, page:null})}}" class="button-classic button-gray w-full md:w-2/6 mx-auto" style="font-weight:600">
+				<i class="fa-light fa-books">&nbsp;</i>
+				Voir tous les récits récents
+			</a>
+		</div>
+	</div>
+	<div class="col-span-12 md:mt-16 mt-0 z-50 order-3 md:order-3">
+		<div class="my-special-hr">
+			<hr>
+			<span>Récits les plus populaires</span>
+			<hr>
+		</div>
+		<div class="animate__animated animate__fadeIn publications-container small ">
+			{% for item in pub_pop %}
+				{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'all', 'queryPage':1, 'sortBy':'pop', 'querySortby':'null', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
+			{% endfor %}
+			{% if pub_pop|length < 7 %}
+				{% for i in pub_pop|length..6 - 1 %}
+					{% include "publication/_partials/_show_all-fake-publication.html.twig" %}
+				{% endfor %}
+			{% endif %}
+		</div>
+		<div class="mt-10 text-right">
+			<a href="{{ path("app_publication_show_all_category", {slug:"all", page:null, sortby:"published", order:"desc", page:1})}}" class="button-classic button-gray w-full md:w-2/6 mx-auto" style="font-weight:600">
+				<i class="fa-light fa-books">&nbsp;</i>
+				Voir tous les récits populaires
+			</a>
 		</div>
 	</div>
 {% endblock %}

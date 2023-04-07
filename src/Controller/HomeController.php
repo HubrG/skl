@@ -31,12 +31,20 @@ class HomeController extends AbstractController
             ->where("p.status = 2")
             ->orderBy("p.published_date", "DESC");
         $publications = $qb->getQuery()->getResult();
-        $publications = $pRepo->findBy(["id" => $publications], ["published_date" => "desc"], 6);
+        $publications_last = $pRepo->findBy(["id" => $publications], ["published_date" => "desc"], 6);
+        //
+        $qb = $pRepo->createQueryBuilder("p")
+            ->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
+            ->where("p.status = 2")
+            ->orderBy("p.pop", "DESC");
+        $publications = $qb->getQuery()->getResult();
+        $publications_pop = $pRepo->findBy(["id" => $publications], ["pop" => "desc"], 6);
         return $this->render('home/home.html.twig', [
             'controller_name' => "d",
             "publications" => $publications,
             "canonicalUrl" => $this->generateUrl('app_home', array(), true),
-            'pub_last' => $publications, // Retourne les dernières publications
+            'pub_last' => $publications_last, // Retourne les dernières publications
+            'pub_pop' => $publications_pop, // Retourne les dernières publications
         ]);
     }
 

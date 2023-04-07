@@ -13,18 +13,19 @@
 					<i class="fa-duotone fa-right-to-bracket"></i>
 					Connexion sur Scrilab
 				</h3>
-				<hr class="mb-5 mt-5">
-				<a href="{{path("connect_google")}}" class="bg-[#DB4437] opacity-90 rounded  hover:opacity-100 text-white font-bold py-2 px-4 flex flex-row items-center justify-center mx-auto gap-x-4">
-					<i class="fa-brands fa-google"></i>
-					<span>Me connecter avec Google</span>
-				</a>
-				<div class="inline-flex items-center justify-center w-full mt-4">
-					<hr class="w-full h-1 my-8 bg-gray-200 border-[1px] rounded dark:bg-gray-700">
-					<div class="absolute px-4 -translate-x-1/2 -mt-4 font-normal bg-white left-1/2 italic dark:bg-gray-900">
-						Ou avec mon email
+				<hr class="mb-10 mt-5">
+				<div class="hidden">
+					<a href="{{path("connect_google")}}" class="bg-[#DB4437] opacity-90 rounded  hover:opacity-100 text-white font-bold py-2 px-4 flex flex-row items-center justify-center mx-auto gap-x-4">
+						<i class="fa-brands fa-google"></i>
+						<span>Me connecter avec Google</span>
+					</a>
+					<div class="inline-flex items-center justify-center w-full mt-4">
+						<hr class="w-full h-1 my-8 bg-gray-200 border-[1px] rounded dark:bg-gray-700">
+						<div class="absolute px-4 -translate-x-1/2 -mt-4 font-normal bg-white left-1/2 italic dark:bg-gray-900">
+							Ou avec mon email
+						</div>
 					</div>
 				</div>
-
 				<turbo-frame id="loginframe" class="w-full">
 					<form method="post" action="{{ path("app_login") }}" class="w-full -mt-5">
 						{% if error is defined %}

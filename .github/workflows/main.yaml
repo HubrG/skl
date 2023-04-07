@@ -20,4 +20,12 @@ jobs:
         run: sudo apt update && sudo apt install sshpass
 
       - name: deploy
-        run: sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }} "cd public_html/; git pull; composer install; npm run-script build; php bin/console cache:clear; php bin/console doctrine:migrations:migrate -n;"
+        run: |
+          sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }} \
+          "git config --global url.\"https://${{ secrets.GIT_ACCESS_TOKEN }}:@github.com/\".insteadOf \"https://github.com/\" && \
+          cd public_html/ && \
+          git pull && \
+          composer install && \
+          npm run-script build && \
+          php bin/console cache:clear && \
+          php bin/console doctrine:migrations:migrate -n;"

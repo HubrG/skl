@@ -21,13 +21,14 @@
 						<i class="fa-brands fa-google"></i>
 						<span>Me connecter avec Google</span>
 					</a>
-					<div class="flex flex-row items-center justify-center w-full">
-						<div><hr></div>
-						<span class="font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2 dark:text-white dark:bg-gray-900">ou me connecter avec Scrilab</span>
-						<hr>
+					<div class="inline-flex items-center justify-center w-full mt-4">
+						<hr class="w-full h-1 my-8 bg-gray-200 border-[1px] rounded dark:bg-gray-700">
+						<div class="absolute px-4 -translate-x-1/2 -mt-6 font-normal bg-white left-1/2 italic dark:bg-gray-900">
+							Ou avec mon email
+						</div>
 					</div>
 					<turbo-frame id="loginframe" class="w-full">
-						<form method="post" action="{{ path("app_login") }}" class="w-full">
+						<form method="post" action="{{ path("app_login") }}" class="w-full -mt-5">
 							{% if error is defined %}
 								{% if error %}
 									<div class="flex justify-center items-center font-bold mt-10">

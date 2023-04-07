@@ -90,4 +90,27 @@ class HomeController extends AbstractController
             "test" => $tests
         ]);
     }
+    #[Route('/cgu', name: 'app_cgu')]
+    public function cgu(): Response
+    {
+
+        // On récupère les publications qui ont le status 2 (publié) et un chapitre publié
+
+        return $this->render('home/cgu.html.twig', [
+            'controller_name' => "d",
+            "canonicalUrl" => $this->generateUrl('app_cgu', array(), true)
+        ]);
+    }
+
+    #[Route('/privacy', name: 'app_privacy')]
+    public function privacy(): Response
+    {
+
+        // On récupère les publications qui ont le status 2 (publié) et un chapitre publié
+
+        return $this->render('home/privacy.html.twig', [
+            'controller_name' => "d",
+            "canonicalUrl" => $this->generateUrl('app_privacy', array(), true)
+        ]);
+    }
 }

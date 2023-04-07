@@ -15,15 +15,18 @@
 					<i class="fa-duotone fa-user-plus ml-5"></i>
 					<span>Rejoindre Scrilab</span>
 				</h3>
-				<hr class="mb-0">
-				<p class="w-full text-center my-5">
-					<a href="{{path("app_login")}}" class="modal-register-login-button w-full">
-						<i class="fa-duotone fa-chevrons-left"></i>&nbsp;&nbsp;&nbsp;J'ai déjà un compte Scrilab
-					</a>
-				</p>
-				<hr class="mb-5">
-
-				<div class="text-left">
+				<hr class="mb-5 mt-5">
+				<a href="{{path("connect_google")}}" class="bg-[#DB4437] opacity-90 rounded  hover:opacity-100 text-white font-bold py-2 px-4 flex flex-row items-center justify-center mx-auto gap-x-4">
+					<i class="fa-brands fa-google"></i>
+					<span>M'inscrire avec Google</span>
+				</a>
+				<div class="inline-flex items-center justify-center w-full mt-4">
+					<hr class="w-full h-1 my-8 bg-gray-200 border-[1px] rounded dark:bg-gray-700">
+					<div class="absolute px-4 -translate-x-1/2 -mt-6 font-normal bg-white left-1/2 italic dark:bg-gray-900">
+						Ou avec le site
+					</div>
+				</div>
+				<div class="text-left -mt-5">
 					<turbo-frame id="register-full-frame">
 
 						{{ form_start(registrationFormFull, {attr: {'novalidate': 'novalidate','action':path("app_register_full")}}) }}
@@ -31,13 +34,20 @@
 						{% include "./partials/_form-row.html.twig" with {'form': registrationFormFull.email, 'icon':"fa-envelope"} %}
 						{% include "./partials/_form-row.html.twig" with {'form': registrationFormFull.plainPassword, 'icon':"fa-lock-keyhole"} %}
 						{% include "./partials/_form-row.html.twig" with {'form': registrationFormFull.agreeTerms, 'icon':"", check:true, checkText:"J'accepte les <button onclick='MicroModal.show(\"popup-cgu\")' type='button' class='hover:underline font-bold'>CGU</button> de Scrilab", class:"text-xs"} %}
-						<button type="submit" class="button-classic w-full flex justify-center button-slate mt-5">
+						<button type="submit" class="button-classic w-full flex justify-center button-slate">
 
 							<i class="fa-duotone fa-user-plus"></i>
 							C'est parti !
 
 						</button>
 						{{ form_end(registrationFormFull) }}</div>
+					<hr class="mb-0">
+					<div class="flex flex-row justify-center items-center gap-x-2 text-s text-sm text-slate-600 dark:text-slate-200">
+						<i class="fa-duotone fa-chevrons-left"></i>
+						<a href="{{path("app_login")}}" target="_top" class="modal-register-login-button">
+							J'ai déjà un compte Scrilab
+						</a>
+					</div>
 				</turbo-frame>
 			</div>
 		</div>

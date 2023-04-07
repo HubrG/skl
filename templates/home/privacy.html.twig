@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Scrilab | Web-éditeur
+{% endblock %}
+{% block stylesheets %}
+	<link rel="canonical" href="https://www.scrilab.com{{ canonicalUrl }}"/>
+{% endblock %}
+{% block javascripts %}{% endblock %}
+{% block body %}
+	<section class="col-span-12 w-full md:col-start-2 mx-auto">
+
+		<h3 class="modal-header">
+			<i class="fa-duotone fa-user-secret"></i>
+			Confidentialité
+		</h3>
+		<hr class="mt-5 mb-3">
+		<ol class="flex flex-col gap-y-5">
+			<li>
+				<strong>Collecte de données limitée :</strong>
+				Collectez uniquement les données personnelles strictement nécessaires à la fourniture de votre service ou produit, et limitez la collecte à ces seules données. Évitez de collecter des données personnelles qui ne sont pas nécessaires à votre activité.</li>
+			<li>
+				<strong>Consentement éclairé :</strong>
+				Demandez le consentement éclairé de vos clients avant de collecter leurs données personnelles. Assurez-vous que vos clients comprennent quelles données vous collectez, pourquoi vous les collectez, comment vous les utilisez et avec qui vous les partagez.</li>
+			<li>
+				<strong>Sécurité des données :</strong>
+				Protégez les données personnelles de vos clients en mettant en place des mesures de sécurité adéquates pour prévenir tout accès, utilisation ou divulgation non autorisés. Veillez à protéger les données sensibles comme les mots de passe, les informations bancaires ou les numéros de sécurité sociale en les cryptant ou en les stockant de manière sécurisée.</li>
+			<li>
+				<strong>Accès limité :</strong>
+				Limitez l'accès aux données personnelles aux seules personnes qui ont besoin de les utiliser pour fournir votre service ou produit. Assurez-vous que votre personnel est formé sur les meilleures pratiques de sécurité des données.</li>
+			<li>
+				<strong>Durée de conservation limitée :</strong>
+				Ne conservez pas les données personnelles plus longtemps que nécessaire. Déterminez une durée de conservation appropriée et détruisez les données personnelles une fois cette durée écoulée.</li>
+			<li>
+				<strong>Transparence :</strong>
+				Soyez transparent sur la façon dont vous utilisez les données personnelles de vos clients. Fournissez une politique de confidentialité claire et facilement accessible qui explique comment vous collectez, utilisez et partagez les données personnelles de vos clients.</li>
+			<li>
+				<strong>Droits des clients :</strong>
+				Respectez les droits de vos clients en matière de confidentialité. Par exemple, assurez-vous que vos clients peuvent accéder à leurs données personnelles, les modifier ou les supprimer, ou retirer leur consentement à tout moment.</li>
+		</ol>
+
+	</section>
+{% endblock %}

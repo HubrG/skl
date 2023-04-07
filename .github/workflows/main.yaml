@@ -26,4 +26,5 @@ jobs:
           git pull &&
           composer install &&
           php bin/console doctrine:migrations:migrate -n &&
-          php bin/console cache:clear"
+          php bin/console cache:clear &&
+          npm run-script build"

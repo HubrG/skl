@@ -18,4 +18,4 @@ jobs:
         run: sudo apt update && sudo apt install sshpass
 
       - name: deploy
-        run: sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }} "cd public_html/; git pull; php bin/console doctrine:migrations:migrate -n; php bin/console cache:clear"
+        run: sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }} "cd public_html/; git pull; composer install; npm run-script build; php bin/console cache:clear; php bin/console doctrine:migrations:migrate -n;"

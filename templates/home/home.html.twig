@@ -231,7 +231,7 @@
 			</div>
 		</div>
 	</section>
-	<div class="col-span-12 mt-10 md:-mt-16 z-50 order-1 md:order-2">
+	<div class="col-span-12 mt-10 md:-mt-5 z-50 order-1 md:order-2">
 		<div class="my-special-hr">
 			<hr>
 			<span>Derniers récits</span>
@@ -254,13 +254,13 @@
 			</a>
 		</div>
 	</div>
-	<div class="col-span-12 md:mt-16 mt-0 z-50 order-3 md:order-3">
+	<div class="col-span-12 md:mt-20 mt-0 z-50 order-3 md:order-3">
 		<div class="my-special-hr">
 			<hr>
 			<span>Récits les plus populaires</span>
-			<hr>
+			<hr class="mb-20">
 		</div>
-		<div class="animate__animated animate__fadeIn publications-container small ">
+		<div class="animate__animated animate__fadeIn publications-container small">
 			{% for item in pub_pop %}
 				{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'all', 'queryPage':1, 'sortBy':'pop', 'querySortby':'pop', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
 			{% endfor %}

@@ -239,7 +239,7 @@
 		</div>
 		<div class="animate__animated animate__fadeIn publications-container small ">
 			{% for item in pub_last %}
-				{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'all', 'queryPage':1, 'sortBy':'pop', 'querySortby':'null', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
+				{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'all', 'queryPage':1, 'sortBy':'published', 'querySortby':'published', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
 			{% endfor %}
 			{% if pub_last|length < 7 %}
 				{% for i in pub_last|length..6 - 1 %}
@@ -262,7 +262,7 @@
 		</div>
 		<div class="animate__animated animate__fadeIn publications-container small ">
 			{% for item in pub_pop %}
-				{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'all', 'queryPage':1, 'sortBy':'pop', 'querySortby':'null', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
+				{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'all', 'queryPage':1, 'sortBy':'pop', 'querySortby':'pop', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
 			{% endfor %}
 			{% if pub_pop|length < 7 %}
 				{% for i in pub_pop|length..6 - 1 %}

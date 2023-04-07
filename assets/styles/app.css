@@ -781,3 +781,24 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 	@apply text-4xl font-bold text-slate-800 dark:text-slate-300;
  
  }
+ .navbar-home-item {
+	@apply hover:bg-slate-100 rounded p-3 flex flex-1 justify-center;
+ }
+ .navbar-home-item a {
+	@apply text-center  flex md:flex-row flex-col gap-y-2 gap-x-2 items-center justify-center;
+}
+.navbar-home-item a i {
+	@apply  text-3xl md:text-xl;
+}
+.navbar-home-item a span {
+	@apply   text-xs md:text-base font-semibold;
+}
+.navbar-home-item button {
+	@apply text-center  flex md:flex-row flex-col gap-y-2 gap-x-2 items-center justify-center;
+}
+.navbar-home-item button i {
+	@apply  text-3xl md:text-xl;
+}
+.navbar-home-item button span {
+	@apply   text-xs md:text-base font-semibold;
+}

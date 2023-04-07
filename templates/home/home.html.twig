@@ -9,8 +9,8 @@
 {% block body %}
 	<div class="bg-home dark:hidden opacity-50 -z-50 left-0 fixed h-screen w-full bg-repeat"></div>
 	<section class="col-span-12">
-		<ul class="text-base shadow dark:shadow-xl rounded-lg flex flex-row justify-between items-start -mt-8 xl:-mt-4 mb-8 xl:mb-0 space-x-5 z-50 text-slate-900 dark:text-indigo-300">
-			<li class="rounded-r-0 navbar-button navbar-button-home" {% if not app.user %} data-micromodal-trigger="popup-register" {% endif %}>
+		<ul class=" shadow dark:shadow-xl rounded-lg flex flex-row justify-between items-start -mt-8 xl:-mt-4 mb-8 xl:mb-0 space-x-5 z-50 text-slate-900 dark:text-indigo-300">
+			<li class="navbar-home-item" {% if not app.user %} data-micromodal-trigger="popup-register" {% endif %}>
 				{% if app.user %}
 					<a href="{{path("app_publication_add")}}" class=" navbar-button-home items-center gap-x-2 w-full h-full">
 						<i class="fa-duotone fa-book text-blue-400  text-3xl md:text-xl"></i>
@@ -19,39 +19,40 @@
 				{% else %}
 					<button class=" navbar-button-home items-center gap-x-2 w-full h-full">
 						<i class="fa-duotone fa-book text-blue-400 text-3xl md:text-xl"></i>
-						Publiez votre roman
+						<span>Publiez votre roman</span>
 					</button>
 				{% endif %}
 			</li>
-			<li class="navbar-button navbar-button-home h-full" {% if not app.user %} data-micromodal-trigger="popup-register" {% endif %}>
+			<li class="navbar-home-item" {% if not app.user %} data-micromodal-trigger="popup-register" {% endif %}>
 				{% if app.user %}
 					<a href="{{path("app_publication_add")}}" class=" navbar-button-home items-center gap-x-2 w-full h-full">
 						<i class="fa-duotone fa-square-rss text-emerald-500  text-3xl md:text-xl"></i>
-						Créez votre blog</a>
-				{% else %}
-					<button class=" navbar-button-home items-center gap-x-2 w-full h-full">
-						<i class="fa-duotone fa-square-rss text-emerald-500  text-3xl md:text-xl"></i>
-						Créez votre blog
-					</button>
-				{% endif %}
-			</li>
-			<li class="navbar-button navbar-button-home h-full" {% if not app.user %} data-micromodal-trigger="popup-register" {% endif %}>
-				{% if app.user %}
-					<a class=" navbar-button-home items-center gap-x-2 w-full h-full" href="{{path("app_publication_add")}}">
-						<i class="fa-duotone fa-comment-music text-purple-500  text-3xl md:text-xl"></i>
-						Déclamez votre poésie
+						<span>Créez votre blog</span>
 					</a>
 				{% else %}
 					<button class=" navbar-button-home items-center gap-x-2 w-full h-full">
-						<i class="fa-duotone fa-comment-music text-purple-500  text-3xl md:text-xl"></i>
-						Déclamez votre poésie
+						<i class="fa-duotone fa-square-rss text-emerald-500  text-3xl md:text-xl"></i>
+						<span>Créez votre blog</span>
 					</button>
 				{% endif %}
 			</li>
-			<li class="navbar-button navbar-button-home">
-				<i class="fa-duotone fa-book-open-reader text-teal-500  text-3xl md:text-xl"></i>
-				<a class="text-center" href="{{path("app_publication_show_all_category")}}">
-					Lisez des tas de récits
+			<li class="navbar-home-item" {% if not app.user %} data-micromodal-trigger="popup-register" {% endif %}>
+				{% if app.user %}
+					<a href="{{path("app_publication_add")}}">
+						<i class="fa-duotone fa-comment-music text-purple-500"></i>
+						<span>Déclamez votre poésie</span>
+					</a>
+				{% else %}
+					<button>
+						<i class="fa-duotone fa-comment-music text-purple-500"></i>
+						<span>Déclamez votre poésie</span>
+					</button>
+				{% endif %}
+			</li>
+			<li class="navbar-home-item">
+				<a href="{{path("app_publication_show_all_category")}}">
+					<i class="fa-duotone fa-book-open-reader text-teal-500  "></i>
+					<span>Lisez des tas de récits</span>
 				</a>
 			</li>
 		</ul>

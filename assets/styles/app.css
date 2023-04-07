@@ -782,23 +782,41 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
  
  }
  .navbar-home-item {
-	@apply hover:bg-slate-100 rounded p-3 flex flex-1 justify-center;
+	@apply hover:bg-slate-100 dark:hover:bg-slate-700 rounded flex flex-1 justify-center;
  }
  .navbar-home-item a {
-	@apply text-center  flex md:flex-row flex-col gap-y-2 gap-x-2 items-center justify-center;
+	@apply text-center  flex xl:flex-row flex-col gap-y-2 w-full p-3 gap-x-2 items-center justify-center;
 }
 .navbar-home-item a i {
-	@apply  text-3xl md:text-xl;
+	@apply  text-3xl xl:text-xl;
 }
 .navbar-home-item a span {
-	@apply   text-xs md:text-base font-semibold;
+	@apply   text-xs xl:text-base font-semibold text-slate-700 dark:text-slate-200;
 }
 .navbar-home-item button {
-	@apply text-center  flex md:flex-row flex-col gap-y-2 gap-x-2 items-center justify-center;
+	@apply text-center  flex xl:flex-row w-full flex-col gap-y-2  p-3 gap-x-2 items-center justify-center;
 }
 .navbar-home-item button i {
-	@apply  text-3xl md:text-xl;
+	@apply  text-3xl xl:text-xl;
 }
 .navbar-home-item button span {
-	@apply   text-xs md:text-base font-semibold;
+	@apply   text-xs xl:text-base font-semibold text-slate-700 dark:text-slate-200;
+}
+.hr-space {
+	@apply inline-flex items-center justify-center w-full my-2 -mt-0;
+}
+.hr-space hr {
+	@apply w-full h-1 my-8 bg-gray-200 border-[1px] rounded dark:bg-gray-700;
+}
+.hr-space div {
+	@apply absolute px-4 -translate-x-1/2 -mt-1 font-normal bg-white left-1/2 italic dark:bg-gray-800 text-slate-700 dark:text-slate-200;
+}
+.my-special-hr {
+	@apply flex-row flex flex-1 mb-14 md:mb-6;
+}
+.my-special-hr hr {
+	@apply border-2 rounded-r-full w-2/6 md:w-4/6;
+}
+.my-special-hr span {
+	@apply -mt-1 text-2xl md:text-4xl md:w-4/6 items-center px-4 text-center bg-white dark:bg-slate-800 dark:text-slate-200 font-serif;
 }

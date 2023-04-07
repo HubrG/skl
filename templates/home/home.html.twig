@@ -85,7 +85,12 @@
 			</div>
 		</div>
 	</section>
-	<section class="col-span-12 z-10">
+	<section class="col-span-12 z-10 order-2 md:order-1 mt-20 md:mt-0">
+		<div class="my-special-hr block md:hidden">
+			<hr>
+			<span>Pourquoi écrire sur Scrilab ?</span>
+			<hr>
+		</div>
 		<div class="glide-market glide -mt-10 left-0">
 			<div data-glide-el="track" class="glide__track mx-16">
 				<div class="glide__slides">
@@ -213,8 +218,6 @@
 						</div>
 					</div>
 				</div>
-				{# MD 1 by 1 #}
-
 			</div>
 			<div class="glide__arrows text-xl" data-glide-el="controls">
 				<button class="glide__arrow glide__arrow--left mr-10" aria-label="Passer à la diapositive précédente" data-glide-dir="&lt;">
@@ -226,8 +229,21 @@
 			</div>
 		</div>
 	</section>
-	<div class="col-span-12 -mt-20">
-		<hr>
-		{# <h1 class="text-center">Publiez des romans, de la poésie ; créez des blogs</h1> #}
+	<div class="col-span-12 mt-10 md:-mt-16 z-50 order-1 md:order-2">
+		<div class="my-special-hr">
+			<hr>
+			<span>Derniers récits</span>
+			<hr>
+		</div>
+		<div class="animate__animated animate__fadeIn publications-container small ">
+			{% for item in pub_last %}
+				{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'all', 'queryPage':1, 'sortBy':'pop', 'querySortby':'null', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
+			{% endfor %}
+			{% if pub_last|length < 7 %}
+				{% for i in pub_last|length..6 - 1 %}
+					{% include "publication/_partials/_show_all-fake-publication.html.twig" %}
+				{% endfor %}
+			{% endif %}
+		</div>
 	</div>
 {% endblock %}

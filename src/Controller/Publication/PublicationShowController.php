@@ -45,12 +45,6 @@ class PublicationShowController extends AbstractController
 	#[Route('/recits/{slug?}/{page<\d+>?}/{sortby?}/{order?}/{keystring?}', name: 'app_publication_show_all_category')]
 	public function show_all(SessionInterface $session, PublicationCategoryRepository $pcRepo, PublicationKeywordRepository $kwRepo, PublicationRepository $pRepo, $sortby = "p.pop", $page = 1, $slug = "all", $keystring = null, $order = "desc"): Response
 	{
-		// $p = $pRepo->findAll();
-		// for ($i = 0; $i <h2 count($p); $i++) {
-		// 	$pp = new Publication();
-		// 	$pp = $p[$i];
-		// 	$this->publicationPopularity->PublicationPopularity($pp);
-		// }
 		// * On set les variables si elles ne sont pas dans l'url
 		$nbr_by_page = 10;
 		$page = $page ?? 1;
@@ -106,39 +100,11 @@ class PublicationShowController extends AbstractController
 					$countPage = 1;
 					$end = $count;
 				}
-				//!SECTION
-				// if ($slug == "all") {
-				// 	$qb = $pRepo->createQueryBuilder("p")
-				// 		->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
-				// 		->where("p.status = 2")
-				// 		->andWhere("pch.status = 2")
-				// 		->andWhere("p.category is not null")
-				// 		->orderBy($sortby, $order)
-				// 		->setFirstResult($start)
-				// 		->setMaxResults($nbr_by_page);
-				// } else {
-				// 	$qb = $pRepo->createQueryBuilder("p")
-				// 		->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
-				// 		->innerJoin("p.category", "pc", "WITH", "pc.id = :category_id")
-				// 		->where("p.status = 2")
-				// 		->andWhere("pc.id = :category_id")
-				// 		->setParameter("category_id", $pcRepo)
-				// 		->orderBy($sortby, $order)
-				// 		->setFirstResult($start)
-				// 		->setMaxResults($nbr_by_page);
-				// }
 				if ($sortby == "p.pop") {
 					$publications = $pRepo->findBy(["id" => $publicationsAll], ["pop" => $order], $nbr_by_page, $start);
 				} else {
 					$publications = $pRepo->findBy(["id" => $publicationsAll], ["published_date" => $order], $nbr_by_page, $start);
 				}
-				try {
-					// $publications = $qb->getQuery()->getResult();
-					// dd("Start: " . $start, "End: " . $end, "CountPage: " . $countPage, "Count Pub: " . $count, "Nbr by page: " . $nbr_by_page, "Page: " . $page, "Slug: " . $slug, "Keystring: " . $keystring, "Order: " . $order, "Sort by: " . $sortby, $publicationsAll);
-				} catch (\Exception $e) {
-					return $this->redirectToRoute('app_home');
-				}
-				//!SECTION
 				$keywString = null;
 			}
 			//  Si il y a des keywords dans l'url, on renvoie toutes les publications qui ont au moins un des keywords
@@ -160,39 +126,7 @@ class PublicationShowController extends AbstractController
 						$publications[] = $p;
 					}
 				}
-				// if ($slug != "all") {
-				// 	// * ... on enlève les publications qui ne sont pas de la catégorie et qui n'ont pas de chapitre publié
-				// 	$publications = array_filter($publications, function ($p) use ($pcRepo) {
-				// 		return $p->getCategory() == $pcRepo;
-				// 	});
-				// 	// * On vérifie que la publication a au moins un chapitre publié
-				// 	$publications = array_filter($publications, function ($p) {
-				// 		$chapters = $p->getPublicationChapters();
-				// 		if ($chapters->count() > 0) {
-				// 			foreach ($chapters as $chapter) {
-				// 				if ($chapter->getStatus() == 2) {
-				// 					return true;
-				// 				}
-				// 			}
-				// 		}
-				// 		return false;
-				// 	});
-				// } else {
-				// 	// * On vérifie que la publication a au moins un chapitre publié
-				// 	$publications = array_filter($publications, function ($p) {
-				// 		$chapters = $p->getPublicationChapters();
-				// 		if ($chapters->count() > 0) {
-				// 			foreach ($chapters as $chapter) {
-				// 				if ($chapter->getStatus() == 2) {
-				// 					return true;
-				// 				}
-				// 			}
-				// 		}
-				// 		return false;
-				// 	});
-				// // }
-				// // * ... et on enlève les doublons en récupérant les ID unique de $publications
-				// // ! pagination
+				// ! pagination
 				$count = count($publications);
 				if ($count > $nbr_by_page) {
 					$countPage = ceil($count / $nbr_by_page);

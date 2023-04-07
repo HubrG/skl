@@ -26,15 +26,17 @@ class HomeController extends AbstractController
     {
 
         // On récupère les publications qui ont le status 2 (publié) et un chapitre publié
-
         $qb = $pRepo->createQueryBuilder("p")
             ->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
-            ->where("p.status = 2");
+            ->where("p.status = 2")
+            ->orderBy("p.published_date", "DESC");
         $publications = $qb->getQuery()->getResult();
+        $publications = $pRepo->findBy(["id" => $publications], ["published_date" => "desc"], 6);
         return $this->render('home/home.html.twig', [
             'controller_name' => "d",
             "publications" => $publications,
-            "canonicalUrl" => $this->generateUrl('app_home', array(), true)
+            "canonicalUrl" => $this->generateUrl('app_home', array(), true),
+            'pub_last' => $publications, // Retourne les dernières publications
         ]);
     }
 
@@ -105,9 +107,7 @@ class HomeController extends AbstractController
     #[Route('/privacy', name: 'app_privacy')]
     public function privacy(): Response
     {
-
         // On récupère les publications qui ont le status 2 (publié) et un chapitre publié
-
         return $this->render('home/privacy.html.twig', [
             'controller_name' => "d",
             "canonicalUrl" => $this->generateUrl('app_privacy', array(), true)

@@ -500,7 +500,7 @@ opacity: 0.4;
 	@apply bg-rose-300 dark:bg-rose-300;
 }
 .button-classic {
-@apply  rounded-md text-sm flex flex-row gap-x-3 font-medium italic tracking-wide items-center justify-center  px-3 py-3 text-center opacity-90 hover:opacity-100  active:ring-2  border-none transition ease-in duration-75;
+@apply  rounded-md text-sm flex flex-row gap-x-3 font-medium italic tracking-wide items-center justify-center  px-3 py-3 text-center opacity-80 hover:opacity-100  active:ring-2  border-none transition ease-in duration-75;
 }
 .button-violet {
 	@apply   bg-violet-50 text-violet-900 ring-violet-400 border-violet-600 dark:bg-violet-900 dark:text-violet-50  dark:border-violet-400;

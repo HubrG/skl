@@ -1,0 +1,30 @@
+name: CD
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env: 
+      SSHPASS: ${{ secrets.APP_PASS }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: APT_UPDATE and INSTALL SSHPASS
+        run:
+          sudo apt update && sudo apt install sshpass
+          sudo apt-get install -y sshpass
+
+      - name: deploy
+        run: 
+          sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
+          "cd public_html/ &&
+          git pull &&
+          composer install &&
+          php bin/console doctrine:migrations:migrate -n &&
+          php bin/console cache:clear &&
+          npm run-script build"

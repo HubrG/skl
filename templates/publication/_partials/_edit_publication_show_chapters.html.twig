@@ -1,12 +1,12 @@
 {% set nbr = 0 %}
-{% for items in infoPub.publicationChapters|sort((a, b) => a.orderDisplay <=> b.orderDisplay) %}
-	{% if items.status == withStatus %}
-		{% set nbr = nbr + 1 %}
-		{% set chapId = items.id  %}
-		<div class="relative bg-white   border-gray-100 rounded-lg shadow dark:shadow-xl dark:bg-slate-800 dark:border-slate-700 dark:border-[0px] mt-5 list-group-item " chap="{{ items.id }}" id="{{ items.orderDisplay }}">
-			<span data-chapter-status="{{items.status}}" id="chapter-sort-{{items.id}}" class="absolute {{ items.status < 2 ? " hidden" }} left-[0.0rem] -bottom-[0.02rem] inline-flex items-center justify-center w-5 h-5 text-xs font-semibold text-slate-50 bg-slate-700 dark:bg-slate-900 rounded-lg rounded-tl-none rounded-br-none chapter-number z-50">
-				{{items.orderDisplay + 1}}</span>
-			<turbo-frame id="{{ chapId }}">
+<turbo-frame id="chapters-list-{{ withStatus }}">
+	{% for items in infoPub.publicationChapters|sort((a, b) => a.orderDisplay <=> b.orderDisplay) %}
+		{% if items.status == withStatus %}
+			{% set nbr = nbr + 1 %}
+			{% set chapId = items.id  %}
+			<div class="relative bg-white   border-gray-100 rounded-lg shadow dark:shadow-xl dark:bg-slate-800 dark:border-slate-700 dark:border-[0px] mt-5 list-group-item " chap="{{ items.id }}" id="{{ items.orderDisplay }}">
+				<span data-chapter-status="{{items.status}}" id="chapter-sort-{{items.id}}" class="absolute {{ items.status < 2 ? " hidden" }} left-[0.0rem] -bottom-[0.02rem] inline-flex items-center justify-center w-5 h-5 text-xs font-semibold text-slate-50 bg-slate-700 dark:bg-slate-900 rounded-lg rounded-tl-none rounded-br-none chapter-number z-50">
+					{{items.orderDisplay + 1}}</span>
 				<i data-tippy-content="Déplacer cette feuille" class="fa-regular fa-up-down-left-right item text-sm mr-2 mt-2 absolute right-0 top-1 font-bold cursor-grab dark:text-slate-50"></i>
 				<div id="defaultTabContent{{ chapId }}">
 					<div class="hidden p-4 pt-3 md:p-8 md:pb-5 md:pt-3 " id="about{{ chapId }}" role="tabpanel" aria-labelledby="about-tab{{ chapId }}">
@@ -98,7 +98,7 @@
 						<button id="statistics-tab{{ chapId }}" data-tabs-target="#statistics{{ chapId }}" type="button" role="tab" aria-controls="statistics{{ chapId }}" aria-selected="false" class="inline-block p-4 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300">Statistiques</button>
 					</li>
 				</ul>
-			</turbo-frame>
-		</div>
-	{% endif %}
-{% endfor %}
+			</div>
+		{% endif %}
+	{% endfor %}
+</turbo-frame>

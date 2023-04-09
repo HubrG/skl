@@ -26,6 +26,8 @@ jobs:
           git config --local url.\"https://${{ secrets.GIT_ACCESS_TOKEN }}:@github.com/\".insteadOf \"https://github.com/\" && \
           git fetch && \
           git reset --hard origin/main && \
+          sed -i 's/^GOOGLE_CLIENT_ID=.*/GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}/' .env.local
+          sed -i 's/^GOOGLE_CLIENT_SECRET=.*/GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}/' .env.local
           composer install && \
           npm run-script build && \
           php bin/console cache:clear && \

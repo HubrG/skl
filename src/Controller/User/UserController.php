@@ -9,10 +9,12 @@ use App\Repository\UserRepository;
 use App\Form\UserChangePasswordType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
+use App\Form\UserChangePasswordGoogleType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationCommentRepository;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -22,6 +24,7 @@ class UserController extends AbstractController
 	private $tokenStorage;
 
 	private $uploadImage;
+
 
 	public function __construct(ImageService $uploadImage, TokenStorageInterface $tokenStorage)
 	{
@@ -211,7 +214,11 @@ class UserController extends AbstractController
 		}
 		$user = $userRepo->findOneBy(["id" => $this->getUser()]);
 		$form = $this->createForm(UserAccountType::class, $user);
-		$pwForm = $this->createForm(UserChangePasswordType::class, $user);
+		if ($user->getGoogleId() && $user->getPassword() == "") {
+			$pwForm = $this->createForm(UserChangePasswordGoogleType::class, $user);
+		} else {
+			$pwForm = $this->createForm(UserChangePasswordType::class, $user);
+		}
 		//
 		$form->handleRequest($request);
 
@@ -224,14 +231,30 @@ class UserController extends AbstractController
 
 		$pwForm->handleRequest($request);
 		if ($pwForm->isSubmitted() && $pwForm->isValid()) {
-			$newEncodedPassword = $userPasswordHasher->hashPassword($user, $user->getPlainPassword());
+			if ($user->getGoogleId() && $user->getPassword() == "") {
+				$newEncodedPassword = $userPasswordHasher->hashPassword($user, $user->getPlainPassword());
+			} else {
+				$newEncodedPassword = $userPasswordHasher->hashPassword($user, $user->getPlainPassword());
+			}
 			$user->setPassword($newEncodedPassword);
 			$em->persist($user);
 			$em->flush();
 			$this->addFlash('success', 'Votre mot de passe a bien été modifié.');
-			return $this->redirectToRoute("app_user_account", [], Response::HTTP_SEE_OTHER);
+			$url = $this->generateUrl('app_user_account');
+			return new Response(<<<HTML
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <title>Redirection</title>
+                <script>
+                    window.top.location.href = "$url";
+                </script>
+            </head>
+            <body>
+            </body>
+        </html>
+    HTML);
 		}
-
 		return $this->render('user/account.html.twig', [
 			'form' => $form,
 			'passwordForm' => $pwForm,

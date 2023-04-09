@@ -6,7 +6,6 @@
 {% endblock %}
 {% block body %}
 	{% include "user/_partials/_top.html.twig" %}
-
 	<div class="w-full xl:w-8/12 flex flex-col justify-center mx-auto  -mt-7">
 		<div class="mb-4 border-b border-gray-200 dark:border-gray-700">
 			<ul class="flex flex-wrap justify-center -mb-px text-md font-semibold text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
@@ -31,9 +30,7 @@
 			</ul>
 		</div>
 		<div id="myTabContent">
-
 			<div class="hidden p-4 rounded-lg  dark:bg-gray-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-
 				{{ form_start(form, {attr:{"data-turbo-frame":"_top"}}) }}
 				{% include "./partials/_form-row.html.twig" with {'form': form.email, 'icon':"fa-envelope"} %}
 				{% include "./partials/_form-row.html.twig" with {'form': form.username, 'icon':"fa-user-vneck"} %}
@@ -51,25 +48,36 @@
 				<hr class="mb-5">
 				<button data-micromodal-trigger="popup-confirm-delete-account" class="button-classic button-red w-full">
 					<i class="fa-duotone fa-user-slash"></i>
-					Suppression du compte
+					Supprimer mon compte
 				</button>
 			</div>
 		</div>
 		<div class="hidden p-4 rounded-lg dark:bg-gray-800" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+			<turbo-frame id="passChange">
+				{{ form_start(passwordForm) }}
+				{% if app.user.googleId is not null and app.user.password == "" %}
+					<div class="bg-yellow-50 rounded-lg p-5 text-center text-yellow-700 flex flex-col gap-y-3">
+						<i class="fa-regular fa-circle-info"></i>
+						<span>
+							Vous êtes actuellement connecté avec un compte Google, ce qui signifie que vous n'avez pas encore défini de mot de passe pour ce compte. Vous pouvez le faire ici en remplissant le formulaire ci-dessous.
+						</span>
+					</div>
 
-			{{ form_start(passwordForm, {attr:{"data-turbo-frame":"_top"}}) }}
-			{% include "./partials/_form-row.html.twig" with {'form': passwordForm.oldPassword, 'icon':"fa-key"} %}
-			{% include "./partials/_form-row.html.twig" with {'form': passwordForm.plainPassword.first, 'icon':"fa-lock-keyhole"} %}
-			{% include "./partials/_form-row.html.twig" with {'form': passwordForm.plainPassword.second, 'icon':"fa-lock-keyhole"} %}
-			<div class="flex justify-center">
-				<button type="submit" class="button-classic button-slate w-full">
-					<i class="fa-regular fa-circle-check"></i>
-					Modifier mon mot de passe
-				</button>
-				<div>
-					{{ form_end(passwordForm) }}
+				{% else %}
+					{% include "./partials/_form-row.html.twig" with {'form': passwordForm.oldPassword, 'icon':"fa-key"} %}
+				{% endif %}
+				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.plainPassword.first, 'icon':"fa-lock-keyhole"} %}
+				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.plainPassword.second, 'icon':"fa-lock-keyhole"} %}
+				<div class="flex justify-center">
+					<button type="submit" class="button-classic button-slate w-full">
+						<i class="fa-regular fa-circle-check"></i>
+						Modifier mon mot de passe
+					</button>
+					<div>
+						{{ form_end(passwordForm) }}
+					</div>
 				</div>
-			</div>
+			</turbo-frame>
 		</div>
 		<div class="hidden p-4 rounded-lg dark:bg-gray-800" id="notif-account" role="tabpanel" aria-labelledby="contacts-tab">
 			<div class="flex flex-col gap-y-4 text-xs lg:text-sm">

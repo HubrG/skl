@@ -19,7 +19,7 @@ class SecurityController extends AbstractController
         $this->urlGenerator = $urlGenerator;
     }
 
-    #[Route(path: '/login', name: 'app_login')]
+    #[Route(path: '/login-fdsfkjlksdjfljoklk', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
     {
         if ($this->getUser()) {
@@ -32,6 +32,20 @@ class SecurityController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+    }
+    #[Route(path: '/login', name: 'app_login_full')]
+    public function loginFull(AuthenticationUtils $authenticationUtils, Request $request): Response
+    {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_home');
+            // On renvoie sur la page précédente avec le referrer
+        }
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('security/login-full.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(Request $request): response

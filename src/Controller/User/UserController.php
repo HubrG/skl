@@ -5,11 +5,14 @@ namespace App\Controller\User;
 use App\Form\UserInfoType;
 use App\Form\UserAccountType;
 use App\Services\ImageService;
+use App\Security\EmailVerifier;
 use App\Repository\UserRepository;
+use Symfony\Component\Mime\Address;
 use App\Form\UserChangePasswordType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
 use App\Form\UserChangePasswordGoogleType;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,11 +28,13 @@ class UserController extends AbstractController
 
 	private $uploadImage;
 
+	private EmailVerifier $emailVerifier;
 
-	public function __construct(ImageService $uploadImage, TokenStorageInterface $tokenStorage)
+	public function __construct(ImageService $uploadImage, TokenStorageInterface $tokenStorage, EmailVerifier $emailVerifier)
 	{
 		$this->uploadImage = $uploadImage;
 		$this->tokenStorage = $tokenStorage;
+		$this->emailVerifier = $emailVerifier;
 	}
 	#[Route('user/{username?}', requirements: ["username" => "[^/]+"], name: 'app_user')]
 	public function index(UserRepository $userRepo, PublicationRepository $pRepo, $username): Response
@@ -240,9 +245,29 @@ class UserController extends AbstractController
 					</body>
 				</html>
 			HTML);
-			}
-			if ($user->getGoogleId() && $user->getPassword() != "" && $userEmail != $form->get("email")->getData()) {
+			} elseif ($user->getGoogleId() && $user->getPassword() != "" && $userEmail != $form->get("email")->getData()) {
 				$user->setGoogleId(null);
+				$user->setIsVerified(false);
+				$this->emailVerifier->sendEmailConfirmation(
+					'app_verify_email',
+					$user,
+					(new TemplatedEmail())
+						->from(new Address('contact@scrilab.fr', 'Scrilab'))
+						->to($user->getEmail())
+						->subject('Confirmez votre adresse adresse email.')
+						->htmlTemplate('emails/valid_email.html.twig')
+				);
+			} elseif (!$user->getGoogleId() && $user->getPassword() != "" && $userEmail != $form->get("email")->getData()) {
+				$user->setIsVerified(false);
+				$this->emailVerifier->sendEmailConfirmation(
+					'app_verify_email',
+					$user,
+					(new TemplatedEmail())
+						->from(new Address('contact@scrilab.fr', 'Scrilab'))
+						->to($user->getEmail())
+						->subject('Confirmez votre adresse adresse email.')
+						->htmlTemplate('emails/valid_email.html.twig')
+				);
 			}
 			$em->persist($user);
 			$em->flush();
@@ -267,13 +292,14 @@ class UserController extends AbstractController
 		if ($pwForm->isSubmitted() && $pwForm->isValid()) {
 			if ($user->getGoogleId() && $user->getPassword() == "") {
 				$newEncodedPassword = $userPasswordHasher->hashPassword($user, $user->getPlainPassword());
+				$this->addFlash('success', 'Votre mot de passe a bien été crée.');
 			} else {
 				$newEncodedPassword = $userPasswordHasher->hashPassword($user, $user->getPlainPassword());
+				$this->addFlash('success', 'Votre mot de passe a bien été modifié.');
 			}
 			$user->setPassword($newEncodedPassword);
 			$em->persist($user);
 			$em->flush();
-			$this->addFlash('success', 'Votre mot de passe a bien été modifié.');
 			$url = $this->generateUrl('app_user_account');
 			return new Response(<<<HTML
 				<!DOCTYPE html>

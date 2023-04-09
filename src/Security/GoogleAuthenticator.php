@@ -82,6 +82,7 @@ class GoogleAuthenticator extends OAuth2Authenticator
                     $slug = new SluggableListener();
                     $existingUser->setNickname(ucfirst($this->slugger->slug($username)->camel()));
                     $existingUser->setIsVerified(1);
+                    $existingUser->setRoles(['ROLE_USER']);
                     $existingUser->setGoogleId($googleUser->getId());
                     $existingUser->setPassword("");
                     $this->entityManager->persist($existingUser);

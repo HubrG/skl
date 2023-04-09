@@ -34,15 +34,22 @@
 				<turbo-frame id="infoChange">
 					{{ form_start(form, {attr:{"data-turbo-frame":"_self"}}) }}
 					{% if app.user.googleId is not null and app.user.password == "" %}
-						{% include "./partials/_form-row.html.twig" with {'form': form.email, 'disabled':'true', 'class':'opacity-50 cursor-not-allowed', 'icon':"fa-envelope"} %}
+						{% include "./partials/_form-row.html.twig" with {'form': form.email, 'class':'opacity-50 cursor-not-allowed disabled pointer-events-none', 'icon':"fa-envelope"} %}
 						<div class="help-text pb-5 flex flex-row gap-x-3 items-baseline">
 							<i class="fa-regular fa-circle-info text-yellow-500"></i>
 							<span>Vous ne pouvez pas modifier votre adresse e-mail car vous vous êtes enregistré(e) avec votre compte Google et que vous n'avez pas encore crée de mot de passe.
-								<span class="font-semibold hover:underline cursor-pointer" onclick="var pcd = document.getElementById('passChange').classList; document.getElementById('password-tab').click();pcd.add('animate__animated','animate__flash');setTimeout(function() {pcd.remove('animate__animated','animate__flash')},2000)">Cliquez ici pour modifier votre mot de passe</span>.
+								<span class="font-semibold hover:underline cursor-pointer" onclick="document.getElementById('password-tab').click();">Cliquez ici pour modifier votre mot de passe</span>.
 							</span>
 						</div>
 					{% else %}
 						{% include "./partials/_form-row.html.twig" with {'form': form.email, 'icon':"fa-envelope"} %}
+						{% if app.user.googleId is not null %}
+							<div class="help-text pb-5 flex flex-row gap-x-3 items-baseline">
+								<i class="fa-brands fa-google text-[#db4a39]"></i>
+								<span>Un compte Google est associé à cette adresse e-mail. Vous pouvez modifier votre adresse e-mail mais vous ne pourrez plus vous connecter avec votre compte Google.
+								</span>
+							</div>
+						{% endif %}
 					{% endif %}
 					{% include "./partials/_form-row.html.twig" with {'form': form.username, 'icon':"fa-user-vneck"} %}
 					<hr>

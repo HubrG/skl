@@ -52,7 +52,8 @@ class EmailVerifier extends AbstractController
         $UserRepo = $this->entityManager->getRepository(User::class);
         $user = $UserRepo->find($user->getId());
 
-        $user->setIsVerified(true);
+        $user->setIsVerified(true)
+            ->setRoles(['ROLE_USER']);
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();

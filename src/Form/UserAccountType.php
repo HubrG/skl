@@ -45,6 +45,7 @@ class UserAccountType extends AbstractType
             // ->add('profil_picture')
             ->add('birth', DateType::class, [
                 'widget' => 'single_text',
+                'required' => false,
                 'html5' => true,
                 'label' => 'Date de naissance',
             ])
@@ -52,7 +53,6 @@ class UserAccountType extends AbstractType
             ->add('country', CountryType::class, [
                 'label' => 'Pays',
                 'required' => false,
-
                 'preferred_choices' => ['FR'],
             ]);
         // ->add('join_date');

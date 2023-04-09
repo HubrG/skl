@@ -212,7 +212,8 @@ class UserController extends AbstractController
 		if (!$this->getUser()) {
 			return $this->redirectToRoute("app_home");
 		}
-		$user = $userRepo->findOneBy(["id" => $this->getUser()]);
+		$user = $userRepo->find($this->getUser());
+		$userEmail = $user->getEmail();
 		$form = $this->createForm(UserAccountType::class, $user);
 		if ($user->getGoogleId() && $user->getPassword() == "") {
 			$pwForm = $this->createForm(UserChangePasswordGoogleType::class, $user);
@@ -223,6 +224,26 @@ class UserController extends AbstractController
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()) {
+			if ($user->getGoogleId() && $user->getPassword() == "" && $userEmail != $form->get("email")->getData()) {
+				$this->addFlash('error', 'Vous ne pouvez pas modifier votre adresse e-mail car vous êtes connecté avec Google et que vous n\'avez pas de mot de passe');
+				$url = $this->generateUrl('app_user_account');
+				return new Response(<<<HTML
+				<!DOCTYPE html>
+				<html>
+					<head>
+						<title>Redirection</title>
+						<script>
+							location.top.location.href = "$url";
+						</script>
+					</head>
+					<body>
+					</body>
+				</html>
+			HTML);
+			}
+			if ($user->getGoogleId() && $user->getPassword() != "" && $userEmail != $form->get("email")->getData()) {
+				$user->setGoogleId(null);
+			}
 			$em->persist($user);
 			$em->flush();
 			$this->addFlash('success', 'Vos informations ont bien été modifées');
@@ -233,7 +254,7 @@ class UserController extends AbstractController
 					<head>
 						<title>Redirection</title>
 						<script>
-							location.reload();
+							location.top.location.href = "$url";
 						</script>
 					</head>
 					<body>
@@ -241,7 +262,7 @@ class UserController extends AbstractController
 				</html>
 			HTML);
 		}
-
+		// ! Password
 		$pwForm->handleRequest($request);
 		if ($pwForm->isSubmitted() && $pwForm->isValid()) {
 			if ($user->getGoogleId() && $user->getPassword() == "") {

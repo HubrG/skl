@@ -5,6 +5,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="robots" content="index,follow">
 		<link rel="apple-touch-icon" href="/images/favicon.png">
+		<script src="https://apis.google.com/js/platform.js" async defer></script>
+
 		{% block metatags %}
 			<meta name="description" content="Découvrez une plateforme littéraire en ligne pour publier et lire des romans, des nouvelles, de la poésie, des blogs et bien plus encore. Rejoignez une communauté passionnée de littérature et explorez de nouveaux talents dès maintenant.">
 			<meta property="og:title" content="Scrilab Éditions">
@@ -33,6 +35,7 @@
 		{% include "partials/_notif.html.twig" %}
 		{# END_FLASHES #}
 		<main>
+
 			{% block body %}{% endblock %}
 		</main>
 		{% include "partials/_footer.html.twig" %}

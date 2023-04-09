@@ -59,9 +59,15 @@ class GoogleAuthenticator extends OAuth2Authenticator
 
                 // have they logged in with Google before? Easy!
                 $existingUser = $this->entityManager->getRepository(User::class)->findOneBy(['googleId' => $googleUser->getId()]);
-
+                $existingUser2 = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $googleUser->getEmail()]);
                 //User doesnt exist, we create it !
-                if (!$existingUser) {
+                if ($existingUser2 and !$existingUser) {
+                    $existingUser2->setGoogleId($googleUser->getId());
+                    $existingUser2->setProfilPicture($googleUser->getAvatar());
+                    $this->entityManager->persist($existingUser2);
+                    $this->entityManager->flush();
+                    return $existingUser2;
+                } else {
                     $username = ucfirst($googleUser->getFirstName()) . ucfirst(substr($googleUser->getName(), 0, 1)) . rand(1, 999);
                     $existingUser = new User();
                     $existingUser->setEmail($email);

@@ -69,6 +69,8 @@ class GoogleAuthenticator extends OAuth2Authenticator
                 //User doesnt exist, we create it !
                 if ($existingUser2 and !$existingUser) {
                     $existingUser2->setGoogleId($googleUser->getId());
+                    $existingUser2->setIsVerified(1);
+                    $existingUser2->setRoles(['ROLE_USER']);
                     $this->entityManager->persist($existingUser2);
                     $this->entityManager->flush();
                     return $existingUser2;

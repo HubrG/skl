@@ -73,7 +73,7 @@ class GoogleAuthenticator extends OAuth2Authenticator
                     $this->entityManager->flush();
                     return $existingUser2;
                 } elseif (!$existingUser) {
-                    $username = ucfirst($googleUser->getFirstName()) . ucfirst(substr($googleUser->getName(), 0, 1)) . rand(1, 999);
+                    $username = ucfirst($googleUser->getName()) . rand(1, 999);
                     $existingUser = new User();
                     $existingUser->setEmail($email);
                     $existingUser->setProfilPicture($googleUser->getAvatar());
@@ -82,6 +82,8 @@ class GoogleAuthenticator extends OAuth2Authenticator
                     $slug = new SluggableListener();
                     $existingUser->setNickname(ucfirst($this->slugger->slug($username)->camel()));
                     $existingUser->setIsVerified(1);
+                    $existingUser->setJoinDate(new \DateTime());
+                    $existingUser->setCountry(strtoupper($googleUser->getLocale()));
                     $existingUser->setRoles(['ROLE_USER']);
                     $existingUser->setGoogleId($googleUser->getId());
                     $existingUser->setPassword("");

@@ -35,18 +35,21 @@
 					{{ form_start(form, {attr:{"data-turbo-frame":"_self"}}) }}
 					{% if app.user.googleId is not null and app.user.password == "" %}
 						{% include "./partials/_form-row.html.twig" with {'form': form.email, 'class':'opacity-50 cursor-not-allowed disabled pointer-events-none', 'icon':"fa-envelope"} %}
-						<div class="help-text pb-5 flex flex-row gap-x-3 items-baseline">
-							<i class="fa-regular fa-circle-info text-yellow-500"></i>
-							<span>Vous ne pouvez pas modifier votre adresse e-mail car vous vous êtes enregistré(e) avec votre compte Google et que vous n'avez pas encore crée de mot de passe.
-								<span class="font-semibold hover:underline cursor-pointer" onclick="document.getElementById('password-tab').click();">Cliquez ici pour modifier votre mot de passe</span>.
+						<div class="help-text pb-2 pt-2 flex flex-row gap-x-3 items-baseline">
+							<i class="fa-regular fa-circle-info"></i>
+							<span class=" dark:text-slate-400 opacity-90">
+								Vous ne pouvez pas modifier votre adresse e-mail car vous vous êtes enregistré(e) avec votre compte Google et que vous n'avez pas encore crée de mot de passe.
+								<span class="font-semibold  dark:text-slate-200 hover:underline cursor-pointer" onclick="document.getElementById('password-tab').click();">Cliquez ici pour modifier votre mot de passe</span>.
 							</span>
 						</div>
 					{% else %}
 						{% include "./partials/_form-row.html.twig" with {'form': form.email, 'icon':"fa-envelope"} %}
 						{% if app.user.googleId is not null %}
-							<div class="help-text pb-5 flex flex-row gap-x-3 items-baseline">
+							<div class="help-text pb-2 pt-2 flex flex-row gap-x-3 items-baseline">
 								<i class="fa-brands fa-google text-[#db4a39]"></i>
-								<span>Un compte Google est associé à cette adresse e-mail. Vous pouvez modifier votre adresse e-mail mais vous ne pourrez plus vous connecter avec votre compte Google.
+								<span class=" dark:text-slate-400 opacity-90">
+									Un compte Google est associé à cette adresse e-mail.
+									<strong>Si vous modifiez votre adresse e-mail, vous ne pourrez plus vous connecter avec votre compte Google</strong>.
 								</span>
 							</div>
 						{% endif %}
@@ -75,18 +78,18 @@
 			<turbo-frame id="passChange">
 				{{ form_start(passwordForm) }}
 				{% if app.user.googleId is not null and app.user.password == "" %}
-					<div class="bg-yellow-50 rounded-lg p-5 px-10 text-justify text-yellow-600 flex flex-row gap-x-10 items-baseline">
+					<div class="bg-slate-50 dark:bg-slate-500 text-sm rounded-lg p-5 px-10 text-justify text-slate-700 dark:text-slate-50  flex flex-row gap-x-5 items-baseline">
 						<i class="fa-regular fa-circle-info"></i>
-						<span>
-							Vous êtes actuellement connecté(e) avec un compte Google, ce qui signifie que vous n'avez pas encore défini de mot de passe pour ce compte. Vous pouvez le faire ici en remplissant le formulaire ci-dessous.
+						<span class="text-slate-700 dark:text-slate-50">
+							Vous êtes actuellement connecté(e) avec un compte Google, ce qui signifie que vous n'avez pas encore défini de mot de passe pour ce compte. Vous pouvez le faire en remplissant les champs ci-dessous.
 						</span>
 					</div>
 
 				{% else %}
-					{% include "./partials/_form-row.html.twig" with {'form': passwordForm.oldPassword, 'icon':"fa-key"} %}
+					{% include "./partials/_form-row.html.twig" with {'form': passwordForm.oldPassword, 'icon':"fa-lock"} %}
 				{% endif %}
-				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.plainPassword.first, 'icon':"fa-lock-keyhole"} %}
-				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.plainPassword.second, 'icon':"fa-lock-keyhole"} %}
+				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.plainPassword.first, 'icon':"fa-shield-keyhole"} %}
+				{% include "./partials/_form-row.html.twig" with {'form': passwordForm.plainPassword.second, 'icon':"fa-shield-check"} %}
 				<div class="flex justify-center">
 					<button type="submit" class="button-classic button-slate w-full">
 						<i class="fa-regular fa-circle-check"></i>

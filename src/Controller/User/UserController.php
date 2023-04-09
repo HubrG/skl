@@ -31,16 +31,16 @@ class UserController extends AbstractController
 		$this->uploadImage = $uploadImage;
 		$this->tokenStorage = $tokenStorage;
 	}
-	#[Route('user/{username}', requirements: ["username" => "[^/]+"], name: 'app_user')]
-	public function index(UserRepository $userRepo, PublicationRepository $pRepo, $username = "me"): Response
+	#[Route('user/{username?}', requirements: ["username" => "[^/]+"], name: 'app_user')]
+	public function index(UserRepository $userRepo, PublicationRepository $pRepo, $username): Response
 	{
 		/// Conditions d'affichage
 		// Si le username n'est pas renseigné et que l'utilisateur est connecté, alors on affiche la page du membre connecté
-		if ($username == "me" && $this->getUser()) {
-			$userInfo = $userRepo->findOneBy(["email" => $this->getUser()]);
+		if ($username == null && $this->getUser()) {
+			$userInfo = $userRepo->find($this->getUser());
 		}
 		// Si le username n'est pas renseigné et que l'utilisateur n'est pas connecté, alors on le redirige
-		elseif ($username == "me" && !$this->getUser()) {
+		elseif ($username == null && !$this->getUser()) {
 			return $this->redirectToRoute("app_home");
 		}
 		// Si le username est renseigné alors on affiche la page du membre du username
@@ -226,7 +226,20 @@ class UserController extends AbstractController
 			$em->persist($user);
 			$em->flush();
 			$this->addFlash('success', 'Vos informations ont bien été modifées');
-			return $this->redirectToRoute("app_user_account", [], Response::HTTP_SEE_OTHER);
+			$url = $this->generateUrl('app_user_account');
+			return new Response(<<<HTML
+				<!DOCTYPE html>
+				<html>
+					<head>
+						<title>Redirection</title>
+						<script>
+							location.reload();
+						</script>
+					</head>
+					<body>
+					</body>
+				</html>
+			HTML);
 		}
 
 		$pwForm->handleRequest($request);
@@ -242,18 +255,18 @@ class UserController extends AbstractController
 			$this->addFlash('success', 'Votre mot de passe a bien été modifié.');
 			$url = $this->generateUrl('app_user_account');
 			return new Response(<<<HTML
-        <!DOCTYPE html>
-        <html>
-            <head>
-                <title>Redirection</title>
-                <script>
-                    window.top.location.href = "$url";
-                </script>
-            </head>
-            <body>
-            </body>
-        </html>
-    HTML);
+				<!DOCTYPE html>
+				<html>
+					<head>
+						<title>Redirection</title>
+						<script>
+							window.top.location.href = "$url";
+						</script>
+					</head>
+					<body>
+					</body>
+				</html>
+			HTML);
 		}
 		return $this->render('user/account.html.twig', [
 			'form' => $form,

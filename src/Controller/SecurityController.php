@@ -5,11 +5,20 @@ namespace App\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+    private $urlGenerator;
+
+    public function __construct(UrlGeneratorInterface $urlGenerator)
+    {
+        $this->urlGenerator = $urlGenerator;
+    }
+
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
     {
@@ -29,6 +38,6 @@ class SecurityController extends AbstractController
     {
         // throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
         // On redirige vers la page précédente avec le referrer
-        return $this->redirect($request->headers->get('referer'));
+        return new RedirectResponse($this->urlGenerator->generate('app_home'));
     }
 }

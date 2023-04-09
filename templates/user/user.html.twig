@@ -2,7 +2,7 @@
 
 {% block title %}
 	Profil de
-	{{ userInfo.nickname }}
+	{{ userInfo.nickname is defined ? userInfo.nickname : userInfo.username }}
 	—
 	{{ parent() }}
 

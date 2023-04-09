@@ -2,6 +2,14 @@ import { NotyDisplay } from "../Noty";
 
 export function User() {
   // ! Modification des paramètres de notifications
+  document.addEventListener("DOMContentLoaded", function () {
+    const cityInput = document.querySelector(
+      ".autocomplete[data-autocomplete='ville']"
+    );
+    if (cityInput) {
+      new Awesomplete(cityInput, { list: [], minChars: 2 });
+    }
+  });
 
   const notif = document.getElementById("notif-account");
   if (notif) {

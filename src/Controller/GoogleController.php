@@ -25,6 +25,7 @@ class GoogleController extends AbstractController
     #[Route('/connect/google/check', name: 'connect_google_check')]
     public function connectCheckAction(Request $request)
     {
-        return $this->redirectToRoute('app_home');
+        $this->addFlash('success', 'You are now logged in with Google!');
+        return $this->redirectToRoute('app_user');
     }
 }

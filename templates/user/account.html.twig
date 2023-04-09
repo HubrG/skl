@@ -16,7 +16,7 @@
 					</button>
 				</li>
 				<li class="mr-2" role="presentation">
-					<button class="p-4 border-b-4 flex-row-custom-gapx-3  dark:bg-slate-800  text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">
+					<button class="p-4 border-b-4 flex-row-custom-gapx-3  dark:bg-slate-800  text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="password-tab" data-tabs-target="#password" type="button" role="tab" aria-controls="password" aria-selected="false">
 						<i class="fa-regular fa-lock-keyhole"></i>
 						<span>Mot de passe</span>
 					</button>
@@ -31,20 +31,32 @@
 		</div>
 		<div id="myTabContent">
 			<div class="hidden p-4 rounded-lg  dark:bg-gray-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-				{{ form_start(form, {attr:{"data-turbo-frame":"_top"}}) }}
-				{% include "./partials/_form-row.html.twig" with {'form': form.email, 'icon':"fa-envelope"} %}
-				{% include "./partials/_form-row.html.twig" with {'form': form.username, 'icon':"fa-user-vneck"} %}
-				<hr>
-				{% include "./partials/_form-row.html.twig" with {'form': form.country, 'icon':"fa-earth-europe"} %}
-				{% include "./partials/_form-row.html.twig" with {'form': form.city, 'icon':"fa-city"} %}
-				{% include "./partials/_form-row.html.twig" with {'form': form.birth, 'icon':"fa-cake-candles"} %}
-				<div class="flex justify-center">
-					<button type="submit" class="button-classic button-slate w-full">
-						<i class="fa-regular fa-circle-check"></i>
-						Enregistrer les informations
-					</button>
-				</div>
-				{{ form_end(form) }}
+				<turbo-frame id="infoChange">
+					{{ form_start(form, {attr:{"data-turbo-frame":"_self"}}) }}
+					{% if app.user.googleId is not null and app.user.password == "" %}
+						{% include "./partials/_form-row.html.twig" with {'form': form.email, 'disabled':'true', 'class':'opacity-50 cursor-not-allowed', 'icon':"fa-envelope"} %}
+						<div class="help-text pb-5 flex flex-row gap-x-3 items-baseline">
+							<i class="fa-regular fa-circle-info text-yellow-500"></i>
+							<span>Vous ne pouvez pas modifier votre adresse e-mail car vous vous êtes enregistré(e) avec votre compte Google et que vous n'avez pas encore crée de mot de passe.
+								<span class="font-semibold hover:underline cursor-pointer" onclick="var pcd = document.getElementById('passChange').classList; document.getElementById('password-tab').click();pcd.add('animate__animated','animate__flash');setTimeout(function() {pcd.remove('animate__animated','animate__flash')},2000)">Cliquez ici pour modifier votre mot de passe</span>.
+							</span>
+						</div>
+					{% else %}
+						{% include "./partials/_form-row.html.twig" with {'form': form.email, 'icon':"fa-envelope"} %}
+					{% endif %}
+					{% include "./partials/_form-row.html.twig" with {'form': form.username, 'icon':"fa-user-vneck"} %}
+					<hr>
+					{% include "./partials/_form-row.html.twig" with {'form': form.country, 'icon':"fa-earth-europe"} %}
+					{% include "./partials/_form-row.html.twig" with {'form': form.city, 'icon':"fa-city"} %}
+					{% include "./partials/_form-row.html.twig" with {'form': form.birth, 'icon':"fa-cake-candles"} %}
+					<div class="flex justify-center">
+						<button type="submit" class="button-classic button-slate w-full">
+							<i class="fa-regular fa-circle-check"></i>
+							Enregistrer les informations
+						</button>
+					</div>
+					{{ form_end(form) }}
+				</turbo-frame>
 				<hr class="mb-5">
 				<button data-micromodal-trigger="popup-confirm-delete-account" class="button-classic button-red w-full">
 					<i class="fa-duotone fa-user-slash"></i>
@@ -52,14 +64,14 @@
 				</button>
 			</div>
 		</div>
-		<div class="hidden p-4 rounded-lg dark:bg-gray-800" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+		<div class="hidden p-4 rounded-lg dark:bg-gray-800" id="password" role="tabpanel" aria-labelledby="password-tab">
 			<turbo-frame id="passChange">
 				{{ form_start(passwordForm) }}
 				{% if app.user.googleId is not null and app.user.password == "" %}
-					<div class="bg-yellow-50 rounded-lg p-5 text-center text-yellow-700 flex flex-col gap-y-3">
+					<div class="bg-yellow-50 rounded-lg p-5 px-10 text-justify text-yellow-600 flex flex-row gap-x-10 items-baseline">
 						<i class="fa-regular fa-circle-info"></i>
 						<span>
-							Vous êtes actuellement connecté avec un compte Google, ce qui signifie que vous n'avez pas encore défini de mot de passe pour ce compte. Vous pouvez le faire ici en remplissant le formulaire ci-dessous.
+							Vous êtes actuellement connecté(e) avec un compte Google, ce qui signifie que vous n'avez pas encore défini de mot de passe pour ce compte. Vous pouvez le faire ici en remplissant le formulaire ci-dessous.
 						</span>
 					</div>
 
@@ -71,7 +83,11 @@
 				<div class="flex justify-center">
 					<button type="submit" class="button-classic button-slate w-full">
 						<i class="fa-regular fa-circle-check"></i>
-						Modifier mon mot de passe
+						{% if app.user.googleId is not null and app.user.password == "" %}
+							Créer mon mot de passe
+						{% else %}
+							Modifier mon mot de passe
+						{% endif %}
 					</button>
 					<div>
 						{{ form_end(passwordForm) }}

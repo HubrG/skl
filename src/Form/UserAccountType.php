@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\User;
+use Geolocation\Address;
+use Geolocation\Geolocation;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Regex;
@@ -18,11 +20,11 @@ class UserAccountType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, [
-                'label' => 'Modifier mon adresse email',
+                'label' => 'Adresse email',
                 'constraints' => [],
             ])
             ->add('username', TextType::class, [
-                'label' => 'Modifier mon nom d\'utilisateur',
+                'label' => 'Nom d\'utilisateur',
                 // Nom d'utilisateur doit être unique
                 'constraints' => [
                     new Regex([
@@ -42,12 +44,9 @@ class UserAccountType extends AbstractType
             ])
             // ->add('profil_picture')
             ->add('birth', DateType::class, [
-                'label' => 'Date de naissance',
-                'required' => false,
                 'widget' => 'single_text',
-                'html5' => false,
-                'format' => 'dd/MM/yyyy',
-                'attr' => ['class' => 'js-datepicker'],
+                'html5' => true,
+                'label' => 'Date de naissance',
             ])
             // ->add('profil_background')
             ->add('country', CountryType::class, [

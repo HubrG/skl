@@ -66,7 +66,7 @@ class GoogleAuthenticator extends OAuth2Authenticator
                     $this->entityManager->persist($existingUser2);
                     $this->entityManager->flush();
                     return $existingUser2;
-                } else {
+                } elseif (!$existingUser) {
                     $username = ucfirst($googleUser->getFirstName()) . ucfirst(substr($googleUser->getName(), 0, 1)) . rand(1, 999);
                     $existingUser = new User();
                     $existingUser->setEmail($email);
@@ -77,6 +77,7 @@ class GoogleAuthenticator extends OAuth2Authenticator
                     $existingUser->setGoogleId($googleUser->getId());
                     $existingUser->setPassword("");
                     $this->entityManager->persist($existingUser);
+                    $this->entityManager->flush();
                     ////
                     $userParameters = new UserParameters();
                     // On crée une table UserParameters pour chaque utilisateur
@@ -84,7 +85,6 @@ class GoogleAuthenticator extends OAuth2Authenticator
                     $this->entityManager->persist($userParameters);
                     $this->entityManager->flush();
                 }
-                $this->entityManager->flush();
                 return $existingUser;
             })
         );

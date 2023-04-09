@@ -72,34 +72,6 @@ class HomeController extends AbstractController
             'message' => 'Notification lues.'
         ], 200);
     }
-    #[Route('/test', name: 'app_test')]
-    public function test(NotificationRepository $notifRepo, EntityManagerInterface $em): Response
-    {
-        $cloudinary = new Cloudinary(
-            [
-                'cloud' => [
-                    'cloud_name' => 'djaro8nwk',
-                    'api_key'    => '716759172429212',
-                    'api_secret' => 'A35hPbZP0NsjnMKrE9pLR-EHwiU',
-                ],
-            ]
-        );
-        $test = $cloudinary->uploadApi()->upload(
-            "images/test.pdf",
-            ["ocr" => "adv_ocr"]
-        );
-        $tests = "";
-        foreach ($test['info']['ocr']['adv_ocr']['data'] as $item) {
-            $tests = $tests . $item["fullTextAnnotation"]['text'] . "<br><br>";
-        }
-        $tests = str_replace("\n\n", "<br><br>", $tests);
-        $tests = str_replace("\n", "<br><br>", $tests);
-        return $this->render('home/test.html.twig', [
-            'controller_name' => "d",
-            "canonicalUrl" => $this->generateUrl('app_home', array(), true),
-            "test" => $tests
-        ]);
-    }
     #[Route('/cgu', name: 'app_cgu')]
     public function cgu(): Response
     {

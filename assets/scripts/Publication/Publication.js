@@ -100,7 +100,7 @@ function AxiosPublication() {
   var hideIdPub = document.getElementById("hideIdPub").value;
   // * Gestion de la photo (si changement de photo)
   var spinCover = document.getElementById("spinCover").classList;
-  var hideNoCover = document.getElementById("hideNoCover");
+  const hideNoCover = document.getElementById("hideNoCover");
   var showNewCover = document.getElementById("showNewCover");
   var coverShow = document.getElementById("cover");
   var cover = document.getElementById("publication_cover");
@@ -155,7 +155,7 @@ function AxiosPublication() {
           cover.value = "";
           if (hideNoCover) {
             if (showNewCover.classList.contains("hidden")) {
-              hideNoCover.classList.add("hidden");
+              hideNoCover.style.display = "none";
               showNewCover.classList.remove("hidden");
             }
           }

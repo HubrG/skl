@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Security\EmailVerifier;
 use App\Repository\UserRepository;
+use Symfony\Component\Mime\Address;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UserParametersRepository;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,12 +22,14 @@ class UserParameterController extends AbstractController
     private $userPRepo;
 
     private $userRepo;
+    private EmailVerifier $emailVerifier;
 
-    public function __construct(EntityManagerInterface $em, UserParametersRepository $userPRepo, UserRepository $userRepo)
+    public function __construct(EntityManagerInterface $em, UserParametersRepository $userPRepo, UserRepository $userRepo, EmailVerifier $emailVerifier)
     {
         $this->em = $em;
         $this->userPRepo = $userPRepo;
         $this->userRepo = $userRepo;
+        $this->emailVerifier = $emailVerifier;
     }
 
     #[Route('/param/user/set', name: 'app_user_parameter', methods: ['POST'])]
@@ -140,6 +145,26 @@ class UserParameterController extends AbstractController
             'value' => $request->get("value"),
             'type' => $request->get("type"),
             'nb' => $request->get("nb"),
+        ], 200);
+    }
+    #[Route('/param/user/resend_validation_email', name: 'app_user_resend_mail_validation', methods: ['POST'])]
+    public function resendMail(Request $request, SessionInterface $session): Response
+    {
+        $user = $this->userRepo->find($this->getUser());
+        // $user->setIsVerified(false);
+        // $this->em->persist($user);
+        // $this->em->flush();
+        $this->emailVerifier->sendEmailConfirmation(
+            'app_verify_email',
+            $user,
+            (new TemplatedEmail())
+                ->from(new Address('contact@scrilab.fr', 'Scrilab'))
+                ->to($user->getEmail())
+                ->subject('Confirmez votre adresse adresse email.')
+                ->htmlTemplate('emails/valid_email.html.twig')
+        );
+        return $this->json([
+            'message' => 'Mail envoyé',
         ], 200);
     }
 }

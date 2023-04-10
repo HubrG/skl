@@ -1,5 +1,30 @@
 import axios from "axios";
+import { NotyDisplay } from "./Noty";
 export function darkMode() {
+  // ! Mail de confirmation
+  const mailConfirm = document.getElementById("mail-confirm-resend");
+  if (mailConfirm) {
+    mailConfirm.addEventListener("click", (event) => {
+      console.log("coucou");
+      const url = "/param/user/resend_validation_email";
+      axios
+        .post(url)
+        .then((response) => {
+          if (response.status === 200) {
+            var notyText =
+              "<span class='text-base font-medium'>Mail de confirmation renvoyé. Vérifiez vos spams !</span>";
+            var notyTimeout = 3500;
+            var notyType = "success";
+            NotyDisplay(notyText, notyType, notyTimeout);
+            console.log(response.data);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+  }
+  // ! Darkmode
   if (document.getElementById("darkButton")) {
     document
       .getElementById("darkButton")

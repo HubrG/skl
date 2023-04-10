@@ -41,7 +41,9 @@ import axios from "axios";
 
 const TurboHelper = class {
   constructor() {
-    document.addEventListener("turbo:before-cache", () => {});
+    document.addEventListener("turbo:before-cache", () => {
+      darkMode();
+    });
     document.addEventListener("turbo:frame-missing", () => {
       window.top.location.reload();
     });
@@ -148,8 +150,11 @@ const TurboHelper = class {
     document.addEventListener("turbo:visit", () => {
       // fade out the old body
       document.body.classList.add("turbo-loading");
+      darkMode();
     });
-    document.addEventListener("turbo:after-render", (event) => {});
+    document.addEventListener("turbo:after-render", (event) => {
+      darkMode();
+    });
     document.addEventListener("turbo:before-render", (event) => {
       if (this.isPreviewRendered()) {
         // this is a preview that has been instantly swapped

@@ -130,7 +130,6 @@ function UpdateProfilPicture(file, type) {
           }
         } else if (type === "pbg") {
           let bgPic = response.data.cloudinary;
-          bgPic = bgPic.replace("/upload/", "/upload/e_vectorize:colors:30,");
           var notyText =
             "<span class='text-base font-medium'>Photo de couverture mise à jour</span>";
           const newStyle = document.createElement("style");

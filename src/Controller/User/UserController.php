@@ -206,7 +206,7 @@ class UserController extends AbstractController
 			return $this->uploadImage->UploadImage($dtPp, "profil_picture", $userRepo->find($this->getUser())->getId(), 500, 500);
 		} elseif ($request->files->get("pbg")) {
 			$dtPbg = $request->files->get("pbg");
-			return $this->uploadImage->UploadImage($dtPbg, "profil_background", $userRepo->find($this->getUser())->getId(), 1024, 500);
+			return $this->uploadImage->UploadImage($dtPbg, "profil_background", $userRepo->find($this->getUser())->getId(), 1680, 600);
 		} else {
 			return $this->redirectToRoute("app_home");
 		}

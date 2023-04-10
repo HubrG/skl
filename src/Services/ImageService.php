@@ -90,16 +90,19 @@ class ImageService extends AbstractController
             ['public_id' => $newFilename, 'folder' => $folder . "/" . $id,]
         );
 
-        $urlCloudinary = $cloudinary->image($folder . "/" . $id . "/" . $newFilename)->resize(Resize::fill($x, $y))->toUrl();
+        $urlCloudinary = $cloudinary->image($folder . "/" . $id . "/" . $newFilename)->toUrl();
 
         $this->DeleteImage($destination . "/" . $newFilename, $get, $id, $folder);
         // * On supprime la pp de l'utilisateur
         //!
         if ($repoSave == "profil_picture") {
+            $urlCloudinary = str_replace("upload/v1", "upload/c_fill,g_auto,h_800,w_800", $urlCloudinary);
             $repo->setProfilPicture($urlCloudinary);
         } elseif ($repoSave == "profil_background") {
+            $urlCloudinary = str_replace("upload/v1", "upload/c_fill,g_auto", $urlCloudinary);
             $repo->setProfilBackground($urlCloudinary);
         } elseif ($repoSave == "story") {
+            $urlCloudinary = str_replace("upload/v1", "upload/c_fill,g_auto,h_793,w_529", $urlCloudinary);
             $repo->setCover($urlCloudinary);
         }
         //

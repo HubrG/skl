@@ -30,7 +30,10 @@
 		<script></script>
 	</head>
 	<body data-turbo-track="reload">
-		{% include "partials/_navbar.html.twig" %}
+		<div class="relative">
+			{% include "partials/_navbar.html.twig" %}
+			{% include "partials/_confirm-email.html.twig" %}
+		</div>
 		{# FLASHES #}
 		{% include "partials/_notif.html.twig" %}
 		{# END_FLASHES #}

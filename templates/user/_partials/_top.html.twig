@@ -1,5 +1,5 @@
 {% if userInfo.profilBackground %}
-	{% set pic_bg = userInfo.profilBackground|replace({'/upload/': '/upload/e_vectorize:colors:30,'}) %}
+	{% set pic_bg = userInfo.profilBackground|replace({'/upload/v1': '/upload/c_fill,g_auto,h_800,w_1680'}) %}
 {% else %}
 	{% set pic_bg = null %}
 {% endif %}
@@ -56,17 +56,11 @@
 						<span class="hidden md:inline">Mon compte</span>
 					</a>
 				</li>
-				{# <li class="li-user-menu">
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												<a href="#" class="item-user-menu">
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													<span class="material-icons-outlined">
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																														archive
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													</span>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													<span class="hidden    md:inline">Messagerie</span>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												</a>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											</li> #}
 			</ul>
 		</div>
+		<div class="absolute w-full left-0 top-14 md:top-16">{% include "partials/_confirm-email.html.twig" %}</div>
 		<div class="mt-20">
+
 	{% else %}
 		</div>
 		<div class="mt-5">

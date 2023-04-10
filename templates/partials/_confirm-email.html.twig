@@ -1,7 +1,10 @@
 {% if app.user and not app.user.isVerified %}
-	<div class="w-full sticky top-10 p-2 italic text-center border-b-[1px] shadow-sm border-slate-200 text-xs bg-slate-50 text-slate-700">
-		<i class="fa-duotone fa-badge-check"></i>
-		&nbsp;&nbsp;Un lien de confirmation vous a été envoyé par email afin de finaliser l'activation de votre compte.
-		<button class="font-semibold hover:underline" id="mail-confirm-resend">Cliquez ici pour en recevoir un nouveau</button>.
+	<div class="w-full sticky flex md:flex-inline flex-grow gap-x-4 top-10 items-center justify-center p-2 italic text-center border-b-[1px] shadow-sm border-slate-200 text-xs bg-slate-50 text-slate-700">
+
+
+		<span>
+			<i class="fa-duotone fa-badge-check"></i>&nbsp;&nbsp;Un lien d'activation vous a été envoyé par email afin de finaliser votre inscription.</span>
+
+		<button class="font-semibold hover:underline" id="mail-confirm-resend">Pas reçu ? cliquez ici pour en recevoir un nouveau</button>.
 	</div>
 {% endif %}

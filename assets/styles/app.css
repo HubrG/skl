@@ -702,7 +702,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 	@apply grid-cols-2 xl:grid-cols-3 gap-y-16 gap-x-5 mx-1;
 }
 .publications-container.small.profil {
-	@apply grid-cols-2 xl:grid-cols-2 gap-y-10 gap-x-5 mx-1 mt-0;
+	@apply grid-cols-2 xl:grid-cols-2 md:ml-5 ml-0 md:mt-0 -mt-10 gap-y-10 gap-x-5 mx-1 ;
 }
 .publications-container.small .publication-card .publication-content {
 	@apply hidden;
@@ -814,11 +814,11 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 	@apply absolute px-4 -translate-x-1/2 -mt-1 font-normal bg-white left-1/2 italic dark:bg-gray-800 text-slate-700 dark:text-slate-200;
 }
 .my-special-hr {
-	@apply flex-row flex flex-1 mb-14 md:mb-6;
+	@apply flex-row flex  mb-14 md:mb-6;
 }
 .my-special-hr hr {
-	@apply border-2 rounded-r-full w-2/6 md:w-4/6;
+	@apply border-2 grow rounded-r-full;
 }
 .my-special-hr span {
-	@apply -mt-1 text-2xl md:text-3xl md:w-4/6 items-center px-4 py-2 text-center bg-white dark:bg-slate-800 dark:text-slate-200 font-serif;
+	@apply -mt-1 text-2xl md:text-3xl  items-center px-4 py-2 text-center bg-white dark:bg-slate-800 dark:text-slate-200 font-serif;
 }

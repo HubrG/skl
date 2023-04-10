@@ -11,7 +11,7 @@
 	{% include "user/_partials/_top.html.twig" %}
 	<section class="col-span-12">
 		<turbo-frame id="up_profil" class="w-full md:flex pt-10">
-			<div class="w-full md:w-4/12 py-10 pt-0 px-5 {% if app.user and app.user.id == userInfo.id %}-mt-5{% else %}-mt-14{% endif %} md:-mt-10 text-center dark:shadow-2xl mb-10 flex flex-col  rounded-lg">
+			<div class="w-12/12 md:w-4/12 py-10 pt-0 px-5 {% if app.user and app.user.id == userInfo.id %}-mt-5{% else %}-mt-14{% endif %} md:-mt-10 text-center dark:shadow-2xl mb-10 flex flex-col  rounded-lg">
 				{% if userInfo.profilPicture %}
 					<img class="w-40 h-40 mx-auto rounded-lg   shadow-lg object-fill order-1  dark:ring-gray-500" src="{{userInfo.profilPicture}}">
 				{% else %}
@@ -56,8 +56,8 @@
 					</a>
 				{% endif %}
 			</div>
-			<div class="w-full parent border-l-0  dark:border-slate-700 pl-7 {% if app.user and app.user.id == userInfo.id %}-mt-10{% endif %}">
-				<div class="my-special-hr">
+			<div class="w-full parent border-l-0 md:ml-10 ml-0 mt-10 md:-mt-10 dark:border-slate-700 p-0  {% if app.user and app.user.id == userInfo.id %}-mt-10{% endif %}">
+				<div class="my-special-hr ">
 					<hr>
 					<span>{{pubInfo|length > 1 ? pubInfo|length ~ " récits" : pubInfo|length == 0 ? "Aucun récit" : pubInfo|length ~ " récit"}}</span>
 					<hr class="mb-5">

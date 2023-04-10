@@ -102,7 +102,7 @@ class ImageService extends AbstractController
             $urlCloudinary = str_replace("upload/v1", "upload/c_fill,g_auto", $urlCloudinary);
             $repo->setProfilBackground($urlCloudinary);
         } elseif ($repoSave == "story") {
-            $urlCloudinary = str_replace("upload/v1", "upload/c_fill,g_auto,h_793,w_529", $urlCloudinary);
+            $urlCloudinary = str_replace("upload/v1", "upload/c_fill,h_793,w_529", $urlCloudinary);
             $repo->setCover($urlCloudinary);
         }
         //

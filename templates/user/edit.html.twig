@@ -1,13 +1,12 @@
-<turbo-frame id="up_profil">
-	<div class="w-full md:w-3/12 py-10 px-5 text-center bg-slate-100 dark:bg-slate-900 mb-10 rounded-lg">
+<turbo-frame id="up_profil" class="flex flex-row items-baseline justify-start gap-x-10">
+	<div class="w-full md:w-4/12   p-8 pl-7 pt-6 md:-mt-16 mt-10 text-center  dark:shadow-2xl  rounded-lg">
 		<label for="pp" class="cursor-pointer relative ">
-			<img class="w-40 h-40 mx-auto rounded-full opacity-90 dark:opacity-60 object-fill dark:ring-sky-500 ring-4  ring-sky-500 " id="profil_picture" src="{{app.user.profilPicture ? app.user.profilPicture : "https://via.placeholder.com/500/500"}}">
+			<img class="w-40 h-40 mx-auto rounded opacity-90 dark:opacity-60 object-fill dark:ring-sky-500 ring-4  ring-sky-500 " id="profil_picture" src="{{app.user.profilPicture ? app.user.profilPicture : "https://via.placeholder.com/500/500"}}">
 			<div class="absolute inset-0 rounded-full text-2xl">
 				<i data-tippy-content="Modifier votre photo de profil" class="fa-duotone fa-pen-to-square bg-white rounded-full bg-opacity-30 p-2  hover:bg-opacity-60 text-slate-900"></i>
 			</div>
 		</label>
-		<h1 class="text-3xl md:text-xl font-medium text-center mb-0 mt-5 py-2 px-2 rounded text-slate-700 font-sans">{{ userInfo.nickname }}</h1>
-
+		<h1 class="text-3xl md:text-2xl mb-5 mt-5  order-2 md:order-1  font-semibold text-center py-2 px-2 rounded text-slate-700 font-sans">{{ userInfo.nickname }}</h1>
 		<p class="text-slate-700 mb-5 text-center {{ not userInfo.about ? " hidden"}}  dark:text-slate-200 ">{{ userInfo.about|nl2br }}</p>
 		{% if userInfo.website or userInfo.twitter or userInfo.instagram or userInfo.facebook %}
 			<div class="flex justify-center order-first md:order-first text-2xl mt-10 mb-2 -ml-2 gap-x-5">&nbsp;
@@ -42,34 +41,45 @@
 			</div>
 		{% endif %}
 	</div>
-	<div class="w-9/12">
-		{{ form_start(editUserForm, { attr: {'data-turbo-frame':'_top','action':path("app_user_edit", {"username" : app.user.username})}}) }}
-		<div class=" w-6/6 mx-auto">
-			<div class="grid grid-cols-1  relative mb-0">
-				<div class="flex justify-center order-first md:order-first text-2xl md:mt-0 gap-x-5"></div>
-				<label class="mx-auto cursor-pointer -mt-10 font-semibold w-full" for="pbg">
-					<p class="button-classic button-sky w-full">
-						<i class="fa-regular fa-panorama"></i>
-						<span>Modifier la couverture</span>
-					</p>
-				</label>
-				<input type="file" class="hidden" id="pp" name="pp">
-				<input type="file" class="hidden" id="pbg" name="pbg">
+	<div class="w-full md:pl-10 pl-0 md:-mt-10 mt-10 ">
+		<div class=" hidden md:block">
+			<div class="my-special-hr short ml-5">
 				<hr>
+				<span>Modification du profil</span>
+				<hr class="mb-5">
 			</div>
 		</div>
-		<div class=" rounded  mx-auto pb-0 -mt-10 ">
-			<div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-0 col-span-12">
-				<div>
-					{{ form_label(editUserForm.nickname) }}
-					<div class="relative mb-6">
-						<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
-							<i class="fa-regular fa-id-badge"></i>
+		{{ form_start(editUserForm, { attr: {'data-turbo-frame':'_self','action':path("app_user_edit", {"username" : app.user.username})}}) }}
+		<div class=" rounded  mx-auto pb-0 ">
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 col-span-12">
+				<div class="flex flex-col gap-y-0">
+					<div class="order-first md:order-last">
+						<hr class="mb-5 mt-0 block md:hidden">
+						<div class="mb-8 mt-0">
+							<label class="cursor-pointer  font-semibold " for="pbg">
+								<p class="button-classic button-sky ">
+									<i class="fa-regular fa-image-landscape"></i>
+									<span>Modifier la couverture</span>
+								</p>
+							</label>
+							<input type="file" class="hidden" id="pp" name="pp">
+							<input type="file" class="hidden" id="pbg" name="pbg">
 						</div>
-						{{ form_widget(editUserForm.nickname, {attr: {'novalidate': 'novalidate'}})}}
+						<hr class="block md:hidden">
 					</div>
-					{{ form_label(editUserForm.about) }}
-					{{ form_widget(editUserForm.about, {attr: {'novalidate': 'novalidate', 'class': 'h-[16.4rem] text-left'}})}}
+					<div class="md:order-2">
+						{{ form_label(editUserForm.nickname) }}
+						<div class="relative mb-6">
+							<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
+								<i class="fa-regular fa-id-badge"></i>
+							</div>
+							{{ form_widget(editUserForm.nickname, {attr: {'novalidate': 'novalidate'}})}}
+						</div>
+					</div>
+					<div class="order-3 -mt-6">
+						{{ form_label(editUserForm.about) }}
+						{{ form_widget(editUserForm.about, {attr: {'novalidate': 'novalidate', 'class': ' h-[11.9rem] text-left'}})}}
+					</div>
 				</div>
 				<div>
 					{{ form_label(editUserForm.website) }}
@@ -115,17 +125,19 @@
 			</div>
 			<div class="order-3 gap-x-5 -mt-10 pb-10 flex justify-end">
 				{% if app.user %}
+
 					<button type="submit" href="{{ path("app_user_edit", {"username" : app.user.username}) }}" class="button-classic button-emerald float-right">
 						<i class="fa-regular fa-floppy-disk"></i>
 						Enregistrer
 					</button>
-					<a href="{{ path("app_user", {"username" : app.user.username}) }}" data-turbo-frame="profil_up" class="button-classic button-slate float-right">
+					<a href="{{ path("app_user", {"username" : app.user.username}) }}" data-turbo-frame="profil_up" data-tippy-content="Annuler les modifcations" class="button-classic button-slate float-right">
 						<i class="fa-regular fa-xmark"></i>
 					</a>
 				{% endif %}
 			</div>
 		</div>
+
+
 		{{ form_end(editUserForm) }}
-		<hr>
 	</div>
 </turbo-frame>

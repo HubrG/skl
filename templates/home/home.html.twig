@@ -56,12 +56,12 @@
 				</a>
 			</li>
 		</ul>
-		<div class="glide-top glide mt-5  left-0 z-50">
+		<div class="glide-top glide mt-10  left-0 z-50">
 			<div data-glide-el="track" class="glide__track rounded-lg ring-0 dark:ring-slate-600">
 				<div class="glide__slides min-h-[40vh] relative">
 					{% for item in publications %}
 						{% if item.cover %}
-							{% set cover = item.cover|replace({'/upload/': '/upload/c_fill_pad,g_auto,h_150,w_1000,e_blur:400,'}) %}
+							{% set cover = item.cover|replace({'/upload/c_fill,h_793,w_529': '/upload/c_fill_pad,g_auto,w_1.0,e_improve:indoor,f_jpg'}) %}
 						{% endif %}
 						<a href="{{path("app_publication_show_one", {id:item.id, slug:item.slug})}}" class="bg-cover bg-center grayscale-[30%] dark:grayscale-[80%] {{ not item.cover ? " bg-slate-50 dark:bg-slate-900"}}" {% if item.cover %} style="background-image:url('{{cover}};')" {% endif %} {{ item.cover ? "backdrop-blur-md" : "" }}>
 							<div class="glide__slide p-10">

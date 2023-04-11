@@ -130,6 +130,7 @@ const TurboHelper = class {
       }
       //!
       ShowChapter();
+      axiosSaveChapter();
       targetQuote();
       LazyLoad();
       TippyC();

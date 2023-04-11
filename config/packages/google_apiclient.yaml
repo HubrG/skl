@@ -5,7 +5,7 @@ services:
             # Authentication with "API key"
             - [setDeveloperKey, ['getenv(GOOGLE_API_KEY)%']]
             # Authentication with "OAuth 2.0" using Client ID & Secret
-            - [setClientId, ['648664480560-ak71es32iv88lbl57rk3hattvt9ab84a.apps.googleusercontent.com']]
-            - [setClientSecret, ['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']]
+            - [setClientId, ['%env(GOOGLE_CLIENT_ID)%']]
+            - [setClientSecret, ['%env(GOOGLE_CLIENT_SECRET)%']]
             # Authentication with "OAuth 2.0" or "Service account" using JSON
             - [setAuthConfig, ['env(resolve:GOOGLE_AUTH_CONFIG)%']]

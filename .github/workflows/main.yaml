@@ -28,6 +28,9 @@ jobs:
           git reset --hard origin/main && \
           sed -i 's/^GOOGLE_CLIENT_ID=.*/GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}/' .env.local
           sed -i 's/^GOOGLE_CLIENT_SECRET=.*/GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}/' .env.local
+          sed -i 's/^CLOUDINARY_CLOUD_NAME=.*/CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}/' .env.local
+          sed -i 's/^CLOUDINARY_API_KEY=.*/CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}/' .env.local
+          sed -i 's/^CLOUDINARY_API_SECRET=.*/CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}/' .env.local
           composer install && \
           npm run-script build && \
           php bin/console cache:clear && \

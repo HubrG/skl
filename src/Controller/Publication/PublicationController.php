@@ -3,36 +3,32 @@
 namespace App\Controller\Publication;
 
 use DirectoryIterator;
-use Cloudinary\Uploader;
 use Cloudinary\Cloudinary;
 use App\Entity\Publication;
 use App\Form\PublicationType;
 use App\Services\ImageService;
 use App\Entity\PublicationKeyword;
-use Cloudinary\Transformation\Resize;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mime\MimeTypesInterface;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
 use App\Repository\PublicationKeywordRepository;
 use App\Repository\PublicationCategoryRepository;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 
 class PublicationController extends AbstractController
 {
 
     private $uploadImage;
-
-    public function __construct(ImageService $uploadImage)
+    private $cloudinary;
+    public function __construct(Cloudinary $cloudinary, ImageService $uploadImage)
     {
         $this->uploadImage = $uploadImage;
+        $this->cloudinary = $cloudinary;
     }
 
     #[Route('/story/add', name: 'app_publication_add')]
@@ -305,21 +301,11 @@ class PublicationController extends AbstractController
                     endforeach;
                     \rmdir($destination);
                 }
-                $cloudinary = new Cloudinary(
-                    [
-                        'cloud' => [
-                            'cloud_name' => 'djaro8nwk',
-                            'api_key' => '716759172429212',
-                            'api_secret' => 'A35hPbZP0NsjnMKrE9pLR-EHwiU',
-                        ],
-                    ]
-                );
             }
             if ($publication->getCover()) {
                 $this->uploadImage->deleteImage($destination . "/" . $publication->getCover(), $publication->getCover(), $publication->getId(), "story");
-                $cloudinary->adminApi()->deleteFolder("story/" . $id);
+                $this->cloudinary->adminApi()->deleteFolder("story/" . $id);
             }
-
             $em->remove($publication);
             $em->flush();
             $this->addFlash("success", "Le récit a bien été supprimé.");

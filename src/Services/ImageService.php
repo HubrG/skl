@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 
+
 class ImageService extends AbstractController
 {
 
@@ -23,12 +24,15 @@ class ImageService extends AbstractController
 
     private $pRepo;
 
-    public function __construct(EntityManagerInterface $em, MimeTypesInterface $mimeTypes, UserRepository $userRepo, PublicationRepository $pRep)
+    private $cloudinary;
+
+    public function __construct(Cloudinary $cloudinary, EntityManagerInterface $em, MimeTypesInterface $mimeTypes, UserRepository $userRepo, PublicationRepository $pRep)
     {
         $this->em = $em;
         $this->mimeTypes = $mimeTypes;
         $this->userRepo = $userRepo;
         $this->pRepo = $pRep;
+        $this->cloudinary = $cloudinary;
     }
 
     public function UploadImage($dtImage, $repo, $id, $x, $y)
@@ -76,21 +80,13 @@ class ImageService extends AbstractController
             ]);
         }
 
-        $cloudinary = new Cloudinary(
-            [
-                'cloud' => [
-                    'cloud_name' => 'djaro8nwk',
-                    'api_key'    => '716759172429212',
-                    'api_secret' => 'A35hPbZP0NsjnMKrE9pLR-EHwiU',
-                ],
-            ]
-        );
-        $cloudinary->uploadApi()->upload(
+
+        $this->cloudinary->uploadApi()->upload(
             $destination . "/" . $newFilename,
             ['public_id' => $newFilename, 'folder' => $folder . "/" . $id,]
         );
 
-        $urlCloudinary = $cloudinary->image($folder . "/" . $id . "/" . $newFilename)->toUrl();
+        $urlCloudinary = $this->cloudinary->image($folder . "/" . $id . "/" . $newFilename)->toUrl();
 
         $this->DeleteImage($destination . "/" . $newFilename, $get, $id, $folder);
         // * On supprime la pp de l'utilisateur
@@ -116,15 +112,7 @@ class ImageService extends AbstractController
     }
     public function DeleteImage($path, $get, $id, $folder)
     {
-        $cloudinary = new Cloudinary(
-            [
-                'cloud' => [
-                    'cloud_name' => 'djaro8nwk',
-                    'api_key'    => '716759172429212',
-                    'api_secret' => 'A35hPbZP0NsjnMKrE9pLR-EHwiU',
-                ],
-            ]
-        );
+
         if (\file_exists($path)) {
             \unlink($path);
         }
@@ -138,7 +126,7 @@ class ImageService extends AbstractController
                 $result = null;
             }
             if ($result) {
-                $cloudinary->uploadApi()->destroy($folder . "/" . $id . "/" . $result, ['invalidate' => true,]);
+                $this->cloudinary->uploadApi()->destroy($folder . "/" . $id . "/" . $result, ['invalidate' => true,]);
             }
         }
     }

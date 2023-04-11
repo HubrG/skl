@@ -81,6 +81,7 @@
         "twig/extra-bundle": "^3.5",
         "twig/string-extra": "^3.5",
         "twig/twig": "^3.0",
+        "vlucas/phpdotenv": "^5.5",
         "wallabag/phpepub": "^4.0"
     },
     "config": {

@@ -112,8 +112,8 @@ const TurboHelper = class {
       MicroModal.init();
       if (document.getElementById("editorHTML")) {
         ReadTime();
-        quillEditor();
       }
+      quillEditor();
       // ! Flashes
       if (document.getElementById("flashbag-success")) {
         if (
@@ -157,10 +157,12 @@ const TurboHelper = class {
     document.addEventListener("turbo:visit", () => {
       // fade out the old body
       document.body.classList.add("turbo-loading");
+      quillEditor();
       darkMode();
     });
     document.addEventListener("turbo:after-render", (event) => {
       darkMode();
+      quillEditor();
     });
     document.addEventListener("turbo:before-render", (event) => {
       if (this.isPreviewRendered()) {

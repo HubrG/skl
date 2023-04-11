@@ -108,7 +108,8 @@ export function quillEditor() {
         if (deletedImageUrls.length > 0) {
           // Exécutez votre code ici pour chaque image supprimée
           deletedImageUrls.forEach((deletedImageUrl) => {
-            DeleteChapterImg(deletedImageUrl);
+            // ! Activer si besoin
+            // DeleteChapterImg(deletedImageUrl);
           });
         }
 

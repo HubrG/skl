@@ -112,7 +112,9 @@ function axiosChapter() {
           "<span class='text-base font-medium'>Feuille enregistré</span><br />Votre feuille est à jour d'après cette version";
         var notyTimeout = 4500;
         var notyType = "success";
-        NotyDisplay(notyText, notyType, notyTimeout);
+        if (!document.querySelector(".noty_body")) {
+          NotyDisplay(notyText, notyType, notyTimeout);
+        }
       } else {
         var notyText =
           "<span class='text-base font-medium'>Erreur</span><br />Une erreur est survenue lors de la sauvegarde de votre feuille";
@@ -164,6 +166,8 @@ function publishChapter(publish) {
         saveChapter.innerHTML =
           '<i class="fa-regular fa-cloud-arrow-up"></i>&nbsp;Publier les modifications';
         asTip.setAttribute("data-tooltip-target", "tooltip-default");
+        asTip.classList.remove("cursor-pointer");
+        asTip.classList.add("cursor-not-allowed", "opacity-60");
         toggleASfunc();
       } else {
         // * on active l'autosave et on rétabli le toggle autosave
@@ -171,6 +175,8 @@ function publishChapter(publish) {
         saveChapter.innerHTML =
           '<i class="fa-regular fa-floppy-disk"></i>&nbsp;Enregistrer';
         asTip.removeAttribute("data-tooltip-target", "tooltip-default");
+        asTip.classList.remove("cursor-not-allowed", "opacity-60");
+        asTip.classList.add("pointer");
       }
     });
 }
@@ -230,3 +236,4 @@ function toggleASfunc() {
   }
 }
 axiosSaveChapter();
+export { axiosChapter };

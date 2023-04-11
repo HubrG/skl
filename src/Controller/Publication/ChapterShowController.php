@@ -267,6 +267,7 @@ class ChapterShowController extends AbstractController
         $newText = preg_replace_callback('/<p\s*(.*?)>(.*?)<\/p>/', function ($matches) use (&$id) {
             return '<p id="paragraphe-' . $id++ . '" ' . $matches[1] . '>' . $matches[2] . '</p>';
         }, $chapter->getContent());
+        $newText = str_replace('/image/upload/', '/image/upload/w_auto,c_scale/', $newText);
 
         return $newText;
     }

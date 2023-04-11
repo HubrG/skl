@@ -14,6 +14,7 @@ import { Dropdown } from "../scripts/Dropdown";
 import { Charts } from "../scripts/Charts";
 import { NotyDisplay } from "../scripts/Noty";
 import { PublicationShowOne } from "../scripts/Publication/PublicationShowOne";
+
 import MicroModal from "micromodal"; // es6 module
 MicroModal.init();
 // ! Flashes

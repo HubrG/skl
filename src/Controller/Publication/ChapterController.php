@@ -2,8 +2,13 @@
 
 namespace App\Controller\Publication;
 
+use Exception;
+use Cloudinary\Cloudinary;
+use App\Services\ImageService;
 use App\Entity\PublicationChapter;
+use App\Repository\UserRepository;
 use App\Services\NotificationSystem;
+use App\Repository\PicturesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
 use App\Repository\NotificationRepository;
@@ -17,14 +22,20 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Repository\PublicationChapterVersioningRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+
 class ChapterController extends AbstractController
 {
 
+    private $cloudinary;
     private $notificationSystem;
+    private $uploadImage;
 
-    public function __construct(NotificationSystem $notificationSystem)
+
+    public function __construct(Cloudinary $cloudinary, ImageService $uploadImage, NotificationSystem $notificationSystem)
     {
         $this->notificationSystem = $notificationSystem;
+        $this->uploadImage = $uploadImage;
+        $this->cloudinary = $cloudinary;
     }
 
     #[Route('/story/edit/{idPub}/chapter/{idChap?}', name: 'app_publication_edit_chapter')]
@@ -108,7 +119,7 @@ class ChapterController extends AbstractController
         }
     }
     #[Route('/story/edit/{idPub}/chapter/{idChap}/delete', name: 'app_publication_del_chapter')]
-    public function DelChapter(PublicationRepository $pubRepo, PublicationChapterRepository $pcRepo, EntityManagerInterface $em, $idPub = null, $idChap = null): response
+    public function DelChapter(PublicationRepository $pubRepo, PicturesRepository $picRepo, PublicationChapterRepository $pcRepo, EntityManagerInterface $em, $idPub = null, $idChap = null): response
     {
         // * Si l'utilisateur est connecté, que la publication existe
         if ($this->getUser() && $pubRepo->find($idPub)) {
@@ -122,6 +133,24 @@ class ChapterController extends AbstractController
                 if ($infoChapitre) {
                     // * On vérifie que le chapitre de l'URL est bien lié à la publication de l'URL
                     if ($infoChapitre->getPublication() == $infoPublication) {
+                        $infoPictures = $picRepo->findBy(['chapter' => $idChap]);
+                        // On trouve toutes les images liées au chapitre
+                        // On supprime les images de la bdd et de Cloudinary
+                        foreach ($infoPictures as $picture) {
+                            $url = $picture->getUrl();
+                            $lastSlashPos = strrpos($url, "/");
+                            $questionMarkPos = strpos($url, "?");
+                            $filename = substr($url, $lastSlashPos + 1, $questionMarkPos - $lastSlashPos - 1);
+
+                            try {
+                                $this->cloudinary->uploadApi()->destroy("chapter/" . $idChap . "/" . $filename, ['invalidate' => true,]);
+                            } catch (Exception $e) {
+                                continue;
+                            }
+                            $em->remove($picture);
+                            $em->flush();
+                        }
+                        $this->cloudinary->uploadApi()->destroy("chapter/" . $idChap, ['invalidate' => true,]);
                         $em->remove($infoChapitre);
                         $em->flush();
                     } else {
@@ -273,5 +302,48 @@ class ChapterController extends AbstractController
             "order" => $chapter->getOrderDisplay() + 1, // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
             "status" => $chapter->getStatus() // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
         ]);
+    }
+
+    #[Route('/story/chapter/addimg', name: 'app_chapter_add_img', methods: "POST")]
+    public function Axios_addImg(Request $request, UserRepository $userRepo, PublicationChapterRepository $pcRepo): response
+    {
+        $chapter = $pcRepo->find($request->get("id"));
+        if ($this->getUser() == $chapter->getPublication()->getUser()) {
+            $dtPic = $request->files->get("pic");
+            $idChap = $request->get("id");
+            return $this->uploadImage->UploadImage($dtPic, "chapter", $idChap, 1680, 600);
+        } else {
+            return $this->json([
+                "code" => 404
+            ]);
+        }
+    }
+    #[Route('/story/chapter/deleteimg', name: 'app_chapter_delete_img', methods: "POST")]
+    public function Axios_delImg(Request $request, EntityManagerInterface $em, PicturesRepository $picRepo, PublicationChapterRepository $pcRepo): response
+    {
+        $chapter = $pcRepo->find($request->get("id"));
+        if ($this->getUser() == $chapter->getPublication()->getUser()) {
+            $dtPic = $request->get("pic");
+            $idChap = $request->get("id");
+            // On recherche l'image dans la bdd via son "pic"
+            $result = $picRepo->findOneBy(["url" => $dtPic]);
+            // On récupère le nom du fichier entre "/" et "?"
+            $url = $result->getUrl();
+            $lastSlashPos = strrpos($url, "/");
+            $questionMarkPos = strpos($url, "?");
+            $filename = substr($url, $lastSlashPos + 1, $questionMarkPos - $lastSlashPos - 1);
+            try {
+                $this->cloudinary->uploadApi()->destroy("chapter/" . $idChap . "/" . $filename, ['invalidate' => true,]);
+            } catch (Exception $e) {
+                return $this->json([], 404);
+            }
+            // On supprime l'image de la bdd
+            $em->remove($result);
+            $em->flush();
+            // retour
+            return $this->json([], 200);
+        } else {
+            return $this->json([], 404);
+        }
     }
 }

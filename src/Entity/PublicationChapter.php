@@ -69,6 +69,9 @@ class PublicationChapter
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $pdf = null;
 
+    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: Pictures::class, orphanRemoval: true)]
+    private Collection $pictures;
+
     public function __construct()
     {
         $this->publicationChapterVersionings = new ArrayCollection();
@@ -78,6 +81,7 @@ class PublicationChapter
         $this->publicationComments = new ArrayCollection();
         $this->publicationBookmarks = new ArrayCollection();
         $this->notifications = new ArrayCollection();
+        $this->pictures = new ArrayCollection();
     }
 
 
@@ -417,6 +421,36 @@ class PublicationChapter
     public function setPdf(?string $pdf): self
     {
         $this->pdf = $pdf;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Pictures>
+     */
+    public function getPictures(): Collection
+    {
+        return $this->pictures;
+    }
+
+    public function addPicture(Pictures $picture): self
+    {
+        if (!$this->pictures->contains($picture)) {
+            $this->pictures->add($picture);
+            $picture->setChapter($this);
+        }
+
+        return $this;
+    }
+
+    public function removePicture(Pictures $picture): self
+    {
+        if ($this->pictures->removeElement($picture)) {
+            // set the owning side to null (unless already changed)
+            if ($picture->getChapter() === $this) {
+                $picture->setChapter(null);
+            }
+        }
 
         return $this;
     }

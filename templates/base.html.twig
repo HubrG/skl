@@ -30,17 +30,19 @@
 		<script></script>
 	</head>
 	<body data-turbo-track="reload">
-		<div class="relative">
-			{% include "partials/_navbar.html.twig" %}
-			{% include "partials/_confirm-email.html.twig" %}
-		</div>
-		{# FLASHES #}
-		{% include "partials/_notif.html.twig" %}
-		{# END_FLASHES #}
-		<main>
+		<div class="flex flex-col min-h-screen">
 
-			{% block body %}{% endblock %}
-		</main>
-		{% include "partials/_footer.html.twig" %}
+			<div class="relative">
+				{% include "partials/_navbar.html.twig" %}
+				{% include "partials/_confirm-email.html.twig" %}
+			</div>
+			{# FLASHES #}
+			{% include "partials/_notif.html.twig" %}
+			{# END_FLASHES #}
+			<main>
+				{% block body %}{% endblock %}
+			</main>
+			{% include "partials/_footer.html.twig" %}
+		</div>
 	</body>
 </html>

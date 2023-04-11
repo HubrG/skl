@@ -2,13 +2,16 @@
 
 namespace App\Services;
 
+use App\Entity\Pictures;
 use Cloudinary\Cloudinary;
 use App\Repository\UserRepository;
 use Cloudinary\Transformation\Resize;
+use App\Repository\PicturesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
 use Symfony\Component\Mime\MimeTypesInterface;
 use Symfony\Component\HttpFoundation\File\File;
+use App\Repository\PublicationChapterRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
@@ -23,16 +26,20 @@ class ImageService extends AbstractController
     private $userRepo;
 
     private $pRepo;
+    private $pcRepo;
+    private $picRepo;
 
     private $cloudinary;
 
-    public function __construct(Cloudinary $cloudinary, EntityManagerInterface $em, MimeTypesInterface $mimeTypes, UserRepository $userRepo, PublicationRepository $pRep)
+    public function __construct(PicturesRepository $picRepo, PublicationChapterRepository $pcRepo, Cloudinary $cloudinary, EntityManagerInterface $em, MimeTypesInterface $mimeTypes, UserRepository $userRepo, PublicationRepository $pRep)
     {
         $this->em = $em;
         $this->mimeTypes = $mimeTypes;
         $this->userRepo = $userRepo;
         $this->pRepo = $pRep;
         $this->cloudinary = $cloudinary;
+        $this->picRepo = $picRepo;
+        $this->pcRepo = $pcRepo;
     }
 
     public function UploadImage($dtImage, $repo, $id, $x, $y)
@@ -64,7 +71,40 @@ class ImageService extends AbstractController
             $folder = "story";
             $repo = $this->pRepo->find($id);
             $get = $repo->getCover();
-        }
+        } elseif ($repo == "chapter") { // ! Chapitres
+            $folder = "chapter";
+            $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/' . $folder . '/' . $id;
+            $newFilename = $id . rand(0, 9999) . '.img';
+            try {
+                $dtImage->move(
+                    $destination,
+                    $newFilename
+                );
+            } catch (FileException $e) {
+                return $this->json([
+                    "code" => 500,
+                    "value" => "Une erreur est survenue lors de l'upload de votre image."
+                ]);
+            }
+            $this->cloudinary->uploadApi()->upload(
+                $destination . "/" . $newFilename,
+                ['public_id' => $newFilename, 'folder' => $folder . "/" . $id,]
+            );
+            $urlCloudinary = $this->cloudinary->image($folder . "/" . $id . "/" . $newFilename)->toUrl();
+            $this->DeleteImage($destination . "/" . $newFilename, null, $id, $folder);
+            // On ajoute l'image dans la base de données :
+            $repo = $this->pcRepo->find($id);
+            $pic = new Pictures();
+            $pic->setChapter($repo);
+            $pic->setUrl($urlCloudinary);
+            $pic->setCreatedAt(new \DateTimeImmutable());
+            $this->em->persist($pic);
+            $this->em->flush();
+            return $this->json([
+                "code" => 200,
+                "cloudinary" => $urlCloudinary
+            ]);
+        } // ! Fin 
         $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/' . $folder . '/' . $id;
         $newFilename = $id . rand(0, 9999) . '.img';
 

@@ -89,6 +89,7 @@ const TurboHelper = class {
       ShowChapter();
       toggleDrawer();
       Charts();
+      axiosSaveChapter();
       Navbar();
       Comment();
       targetQuote();
@@ -109,6 +110,10 @@ const TurboHelper = class {
     });
     document.addEventListener("turbo:frame-render", () => {
       MicroModal.init();
+      if (document.getElementById("editorHTML")) {
+        ReadTime();
+        quillEditor();
+      }
       // ! Flashes
       if (document.getElementById("flashbag-success")) {
         if (

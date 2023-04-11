@@ -3,6 +3,9 @@ import { NotyDisplay } from "./Noty";
 import { axiosChapter } from "./Publication/Chapter";
 
 export function quillEditor() {
+  if (!document.getElementById("editor")) {
+    return;
+  }
   var toolbarOptions = [
     ["bold", "italic", "underline", "strike"], // toggled buttons
     ["blockquote"],

@@ -1,5 +1,6 @@
 {% set class = class is defined ? class : null %}
 {% set value = value is defined ? value : null %}
+{% set id = id is defined ? id : null %}
 {% set disabled = disabled is defined ? disabled : false %}
 {% set checkText = checkText is defined ? checkText : null %}
 {% if check is defined %}
@@ -14,9 +15,9 @@
 		{{ form_label(form) }}
 		<div class="relative">
 			<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
-				<i class="fa-regular dark:text-slate-300 mt-1 {{icon}}"></i>
+				<i class="fa-regular text-slate-800 dark:text-slate-300 mt-1 {{icon}}"></i>
 			</div>
-			{{ form_widget(form, {attr:{"disabled":disabled}}) }}
+			{{ form_widget(form, {attr:{"disabled":disabled, "id":id}}) }}
 		</div>
 		<span class="form_error">{{ form_errors(form) }}</span>
 	</div>

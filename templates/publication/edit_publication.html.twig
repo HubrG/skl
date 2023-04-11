@@ -92,28 +92,16 @@
 				{{ form_start(formPub) }}
 				{{ form_widget(formPub.cover, {attr:{"class":"axiosPublication hidden axiosPubAS axiosPubSpy"}})}}
 				<input type="hidden" value="{{ infoPub.id }}" id="hideId"/>
-				{{ form_label(formPub.title) }}
-				<div class="relative mb-6">
-					<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
-						<i class="fa-regular fa-heading"></i>
-					</div>
-					{{ form_widget(formPub.title, {attr:{"class":"axiosPublication axiosPubAS axiosPubSpy", "onkeydown":"if(this.value == '' && event.keyCode==32) return false;", "onkeyup":"if(this.value.charAt(0) == ' ') { this.value = this.value.trim() } if (!this.value) { document.getElementById('pubTitle').innerHTML='Récit sans titre' } else { document.getElementById('pubTitle').innerHTML=this.value.charAt(0).toUpperCase() + this.value.substring(1).toLowerCase()}"}}) }}
-				</div>
+				{% include "./partials/_form-row.html.twig" with {'form': formPub.title, 'class':'axiosPublication axiosPubAS axiosPubSpy', 'icon':"fa-heading"} %}
 				{{ form_label(formPub.summary) }}
 				<div class="relative mb-6">
 					{{ form_widget(formPub.summary, {attr:{"class":"axiosPublication axiosPubAS axiosPubSpy h-44"}}) }}
 				</div>
-				{{ form_label(formPub.category) }}
-				<div class="relative mb-6" id="publication_category_div">
-					<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
-						<i class="fa-regular fa-masks-theater"></i>
-					</div>
-					{{ form_widget(formPub.category, {attr:{"class":"axiosPublication axiosPubAS axiosPubSpy"}}) }}
-				</div>
+				{% include "./partials/_form-row.html.twig" with {'form': formPub.category, 'class':'axiosPublication axiosPubAS axiosPubSpy', 'id':'publication_category_div', 'icon':"fa-masks-theater"} %}
 				<label>En quelques mots, quelles sont les grandes thématiques de votre récit ?</label>
 				<div class="relative mb-6">
 					<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
-						<i class="fa-regular fa-tags"></i>
+						<i class="fa-regular fa-tags dark:text-slate-200"></i>
 					</div>
 					<input type="text" value="" id="keyValue"/>
 				</div>

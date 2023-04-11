@@ -1,3 +1,19 @@
+{% block turbo_stream %}
+	<turbo-stream action="replace" target="turbo_head">
+		<template>
+			<head>
+				{# Copiez ici tout le contenu de la balise <head> de votre fichier Twig #}
+			</head>
+		</template>
+	</turbo-stream>
+	<turbo-stream action="replace" target="turbo_body">
+		<template>
+			<body>
+				{# Copiez ici tout le contenu de la balise <body> de votre fichier Twig #}
+			</body>
+		</template>
+	</turbo-stream>
+{% endblock %}
 {% extends 'base.html.twig' %}
 
 {% block title %}

@@ -137,13 +137,11 @@ class PublicationController extends AbstractController
                                 ->addPublication($publication);
                         }
                         // ... Sinon, on ne le recrée pas, mais on ne lui ajoute pas d'occurrence, on ajoute seulement le mot au ManyToMany
-
                         else {
                             $key = $keyExists->addPublication($publication);
                         }
                     }
                     // sinon, on crée le nouveau mot et on l'ajoute au ManyToMany de l'article et on setcount 1 (uniquement si l'article est publié).....
-
                     else {
                         $keykey = new PublicationKeyword();
                         $key = $keykey->setKeyword($value)
@@ -446,5 +444,31 @@ class PublicationController extends AbstractController
             "comments" => json_encode($monthComments),
             "popularity" => json_encode($monthPop)
         ]);
+    }
+    #[Route('/story/fastedititle', name: 'app_publication_fast_edit_title', methods: "POST")]
+    public function Axios_FastEditTitle(Request $request, PublicationChapterRepository $pchRepo, EntityManagerInterface $em, SluggerInterface $slugger, PublicationCategoryRepository $catRepo, PublicationRepository $pRepo): response
+    {
+        $id = $request->get("id");
+        $dtTitle = $request->get("title");
+        //
+        $chap = $pchRepo->find($id);
+
+        $pub = $chap->getPublication();
+        //
+        if ($this->getUser() == $pub->getUser()) {
+            $chap->setTitle($dtTitle);
+            $chap->setSlug($slugger->slug(strtolower($dtTitle)));
+            $em->persist($chap);
+            $em->flush();
+        } else {
+            return $this->json([
+                "code" => 404,
+                "title" => $pub
+            ]);
+        }
+        return $this->json([
+            "code" => 200,
+            "title" => $dtTitle
+        ], 200);
     }
 }

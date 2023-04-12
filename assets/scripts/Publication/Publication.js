@@ -3,6 +3,50 @@ import axios from "axios";
 export function AxiosSavePublication() {
   if (document.getElementById("togglePubAS")) {
     axiosGoSortable();
+    // ! Édition rapide du titre (à la volée)
+    // On set fastChangeTitle en jquery
+    var fastChangeTitles = $(".fastChangeTitle");
+    fastChangeTitles.each(function () {
+      $(this).click(function (event) {
+        var clickedElement = $(event.target);
+        clickedElement.addClass("active");
+        var titleDataId = event.target.getAttribute("data-title-id");
+        var titleId = event.target.getAttribute("id");
+        var titleInput = document.getElementById("titleInput" + titleDataId);
+        var oldTitle = this.innerHTML.trim();
+        titleInput.classList.remove("hidden");
+        this.classList.add("hidden");
+        titleInput.value = this.innerHTML.trim();
+        titleInput.focus();
+
+        var blurOccurred = false;
+
+        $(titleInput)
+          .off("blur keydown")
+          .on("blur keydown", function (e) {
+            if (e.type === "blur") {
+              blurOccurred = true;
+            } else if (e.type === "keydown" && e.keyCode === 13) {
+              blurOccurred = true;
+              e.preventDefault();
+            }
+
+            if (blurOccurred) {
+              var updatedTitle = titleInput.value.trim();
+              $(clickedElement).html(updatedTitle);
+              clickedElement.removeClass("hidden");
+              titleInput.classList.add("hidden");
+
+              if (updatedTitle.trim() != oldTitle) {
+                axiosChangeTitle(titleDataId, updatedTitle);
+                console.log("ok");
+              }
+            }
+          });
+
+        event.stopPropagation();
+      });
+    });
     // ! Variables autosave
     var togglePubAS = document.getElementById("togglePubAS");
     var axiosPubAS = document.querySelectorAll(".axiosPubAS");
@@ -368,5 +412,30 @@ function axiosGoSortable() {
       .then(function (response) {});
     nbr++;
   });
+}
+async function axiosChangeTitle(id, title) {
+  const url = "/story/fastedititle";
+  const formData = new FormData();
+  formData.append("title", title);
+  formData.append("id", id);
+
+  try {
+    const response = await axios.post(url, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    let notyText =
+      "<span class='text-base font-medium'>Erreur</span><br />Une erreur est survenue lors de la modification du titre de votre récit";
+    let notyType = "error";
+    let notyTimeout = 4500;
+    if (error.response) {
+      if (!document.querySelector(".noty_type__error")) {
+        NotyDisplay(notyText, notyType, notyTimeout);
+      }
+    }
+  }
 }
 AxiosSavePublication();

@@ -113,29 +113,32 @@ function setDarkmode(dark) {
   const url = "/param/user/set";
   data.append("param", "darkmode");
   data.append("value", dark);
-  axios
-    .post(url, data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
-    .then((response) => {
-      // console.log(response.data);
-    });
+  $.ajax({
+    url: url,
+    method: "POST",
+    data: data,
+    processData: false,
+    contentType: false,
+    success: function (response) {
+      // console.log(response);
+    },
+  });
 }
 function setGrid(grid) {
   const data = new FormData();
   const url = "/param/user/set";
   data.append("param", "grid");
   data.append("value", grid);
-  axios
-    .post(url, data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
-    .then((response) => {
-      console.log(response.data);
-    });
+  $.ajax({
+    url: url,
+    method: "POST",
+    data: data,
+    processData: false,
+    contentType: false,
+    success: function (response) {
+      console.log(response);
+    },
+  });
 }
+
 darkMode();

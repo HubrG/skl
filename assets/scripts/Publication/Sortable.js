@@ -66,6 +66,7 @@ function axiosGoSortable() {
   let url = "/story/chapter/sort";
   var parent1 = document.querySelector("#itemsChap");
   var parent2 = document.querySelector("#itemsChap2");
+  var parent3 = document.querySelector("#itemsChap3");
   document.querySelectorAll(".list-group-item").forEach(function (row) {
     row.id = nbr;
     let data = new FormData();

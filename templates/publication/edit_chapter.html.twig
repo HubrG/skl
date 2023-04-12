@@ -58,12 +58,12 @@
 						</div>
 						<ul id="dropdown-database" class="z-10  bg-white hidden overflow-y-auto max-h-[70vh] divide-y  divide-gray-100 rounded-lg shadow dark:shadow-2xl w-80 dark:bg-slate-700  transform translate-y-2">
 							<ul class="relative text-sm flex flex-col py-4 pt-0 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
-								<li class="dark:bg-slate-900 bg-white shadow text-center sticky top-0">
+								<li class="dark:bg-slate-900 bg-slate-50 shadow text-center sticky top-0">
 									<span class="block w-full px-4 py-2 font-semibold dark:text-red-500 text-md ">
 										<i class="fa-duotone fa-eye"></i>&nbsp;&nbsp;Feuilles publiées
 									</span>
 								</li>
-								<ul>
+								<ul class="my-2">
 									{% set n = 0 %}
 									{% for item in chaps %}
 										{% if item.status == 2 %}
@@ -88,12 +88,12 @@
 										<span>Aucune feuille publiée</span>
 									</li>
 								{% endif %}
-								<li class=" sticky top-0 dark:bg-slate-900 bg-white shadow border-t-[1px] dark:border-t-slate-700 border-t-slate-100 text-center">
+								<li class=" sticky top-0 dark:bg-slate-900 bg-slate-50 shadow border-t-[1px] dark:border-t-slate-700 border-t-slate-100 text-center">
 									<span class="block w-full px-4 py-2 font-semibold dark:text-red-500  text-md ">
 										<i class="fa-duotone fa-eye"></i>&nbsp;&nbsp;Feuilles dépubliées
 									</span>
 								</li>
-								<ul>
+								<ul class="my-2">
 									{% set n = 0 %}
 									{% for item in chaps %}
 										{% if item.status == 1 %}
@@ -127,7 +127,7 @@
 			<div role="status" id="spinAS" class="hidden flex  flex-row  items-centers">
 				<i class="fa-duotone fa-angle-right mt-1"></i>
 				<span class="flex flex-row  items-centers">
-					<i class="fa-duotone fa-loader fa-spin align-middle leading-[inherit]" style="--fa-primary-color: #16da47; --fa-secondary-color: #1e3e26;"></i>
+					<i class="fa-duotone fa-spinner fa-spin align-middle leading-[inherit] dark:[--fa-secondary-color:#1E293B] [--fa-secondary-color:#fff]" style="--fa-primary-color: #16da47; "></i>
 					<span class=" text-slate-400">Enregistrement...</span>
 				</span>
 			</div>

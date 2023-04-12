@@ -12,7 +12,7 @@ export function quillEditor() {
     [{ size: ["small", false, "large", "huge"] }],
     [{ header: [2, 3, 4, 5, 6], size: ["small", false, "large", "huge"] }], // custom button values
     [{ list: "ordered" }, { list: "bullet" }],
-    ["link", "image"],
+    ["link"],
     [{ align: [] }],
     ["clean"], // remove formatting button
   ];

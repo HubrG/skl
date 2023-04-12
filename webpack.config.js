@@ -43,6 +43,8 @@ Encore
   .enableSourceMaps(!Encore.isProduction())
   // enables hashed filenames (e.g. app.abc123.css)
   .enableVersioning(Encore.isProduction())
+  // enable jquery
+  .autoProvidejQuery() // Fournir automatiquement jQuery pour les modules qui en dépendent
 
   // configure Babel
   // .configureBabel((config) => {

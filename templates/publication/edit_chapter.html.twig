@@ -57,8 +57,8 @@
 							</svg>
 						</div>
 						<ul id="dropdown-database" class="z-10  bg-white hidden overflow-y-auto max-h-[70vh] divide-y  divide-gray-100 rounded-b-lg shadow dark:shadow-2xl w-80 dark:bg-slate-700  transform translate-y-2">
-							<ul class=" text-sm flex flex-col py-4 pt-0 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
-								<li class="dark:bg-slate-900 text-center">
+							<ul class="relative text-sm flex flex-col py-4 pt-0 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
+								<li class="dark:bg-slate-900 text-center sticky top-0">
 									<span class="block w-full px-4 py-2 font-semibold dark:text-red-500 text-md ">
 										<i class="fa-duotone fa-eye"></i>&nbsp;&nbsp;Feuilles publiées
 									</span>
@@ -80,7 +80,7 @@
 										{% endif %}
 									{% endfor %}
 								</ul>
-								<li class="dark:bg-slate-900 border-t-[1px] dark:border-t-slate-700 border-t-slate-100 text-center">
+								<li class=" sticky top-0 dark:bg-slate-900 border-t-[1px] dark:border-t-slate-700 border-t-slate-100 text-center">
 									<span class="block w-full px-4 py-2 font-semibold dark:text-red-500  text-md ">
 										<i class="fa-duotone fa-eye"></i>&nbsp;&nbsp;Feuilles dépubliées
 									</span>

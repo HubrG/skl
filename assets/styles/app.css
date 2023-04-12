@@ -852,5 +852,10 @@ nav.breadcrumb ol li i:first-child{
 #badgePubStatus {
 	@apply ml-3
 }
-
-
+#chapArticle ul li::before {
+	content: "—"; /* Emoji de caméra */
+	margin-right: 10px;
+}
+#chapArticle ul li {
+	@apply list-none;
+}

@@ -67,6 +67,7 @@ export function axiosSaveChapter() {
 
   function handleChapterSave() {
     axiosChapter();
+    spinAS.classList.add("hidden");
   }
 
   function handleChapterPublish() {
@@ -109,10 +110,10 @@ function axiosChapter() {
       console.log(response.data.code);
       if (response.data.code == 200) {
         var notyText =
-          "<span class='text-base font-medium'>Feuille enregistré</span><br />Votre feuille est à jour d'après cette version";
+          "<span class='text-base font-medium'>Feuille enregistrée</span><br />Votre feuille est à jour d'après cette version";
         var notyTimeout = 4500;
         var notyType = "success";
-        if (!document.querySelector(".noty_body")) {
+        if (!document.querySelector(".noty_type__success")) {
           NotyDisplay(notyText, notyType, notyTimeout);
         }
       } else {

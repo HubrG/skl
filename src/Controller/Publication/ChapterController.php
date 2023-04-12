@@ -109,7 +109,8 @@ class ChapterController extends AbstractController
                 // *
                 return $this->render('publication/edit_chapter.html.twig', [
                     'infoPub' => $infoPublication,
-                    'infoChap' => $infoChapitre
+                    'infoChap' => $infoChapitre,
+                    'chaps' => $pcRepo->findBy(['publication' => $idPub], ['order_display' => 'ASC']),
                 ]);
             } else {
                 return $this->redirectToRoute('app_home');

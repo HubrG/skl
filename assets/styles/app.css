@@ -168,7 +168,7 @@ form button:disabled {
 }
 /* ! QuillJS */
   #editor .ql-editor {
-	@apply z-0 border-0 border-b-[2px] border-b-slate-300 min-h-[66.67vh] text-slate-500 focus:ring-0 text-base focus:border-slate-300 block w-full pt-16 md:pt-8 dark:bg-transparent dark:border-gray-600 dark:placeholder-gray-400 dark:text-slate-50;
+	@apply z-0 border-0 border-b-[2px] border-b-slate-300 min-h-[66.67vh] text-slate-500 focus:ring-0 text-base focus:border-slate-300 block w-full pt-16 md:pt-0 dark:bg-transparent dark:border-gray-600 dark:placeholder-gray-400 dark:text-slate-50;
 	overflow: visible; /* Permet à l'éditeur de s'agrandir en fonction de son contenu */
   }
   
@@ -828,3 +828,29 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 article#chapContent p img {
 	@apply w-full;
 }
+nav.breadcrumb {
+	@apply flex py-3 pt-4 md:pt-3  justify-center  shadow-none border-b-slate-200 dark:border-b-slate-700 dark:bg-slate-800 mb-10 -mt-5 md:-mt-0;
+}
+nav.breadcrumb ol {
+	@apply inline-flex items-center space-x-1 md:space-x-3 text-xs;
+}
+nav.breadcrumb ol li {
+	@apply inline-flex items-center;
+}
+nav.breadcrumb ol li a {
+	@apply inline-flex items-center font-semibold text-slate-700 hover:underline dark:text-slate-400 dark:hover:text-white;
+}
+nav.breadcrumb ol li div:not(#spinAS):not(#ddt) {
+	@apply flex items-center text-left;
+}
+nav.breadcrumb ol li div:not(#spinAS,#dropdown-database) span:not(#badgePubStatus) {
+	@apply font-medium text-slate-500  dark:text-slate-400;
+}
+nav.breadcrumb ol li i:first-child{
+	@apply mr-3 dark:text-slate-200;
+}
+#badgePubStatus {
+	@apply ml-3
+}
+
+

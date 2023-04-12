@@ -146,7 +146,9 @@ function AxiosPublication() {
           "<span class='text-base font-medium'>Récit enregistré</span><br />Votre récit est à jour.";
         var notyTimeout = 4500;
         var notyType = "success";
-        NotyDisplay(notyText, notyType, notyTimeout);
+        if (!document.querySelector(".noty_type__success")) {
+          NotyDisplay(notyText, notyType, notyTimeout);
+        }
         // * cover
         if (response.data.cloudinary) {
           spinCover.toggle("hidden");

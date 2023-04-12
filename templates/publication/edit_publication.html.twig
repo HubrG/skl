@@ -9,25 +9,25 @@
 
 {% block body %}
 	<div class="col-span-12 col-start-0 -mt-10 mb-10 ">
-		<nav class="flex py-3  justify-center  shadow-none   border-b-slate-200 dark:border-b-slate-700 dark:bg-slate-800 mb-10 -mt-5 md:-mt-0" aria-label="Breadcrumb">
-			<ol class="inline-flex items-center space-x-1 md:space-x-3 text-xs">
-				<li class="inline-flex items-center">
-					<a href="{{path("app_user_show_publications")}}" class="inline-flex items-center font-medium text-slate-700 hover:text-blue-600 dark:text-slate-400 dark:hover:text-white">
-						Mes récits</a>
+		<nav class="breadcrumb" aria-label="Breadcrumb">
+			<ol>
+				<li>
+					<a href="{{path("app_user_show_publications")}}">
+						Mes récits
+					</a>
 				</li>
 				<li aria-current="page">
-					<div class="flex items-center">
+					<div>
 						<svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 							<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
 						</svg>
-						<span class="ml-1 font-medium text-slate-500 md:ml-2 dark:text-slate-400">Édition d'un récit &nbsp;&nbsp;
-							<span class=" cursor-pointer" data-micromodal-trigger="popup-modal">
-								{% if (infoPub.status > 1) %}
-									<span id="badgePubStatus" class="badge">Publié</span>
-								{% else %}
-									<span id="badgePubStatus" class="badge">Dépublié</span>
-								{% endif %}
-							</span>
+						<span>Édition d'un récit</span>
+						<span class=" cursor-pointer" data-micromodal-trigger="popup-modal">
+							{% if (infoPub.status > 1) %}
+								<span id="badgePubStatus" class="badge">Publié</span>
+							{% else %}
+								<span id="badgePubStatus" class="badge">Dépublié</span>
+							{% endif %}
 						</span>
 					</div>
 				</li>

@@ -19,7 +19,7 @@ Encore
    * Each entry will result in one JavaScript file (e.g. app.js)
    * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
    */
-  .addEntry("app", "./assets/app.js", "jquery")
+  .addEntry("app", "./assets/app.js")
 
   // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
   .enableStimulusBridge("./assets/controllers.json")
@@ -44,7 +44,7 @@ Encore
   // enables hashed filenames (e.g. app.abc123.css)
   .enableVersioning(Encore.isProduction())
   // enable jquery
-  .autoProvidejQuery() // Fournir automatiquement jQuery pour les modules qui en dépendent
+  // .autoProvidejQuery() // Fournir automatiquement jQuery pour les modules qui en dépendent
 
   // configure Babel
   // .configureBabel((config) => {

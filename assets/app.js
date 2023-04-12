@@ -9,8 +9,6 @@ import "@glidejs/glide/dist/css/glide.core.min.css";
 import "./bootstrap";
 import "./styles/app.css";
 import "./turbo/turbo-helper";
-import $ from "jquery";
-global.$ = global.jQuery = $;
 window.axios = require("axios");
 // TODO: refaire cette fonction
 import Glide from "@glidejs/glide";

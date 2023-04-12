@@ -4,12 +4,13 @@ export function AxiosSavePublication() {
   if (document.getElementById("togglePubAS")) {
     axiosGoSortable();
     // ! Édition rapide du titre (à la volée)
-    // On set fastChangeTitle en jquery
-    var fastChangeTitles = $(".fastChangeTitle");
-    fastChangeTitles.each(function () {
-      $(this).click(function (event) {
-        var clickedElement = $(event.target);
-        clickedElement.addClass("active");
+    // On récupère tous les éléments avec la classe "fastChangeTitle"
+    var fastChangeTitles = document.querySelectorAll(".fastChangeTitle");
+
+    fastChangeTitles.forEach(function (element) {
+      element.addEventListener("click", function (event) {
+        var clickedElement = event.target;
+        clickedElement.classList.add("active");
         var titleDataId = event.target.getAttribute("data-title-id");
         var titleId = event.target.getAttribute("id");
         var titleInput = document.getElementById("titleInput" + titleDataId);
@@ -18,35 +19,43 @@ export function AxiosSavePublication() {
         this.classList.add("hidden");
         titleInput.value = this.innerHTML.trim();
         titleInput.focus();
-
         var blurOccurred = false;
 
-        $(titleInput)
-          .off("blur keydown")
-          .on("blur keydown", function (e) {
-            if (e.type === "blur") {
-              blurOccurred = true;
-            } else if (e.type === "keydown" && e.keyCode === 13) {
-              blurOccurred = true;
-              e.preventDefault();
-            }
+        titleInput.addEventListener("blur", function (e) {
+          blurOccurred = true;
 
-            if (blurOccurred) {
-              var updatedTitle = titleInput.value.trim();
-              $(clickedElement).html(updatedTitle);
-              clickedElement.removeClass("hidden");
-              titleInput.classList.add("hidden");
+          var updatedTitle = titleInput.value.trim();
+          clickedElement.innerHTML = updatedTitle;
+          clickedElement.classList.remove("hidden");
+          titleInput.classList.add("hidden");
 
-              if (updatedTitle.trim() != oldTitle) {
-                axiosChangeTitle(titleDataId, updatedTitle);
-                console.log("ok");
-              }
+          if (updatedTitle.trim() != oldTitle) {
+            axiosChangeTitle(titleDataId, updatedTitle);
+            console.log("ok");
+          }
+        });
+
+        titleInput.addEventListener("keydown", function (e) {
+          if (e.keyCode === 13) {
+            blurOccurred = true;
+            e.preventDefault();
+
+            var updatedTitle = titleInput.value.trim();
+            clickedElement.innerHTML = updatedTitle;
+            clickedElement.classList.remove("hidden");
+            titleInput.classList.add("hidden");
+
+            if (updatedTitle.trim() != oldTitle) {
+              axiosChangeTitle(titleDataId, updatedTitle);
+              console.log("ok");
             }
-          });
+          }
+        });
 
         event.stopPropagation();
       });
     });
+
     // ! Variables autosave
     var togglePubAS = document.getElementById("togglePubAS");
     var axiosPubAS = document.querySelectorAll(".axiosPubAS");

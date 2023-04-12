@@ -859,3 +859,10 @@ nav.breadcrumb ol li i:first-child{
 #chapArticle ul li {
 	@apply list-none;
 }
+#editor .ql-editor ul li::before {
+	content: "—"; /* Emoji de caméra */
+	margin-right: 10px;
+}
+#editor .ql-editor ul li {
+	@apply list-none;
+}

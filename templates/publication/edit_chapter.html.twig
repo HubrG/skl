@@ -56,14 +56,15 @@
 								<path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
 							</svg>
 						</div>
-						<ul id="dropdown-database" class="z-10  bg-white hidden overflow-y-auto max-h-[70vh] divide-y  divide-gray-100 rounded-b-lg shadow dark:shadow-2xl w-80 dark:bg-slate-700  transform translate-y-2">
+						<ul id="dropdown-database" class="z-10  bg-white hidden overflow-y-auto max-h-[70vh] divide-y  divide-gray-100 rounded-lg shadow dark:shadow-2xl w-80 dark:bg-slate-700  transform translate-y-2">
 							<ul class="relative text-sm flex flex-col py-4 pt-0 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
-								<li class="dark:bg-slate-900 text-center sticky top-0">
+								<li class="dark:bg-slate-900 bg-white shadow text-center sticky top-0">
 									<span class="block w-full px-4 py-2 font-semibold dark:text-red-500 text-md ">
 										<i class="fa-duotone fa-eye"></i>&nbsp;&nbsp;Feuilles publiées
 									</span>
 								</li>
-								<ul class=" shadow-inner">
+								<ul>
+									{% set n = 0 %}
 									{% for item in chaps %}
 										{% if item.status == 2 %}
 											{% if item.id == infoChap.id %}
@@ -77,15 +78,23 @@
 													<a href="{{ path("app_publication_edit_chapter", { idPub:infoPub.id, idChap:item.id }) }}" target="_top" class="block w-full px-4 py-2 font-semibold dark:hover:text-white ">{{item.title}}</a>
 												</li>
 											{% endif %}
+											{% set n = n + 1 %}
 										{% endif %}
 									{% endfor %}
+
 								</ul>
-								<li class=" sticky top-0 dark:bg-slate-900 border-t-[1px] dark:border-t-slate-700 border-t-slate-100 text-center">
+								{% if n == 0 %}
+									<li class="flex justify-center items-center my-5 italic opacity-70 text-xs">
+										<span>Aucune feuille publiée</span>
+									</li>
+								{% endif %}
+								<li class=" sticky top-0 dark:bg-slate-900 bg-white shadow border-t-[1px] dark:border-t-slate-700 border-t-slate-100 text-center">
 									<span class="block w-full px-4 py-2 font-semibold dark:text-red-500  text-md ">
 										<i class="fa-duotone fa-eye"></i>&nbsp;&nbsp;Feuilles dépubliées
 									</span>
 								</li>
-								<ul class=" shadow-inner ">
+								<ul>
+									{% set n = 0 %}
 									{% for item in chaps %}
 										{% if item.status == 1 %}
 											{% if item.id == infoChap.id %}
@@ -99,9 +108,15 @@
 													<a href="{{ path("app_publication_edit_chapter", { idPub:infoPub.id, idChap:item.id }) }}" target="_top" class="block w-full px-4 py-2 font-semibold dark:hover:text-white ">{{item.title}}</a>
 												</li>
 											{% endif %}
+											{% set n = n + 1 %}
 										{% endif %}
 									{% endfor %}
 								</ul>
+								{% if n == 0 %}
+									<li class="flex justify-center items-center my-5 italic opacity-70 text-xs">
+										<span>Aucune feuille dépubliée</span>
+									</li>
+								{% endif %}
 							</ul>
 						</ul>
 					</div>

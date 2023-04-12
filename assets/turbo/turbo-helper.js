@@ -42,13 +42,25 @@ import axios from "axios";
 
 const TurboHelper = class {
   constructor() {
+    // * Turbo before-cache sert à faire des actions avant le cache
     document.addEventListener("turbo:before-cache", () => {
       darkMode();
     });
+    // * Turbo Frame Missing sert à recharger la page si le frame est manquant
     document.addEventListener("turbo:frame-missing", () => {
       window.top.location.reload();
     });
+    // * Turbo Render sert à faire des actions après le chargement de la page
     document.addEventListener("turbo:render", () => {
+      if (!this.isPreviewRendered()) {
+        // if this is a preview, then we do nothing: stay faded out
+        // after rendering the REAL page, we first allow the .turbo-loading to
+        // instantly start the page at lower opacity. THEN remove the class,
+        // which allows the fade in
+        setTimeout(() => {
+          document.body.classList.remove("turbo-loading");
+        }, 10);
+      }
       darkMode();
       PublicationShowOne();
       // ! Flashes
@@ -108,6 +120,7 @@ const TurboHelper = class {
         }, 2500);
       }
     });
+    // * Turbo Frame Render sert à faire des actions après le chargement d'un frame
     document.addEventListener("turbo:frame-render", () => {
       MicroModal.init();
       if (document.getElementById("editorHTML")) {
@@ -154,17 +167,21 @@ const TurboHelper = class {
         .classList.add("hidden");
       document.getElementById("dropdownInformation").classList.add("hidden");
     });
+    // * Turbo Visit sert à faire des actions avant le chargement de la page
     document.addEventListener("turbo:visit", () => {
       // fade out the old body
-      document.body.classList.add("turbo-loading");
+      // document.body.classList.add("turbo-loading");
       quillEditor();
       darkMode();
     });
+    // * Turbo Before Render sert à faire des actions après le chargement de la page
     document.addEventListener("turbo:after-render", (event) => {
       darkMode();
       quillEditor();
     });
+    // * Turbo Before Render sert à faire des actions avant le chargement de la page
     document.addEventListener("turbo:before-render", (event) => {
+      darkMode();
       if (this.isPreviewRendered()) {
         // this is a preview that has been instantly swapped
         // remove .turbo-loading so the preview starts fully opaque
@@ -177,17 +194,6 @@ const TurboHelper = class {
         // when we are *about* to render a fresh page
         // we should already be faded out, so start us faded out
         event.detail.newBody.classList.add("turbo-loading");
-      }
-    });
-    document.addEventListener("turbo:render", () => {
-      if (!this.isPreviewRendered()) {
-        // if this is a preview, then we do nothing: stay faded out
-        // after rendering the REAL page, we first allow the .turbo-loading to
-        // instantly start the page at lower opacity. THEN remove the class,
-        // which allows the fade in
-        setTimeout(() => {
-          document.body.classList.remove("turbo-loading");
-        }, 10);
       }
     });
   }

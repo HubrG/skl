@@ -17,7 +17,7 @@ export function quillEditor() {
     ["clean"], // remove formatting button
   ];
   var options = {
-    placeholder: "Contenu de votre chapitre...",
+    placeholder: "Contenu de votre feuille...",
     theme: "bubble",
     modules: {
       toolbar: toolbarOptions,
@@ -60,25 +60,42 @@ export function quillEditor() {
       }
     });
 
-    // Affiche le sélecteur de bouton lors d'un clic sur un paragraphe
+    function positionButton(rect) {
+      // buttonSelector.style.left =
+      //   document.getElementById("editor").offsetLeft -
+      //   buttonSelector.offsetWidth +
+      //   13 +
+      //   "px";
+      buttonSelector.style.top = rect.top + rect.height + window.scrollY + "px";
+    }
+
     document.getElementById("editor").addEventListener("click", (e) => {
       let clickedElement = e.target;
-      let paragraphElement = clickedElement.closest("p");
+      let paragraphElement;
+
+      // Sélectionne l'élément p en fonction de l'élément sur lequel vous avez cliqué
+      if (clickedElement.tagName === "P") {
+        paragraphElement = clickedElement;
+      } else {
+        paragraphElement = clickedElement.parentElement;
+        while (paragraphElement && paragraphElement.tagName !== "P") {
+          paragraphElement = paragraphElement.parentElement;
+        }
+      }
 
       if (paragraphElement) {
         let rect = paragraphElement.getBoundingClientRect();
 
-        // Ajoute la hauteur du paragraphe pour afficher la tooltip en-dessous
-        buttonSelector.style.left =
-          document.getElementById("editor").offsetLeft -
-          buttonSelector.offsetWidth +
-          13 +
-          "px";
-        buttonSelector.style.top =
-          rect.top + rect.height + window.scrollY + "px";
-        buttonSelector.style.display = "block";
+        // Utilise requestAnimationFrame pour retarder l'exécution du code de positionnement
+        requestAnimationFrame(() => {
+          // Met à jour la position du bouton
+          positionButton(rect);
+
+          buttonSelector.style.display = "block";
+        });
       }
     });
+
     // ! On observe le DOM pour vérifier les balises img supprimées, et on suppirme les IMG référentes (en BDD et sur Cloudinary)
     // Fonction pour extraire les URL des images à partir d'un Delta
     function extractImageUrls(delta) {
@@ -131,31 +148,6 @@ if (document.getElementById("editorHTML")) {
   quillEditor();
 }
 // ! Axios
-function DeleteChapterImg(pic) {
-  const url = "/story/chapter/deleteimg";
-  var hideIdChap = document.getElementById("hideIdChap").value;
-  let data = new FormData();
-  data.append("id", hideIdChap);
-  data.append("pic", pic);
-  axios
-    .post(url, data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
-    .then(function (response) {
-      if (response.status === 200) {
-        console.log(response.data.delimg);
-        axiosChapter();
-      } else {
-        var notyText =
-          "<span class='text-base font-medium'>Erreur</span><br />Une erreur est survenue lors de la suppression de votre image";
-        var notyTimeout = 4500;
-        var notyType = "error";
-        NotyDisplay(notyText, notyType, notyTimeout);
-      }
-    });
-}
 function AddChapterImg(file, type, quill, clickedIndex) {
   if (!file) {
     return;
@@ -195,6 +187,7 @@ function AddChapterImg(file, type, quill, clickedIndex) {
         // Insérer deux sauts de ligne après cette position pour créer un nouveau paragraphe
         // Insérer l'image dans le nouveau paragraphe
         quill.insertEmbed(lineEndPosition + 1, "image", pic);
+        quill.insertText(lineEndPosition + 2, "\n", "user");
         clickedIndex = null;
         document.body.classList.remove("opacity-50");
         axiosChapter();
@@ -206,6 +199,31 @@ function AddChapterImg(file, type, quill, clickedIndex) {
         var notyType = "error";
         NotyDisplay(notyText, notyType, notyTimeout);
         document.body.classList.remove("opacity-50");
+      }
+    });
+}
+function DeleteChapterImg(pic) {
+  const url = "/story/chapter/deleteimg";
+  var hideIdChap = document.getElementById("hideIdChap").value;
+  let data = new FormData();
+  data.append("id", hideIdChap);
+  data.append("pic", pic);
+  axios
+    .post(url, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then(function (response) {
+      if (response.status === 200) {
+        console.log(response.data.delimg);
+        axiosChapter();
+      } else {
+        var notyText =
+          "<span class='text-base font-medium'>Erreur</span><br />Une erreur est survenue lors de la suppression de votre image";
+        var notyTimeout = 4500;
+        var notyType = "error";
+        NotyDisplay(notyText, notyType, notyTimeout);
       }
     });
 }

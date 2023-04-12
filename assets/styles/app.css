@@ -168,12 +168,12 @@ form button:disabled {
 }
 /* ! QuillJS */
   #editor .ql-editor {
-	@apply z-0 border-0 border-b-[2px] border-b-slate-300 min-h-[66.67vh] text-slate-500 focus:ring-0 text-base focus:border-slate-300 block w-full pt-10 dark:bg-transparent dark:border-gray-600 dark:placeholder-gray-400 dark:text-slate-50;
+	@apply z-0 border-0 border-b-[2px] border-b-slate-300 min-h-[66.67vh] text-slate-500 focus:ring-0 text-base focus:border-slate-300 block w-full pt-16 md:pt-8 dark:bg-transparent dark:border-gray-600 dark:placeholder-gray-400 dark:text-slate-50;
 	overflow: visible; /* Permet à l'éditeur de s'agrandir en fonction de son contenu */
   }
   
 #editor img {
-	@apply max-w-full block rounded-lg mx-auto my-3;
+	@apply max-w-[97%] block rounded-lg mx-auto my-3;
 }
 #editor img::before {
 	@apply w-full bg-slate-900;
@@ -184,10 +184,10 @@ form button:disabled {
 	font-style: italic;
 	left: 50px;
 	margin-top:2px;
-	margin-left:17px;
+	margin-left:5px;
 	pointer-events: none;
 	position: absolute;
-	right: 30px;
+	right: 10px;
 }
 .ql-bubble * {
 	@apply font-serif;

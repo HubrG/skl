@@ -251,7 +251,7 @@ class UserController extends AbstractController
 					'app_verify_email',
 					$user,
 					(new TemplatedEmail())
-						->from(new Address('contact@scrilab.fr', 'Scrilab'))
+						->from(new Address('admin@scrilab.com', 'Scrilab'))
 						->to($user->getEmail())
 						->subject('Confirmez votre adresse adresse email.')
 						->htmlTemplate('emails/valid_email.html.twig')
@@ -262,7 +262,7 @@ class UserController extends AbstractController
 					'app_verify_email',
 					$user,
 					(new TemplatedEmail())
-						->from(new Address('contact@scrilab.fr', 'Scrilab'))
+						->from(new Address('admin@scrilab.com', 'Scrilab'))
 						->to($user->getEmail())
 						->subject('Confirmez votre adresse adresse email.')
 						->htmlTemplate('emails/valid_email.html.twig')

@@ -70,7 +70,7 @@ class NotificationSystem extends AbstractController
         }
         $userRepo = $this->userRepo->find($user);
         $email = (new TemplatedEmail())
-            ->from(new Address('contact@scrilab.fr', 'Scrilab'))
+            ->from(new Address('admin@scrilab.com', 'Scrilab'))
             ->to($user->getEmail())
             ->htmlTemplate('emails/notifications_emails_template.html.twig');
         // //

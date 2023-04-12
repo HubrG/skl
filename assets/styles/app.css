@@ -530,7 +530,7 @@ opacity: 0.4;
 	@apply   bg-slate-700 dark:bg-slate-900  text-slate-100   dark:text-slate-50 ring-slate-500;
 }
 .button-gray {
-	@apply   bg-gray-100 text-gray-900 ring-gray-400 border-gray-600 dark:bg-gray-700 dark:text-gray-50  dark:border-gray-400;
+	@apply   bg-gray-200 text-gray-900 ring-gray-400 border-gray-600 dark:bg-gray-700 dark:text-gray-50  dark:border-gray-400;
 }
 .button-cyan {
 	@apply   bg-cyan-50 text-cyan-900 ring-cyan-400 border-cyan-600 dark:bg-cyan-900 dark:text-cyan-50  dark:border-cyan-400;

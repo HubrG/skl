@@ -31,6 +31,7 @@ jobs:
           sed -i 's/^CLOUDINARY_CLOUD_NAME=.*/CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}/' .env.local
           sed -i 's/^CLOUDINARY_API_KEY=.*/CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}/' .env.local
           sed -i 's/^CLOUDINARY_API_SECRET=.*/CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}/' .env.local
+          sed -i 's/^MAILER_DSN=.*/MAILER_DSN=${{ secrets.MAILER_DSN }}/' .env.local
           composer install && \
           npm run-script build && \
           php bin/console cache:clear && \

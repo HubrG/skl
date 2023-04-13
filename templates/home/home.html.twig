@@ -326,7 +326,7 @@
 								{% if item.quote %}
 									<blockquote class="mt-4 border-l-4 border-emerald-200 pl-4 italic text-slate-500 mb-2">
 										<p class="font-serif quoteComment cursor-pointer text-[0.85rem]">
-											<a href="{{ path("app_chapter_show", {idChap:item.chapter.id, user:item.publication.user.username, slugPub:item.publication.slug, slug:item.chapter.slug}) }}">{{ item.quote }}</a>
+											<a href="{{ path("app_chapter_show", {idChap:item.chapter.id, user:item.publication.user.username, slugPub:item.publication.slug, slug:item.chapter.slug}) }}" target="_top">{{ item.quote }}</a>
 										</p>
 									</blockquote>
 								{% endif %}

@@ -77,7 +77,13 @@ class PublicationPopularity
         // Calcul du facteur de décroissance en fonction du temps écoulé depuis la date de publication
         $publishedAt = $p->getPublishedDate();
         $timeSincePublication = ($publishedAt !== null) ? (time() - strtotime($publishedAt->format('Y-m-d H:i:s'))) : 0;
-        $decayFactor = exp(($timeSincePublication / (60 * 60 * 24 * 15))); // factor de décroissance (exprimé en jours)
+        $maxDecayDays = 30 * 24 * 60 * 60; // 30 jours en secondes
+
+        if ($timeSincePublication <= $maxDecayDays) {
+            $decayFactor = exp(($timeSincePublication / (60 * 60 * 24 * 15))); // facteur de décroissance (exprimé en jours)
+        } else {
+            $decayFactor = exp(($maxDecayDays / (60 * 60 * 24 * 15)));
+        }
 
         // Calculate the sum of all the priority factors
         $prioritySum = $priorityPcv + $priorityPcom + $priorityPcl + $priorityBmC + $priorityBm + $priorityDl;
@@ -120,6 +126,50 @@ class PublicationPopularity
             $this->em->persist($pp);
             $this->em->flush();
         }
+        foreach ($pch as $chapter) {
+            $this->ChapterPopularity($chapter);
+        }
+        return;
+    }
+    public function ChapterPopularity($chapter)
+    {
+        // Définition des priorités pour les différentes métriques
+        $priorityPcv = 0.001; // vues du chapitre
+        $priorityPcl = 0.002; // likes du chapitre
+        $priorityPcom = 0.003; // commentaires de la publication
+        $priorityBmC = 0.004; // signets du chapitre
+
+        // Récupération des informations sur le chapitre
+        $ch = $this->pchRepo->find($chapter);
+
+        // Récupération des différentes métriques
+        $pcv = count($this->pcvRepo->findBy(["chapter" => $ch])); // views chapter
+        $pcl = count($this->pclRepo->findBy(["chapter" => $ch])); // likes chapter
+        $pcb = count($this->pbRepo->findBy(["chapter" => $ch])); // bookmarks chapter
+        $pcom = count($this->pcomRepo->findBy(["chapter" => $ch])); // comments publication
+
+        // Calcul du facteur de décroissance en fonction du temps écoulé depuis la date de création du chapitre
+        $createdAt = $ch->getPublished();
+        $timeSinceCreation = ($createdAt !== null) ? (time() - strtotime($createdAt->format('Y-m-d H:i:s'))) : 0;
+        $maxDecayDays = 30 * 24 * 60 * 60; // 30 jours en secondes
+
+        if ($timeSinceCreation <= $maxDecayDays) {
+            $decayFactor = exp(($timeSinceCreation / (60 * 60 * 24 * 7))); // facteur de décroissance (exprimé en jours)
+        } else {
+            $decayFactor = exp(($maxDecayDays / (60 * 60 * 24 * 7)));
+        }
+
+        // Calculate the sum of all the priority factors
+        $prioritySum = $priorityPcv + $priorityPcl + $priorityBmC + $priorityPcom;
+
+        // Calcul de la popularité en utilisant les priorités
+        $popularity = ($pcv * $priorityPcv) + ($pcl * $priorityPcl) + ($pcb * $priorityBmC) + ($pcom * $priorityPcom);
+        $popularity = ($popularity * $decayFactor) / $prioritySum;
+
+        // Mise à jour de la popularité dans la base de données "PublicationChapters"
+        $ch->setPop($popularity);
+        $this->em->persist($ch);
+        $this->em->flush();
 
         return;
     }

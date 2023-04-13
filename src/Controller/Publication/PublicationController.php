@@ -234,6 +234,7 @@ class PublicationController extends AbstractController
                 if ($publication->getPublishedDate() === null) {
                     $publication->setPublishedDate(new \DateTime('now'));
                 }
+                $publication->setLastPublishedAt(new \DateTimeImmutable('now'));
                 $keywords = $publication->getPublicationKeywords();
                 foreach ($keywords as $key) {
                     $countKey = $key->getCount() + 1;

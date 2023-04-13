@@ -86,6 +86,9 @@ class Publication
     #[ORM\OneToMany(mappedBy: 'publication_follow_add', targetEntity: Notification::class, orphanRemoval: true)]
     private Collection $notifications;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $lastPublishedAt = null;
+
 
 
     public function __construct()
@@ -539,6 +542,18 @@ class Publication
                 $notification->setPublicationFollowAdd(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLastPublishedAt(): ?\DateTimeImmutable
+    {
+        return $this->lastPublishedAt;
+    }
+
+    public function setLastPublishedAt(?\DateTimeImmutable $lastPublishedAt): self
+    {
+        $this->lastPublishedAt = $lastPublishedAt;
 
         return $this;
     }

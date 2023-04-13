@@ -72,6 +72,9 @@ class PublicationChapter
     #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: Pictures::class, orphanRemoval: true)]
     private Collection $pictures;
 
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 3)]
+    private ?string $pop = null;
+
     public function __construct()
     {
         $this->publicationChapterVersionings = new ArrayCollection();
@@ -451,6 +454,18 @@ class PublicationChapter
                 $picture->setChapter(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPop(): ?string
+    {
+        return $this->pop;
+    }
+
+    public function setPop(string $pop): self
+    {
+        $this->pop = $pop;
 
         return $this;
     }

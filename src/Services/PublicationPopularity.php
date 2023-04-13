@@ -62,6 +62,7 @@ class PublicationPopularity
 
         $p = $this->pRepo->find($publication);
         $pch = $this->pchRepo->findBy(["publication" => $p, "status" => 2]);
+        $totalChapters = count($pch);
         //
         $pcv = count($this->pcvRepo->findBy(["chapter" => $pch])); // views chapter
         $pcl = count($this->pclRepo->findBy(["chapter" => $pch])); // likes chapter
@@ -79,8 +80,15 @@ class PublicationPopularity
         $popularity = ($pcv * $priorityPcv) + ($pcom * $priorityPcom) + ($pcl * $priorityPcl)  + ($pcb * $priorityBmC)  + ($pb * $priorityBm) + ($pdl * $priorityDl);
         $popularity = $popularity * $decayFactor;
 
+        // Calculate average popularity per chapter
+        if ($totalChapters > 0) {
+            $averagePopularityPerChapter = $popularity / $totalChapters;
+        } else {
+            $averagePopularityPerChapter = 0;
+        }
+
         // * Update popularity in "Publication" database
-        $p->setPop($popularity);
+        $p->setPop($averagePopularityPerChapter);
         $this->em->persist($p);
         $this->em->flush();
 
@@ -94,7 +102,7 @@ class PublicationPopularity
             if ($timeSincePublication > 302400) { // 3,5 jours
                 $pp = new EntityPublicationPopularity;
                 $pp->setPublication($p);
-                $pp->setPopularity($popularity);
+                $pp->setPopularity($averagePopularityPerChapter);
                 $pp->setCreatedAt(new \DateTimeImmutable("now"));
                 $this->em->persist($pp);
                 $this->em->flush();
@@ -102,7 +110,7 @@ class PublicationPopularity
         } else {
             $pp = new EntityPublicationPopularity;
             $pp->setPublication($p);
-            $pp->setPopularity($popularity);
+            $pp->setPopularity($averagePopularityPerChapter);
             $pp->setCreatedAt(new \DateTimeImmutable("now"));
             $this->em->persist($pp);
             $this->em->flush();

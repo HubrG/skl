@@ -5,9 +5,14 @@
 	{% set chap_content = item.summary %}
 {% else %}
 	{% set nbr = 0 %}
-	{% for chap in item.publicationChapters %}
-		{% if nbr == 0 %}
-			{% set chap_content = chap.content|regex_replace('/<p.*?>/i', ' ')|striptags|slice(0,300) ~ "..." %}
+	{% for chap in item.publicationChapters|sort((a, b) => a.orderDisplay <=> b.orderDisplay) %}
+		{% if nbr == 0 and chap.status == 2 %}
+			{% set chap_content = chap.content|regex_replace('/<p.*?>/i', ' ') %}
+			{% if chap_content|length < 10 %}
+				{% set chap_content = "<span class='italic'>Aucun contenu</span>" %}
+			{% else %}
+				{% set chap_content = chap_content|striptags|slice(0,300) ~ "..." %}
+			{% endif %}
 			{% set nbr = nbr + 1 %}
 		{% endif %}
 	{% endfor %}
@@ -43,7 +48,7 @@
 				<span class="catColor-{{item.category.color}} kwTag">{{ item.category.name|lower }}</span>
 			</a>
 		{% endif %}
-		<span class="summary card-stat font-medium cursor-help" data-tippy-content="{{chap_content}}">
+		<span class="summary card-stat font-medium cursor-help" data-tippy-content="{{chap_content|raw}}">
 			<i class="fa-light fa-circle-info"></i>
 			<span class="hidden md:inline">&nbsp;voir le résumé</span>
 		</span>
@@ -101,7 +106,7 @@
 				</a>
 			</div>
 			<p class="px-2 w-4/6  font-normal text-slate-600 font-sans text-sm leading-[1.5rem] dark:text-slate-400 line-clamp-[6] md:line-clamp-[11] lg:line-clamp-[7] text-left">
-				{{chap_content}}
+				{{chap_content|raw}}
 				<br/>
 			</p>
 		</div>

@@ -1,9 +1,29 @@
+{% set pic = infoChap.publication.cover %}
+
+{% if pic %}
+	{% set pic_bg = pic|replace({'/upload/': '/upload/e_vectorize:colors:3,'}) %}
+{% else %}
+	{% set pic_bg = "/images/no-cover-bg.png" %}
+	{% if app.user and app.user.userParameters is defined and app.user.userParameters.darkmode == true %}
+		{% set pic = "/images/no-cover-dark.png" %}
+	{% else %}
+		{% set pic = "/images/no-cover.png" %}
+	{% endif %}
+	{% if app.session.get('darkmode') and not app.user  and app.session.get('darkmode') == true %}
+		{% set pic = "/images/no-cover-dark.png" %}
+	{% else %}
+		{% set pic = "/images/no-cover.png" %}
+	{% endif %}
+{% endif %}
+
 {% extends 'base.html.twig' %}
 
 {% block metatags %}
 	<link rel="canonical" href="https://scrilab.com{{ canonicalUrl }}"/>
 	<meta name="description" content="Lecture de la feuille « {{infoChap.title}} » du récit « {{infoPub.title}} » | Par {{infoPub.user.nickname}}">
 	<meta name="author" content="{{infoPub.user.nickname}}">
+	<meta property="og:image" content="{{pic}}">
+	<meta name="twitter:image" content="{{pic}}">
 {% endblock %}
 
 {% block title %}

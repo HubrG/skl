@@ -82,8 +82,14 @@
 			{{item.publicationComments|length}}
 		</span>
 		<span class="bookmarks card-stat" data-tippy-content="Nombre de pages marquées">
-			<i class="fa-light fa-bookmark"></i>
-			{{item.publicationBookmarks|length}}
+			<i class="fa-folder-bookmark fa-light"></i>
+			{% set pubBM = item.publicationBookmarks|length %}
+			{% set totalBookmarks = 0 %}
+			{% for items in item.publicationChapters %}
+				{# On compte le nombre de bookmarks par chapitres #}
+				{% set totalBookmarks = totalBookmarks + items.publicationBookmarks|length %}
+			{% endfor %}
+			{{pubBM + totalBookmarks}}
 		</span>
 		{% set lastPopularity = 0 %}
 		{% if item.PublicationPopularities|length > 1 %}

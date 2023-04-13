@@ -95,8 +95,8 @@
 				<a href="{{ path("app_user", {username:pubShow.user.username}) }}" class="font-sans hover:underline dark:text-slate-200">{{ pubShow.user.nickname }}</a>
 			</span>
 		</h2>
-		<div class="flex rounnded justify-center">
-			<img class="rounded mt-6 object-cover w-40 h-50 justify-center bg-white dark:bg-slate-700 shadow mb-5  pb-1  dark:grayscale-[50%]" src="{{pic}}" alt=""/>
+		<div class="flex rounded justify-center">
+			<img class="rounded mt-6 w-40 h-50 justify-center  shadow mb-5  pb-1  dark:grayscale-[50%]" src="{{pic}}" alt=""/>
 		</div>
 		<div class="flex gap-5 p-10 pt-0  items-center">
 
@@ -182,7 +182,7 @@
 						{% endfor %}
 						<div id="btnCollection" data-href="{{path("app_publication_add_collection", {id:pubShow.id})}}" class="{{classCollectionBtn}}">
 							<button class="font-medium  flex flex-row gap-x-3 justify-center items-center">
-								<i id="iconCollection" class="fa-duotone {{classCollectionBtn == 'follow-collection-buttons-ok' ? " fa-bookmark-slash" : " fa-bookmark" }}"></i>
+								<i id="iconCollection" class="{{classCollectionBtn == 'follow-collection-buttons-ok' ? "fa-kit fa-regular-book-bookmark-slash" : "fa-duotone fa-book-bookmark" }}"></i>
 								<span id="titleCollection">
 									{{classCollectionBtn == "follow-collection-buttons-ok" ? "Retirer de ma collection" : "Ajouter à ma collection" }}
 								</span>
@@ -194,7 +194,7 @@
 					{% elseif not app.user %}
 						<div class="follow-collection-buttons cursor-pointer" onclick="MicroModal.show('popup-login')">
 							<button class="font-medium  flex flex-row gap-x-3 justify-center items-center">
-								<i class="fa-duotone fa-bookmark"></i>
+								<i class="fa-duotone fa-book-bookmark"></i>
 								Ajouter à ma collection
 							</button>
 							<span class="opacity-60 text-xs">
@@ -413,6 +413,14 @@
 								Aucun
 							{% endif %}
 						</span>
+					</li>
+					<li class="show-one-details">
+						<span>
+							<i class="fa-regular fa-book-bookmark"></i>
+							Récit collectionné
+						</span>
+						{# Récits collectionnés #}
+						<span>{{pubShow.publicationBookmarks|length}}</span>
 					</li>
 					<li class="show-one-details">
 						<span>

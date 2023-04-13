@@ -323,6 +323,11 @@
 								«
 								{{item.content}}
 								»
+								{% if item.quote %}
+									<blockquote class="mt-4 border-l-4 border-emerald-200 pl-4 italic text-slate-500">
+										<p class="font-serif quoteComment cursor-alias text-[0.85rem]">{{ item.quote }}</p>
+									</blockquote>
+								{% endif %}
 							</span>
 						</span>
 						<span class="text-slate-500 dark:text-slate-400 flex flex-row gap-x-2 items-center">
@@ -332,11 +337,10 @@
 								<a href="{{ path("app_chapter_show", {idChap:item.chapter.id, user:item.publication.user.username, slugPub:item.publication.slug, slug:item.chapter.slug}) }}" target="_top" class="w-full text-sm hover:underline">{{item.chapter.title}}</a>
 							{% endif %}
 						</span>
-						<span class="text-slate-500 dark:text-slate-400 flex flex-row gap-x-2 items-center">
+						<span class="text-slate-500 dark:text-slate-400 flex flex-row gap-x-2 items-center {% if item.chapter is not null %}ml-5{% endif %}">
 							<i class="fa-regular fa-arrow-turn-down-right"></i>
 							<i class="fa-light fa-book text-[0.75rem]"></i>
 							<a href="{{ path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug}) }}" target="_top" class="w-full text-sm hover:underline">{{item.publication.title}}</a>
-
 						</span>
 					</div>
 

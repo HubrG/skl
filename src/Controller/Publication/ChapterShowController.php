@@ -216,7 +216,6 @@ class ChapterShowController extends AbstractController
         if (!$this->getUser()) {
             // Récupérer la session en cours
             $session = $this->requestStack->getSession();
-
             if (!$session->get('view_' . $chapter->getId())) {
                 $session->set('view_' . $chapter->getId(), true);
                 $view->setChapter($chapter);
@@ -261,10 +260,10 @@ class ChapterShowController extends AbstractController
             $view->setViewDate(new \DateTime('now'));
             $this->em->persist($view);
             $this->em->flush();
-            // * On met à jour la popularité de la publication
-            $this->publicationPopularity->PublicationPopularity($chapter->getPublication());
             //
         }
+        // * On met à jour la popularité de la publication
+        $this->publicationPopularity->PublicationPopularity($chapter->getPublication());
     }
     public function formatChapter($chapter)
     {

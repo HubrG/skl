@@ -19,6 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
 use App\Repository\PublicationCommentRepository;
 use App\Repository\PublicationBookmarkRepository;
+use Symfony\Component\HttpFoundation\RequestStack;
 use App\Repository\PublicationChapterLikeRepository;
 use App\Repository\PublicationChapterNoteRepository;
 use App\Repository\PublicationChapterViewRepository;
@@ -33,14 +34,16 @@ class ChapterShowController extends AbstractController
     private $chapterNote;
     private $notificationSystem;
     private $publicationPopularity;
+    private $requestStack;
 
 
-    public function __construct(NotificationSystem $notificationSystem, EntityManagerInterface $em, PublicationChapterNoteRepository $chapterNote, PublicationPopularity $publicationPopularity)
+    public function __construct(RequestStack $requestStack, NotificationSystem $notificationSystem, EntityManagerInterface $em, PublicationChapterNoteRepository $chapterNote, PublicationPopularity $publicationPopularity)
     {
         $this->em = $em;
         $this->chapterNote = $chapterNote;
         $this->publicationPopularity = $publicationPopularity;
         $this->notificationSystem = $notificationSystem;
+        $this->requestStack = $requestStack;
     }
 
     #[Route('/recit-{slugPub}/{user}/{idChap}/{slug?}/{nbrShowCom?}', name: 'app_chapter_show')]
@@ -211,7 +214,9 @@ class ChapterShowController extends AbstractController
         $view = new PublicationChapterView();
         // * SESSIONS
         if (!$this->getUser()) {
-            $session = new \Symfony\Component\HttpFoundation\Session\Session();
+            // Récupérer la session en cours
+            $session = $this->requestStack->getSession();
+
             if (!$session->get('view_' . $chapter->getId())) {
                 $session->set('view_' . $chapter->getId(), true);
                 $view->setChapter($chapter);

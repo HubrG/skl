@@ -277,4 +277,73 @@
 			</a>
 		</div>
 	</div>
+	<div class="col-span-12 grid grid-cols-1 md:grid-cols-2 gap-x-5 mt-20 order-4 md:order-4 w-full">
+		<div class="w-full">
+			<div class="my-special-hr">
+				<hr>
+				<span>
+					Dernières feuilles publiées
+				</span>
+				<hr class="mb-5">
+			</div>
+			{% for item in chaps_last %}
+				<div class="flex flex-col my-2 bg-slate-50 dark:bg-slate-900 p-4 rounded">
+					<div class=" w-full flex flex-col">
+						<span
+							class="flex flex-row">
+							{# <img class="h-5 object-fill" src="{{item.publication.cover}}"/> #}
+							<a href="{{ path("app_chapter_show", {idChap:item.id, user:item.publication.user.username, slugPub:item.publication.slug, slug:item.slug}) }}" target="_top" class="w-full text-base hover:underline dark:text-slate-200">{{item.title}}</a>
+						</span>
+						<span class="text-slate-500 dark:text-slate-400 flex flex-row gap-x-2 items-center">
+							<i class="fa-regular fa-arrow-turn-down-right"></i>
+							<i class="fa-light fa-book text-[0.75rem]"></i>
+							<a href="{{ path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug}) }}" class="w-full text-sm hover:underline">{{item.publication.title}}</a>
+						</span>
+					</div>
+
+				</div>
+			{% endfor %}
+		</div>
+		<div class="w-full mt-14 md:mt-0">
+			<div class="my-special-hr">
+				<hr>
+				<span>
+					Derniers commentaires
+				</span>
+				<hr class="mb-5">
+			</div>
+			{% for item in coms_last %}
+				<div class="flex flex-col my-2 bg-slate-50 dark:bg-slate-900 p-4 rounded">
+					<div class=" w-full flex flex-col">
+						<span class="flex flex-col mb-2 gap-y-2">
+							<span class="text-xs text-slate-500">par
+								<a href="{{path("app_user", {username:item.user.username})}}" target="_top" class="font-semibold hover:underline">{{item.user.nickname}}</a>
+							</span>
+							<span>
+								«
+								{{item.content}}
+								»
+							</span>
+						</span>
+						<span class="text-slate-500 dark:text-slate-400 flex flex-row gap-x-2 items-center">
+							{% if item.chapter is not null %}
+								<i class="fa-regular fa-arrow-turn-down-right"></i>
+								<i class="fa-regular fa-file  text-[0.75rem]"></i>
+								<a href="{{ path("app_chapter_show", {idChap:item.chapter.id, user:item.publication.user.username, slugPub:item.publication.slug, slug:item.chapter.slug}) }}" target="_top" class="w-full text-sm hover:underline">{{item.chapter.title}}</a>
+							{% endif %}
+						</span>
+						<span class="text-slate-500 dark:text-slate-400 flex flex-row gap-x-2 items-center">
+							<i class="fa-regular fa-arrow-turn-down-right"></i>
+							<i class="fa-light fa-book text-[0.75rem]"></i>
+							<a href="{{ path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug}) }}" target="_top" class="w-full text-sm hover:underline">{{item.publication.title}}</a>
+
+						</span>
+					</div>
+
+				</div>
+			{% endfor %}
+		</div>
+
+
+	</div>
 {% endblock %}

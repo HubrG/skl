@@ -9,6 +9,8 @@ use App\Repository\PublicationRepository;
 use App\Repository\NotificationRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\PublicationChapterRepository;
+use App\Repository\PublicationCommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
@@ -22,7 +24,7 @@ class HomeController extends AbstractController
     }
 
     #[Route('/', name: 'app_home')]
-    public function index(PublicationRepository $pRepo): Response
+    public function index(PublicationRepository $pRepo, PublicationChapterRepository $pchRepo, PublicationCommentRepository $pcomRepo): Response
     {
 
         // On récupère les publications qui ont le status 2 (publié) et un chapitre publié
@@ -39,16 +41,32 @@ class HomeController extends AbstractController
             ->orderBy("p.pop", "DESC");
         $publications = $qb->getQuery()->getResult();
         $publications_pop = $pRepo->findBy(["id" => $publications], ["pop" => "desc"], 6);
+        // Derniers chapitres publiés en status 2, limités à 8, et dont la publication est publiée
+        $qb = $pchRepo->createQueryBuilder("pch")
+            ->innerJoin("pch.publication", "p", "WITH", "p.status = 2")
+            ->where("pch.status = 2")
+            ->orderBy("pch.published", "DESC");
+        $publications_chapters = $qb->getQuery()->getResult();
+        $publications_chapters = $pchRepo->findBy(["id" => $publications_chapters], ["published" => "desc"], 8);
+        // Derniers commentaires publiés, limités à 8, et dont le chapitre ou la publication est publiée
+        $qb = $qb = $pcomRepo->createQueryBuilder("pcom")
+            ->leftJoin("pcom.chapter", "pch", "WITH", "pch.status = 2")
+            ->innerJoin("pcom.publication", "p", "WITH", "p.status = 2")
+            ->where("pcom.replyTo IS NULL");
+        $publications_comments = $qb->getQuery()->getResult();
+        $publications_comments = $pcomRepo->findBy(["id" => $publications_comments], ["published_at" => "desc"], 8);
+        //
         return $this->render('home/home.html.twig', [
             'controller_name' => "d",
             "publications" => $publications,
             "canonicalUrl" => $this->generateUrl('app_home', array(), true),
             'pub_last' => $publications_last, // Retourne les dernières publications
             'pub_pop' => $publications_pop, // Retourne les dernières publications
-            'is_homepage' => true
+            'is_homepage' => true,
+            'chaps_last' => $publications_chapters,
+            'coms_last' => $publications_comments,
         ]);
     }
-
     #[Route('/clearnotification', name: 'app_notification_clear', methods: ['POST'])]
     public function clearNotification(NotificationRepository $notifRepo, EntityManagerInterface $em): Response
     {

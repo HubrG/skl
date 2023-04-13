@@ -34,7 +34,17 @@
 			</div>
 		</div>
 		<div class="right">
-			<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" target="_top" class="button-classic button-slate">
+			{% set chapterWithOrderDisplayZero = null %}
+			{% for chapter in item.publicationChapters|slice(0, (chapterWithOrderDisplayZero ? 0 : item.publicationChapters|length)) %}
+				{% if chapter.orderDisplay == 0 %}
+					{% set chapterWithOrderDisplayZero = chapter %}
+				{% endif %}
+			{% endfor %}
+			{% if chapterWithOrderDisplayZero %}
+				{% set firstChapId = chapterWithOrderDisplayZero.id %}
+				{% set firstChapSlug = chapterWithOrderDisplayZero.slug %}
+			{% endif %}
+			<a href="{{ path("app_chapter_show", {idChap:firstChapId, user:item.user.username, slugPub:item.slug, slug:firstChapSlug}) }}" target="_top" class="button-classic button-slate">
 				<span class="text-xs md:text-sm flex flex-row items-center gap-x-3">
 					<i class="fa-duotone fa-book-open-reader"></i>
 					Lire
@@ -50,11 +60,11 @@
 		{% endif %}
 		<span class="summary card-stat font-medium cursor-help" data-tippy-content="{{chap_content|raw}}">
 			<i class="fa-light fa-circle-info"></i>
-			<span class="hidden md:inline">&nbsp;voir le résumé</span>
+			<span class="hidden md:inline">&nbsp;résumé</span>
 		</span>
 		{% set filteredChapters = item.publicationChapters|filter(chapter => chapter.status == 2) %}
 		<span class="card-stat chapters" data-tippy-content="Nombre de feuilles">
-			<i class="fa-light fa-list-ol"></i>
+			<i class="fa-light fa-file"></i>
 			{{filteredChapters|length}}
 		</span>
 		{% set totalViews = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterViews|length, 0) %}
@@ -105,10 +115,9 @@
 					<img alt="Photo de couverture de {{item.title}}" class="grayscale-[50%] rounded  w-full h-full object-cover lazy animate-pulse animate__animated bg-white  {% if not pic %}  dark:bg-transparent  {% endif %}" width="529" height="793" loading="lazy" src="" data-src="{% if pic %}{{pic}}{% else %}{{ "/images/no-cover.png" }} {% endif %}" alt=""/>
 				</a>
 			</div>
-			<p class="px-2 w-4/6  font-normal text-slate-600 font-sans text-sm leading-[1.5rem] dark:text-slate-400 line-clamp-[6] md:line-clamp-[11] lg:line-clamp-[7] text-left">
-				{{chap_content|raw}}
-				<br/>
-			</p>
+			<div class="px-2 w-4/6  font-normal text-slate-600 font-sans text-sm leading-[1.5rem] dark:text-slate-400 line-clamp-[6] md:line-clamp-[11] lg:line-clamp-[7]">
+				<p>{{chap_content|raw}}</p>
+			</div>
 		</div>
 	</div>
 	<div class="publication-bottom ">

@@ -45,6 +45,7 @@ class HomeController extends AbstractController
             "canonicalUrl" => $this->generateUrl('app_home', array(), true),
             'pub_last' => $publications_last, // Retourne les dernières publications
             'pub_pop' => $publications_pop, // Retourne les dernières publications
+            'is_homepage' => true
         ]);
     }
 

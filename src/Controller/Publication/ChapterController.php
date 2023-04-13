@@ -186,7 +186,7 @@ class ChapterController extends AbstractController
                 // * S'il n'y a pas de titre, on lui attribue un titre par défaut qui représente "Feuille n°X", dont le x est son numéro de feuille (orderDisplay)
                 $dtTitle = "Feuille n°" . $chapter->getOrderDisplay() + 1;
             }
-            $chapter->setTitle($dtTitle)
+            $chapter->setTitle(trim($dtTitle))
                 ->setSlug($slugger->slug(strtolower($dtTitle)))
                 ->setContent($dtQuill)
                 ->setUpdated(new \DateTime('now'));

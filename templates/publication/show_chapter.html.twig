@@ -27,7 +27,7 @@
 {% endblock %}
 
 {% block title %}
-	{{ infoPub.title ~ ' (' ~ infoChap.title ~ ')' }}
+	{{ infoPub.title ~ ' (' ~ infoChap.title|trim ~ ')' }}
 	-
 	{{ parent() }}
 {% endblock %}

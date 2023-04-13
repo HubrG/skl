@@ -70,6 +70,7 @@ class ChapterController extends AbstractController
                             ->setPublication($infoPublication)
                             ->setTitle("Feuille n°" . $nbrChap . $chapAdd)
                             ->setSlug("feuille-n0" . $nbrChap . $chapAdd)
+                            ->setPop(0)
                             ->setOrderDisplay($nbrChap);
                         $em->persist($publicationChapter);
                         // ! on l'ajoute au versioning

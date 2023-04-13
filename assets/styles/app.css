@@ -866,3 +866,12 @@ nav.breadcrumb ol li i:first-child{
 #editor .ql-editor ul li {
 	@apply list-none;
 }
+.cgu-full li p {
+	@apply pl-5 p-0 my-4;
+}
+.cgu-full li ul {
+	@apply pl-10;
+}
+.cgu-full li ul li {
+	@apply py-0 my-3;
+}

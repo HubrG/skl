@@ -37,8 +37,7 @@ jobs:
       - name: deploy
         run: |
           sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }} \
-          "sudo chown -R ${USER}:${USER} /home/976953.cloudwaysapps.com/xfbbjgzbvt/.npm && \
-          cd public_html/ && \
+          "cd public_html/ && \
           git config --local url.\"https://${{ secrets.GIT_ACCESS_TOKEN }}:@github.com/\".insteadOf \"https://github.com/\" && \
           git fetch && \
           git reset --hard origin/main && \
@@ -47,10 +46,10 @@ jobs:
           sed -i 's/^CLOUDINARY_CLOUD_NAME=.*/CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}/' .env.local
           sed -i 's/^CLOUDINARY_API_KEY=.*/CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}/' .env.local
           sed -i 's/^CLOUDINARY_API_SECRET=.*/CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}/' .env.local
-          composer install && \
-          sudo chown -R $(id -u):$(id -g) "/home/976953.cloudwaysapps.com/xfbbjgzbvt/.npm" && \
-          npm ci && \
-          npm install @symfony/ux-chartjs && \
-          npm run-script build && \
+          composer install --no-scripts && \
+          npm ci --cache ~/npm-cache && \
+          npm install @symfony/ux-chartjs --cache ~/npm-cache && \
+          npm run-script build --cache ~/npm-cache && \
           php bin/console cache:clear && \
           php bin/console doctrine:migrations:migrate -n;"
+

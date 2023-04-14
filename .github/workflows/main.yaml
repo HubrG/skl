@@ -42,7 +42,7 @@ jobs:
           sed -i 's/^CLOUDINARY_API_SECRET=.*/CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}/' .env.local
           composer install --no-scripts && \
           npm cache clean --force && \
-          npm ci --cache ~/npm-cache && \
+          npm install --cache ~/npm-cache && \
           export PATH=./node_modules/.bin:$PATH && \
           npm run-script build && \
           php bin/console cache:clear && \

@@ -32,6 +32,7 @@ jobs:
           sed -i 's/^CLOUDINARY_API_KEY=.*/CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}/' .env.local
           sed -i 's/^CLOUDINARY_API_SECRET=.*/CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}/' .env.local
           composer install && \
+          yarn install && \
           npm run-script build && \
           php bin/console cache:clear && \
           php bin/console doctrine:migrations:migrate -n;"

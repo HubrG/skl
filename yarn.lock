@@ -6163,11 +6163,6 @@ typed-query-selector@^2.6.1:
   resolved "https://registry.npmjs.org/typed-query-selector/-/typed-query-selector-2.8.0.tgz"
   integrity sha512-jo9NLGQ0b7sT9TK3mxzemATQqTb/uh8TRvcOK6WSwKNewALt3AA8q2m7cdpF/uUbd/cdixaBxCGe6fpzpEWbGw==
 
-typescript@^4.2.2:
-  version "4.9.5"
-  resolved "https://registry.npmjs.org/typescript/-/typescript-4.9.5.tgz"
-  integrity sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==
-
 ua-parser-js@^1.0.33:
   version "1.0.35"
   resolved "https://registry.npmjs.org/ua-parser-js/-/ua-parser-js-1.0.35.tgz"

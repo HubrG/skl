@@ -43,6 +43,9 @@
 			{% if chapterWithOrderDisplayZero %}
 				{% set firstChapId = chapterWithOrderDisplayZero.id %}
 				{% set firstChapSlug = chapterWithOrderDisplayZero.slug %}
+			{% else %}
+				{% set firstChapId = item.publicationChapters|first.id %}
+				{% set firstChapSlug = item.publicationChapters|first.slug %}
 			{% endif %}
 			<a href="{{ path("app_chapter_show", {idChap:firstChapId, user:item.user.username, slugPub:item.slug, slug:firstChapSlug}) }}" target="_top" class="button-classic button-slate">
 				<span class="text-xs md:text-sm flex flex-row items-center gap-x-3">

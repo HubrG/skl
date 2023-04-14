@@ -51,7 +51,8 @@ jobs:
           sed -i 's/^CLOUDINARY_API_SECRET=.*/CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}/' .env.local
           composer install --no-scripts && \
           npm ci --cache ~/npm-cache && \
-          npm run-script build --cache ~/npm-cache && \
+          export PATH=./node_modules/.bin:$PATH && \
+          npm run-script build && \
           php bin/console cache:clear && \
           php bin/console doctrine:migrations:migrate -n;"
 

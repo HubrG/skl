@@ -286,23 +286,25 @@
 				</span>
 				<hr class="mb-5">
 			</div>
-			{% for item in chaps_last %}
-				<div class="flex flex-col my-2 bg-slate-50 dark:bg-slate-900 p-4 rounded">
-					<div class=" w-full flex flex-col">
-						<span
-							class="flex flex-row">
-							{# <img class="h-5 object-fill" src="{{item.publication.cover}}"/> #}
-							<a href="{{ path("app_chapter_show", {idChap:item.id, user:item.publication.user.username, slugPub:item.publication.slug, slug:item.slug}) }}" target="_top" class="w-full text-base hover:underline dark:text-slate-200">{{item.title}}</a>
-						</span>
-						<span class="text-slate-500 dark:text-slate-400 flex flex-row gap-x-2 items-center">
-							<i class="fa-regular fa-arrow-turn-down-right"></i>
-							<i class="fa-light fa-book text-[0.75rem]"></i>
-							<a href="{{ path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug}) }}" class="w-full text-sm hover:underline">{{item.publication.title}}</a>
-						</span>
-					</div>
+			<div class="grid-cols-2 grid gap-x-2">
+				{% for item in chaps_last %}
+					<div class="flex flex-col my-2 bg-slate-50 dark:bg-slate-900 p-4 rounded">
+						<div class=" w-full flex flex-col">
+							<span
+								class="flex flex-row">
+								{# <img class="h-5 object-fill" src="{{item.publication.cover}}"/> #}
+								<a href="{{ path("app_chapter_show", {idChap:item.id, user:item.publication.user.username, slugPub:item.publication.slug, slug:item.slug}) }}" target="_top" class="w-full text-base hover:underline dark:text-slate-200">{{item.title}}</a>
+							</span>
+							<span class="text-slate-500 dark:text-slate-400 flex flex-row gap-x-2 items-center">
+								<i class="fa-regular fa-arrow-turn-down-right"></i>
+								<i class="fa-light fa-book text-[0.75rem]"></i>
+								<a href="{{ path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug}) }}" class="w-full text-sm hover:underline">{{item.publication.title}}</a>
+							</span>
+						</div>
 
-				</div>
-			{% endfor %}
+					</div>
+				{% endfor %}
+			</div>
 		</div>
 		<div class="w-full mt-14 md:mt-0">
 			<div class="my-special-hr">
@@ -312,42 +314,43 @@
 				</span>
 				<hr class="mb-5">
 			</div>
-			{% for item in coms_last %}
-				<div class="flex flex-col my-2 bg-slate-50 dark:bg-slate-900 p-4 rounded">
-					<div class=" w-full flex flex-col">
-						<span class="flex flex-col mb-2 gap-y-2">
-							<span class="text-xs text-slate-500">par
-								<a href="{{path("app_user", {username:item.user.username})}}" target="_top" class="font-semibold hover:underline">{{item.user.nickname}}</a>
+			<div class="grid-cols-2 grid gap-x-2">
+				{% for item in coms_last %}
+					<div class="flex flex-col my-2 bg-blue-50 dark:bg-slate-900 p-4 rounded">
+						<div class=" w-full flex flex-col">
+							<span class="flex flex-col mb-2 gap-y-2">
+								<span class="text-xs text-slate-500">par
+									<a href="{{path("app_user", {username:item.user.username})}}" target="_top" class="font-semibold hover:underline">{{item.user.nickname}}</a>
+								</span>
+								<span>
+									«
+									{{item.content}}
+									»
+									{% if item.quote %}
+										<blockquote class="mt-4 border-l-4 border-emerald-200 pl-4 italic text-slate-500 mb-2">
+											<p class="font-serif quoteComment cursor-pointer text-[0.85rem]">
+												<a href="{{ path("app_chapter_show", {idChap:item.chapter.id, user:item.publication.user.username, slugPub:item.publication.slug, slug:item.chapter.slug}) }}" target="_top">{{ item.quote }}</a>
+											</p>
+										</blockquote>
+									{% endif %}
+								</span>
 							</span>
-							<span>
-								«
-								{{item.content}}
-								»
-								{% if item.quote %}
-									<blockquote class="mt-4 border-l-4 border-emerald-200 pl-4 italic text-slate-500 mb-2">
-										<p class="font-serif quoteComment cursor-pointer text-[0.85rem]">
-											<a href="{{ path("app_chapter_show", {idChap:item.chapter.id, user:item.publication.user.username, slugPub:item.publication.slug, slug:item.chapter.slug}) }}" target="_top">{{ item.quote }}</a>
-										</p>
-									</blockquote>
+							<span class="text-slate-500 dark:text-slate-400 flex flex-row gap-x-2 items-center">
+								{% if item.chapter is not null %}
+									<i class="fa-regular fa-arrow-turn-down-right"></i>
+									<i class="fa-regular fa-file  text-[0.75rem]"></i>
+									<a href="{{ path("app_chapter_show", {idChap:item.chapter.id, user:item.publication.user.username, slugPub:item.publication.slug, slug:item.chapter.slug}) }}" target="_top" class="w-full text-sm hover:underline">{{item.chapter.title}}</a>
 								{% endif %}
 							</span>
-						</span>
-						<span class="text-slate-500 dark:text-slate-400 flex flex-row gap-x-2 items-center">
-							{% if item.chapter is not null %}
+							<span class="text-slate-500 dark:text-slate-400 flex flex-row gap-x-2 items-center {% if item.chapter is not null %}ml-5{% endif %}">
 								<i class="fa-regular fa-arrow-turn-down-right"></i>
-								<i class="fa-regular fa-file  text-[0.75rem]"></i>
-								<a href="{{ path("app_chapter_show", {idChap:item.chapter.id, user:item.publication.user.username, slugPub:item.publication.slug, slug:item.chapter.slug}) }}" target="_top" class="w-full text-sm hover:underline">{{item.chapter.title}}</a>
-							{% endif %}
-						</span>
-						<span class="text-slate-500 dark:text-slate-400 flex flex-row gap-x-2 items-center {% if item.chapter is not null %}ml-5{% endif %}">
-							<i class="fa-regular fa-arrow-turn-down-right"></i>
-							<i class="fa-light fa-book text-[0.75rem]"></i>
-							<a href="{{ path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug}) }}" target="_top" class="w-full text-sm hover:underline">{{item.publication.title}}</a>
-						</span>
+								<i class="fa-light fa-book text-[0.75rem]"></i>
+								<a href="{{ path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug}) }}" target="_top" class="w-full text-sm hover:underline">{{item.publication.title}}</a>
+							</span>
+						</div>
 					</div>
-
-				</div>
-			{% endfor %}
+				{% endfor %}
+			</div>
 		</div>
 
 

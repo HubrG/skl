@@ -1,24 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AdminCategoryController!
+{% block title %}Gestion des catégories
 {% endblock %}
 
 {% block body %}
-	<section class="col-span-7 col-start-3">
-		<h1>Gestion des catégories</h1>
-		<turbo-frame id="showPubCat">
-			<ul>
-				{% for p in categories %}
-					{{p.name}}
-					—
-					<a href="{{ path("app_admin_category_delete", { id : p.id}) }}" class="text-rose-600">x</a><br/>
-				{% endfor %}
-			</ul>
-		</turbo-frame>
-		{{ form_start(formPublicationCat, {attr: {"data-turbo-frame":"showPubCat"}})}}
-		{{ form_widget(formPublicationCat.name)}}
-		<button type="submit">Ajouter</button>
-		{{ form_end(formPublicationCat)}}
-
-	</section>
+	<section class="col-span-7 col-start-3"></section>
 {% endblock %}

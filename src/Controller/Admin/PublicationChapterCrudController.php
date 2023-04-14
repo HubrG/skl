@@ -6,6 +6,7 @@ use App\Entity\PublicationChapter;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -20,6 +21,10 @@ class PublicationChapterCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        if (Crud::PAGE_DETAIL === $pageName) {
+            // Ajoutez ou modifiez les champs à afficher sur la page de détail
+            $fields[] = DateTimeField::new('createdAt', 'Créé le');
+        }
         return [
             IdField::new('id')->hideOnForm(),
             AssociationField::new('publication', 'Publication référente'),
@@ -29,6 +34,7 @@ class PublicationChapterCrudController extends AbstractCrudController
     }
     public function configureCrud(Crud $crud): Crud
     {
+
         return $crud
             ->setPageTitle(Crud::PAGE_INDEX, 'Liste des chapitres de publication')
             ->setPageTitle(Crud::PAGE_DETAIL, 'Détails du chapitre de publication')

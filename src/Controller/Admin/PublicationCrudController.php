@@ -32,7 +32,7 @@ class PublicationCrudController extends AbstractCrudController
                 return "<strong>" . htmlspecialchars_decode($value) . "</strong>";
             }),
             AssociationField::new('user', 'Auteur'),
-            TextEditorField::new('summary'),
+            TextEditorField::new('summary', "Résumé"),
             IntegerField::new('status', "Publié")->formatValue(function ($value, $entity) {
                 if ($value == 1) {
                     return "<span class='badge badge-success'>Oui</span>";

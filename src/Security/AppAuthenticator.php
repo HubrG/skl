@@ -20,7 +20,7 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'app_login';
+    public const LOGIN_ROUTE = ['app_login', 'app_login_full'];
 
 
     public function __construct(private UrlGeneratorInterface $urlGenerator)
@@ -58,6 +58,8 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
 
     protected function getLoginUrl(Request $request): string
     {
-        return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+
+        // Générer l'URL de connexion pour la route par défaut
+        return $this->urlGenerator->generate(self::LOGIN_ROUTE[0]);
     }
 }

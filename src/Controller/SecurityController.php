@@ -40,12 +40,10 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('app_home');
             // On renvoie sur la page précédente avec le referrer
         }
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login-full.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+
+
+        return $this->render('security/login-full.html.twig');
     }
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(Request $request): response

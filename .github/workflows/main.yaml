@@ -31,12 +31,6 @@ jobs:
       - name: Clear npm cache
         run: npm cache clean --force
 
-      - name: Install Node.js dependencies
-        run: npm ci
-
-      - name: Install @symfony/ux-chartjs
-        run: npm install @symfony/ux-chartjs
-
       - name: deploy
         run: |
           sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }} \

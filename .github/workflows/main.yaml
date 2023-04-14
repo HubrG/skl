@@ -24,12 +24,12 @@ jobs:
         with:
           node-version: 18 # ou la version de votre choix
           cache: 'npm'
-          
-      - name: List files in the working directory
-        run: ls -la
 
       - name: Install Node.js dependencies
         run: npm ci
+
+      - name: Install @symfony/ux-chartjs
+      run: npm install @symfony/ux-chartjs
 
       - name: deploy
         run: |

@@ -1,0 +1,7 @@
+{% set underlyingEntity = entity.getInstance() %}
+
+{% if underlyingEntity.profilPicture is not empty %}
+	<img src="{{ underlyingEntity.profilPicture }}" height="25" width="25" class="rounded"/>
+{% else %}
+	<span></span>
+{% endif %}

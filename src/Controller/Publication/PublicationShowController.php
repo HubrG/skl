@@ -165,7 +165,16 @@ class PublicationShowController extends AbstractController
 
 		$nbrShowCom = $nbrShowCom ?? 10;
 		$publication = $pRepo->find($id);
-		$orderChap = $pchRepo->findOneBy(["publication" => $publication, "order_display" => 0, "status" => 2]);
+		// * on récupère le premier chapitre de la publication par order_display (le plus petit et le premier) avec un querybuilder
+		$orderChap = $pchRepo->createQueryBuilder('pch')
+			->where('pch.publication = :publication')
+			->andWhere('pch.status = :status')
+			->setParameter('publication', $publication)
+			->setParameter('status', 2)
+			->orderBy('pch.order_display', 'ASC')
+			->setMaxResults(1)
+			->getQuery()
+			->getOneOrNullResult();
 		$chapters = $pchRepo->findBy(["publication" => $publication, "status" => 2], ["order_display" => "ASC"]);
 
 		if ($publication->getStatus() < 2 && $publication->getUser() != $this->getUser()) {

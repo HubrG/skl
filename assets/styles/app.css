@@ -817,13 +817,17 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 	@apply absolute px-4 -translate-x-1/2 -mt-1 font-normal bg-white left-1/2 italic dark:bg-gray-800 text-slate-700 dark:text-slate-200;
 }
 .my-special-hr {
-	@apply flex-row flex  mb-14 md:mb-6;
+	@apply flex-row flex mt-10 mb-14 md:mb-6;
 }
 .my-special-hr hr {
 	@apply border-2 grow rounded-r-full;
 }
 .my-special-hr span {
-	@apply -mt-1 text-2xl md:text-3xl  items-center px-4 py-2 text-center bg-white dark:bg-slate-800 dark:text-slate-200 font-serif;
+	@apply gap-y-0 mt-0.5 text-2xl md:text-3xl   px-4  text-center bg-white dark:bg-slate-800 dark:text-slate-200 font-serif flex flex-col;
+}
+.my-special-hr span i {
+	@apply text-3xl order-first -mt-9 opacity-50;
+	/* @apply text-3xl order-first -mt-10; */
 }
 article#chapContent p img {
 	@apply w-full;

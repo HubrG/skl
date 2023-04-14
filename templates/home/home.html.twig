@@ -85,11 +85,12 @@
 			</div>
 		</div>
 	</section>
-	<section class="col-span-12 z-10 order-2 md:order-1 mt-10 md:mt-0">
+	<section class="col-span-12 z-10 order-2 md:order-1 mt-10 md:mt-10">
 		<div class="my-special-hr mt-12">
 			<hr>
 			<span>
 				Pourquoi écrire ici ?
+				<i class="fa-duotone fa-question-circle"></i>
 			</span>
 			<hr>
 		</div>
@@ -234,7 +235,10 @@
 	<div class="col-span-12 mt-10 md:-mt-5 z-50 order-1 md:order-2">
 		<div class="my-special-hr">
 			<hr>
-			<span>Derniers récits</span>
+			<span>
+				Derniers récits
+				<i class="fa-duotone fa-book-open"></i>
+			</span>
 			<hr>
 		</div>
 		<div class="animate__animated animate__fadeIn publications-container small ">
@@ -257,7 +261,9 @@
 	<div class="col-span-12 md:mt-20 mt-0 z-50 order-3 md:order-3">
 		<div class="my-special-hr">
 			<hr>
-			<span>Les plus populaires</span>
+			<span>Les plus populaires
+				<i class="fa-duotone fa-fire"></i>
+			</span>
 			<hr class="mb-20">
 		</div>
 		<div class="animate__animated animate__fadeIn publications-container small">
@@ -282,13 +288,14 @@
 			<div class="my-special-hr">
 				<hr>
 				<span>
-					Dernières feuilles publiées
+					<span>Dernières feuilles publiées</span>
+					<i class="fa-duotone fa-files"></i>
 				</span>
 				<hr class="mb-5">
 			</div>
-			<div class="grid-cols-2 grid gap-x-2">
+			<div class="grid grid-cols-2 gap-x-2">
 				{% for item in chaps_last %}
-					<div class="flex flex-col my-2 bg-slate-50 dark:bg-slate-900 p-4 rounded">
+					<div class="flex flex-col w-auto my-2 bg-slate-50 dark:bg-slate-900 p-4 rounded">
 						<div class=" w-full flex flex-col">
 							<span
 								class="flex flex-row">
@@ -311,18 +318,19 @@
 				<hr>
 				<span>
 					Derniers commentaires
+					<i class="fa-duotone fa-comment-lines"></i>
 				</span>
 				<hr class="mb-5">
 			</div>
-			<div class="grid-cols-2 grid gap-x-2">
+			<div class="flex gap-x-2 flex-wrap  justify-items-stretch justify-between">
 				{% for item in coms_last %}
-					<div class="flex flex-col my-2 bg-blue-50 dark:bg-slate-900 p-4 rounded">
+					<div class="flex flex-col  my-2 bg-blue-50 dark:bg-slate-900 p-4 rounded">
 						<div class=" w-full flex flex-col">
 							<span class="flex flex-col mb-2 gap-y-2">
 								<span class="text-xs text-slate-500">par
 									<a href="{{path("app_user", {username:item.user.username})}}" target="_top" class="font-semibold hover:underline">{{item.user.nickname}}</a>
 								</span>
-								<span>
+								<span class="dark:text-slate-200">
 									«
 									{{item.content}}
 									»

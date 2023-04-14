@@ -47,6 +47,8 @@ jobs:
           sed -i 's/^CLOUDINARY_API_KEY=.*/CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}/' .env.local
           sed -i 's/^CLOUDINARY_API_SECRET=.*/CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}/' .env.local
           composer install && \
+          sudo chown -R $(id -u):$(id -g) "/home/976953.cloudwaysapps.com/xfbbjgzbvt/.npm" && \
+          npm ci && \
           npm install @symfony/ux-chartjs && \
           npm run-script build && \
           php bin/console cache:clear && \

@@ -23,10 +23,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 14 # ou la version de votre choix
-          cache: 'yarn'
+          cache: 'npm'
 
       - name: Install Node.js dependencies
-        run: yarn install
+        run: npm install
 
       - name: deploy
         run: |

@@ -54,6 +54,7 @@ class UserCrudController extends AbstractCrudController
             TextField::new('twitter', "Twitter")->hideOnIndex(),
             TextField::new('facebook', "Facebook")->hideOnIndex(),
             TextField::new('instagram', "Instagram")->hideOnIndex(),
+            TextField::new('googleId', "GID")->hideOnForm(),
 
         ];
     }

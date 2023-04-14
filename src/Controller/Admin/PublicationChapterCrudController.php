@@ -37,7 +37,7 @@ class PublicationChapterCrudController extends AbstractCrudController
                 return "<strong>" . htmlspecialchars_decode($value) . "</strong>";
             }),
             IntegerField::new('status', "Publié")->formatValue(function ($value, $entity) {
-                if ($value == 1) {
+                if ($value == 2) {
                     return "<span class='badge badge-success'>Oui</span>";
                 } else {
                     return "<span class='badge badge-danger'>Non</span>";
@@ -57,6 +57,7 @@ class PublicationChapterCrudController extends AbstractCrudController
             TextField::new('slug', "Slug")->hideOnIndex(),
             DateTimeField::new('created', 'Créé le'),
             DateTimeField::new('updated', 'Modifié le'),
+
 
 
 

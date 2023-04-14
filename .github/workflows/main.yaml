@@ -19,8 +19,14 @@ jobs:
       - name: APT_UPDATE and INSTALL SSHPASS
         run: sudo apt update && sudo apt install sshpass
 
+      - name: Set up Node.js and Yarn
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14 # ou la version de votre choix
+          cache: 'yarn'
+
       - name: Install Node.js dependencies
-        run: npm ci # ou utilisez `yarn install` si vous préférez Yarn
+        run: yarn install
 
       - name: deploy
         run: |

@@ -41,8 +41,8 @@ jobs:
           sed -i 's/^CLOUDINARY_API_KEY=.*/CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}/' .env.local
           sed -i 's/^CLOUDINARY_API_SECRET=.*/CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}/' .env.local
           composer install --no-scripts && \
-          npm cache clean --force && \
-          npm install --cache ~/npm-cache && \
+          mkdir -p /tmp/npm-cache && \ # Créez un répertoire temporaire pour le cache npm
+          npm install --cache /tmp/npm-cache && \ # Utilisez le nouveau répertoire temporaire pour le cache npm
           export PATH=./node_modules/.bin:$PATH && \
           npm run-script build && \
           php bin/console cache:clear && \

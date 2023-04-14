@@ -24,9 +24,6 @@ jobs:
         with:
           node-version: 18 # ou la version de votre choix
           cache: 'npm'
-          
-      - name: List files in the working directory
-        run: ls -la
 
       - name: Clear npm cache
         run: npm cache clean --force
@@ -44,6 +41,7 @@ jobs:
           sed -i 's/^CLOUDINARY_API_KEY=.*/CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}/' .env.local
           sed -i 's/^CLOUDINARY_API_SECRET=.*/CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}/' .env.local
           composer install --no-scripts && \
+          npm cache clean --force && \
           npm ci --cache ~/npm-cache && \
           export PATH=./node_modules/.bin:$PATH && \
           npm run-script build && \

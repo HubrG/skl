@@ -1,6 +1,6 @@
 <turbo-frame id="login-frame">
 
-	<form method="post" action="{{ path("app_login") }}" class="w-full -mt-5">
+	<form method="post" action="{{ path("app_login") }}" data-turbo-action="submit->turbo-form#submit" class="w-full -mt-5">
 		{% if error is defined %}
 			{% if error %}
 				<div class="flex justify-center items-center font-bold mt-10">

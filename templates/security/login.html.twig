@@ -1,6 +1,3 @@
-{% block metatags %}
-	<meta name="turbo-visit-control" content="reload">
-{% endblock %}
 <turbo-frame id="login-frame">
 
 	<form method="post" action="{{ path("app_login") }}" data-turbo-action="submit->turbo-form#submit" turbo-visit-control="reload" class="w-full -mt-5">

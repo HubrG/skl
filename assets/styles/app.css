@@ -816,9 +816,9 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 .hr-space div {
 	@apply absolute px-4 -translate-x-1/2 -mt-1 font-normal bg-white left-1/2 italic dark:bg-gray-800 text-slate-700 dark:text-slate-200;
 }
-.turbo-frame-error {
+/* .turbo-frame-error {
 	@apply hidden;
-}
+} */
 .my-special-hr {
 	@apply flex-row flex mt-10 mb-14 md:mb-6;
 }

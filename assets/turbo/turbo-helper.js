@@ -47,8 +47,8 @@ const TurboHelper = class {
       darkMode();
     });
     // * Turbo Frame Missing sert à recharger la page si le frame est manquant
-    document.addEventListener("turbo:before-frame-render", (event) => {
-      document.addEventListener("turbo:frame-missing", (event) => {
+    document.addEventListener("turbo:frame-missing", (event) => {
+      document.addEventListener("turbo:before-frame-render", (event) => {
         console.log(event.detail.visit);
         window.top.location.reload();
       });

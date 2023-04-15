@@ -48,10 +48,10 @@ const TurboHelper = class {
     });
     // * Turbo Frame Missing sert à recharger la page si le frame est manquant
     document.addEventListener("turbo:frame-missing", (event) => {
-      document.addEventListener("turbo:before-frame-render", (event) => {
-        console.log(event.detail.visit);
-        window.top.location.reload();
+      document.querySelectorAll(".turbo-frame-error").forEach((element) => {
+        element.innerHTML = "Redirection en cours...";
       });
+      window.top.location.reload();
     });
     // * Turbo Render sert à faire des actions après le chargement de la page
     document.addEventListener("turbo:render", () => {

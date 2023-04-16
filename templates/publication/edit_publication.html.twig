@@ -35,7 +35,7 @@
 		</nav>
 	</div>
 	<div class=" col-span-12 col-start-0 " id="showTitle">
-		<h1 class=" -mt-10 mb-10 text-center relative">
+		<h1 class=" -mt-14 mb-16 text-center relative">
 			<span id="pubTitle" class="text-4xl font-serif">
 				{{ infoPub.title|capitalize }}
 			</span>
@@ -65,22 +65,22 @@
 		{% endif %}
 	</aside>
 	<section class="col-span-12 -col-start-0 lg:col-span-6 -mt-10">
-		<div class="mb-4  dark:border-gray-700  dark:bg-slate-800 pt-5  pb-[3px]z-40">
+		<div class="mb-4 border-b border-gray-200 dark:border-gray-700">
 			<ul class="flex justify-center -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
-				<li class="mr-2 text-xs lg:text-sm" role="presentation">
-					<button class=" p-4 border-b-4 flex-row-custom-gapx-3  dark:bg-slate-800  text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
+				<li class="mr-2 text-xs lg:text-base" role="presentation">
+					<button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
 						<i class="fa-light fa-circle-info"></i>
 						<span>Informations</span>
 					</button>
 				</li>
-				<li class="mr-2 text-xs lg:text-sm" role="presentation">
-					<button class="inline-block p-4 flex-row-custom-gapx-3 border-b-4  dark:bg-slate-800 text-slate-500 hover:text-slate-900  focus:text-slate-900  rounded-t-lg" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">
+				<li class="mr-2 text-xs lg:text-base" role="presentation">
+					<button class="inline-block p-4 border-b-2 rounded-t-lg" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">
 						<i class="fa-light fa-list-ol"></i>
 						<span>Feuilles</span>
 					</button>
 				</li>
-				<li class="mr-2 text-xs lg:text-sm" role="presentation">
-					<button class="inline-block p-4 flex-row-custom-gapx-3 border-b-4  dark:bg-slate-800 text-slate-500 hover:text-slate-900 focus:text-slate-900  rounded-t-lg" id="statistiques-tab" data-tabs-target="#statistiques" type="button" role="tab" aria-controls="statistiques" aria-selected="false">
+				<li class="mr-2 text-xs lg:text-base" role="presentation">
+					<button class="inline-block p-4 border-b-2 rounded-t-lg" id="statistiques-tab" data-tabs-target="#statistiques" type="button" role="tab" aria-controls="statistiques" aria-selected="false">
 						<i class="fa-light fa-chart-mixed"></i>
 						<span>Statistiques</span>
 					</button>
@@ -136,15 +136,15 @@
 					<ul>
 						<li class="text-center">
 							<a href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}" class=" w-full button-classic  button-gray flex flex-row gap-x-5 justify-center items-center" target="_top">
-								<i class="fa-regular fa-file-circle-plus"></i>
-								<span>Ajouter une nouvelle feuille</span>
+								<i class="fa-regular  text-base fa-file-circle-plus"></i>
+								<span class=" text-base">Ajouter une nouvelle feuille</span>
 							</a>
 						</li>
 					</ul>
 				{% endif %}
 				<div id="accordion-flush" data-accordion="open" data-active-classes="text-gray-900 dark:text-white" class="list-group " data-inactive-classes="text-gray-500 dark:text-gray-400">
-					<h2 id="accordion-flush-heading-1" class="border-b-[1px] border-b-slate-200 shadow  px-5 bg-gray-50 rounded mt-5 dark:border-b-slate-900  dark:bg-transparent dark:shadow-lg ">
-						<button type="button" class="flex items-center  justify-between w-full py-5 font-medium text-left  dark:border-gray-700 dark:text-gray-400" data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
+					<h2 id="accordion-flush-heading-1" class=" border-b-emerald-800    px-5 bg-white border-b-2 mt-5 dark:border-b-slate-900  dark:bg-transparent  ">
+						<button type="button" class="flex items-center  justify-between w-full py-2 font-medium text-left text-base  dark:border-gray-700 dark:text-gray-400" data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
 							<span class="flex-row-custom-gapx-3">
 								<i class="fa-regular fa-eye"></i>
 								<span>Feuilles publiées</span>
@@ -234,9 +234,9 @@
 							{% include "publication/_partials/_edit_publication_show_chapters.html.twig" with {withStatus:2} %}
 						</div>
 					</div>
-					<h2 id="accordion-flush-heading-2" class=" border-b-[1px] border-b-slate-200 shadow  px-5  bg-gray-50 rounded mt-5 dark:border-b-slate-900  dark:bg-transparent dark:shadow-lg">
-						<button type="button" class="flex items-center justify-between w-full py-5 font-medium text-left   dark:border-slate-700 dark:text-slate-400" data-accordion-target="#accordion-flush-body-2" aria-expanded="true" aria-controls="accordion-flush-body-2">
-							<span class="opacity-80 flex-row-custom-gapx-3">
+					<h2 id="accordion-flush-heading-2" class=" border-b-emerald-800  mt-8  px-5 bg-white border-b-2  dark:border-b-slate-900  dark:bg-transparent ">
+						<button type="button" class="flex items-center justify-between w-full py-2 font-medium text-left  text-base dark:border-slate-700 dark:text-slate-400" data-accordion-target="#accordion-flush-body-2" aria-expanded="true" aria-controls="accordion-flush-body-2">
+							<span class=" flex-row-custom-gapx-3">
 								<i class="fa-regular fa-eye-slash"></i>
 								<span>Feuilles dépubliées, brouillons...</span>
 							</span>
@@ -244,6 +244,7 @@
 								<path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
 							</svg>
 						</button>
+
 					</h2>
 					<div id="accordion-flush-body-2" class="hidden" aria-labelledby="accordion-flush-heading-2">
 						{% if infoPub.publicationChapters|filter(c => c.status == 1)|length == 0 %}
@@ -295,7 +296,7 @@
 				&nbsp;Enregistrer
 			{% endif %}
 		</button>
-		<div class="bg-slate-50 dark:bg-slate-900 py-3 mb-5 mt-3 rounded-lg">
+		<div class="bg-slate-50 dark:bg-slate-900 py-3 mb-5 mt-3 rounded-lg  text-sm">
 
 			<div id="publishDiv" class="px-3 rounded-lg  w-full mb-3 mt-2 flex hover:opacity-100 hover:grayscale-0" for="publishToggle">
 				<label
@@ -307,7 +308,7 @@
 						<div class="toggle-dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition-all duration-300 ease-linear"></div>
 					</div>
 					<!-- Le label du toggle button -->
-					<div class="ml-3 dark:text-slate-300 text-sm font-medium" id="publishText">
+					<div class="ml-3 dark:text-slate-300 font-medium" id="publishText">
 						<span>
 							{% if infoPub.status > 1 %}
 								Dépublier le récit
@@ -332,7 +333,7 @@
 						<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
 						<div class="toggle-dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition-all duration-300 ease-linear"></div>
 					</div>
-					<span class="ml-3 dark:text-slate-300 text-sm {{ infoPub.status > 1 ? " text-slate-400 dark:text-slate-600 cursor-default" : " cursor-pointer" }}   disabled" id="ASText">Sauvegarde auto.</span>
+					<span class="ml-3 dark:text-slate-300 {{ infoPub.status > 1 ? " text-slate-400 dark:text-slate-600 cursor-default" : " cursor-pointer" }}   disabled" id="ASText">Sauvegarde auto.</span>
 					<span class="ml-3 left-0 cursor-default dark:text-white" id="ASTooltip">
 						<i class="fa-duotone fa-comment-question" data-tippy-content='<p class="text-center tippy-tt p-2"><strong><i class="fa-duotone fa-cloud-slash"></i><br>La sauvegarde automatique est désactivée car votre récit est publié.</strong><br><br>Si vous souhaitez enregistrer les modifications apportées à votre récit, veuillez cliquer sur le bouton ci-dessus, « Publier les modifications ».</p>'></i>
 					</span>
@@ -345,7 +346,7 @@
 						<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
 						<div class="toggle-dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition-all duration-300 ease-linear"></div>
 					</div>
-					<span class="ml-3 text-sm dark:text-gray-300">Récit terminé&nbsp;&nbsp;
+					<span class="ml-3  dark:text-gray-300">Récit terminé&nbsp;&nbsp;
 						<span data-tippy-content="<strong>Si vous activez cette option</strong>, vous informez vos lecteurs que votre récit est terminé et qu'aucune nouvelle feuille ne sera publiée.<br><br><strong>Si vous désactivez cette option</strong>, vos lecteurs pourront s'abonner à votre récit et recevront des notifications si de nouvelles feuilles sont publiées.">
 							<i class="fa-duotone fa-comment-question"></i>
 						</span>
@@ -353,22 +354,22 @@
 				</label>
 			</div>
 		</div>
-		<div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-900 w-full  mb-4 text-slate-800 dark:text-slate-400">
-			<p class="text-xs mb-1 flex gap-x-3  items-center">
+		<div class="p-4 rounded-lg bg-slate-50 text-sm dark:bg-slate-900 w-full  mb-4 text-slate-800 dark:text-slate-400">
+			<p class=" mb-1 flex gap-x-3  items-center">
 				<i class="fa-regular fa-calendar-plus"></i>
 				<span>
 					Crée il y a
 					<span class="font-medium">{{ infoPub.created|since }}</span>
 				</span>
 			</p>
-			<p class="text-xs mb-1 flex gap-x-3 items-center">
+			<p class="mb-1 flex gap-x-3 items-center">
 				<i class="fa-regular fa-square-pen"></i>
 				<span>
 					Modifié il y a
 					<span class="font-medium">{{ infoPub.updated|since }}</span>
 				</span>
 			</p>
-			<p id="publishDateText" class="text-xs mb-1  flex gap-x-2  items-center">
+			<p id="publishDateText" class="mb-1  flex gap-x-2  items-center">
 				<i class="fa-regular fa-cloud-arrow-up"></i>
 				<span>
 					Publié il y a

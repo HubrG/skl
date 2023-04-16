@@ -41,9 +41,9 @@
 			</span>
 		</h1>
 	</div>
-	<aside class="relative col-span-7 col-start-4 pr-10 mb-14 lg:col-span-3 lg:mt-8">
+	<aside class="relative col-span-12  pr-0 mx-auto lg:pr-10 mb-14 lg:col-span-3 lg:mt-8">
 		{% if infoPub.cover == "" %}
-			<div id="hideNoCover" data-tippy-content="Cliquez ici pour ajouter une photo de couverture" class="no-cover" for="publication_cover">
+			<div id="hideNoCover" data-tippy-content="Cliquez ici pour ajouter une photo de couverture" class="no-cover justify-center" for="publication_cover">
 				<label for="publication_cover" class="cursor-pointer justify-center h-80">
 					<h2 class="m-auto text-center font-light shadow-slate-300  dark:shadow-slate-900 mt-10 rounded-lg">
 						<i class="fa-duotone fa-images text-6xl"></i><br/><br/>Ajouter une couverture
@@ -296,30 +296,42 @@
 			{% endif %}
 		</button>
 		<div class="bg-slate-50 dark:bg-slate-900 py-3 mb-5 mt-3 rounded-lg">
+
 			<div id="publishDiv" class="px-3 rounded-lg  w-full mb-3 mt-2 flex hover:opacity-100 hover:grayscale-0" for="publishToggle">
-				<label class="relative inline-flex  mr-5 cursor-pointer" data-micromodal-trigger="popup-modal">
-					<input type="checkbox" id="publishButton" class="disabled sr-only peer" disabled {% if infoPub.status == 2 %} checked {% endif %}>
-					<div id="publishToggle" class="w-11 h-6 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 "></div>
-					<p class="ml-3 text-sm font-normal dark:text-gray-300 flex flex-row justify-evenly gap-x-3" id="publishText">
+				<label
+					for="toggle" class="toggle" data-micromodal-trigger="popup-modal">
+					<!-- Le toggle button -->
+					<div class="relative">
+						<input type="checkbox" id="publishButton" class="disabled sr-only peer" disabled {% if infoPub.status == 2 %} checked {% endif %}/>
+						<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner" id="publishToggle"></div>
+						<div class="toggle-dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition-all duration-300 ease-linear"></div>
+					</div>
+					<!-- Le label du toggle button -->
+					<div class="ml-3 text-gray-700 font-medium" id="publishText">
 						<span>
-							{% if infoPub.status > 1 %}Dépublier le récit{% else %}Publier le récit
+							{% if infoPub.status > 1 %}
+								Dépublier le récit
+							{% else %}
+								Publier le récit
 							{% endif %}
 						</span>
 						<span data-tippy-content="<strong>Si vous activez cette option</strong>, votre récit sera accessible aux utilisateurs via son URL publique et apparaîtra sur nos pages (à condition que vous ayez publié au moins un chapitre et sélectionné une catégorie).<br><br><strong>Si vous désactivez cette option</strong>, votre récit devient absolument inacessible à tous, sauf pour vous.">
 							<i class="fa-duotone fa-comment-question"></i>
 						</span>
-
-					</p>
+					</div>
 				</label>
 			</div>
 			<div class="px-3 rounded-lg  w-full relative mb-3 flex hover:opacity-100 hover:grayscale-0">
-				<label class="relative inline-flex items-center">
-					{% if infoPub.status < 2 %}
-						<input type="checkbox" value="" class="sr-only peer" id="togglePubAS" checked/>
-					{% else %}
-						<input type="checkbox" value="" class="sr-only peer" id="togglePubAS" disabled/>
-					{% endif %}
-					<div class="w-11 h-6 bg-slate-200 cursor-pointer rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-blue-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+				<label class="toggle">
+					<div class="relative">
+						{% if infoPub.status < 2 %}
+							<input type="checkbox" value="" class="sr-only peer" id="togglePubAS" checked/>
+						{% else %}
+							<input type="checkbox" value="" class="sr-only peer" id="togglePubAS" disabled/>
+						{% endif %}
+						<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
+						<div class="toggle-dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition-all duration-300 ease-linear"></div>
+					</div>
 					<span class="ml-3 dark:text-slate-300 text-sm {{ infoPub.status > 1 ? " text-slate-400 dark:text-slate-600 cursor-default" : " cursor-pointer" }}   disabled" id="ASText">Sauvegarde auto.</span>
 					<span class="ml-3 left-0 cursor-default dark:text-white" id="ASTooltip">
 						<i class="fa-duotone fa-comment-question" data-tippy-content='<p class="text-center tippy-tt p-2"><strong><i class="fa-duotone fa-cloud-slash"></i><br>La sauvegarde automatique est désactivée car votre récit est publié.</strong><br><br>Si vous souhaitez enregistrer les modifications apportées à votre récit, veuillez cliquer sur le bouton ci-dessus, « Publier les modifications ».</p>'></i>
@@ -327,9 +339,12 @@
 				</label>
 			</div>
 			<div class="px-3 rounded-lg  w-full mb-3 flex hover:opacity-100 cursor-pointer">
-				<label class="relative inline-flex items-center  cursor-pointer">
-					<input type="checkbox" value="" class="sr-only peer axiosPublication axiosPubAS axiosPubSpy" id="publication_finished" {{ infoPub.finished == 1 ? "checked" }}/>
-					<div class="w-11 h-6 bg-blue-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-blue-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+				<label class="toggle">
+					<div class="relative">
+						<input type="checkbox" value="" class="sr-only peer axiosPublication axiosPubAS axiosPubSpy" id="publication_finished" {{ infoPub.finished == 1 ? "checked" }}/>
+						<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
+						<div class="toggle-dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition-all duration-300 ease-linear"></div>
+					</div>
 					<span class="ml-3 text-sm dark:text-gray-300">Récit terminé&nbsp;&nbsp;
 						<span data-tippy-content="<strong>Si vous activez cette option</strong>, vous informez vos lecteurs que votre récit est terminé et qu'aucune nouvelle feuille ne sera publiée.<br><br><strong>Si vous désactivez cette option</strong>, vos lecteurs pourront s'abonner à votre récit et recevront des notifications si de nouvelles feuilles sont publiées.">
 							<i class="fa-duotone fa-comment-question"></i>
@@ -421,10 +436,9 @@
 						{% else %}
 							{% set classHidden = "false" %}
 						{% endif %}
-
 						{# TODO: modifier le "certaine" en fonction du genre de l'utilisateur #}
 						<div class="mt-10 flex justify-center gap-x-3">
-							<button id="PublicationPublishButton" data-micromodal-close type="button" class="button-classic">
+							<button id="PublicationPublishButton" onclick='MicroModal.close("popup-modal")' type="button" class="button-classic z-50">
 								Oui, je suis certain(e)
 							</button>
 							<button type="button" onclick="MicroModal.close('popup-modal')" class="button-classic button-slate">Non, j'annule</button>

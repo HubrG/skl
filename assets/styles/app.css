@@ -19,7 +19,7 @@
 	
 }
 body {
-	@apply bg-white dark:bg-slate-800 h-screen grid col-span-12;
+	@apply bg-white dark:bg-slate-800 h-screen w-full;
 }
 
 body.turbo-loading, body.turbo-loaded {
@@ -882,3 +882,13 @@ nav.breadcrumb ol li i:first-child{
 .cgu-full li ul li {
 	@apply py-0 my-3;
 }
+input:checked ~ .toggle-dot {
+    transform: translateX(100%);
+    background-color: white; /* Couleur de fond lorsque le bouton est activé */
+  }
+   input:checked ~ .bg-gray-400 {
+    background-color: #3B82F6; /* Couleur de fond de la barre lorsque la case à cocher est sélectionnée */
+  }
+  .toggle {
+	@apply flex items-center cursor-pointer;
+  }

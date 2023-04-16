@@ -41,7 +41,7 @@
 			</span>
 		</h1>
 	</div>
-	<aside class="relative col-span-12  pr-0 mx-auto lg:pr-10 mb-14 lg:col-span-3 lg:mt-8">
+	<aside class="relative col-span-12 lg:col-span-3 lg:mt-8 pr-0 mx-auto lg:pr-10 mb-14 ">
 		{% if infoPub.cover == "" %}
 			<div id="hideNoCover" data-tippy-content="Cliquez ici pour ajouter une photo de couverture" class="no-cover justify-center" for="publication_cover">
 				<label for="publication_cover" class="cursor-pointer justify-center h-80">
@@ -142,9 +142,9 @@
 						</li>
 					</ul>
 				{% endif %}
-				<div id="accordion-flush" data-accordion="open" data-active-classes="text-gray-900 dark:text-white" class="list-group" data-inactive-classes="text-gray-500 dark:text-gray-400">
-					<h2 id="accordion-flush-heading-1" class="border-b-[1px] border-b-slate-200 shadow  px-5  rounded mt-5 dark:border-b-slate-900  dark:bg-transparent dark:shadow-lg ">
-						<button type="button" class="flex items-center justify-between w-full py-5 font-medium text-left  dark:border-gray-700 dark:text-gray-400" data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
+				<div id="accordion-flush" data-accordion="open" data-active-classes="text-gray-900 dark:text-white" class="list-group " data-inactive-classes="text-gray-500 dark:text-gray-400">
+					<h2 id="accordion-flush-heading-1" class="border-b-[1px] border-b-slate-200 shadow  px-5 bg-gray-50 rounded mt-5 dark:border-b-slate-900  dark:bg-transparent dark:shadow-lg ">
+						<button type="button" class="flex items-center  justify-between w-full py-5 font-medium text-left  dark:border-gray-700 dark:text-gray-400" data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
 							<span class="flex-row-custom-gapx-3">
 								<i class="fa-regular fa-eye"></i>
 								<span>Feuilles publiées</span>
@@ -234,7 +234,7 @@
 							{% include "publication/_partials/_edit_publication_show_chapters.html.twig" with {withStatus:2} %}
 						</div>
 					</div>
-					<h2 id="accordion-flush-heading-2" class=" border-b-[1px] border-b-slate-200 shadow  px-5  rounded mt-5 dark:border-b-slate-900  dark:bg-transparent dark:shadow-lg">
+					<h2 id="accordion-flush-heading-2" class=" border-b-[1px] border-b-slate-200 shadow  px-5  bg-gray-50 rounded mt-5 dark:border-b-slate-900  dark:bg-transparent dark:shadow-lg">
 						<button type="button" class="flex items-center justify-between w-full py-5 font-medium text-left   dark:border-slate-700 dark:text-slate-400" data-accordion-target="#accordion-flush-body-2" aria-expanded="true" aria-controls="accordion-flush-body-2">
 							<span class="opacity-80 flex-row-custom-gapx-3">
 								<i class="fa-regular fa-eye-slash"></i>
@@ -307,7 +307,7 @@
 						<div class="toggle-dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition-all duration-300 ease-linear"></div>
 					</div>
 					<!-- Le label du toggle button -->
-					<div class="ml-3 text-gray-700 font-medium" id="publishText">
+					<div class="ml-3 dark:text-slate-300 text-sm font-medium" id="publishText">
 						<span>
 							{% if infoPub.status > 1 %}
 								Dépublier le récit

@@ -206,8 +206,8 @@
 				{% if not app.user or pubShow.finished == true %}
 					<hr>
 				{% endif %}
-				<h3 class="text-2xl mb-5 flex flex-row gap-x-3 items-center lg:text-left text-center mt-5 dark:text-slate-100">
-					<i class="fa-duotone fa-list-ol"></i>
+				<h3 class="text-2xl mb-5 flex flex-row gap-x-3 items-center lg:text-left border-t-[1px] dark:border-slate-700 text-center  pt-5 dark:text-slate-100">
+					<i class="fa-duotone fa-file"></i>
 					<span>
 						{% set count = 0 %}
 						{% for chapter in pubShow.publicationChapters %}
@@ -281,7 +281,7 @@
 					<ul>
 						<li class="text-center mb-5 -mt-3 block lg:hidden" onclick="let commentSection = document.getElementById('comment-section').classList; commentSection.toggle('hidden');if (commentSection.contains('hidden')) { document.getElementById('showComMd').innerHTML = 'Afficher' } else {  document.getElementById('showComMd').innerHTML = 'Masquer' }">
 							{% if nbrCom > 0 %}
-								<button class="text-base text-slate-300 font-medium hover:underline">
+								<button class="text-base mx-auto text-slate-300 font-medium hover:underline">
 									<span id="showComMd">Afficher</span>
 									les
 									{{nbrCom}}
@@ -468,13 +468,15 @@
 						</span>
 					</li>
 				</ul>
-				<ul class="flex flex-wrap justify-between p-2 text-sm border-t-[1px] gap-x-5 gap-y-5 grid-cols-4 border-t-slate-200 dark:border-t-slate-900 pt-5 mt-5">
-					{% for item in pubShow.publicationKeywords %}
-						<li class="font-medium dark:text-white">
-							<a href="{{path("app_publication_show_all_category", {keystring:item.keyword|lower, order:'desc', sortby:'published', page:1, slug:"all"})}}" class="hover:underline text-slate-800 dark:text-white">#{{ item.keyword }}</a>
-						</li>
-					{% endfor %}
-				</ul>
+				{% if pubShow.publicationKeywords|length > 0 %}
+					<ul class="flex flex-wrap justify-between p-2 text-sm border-t-[1px] gap-x-5 gap-y-5 grid-cols-4 border-t-slate-200 dark:border-t-slate-900 pt-5 mt-5">
+						{% for item in pubShow.publicationKeywords %}
+							<li class="font-medium dark:text-white">
+								<a href="{{path("app_publication_show_all_category", {keystring:item.keyword|lower, order:'desc', sortby:'published', page:1, slug:"all"})}}" class="hover:underline text-slate-800 dark:text-white">#{{ item.keyword }}</a>
+							</li>
+						{% endfor %}
+					</ul>
+				{% endif %}
 				<ul class=" flex flex-col gap-y-5 opacity-80 dark:opacity-100 text-sm border-t-[1px] border-t-slate-200 dark:border-t-slate-900 pt-5 mt-5">
 					<li class="show-one-details">
 						<span>

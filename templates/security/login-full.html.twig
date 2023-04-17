@@ -7,36 +7,34 @@
 
 {% endblock %}
 {% block body %}
-	<section class="col-span-12 w-full md:col-start-4 mx-auto">
-		<div class="modal__container sm:h-auto sm:w-auto  shadow-xl w-screen items-center flex md:flex-none  justify-center" role="dialog" aria-modal="true" aria-labelledby="popup-register-title">
-			<div class="px-6 lg:px-8 relative" style="width:100%">
-				<h3 class="modal-header">
-					<i class="fa-duotone fa-right-to-bracket"></i>
-					Connexion sur Scrilab
-				</h3>
-				<hr class="mb-5 mt-5">
-				<div class="block">
-					<a href="{{path("connect_google")}}" class="opacity-90 rounded  hover:opacity-100 text-white font-bold py-2 px-4 flex flex-row items-center justify-center mx-auto gap-x-4">
-						<img src="/images/connexion_google.png" class="h-14" alt="Se connecter avec Google"/>
-					</a>
-					<div class="hr-space">
-						<hr>
-						<div>
-							Ou avec mon email
-						</div>
+	<div class="mx-auto  items-center flex sm:w-full md:1/6 lg:w-3/6 mt-10 justify-center">
+		<div class="px-6 lg:px-8 relative" style="width:100%">
+			<h3 class="modal-header">
+				<i class="fa-duotone fa-right-to-bracket"></i>
+				Connexion sur Scrilab
+			</h3>
+			<hr class="mb-5 mt-5">
+			<div class="block">
+				<a href="{{path("connect_google")}}" class="opacity-90 rounded  hover:opacity-100 text-white font-bold py-2 px-4 flex flex-row items-center justify-center mx-auto gap-x-4">
+					<img src="/images/connexion_google.png" class="h-14" alt="Se connecter avec Google"/>
+				</a>
+				<div class="hr-space">
+					<hr>
+					<div>
+						Ou avec mon email
 					</div>
 				</div>
-				<turbo-frame id="login-frame" src="{{path("app_login")}}">
+			</div>
+			<turbo-frame id="login-frame" src="{{path("app_login")}}">
 
-					{{ render(controller('App\\Controller\\SecurityController::login')) }}
-				</turbo-frame>
-				<hr class="mb-0">
-				<div class="flex flex-row justify-center items-center gap-x-2 text-s text-sm  text-slate-600 dark:text-slate-200">
-					<a href="{{path("app_register_full")}}" target="_top" class="modal-register-login-button w-full" tabindex="0">
-						Je n'ai pas encore de compte Scrilab&nbsp;&nbsp;&nbsp;<i class="fa-duotone fa-chevrons-right"></i>
-					</a>
-				</div>
-			</p>
-		</div>
+				{{ render(controller('App\\Controller\\SecurityController::login')) }}
+			</turbo-frame>
+			<hr class="mb-0">
+			<div class="flex flex-row justify-center items-center gap-x-2 text-s text-sm  text-slate-600 dark:text-slate-200">
+				<a href="{{path("app_register_full")}}" target="_top" class="modal-register-login-button w-full" tabindex="0">
+					Je n'ai pas encore de compte Scrilab&nbsp;&nbsp;&nbsp;<i class="fa-duotone fa-chevrons-right"></i>
+				</a>
+			</div>
+		</p>
 	</div>
-</section>{% endblock %}
+{% endblock %}

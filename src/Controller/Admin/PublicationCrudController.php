@@ -34,7 +34,7 @@ class PublicationCrudController extends AbstractCrudController
             AssociationField::new('user', 'Auteur'),
             TextEditorField::new('summary', "Résumé"),
             IntegerField::new('status', "Publié")->formatValue(function ($value, $entity) {
-                if ($value == 1) {
+                if ($value == 2) {
                     return "<span class='badge badge-success'>Oui</span>";
                 } elseif ($value == 0) {
                     return "<span class='badge badge-warning'>En attente</span>";

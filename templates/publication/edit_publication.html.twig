@@ -8,419 +8,414 @@
 {% endblock %}
 
 {% block body %}
-	<div class="col-span-12 col-start-0 -mt-10 mb-10 ">
-		<nav class="breadcrumb" aria-label="Breadcrumb">
-			<ol>
-				<li>
-					<a href="{{path("app_user_show_publications")}}">
-						Mes récits
-					</a>
-				</li>
-				<li aria-current="page">
-					<div>
-						<svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-							<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-						</svg>
-						<span>Édition d'un récit</span>
-						<span class=" cursor-pointer" data-micromodal-trigger="popup-modal">
-							{% if (infoPub.status > 1) %}
-								<span id="badgePubStatus" class="badge">Publié</span>
-							{% else %}
-								<span id="badgePubStatus" class="badge">Dépublié</span>
-							{% endif %}
-						</span>
-					</div>
-				</li>
-			</ol>
-		</nav>
-	</div>
-	<div class=" col-span-12 col-start-0 " id="showTitle">
-		<h1 class=" -mt-14 mb-16 text-center relative">
-			<span id="pubTitle" class="text-4xl font-serif">
-				{{ infoPub.title|capitalize }}
-			</span>
-		</h1>
-	</div>
-	<aside class="relative col-span-12 lg:col-span-3 lg:mt-8 pr-0 mx-auto lg:pr-10 mb-14 ">
-		{% if infoPub.cover == "" %}
-			<div id="hideNoCover" data-tippy-content="Cliquez ici pour ajouter une photo de couverture" class="no-cover justify-center" for="publication_cover">
-				<label for="publication_cover" class="cursor-pointer justify-center h-80">
-					<h2 class="m-auto text-center font-light shadow-slate-300  dark:shadow-slate-900 mt-10 rounded-lg">
-						<i class="fa-duotone fa-images text-6xl"></i><br/><br/>Ajouter une couverture
-					</h2>
-				</label>
-			</div>
-			<div role="status" id="spinCover" class="hidden absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2">
-				<svg aria-hidden="true" class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewbox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/><path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/></svg>
-				<span class="sr-only">Loading...</span>
-			</div>
-			<label for="publication_cover" id="showNewCover" class="cursor-pointer hidden"><img id="cover" src="" class="shadow-md shadow-slate-300 dark:shadow-slate-900 rounded-lg"/></label>
-		{% else %}
-			<label for="publication_cover" class="cursor-pointer">
+	<nav class="breadcrumb" aria-label="Breadcrumb">
+		<ol>
+			<li>
+				<a href="{{path("app_user_show_publications")}}">
+					Mes récits
+				</a>
+			</li>
+			<li aria-current="page">
+				<div>
+					<svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+					</svg>
+					<span>Édition d'un récit</span>
+					<span class=" cursor-pointer" data-micromodal-trigger="popup-modal">
+						{% if (infoPub.status > 1) %}
+							<span id="badgePubStatus" class="badge">Publié</span>
+						{% else %}
+							<span id="badgePubStatus" class="badge">Dépublié</span>
+						{% endif %}
+					</span>
+				</div>
+			</li>
+		</ol>
+	</nav>
+	<h1 class=" mb-20 text-center relative">
+		<span id="pubTitle" class="text-4xl font-serif">
+			{{ infoPub.title|capitalize }}
+		</span>
+	</h1>
+	<div class="flex flex-col lg:flex-row   mx-auto justify-center w-full">
+		<aside class="relative md:w-full lg:w-3/12 mx-auto md:mt-5 mb-14">
+			{% if infoPub.cover == "" %}
+				<div id="hideNoCover" data-tippy-content="Cliquez ici pour ajouter une photo de couverture" class="no-cover justify-center flex lg:w-full w-[80%] mx-auto" for="publication_cover">
+					<label for="publication_cover" class="cursor-pointer justify-center h-80">
+						<h2 class="m-auto text-center font-light shadow-slate-300  dark:shadow-slate-900 mt-10 rounded-lg">
+							<i class="fa-duotone fa-images text-6xl"></i><br/><br/>Ajouter une couverture
+						</h2>
+					</label>
+				</div>
 				<div role="status" id="spinCover" class="hidden absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2">
 					<svg aria-hidden="true" class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewbox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/><path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/></svg>
 					<span class="sr-only">Loading...</span>
 				</div>
-				<img data-tippy-content="Cliquez ici pour modifier votre photo de couverture" id="cover" class="shadow-md shadow-slate-300 dark:shadow-slate-900 rounded-lg" src="{{infoPub.cover}}"/></label>
-		{% endif %}
-	</aside>
-	<section class="col-span-12 -col-start-0 lg:col-span-6 -mt-10">
-		<div class="mb-4 border-b border-gray-200 dark:border-gray-700">
-			<ul class="flex justify-center text-sm lg:text-base -mb-px font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
-				<li class="mr-2 " role="presentation">
-					<button class="p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
-						<i class="fa-light fa-circle-info"></i>
-						<span>Informations</span>
-					</button>
-				</li>
-				<li class="mr-2" role="presentation">
-					<button class="p-4 border-b-2 rounded-t-lg" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">
-						<i class="fa-light fa-list-ol"></i>
-						<span>Feuilles</span>
-					</button>
-				</li>
-				<li class="mr-2" role="presentation">
-					<button class="p-4 border-b-2 rounded-t-lg" id="statistiques-tab" data-tabs-target="#statistiques" type="button" role="tab" aria-controls="statistiques" aria-selected="false">
-						<i class="fa-light fa-chart-mixed"></i>
-						<span>Statistiques</span>
-					</button>
-				</li>
-			</ul>
-		</div>
-		<div id="myTabContent">
-			<div class="hidden p-4 rounded-lg  dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-				{{ form_start(formPub) }}
-				{{ form_widget(formPub.cover, {attr:{"class":"axiosPublication hidden axiosPubAS axiosPubSpy"}})}}
-				<input type="hidden" value="{{ infoPub.id }}" id="hideId"/>
-				{% include "./partials/_form-row.html.twig" with {'form': formPub.title, 'class':'axiosPublication axiosPubAS axiosPubSpy', 'icon':"fa-heading"} %}
-				{{ form_label(formPub.summary) }}
-				<div class="relative mb-6">
-					{{ form_widget(formPub.summary, {attr:{"class":"axiosPublication axiosPubAS axiosPubSpy h-44"}}) }}
-				</div>
-				{% include "./partials/_form-row.html.twig" with {'form': formPub.category, 'class':'axiosPublication axiosPubAS axiosPubSpy', 'id':'publication_category_div', 'icon':"fa-masks-theater"} %}
-				<label>En quelques mots, quelles sont les grandes thématiques de votre récit ?</label>
-				<div class="relative mb-6">
-					<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
-						<i class="fa-regular fa-tags dark:text-slate-200"></i>
+				<label for="publication_cover" id="showNewCover" class="cursor-pointer hidden"><img id="cover" src="" class="shadow-md shadow-slate-300 dark:shadow-slate-900 rounded-lg"/></label>
+			{% else %}
+				<label for="publication_cover" class="cursor-pointer flex justify-center">
+					<div role="status" id="spinCover" class="hidden absolute -translate-x-1/2 -translate-y-1/2 mx-auto">
+						<svg aria-hidden="true" class="w-8 h-8 mr-2 mx-auto text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewbox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/><path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/></svg>
+						<span class="sr-only">Loading...</span>
 					</div>
-					<input type="text" value="" id="keyValue"/>
-				</div>
-				<div class="help-text pt-2">Séparez vos mots-clés par une virgule
-					<kbd class="px-2 py-0.5 text-xs font-semibold text-slate-800 bg-slate-100 border border-slate-200 rounded-lg dark:bg-slate-600 dark:text-slate-100 dark:border-slate-500">,</kbd>
-					ou un point-virgule
-					<kbd class="px-2 py-0.5 text-xs font-semibold text-slate-800 bg-slate-100 border border-slate-200 rounded-lg dark:bg-slate-600 dark:text-slate-100 dark:border-slate-500">;</kbd>
-				</div>
-				<div class="hidden" id="editPage"></div>
-				<turbo-frame id="keyroute">
-					<div id="keyList" class="items-center">
-						{% for k in infoPub.publicationKeywords %}
-							<div id="keyw_{{ k.keyword|upper }}" class="flex flex-row justify-between gap-x-2">
-								<span>{{ k.keyword }}</span>
-								<a href="{{path("app_publication_del_keyword", {value:k.keyword, pub:infoPub.id, mode:"edit"})}}">
-									<i class="fa-duotone fa-delete-left hover:text-red-200 text-sm"></i>
-								</a>
-							</div>
-						{% endfor %}
-					</div>
-				</turbo-frame>
-				<hr class=" -mt-5">
-				<label class="relative inline-flex items-center cursor-pointer">
-					{{ form_widget(formPub.mature, {attr:{"class":"sr-only peer axiosPublication axiosPubAS axiosPubSpy"}}) }}
-					<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-					<span class="ml-3 -mt-6 text-sm font-medium text-slate-900 dark:text-slate-300">Votre récit contient-il du contenu pour adulte ?</span>
-				</label>
-				{{ form_end(formPub) }}
-			</div>
-			<div class="hidden p-4 rounded-lg" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-				{% if infoPub.publicationChapters|length > 0 %}
-					<ul>
-						<li class="text-center">
-							<a href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}" class=" w-full button-classic  button-gray flex flex-row gap-x-5 justify-center items-center" target="_top">
-								<i class="fa-regular  text-base fa-file-circle-plus"></i>
-								<span class=" text-base">Ajouter une nouvelle feuille</span>
-							</a>
-						</li>
-					</ul>
-				{% endif %}
-				<div id="accordion-flush" data-accordion="open" data-active-classes="text-gray-900 dark:text-white" class="list-group " data-inactive-classes="text-gray-500 dark:text-gray-400">
-					<h2 id="accordion-flush-heading-1" class=" border-b-emerald-800    px-5 bg-white border-b-2 mt-5 dark:border-b-slate-900  dark:bg-transparent  ">
-						<button type="button" class="flex items-center  justify-between w-full py-2 font-medium text-left text-base  dark:border-gray-700 dark:text-gray-400" data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
-							<span class="flex-row-custom-gapx-3">
-								<i class="fa-regular fa-eye"></i>
-								<span>Feuilles publiées</span>
-							</span>
-							<svg data-accordion-icon class="w-6 h-6 rotate-180 shrink-0" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-								<path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-							</svg>
+					<img data-tippy-content="Cliquez ici pour modifier votre photo de couverture" id="cover" class="shadow-md lg:w-full w-[50%] lg:mt-0 -mt-10 shadow-slate-300 dark:shadow-slate-900 rounded-lg" src="{{infoPub.cover}}"/></label>
+			{% endif %}
+		</aside>
+		<section class="relative sm:w-full lg:w-6/12  lg:ml-7 lg:-mt-10 mb-14 ">
+			<div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+				<ul class="flex justify-center text-sm lg:text-base -mb-px font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
+					<li class="mr-2 " role="presentation">
+						<button class="p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
+							<i class="fa-light fa-circle-info"></i>
+							<span>Informations</span>
 						</button>
-					</h2>
-					<div id="accordion-flush-body-1" class="hidden" aria-labelledby="accordion-flush-heading-1">
-						<div id="itemsChap" class=" flex-col grid-cols-1 md:grid-cols-2 grid justify-center gap-x-5">
-							{% if infoPub.publicationChapters|length == 0 %}
-								<div class="w-full text-center bg-slate-100 dark:bg-slate-700 items-center justify-center justify-items-center flex-cols dark:text-slate-100 text-slate-600 rounded  mt-3 opacity-80 hover:opacity-100 border-2 border-slate-200 dark:border-slate-900" id="noPublication">
-									<p class="w-full h-full flex-row grid-cols-1 grid items-center justify-items-center place-items-center font-medium leading-5">
-										<a class="h-full px-5 space-y-5 py-0 grid-rows-2 grid-cols-1 grid items-center justify-items-center place-items-center font-medium leading-5 pb-10" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}#first" target="_top">
-											<span class="flex justify-items-end text-slate-900 dark:text-slate-100 text-xl leading-7 self-end">
-												Cliquez ici pour éditer votre première feuille
-											</span>
-											<span class="text-4xl flex justify-items-start self-start">
-												<i class="fa-duotone fa-file-circle-plus"></i>
-											</span>
-										</a>
-									</p>
+					</li>
+					<li class="mr-2" role="presentation">
+						<button class="p-4 border-b-2 rounded-t-lg" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">
+							<i class="fa-light fa-list-ol"></i>
+							<span>Feuilles</span>
+						</button>
+					</li>
+					<li class="mr-2" role="presentation">
+						<button class="p-4 border-b-2 rounded-t-lg" id="statistiques-tab" data-tabs-target="#statistiques" type="button" role="tab" aria-controls="statistiques" aria-selected="false">
+							<i class="fa-light fa-chart-mixed"></i>
+							<span>Statistiques</span>
+						</button>
+					</li>
+				</ul>
+			</div>
+			<div id="myTabContent">
+				<div class="hidden p-4 rounded-lg  dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+					{{ form_start(formPub) }}
+					{{ form_widget(formPub.cover, {attr:{"class":"axiosPublication hidden axiosPubAS axiosPubSpy"}})}}
+					<input type="hidden" value="{{ infoPub.id }}" id="hideId"/>
+					{% include "./partials/_form-row.html.twig" with {'form': formPub.title, 'class':'axiosPublication axiosPubAS axiosPubSpy', 'icon':"fa-heading"} %}
+					{{ form_label(formPub.summary) }}
+					<div class="relative mb-6">
+						{{ form_widget(formPub.summary, {attr:{"class":"axiosPublication axiosPubAS axiosPubSpy h-44"}}) }}
+					</div>
+					{% include "./partials/_form-row.html.twig" with {'form': formPub.category, 'class':'axiosPublication axiosPubAS axiosPubSpy', 'id':'publication_category_div', 'icon':"fa-masks-theater"} %}
+					<label>En quelques mots, quelles sont les grandes thématiques de votre récit ?</label>
+					<div class="relative mb-6">
+						<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
+							<i class="fa-regular fa-tags dark:text-slate-200"></i>
+						</div>
+						<input type="text" value="" id="keyValue"/>
+					</div>
+					<div class="help-text pt-2">Séparez vos mots-clés par une virgule
+						<kbd class="px-2 py-0.5 text-xs font-semibold text-slate-800 bg-slate-100 border border-slate-200 rounded-lg dark:bg-slate-600 dark:text-slate-100 dark:border-slate-500">,</kbd>
+						ou un point-virgule
+						<kbd class="px-2 py-0.5 text-xs font-semibold text-slate-800 bg-slate-100 border border-slate-200 rounded-lg dark:bg-slate-600 dark:text-slate-100 dark:border-slate-500">;</kbd>
+					</div>
+					<div class="hidden" id="editPage"></div>
+					<turbo-frame id="keyroute">
+						<div id="keyList" class="items-center">
+							{% for k in infoPub.publicationKeywords %}
+								<div id="keyw_{{ k.keyword|upper }}" class="flex flex-row justify-between gap-x-2">
+									<span>{{ k.keyword }}</span>
+									<a href="{{path("app_publication_del_keyword", {value:k.keyword, pub:infoPub.id, mode:"edit"})}}">
+										<i class="fa-duotone fa-delete-left hover:text-red-200 text-sm"></i>
+									</a>
 								</div>
-								<div class="mt-5 flex flex-col space-y-2 items-baseline gap-y-1 text-slate-700 dark:text-slate-300">
-									<p class="text-sm flex font-normal gap-x-2  items-start">
-										<i class="fa-regular fa-lightbulb-exclamation-on mt-1 text-yellow-400 dark:text-amber-400"></i>
-										<span class="font-medium">
-											Vous avez la possibilité de créer un nombre illimité de feuilles et de les organiser selon vos préférences.
-										</span>
-									</p>
-									<p class="text-md flex font-normal gap-x-4 opacity-70">
-										<i class="fa-regular fa-file-lines mt-1"></i>
-										<span class="text-[0.8rem]">
-											Chaque feuille peut être considérée comme une simple page de texte, une copie intégrale d'un document PDF (tel qu'un récit entier) ou comme un épisode, un chapitre de votre récit.
-										</span>
-									</p>
-									<p class="text-sm flex font-normal gap-x-4 opacity-70">
-										<i class="fa-regular fa-hashtag"></i>
-										<span class="text-[0.8rem]">
-											L'ordre par lequel vous les organisez déterminera l'ordre dans lequel vos lecteurs les liront.
-										</span>
-									</p>
-								</div>
-							{% elseif infoPub.publicationChapters|length > 0 and infoPub.publicationChapters|length < 2 %}
-								{% set var = true %}
-								{% for item in infoPub.publicationChapters %}
-									{% if item.status > 1 %}
-										{% set var = false %}
-									{% endif %}
-								{% endfor %}
-								{% if var %}
-									<div class="w-full text-center bg-emerald-500 dark:bg-amber-200 dark:opacity-70 rounded items-center justify-center justify-items-center flex-colsrounded  mt-3 " id="noPublication">
-										<p class="w-full h-full px-5 pt-5 grid-rows-1 grid-cols-1 grid pb-5 items-center justify-items-center place-items-center font-medium leading-5">
-											<span class="text-emerald-50 dark:text-amber-900 text-base  px-5 pt-5 grid-rows-2 grid-cols-1 grid pb-5 items-center justify-items-center place-items-center font-medium leading-5" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}#first" target="_top">
-												<span class="mt-10">
-													Vous venez de créer votre première feuille !
+							{% endfor %}
+						</div>
+					</turbo-frame>
+					<hr class=" -mt-5">
+					<label class="relative inline-flex items-center cursor-pointer">
+						{{ form_widget(formPub.mature, {attr:{"class":"sr-only peer axiosPublication axiosPubAS axiosPubSpy"}}) }}
+						<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+						<span class="ml-3 -mt-6 text-sm font-medium text-slate-900 dark:text-slate-300">Votre récit contient-il du contenu pour adulte ?</span>
+					</label>
+					{{ form_end(formPub) }}
+				</div>
+				<div class="hidden p-4 rounded-lg" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+					{% if infoPub.publicationChapters|length > 0 %}
+						<ul>
+							<li class="text-center">
+								<a href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}" class=" w-full button-classic  button-gray flex flex-row gap-x-5 justify-center items-center" target="_top">
+									<i class="fa-regular  text-base fa-file-circle-plus"></i>
+									<span class=" text-base">Ajouter une nouvelle feuille</span>
+								</a>
+							</li>
+						</ul>
+					{% endif %}
+					<div id="accordion-flush" data-accordion="open" data-active-classes="text-gray-900 dark:text-white" class="list-group " data-inactive-classes="text-gray-500 dark:text-gray-400">
+						<h2 id="accordion-flush-heading-1" class=" border-b-emerald-800    px-5 bg-white border-b-2 mt-5 dark:border-b-slate-900  dark:bg-transparent  ">
+							<button type="button" class="flex items-center  justify-between w-full py-2 font-medium text-left text-base  dark:border-gray-700 dark:text-gray-400" data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
+								<span class="flex-row-custom-gapx-3">
+									<i class="fa-regular fa-eye"></i>
+									<span>Feuilles publiées</span>
+								</span>
+								<svg data-accordion-icon class="w-6 h-6 rotate-180 shrink-0" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+								</svg>
+							</button>
+						</h2>
+						<div id="accordion-flush-body-1" class="hidden" aria-labelledby="accordion-flush-heading-1">
+							<div id="itemsChap" class=" flex-col grid-cols-1 md:grid-cols-2 grid justify-center gap-x-5">
+								{% if infoPub.publicationChapters|length == 0 %}
+									<div class="w-full text-center bg-slate-100 dark:bg-slate-700 items-center justify-center justify-items-center flex-cols dark:text-slate-100 text-slate-600 rounded  mt-3 opacity-80 hover:opacity-100 border-2 border-slate-200 dark:border-slate-900" id="noPublication">
+										<p class="w-full h-full flex-row grid-cols-1 grid items-center justify-items-center place-items-center font-medium leading-5">
+											<a class="h-full px-5 space-y-5 py-0 grid-rows-2 grid-cols-1 grid items-center justify-items-center place-items-center font-medium leading-5 pb-10" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}#first" target="_top">
+												<span class="flex justify-items-end text-slate-900 dark:text-slate-100 text-xl leading-7 self-end">
+													Cliquez ici pour éditer votre première feuille
 												</span>
-												<span class="text-4xl">
-													<i class="fa-duotone fa-hands-clapping"></i>
+												<span class="text-4xl flex justify-items-start self-start">
+													<i class="fa-duotone fa-file-circle-plus"></i>
 												</span>
-											</span>
+											</a>
 										</p>
 									</div>
-									<div class="mt-5 flex flex-col space-y-2 items-baseline gap-y-1 text-slate-700 dark:text-slate-300" id="noPublication2">
+									<div class="mt-5 flex flex-col space-y-2 items-baseline gap-y-1 text-slate-700 dark:text-slate-300">
 										<p class="text-sm flex font-normal gap-x-2  items-start">
 											<i class="fa-regular fa-lightbulb-exclamation-on mt-1 text-yellow-400 dark:text-amber-400"></i>
 											<span class="font-medium">
-												Votre première feuille est dépubliée et se trouve dans la section ci-dessous.
+												Vous avez la possibilité de créer un nombre illimité de feuilles et de les organiser selon vos préférences.
 											</span>
 										</p>
-										<p class="text-md flex font-normal gap-x-3 opacity-70">
-											<i class="fa-regular fa-up-down-left-right mt-1"></i>
+										<p class="text-md flex font-normal gap-x-4 opacity-70">
+											<i class="fa-regular fa-file-lines mt-1"></i>
 											<span class="text-[0.8rem]">
-												Vous pouvez la publier en la glissant dans cet espace
+												Chaque feuille peut être considérée comme une simple page de texte, une copie intégrale d'un document PDF (tel qu'un récit entier) ou comme un épisode, un chapitre de votre récit.
 											</span>
 										</p>
-										<p class="text-md flex font-normal gap-x-3 opacity-70">
-											<i class="fa-regular fa-hashtag mt-1"></i>
+										<p class="text-sm flex font-normal gap-x-4 opacity-70">
+											<i class="fa-regular fa-hashtag"></i>
 											<span class="text-[0.8rem]">
 												L'ordre par lequel vous les organisez déterminera l'ordre dans lequel vos lecteurs les liront.
 											</span>
 										</p>
 									</div>
+								{% elseif infoPub.publicationChapters|length > 0 and infoPub.publicationChapters|length < 2 %}
+									{% set var = true %}
+									{% for item in infoPub.publicationChapters %}
+										{% if item.status > 1 %}
+											{% set var = false %}
+										{% endif %}
+									{% endfor %}
+									{% if var %}
+										<div class="w-full text-center bg-emerald-500 dark:bg-amber-200 dark:opacity-70 rounded items-center justify-center justify-items-center flex-colsrounded  mt-3 " id="noPublication">
+											<p class="w-full h-full px-5 pt-5 grid-rows-1 grid-cols-1 grid pb-5 items-center justify-items-center place-items-center font-medium leading-5">
+												<span class="text-emerald-50 dark:text-amber-900 text-base  px-5 pt-5 grid-rows-2 grid-cols-1 grid pb-5 items-center justify-items-center place-items-center font-medium leading-5" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}#first" target="_top">
+													<span class="mt-10">
+														Vous venez de créer votre première feuille !
+													</span>
+													<span class="text-4xl">
+														<i class="fa-duotone fa-hands-clapping"></i>
+													</span>
+												</span>
+											</p>
+										</div>
+										<div class="mt-5 flex flex-col space-y-2 items-baseline gap-y-1 text-slate-700 dark:text-slate-300" id="noPublication2">
+											<p class="text-sm flex font-normal gap-x-2  items-start">
+												<i class="fa-regular fa-lightbulb-exclamation-on mt-1 text-yellow-400 dark:text-amber-400"></i>
+												<span class="font-medium">
+													Votre première feuille est dépubliée et se trouve dans la section ci-dessous.
+												</span>
+											</p>
+											<p class="text-md flex font-normal gap-x-3 opacity-70">
+												<i class="fa-regular fa-up-down-left-right mt-1"></i>
+												<span class="text-[0.8rem]">
+													Vous pouvez la publier en la glissant dans cet espace
+												</span>
+											</p>
+											<p class="text-md flex font-normal gap-x-3 opacity-70">
+												<i class="fa-regular fa-hashtag mt-1"></i>
+												<span class="text-[0.8rem]">
+													L'ordre par lequel vous les organisez déterminera l'ordre dans lequel vos lecteurs les liront.
+												</span>
+											</p>
+										</div>
+									{% endif %}
 								{% endif %}
-							{% endif %}
-							{% include "publication/_partials/_edit_publication_show_chapters.html.twig" with {withStatus:2} %}
+								{% include "publication/_partials/_edit_publication_show_chapters.html.twig" with {withStatus:2} %}
+							</div>
 						</div>
-					</div>
-					<h2 id="accordion-flush-heading-2" class=" border-b-emerald-800  mt-8  px-5 bg-white border-b-2  dark:border-b-slate-900  dark:bg-transparent ">
-						<button type="button" class="flex items-center justify-between w-full py-2 font-medium text-left  text-base dark:border-slate-700 dark:text-slate-400" data-accordion-target="#accordion-flush-body-2" aria-expanded="true" aria-controls="accordion-flush-body-2">
-							<span class=" flex-row-custom-gapx-3">
-								<i class="fa-regular fa-eye-slash"></i>
-								<span>Feuilles dépubliées, brouillons...</span>
-							</span>
-							<svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-								<path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-							</svg>
-						</button>
-
-					</h2>
-					<div id="accordion-flush-body-2" class="hidden" aria-labelledby="accordion-flush-heading-2">
-						{% if infoPub.publicationChapters|filter(c => c.status == 1)|length == 0 %}
-							{% set noChapUnpublished = true %}
-						{% else %}
-							{% set noChapUnpublished = false %}
-						{% endif %}
-						<div id="itemsChap2" class=" animate__animated flex-col  grid-cols-1 {{noChapUnpublished == false ? " md:grid-cols-2" : " md:grid-cols-1"}} grid gap-x-4 justify-center  opacity-100">
-							{% include "publication/_partials/_edit_publication_show_chapters.html.twig" with {withStatus:1} %}
-							{% if noChapUnpublished == true %}
-								<div id="noChapUnpublished" class="rounded p-5 text-center border-dashed dark:border-2 dark:border-slate-800  mt-5 dark:opacity-100 opacity-50 dark:text-slate-600 text-slate-700">Aucune feuille dépubliée</div>
+						<h2 id="accordion-flush-heading-2" class=" border-b-emerald-800  mt-8  px-5 bg-white border-b-2  dark:border-b-slate-900  dark:bg-transparent ">
+							<button type="button" class="flex items-center justify-between w-full py-2 font-medium text-left  text-base dark:border-slate-700 dark:text-slate-400" data-accordion-target="#accordion-flush-body-2" aria-expanded="true" aria-controls="accordion-flush-body-2">
+								<span class=" flex-row-custom-gapx-3">
+									<i class="fa-regular fa-eye-slash"></i>
+									<span>Feuilles dépubliées, brouillons...</span>
+								</span>
+								<svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+								</svg>
+							</button>
+						</h2>
+						<div id="accordion-flush-body-2" class="hidden" aria-labelledby="accordion-flush-heading-2">
+							{% if infoPub.publicationChapters|filter(c => c.status == 1)|length == 0 %}
+								{% set noChapUnpublished = true %}
+							{% else %}
+								{% set noChapUnpublished = false %}
 							{% endif %}
+							<div id="itemsChap2" class=" animate__animated flex-col  grid-cols-1 {{noChapUnpublished == false ? " md:grid-cols-2" : " md:grid-cols-1"}} grid gap-x-4 justify-center  opacity-100">
+								{% include "publication/_partials/_edit_publication_show_chapters.html.twig" with {withStatus:1} %}
+								{% if noChapUnpublished == true %}
+									<div id="noChapUnpublished" class="rounded p-5 text-center border-dashed dark:border-2 dark:border-slate-800  mt-5 dark:opacity-100 opacity-50 dark:text-slate-600 text-slate-700">Aucune feuille dépubliée</div>
+								{% endif %}
+							</div>
 						</div>
 					</div>
 				</div>
+				<div class="hidden p-4 rounded-lg  min-h-screen" id="statistiques" role="tabpanel" aria-labelledby="settings-tab">
+					{% if infoPub.publicationPopularities|length > 0 %}
+						<div id="legend-container" class="flex justify-evenly mb-5 text-xs"></div>
+						<div class="w-full  rounded p-5 dark:bg-slate-900">
+							<canvas id="chartStat" class="text-white"></canvas>
+						</div>
+						<hr class="mb-5">
+						<h2 class="font-medium dark:text-slate-300 mb-5 mt-0 text-slate-700 flex-row-custom-gapx-3 justify-center">
+							<i class="fa-duotone fa-fire"></i>
+							<span>Évolution de la popularité de votre récit</span>
+						</h2>
+						<div class="w-full  rounded p-5 dark:bg-slate-900">
+							<canvas id="chartStat2" class="text-white"></canvas>
+						</div>
+					{% else %}
+						<p class="text-center my-5 dark:text-slate-200">Aucune statistique à afficher pour le moment !</p>
+					{% endif %}
+				</div>
+				<div class="hidden p-4 rounded-lg  min-h-screen" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+					<p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the
+						<strong class="font-medium text-gray-800 dark:text-white">Settings tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
+				</div>
 			</div>
-			<div class="hidden p-4 rounded-lg  min-h-screen" id="statistiques" role="tabpanel" aria-labelledby="settings-tab">
-				{% if infoPub.publicationPopularities|length > 0 %}
-					<div id="legend-container" class="flex justify-evenly mb-5 text-xs"></div>
-					<div class="w-full  rounded p-5 dark:bg-slate-900">
-						<canvas id="chartStat" class="text-white"></canvas>
-					</div>
-					<hr class="mb-5">
-					<h2 class="font-medium dark:text-slate-300 mb-5 mt-0 text-slate-700 flex-row-custom-gapx-3 justify-center">
-						<i class="fa-duotone fa-fire"></i>
-						<span>Évolution de la popularité de votre récit</span>
-					</h2>
-					<div class="w-full  rounded p-5 dark:bg-slate-900">
-						<canvas id="chartStat2" class="text-white"></canvas>
-					</div>
+		</section>
+		<aside class="relative md:w-full lg:w-3/12  md:ml-7 md:mt-5 mb-14 ">
+			<hr class="w-full lg:hidden">
+			<button type="button" class="button-classic button-emerald w-full mb-3" id="savePublication">
+				{% if infoPub.status > 1 %}
+					<i class="fa-regular fa-cloud-arrow-up"></i>
+					&nbsp;Publier les modifications
 				{% else %}
-					<p class="text-center my-5 dark:text-slate-200">Aucune statistique à afficher pour le moment !</p>
+					<i class="fa-regular fa-floppy-disk"></i>
+					&nbsp;Enregistrer
 				{% endif %}
-			</div>
-			<div class="hidden p-4 rounded-lg  min-h-screen" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-				<p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the
-					<strong class="font-medium text-gray-800 dark:text-white">Settings tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
-			</div>
-		</div>
-	</section>
-	<aside class="col-span-12 mt-9 ml-5 lg:col-span-3 lg:mt-5 opacity-90  p-3 rounded">
-		<hr class="w-full col-span-12 lg:hidden">
-		<button type="button" class="button-classic button-emerald w-full mb-3" id="savePublication">
-			{% if infoPub.status > 1 %}
-				<i class="fa-regular fa-cloud-arrow-up"></i>
-				&nbsp;Publier les modifications
-			{% else %}
-				<i class="fa-regular fa-floppy-disk"></i>
-				&nbsp;Enregistrer
-			{% endif %}
-		</button>
-		<div class="bg-slate-50 dark:bg-slate-900 py-3 mb-5 mt-3 rounded-lg  text-sm">
-
-			<div id="publishDiv" class="px-3 rounded-lg  w-full mb-3 mt-2 flex hover:opacity-100 hover:grayscale-0" for="publishToggle">
-				<label
-					for="toggle" class="toggle" data-micromodal-trigger="popup-modal">
-					<!-- Le toggle button -->
-					<div class="relative">
-						<input type="checkbox" id="publishButton" class="disabled sr-only peer" disabled {% if infoPub.status == 2 %} checked {% endif %}/>
-						<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner" id="publishToggle"></div>
-						<div class="toggle-dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition-all duration-300 ease-linear"></div>
-					</div>
-					<!-- Le label du toggle button -->
-					<div class="ml-3 dark:text-slate-300 font-medium" id="publishText">
-						<span>
-							{% if infoPub.status > 1 %}
-								Dépublier le récit
+			</button>
+			<div class="bg-slate-50 dark:bg-slate-900 py-3 mb-5 mt-3 rounded-lg  text-sm">
+				<div id="publishDiv" class="px-3 rounded-lg  w-full mb-3 mt-2 flex hover:opacity-100 hover:grayscale-0" for="publishToggle">
+					<label
+						for="toggle" class="toggle" data-micromodal-trigger="popup-modal">
+						<!-- Le toggle button -->
+						<div class="relative">
+							<input type="checkbox" id="publishButton" class="disabled sr-only peer" disabled {% if infoPub.status == 2 %} checked {% endif %}/>
+							<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner" id="publishToggle"></div>
+							<div class="toggle-dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition-all duration-300 ease-linear"></div>
+						</div>
+						<!-- Le label du toggle button -->
+						<div class="ml-3 dark:text-slate-300 font-medium" id="publishText">
+							<span>
+								{% if infoPub.status > 1 %}
+									Dépublier le récit
+								{% else %}
+									Publier le récit
+								{% endif %}
+							</span>
+							<span data-tippy-content="<strong>Si vous activez cette option</strong>, votre récit sera accessible aux utilisateurs via son URL publique et apparaîtra sur nos pages (à condition que vous ayez publié au moins un chapitre et sélectionné une catégorie).<br><br><strong>Si vous désactivez cette option</strong>, votre récit devient absolument inacessible à tous, sauf pour vous.">
+								<i class="fa-duotone fa-comment-question"></i>
+							</span>
+						</div>
+					</label>
+				</div>
+				<div class="px-3 rounded-lg  w-full relative mb-3 flex hover:opacity-100 ">
+					<label class="toggle ">
+						<div class="relative" id="ASDisabled">
+							{% if infoPub.status < 2 %}
+								<input type="checkbox" value="" class="sr-only peer" id="togglePubAS" checked/>
 							{% else %}
-								Publier le récit
+								<input type="checkbox" value="" class="sr-only peer" id="togglePubAS" disabled/>
+							{% endif %}
+							<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner "></div>
+							<div class="toggle-dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition-all duration-300 ease-linear"></div>
+						</div>
+						<span class="ml-3 dark:text-slate-300 {{ infoPub.status > 1 ? " text-slate-400 dark:text-slate-600 cursor-default" : " cursor-pointer" }}   disabled" id="ASText">Sauvegarde auto.</span>
+						<span class="ml-3 left-0 cursor-default dark:text-white" id="ASTooltip">
+							<i class="fa-duotone fa-comment-question" data-tippy-content='<p class="text-center tippy-tt p-2"><strong><i class="fa-duotone fa-cloud-slash"></i><br>La sauvegarde automatique est désactivée car votre récit est publié.</strong><br><br>Si vous souhaitez enregistrer les modifications apportées à votre récit, veuillez cliquer sur le bouton ci-dessus, « Publier les modifications ».</p>'></i>
+						</span>
+					</label>
+				</div>
+				<div class="px-3 rounded-lg  w-full mb-3 flex hover:opacity-100 cursor-pointer">
+					<label class="toggle">
+						<div class="relative">
+							<input type="checkbox" value="" class="sr-only peer axiosPublication axiosPubAS axiosPubSpy" id="publication_finished" {{ infoPub.finished == 1 ? "checked" }}/>
+							<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
+							<div class="toggle-dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition-all duration-300 ease-linear"></div>
+						</div>
+						<span class="ml-3  dark:text-gray-300">Récit terminé&nbsp;&nbsp;
+							<span data-tippy-content="<strong>Si vous activez cette option</strong>, vous informez vos lecteurs que votre récit est terminé et qu'aucune nouvelle feuille ne sera publiée.<br><br><strong>Si vous désactivez cette option</strong>, vos lecteurs pourront s'abonner à votre récit et recevront des notifications si de nouvelles feuilles sont publiées.">
+								<i class="fa-duotone fa-comment-question"></i>
+							</span>
+						</span>
+					</label>
+				</div>
+			</div>
+			<div class="p-4 rounded-lg bg-slate-50 text-sm dark:bg-slate-900 w-full  mb-4 text-slate-800 dark:text-slate-400">
+				<p class=" mb-1 flex gap-x-3  items-center">
+					<i class="fa-regular fa-calendar-plus"></i>
+					<span>
+						Crée il y a
+						<span class="font-medium">{{ infoPub.created|since }}</span>
+					</span>
+				</p>
+				<p class="mb-1 flex gap-x-3 items-center">
+					<i class="fa-regular fa-square-pen"></i>
+					<span>
+						Modifié il y a
+						<span class="font-medium">{{ infoPub.updated|since }}</span>
+					</span>
+				</p>
+				<p id="publishDateText" class="mb-1  flex gap-x-2  items-center">
+					<i class="fa-regular fa-cloud-arrow-up"></i>
+					<span>
+						Publié il y a
+						<span class="font-medium" id="publishDateTextSpan">
+							{% if infoPub.publishedDate %}
+								{{ infoPub.publishedDate|since }}
 							{% endif %}
 						</span>
-						<span data-tippy-content="<strong>Si vous activez cette option</strong>, votre récit sera accessible aux utilisateurs via son URL publique et apparaîtra sur nos pages (à condition que vous ayez publié au moins un chapitre et sélectionné une catégorie).<br><br><strong>Si vous désactivez cette option</strong>, votre récit devient absolument inacessible à tous, sauf pour vous.">
-							<i class="fa-duotone fa-comment-question"></i>
-						</span>
-					</div>
-				</label>
-			</div>
-			<div class="px-3 rounded-lg  w-full relative mb-3 flex hover:opacity-100 ">
-				<label class="toggle ">
-					<div class="relative" id="ASDisabled">
-						{% if infoPub.status < 2 %}
-							<input type="checkbox" value="" class="sr-only peer" id="togglePubAS" checked/>
-						{% else %}
-							<input type="checkbox" value="" class="sr-only peer" id="togglePubAS" disabled/>
-						{% endif %}
-						<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner "></div>
-						<div class="toggle-dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition-all duration-300 ease-linear"></div>
-					</div>
-					<span class="ml-3 dark:text-slate-300 {{ infoPub.status > 1 ? " text-slate-400 dark:text-slate-600 cursor-default" : " cursor-pointer" }}   disabled" id="ASText">Sauvegarde auto.</span>
-					<span class="ml-3 left-0 cursor-default dark:text-white" id="ASTooltip">
-						<i class="fa-duotone fa-comment-question" data-tippy-content='<p class="text-center tippy-tt p-2"><strong><i class="fa-duotone fa-cloud-slash"></i><br>La sauvegarde automatique est désactivée car votre récit est publié.</strong><br><br>Si vous souhaitez enregistrer les modifications apportées à votre récit, veuillez cliquer sur le bouton ci-dessus, « Publier les modifications ».</p>'></i>
 					</span>
-				</label>
+				</p>
 			</div>
-			<div class="px-3 rounded-lg  w-full mb-3 flex hover:opacity-100 cursor-pointer">
-				<label class="toggle">
-					<div class="relative">
-						<input type="checkbox" value="" class="sr-only peer axiosPublication axiosPubAS axiosPubSpy" id="publication_finished" {{ infoPub.finished == 1 ? "checked" }}/>
-						<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
-						<div class="toggle-dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition-all duration-300 ease-linear"></div>
-					</div>
-					<span class="ml-3  dark:text-gray-300">Récit terminé&nbsp;&nbsp;
-						<span data-tippy-content="<strong>Si vous activez cette option</strong>, vous informez vos lecteurs que votre récit est terminé et qu'aucune nouvelle feuille ne sera publiée.<br><br><strong>Si vous désactivez cette option</strong>, vos lecteurs pourront s'abonner à votre récit et recevront des notifications si de nouvelles feuilles sont publiées.">
-							<i class="fa-duotone fa-comment-question"></i>
-						</span>
-					</span>
-				</label>
+			<div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-900 w-full  mb-4 text-slate-800 dark:text-slate-400">
+				<p class=" text-sm mb-1 font-semibold flex gap-x-2 items-center">
+					{% set slug = "recit-sans-titre" %}
+					{% if infoPub.slug %}
+						{% set slug = infoPub.slug %}
+					{% endif %}
+					{% if infoPub.status < 2 %}
+						<i class="fa-regular fa-browser"></i>
+						<a href="{{ path("app_publication_show_one", {id:infoPub.id, slug:slug}) }}" class=" hover:underline" target="_blank">Voir un aperçu du récit</a>
+					{% else %}
+						<i class="fa-regular fa-browser"></i>
+						<a href="{{ path("app_publication_show_one", {id:infoPub.id, slug:slug}) }}" class=" hover:underline" target="_blank">Voir le récit sur le site</a>
+					{% endif %}
+				</p>
 			</div>
-		</div>
-		<div class="p-4 rounded-lg bg-slate-50 text-sm dark:bg-slate-900 w-full  mb-4 text-slate-800 dark:text-slate-400">
-			<p class=" mb-1 flex gap-x-3  items-center">
-				<i class="fa-regular fa-calendar-plus"></i>
-				<span>
-					Crée il y a
-					<span class="font-medium">{{ infoPub.created|since }}</span>
-				</span>
-			</p>
-			<p class="mb-1 flex gap-x-3 items-center">
-				<i class="fa-regular fa-square-pen"></i>
-				<span>
-					Modifié il y a
-					<span class="font-medium">{{ infoPub.updated|since }}</span>
-				</span>
-			</p>
-			<p id="publishDateText" class="mb-1  flex gap-x-2  items-center">
-				<i class="fa-regular fa-cloud-arrow-up"></i>
-				<span>
-					Publié il y a
-					<span class="font-medium" id="publishDateTextSpan">
-						{% if infoPub.publishedDate %}
-							{{ infoPub.publishedDate|since }}
-						{% endif %}
-					</span>
-				</span>
-			</p>
-		</div>
-		<div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-900 w-full  mb-4 text-slate-800 dark:text-slate-400">
-			<p class=" text-sm mb-1 font-semibold flex gap-x-2 items-center">
-				{% set slug = "recit-sans-titre" %}
-				{% if infoPub.slug %}
-					{% set slug = infoPub.slug %}
-				{% endif %}
-				{% if infoPub.status < 2 %}
-					<i class="fa-regular fa-browser"></i>
-					<a href="{{ path("app_publication_show_one", {id:infoPub.id, slug:slug}) }}" class=" hover:underline" target="_blank">Voir un aperçu du récit</a>
-				{% else %}
-					<i class="fa-regular fa-browser"></i>
-					<a href="{{ path("app_publication_show_one", {id:infoPub.id, slug:slug}) }}" class=" hover:underline" target="_blank">Voir le récit sur le site</a>
-				{% endif %}
-			</p>
-		</div>
-		<div id="task" class="{{infoPub.publicationChapters|filter(c => c.status == 2)|length > 0 and infoPub.category ? " hidden" : " " }} p-4 rounded-lg bg-yellow-50 text-yellow-800 dark:bg-slate-900 w-full mb-4 dark:text-slate-400">
-			<p class="text-sm mb-1 font-semibold">
-				Vous devriez :
-				<ul class="text-xs mt-2">
-					<li class="flex gap-x-2 animate__animated {{infoPub.category ? " hidden" : " " }}" id="taskCategory">
-						<i class="fa-regular fa-masks-theater"></i>
-						<span>Choisir une catégorie dans la section «
-							<button onclick="var pcd = document.getElementById('publication_category_div').classList; document.getElementById('profile-tab').click();pcd.add('animate__animated','animate__flash');setTimeout(function() {pcd.remove('animate__animated','animate__flash')},2000)" class="hover:underline font-medium" type="button">Informations</button>
-							»
-						</span>
-					</li>
-					<li class="mt-3 flex  items-center gap-x-2 animate__animated  {{infoPub.publicationChapters|filter(c => c.status == 2)|length > 0 ? " hidden" : " " }}" id="taskPublish">
-						<i class="fa-regular fa-eye"></i>
-						Publier au moins une feuille
-					</li>
-					<li><hr class="mb-2 mt-2 border-yellow-400 bg-yellow-400 opacity-30"></li>
-					<li class="mt-3 flex items-baseline opacity-50 text-[0.75rem]  gap-x-2 animate__animated">
-						<i class="fa-regular fa-circle-info"></i>
-						Réalisez ces tâches afin que votre récit soit visible par les autres utilisateurs lors de sa publication. Autrement, il ne se sera consultable que par accès direct (lien).
-					</li>
+			<div id="task" class="{{infoPub.publicationChapters|filter(c => c.status == 2)|length > 0 and infoPub.category ? " hidden" : " " }} p-4 rounded-lg bg-yellow-50 text-yellow-800 dark:bg-slate-900 w-full mb-4 dark:text-slate-400">
+				<p class="text-sm mb-1 font-semibold">
+					Vous devriez :
+					<ul class="text-xs mt-2">
+						<li class="flex gap-x-2 animate__animated {{infoPub.category ? " hidden" : " " }}" id="taskCategory">
+							<i class="fa-regular fa-masks-theater"></i>
+							<span>Choisir une catégorie dans la section
+								<button onclick="document.getElementById('profile-tab').click();" class="hover:underline font-semibold" type="button">Informations</button>
+							</span>
+						</li>
+						<li class="mt-3 flex  items-center gap-x-2 animate__animated  {{infoPub.publicationChapters|filter(c => c.status == 2)|length > 0 ? " hidden" : " " }}" id="taskPublish">
+							<i class="fa-regular fa-eye"></i>
+							Publier au moins une feuille
+						</li>
+						<li><hr class="mb-2 mt-2 border-yellow-400 bg-yellow-400 opacity-30"></li>
+						<li class="mt-3 flex items-baseline opacity-50 text-[0.75rem]  gap-x-2 animate__animated">
+							<i class="fa-regular fa-circle-info"></i>
+							Réalisez ces tâches afin que votre récit soit visible par les autres utilisateurs lors de sa publication. Autrement, il ne se sera consultable que par accès direct (lien).
+						</li>
 
-				</ul>
-			</p>
-		</div>
-	</aside>
+					</ul>
+				</p>
+			</div>
+		</aside>
+	</div>
 	<div>
 		<div id="popup-modal" class="modal micromodal-slide" data-hidden="true">
 			<div class="modal__overlay" tabindex="-1" data-micromodal-close>

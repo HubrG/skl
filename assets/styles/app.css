@@ -45,7 +45,7 @@ nav {
 	@apply hover:bg-gray-100 text-gray-900 dark:text-slate-200 dark:hover:bg-slate-600  px-4 py-3 flex items-center gap-x-3;
 }
 main {
-	@apply  grid grid-rows-none grid-cols-12 items-start mx-auto md:p-10 p-3 pt-14 md:w-9/12 z-50 flex-grow;
+	@apply  container items-start mx-auto px-5 z-50 pt-10 xl:px-[10%] ;
 }
 #titleChapter {
 	@apply  py-2 col-span-12 rounded items-center -mt-10 ;
@@ -173,7 +173,7 @@ form button:disabled {
   }
   
 #editor img {
-	@apply max-w-[97%] block rounded-lg mx-auto my-3;
+	@apply w-full block rounded-lg mx-auto my-3;
 }
 #editor img::before {
 	@apply w-full bg-slate-900;
@@ -837,7 +837,7 @@ article#chapContent p img {
 	@apply w-full;
 }
 nav.breadcrumb {
-	@apply flex py-3 pt-4 md:pt-3  justify-center  shadow-none border-b-slate-200 dark:border-b-slate-700 dark:bg-slate-800 mb-10 -mt-5 md:-mt-0;
+	@apply flex py-3 pt-4 md:pt-3 w-full  -mt-10  mb-8 justify-center  shadow-none border-b-slate-200 dark:border-b-slate-700 dark:bg-slate-800;
 }
 nav.breadcrumb ol {
 	@apply inline-flex items-center space-x-1 md:space-x-3 text-xs;

@@ -469,4 +469,9 @@ class PublicationChapter
 
         return $this;
     }
+    public function __toString()
+    {
+        // Si le titre est null, retourner une chaîne vide ou une valeur par défaut
+        return $this->title ?? '';
+    }
 }

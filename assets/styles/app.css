@@ -702,8 +702,9 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 	@apply grid grid-cols-1 -mt-8 md:mt-0  gap-10 xl:grid-cols-2;
 }
 .publications-container.small {
-	@apply grid-cols-2 xl:grid-cols-3 gap-y-16 gap-x-5 mx-1;
+	@apply grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3  gap-y-8 gap-x-5 mx-1;
 }
+
 .publications-container.small.profil {
 	@apply grid-cols-2 xl:grid-cols-2 md:ml-5 ml-0 md:mt-0 -mt-10 gap-y-10 gap-x-5 mx-1 ;
 }
@@ -885,13 +886,40 @@ nav.breadcrumb ol li i:first-child{
 input:checked ~ .toggle-dot {
 	@apply bg-white dark:bg-slate-200;
     transform: translateX(100%);
-  }
-   input:checked ~ .bg-gray-400 {
-    background-color: #3B82F6; /* Couleur de fond de la barre lorsque la case à cocher est sélectionnée */
-  }
-  input ~ .bg-gray-400 {
-   @apply bg-slate-400 dark:bg-slate-700 /* Couleur de fond de la barre lorsque la case à cocher est sélectionnée */
-  }
-  .toggle {
+}
+input:checked ~ .bg-gray-400 {
+	background-color: #3B82F6; /* Couleur de fond de la barre lorsque la case à cocher est sélectionnée */
+}
+input ~ .bg-gray-400 {
+	@apply bg-slate-400 dark:bg-slate-700 /* Couleur de fond de la barre lorsque la case à cocher est sélectionnée */
+}
+.toggle {
 	@apply flex items-center cursor-pointer;
-  }
+}
+/* ! */
+/* ! Hack Flowbite */
+/* ! */
+/* * Tabs */
+button.text-blue-600 {
+    --tw-text-opacity: 1;
+    @apply text-slate-900 font-semibold dark:text-white ;
+}
+button.hover\:text-blue-600:hover {
+    --tw-text-opacity: 1;
+    @apply text-slate-900 font-semibold dark:text-white;
+}
+button.border-b-2 {
+    @apply border-b-[0px]
+}
+button.text-blue-600.border-b-2 {
+    --tw-text-opacity: 1;
+    @apply text-slate-900 font-semibold dark:text-white border-slate-900 dark:border-white border-b-[1px];
+}
+button.hover\:border-b-2:hover {
+    --tw-text-opacity: 1;
+	@apply border-2
+
+}
+main button {
+	@apply gap-x-2 flex flex-row items-center justify-center; 
+}

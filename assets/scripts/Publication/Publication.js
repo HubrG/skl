@@ -269,6 +269,7 @@ function publishPublication(ev) {
   var togglePubAS = document.getElementById("togglePubAS");
   var ASTooltip = document.getElementById("ASTooltip");
   var ASText = document.getElementById("ASText");
+  var ASDisabled = document.getElementById("ASDisabled");
   var savePublication = document.getElementById("savePublication");
   var PublicationPublishModalText = document.getElementById(
     "PublicationPublishModalText"
@@ -283,6 +284,7 @@ function publishPublication(ev) {
       publishToggle.classList.add("peer-checked:bg-red-600");
       publish.classList.add("button-red");
       badgePubStatus.classList.toggle("badge-published");
+      ASDisabled.classList.add("cursor-not-allowed");
     } else {
       PublicationPublishModalText.innerHTML =
         "Êtes-vous certain(e) de vouloir <span class='text-emerald-500 dark:text-emerald-500'>publier</span> votre récit ?";
@@ -309,6 +311,7 @@ function publishPublication(ev) {
         "text-slate-400",
         "dark:text-slate-600"
       );
+      ASDisabled.classList.add("cursor-not-allowed");
       ASText.classList.remove("cursor-pointer");
       badgePubStatus.classList.toggle("badge-unpublished");
       badgePubStatus.classList.toggle("badge-published");
@@ -327,6 +330,7 @@ function publishPublication(ev) {
         "text-slate-400",
         "dark:text-slate-600"
       );
+      ASDisabled.classList.remove("cursor-not-allowed");
       ASText.classList.add("cursor-pointer");
       badgePubStatus.classList.toggle("badge-unpublished");
       badgePubStatus.classList.toggle("badge-published");

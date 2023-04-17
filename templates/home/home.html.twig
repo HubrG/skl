@@ -241,7 +241,7 @@
 			</span>
 			<hr>
 		</div>
-		<div class="animate__animated animate__fadeIn publications-container small ">
+		<div class="animate__animated animate__fadeIn publications-container small two-col ">
 			{% for item in pub_last %}
 				{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'all', 'queryPage':1, 'sortBy':'published', 'querySortby':'published', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
 			{% endfor %}
@@ -266,7 +266,7 @@
 			</span>
 			<hr class="mb-20">
 		</div>
-		<div class="animate__animated animate__fadeIn publications-container small">
+		<div class="animate__animated animate__fadeIn publications-container small two-col">
 			{% for item in pub_pop %}
 				{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'all', 'queryPage':1, 'sortBy':'pop', 'querySortby':'pop', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
 			{% endfor %}

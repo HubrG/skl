@@ -2,7 +2,7 @@
 
 {% block title %}
 	Création d'un nouveau récit
-																																																																																																																												-
+																																																																																																																																	-
 	{{ parent() }}
 {% endblock %}
 {# TODO: sur l'affichage des textes, faire un module de surlignage, mise en favoris, commentaire etc sur la selection #}
@@ -63,7 +63,7 @@
 		{{ form_label(form.title) }}
 		<div class="relative mb-6">
 			<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
-				<i class="fa-regular fa-heading"></i>
+				<i class="fa-regular fa-heading  dark:text-white"></i>
 			</div>
 			{{ form_widget(form.title, {attr:{"class":"axiosPubAS"}}) }}
 		</div>
@@ -74,14 +74,14 @@
 		{{ form_label(form.category) }}
 		<div class="relative mb-6">
 			<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
-				<i class="fa-regular fa-masks-theater"></i>
+				<i class="fa-regular fa-masks-theater  dark:text-white"></i>
 			</div>
 			{{ form_widget(form.category, {attr:{"class":"axiosPubAS select"}}) }}
 		</div>
 		<label>En quelques mots, quelles sont les grandes thématiques de votre récit ?</label>
 		<div class="relative mb-6">
 			<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
-				<i class="fa-regular fa-tags"></i>
+				<i class="fa-regular fa-tags  dark:text-white"></i>
 			</div>
 			<input type="text" value="" id="keyValue"/>
 		</div>

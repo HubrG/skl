@@ -66,21 +66,21 @@
 	</aside>
 	<section class="col-span-12 -col-start-0 lg:col-span-6 -mt-10">
 		<div class="mb-4 border-b border-gray-200 dark:border-gray-700">
-			<ul class="flex justify-center -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
-				<li class="mr-2 text-xs lg:text-base" role="presentation">
-					<button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
+			<ul class="flex justify-center text-sm lg:text-base -mb-px font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
+				<li class="mr-2 " role="presentation">
+					<button class="p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
 						<i class="fa-light fa-circle-info"></i>
 						<span>Informations</span>
 					</button>
 				</li>
-				<li class="mr-2 text-xs lg:text-base" role="presentation">
-					<button class="inline-block p-4 border-b-2 rounded-t-lg" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">
+				<li class="mr-2" role="presentation">
+					<button class="p-4 border-b-2 rounded-t-lg" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">
 						<i class="fa-light fa-list-ol"></i>
 						<span>Feuilles</span>
 					</button>
 				</li>
-				<li class="mr-2 text-xs lg:text-base" role="presentation">
-					<button class="inline-block p-4 border-b-2 rounded-t-lg" id="statistiques-tab" data-tabs-target="#statistiques" type="button" role="tab" aria-controls="statistiques" aria-selected="false">
+				<li class="mr-2" role="presentation">
+					<button class="p-4 border-b-2 rounded-t-lg" id="statistiques-tab" data-tabs-target="#statistiques" type="button" role="tab" aria-controls="statistiques" aria-selected="false">
 						<i class="fa-light fa-chart-mixed"></i>
 						<span>Statistiques</span>
 					</button>
@@ -322,15 +322,15 @@
 					</div>
 				</label>
 			</div>
-			<div class="px-3 rounded-lg  w-full relative mb-3 flex hover:opacity-100 hover:grayscale-0">
-				<label class="toggle">
-					<div class="relative">
+			<div class="px-3 rounded-lg  w-full relative mb-3 flex hover:opacity-100 ">
+				<label class="toggle ">
+					<div class="relative" id="ASDisabled">
 						{% if infoPub.status < 2 %}
 							<input type="checkbox" value="" class="sr-only peer" id="togglePubAS" checked/>
 						{% else %}
 							<input type="checkbox" value="" class="sr-only peer" id="togglePubAS" disabled/>
 						{% endif %}
-						<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
+						<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner "></div>
 						<div class="toggle-dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition-all duration-300 ease-linear"></div>
 					</div>
 					<span class="ml-3 dark:text-slate-300 {{ infoPub.status > 1 ? " text-slate-400 dark:text-slate-600 cursor-default" : " cursor-pointer" }}   disabled" id="ASText">Sauvegarde auto.</span>
@@ -382,7 +382,7 @@
 			</p>
 		</div>
 		<div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-900 w-full  mb-4 text-slate-800 dark:text-slate-400">
-			<p class=" text-xs mb-1 font-semibold flex gap-x-2 items-center">
+			<p class=" text-sm mb-1 font-semibold flex gap-x-2 items-center">
 				{% set slug = "recit-sans-titre" %}
 				{% if infoPub.slug %}
 					{% set slug = infoPub.slug %}

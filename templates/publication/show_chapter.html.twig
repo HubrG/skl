@@ -86,7 +86,7 @@
 			{% endfor %}
 		</div>
 	</section>
-	<section class="w-full md:w-9/12 mx-auto pt-10 row-start-2 backdrop:blur-sm" id="chapContent">
+	<section class="w-full md:w-9/12 mx-auto pt-10 row-start-2 backdrop:blur-sm px-1" id="chapContent">
 		{% if previousChap %}
 			<div class="fixed top-0 w-10 bottom-0 left-0 hidden md:flex items-center justify-start  ml-8 lg:ml-56 z-10" id="arrowPrevious">
 				<a href="{{ path("app_chapter_show", {idChap:previousChap.id, slugPub:infoPub.slug, user:infoPub.user.username, slug:previousChap.slug}) }}" class="text-slate-600  text-6xl" aria-label="Revenir au chapitre précédent">

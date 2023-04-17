@@ -128,7 +128,7 @@
 					</label>
 					{{ form_end(formPub) }}
 				</div>
-				<div class="hidden p-4 rounded-lg" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+				<div class="hidden rounded-lg" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
 					{% if infoPub.publicationChapters|length > 0 %}
 						<ul>
 							<li class="text-center">
@@ -156,8 +156,8 @@
 								{% if infoPub.publicationChapters|length == 0 %}
 									<div class="w-full text-center bg-slate-100 dark:bg-slate-700 items-center justify-center justify-items-center flex-cols dark:text-slate-100 text-slate-600 rounded  mt-3 opacity-80 hover:opacity-100 border-2 border-slate-200 dark:border-slate-900" id="noPublication">
 										<p class="w-full h-full flex-row grid-cols-1 grid items-center justify-items-center place-items-center font-medium leading-5">
-											<a class="h-full px-5 space-y-5 py-0 grid-rows-2 grid-cols-1 grid items-center justify-items-center place-items-center font-medium leading-5 pb-10" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}#first" target="_top">
-												<span class="flex justify-items-end text-slate-900 dark:text-slate-100 text-xl leading-7 self-end">
+											<a class="h-full px-5 pt-8 sm:pt-5 space-y-5 py-0 grid-rows-2 grid-cols-1 grid items-center justify-items-center place-items-center font-medium leading-5 pb-10" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}#first" target="_top">
+												<span class="flex justify-items-end text-slate-900 dark:text-slate-100 text-sm sm:text-md md:text-lg leading-7 self-end">
 													Cliquez ici pour éditer votre première feuille
 												</span>
 												<span class="text-4xl flex justify-items-start self-start">
@@ -292,7 +292,7 @@
 					&nbsp;Enregistrer
 				{% endif %}
 			</button>
-			<div class="bg-slate-50 dark:bg-slate-900 py-3 mb-5 mt-3 rounded-lg  text-sm">
+			<div class="bg-slate-50 dark:bg-slate-900 py-3 px-3 mb-5 mt-3 rounded-lg  text-sm">
 				<div id="publishDiv" class="px-3 rounded-lg  w-full mb-3 mt-2 flex hover:opacity-100 hover:grayscale-0" for="publishToggle">
 					<label
 						for="toggle" class="toggle" data-micromodal-trigger="popup-modal">
@@ -304,19 +304,20 @@
 						</div>
 						<!-- Le label du toggle button -->
 						<div class="ml-3 dark:text-slate-300 font-medium" id="publishText">
-							<span>
+							<span class="font-semibold">
 								{% if infoPub.status > 1 %}
 									Dépublier le récit
 								{% else %}
 									Publier le récit
 								{% endif %}
 							</span>
-							<span data-tippy-content="<strong>Si vous activez cette option</strong>, votre récit sera accessible aux utilisateurs via son URL publique et apparaîtra sur nos pages (à condition que vous ayez publié au moins un chapitre et sélectionné une catégorie).<br><br><strong>Si vous désactivez cette option</strong>, votre récit devient absolument inacessible à tous, sauf pour vous.">
+							<span class="ml-2" data-tippy-content="<strong>Si vous activez cette option</strong>, votre récit sera accessible aux utilisateurs via son URL publique et apparaîtra sur nos pages (à condition que vous ayez publié au moins un chapitre et sélectionné une catégorie).<br><br><strong>Si vous désactivez cette option</strong>, votre récit devient absolument inacessible à tous, sauf pour vous.">
 								<i class="fa-duotone fa-comment-question"></i>
 							</span>
 						</div>
 					</label>
 				</div>
+				<hr class="mb-5">
 				<div class="px-3 rounded-lg  w-full relative mb-3 flex hover:opacity-100 ">
 					<label class="toggle ">
 						<div class="relative" id="ASDisabled">

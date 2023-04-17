@@ -19,7 +19,8 @@
 {% block title %}
 	Récit |
 	{{ pubShow.title }}
-	-
+	({{ pubShow.user.nickname }})
+			-
 	{{ parent() }}
 {% endblock %}
 
@@ -96,7 +97,7 @@
 			</span>
 		</h2>
 		<div class="flex rounded justify-center">
-			<img class="rounded mt-6 w-40 h-50 justify-center  shadow mb-5  pb-1  dark:grayscale-[50%]" src="{{pic}}" alt=""/>
+			<img class="rounded mt-6 w-40 h-50 justify-center  shadow mb-5  dark:grayscale-[50%]" src="{{pic}}" alt=""/>
 		</div>
 		<div class="flex gap-5 p-10 pt-0  items-center">
 

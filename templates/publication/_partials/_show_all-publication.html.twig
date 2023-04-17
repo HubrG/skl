@@ -129,7 +129,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="publication-bottom ">
+	<div class="publication-bottom {% if item.publicationKeywords|length == 0 %}hidden{% endif %}">
 		<ul class="text-cyan-600 flex flex-wrap px-3 mt-1 ">
 			{% for pubKeyw in item.publicationKeywords %}
 				<li>
@@ -138,6 +138,7 @@
 					</a>
 				</li>
 			{% endfor %}
+
 		</ul>
 	</div>
 </div>

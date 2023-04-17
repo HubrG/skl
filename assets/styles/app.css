@@ -66,9 +66,7 @@ main {
 dialog {
 	@apply bg-white backdrop-blur-sm border-2 rounded border-slate-800 bg-opacity-25 text-left  ;
 }
-dialog h1,h2,h3 {
-	@apply text-center  ;
-}
+
 .bg-gray-900 { 
 	/* lié au dialogue */
 	@apply bg-opacity-10 
@@ -173,22 +171,22 @@ form button:disabled {
 	overflow: visible; /* Permet à l'éditeur de s'agrandir en fonction de son contenu */
   }
   #editor h1 {
-	@apply text-4xl font-serif;
+	@apply text-5xl font-serif;
    }
    #editor h2 {
-	@apply text-3xl font-bold  font-serif;
+	@apply text-4xl font-bold  font-serif ;
    }
    #editor h3 {
-	@apply text-2xl font-semibold  font-serif;
+	@apply text-3xl font-semibold  font-serif;
    }
    #editor h4 {
-	@apply text-xl font-medium  font-serif;
+	@apply text-2xl font-medium  font-serif;
    }
    #editor h5 {
-	@apply text-sm font-normal  font-serif;
+	@apply text-xl font-normal  font-serif text-left;
    }
    #editor h6 {
-	@apply text-xs  font-serif
+	@apply text-xs  font-serif text-left;
    }
 #editor img {
 	@apply w-full block rounded-lg mx-auto my-3;
@@ -280,22 +278,22 @@ opacity: 0.4;
 	@apply text-base text-slate-800 dark:text-slate-300 font-serif ;
 }
 #chapContent h1 {
- @apply text-4xl  font-serif;
+ @apply text-4xl  font-serif text-left;
 }
 #chapContent h2 {
- @apply text-3xl font-bold font-serif;
+ @apply text-3xl font-bold font-serif text-left;
 }
 #chapContent h3 {
- @apply text-2xl font-semibold font-serif;
+ @apply text-2xl font-semibold font-serif text-left;
 }
 #chapContent h4 {
  @apply text-xl font-medium  font-serif;
 }
 #chapContent h5 {
- @apply text-sm font-normal font-serif;
+ @apply text-sm font-normal font-serif text-left;
 }
 #chapContent h6 {
- @apply text-xs font-serif;
+ @apply text-xs font-serif text-left;
 }
 #chapContent p {
 	@apply text-lg mb-2 indent-2 leading-6 text-slate-800 dark:text-slate-300 font-serif;

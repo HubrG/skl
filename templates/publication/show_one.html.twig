@@ -2,7 +2,7 @@
 {% set pic = pubShow.cover %}
 
 {% if pic %}
-	{% set pic_bg = pic|replace({'/upload/': '/upload/e_vectorize:colors:3,'}) %}
+	{% set pic_bg = pic|replace({'/upload/': '/upload/c_fill_pad,g_auto,w_1.0,e_improve:outdoor,f_jpg,e_blur:400,'}) %}
 {% else %}
 	{% set pic_bg = "/images/no-cover-bg.png" %}
 	{% if app.user and app.user.userParameters is defined and app.user.userParameters.darkmode == true %}
@@ -72,7 +72,7 @@
 			background-position: center;
 		}
 	</style>
-	<section class=" before:bg-cover before:-z-[9999]  col-span-12 col-start-0 lg:col-span-10 lg:col-start-2 gap-10 " id="PublicationShowOneContent">
+	<section class=" before:bg-cover before:-z-[9999] dark:before:grayscale  col-span-12 col-start-0 lg:col-span-10 lg:col-start-2 gap-10 " id="PublicationShowOneContent">
 		{% if pubShow.status < 2 %}
 			<div class="mb-0">
 				<div class="w-full -mt-10 mb-5 h-10 bg-slate-100 ring-1 ring-slate-500 dark:bg-slate-700 dark:shadow dark:text-slate-200 opacity-80 dark:opacity-100 right-0 rounded-b-sm">

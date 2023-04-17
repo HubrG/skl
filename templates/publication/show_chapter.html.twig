@@ -33,10 +33,10 @@
 {% endblock %}
 
 {% block body %}
-	<section id="titleChapter" data-title="{{infoChap.title}}" class="sticky {{ infoChap.Publication.status < 2 ? " -mt-20 top-16" : " top-14" }}  bg-white dark:bg-slate-800 dark:bg-transparent dark:bg-opacity-50 bg-transparent bg-opacity-50 backdrop-blur-sm">
+	<section id="titleChapter" data-title="{{infoChap.title}}" class=" {{ infoChap.Publication.status < 2 ? " -mt-20 top-16" : " top-14" }}  bg-white dark:bg-slate-800 dark:bg-transparent dark:bg-opacity-50 bg-transparent bg-opacity-50 backdrop-blur-sm">
 		{% if infoChap.Publication.status < 2 %}
 			<div class="mb-0">
-				<div class="w-5/6 mx-auto -mt-2 h-10  bg-slate-100 dark:bg-slate-700 dark:text-slate-200  ring-1 ring-slate-700 opacity-80 right-0 rounded-b-sm">
+				<div class="w-6/6 mx-auto -mt-2 h-10  bg-slate-100 dark:bg-slate-700 dark:text-slate-200  ring-1 ring-slate-700 opacity-80 right-0 rounded-b-sm">
 					<p class="text-center p-2 font-medium text-xs flex justify-between px-5">
 						<span>
 
@@ -86,7 +86,7 @@
 			{% endfor %}
 		</div>
 	</section>
-	<section class="col-span-12 col-start-0 md:col-span-8 md:col-start-3 pt-10 row-start-2 backdrop:blur-sm" id="chapContent">
+	<section class="w-full md:w-9/12 mx-auto pt-10 row-start-2 backdrop:blur-sm" id="chapContent">
 		{% if previousChap %}
 			<div class="fixed top-0 w-10 bottom-0 left-0 hidden md:flex items-center justify-start  ml-8 lg:ml-56 z-10" id="arrowPrevious">
 				<a href="{{ path("app_chapter_show", {idChap:previousChap.id, slugPub:infoPub.slug, user:infoPub.user.username, slug:previousChap.slug}) }}" class="text-slate-600  text-6xl" aria-label="Revenir au chapitre précédent">

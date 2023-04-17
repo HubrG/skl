@@ -30,10 +30,11 @@ footer {
 	@apply w-full bg-white dark:bg-gray-900 p-4 sm:p-6 mt-14 z-10;
 }
 nav {
-	@apply  bg-white   border-b border-b-slate-300 px-2 md:px-4 py-2.5 dark:bg-slate-800 dark:border-b-slate-700
+	@apply  bg-white  border-b border-b-slate-300 px-2 md:px-4 py-2.5 dark:bg-slate-800 dark:border-b-slate-700
 }
+
 .navbar-button {
-	@apply  w-full flex gap-x-2 justify-center cursor-pointer items-center text-slate-800 dark:text-slate-50 hover:bg-slate-50 focus:ring-4 focus:ring-slate-300 font-medium rounded-lg  px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-slate-700 focus:outline-none dark:focus:ring-slate-800;
+	@apply  w-full flex gap-x-2 justify-center  cursor-pointer items-center text-slate-800 dark:text-slate-50 hover:bg-slate-50 focus:ring-4 focus:ring-slate-300 rounded-lg  px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-slate-700 focus:outline-none dark:focus:ring-slate-800;
 }
 .navbar-button-home {
 	@apply flex flex-col md:flex-row justify-center md:justify-center text-center font-semibold md:font-normal gap-y-2 text-sm md:text-base;

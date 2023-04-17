@@ -377,7 +377,7 @@
 					</span>
 				</p>
 			</div>
-			<div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-900 w-full  mb-4 text-slate-800 dark:text-slate-400">
+			<div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-900 w-full  mb-4 text-slate-800 dark:text-slate-400 {{infoPub.category and infoPub.publicationChapters|filter(c => c.status == 2)|length > 0 ? " block" : " hidden"  }}">
 				<p class=" text-sm mb-1 font-semibold flex gap-x-2 items-center">
 					{% set slug = "recit-sans-titre" %}
 					{% if infoPub.slug %}

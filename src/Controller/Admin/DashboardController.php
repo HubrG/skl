@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\User;
 use App\Entity\Publication;
+use App\Entity\BlogCategory;
 use App\Entity\Notification;
 use App\Entity\UserParameters;
 use App\Entity\PublicationFollow;
@@ -61,11 +62,17 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         //
+        yield MenuItem::section('Blog', 'fas fa-blog');
         yield MenuItem::subMenu('Catégories', 'fas fa-masks-theater')->setSubItems([
+            MenuItem::linkToCrud('Voir les catégories', 'fas fa-eye', BlogCategory::class),
+            MenuItem::linkToCrud('Créer une catégorie', 'fas fa-add', BlogCategory::class)->setAction(Crud::PAGE_NEW),
+        ]);
+        yield MenuItem::section('Récits', 'fas fa-book');
+        yield MenuItem::subMenu('Catégories', 'fas fa-tags')->setSubItems([
             MenuItem::linkToCrud('Voir les catégories', 'fas fa-eye', PublicationCategory::class),
             MenuItem::linkToCrud('Créer une catégorie', 'fas fa-add', PublicationCategory::class)->setAction(Crud::PAGE_NEW),
-            // MenuItem::linkToCrud('Publications', 'fas fa-list', PublicationCrudController::class),
         ]);
+
         // 
         yield MenuItem::subMenu('Utilisateurs', 'fas fa-user')->setSubItems([
             MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class),

@@ -19,7 +19,13 @@
 					<li>
 						<button id="mega-menu-icons-dropdown-button" aria-label="Lire" data-dropdown-toggle="mega-menu-icons-dropdown" type="button" class="navbar-button">
 							<i class="fa-duotone fa-glasses-round"></i>
-							Lire
+							Récits
+						</button>
+					</li>
+					<li>
+						<button id="mega-menu-blog-button" aria-label="Lire" data-dropdown-toggle="mega-menu-blog" type="button" class="navbar-button">
+							<i class="fa-duotone fa-rss"></i>
+							Blog
 						</button>
 					</li>
 					{% if app.user %}
@@ -166,6 +172,26 @@
 							<li class="flex justify-center justify-items-center">
 								<a href="{{ path("app_publication_show_all_category", {slug:item.slug, page:null})}}" class=" text-slate-600 dark:text-slate-100 hover:underline font-medium hover:text-purple-500 dark:hover:text-purple-400 group flex gap-x-2 items-center">
 									<span class="flex w-3 h-3 catColor-{{item.color}} rounded-full"></span>
+									{{ item.name }}
+								</a>
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+			<div id="mega-menu-blog" class="navbar-dropdown md:w-auto absolute z-10 hidden w-auto bg-white  border-slate-100 border-t-2  border-t-green-400 shadow-md dark:border-b-none dark:border-l-none dark:border-r-none  md:grid-cols-3 dark:bg-slate-700 dark:shadow-2xl">
+				<div class=" pt-0 pb-0  dark:bg-slate-800 text-slate-900 md:pb-4 dark:text-white divide-y divide-slate-100 dark:divide-slate-600">
+					<div aria-labelledby="mega-menu-icons-dropdown-button" class="w-full hover:bg-slate-50 border-b-[1px] border-b-slate-200 dark:border-b-slate-900 ">
+						<a class=" opacity-100 block px-4 py-4  text-lg text-slate-800    dark:bg-slate-900 dark:hover:bg-slate-700 dark:text-gray-200 dark:hover:text-white  font-semibold" href="{{ path("app_publication_show_all_category", {slug:null, page:null})}}">
+
+							Afficher tous les blogs
+						</a>
+					</div>
+					<ul class="gap-y-5 gap-x-5 px-6 flex-col grid-cols-2 md:grid-cols-3 grid-flow-row  grid justify-items-start items-baseline py-3" aria-labelledby="mega-menu-icons-dropdown-button">
+						{% for item in blogCategoryRepository.findAll()|sort((a, b) => a.slug < b.slug ? -1 : 1) %}
+							<li class="flex justify-start text-left items-baseline gap-x-2">
+								<i class="fa-duotone {{ item.icon }}"></i>
+								<a href="{{ path("app_publication_show_all_category", {slug:item.slug, page:null})}}" class=" text-slate-600 dark:text-slate-100 hover:underline font-medium hover:text-purple-500 dark:hover:text-purple-400 group flex gap-x-2 items-center">
 									{{ item.name }}
 								</a>
 							</li>

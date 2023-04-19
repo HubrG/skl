@@ -3,6 +3,7 @@ twig:
     globals:
         publicationCategoryRepository: "@App\\Repository\\PublicationCategoryRepository"
         notificationRepository: "@App\\Repository\\NotificationRepository"
+        blogCategoryRepository: "@App\\Repository\\BlogCategoryRepository"
     cache: '%kernel.cache_dir%/twig'
     #cache: false
 

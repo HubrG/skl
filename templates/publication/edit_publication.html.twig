@@ -63,7 +63,7 @@
 		</aside>
 		<section class="relative sm:w-full lg:w-6/12  lg:ml-7 lg:-mt-10 mb-14 ">
 			<div class="mb-4 border-b border-gray-200 dark:border-gray-700">
-				<ul class="flex justify-center text-sm lg:text-base -mb-px font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
+				<ul class="flex justify-center  lg:text-md -mb-px font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
 					<li class="mr-2 " role="presentation">
 						<button class="p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
 							<i class="fa-light fa-circle-info"></i>
@@ -317,6 +317,60 @@
 						</div>
 					</label>
 				</div>
+				<div id="task" class="{{infoPub.publicationChapters|filter(c => c.status == 2)|length > 0 and infoPub.category ? " hidden" : " " }} p-4 bg-slate-200 rounded text-slate-800 dark:bg-slate-900 w-full mb-0 dark:text-slate-400">
+					<p class="text-sm mb-1 font-semibold">
+						Avant de publier, vous devriez :
+						<ul class="text-xs mt-4">
+							<li class="flex gap-x-2 animate__animated {{infoPub.category ? " hidden" : " " }}" id="taskCategory">
+								<i class="fa-regular fa-masks-theater"></i>
+								<span>Choisir une catégorie dans la section
+									<button type="button" class="inline hover:underline font-semibold" onclick="document.getElementById('profile-tab').click();">Informations</button>
+								</span>
+							</li>
+							<li class="mt-3 flex  items-center gap-x-2 animate__animated  {{infoPub.publicationChapters|filter(c => c.status == 2)|length > 0 ? " hidden" : " " }}" id="taskPublish">
+								<i class="fa-regular fa-eye"></i>
+								Publier au moins une feuille
+							</li>
+							<li>
+								<hr class="mb-2 mt-4 border-slate-400 bg-slate-400 opacity-30"></li>
+							<li class="mt-3 flex items-baseline opacity-50 text-[0.75rem]  gap-x-2 animate__animated">
+								<i class="fa-regular fa-circle-info"></i>
+								Réalisez ces tâches afin que votre récit soit visible par les autres utilisateurs lors de sa publication. Autrement, il ne se sera consultable que par accès direct (lien).
+							</li>
+
+						</ul>
+					</p>
+				</div>
+				<hr class="mb-5">
+
+				<div class="px-3 rounded-lg  w-full mb-3 flex hover:opacity-100 cursor-pointer">
+					<label class="toggle">
+						<div class="relative">
+							<input type="checkbox" value="" class="sr-only peer axiosPublication axiosPubAS axiosPubSpy" id="publication_finished" {{ infoPub.finished == 1 ? "checked" }}/>
+							<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
+							<div class="toggle-dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition-all duration-300 ease-linear"></div>
+						</div>
+						<span class="ml-3  dark:text-gray-300">Récit terminé&nbsp;&nbsp;
+							<span data-tippy-content="<strong>Si vous activez cette option</strong>, vous informez vos lecteurs que votre récit est terminé et qu'aucune nouvelle feuille ne sera publiée.<br><br><strong>Si vous désactivez cette option</strong>, vos lecteurs pourront s'abonner à votre récit et recevront des notifications si de nouvelles feuilles sont publiées.">
+								<i class="fa-duotone fa-comment-question"></i>
+							</span>
+						</span>
+					</label>
+				</div>
+				<div class="px-3 rounded-lg  w-full mb-3 flex hover:opacity-100 cursor-pointer">
+					<label class="toggle">
+						<div class="relative">
+							<input type="checkbox" value="" class="sr-only peer axiosPublication axiosPubAS axiosPubSpy" id="publication_sell" {{ infoPub.finished == 1 ? "checked" }}/>
+							<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
+							<div class="toggle-dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition-all duration-300 ease-linear"></div>
+						</div>
+						<span class="ml-3  dark:text-gray-300">Récit en vente&nbsp;&nbsp;
+							<span data-tippy-content="<strong>Si vous activez cette option</strong>, vous informez vos lecteurs que votre récit est terminé et qu'aucune nouvelle feuille ne sera publiée.<br><br><strong>Si vous désactivez cette option</strong>, vos lecteurs pourront s'abonner à votre récit et recevront des notifications si de nouvelles feuilles sont publiées.">
+								<i class="fa-duotone fa-comment-question"></i>
+							</span>
+						</span>
+					</label>
+				</div>
 				<hr class="mb-5">
 				<div class="px-3 rounded-lg  w-full relative mb-3 flex hover:opacity-100 ">
 					<label class="toggle ">
@@ -332,20 +386,6 @@
 						<span class="ml-3 dark:text-slate-300 {{ infoPub.status > 1 ? " text-slate-400 dark:text-slate-600 cursor-default" : " cursor-pointer" }}   disabled" id="ASText">Sauvegarde auto.</span>
 						<span class="ml-3 left-0 cursor-default dark:text-white" id="ASTooltip">
 							<i class="fa-duotone fa-comment-question" data-tippy-content='<p class="text-center tippy-tt p-2"><strong><i class="fa-duotone fa-cloud-slash"></i><br>La sauvegarde automatique est désactivée car votre récit est publié.</strong><br><br>Si vous souhaitez enregistrer les modifications apportées à votre récit, veuillez cliquer sur le bouton ci-dessus, « Publier les modifications ».</p>'></i>
-						</span>
-					</label>
-				</div>
-				<div class="px-3 rounded-lg  w-full mb-3 flex hover:opacity-100 cursor-pointer">
-					<label class="toggle">
-						<div class="relative">
-							<input type="checkbox" value="" class="sr-only peer axiosPublication axiosPubAS axiosPubSpy" id="publication_finished" {{ infoPub.finished == 1 ? "checked" }}/>
-							<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
-							<div class="toggle-dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition-all duration-300 ease-linear"></div>
-						</div>
-						<span class="ml-3  dark:text-gray-300">Récit terminé&nbsp;&nbsp;
-							<span data-tippy-content="<strong>Si vous activez cette option</strong>, vous informez vos lecteurs que votre récit est terminé et qu'aucune nouvelle feuille ne sera publiée.<br><br><strong>Si vous désactivez cette option</strong>, vos lecteurs pourront s'abonner à votre récit et recevront des notifications si de nouvelles feuilles sont publiées.">
-								<i class="fa-duotone fa-comment-question"></i>
-							</span>
 						</span>
 					</label>
 				</div>
@@ -392,29 +432,7 @@
 					{% endif %}
 				</p>
 			</div>
-			<div id="task" class="{{infoPub.publicationChapters|filter(c => c.status == 2)|length > 0 and infoPub.category ? " hidden" : " " }} p-4 rounded-lg bg-yellow-50 text-yellow-800 dark:bg-slate-900 w-full mb-4 dark:text-slate-400">
-				<p class="text-sm mb-1 font-semibold">
-					Vous devriez :
-					<ul class="text-xs mt-2">
-						<li class="flex gap-x-2 animate__animated {{infoPub.category ? " hidden" : " " }}" id="taskCategory">
-							<i class="fa-regular fa-masks-theater"></i>
-							<span>Choisir une catégorie dans la section
-								<button onclick="document.getElementById('profile-tab').click();" class="hover:underline font-semibold" type="button">Informations</button>
-							</span>
-						</li>
-						<li class="mt-3 flex  items-center gap-x-2 animate__animated  {{infoPub.publicationChapters|filter(c => c.status == 2)|length > 0 ? " hidden" : " " }}" id="taskPublish">
-							<i class="fa-regular fa-eye"></i>
-							Publier au moins une feuille
-						</li>
-						<li><hr class="mb-2 mt-2 border-yellow-400 bg-yellow-400 opacity-30"></li>
-						<li class="mt-3 flex items-baseline opacity-50 text-[0.75rem]  gap-x-2 animate__animated">
-							<i class="fa-regular fa-circle-info"></i>
-							Réalisez ces tâches afin que votre récit soit visible par les autres utilisateurs lors de sa publication. Autrement, il ne se sera consultable que par accès direct (lien).
-						</li>
 
-					</ul>
-				</p>
-			</div>
 		</aside>
 	</div>
 	<div>

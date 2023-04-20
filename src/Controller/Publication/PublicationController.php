@@ -83,16 +83,24 @@ class PublicationController extends AbstractController
         ]);
     }
     #[Route('/story/edit/{id}', name: 'app_publication_edit')]
-    public function EditPublication(PublicationRepository $pubRepo, $id = null): Response
+    public function EditPublication(PublicationRepository $pubRepo, PublicationChapterRepository $pchRepo, $id = null): Response
     {
 
         if ($this->getUser()) {
             $infoPublication = $pubRepo->findOneBy(["user" => $this->getUser(), "id" => $id]);
+            // On recherche tous les chapitres de la publication avec le "statut" => 2
+            $chaptersWithStatus2 = $pchRepo->findChaptersByPublicationAndStatus($infoPublication->getId(), 2);
+            $chaptersWithStatus1 = $pchRepo->findChaptersByPublicationAndStatus($infoPublication->getId(), 1);
+            $chaptersWithStatus0 = $pchRepo->findChaptersByPublicationAndStatus($infoPublication->getId(), 0);
             if ($infoPublication) {
                 $formPub = $this->createForm(PublicationType::class, $infoPublication);
                 return $this->render('publication/edit_publication.html.twig', [
                     'infoPub' => $infoPublication,
-                    'formPub' => $formPub
+                    'formPub' => $formPub,
+                    'chaptersWithStatus2' => $chaptersWithStatus2,
+                    'chaptersWithStatus1' => $chaptersWithStatus1,
+                    'chaptersWithStatus0' => $chaptersWithStatus0,
+
                 ]);
             } else {
                 return $this->redirectToRoute("app_home");

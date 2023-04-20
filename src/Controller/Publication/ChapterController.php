@@ -50,7 +50,7 @@ class ChapterController extends AbstractController
                 // * s'il n'y a pas d'ID de chapitre dans l'URL, on vérifie si un chapitre brouillon existe pour cet utilisateur
                 if (!$idChap) {
                     // * on vérifie si un chapitre brouillon existe pour cet utilisateur
-                    $pcExists = $pcRepo->findOneBy(['publication' => $idPub, "status" => 0]);
+                    $pcExists = $pcRepo->findOneBy(['publication' => $idPub, "status" => -1]);
                     // * si le chapitre n'existe pas en brouillon, on le crée
                     if (!$pcExists) {
                         // ! on l'ajoute aux chapitres
@@ -66,7 +66,7 @@ class ChapterController extends AbstractController
                         }
                         $pc = new PublicationChapter;
                         $publicationChapter = $pc->setCreated(new \DateTime('now'))
-                            ->setStatus(0) // 0 = brouillon / 1 = en cours de rédaction
+                            ->setStatus(-1) // 0 = brouillon / 1 = en cours de rédaction
                             ->setPublication($infoPublication)
                             ->setTitle("Feuille n°" . $nbrChap . $chapAdd)
                             ->setSlug("feuille-n0" . $nbrChap . $chapAdd)
@@ -82,7 +82,7 @@ class ChapterController extends AbstractController
                         $em->flush();
                     }
                     // * On récupère le chapitre qui vient d'être créé
-                    $infoChapitre = $pcRepo->findOneBy(['publication' => $idPub, "status" => 0]);
+                    $infoChapitre = $pcRepo->findOneBy(['publication' => $idPub, "status" => -1]);
                     // * Et on redirige
                     return $this->redirectToRoute('app_publication_edit_chapter', ['idPub' => $idPub, 'idChap' => $infoChapitre->getId()]);
                 }
@@ -93,8 +93,8 @@ class ChapterController extends AbstractController
                     if ($infoChapitre) {
                         // * On vérifie que le chapitre de l'URL est bien lié à la publication de l'URL
                         if ($infoChapitre->getPublication() == $infoPublication) {
-                            // * Si le chapitre est en statut 0 (pré-brouillon), on le passe en statut 1 (en cours de rédaction)
-                            if ($infoChapitre->getStatus() === 0) {
+                            // * Si le chapitre est en statut -1 (pré-brouillon), on le passe en statut 1 (en cours de rédaction)
+                            if ($infoChapitre->getStatus() === -1) {
                                 $infoChapitre->setStatus(1);
                             }
                             //
@@ -169,6 +169,53 @@ class ChapterController extends AbstractController
         }
         return $this->redirectToRoute('app_publication_edit', ['id' => $idPub]);
     }
+
+    #[Route('/story/edit/{idPub}/trash/delete', name: 'app_publication_del_trash_chapter')]
+    public function DelAllChapter(PublicationRepository $pubRepo, PicturesRepository $picRepo, PublicationChapterRepository $pcRepo, EntityManagerInterface $em, $idPub = null): response
+    {
+        // * Si l'utilisateur est connecté, que la publication existe
+        if ($this->getUser() && $pubRepo->find($idPub)) {
+            // on récupère les informations de la publication
+            $infoPublication = $pubRepo->find($idPub);
+            // * Si l'utilisateur est bien l'auteur de la publication, on continue, sinon on est redirigé vers la page d'accueil
+            if ($this->getUser() == $infoPublication->getUser()) {
+
+                // On récupère tous les chapitres en statut 0
+                $infoChapitres = $pcRepo->findBy(['publication' => $idPub, 'status' => 0]);
+                // On les supprime tous
+                foreach ($infoChapitres as $infoChapitre) {
+                    $idChap = $infoChapitre->getId();
+                    $infoPictures = $picRepo->findBy(['chapter' => $idChap]);
+                    // On trouve toutes les images liées au chapitre
+                    // On supprime les images de la bdd et de Cloudinary
+                    foreach ($infoPictures as $picture) {
+                        $url = $picture->getUrl();
+                        $lastSlashPos = strrpos($url, "/");
+                        $questionMarkPos = strpos($url, "?");
+                        $filename = substr($url, $lastSlashPos + 1, $questionMarkPos - $lastSlashPos - 1);
+
+                        try {
+                            $this->cloudinary->uploadApi()->destroy("chapter/" . $idChap . "/" . $filename, ['invalidate' => true,]);
+                        } catch (Exception $e) {
+                            continue;
+                        }
+                        $em->remove($picture);
+                        $em->flush();
+                        $this->addFlash('success', 'Le chapitre a bien été supprimé !');
+                    }
+                    $this->cloudinary->uploadApi()->destroy("chapter/" . $idChap, ['invalidate' => true,]);
+                    $em->remove($infoChapitre);
+                    $em->flush();
+                }
+            } else {
+                return $this->redirectToRoute('app_home');
+            }
+        } else {
+            return $this->redirectToRoute('app_home');
+        }
+        return $this->redirectToRoute('app_publication_edit', ['id' => $idPub]);
+    }
+
     #[Route('/story/chapter/autosave', name: 'app_chapter_autosave', methods: "POST")]
     public function Axios_ChapAutoSave(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, PublicationChapterRepository $pcRepo, PublicationRepository $pRepo): response
     {
@@ -269,23 +316,42 @@ class ChapterController extends AbstractController
         ]);
     }
     #[Route('/story/chapter/sort', name: 'app_chapter_sort', methods: "POST")]
-    public function Axios_ChapSort(Request $request, EntityManagerInterface $em, NotificationRepository $nRepo, PublicationChapterRepository $pcRepo, PublicationFollowRepository $pfRepo): response
+    public function Axios_ChapSort(Request $request, EntityManagerInterface $em, PublicationChapterRepository $pcRepo): response
     {
         $idChap = $request->get("idChap");
         $order = $request->get("order");
-        $status = $request->get("status");
         //
         $chapter = $pcRepo->find($idChap);
         //
+        $chapter->setOrderDisplay($order);
+        $em->persist($chapter);
+        $em->flush();
+        //
+        //
+        return $this->json([
+            "code" => 200, // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
+            "order" => $chapter->getOrderDisplay() + 1, // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
+            "status" => $chapter->getStatus(), // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
+        ], 200);
+    }
+    #[Route('/story/chapter/status', name: 'app_chapter_status', methods: "POST")]
+    public function Axios_ChapStatus(Request $request, EntityManagerInterface $em, NotificationRepository $nRepo, PublicationChapterRepository $pcRepo, PublicationFollowRepository $pfRepo): response
+    {
+        $idChap = $request->get("idChap");
+
+        $newStatus = $request->get("status");
+
+        $chapter = $pcRepo->find($idChap);
+
         // * Envoi d'une notification aux abonnés de la publication
         // Si le chapitre est dépublié, que le $status est sur 2 et que la publication est publiée 
-        if ($chapter->getStatus() == 1 && $status == 2 && $chapter->getPublication()->getStatus() == 2) {
+        if ($chapter->getStatus() == 1 && $newStatus == 2 && $chapter->getPublication()->getStatus() == 2) {
             // On envoie une notification à tous les abonnés de la publication
             $followers = $pfRepo->findBy(["publication" => $chapter->getPublication()]);
             foreach ($followers as $follower) {
                 $this->notificationSystem->addNotification(7, $follower->getUser(), $chapter->getPublication()->getUser(), $chapter);
             }
-        } elseif ($chapter->getStatus() == 2 && $status == 1 && $chapter->getPublication()->getStatus() == 2) {
+        } elseif ($chapter->getStatus() == 2 && $newStatus == 1 && $chapter->getPublication()->getStatus() == 2) {
             // S'il y a des abonnées à la publication, on supprime les notifications qui leur ont été envoyées concernant le chapitre publié, désormais dépublié
             // On cherche les notifications qui ont pour type 7 (chapitre publié) et pour publication la publication du chapitre
             $notifications = $nRepo->findBy(["type" => 7, "publication_follow" => $chapter]);
@@ -293,19 +359,24 @@ class ChapterController extends AbstractController
                 $em->remove($notification);
             }
         }
+        // 
         //
-        $chapter->setOrderDisplay($order)
-            ->setStatus($status);
+        if ($chapter->getStatus() > 0 && $newStatus == 0) {
+            $chapter->setTrashAt(new \DateTimeImmutable('now'));
+        } elseif ($chapter->getStatus() == 0 && $newStatus == 0) {
+        } else {
+            $chapter->setTrashAt(null);
+        }
+        //
+        $chapter->setStatus($newStatus);
         $em->persist($chapter);
         $em->flush();
-
         return $this->json([
-            "code" => 200, // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
+            "status" => $newStatus,
             "order" => $chapter->getOrderDisplay() + 1, // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
-            "status" => $chapter->getStatus() // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
-        ]);
+            // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
+        ], 200);
     }
-
     #[Route('/story/chapter/addimg', name: 'app_chapter_add_img', methods: "POST")]
     public function Axios_addImg(Request $request, UserRepository $userRepo, PublicationChapterRepository $pcRepo): response
     {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html id="html" lang="fr" class="scroll-smooth {{app.user ? app.user.userParameters is defined ? app.user.userParameters.darkmode == true ? " dark"}}{{ app.session.get('darkmode') and not app.user ? app.session.get('darkmode') == true ? " dark"}}">
+<html {% block html_attr %} {% endblock %} id="html" lang="fr" class="scroll-smooth {{app.user ? app.user.userParameters is defined ? app.user.userParameters.darkmode == true ? " dark"}}{{ app.session.get('darkmode') and not app.user ? app.session.get('darkmode') == true ? " dark"}}">
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,7 +29,7 @@
 		<script async src="https://www.googletagmanager.com/gtag/js?id=G-2DX7NLM4HX"></script>
 		{% include "/partials/_google-analytics.html.twig" %}
 	</head>
-	<body data-turbo-track="reload">
+	<body>
 		<div class="flex flex-col min-h-screen">
 			<div class="relative">
 				{% include "partials/_navbar.html.twig" %}

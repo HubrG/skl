@@ -903,6 +903,9 @@ input:checked ~ .toggle-dot {
 	@apply bg-white dark:bg-slate-200;
     transform: translateX(100%);
 }
+input.green:checked ~ .bg-gray-400 {
+	background-color: #0f9a42; /* Couleur de fond de la barre lorsque la case à cocher est sélectionnée */
+}
 input:checked ~ .bg-gray-400 {
 	background-color: #3B82F6; /* Couleur de fond de la barre lorsque la case à cocher est sélectionnée */
 }

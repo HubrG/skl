@@ -75,6 +75,9 @@ class PublicationChapter
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 3)]
     private ?string $pop = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $trashAt = null;
+
     public function __construct()
     {
         $this->publicationChapterVersionings = new ArrayCollection();
@@ -473,5 +476,17 @@ class PublicationChapter
     {
         // Si le titre est null, retourner une chaîne vide ou une valeur par défaut
         return $this->title ?? '';
+    }
+
+    public function getTrashAt(): ?\DateTimeImmutable
+    {
+        return $this->trashAt;
+    }
+
+    public function setTrashAt(?\DateTimeImmutable $trashAt): self
+    {
+        $this->trashAt = $trashAt;
+
+        return $this;
     }
 }

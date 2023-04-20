@@ -27,6 +27,7 @@
 				{% else %}
 					{% set var = "" %}
 				{% endif %}
+				{# <a href="{{path("app_publication_edit", {id:infoPub.id})}}{{var}}" target="_top"> #}
 				<a href="{{path("app_publication_edit", {id:infoPub.id})}}{{var}}">
 					{% set titleChar = infoPub.title|length %}
 					{% if titleChar > 15 %}

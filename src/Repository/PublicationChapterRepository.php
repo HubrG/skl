@@ -3,8 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\PublicationChapter;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<PublicationChapter>
@@ -39,28 +39,40 @@ class PublicationChapterRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return PublicationChapter[] Returns an array of PublicationChapter objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findChaptersByPublicationAndStatus($publicationId, $status)
+    {
+        $qb = $this->createQueryBuilder('pc')
+            ->andWhere('pc.publication = :publicationId')
+            ->andWhere('pc.status = :status')
+            ->setParameter('publicationId', $publicationId)
+            ->setParameter('status', $status)
+            ->orderBy('pc.order_display', 'ASC');
 
-//    public function findOneBySomeField($value): ?PublicationChapter
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        return $qb->getQuery()->getResult();
+    }
+
+    //    /**
+    //     * @return PublicationChapter[] Returns an array of PublicationChapter objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('p.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?PublicationChapter
+    //    {
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

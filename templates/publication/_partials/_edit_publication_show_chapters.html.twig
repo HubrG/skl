@@ -41,9 +41,9 @@
 						<i class="fa-duotone fa-trash" data-tippy-content="Supprimer"></i>
 					</button>
 					{# si dans la section "trash" #}
-					<a id="trashEver{{items.id}}" href="{{path("app_publication_del_chapter", {idChap:items.id, idPub:infoPub.id})}}" target="_self" data-chap-id="{{items.id}}" class="{{items.status == 0 ? "flex" : "hidden"}} confirmTrash gap-x-2 flex-row items-center text-red-500 text-xs text-justify dark:text-red-500">
+					<button id="trashEver{{items.id}}" target="trash-for-ever" data-chap-id="{{items.id}}" class="{{items.status == 0 ? "flex" : "hidden"}} trash-forever gap-x-2 flex-row items-center text-red-500 text-xs text-justify dark:text-red-500">
 						<i class="fa-duotone fa-trash" data-tippy-content="Supprimer définitivement"></i>
-					</a>
+					</button>
 				</div>
 			</div>
 		</div>

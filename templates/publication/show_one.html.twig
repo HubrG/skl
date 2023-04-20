@@ -20,7 +20,7 @@
 	Récit |
 	{{ pubShow.title }}
 	({{ pubShow.user.nickname }})
-			-
+				-
 	{{ parent() }}
 {% endblock %}
 
@@ -458,7 +458,7 @@
 							<span class="font-light text-xs">(7 jours)</span>
 						</span>
 						<span class="flex justify-end gap-x-2 text-xs items-center">
-							{{pubShow.pop}}
+
 							{% if pubShow.pop < lastPopularity %}
 								<i class="fa-duotone fa-circle-arrow-down  text-lg text-red-700 dark:text-red-500"></i>
 							{% elseif pubShow.pop == lastPopularity %}

@@ -298,7 +298,7 @@ function publishPublication(ev) {
     if (publishButton.checked == false) {
       publishButton.checked = true;
       publishDateTextSpan.innerHTML = "quelques instants";
-      publishText.innerHTML = "Dépublier le récit";
+      publishText.innerHTML = "Dépublier de Scrilab";
       PublicationPublishModalText.innerHTML =
         "Êtes-vous certain(e) de vouloir <span class='text-red-500 dark:text-red-500'>dépublier</span> de votre récit ?";
       publishToggle.classList.remove("peer-checked:bg-slate-600");
@@ -319,7 +319,7 @@ function publishPublication(ev) {
       publishDateText.classList.remove("hidden");
     } else {
       publishButton.checked = false;
-      publishText.innerHTML = "Publier le récit";
+      publishText.innerHTML = "Publier sur Scrilab";
       PublicationPublishModalText.innerHTML =
         "Êtes-vous certain(e) de vouloir <span class='text-emerald-500 dark:text-emerald-500'>publier</span> votre récit ?";
       publishToggle.classList.remove("peer-checked:bg-red-600");
@@ -363,7 +363,7 @@ function publishPublication(ev) {
           hidePubStatus.value = 2;
           togglePubAS.checked = false;
           togglePubAS.disabled = true;
-          savePublication.innerHTML = `<i class="fa-regular fa-cloud-arrow-up"></i> &nbsp;Publier les modifications`;
+          savePublication.innerHTML = `<i class="fa-regular fa-cloud-arrow-up"></i> &nbsp;Valider les modifications`;
           togglePubASfunc();
         } else {
           var notyText =
@@ -371,7 +371,7 @@ function publishPublication(ev) {
           hidePubStatus.value = 1;
           togglePubAS.checked = true;
           togglePubAS.disabled = false;
-          savePublication.innerHTML = `<i class="fa-regular fa-floppy-disk"></i>  &nbsp;Enregistrer`;
+          savePublication.innerHTML = `<i class="fa-regular fa-floppy-disk"></i>  &nbsp;Sauvegarder`;
           togglePubASfunc();
         }
         NotyDisplay(notyText, notyType, notyTimeout);

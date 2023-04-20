@@ -2,6 +2,7 @@
 
 namespace App\Controller\Publication;
 
+use DateTimeImmutable;
 use DirectoryIterator;
 use Cloudinary\Cloudinary;
 use App\Entity\Publication;
@@ -23,12 +24,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class PublicationController extends AbstractController
 {
 
-    private $uploadImage;
-    private $cloudinary;
-    public function __construct(Cloudinary $cloudinary, ImageService $uploadImage)
+    public function __construct(private Cloudinary $cloudinary, private ImageService $uploadImage, private ChapterController $chapterController)
     {
-        $this->uploadImage = $uploadImage;
-        $this->cloudinary = $cloudinary;
     }
 
     #[Route('/story/add', name: 'app_publication_add')]
@@ -85,13 +82,29 @@ class PublicationController extends AbstractController
     #[Route('/story/edit/{id}', name: 'app_publication_edit')]
     public function EditPublication(PublicationRepository $pubRepo, PublicationChapterRepository $pchRepo, $id = null): Response
     {
-
+        $infoPublication = $pubRepo->findOneBy(["user" => $this->getUser(), "id" => $id]);
+        //
         if ($this->getUser()) {
-            $infoPublication = $pubRepo->findOneBy(["user" => $this->getUser(), "id" => $id]);
-            // On recherche tous les chapitres de la publication avec le "statut" => 2
+            // On recherceh tous les chapitres de la publication avec le "statut" => 0
+            $chaptersWithStatus0 = $pchRepo->findChaptersByPublicationAndStatus($infoPublication, 0);
+            // On vérifie si la durée est supérieure à 1 minute
+            foreach ($chaptersWithStatus0 as $trash) {
+                $trashAt = $trash->getTrashAt();
+                $now = new DateTimeImmutable('now');
+                $interval = $now->diff($trashAt);
+                $hours = (int)$interval->format('%h');
+                $days = (int)$interval->format('%a');
+
+                if ($days >= 2 || ($days === 1 && $hours >= 0)) {
+                    $this->chapterController->funcDeleteChapter($trash);
+                }
+            }
+
+            //
+            $chaptersWithStatus0 = $pchRepo->findChaptersByPublicationAndStatus($infoPublication, 0);
             $chaptersWithStatus2 = $pchRepo->findChaptersByPublicationAndStatus($infoPublication->getId(), 2);
             $chaptersWithStatus1 = $pchRepo->findChaptersByPublicationAndStatus($infoPublication->getId(), 1);
-            $chaptersWithStatus0 = $pchRepo->findChaptersByPublicationAndStatus($infoPublication->getId(), 0);
+            // On recherche tous les chapitres de la publication avec le "statut" => 2
             if ($infoPublication) {
                 $formPub = $this->createForm(PublicationType::class, $infoPublication);
                 return $this->render('publication/edit_publication.html.twig', [

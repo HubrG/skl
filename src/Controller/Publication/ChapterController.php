@@ -25,17 +25,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ChapterController extends AbstractController
 {
-
-    private $cloudinary;
-    private $notificationSystem;
-    private $uploadImage;
-
-
-    public function __construct(Cloudinary $cloudinary, ImageService $uploadImage, NotificationSystem $notificationSystem)
+    public function __construct(private EntityManagerInterface $em, private PublicationChapterRepository $pchRepo, private PicturesRepository $picRepo, private PublicationRepository $pRepo, private Cloudinary $cloudinary, private ImageService $uploadImage, private NotificationSystem $notificationSystem)
     {
-        $this->notificationSystem = $notificationSystem;
-        $this->uploadImage = $uploadImage;
-        $this->cloudinary = $cloudinary;
     }
 
     #[Route('/story/edit/{idPub}/chapter/{idChap?}', name: 'app_publication_edit_chapter')]
@@ -120,102 +111,75 @@ class ChapterController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
     }
-    #[Route('/story/edit/{idPub}/chapter/{idChap}/delete', name: 'app_publication_del_chapter')]
-    public function DelChapter(PublicationRepository $pubRepo, PicturesRepository $picRepo, PublicationChapterRepository $pcRepo, EntityManagerInterface $em, $idPub = null, $idChap = null): response
+    #[Route('/story/chapter/{idChap}/delete', name: 'app_publication_del_chapter', methods: ['POST'])]
+    public function DelChapter($idChap = null): Response
     {
-        // * Si l'utilisateur est connecté, que la publication existe
-        if ($this->getUser() && $pubRepo->find($idPub)) {
-            // on récupère les informations de la publication
-            $infoPublication = $pubRepo->find($idPub);
-            // * Si l'utilisateur est bien l'auteur de la publication, on continue, sinon on est redirigé vers la page d'accueil
-            if ($this->getUser() == $infoPublication->getUser()) {
-                // * On récupère le chapitre qui vient d'être crée
-                $infoChapitre = $pcRepo->find($idChap);
-                // * On vérifie que le chapitre existe bel et bien dans la BDD
-                if ($infoChapitre) {
-                    // * On vérifie que le chapitre de l'URL est bien lié à la publication de l'URL
-                    if ($infoChapitre->getPublication() == $infoPublication) {
-                        $infoPictures = $picRepo->findBy(['chapter' => $idChap]);
-                        // On trouve toutes les images liées au chapitre
-                        // On supprime les images de la bdd et de Cloudinary
-                        foreach ($infoPictures as $picture) {
-                            $url = $picture->getUrl();
-                            $lastSlashPos = strrpos($url, "/");
-                            $questionMarkPos = strpos($url, "?");
-                            $filename = substr($url, $lastSlashPos + 1, $questionMarkPos - $lastSlashPos - 1);
-
-                            try {
-                                $this->cloudinary->uploadApi()->destroy("chapter/" . $idChap . "/" . $filename, ['invalidate' => true,]);
-                            } catch (Exception $e) {
-                                continue;
-                            }
-                            $em->remove($picture);
-                            $em->flush();
-                        }
-                        $this->cloudinary->uploadApi()->destroy("chapter/" . $idChap, ['invalidate' => true,]);
-                        $em->remove($infoChapitre);
-                        $em->flush();
-                    } else {
-                        return $this->redirectToRoute('app_home');
-                    }
-                } else {
-                    return $this->redirectToRoute('app_home');
-                }
-            } else {
-                return $this->redirectToRoute('app_home');
-            }
-        } else {
-            return $this->redirectToRoute('app_home');
+        $pch = $this->pchRepo->find($idChap);
+        $pub = $pch?->getPublication();
+        $user = $this->getUser();
+        if (
+            $user &&
+            $pub &&
+            $pch &&
+            $user == $pub->getUser() &&
+            $pch->getPublication() == $pub
+        ) {
+            $this->funcDeleteChapter($pch);
+            return $this->redirectToRoute('app_publication_edit', ['id' => $pub->getId()]);
         }
-        return $this->redirectToRoute('app_publication_edit', ['id' => $idPub]);
+        return $this->redirectToRoute('app_home');
     }
 
     #[Route('/story/edit/{idPub}/trash/delete', name: 'app_publication_del_trash_chapter')]
-    public function DelAllChapter(PublicationRepository $pubRepo, PicturesRepository $picRepo, PublicationChapterRepository $pcRepo, EntityManagerInterface $em, $idPub = null): response
+    public function DelAllChapter(PublicationRepository $pubRepo, PublicationChapterRepository $pcRepo, $idPub = null): Response
     {
-        // * Si l'utilisateur est connecté, que la publication existe
-        if ($this->getUser() && $pubRepo->find($idPub)) {
-            // on récupère les informations de la publication
-            $infoPublication = $pubRepo->find($idPub);
-            // * Si l'utilisateur est bien l'auteur de la publication, on continue, sinon on est redirigé vers la page d'accueil
-            if ($this->getUser() == $infoPublication->getUser()) {
+        $infoPublication = $pubRepo->find($idPub);
+        $user = $this->getUser();
 
-                // On récupère tous les chapitres en statut 0
-                $infoChapitres = $pcRepo->findBy(['publication' => $idPub, 'status' => 0]);
-                // On les supprime tous
-                foreach ($infoChapitres as $infoChapitre) {
-                    $idChap = $infoChapitre->getId();
-                    $infoPictures = $picRepo->findBy(['chapter' => $idChap]);
-                    // On trouve toutes les images liées au chapitre
-                    // On supprime les images de la bdd et de Cloudinary
-                    foreach ($infoPictures as $picture) {
-                        $url = $picture->getUrl();
-                        $lastSlashPos = strrpos($url, "/");
-                        $questionMarkPos = strpos($url, "?");
-                        $filename = substr($url, $lastSlashPos + 1, $questionMarkPos - $lastSlashPos - 1);
+        if (
+            $user &&
+            $infoPublication &&
+            $user == $infoPublication->getUser()
+        ) {
+            $infoChapitres = $pcRepo->findBy(['publication' => $idPub, 'status' => 0]);
 
-                        try {
-                            $this->cloudinary->uploadApi()->destroy("chapter/" . $idChap . "/" . $filename, ['invalidate' => true,]);
-                        } catch (Exception $e) {
-                            continue;
-                        }
-                        $em->remove($picture);
-                        $em->flush();
-                        $this->addFlash('success', 'Le chapitre a bien été supprimé !');
-                    }
-                    $this->cloudinary->uploadApi()->destroy("chapter/" . $idChap, ['invalidate' => true,]);
-                    $em->remove($infoChapitre);
-                    $em->flush();
-                }
-            } else {
-                return $this->redirectToRoute('app_home');
+            foreach ($infoChapitres as $infoChapitre) {
+                $this->funcDeleteChapter($infoChapitre);
             }
-        } else {
-            return $this->redirectToRoute('app_home');
+
+            $this->addFlash('success', '&nbsp;&nbsp;Les feuilles ont bien été supprimées !');
+            return $this->redirectToRoute('app_publication_edit', ['id' => $idPub]);
         }
-        return $this->redirectToRoute('app_publication_edit', ['id' => $idPub]);
+
+        return $this->redirectToRoute('app_home');
     }
 
+    public function funcDeleteChapter($infoChapitre): void
+    {
+        //
+        $idChap = $infoChapitre->getId();
+        $infoPictures = $this->picRepo->findBy(['chapter' => $idChap]);
+        // On trouve toutes les images liées au chapitre
+        // On supprime les images de la bdd et de Cloudinary
+        foreach ($infoPictures as $picture) {
+            $url = $picture->getUrl();
+            $lastSlashPos = strrpos($url, "/");
+            $questionMarkPos = strpos($url, "?");
+            $filename = substr($url, $lastSlashPos + 1, $questionMarkPos - $lastSlashPos - 1);
+
+            try {
+                $this->cloudinary->uploadApi()->destroy("chapter/" . $idChap . "/" . $filename, ['invalidate' => true,]);
+            } catch (Exception $e) {
+                continue;
+            }
+            $this->em->remove($picture);
+            $this->em->flush();
+            $this->addFlash('success', 'La feuille a bien été supprimée !');
+        }
+        $this->cloudinary->uploadApi()->destroy("chapter/" . $idChap, ['invalidate' => true,]);
+        $this->em->remove($infoChapitre);
+        $this->em->flush();
+    }
     #[Route('/story/chapter/autosave', name: 'app_chapter_autosave', methods: "POST")]
     public function Axios_ChapAutoSave(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, PublicationChapterRepository $pcRepo, PublicationRepository $pRepo): response
     {

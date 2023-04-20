@@ -10,6 +10,7 @@ export function Sortables() {
     createTrashSortable();
 
     addTrashClickListener();
+    addTrashEverClickListener();
 
     document.addEventListener("DOMContentLoaded", function () {
       // axiosGoSortable();
@@ -113,14 +114,22 @@ function addTrashClickListener() {
     });
   });
 }
-
+function addTrashEverClickListener() {
+  const trashItems = document.querySelectorAll(".trash-forever");
+  trashItems.forEach((item) => {
+    item.addEventListener("click", () => {
+      const listItem = item.closest(".list-group-item");
+      axiosTrashForever(listItem);
+    });
+  });
+}
 function moveToTrash(item) {
   const itemsChapTrash = document.getElementById("itemsChapTrash");
   itemsChapTrash.appendChild(item);
   handleNoChapTrashRemoval();
   if (!document.querySelector(".noty_type__info")) {
     NotyDisplay(
-      "Feuille supprimée ! Vous pouvez la retrouver dans la section « Feuilles supprimées » durant 24h",
+      "<big>Feuille supprimée !</big><br>Vous pouvez encore la retrouver dans la section « Corbeille » durant 48h",
       "info",
       5000
     );
@@ -285,6 +294,33 @@ function axiosGoStatus(status) {
           trashTemp.classList.remove("hidden");
           trashEver.classList.add("hidden");
         }
+      } else {
+        NotyDisplay(
+          "Une erreur est survenue. Veuillez actualiser la page !",
+          "error",
+          3000
+        );
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
+      }
+    });
+}
+function axiosTrashForever(listItem) {
+  let data = new FormData();
+  let urls = "/story/chapter/" + listItem.getAttribute("chap") + "/delete";
+  axios
+    .post(urls, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        listItem.classList.add("animate__animated", "animate__bounceOut");
+        setTimeout(() => {
+          listItem.remove();
+        }, 1000);
       } else {
         NotyDisplay(
           "Une erreur est survenue. Veuillez actualiser la page !",

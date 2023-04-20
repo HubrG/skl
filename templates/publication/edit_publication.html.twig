@@ -402,7 +402,20 @@
 						</span>
 					</label>
 				</div>
-
+				<div class="px-3 rounded-lg  w-full mb-3 flex hover:opacity-100 cursor-pointer">
+					<label class="toggle">
+						<div class="relative">
+							<input type="checkbox" value="" class="sr-only peer axiosPublication axiosPubAS axiosPubSpy" id="publication_sell" {{ infoPub.finished == 1 ? "checked" }}/>
+							<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
+							<div class="toggle-dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition-all duration-300 ease-linear"></div>
+						</div>
+						<span class="ml-3  dark:text-gray-300">Récit en vente&nbsp;&nbsp;
+							<span data-tippy-content="<strong>Si vous activez cette option</strong>, vous informez vos lecteurs que votre récit est terminé et qu'aucune nouvelle feuille ne sera publiée.<br><br><strong>Si vous désactivez cette option</strong>, vos lecteurs pourront s'abonner à votre récit et recevront des notifications si de nouvelles feuilles sont publiées.">
+								<i class="fa-duotone fa-comment-question"></i>
+							</span>
+						</span>
+					</label>
+				</div>
 				<hr class="mb-5">
 				<div class="px-3 rounded-lg  w-full relative mb-3 flex hover:opacity-100 ">
 					<label class="toggle ">

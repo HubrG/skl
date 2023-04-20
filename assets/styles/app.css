@@ -319,13 +319,13 @@ opacity: 0.4;
 	@apply text-center items-center font-serif;
 }
 .ql-align-right {
-	@apply text-right items-end font-serif;
+	@apply text-right items-end font-serif indent-5;
 }
 .ql-align-left {
-	@apply text-left items-start font-serif;
+	@apply text-left items-start font-serif indent-5;
 }
 .ql-align-justify {
-	@apply text-justify items-start font-serif;
+	@apply text-justify items-start font-serif indent-5;
 }
 .highlighted {
 	@apply  font-serif cursor-pointer;
@@ -886,6 +886,7 @@ nav.breadcrumb ol li i:first-child{
 	content: "—"; /* Emoji de caméra */
 	margin-right: 10px;
 }
+
 #editor .ql-editor ul li {
 	@apply list-none;
 }

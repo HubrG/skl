@@ -3,6 +3,16 @@ import axios from "axios";
 export function AxiosSavePublication() {
   if (document.getElementById("togglePubAS")) {
     axiosGoSortable();
+    // ! Publication Sale - Afficher la div de vente si case cochée
+    var saleLinks = document.getElementById("saleLinks");
+    var sale = document.getElementById("publication_sale");
+    sale.addEventListener("change", () => {
+      if (saleLinks.classList.contains("hidden")) {
+        saleLinks.classList.remove("hidden");
+      } else {
+        saleLinks.classList.add("hidden");
+      }
+    });
     // ! Édition rapide du titre (à la volée)
     // On récupère tous les éléments avec la classe "fastChangeTitle"
     var fastChangeTitles = document.querySelectorAll(".fastChangeTitle");
@@ -149,15 +159,8 @@ function AxiosPublication() {
   } else {
     var finished = 0;
   }
-  // ! Publication Sale - Afficher la div de vente si case cochée
-  var saleLinks = document.getElementById("saleLinks");
   if (document.getElementById("publication_sale")) {
     var sale = document.getElementById("publication_sale").checked;
-    if (saleLinks.classList.contains("hidden")) {
-      saleLinks.classList.remove("hidden");
-    } else {
-      saleLinks.classList.add("hidden");
-    }
   } else {
     var sale = 0;
   }

@@ -20,7 +20,7 @@
 	Récit |
 	{{ pubShow.title }}
 	({{ pubShow.user.nickname }})
-				-
+																																																																																																																		-
 	{{ parent() }}
 {% endblock %}
 
@@ -117,23 +117,61 @@
 						{% endif %}
 					</p>
 				</div>
-				<a href="{{ path("app_chapter_show", {idChap:orderChap.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:orderChap.slug}) }}" class=" block mt-5 not-italic py-5 text-center w-full lg:w-3/6 px-10 bg-white   hover:bg-white text-slate-800 shadow hover:text-slate-800 bg-opacity-50 dark:bg-opacity-80 hover:bg-opacity-100 dark:bg-slate-800 dark:text-slate-100  dark:hover:bg-slate-900 rounded-lg">
+				<a href="{{ path("app_chapter_show", {idChap:orderChap.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:orderChap.slug}) }}" class=" block mt-5 not-italic py-5 text-center w-full lg:w-3/6 px-10 bg-white  text-base hover:bg-white text-slate-800 shadow hover:text-slate-800 bg-opacity-50 dark:bg-opacity-80 hover:bg-opacity-100 dark:bg-slate-800 dark:text-slate-100  dark:hover:bg-slate-900 rounded-lg">
 					<i class="fa-regular fa-book-open-reader"></i>
 					<br/><span class="font-semibold">Commencer la lecture</span>
 				</a>
-				<a target="_top" href="{{ path("app_publication_show_one", {id:pubShow.id, slug:"download"}) }}" class=" block mt-5 not-italic  text-center text-sm px-5  hover:underline text-slate-900 dark:text-slate-200">
-					<i class="fa-duotone fa-file-pdf"></i>
-					<span class="font-light">
-						Télécharger au format pdf
-					</span>
-				</a>
+				<div class="grid {{ pubShow.sale ? " grid-cols-2" : " grid-cols-1" }} w-full md:w-3/6 text-sm items-center justify-center gap-x-2">
+					<button id="dropdownBuyBookButton" data-dropdown-toggle="dropdownBuyBook" class="{{ pubShow.sale ? "block" : "hidden" }} mt-5 not-italic py-2 text-center px-5 bg-white hover:bg-white text-slate-800 shadow hover:text-slate-800 bg-opacity-10 dark:bg-opacity-50 hover:bg-opacity-70 dark:hover:bg-opacity-50 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-900 rounded-lg">
+						<span class="font-light flex flex-row justify-center items-center w-full">
+							<span class="w-full">
+								<i class="fa-duotone fa-cart-shopping"></i>&nbsp;&nbsp;Acheter
+							</span>
+							<i class="fa-regular fa-chevron-down float-right text-slate-700 dark:text-slate-400"></i>
+						</span>
+					</button>
+					{# Dropdown menu #}
+					<div id="dropdownBuyBook" class="hidden bg-white divide-y divide-gray-100 z-50 rounded-lg shadow w-auto dark:bg-gray-700">
+						<ul class="text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownBuyBookButton">
+							{% if not pubShow.saleWeb and not pubShow.salePaper %}
+								<li class="flex flex-row items-center gap-x-2 px-5 rounded ">
+									<i class="fa-regular fa-tablet-screen py-4"></i>
+									Aucune vente disponible
+									<strong>pour le moment</strong>
+								</li>
+							{% endif %}
+							{% if pubShow.saleWeb %}
+								<li class="flex flex-row items-center gap-x-2 px-5 rounded  hover:bg-gray-100  dark:hover:bg-gray-600 dark:hover:text-white">
+									<i class="fa-regular fa-tablet-screen py-4"></i>
+									<a href="{{ pubShow.saleWeb }}" class="block">Acheter au
+										<strong>format numérique</strong>
+									</a>
+								</li>
+							{% endif %}
+							{% if pubShow.salePaper %}
+								<li class="flex flex-row items-center gap-x-2 px-5 rounded  hover:bg-gray-100  dark:hover:bg-gray-600 dark:hover:text-white">
+									<i class="fa-regular fa-book-open-cover py-4"></i>
+									<a href="{{ pubShow.salePaper }}" class="block">Acheter au
+										<strong>format papier</strong>
+									</a>
+								</li>
+							{% endif %}
+						</ul>
+					</div>
+					<a target="_top" href="{{ path("app_publication_show_one", {id:pubShow.id, slug:"download"}) }}" class="block mt-5 not-italic py-2 text-center  px-5 bg-white   hover:bg-white text-slate-800 shadow hover:text-slate-800 bg-opacity-10 dark:bg-opacity-50 hover:bg-opacity-70 dark:hover:bg-opacity-50 dark:bg-slate-800 dark:text-slate-100  dark:hover:bg-slate-900 rounded-lg">
+						<i class="fa-duotone fa-file-pdf"></i>
+						<span class="font-light">
+							Télécharger
+						</span>
+					</a>
+				</div>
 			</div>
 		</div>
 	</section>
 	<section class="lg:flex  col-span-12 lg:col-span-10 lg:col-start-2  mt-6 justify-evenly min-h-[50vh] z-50 dark:opacity-100">
 		<div class="absolute bg-white dark:bg-slate-800 w-full min-h-[100%] left-0 right-0 -z-10  border-t-[1px] border-slate-200 dark:border-slate-900">&nbsp;</div>
 		{% if orderChap %}
-			<div class="w-full lg:w-7/12 pt-10 z-50 order-2 lg:order-1 ">
+			<div class="w-full lg:w-7/12 pt-10 z-40 order-2 lg:order-1 ">
 				<div class="flex justify-between  gap-x-5 -mt-5 mb-5">
 					{% if pubShow.finished == true %}
 						<div class="w-full text-center bg-emerald-50 p-3 gap-y-2 rounded cursor-default grid grid-flow-row  dark:bg-transparent text-emerald-700 dark:text-emerald-300 ">
@@ -458,7 +496,6 @@
 							<span class="font-light text-xs">(7 jours)</span>
 						</span>
 						<span class="flex justify-end gap-x-2 text-xs items-center">
-
 							{% if pubShow.pop < lastPopularity %}
 								<i class="fa-duotone fa-circle-arrow-down  text-lg text-red-700 dark:text-red-500"></i>
 							{% elseif pubShow.pop == lastPopularity %}

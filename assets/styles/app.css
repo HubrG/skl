@@ -197,15 +197,26 @@ form button:disabled {
 	@apply w-full bg-slate-900;
 }
 .ql-editor.ql-blank::before {
-	@apply font-serif dark:text-slate-200;
 	content: attr(data-placeholder);
 	font-style: italic;
 	left: 50px;
-	margin-top:2px;
-	margin-left:5px;
+	margin-top: 2px;
+	margin-left: 10rem;
 	pointer-events: none;
 	position: absolute;
 	right: 10px;
+}
+
+/* Media query pour les smartphones */
+@media screen and (max-width: 767px) {
+	.ql-editor.ql-blank::before {
+		
+		margin-left: 1rem; /* Changez cette valeur en fonction de vos préférences */
+	}
+}
+.dark .ql-editor.ql-blank::before {
+	/* Ajoutez ici les styles spécifiques au dark mode */
+	color: #fff; /* Par exemple, changer la couleur du texte */
 }
 .ql-bubble * {
 	@apply font-serif;

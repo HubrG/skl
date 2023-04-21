@@ -27,7 +27,10 @@ body.turbo-loading, body.turbo-loaded {
 	@apply dark:bg-slate-800
 }
 footer {
-	@apply w-full bg-white dark:bg-gray-900 p-4 sm:p-6 mt-14 z-10;
+	@apply w-full bg-white dark:bg-gray-900 p-4 sm:p-6 mt-14 z-10 py-10;
+}
+footer li {
+	@apply flex flex-row gap-x-2 justify-items-start items-center justify-center md:justify-start 
 }
 nav {
 	@apply  bg-white  border-b border-b-slate-300 px-2 md:px-4 py-2.5 dark:bg-slate-800 dark:border-b-slate-700

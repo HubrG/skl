@@ -1,4 +1,4 @@
-<footer class=" bg-gray-100 dark:bg-gray-900 border-t-[1px] dark:border-t-slate-700 p-4 sm:p-6 mt-14 {{ is_homepage is defined ? " z-50" : " z-10"}}" id="footer" style=" ">
+<footer class=" bg-gray-100 dark:bg-gray-900 border-t-[1px] mt-20 dark:border-t-slate-700 p-4 sm:p-6  {{ is_homepage is defined ? " z-50" : " z-10"}}" id="footer" style=" ">
 	<div class="md:flex md:justify-between">
 		<div class="mb-10 w-1/6 mx-auto md:mb-0  md:bg-none md:text-left flex flex-none justify-center ">
 			<a href="{{ path("app_home")}}" target="_self" class="flex items-center  md:order-1 logo text-3xl">
@@ -7,17 +7,20 @@
 				</span>lab
 			</a>
 		</div>
-		<div class="md:flex md:flex-row grid grid-cols-2 gap-y-10 w-full   justify-evenly text-center">
+		<div class="md:flex md:flex-row grid grid-cols-2 py-10 gap-y-10 w-full  md:text-left text-center justify-evenly ">
 			<div>
 				<h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Récits</h2>
 				<ul class="text-gray-600 dark:text-gray-400">
 					<li class="mb-4">
+						<i class="fa-duotone fa-glasses-round"></i>
 						<a href="{{path("app_publication_show_all_category")}}" class="hover:underline">Tous les récits</a>
 					</li>
 					<li>
 						{% if app.user %}
+							<i class="fa-duotone fa-pen-to-square"></i>
 							<a href="{{path("app_publication_add")}}" class="hover:underline">Écrire & publier</a>
 						{% else %}
+							<i class="fa-duotone fa-pen-to-square"></i>
 							<button data-micromodal-trigger="popup-register" class="hover:underline">Écrire & publier</button>
 						{% endif %}
 					</li>
@@ -29,7 +32,7 @@
 					<li class="mb-4">
 						<i class="fa-solid fa-circle-euro"></i>
 						<a href="https://fr.tipeee.com/scrilab/" target="_blank" class="hover:underline ">
-							Sur Tippee</a>
+							sur Tipee</a>
 					</li>
 				</ul>
 			</div>
@@ -37,10 +40,14 @@
 				<h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Nous suivre</h2>
 				<ul class="text-gray-600 dark:text-gray-400">
 					<li class="mb-4">
-						<a href="https://www.facebook.com/people/Scrilab-%C3%89ditions/100090682933322/" target="_blank" class="hover:underline ">Sur Facebook</a>
+						<i class="fa-brands fa-facebook"></i>
+						<a href="https://www.facebook.com/people/Scrilab-%C3%89ditions/100090682933322/" target="_blank" class="hover:underline ">
+							sur Facebook</a>
 					</li>
 					<li>
-						<a href="https://twitter.com/ScrilabEditions" target="_blank" class="hover:underline">Sur Twitter</a>
+						<i class="fa-brands fa-twitter"></i>
+						<a href="https://twitter.com/ScrilabEditions" target="_blank" class="hover:underline">
+							sur Twitter</a>
 					</li>
 				</ul>
 			</div>
@@ -48,30 +55,47 @@
 				<h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Rejoindre</h2>
 				<ul class="text-gray-600 flex flex-col gap-y-4 dark:text-gray-400">
 					<li>
+						<i class="fa-duotone fa-user-plus"></i>
 						<a href="{{path("app_register_full")}}" class="hover:underline">Inscription</a>
 					</li>
 					<li>
+						<i class="fa-duotone fa-right-to-bracket"></i>
 						<a href="{{path("app_login_full")}}" data-turbo="false" target="_top" class="hover:underline">Connexion</a>
 					</li>
+					<li>
+						<i class="fa-brands fa-discord"></i>
+						<a href="https://discord.gg/HStGhZGxzJ" data-turbo="false" target="_blank" class="hover:underline">
+							Discord</a>
+					</li>
+
 				</ul>
 			</div>
 			<div>
 				<h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Divers</h2>
 				<ul class="text-gray-600 flex flex-col gap-y-4 dark:text-gray-400">
 					<li>
-						<a href="{{path("app_cgu")}}" class="hover:underline">CGU</a>
+						<i class="fa-regular fa-signature"></i>
+						<a href="{{path("app_cgu")}}" class="hover:underline">
+							CGU
+						</a>
 					</li>
 					<li>
-						<a href="{{path("app_privacy")}}" class="hover:underline">Confidentialité</a>
+						<i class="fa-regular fa-user-secret"></i>
+						<a href="{{path("app_privacy")}}" class="hover:underline">
+							Confidentialité
+						</a>
 					</li>
 					<li>
-						<a href="mailto:contact@scrilab.fr" class="hover:underline">Nous écrire</a>
+						<i class="fa-regular fa-paper-plane"></i>
+						<a href="mailto:contact@scrilab.fr" class="hover:underline">
+							Nous écrire
+						</a>
 					</li>
 				</ul>
 			</div>
 		</div>
 	</div>
-	<hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8"/>
+	<hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8 "/>
 	<div class="sm:flex  sm:items-center sm:justify-between">
 		<span class="text-sm flex justify-center text-gray-500 sm:text-center dark:text-gray-400">© 2023&nbsp;
 			<a href="http://scrilab.org" class="hover:underline">Scrilab</a>. Tous droits réservés.
@@ -80,7 +104,7 @@
 
 			<a href="https://fr.tipeee.com/scrilab/" data-tippy-content="Faire un don sur Tippy" target="_blank" class="text-gray-500 hover:text-gray-900 dark:hover:text-white">
 				<i class="fa-solid fa-circle-euro"></i>
-				<span class="sr-only">Facebook page</span>
+				<span class="sr-only">Tipee page</span>
 			</a>
 			<a href="https://www.facebook.com/people/Scrilab-%C3%89ditions/100090799525495/" target="_blank" class="text-gray-500 hover:text-gray-900 dark:hover:text-white">
 				<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"/></svg>

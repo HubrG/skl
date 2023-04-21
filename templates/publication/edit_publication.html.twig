@@ -431,7 +431,7 @@
 							<div class="absolute inset-y-0 left-0 flex mt-1 items-center pl-3 pointer-events-none mb-1">
 								<i class="fa-regular fa-tablet-screen  dark:text-white"></i>
 							</div>
-							<input type="text" class="h-8 rounded pl-10 dark:bg-slate-700 w-full text-xs axiosPublication axiosPubAS axiosPubSpy" value="{{infoPub.saleWeb}}" id="publication_sale_web">
+							<input type="text" class="h-8 rounded pl-10 dark:bg-slate-700 w-full text-xs axiosPublication axiosPubAS axiosPubSpy" value="{{infoPub.saleWeb ? infoPub.saleWeb : ""}}" id="publication_sale_web">
 						</div>
 					</div>
 					<div>
@@ -442,7 +442,7 @@
 							<div class="absolute inset-y-0 left-0  mt-1 flex items-center pl-3 pointer-events-none mb-1">
 								<i class="fa-regular fa-book-open-cover  dark:text-white"></i>
 							</div>
-							<input type="text" class="h-8 rounded pl-10 w-full text-xs dark:bg-slate-700 axiosPublication axiosPubAS axiosPubSpy" value="{{infoPub.salePaper}}" id="publication_sale_paper">
+							<input type="text" class="h-8 rounded pl-10 w-full text-xs dark:bg-slate-700 axiosPublication axiosPubAS axiosPubSpy" value="{{infoPub.salePaper ? infoPub.salePaper : ""}}" id="publication_sale_paper">
 						</div>
 					</div>
 				</div>

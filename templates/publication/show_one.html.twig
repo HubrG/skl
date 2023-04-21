@@ -20,7 +20,7 @@
 	Récit |
 	{{ pubShow.title }}
 	({{ pubShow.user.nickname }})
-																																																																																																																							-
+																																																																																																																										-
 	{{ parent() }}
 {% endblock %}
 
@@ -99,9 +99,11 @@
 				<a href="{{ path("app_user", {username:pubShow.user.username}) }}" class="font-sans hover:underline dark:text-slate-200">{{ pubShow.user.nickname }}</a>
 			</span>
 		</h2>
-		<div class="flex rounded justify-center">
-			<img class="rounded mt-6 w-40 h-50 justify-center  shadow mb-5  dark:grayscale-[50%]" src="{{pic}}" alt=""/>
-		</div>
+		{% if pubShow.cover != "" %}
+			<div class="flex rounded justify-center">
+				<img class="rounded mt-6 w-40 h-50 justify-center  shadow mb-5  dark:grayscale-[50%]" src="{{pic}}" alt=""/>
+			</div>
+		{% endif %}
 		<div class="flex gap-5 p-10 pt-0  items-center">
 
 			<div class="flex-1 text-center flex flex-col justify-center items-center justify-items-center origin-center">

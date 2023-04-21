@@ -4,7 +4,7 @@
 {% if pic %}
 	{% set pic_bg = pic|replace({'/upload/': '/upload/c_fill_pad,g_auto,w_1.0,e_improve:outdoor,f_jpg,e_blur:400,'}) %}
 {% else %}
-	{% set pic_bg = "/images/no-cover-bg.png" %}
+	{% set pic_bg = "" %}
 	{% if app.user and app.user.userParameters is defined and app.user.userParameters.darkmode == true %}
 		{% set pic = "/images/no-cover-dark.png" %}
 	{% else %}
@@ -20,7 +20,7 @@
 	Récit |
 	{{ pubShow.title }}
 	({{ pubShow.user.nickname }})
-																																																																																																																										-
+																																																																																																																																												-
 	{{ parent() }}
 {% endblock %}
 
@@ -74,9 +74,10 @@
 			z-index: -99999999999;
 			background-image: url('{{ pic_bg }}');
 			background-position: center;
+			background-color: rgb(51 65 85 / var(--tw-bg-opacity));
 		}
 	</style>
-	<section class=" before:bg-cover before:-z-[9999] dark:before:grayscale  col-span-12 col-start-0 lg:col-span-10 lg:col-start-2 gap-10 " id="PublicationShowOneContent">
+	<section class=" before:bg-cover before:-z-[9999]dark:before:grayscale  col-span-12 col-start-0 lg:col-span-10 lg:col-start-2 gap-10 " id="PublicationShowOneContent">
 		{% if pubShow.status < 2 %}
 			<div class="mb-0">
 				<div class="w-full -mt-10 mb-5 h-10 bg-slate-100 ring-1 ring-slate-500 dark:bg-slate-700 dark:shadow dark:text-slate-200 opacity-80 dark:opacity-100 right-0 rounded-b-sm">
@@ -93,7 +94,7 @@
 				</div>
 			</div>
 		{% endif %}
-		<h1 class="text-center text-4xl font-semibold bg-center text-slate-700 font-serif" style="text-shadow: 0 0.5px 1px blanchedalmond;">{{ pubShow.title }}</h1>
+		<h1 class="text-center text-4xl font-semibold bg-center text-slate-700 font-serif pt-5" style="text-shadow: 0 0.5px 1px blanchedalmond;">{{ pubShow.title }}</h1>
 		<h2 class="text-center -mt-8">
 			<span class="font-light">
 				<a href="{{ path("app_user", {username:pubShow.user.username}) }}" class="font-sans hover:underline dark:text-slate-200">{{ pubShow.user.nickname }}</a>
@@ -122,12 +123,12 @@
 						{% endif %}
 					</p>
 				</div>
-				<a href="{{ path("app_chapter_show", {idChap:orderChap.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:orderChap.slug}) }}" class=" block mt-5 not-italic py-5 text-center w-full lg:w-3/6 px-10 bg-white  text-base hover:bg-white text-slate-800 shadow hover:text-slate-800 bg-opacity-50 dark:bg-opacity-80 hover:bg-opacity-100 dark:bg-slate-800 dark:text-slate-100  dark:hover:bg-slate-900 rounded-lg">
+				<a href="{{ path("app_chapter_show", {idChap:orderChap.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:orderChap.slug}) }}" class=" block mt-5 not-italic py-5 text-center w-full lg:w-3/6 px-10 bg-white  text-base hover:bg-white text-slate-800 shadow hover:text-slate-800 bg-opacity-50 dark:bg-opacity-80 hover:bg-opacity-100 dark:bg-slate-700 dark:text-slate-100  dark:hover:bg-slate-900 rounded-lg">
 					<i class="fa-regular fa-book-open-reader"></i>
 					<br/><span class="font-semibold">Commencer la lecture</span>
 				</a>
 				<div class="grid {{ pubShow.sale ? " grid-cols-2" : " grid-cols-1" }} w-full md:w-3/6 text-sm items-center justify-center gap-x-2">
-					<button id="dropdownBuyBookButton" data-dropdown-toggle="dropdownBuyBook" class="{{ pubShow.sale ? "block" : "hidden" }} mt-5 not-italic py-2 text-center px-5 bg-white hover:bg-white text-slate-800 shadow hover:text-slate-800 bg-opacity-10 dark:bg-opacity-50 hover:bg-opacity-70 dark:hover:bg-opacity-50 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-900 rounded-lg">
+					<button id="dropdownBuyBookButton" data-dropdown-toggle="dropdownBuyBook" class="{{ pubShow.sale ? "block" : "hidden" }} block mt-5 not-italic py-2 text-center px-5 text-slate-800 hover:text-slate-800 dark:text-slate-100 dark:hover:bg-slate-900 rounded-lg">
 						<span class="font-light flex flex-row justify-center items-center w-full">
 							<span class="w-full">
 								<i class="fa-duotone fa-cart-shopping"></i>&nbsp;&nbsp;Acheter
@@ -148,7 +149,7 @@
 							{% if pubShow.saleWeb %}
 								<li class="flex flex-row items-center gap-x-2 px-5 rounded  hover:bg-gray-100  dark:hover:bg-gray-600 dark:hover:text-white">
 									<i class="fa-regular fa-tablet-screen py-4"></i>
-									<a href="{{ pubShow.saleWeb }}" class="block">Acheter au
+									<a href="{{ pubShow.saleWeb }}" class="block" target="_blank">Acheter au
 										<strong>format numérique</strong>
 									</a>
 								</li>
@@ -156,14 +157,14 @@
 							{% if pubShow.salePaper %}
 								<li class="flex flex-row items-center gap-x-2 px-5 rounded  hover:bg-gray-100  dark:hover:bg-gray-600 dark:hover:text-white">
 									<i class="fa-regular fa-book-open-cover py-4"></i>
-									<a href="{{ pubShow.salePaper }}" class="block">Acheter au
+									<a href="{{ pubShow.salePaper }}" class="block" target="_blank">Acheter au
 										<strong>format papier</strong>
 									</a>
 								</li>
 							{% endif %}
 						</ul>
 					</div>
-					<a target="_top" href="{{ path("app_publication_show_one", {id:pubShow.id, slug:"download"}) }}" class="block mt-5 not-italic py-2 text-center  px-5 bg-white   hover:bg-white text-slate-800 shadow hover:text-slate-800 bg-opacity-10 dark:bg-opacity-50 hover:bg-opacity-70 dark:hover:bg-opacity-50 dark:bg-slate-800 dark:text-slate-100  dark:hover:bg-slate-900 rounded-lg">
+					<a target="_top" href="{{ path("app_publication_show_one", {id:pubShow.id, slug:"download"}) }}" class="block mt-5 not-italic py-2 text-center  px-5    text-slate-800  hover:text-slate-800 dark:text-slate-100  dark:hover:bg-slate-900 rounded-lg">
 						<i class="fa-duotone fa-file-pdf"></i>
 						<span class="font-light">
 							Télécharger

@@ -22,8 +22,13 @@
 	<link rel="canonical" href="https://scrilab.com{{ canonicalUrl }}"/>
 	<meta name="description" content="Lecture de la feuille « {{infoChap.title}} » du récit « {{infoPub.title}} » | Par {{infoPub.user.nickname}}">
 	<meta name="author" content="{{infoPub.user.nickname}}">
-	<meta property="og:image" content="{{pic}}">
 	<meta name="twitter:image" content="{{pic}}">
+	<meta property="og:title" content="{{infoPub.title}} ({{infoChap.title}})">
+	<meta property="og:description" content="{{ infoPub.summary|trim }}">
+	<meta property="og:url" content="https://scrilab.com{{ canonicalUrl }}">
+	<meta property="og:image" content="{{pic}}">
+	<meta property="og:image:width" content="529">
+	<meta property="og:image:height" content="730">
 {% endblock %}
 
 {% block title %}

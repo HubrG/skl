@@ -20,7 +20,7 @@
 	Récit |
 	{{ pubShow.title }}
 	({{ pubShow.user.nickname }})
-																																																																																																																		-
+																																																																																																																							-
 	{{ parent() }}
 {% endblock %}
 
@@ -40,6 +40,9 @@
 {% block metatags %}
 	<meta name="description" content="{{ summary|trim }}">
 	<meta name="author" content="{{ pubShow.user.nickname }}">
+	<meta property="og:title" content="{{pubShow.title}}">
+	<meta property="og:description" content="{{ summary|trim }}">
+	<meta property="og:url" content="https://scrilab.com{{ canonicalUrl }}">
 	<meta property="og:image" content="{{pic}}">
 	<meta property="og:image:width" content="529">
 	<meta property="og:image:height" content="730">

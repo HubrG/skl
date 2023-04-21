@@ -149,6 +149,22 @@ function AxiosPublication() {
   } else {
     var finished = 0;
   }
+  // ! Publication Sale - Afficher la div de vente si case cochée
+  var saleLinks = document.getElementById("saleLinks");
+  if (document.getElementById("publication_sale")) {
+    var sale = document.getElementById("publication_sale").checked;
+    if (saleLinks.classList.contains("hidden")) {
+      saleLinks.classList.remove("hidden");
+    } else {
+      saleLinks.classList.add("hidden");
+    }
+  } else {
+    var sale = 0;
+  }
+
+  var saleWeb = document.getElementById("publication_sale_web").value;
+  var salePaper = document.getElementById("publication_sale_paper").value;
+  //!
   var mature = document.getElementById("publication_mature").value;
   var hideIdPub = document.getElementById("hideIdPub").value;
   // * Gestion de la photo (si changement de photo)
@@ -184,6 +200,9 @@ function AxiosPublication() {
   data.append("finished", finished);
   data.append("category", category);
   data.append("mature", mature);
+  data.append("sale", sale);
+  data.append("sale_paper", salePaper);
+  data.append("sale_web", saleWeb);
   data.append("idPub", hideIdPub);
   data.append("cover", coverFile);
   // * Envoi sur le serveur via Axios

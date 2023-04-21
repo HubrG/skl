@@ -107,10 +107,16 @@ function addTrashClickListener() {
   trashItems.forEach((item) => {
     item.addEventListener("click", () => {
       const listItem = item.closest(".list-group-item");
-      moveToTrash(listItem);
-      // console.log(listItem);
-      listItem.setAttribute("data-chapter-status", 0);
-      axiosGoStatus(listItem);
+      listItem.classList.add("animate__animated", "animate__backOutDown");
+      setTimeout(() => {
+        listItem.classList.remove("animate__animated", "animate__backOutDown");
+      }, 1000);
+      setTimeout(() => {
+        moveToTrash(listItem);
+        // console.log(listItem);
+        listItem.setAttribute("data-chapter-status", 0);
+        axiosGoStatus(listItem);
+      }, 1000);
     });
   });
 }
@@ -125,6 +131,7 @@ function addTrashEverClickListener() {
 }
 function moveToTrash(item) {
   const itemsChapTrash = document.getElementById("itemsChapTrash");
+
   itemsChapTrash.appendChild(item);
   handleNoChapTrashRemoval();
   if (!document.querySelector(".noty_type__info")) {
@@ -320,6 +327,7 @@ function axiosTrashForever(listItem) {
         listItem.classList.add("animate__animated", "animate__bounceOut");
         setTimeout(() => {
           listItem.remove();
+          updateNbrItems();
         }, 1000);
       } else {
         NotyDisplay(

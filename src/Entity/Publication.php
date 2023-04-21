@@ -89,6 +89,17 @@ class Publication
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $lastPublishedAt = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $sale_paper = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $sale_web = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $sale = null;
+
+
+
 
 
     public function __construct()
@@ -561,5 +572,41 @@ class Publication
     {
         // Si le titre est null, retourner une chaîne vide ou une valeur par défaut
         return $this->title ?? '';
+    }
+
+    public function getSalePaper(): ?string
+    {
+        return $this->sale_paper;
+    }
+
+    public function setSalePaper(?string $sale_paper): self
+    {
+        $this->sale_paper = $sale_paper;
+
+        return $this;
+    }
+
+    public function getSaleWeb(): ?string
+    {
+        return $this->sale_web;
+    }
+
+    public function setSaleWeb(?string $sale_web): self
+    {
+        $this->sale_web = $sale_web;
+
+        return $this;
+    }
+
+    public function isSale(): ?bool
+    {
+        return $this->sale;
+    }
+
+    public function setSale(?bool $sale): self
+    {
+        $this->sale = $sale;
+
+        return $this;
     }
 }

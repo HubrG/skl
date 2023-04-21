@@ -13,9 +13,10 @@ framework:
         handler_id: null
         cookie_secure: auto
         save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+        cookie_lifetime: 86400 # durée de vie du cookie (1 jour)
         cookie_samesite: lax
         storage_factory_id: session.storage.factory.native
-        gc_maxlifetime: 7200 # durée de vie de la session (2 heures)
+        gc_maxlifetime: 86400 # durée de vie de la session (2 heures)
 
     #esi: true
     fragments: true

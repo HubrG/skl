@@ -34,11 +34,7 @@ class PublicationType extends AbstractType
             ->add('cover', FileType::class, [
                 'mapped' => false,
                 'required' => false,
-                'constraints' => [
-                    new Image([
-                        'maxSize' => '5k'
-                    ])
-                ]
+
             ])
             ->add('mature', CheckboxType::class, [
                 'required' => false

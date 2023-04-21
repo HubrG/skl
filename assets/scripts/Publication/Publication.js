@@ -3,16 +3,25 @@ import axios from "axios";
 export function AxiosSavePublication() {
   if (document.getElementById("togglePubAS")) {
     axiosGoSortable();
+    // ! Suppression de la couverture
+    var deleteCover = document.getElementById("deleteCover");
+    if (deleteCover) {
+      deleteCover.addEventListener("click", () => {
+        axiosDeleteCover();
+      });
+    }
     // ! Publication Sale - Afficher la div de vente si case cochée
-    var saleLinks = document.getElementById("saleLinks");
-    var sale = document.getElementById("publication_sale");
-    sale.addEventListener("change", () => {
-      if (saleLinks.classList.contains("hidden")) {
-        saleLinks.classList.remove("hidden");
-      } else {
-        saleLinks.classList.add("hidden");
-      }
-    });
+    if (document.getElementById("publication_sale")) {
+      var saleLinks = document.getElementById("saleLinks");
+      var sale = document.getElementById("publication_sale");
+      sale.addEventListener("change", () => {
+        if (saleLinks.classList.contains("hidden")) {
+          saleLinks.classList.remove("hidden");
+        } else {
+          saleLinks.classList.add("hidden");
+        }
+      });
+    }
     // ! Édition rapide du titre (à la volée)
     // On récupère tous les éléments avec la classe "fastChangeTitle"
     var fastChangeTitles = document.querySelectorAll(".fastChangeTitle");
@@ -164,15 +173,18 @@ function AxiosPublication() {
   } else {
     var sale = 0;
   }
-
-  var saleWeb = document.getElementById("publication_sale_web").value;
-  var salePaper = document.getElementById("publication_sale_paper").value;
+  if (document.getElementById("publication_sale_web")) {
+    var saleWeb = document.getElementById("publication_sale_web").value;
+    var salePaper = document.getElementById("publication_sale_paper").value;
+  }
   //!
   var mature = document.getElementById("publication_mature").value;
   var hideIdPub = document.getElementById("hideIdPub").value;
   // * Gestion de la photo (si changement de photo)
   var spinCover = document.getElementById("spinCover").classList;
   const hideNoCover = document.getElementById("hideNoCover");
+  const noCover = document.getElementById("no-cover");
+  const coverOk = document.getElementById("cover-ok");
   var showNewCover = document.getElementById("showNewCover");
   var coverShow = document.getElementById("cover");
   var cover = document.getElementById("publication_cover");
@@ -230,11 +242,9 @@ function AxiosPublication() {
           coverShow.classList.remove("opacity-50");
           coverShow.src = response.data.cloudinary;
           cover.value = "";
-          if (hideNoCover) {
-            if (showNewCover.classList.contains("hidden")) {
-              hideNoCover.style.display = "none";
-              showNewCover.classList.remove("hidden");
-            }
+          if (coverOk.classList.contains("hidden")) {
+            noCover.classList.add("hidden");
+            coverOk.classList.remove("hidden");
           }
         }
       } else {
@@ -472,5 +482,39 @@ async function axiosChangeTitle(id, title) {
       }
     }
   }
+}
+function axiosDeleteCover() {
+  let id = document.getElementById("hideId").value;
+  let url = "/story/deletecover";
+  let data = new FormData();
+  data.append("id", id);
+  axios
+    .post(url, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then(function (response) {
+      var coverOk = document.getElementById("cover-ok");
+      var noCover = document.getElementById("no-cover");
+      if (response.data["code"] == 200) {
+        var notyTimeout = 4000;
+        var notyType = "info";
+        var notyText =
+          "<span class='text-base font-medium'>Couverture supprimée</span><br />La couverture de votre récit a été supprimée";
+        NotyDisplay(notyText, notyType, notyTimeout);
+        coverOk.classList.add("hidden");
+        noCover.classList.remove("hidden");
+      }
+    })
+    .catch(function (error) {
+      if (error.response) {
+        var notyText =
+          "<span class='text-base font-medium'>Erreur</span><br />Une erreur est survenue lors de la suppression de la couverture de votre récit";
+        var notyTimeout = 4500;
+        var notyType = "error";
+        NotyDisplay(notyText, notyType, notyTimeout);
+      }
+    });
 }
 AxiosSavePublication();

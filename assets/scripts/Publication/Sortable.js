@@ -107,16 +107,20 @@ function addTrashClickListener() {
   trashItems.forEach((item) => {
     item.addEventListener("click", () => {
       const listItem = item.closest(".list-group-item");
-      listItem.classList.add("animate__animated", "animate__backOutDown");
+      listItem.classList.add(
+        "animate__animated",
+        "animate__backOutDown",
+        "animate__faster"
+      );
       setTimeout(() => {
         listItem.classList.remove("animate__animated", "animate__backOutDown");
-      }, 1000);
+      }, 600);
       setTimeout(() => {
         moveToTrash(listItem);
         // console.log(listItem);
         listItem.setAttribute("data-chapter-status", 0);
         axiosGoStatus(listItem);
-      }, 1000);
+      }, 500);
     });
   });
 }

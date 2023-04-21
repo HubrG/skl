@@ -499,4 +499,38 @@ class PublicationController extends AbstractController
             "title" => $dtTitle
         ], 200);
     }
+    #[Route('/story/deletecover', name: 'app_publication_delete_cover', methods: "POST")]
+    public function Axios_DeleteCover(Request $request, PublicationRepository $pRepo, EntityManagerInterface $em): response
+    {
+        $id = $request->get("id");
+        $pub = $pRepo->find($id);
+        if ($this->getUser() == $pub->getUser()) {
+            // ! Suppression du dossier $id avec tous les fichiers
+            if ($pub->getCover()) {
+                $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $id;
+                if (\file_exists($destination)) {
+                    foreach (new DirectoryIterator($destination) as $item) :
+                        if ($item->isFile()) {
+                            \unlink($item->getPathname());
+                        }
+                    endforeach;
+                    \rmdir($destination);
+                }
+            }
+            if ($pub->getCover()) {
+                $this->uploadImage->deleteImage($destination . "/" . $pub->getCover(), $pub->getCover(), $pub->getId(), "story");
+                $this->cloudinary->adminApi()->deleteFolder("story/" . $id);
+            }
+            $pub->setCover(null);
+            $em->persist($pub);
+            $em->flush();
+        } else {
+            return $this->json([
+                "code" => 404
+            ]);
+        }
+        return $this->json([
+            "code" => 200
+        ]);
+    }
 }

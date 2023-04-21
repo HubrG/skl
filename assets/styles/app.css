@@ -670,6 +670,9 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 .publication-header .right {
 	@apply w-2/12;
 }
+.publications-container.small .publication-header {
+	@apply min-h-[96px];
+}
 .publications-container.small .publication-header .right {
 	@apply hidden;
 }

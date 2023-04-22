@@ -13,7 +13,7 @@ export function Sortables() {
     addTrashEverClickListener();
 
     document.addEventListener("DOMContentLoaded", function () {
-      // axiosGoSortable();
+      axiosGoSortable();
     });
   }
 }

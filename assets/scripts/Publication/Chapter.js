@@ -3,6 +3,9 @@ import { ReadTimeFunction } from "./ChapterStats";
 // !
 // ! Fonction permettant de gérer la sauvegarde et la publication du chapitre
 // !
+const globalThis = window;
+globalThis.scriptAlreadyExecuted = globalThis.scriptAlreadyExecuted || false;
+
 export function axiosSaveChapter() {
   const selectChapVersion = document.getElementById("selectChapVersion");
   if (!selectChapVersion) return;
@@ -69,8 +72,9 @@ export function axiosSaveChapter() {
     axiosChapter();
     spinAS.classList.add("hidden");
   }
-
+  globalThis.scriptAlreadyExecuted = true;
   function handleChapterPublish() {
+    console.log("handleChapterPublish called");
     stopAutosave();
     const isPublished = togglePublish.checked;
     publishChapter(isPublished);
@@ -147,12 +151,12 @@ function publishChapter(publish) {
     .then(function (response) {
       if (response.data.code == "true") {
         var notyText =
-          "<span class='text-base font-medium'>Feuille publié</span><br />Votre feuille est désormais visible par vos lecteurs";
+          "<span class='text-base font-medium'>Feuille publiée</span><br />Votre feuille est désormais visible par vos lecteurs";
         hideChapStatus.value = 2;
         axiosChapter();
       } else {
         var notyText =
-          "<span class='text-base font-medium'>Feuille dépublié</span><br />Votre feuille n'est plus visible par vos lecteurs";
+          "<span class='text-base font-medium'>Feuille dépubliée</span><br />Votre feuille n'est plus visible par vos lecteurs";
         hideChapStatus.value = 1;
       }
       var notyTimeout = 4500;

@@ -229,6 +229,15 @@ class ChapterController extends AbstractController
         $dataPublish = $request->get("publish");
         $chapter = $pcRepo->find($idPub);
         if ($dataPublish == "true") {
+            // On recherche tous les chapitres de la publication avec un status 2 et on les trie par orderDisplay, et on récupère le dernier chapitre orderDisplay
+            $lastChapter = $pcRepo->findOneBy(["publication" => $chapter->getPublication(), "status" => 2], ["order_display" => "DESC"]);
+            // Vérifier si un chapitre a été trouvé
+            if ($lastChapter) {
+                $chapter->setOrderDisplay($lastChapter->getOrderDisplay() + 1);
+            } else {
+                // Si aucun chapitre n'a été trouvé, définir l'ordre d'affichage sur 0
+                $chapter->setOrderDisplay(0);
+            }
             $chapter->setStatus(2);
             $chapter->setPublished(new \DateTime('now'));
             // * Envoi d'une notification aux abonnés de la publication

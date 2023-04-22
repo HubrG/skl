@@ -46,6 +46,9 @@ const TurboHelper = class {
     document.addEventListener("turbo:before-cache", () => {
       darkMode();
     });
+    if (document.querySelector(".list-group-item")) {
+      Sortables();
+    }
     // * Turbo Frame Missing sert à recharger la page si le frame est manquant
     document.addEventListener("turbo:frame-missing", (event) => {
       document.querySelectorAll(".turbo-frame-error").forEach((element) => {
@@ -151,7 +154,6 @@ const TurboHelper = class {
       }
       //!
       ShowChapter();
-      axiosSaveChapter();
       targetQuote();
       LazyLoad();
       TippyC();

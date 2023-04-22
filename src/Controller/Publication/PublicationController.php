@@ -82,9 +82,9 @@ class PublicationController extends AbstractController
     #[Route('/story/edit/{id}', name: 'app_publication_edit')]
     public function EditPublication(PublicationRepository $pubRepo, PublicationChapterRepository $pchRepo, $id = null): Response
     {
-        $infoPublication = $pubRepo->findOneBy(["user" => $this->getUser(), "id" => $id]);
+        $infoPublication = $pubRepo->findOneBy(["id" => $id]);
         //
-        if ($this->getUser()) {
+        if ($this->getUser() === $infoPublication->getUser() or $this->isGranted("ROLE_ADMIN")) {
             // On recherceh tous les chapitres de la publication avec le "statut" => 0
             $chaptersWithStatus0 = $pchRepo->findChaptersByPublicationAndStatus($infoPublication, 0);
             // On vérifie si la durée est supérieure à 1 minute
@@ -147,7 +147,7 @@ class PublicationController extends AbstractController
             // * If the post exists
             if ($publication) {
                 // * If the connected user is the author of the post, we continue...
-                if ($this->getUser() === $publication->getUser()) {
+                if ($this->getUser() === $publication->getUser() or $this->isGranted("ROLE_ADMIN")) {
                     // Si le mot clé existe déjà...
                     if ($keyExists) {
                         // ... alors on ne le recrée pas et on lui ajoute 1 occurrence (uniquement si l'article est publié)
@@ -200,7 +200,7 @@ class PublicationController extends AbstractController
             $delKey = $keyRepo->findOneBy(["keyword" => $value]);
             $publication = $pubRepo->find($pub);
             // * Si l'user authentitifé est bien l'auteur du post...
-            if ($publication->getUser() === $this->getUser()) {
+            if ($publication->getUser() === $this->getUser() or $this->isGranted("ROLE_ADMIN")) {
                 // * Si le mot existe alors...
                 if ($delKey) {
                     // * On verifie que le post existe et que ce keyword est bien lié au post
@@ -248,7 +248,7 @@ class PublicationController extends AbstractController
         //
         $publication = $pubRepo->find($dataPub);
         //
-        if ($this->getUser() == $publication->getUser()) {
+        if ($this->getUser() == $publication->getUser() or $this->isGranted("ROLE_ADMIN")) {
             if ($dataPublish) {
                 $return = 200;
                 $publication->setStatus(2);
@@ -297,7 +297,7 @@ class PublicationController extends AbstractController
 
         $publication = $pubRepo->find($id);
         // * Si l'utilisateur est bien l'auteur de la publication
-        if ($this->getUser() === $publication->getUser()) {
+        if ($this->getUser() === $publication->getUser() or $this->isGranted("ROLE_ADMIN")) {
 
 
             $keyw = $publication->getPublicationKeywords();
@@ -353,7 +353,7 @@ class PublicationController extends AbstractController
         $category = $catRepo->find($dtCategory);
         //
         $urlCloudinary = "";
-        if ($this->getUser() == $pub->getUser()) {
+        if ($this->getUser() == $pub->getUser() or $this->isGranted("ROLE_ADMIN")) {
             //
             $publication = $pub->setTitle($dtTitle)->setSlug($slugger->slug(strtolower($dtTitle)))
                 ->setSummary($dtSummary)
@@ -483,7 +483,7 @@ class PublicationController extends AbstractController
 
         $pub = $chap->getPublication();
         //
-        if ($this->getUser() == $pub->getUser()) {
+        if ($this->getUser() == $pub->getUser() or  $this->isGranted("ROLE_ADMIN")) {
             $chap->setTitle($dtTitle);
             $chap->setSlug($slugger->slug(strtolower($dtTitle)));
             $em->persist($chap);
@@ -504,7 +504,7 @@ class PublicationController extends AbstractController
     {
         $id = $request->get("id");
         $pub = $pRepo->find($id);
-        if ($this->getUser() == $pub->getUser()) {
+        if ($this->getUser() == $pub->getUser() or  $this->isGranted("ROLE_ADMIN")) {
             // ! Suppression du dossier $id avec tous les fichiers
             if ($pub->getCover()) {
                 $destination = $this->getParameter('kernel.project_dir') . '/public/images/uploads/story/' . $id;

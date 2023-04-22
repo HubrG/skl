@@ -1,7 +1,7 @@
 <turbo-frame id="up_profil" class="flex flex-row items-baseline justify-start gap-x-10">
 	<div class="w-full md:w-4/12   p-8 pl-7 pt-6 md:-mt-16 mt-10 text-center  dark:shadow-2xl  rounded-lg">
 		<label for="pp" class="cursor-pointer relative ">
-			<img class="w-40 h-40 mx-auto rounded opacity-90 dark:opacity-60 object-fill dark:ring-sky-500 ring-4  ring-sky-500 " id="profil_picture" src="{{app.user.profilPicture ? app.user.profilPicture : "https://via.placeholder.com/500/500"}}">
+			<img class="w-40 h-40 mx-auto rounded opacity-90 dark:opacity-60 object-fill dark:ring-sky-500 ring-4  ring-sky-500 " id="profil_picture" src="{{userInfo.profilPicture ? userInfo.profilPicture : "https://via.placeholder.com/500/500"}}">
 			<div class="absolute inset-0 rounded-full text-2xl">
 				<i data-tippy-content="Modifier votre photo de profil" class="fa-duotone fa-pen-to-square bg-white rounded-full bg-opacity-30 p-2  hover:bg-opacity-60 text-slate-900"></i>
 			</div>
@@ -49,7 +49,7 @@
 				<hr class="mb-5">
 			</div>
 		</div>
-		{{ form_start(editUserForm, { attr: {'data-turbo-frame':'_self','action':path("app_user_edit", {"username" : app.user.username})}}) }}
+		{{ form_start(editUserForm, { attr: {'data-turbo-frame':'_self','action':path("app_user_edit", {"username" : userInfo.username})}}) }}
 		<div class=" rounded  mx-auto pb-0 ">
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 col-span-12">
 				<div class="flex flex-col gap-y-0">
@@ -125,12 +125,11 @@
 			</div>
 			<div class="order-3 gap-x-5 -mt-10 pb-10 flex justify-end">
 				{% if app.user %}
-
-					<button type="submit" href="{{ path("app_user_edit", {"username" : app.user.username}) }}" class="button-classic button-emerald float-right">
+					<button type="submit" href="{{ path("app_user_edit", {"username" : userInfo.username}) }}" class="button-classic button-emerald float-right">
 						<i class="fa-regular fa-floppy-disk"></i>
 						Enregistrer
 					</button>
-					<a href="{{ path("app_user", {"username" : app.user.username}) }}" data-turbo-frame="profil_up" data-tippy-content="Annuler les modifcations" class="button-classic button-slate float-right">
+					<a href="{{ path("app_user", {"username" : userInfo.username}) }}" data-turbo-frame="profil_up" data-tippy-content="Annuler les modifcations" class="button-classic button-slate float-right">
 						<i class="fa-regular fa-xmark"></i>
 					</a>
 				{% endif %}

@@ -10,6 +10,7 @@
 {% block body %}
 	<nav class="breadcrumb" aria-label="Breadcrumb">
 		<ol>
+
 			<li>
 				<a href="{{path("app_user_show_publications")}}">
 					Mes récits
@@ -33,7 +34,19 @@
 		</ol>
 	</nav>
 	<h1 class=" mb-20 text-center relative">
-		<span id="pubTitle" class="text-4xl font-serif">
+		<span
+			id="pubTitle" class="text-4xl font-serif flex flex-col">
+			{# Si l'utilisateur est admin #}
+			{% if (is_granted('ROLE_ADMIN') and infoPub.user.username != app.user.username) %}
+				<div class="bg-yellow-300 p-3 py-0 mb-8 w-2/6 mx-auto text-sm text-yellow-800 rounded">
+					Vue admin
+					<i class="fa-duotone fa-screwdriver-wrench px-2"></i>
+					récit de
+					<a href="{{path("app_user", {username:infoPub.user.username})}}" class="hover:underline font-semibold" target="_top">{{ infoPub.user.username }}</a>
+				</div>
+
+			{% endif %}
+			{# end #}
 			{{ infoPub.title|capitalize }}
 		</span>
 	</h1>

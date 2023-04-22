@@ -37,7 +37,7 @@ class ChapterController extends AbstractController
             // on récupère les informations de la publication
             $infoPublication = $pubRepo->find($idPub);
             // * Si l'utilisateur est bien l'auteur de la publication, on continue, sinon on est redirigé vers la page d'accueil
-            if ($this->getUser() == $infoPublication->getUser()) {
+            if ($this->getUser() == $infoPublication->getUser() or $this->isGranted('ROLE_ADMIN')) {
                 // * s'il n'y a pas d'ID de chapitre dans l'URL, on vérifie si un chapitre brouillon existe pour cet utilisateur
                 if (!$idChap) {
                     // * on vérifie si un chapitre brouillon existe pour cet utilisateur
@@ -121,7 +121,8 @@ class ChapterController extends AbstractController
             $user &&
             $pub &&
             $pch &&
-            $user == $pub->getUser() &&
+            ($user == $pub->getUser() || $this->isGranted('ROLE_ADMIN'))
+            &&
             $pch->getPublication() == $pub
         ) {
             $this->funcDeleteChapter($pch);
@@ -139,7 +140,7 @@ class ChapterController extends AbstractController
         if (
             $user &&
             $infoPublication &&
-            $user == $infoPublication->getUser()
+            ($user == $infoPublication->getUser() or $this->isGranted('ROLE_ADMIN'))
         ) {
             $infoChapitres = $pcRepo->findBy(['publication' => $idPub, 'status' => 0]);
 
@@ -192,7 +193,7 @@ class ChapterController extends AbstractController
         $publication = $pRepo->find($idPub);
         $chapter = $pcRepo->find($idChap);
         //
-        if ($publication->getId() == $chapter->getPublication()->getId() && $this->getUser() == $publication->getUser()) {
+        if ($publication->getId() == $chapter->getPublication()->getId() && ($this->getUser() == $publication->getUser() or $this->isGranted('ROLE_ADMIN'))) {
             if ($dtTitle == "") {
                 // * S'il n'y a pas de titre, on lui attribue un titre par défaut qui représente "Feuille n°X", dont le x est son numéro de feuille (orderDisplay)
                 $dtTitle = "Feuille n°" . $chapter->getOrderDisplay() + 1;
@@ -345,7 +346,7 @@ class ChapterController extends AbstractController
     public function Axios_addImg(Request $request, UserRepository $userRepo, PublicationChapterRepository $pcRepo): response
     {
         $chapter = $pcRepo->find($request->get("id"));
-        if ($this->getUser() == $chapter->getPublication()->getUser()) {
+        if ($this->getUser() == $chapter->getPublication()->getUser() or $this->isGranted("ROLE_ADMIN")) {
             $dtPic = $request->files->get("pic");
             $idChap = $request->get("id");
             return $this->uploadImage->UploadImage($dtPic, "chapter", $idChap, 1680, 600);
@@ -359,7 +360,7 @@ class ChapterController extends AbstractController
     public function Axios_delImg(Request $request, EntityManagerInterface $em, PicturesRepository $picRepo, PublicationChapterRepository $pcRepo): response
     {
         $chapter = $pcRepo->find($request->get("id"));
-        if ($this->getUser() == $chapter->getPublication()->getUser()) {
+        if ($this->getUser() == $chapter->getPublication()->getUser() or $this->isGranted("ROLE_ADMIN")) {
             $dtPic = $request->get("pic");
             $idChap = $request->get("id");
             // On recherche l'image dans la bdd via son "pic"

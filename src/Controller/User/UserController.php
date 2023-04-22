@@ -91,14 +91,23 @@ class UserController extends AbstractController
 
 		]);
 	}
-	#[Route('user/publications/show/{sort?}/{order?}', name: 'app_user_show_publications')]
-	public function showpublication(Request $request, PublicationRepository $pubRepo, UserRepository $user, EntityManagerInterface $em, $sort = null, $order = null): Response
+	#[Route('user/publications/show/{sort?}/{order?}/{username?}', name: 'app_user_show_publications')]
+	public function showpublication(Request $request, PublicationRepository $pubRepo, UserRepository $user, EntityManagerInterface $em, $sort = null, $order = null, $username = null): Response
 	{
 		if (!$this->getUser()) {
 			return $this->redirectToRoute("app_home");
 		}
-		$user = $user->findOneBy(["id" => $this->getUser()]);
-		$user = $user->getId();
+		if ($username == null) {
+			$user = $user->findOneBy(["id" => $this->getUser()]);
+			$user = $user->getId();
+		} elseif ($username != null && $this->isGranted("ROLE_ADMIN")) {
+			$user = $user->findOneBy(["username" => $username]);
+			$user = $user->getId();
+		} else {
+			$user = $user->findOneBy(["id" => $this->getUser()]);
+			$user = $user->getId();
+		}
+
 		//
 		$order = $order ?? "desc";
 		$sort = $sort ?? "created";

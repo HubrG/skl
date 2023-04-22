@@ -39,11 +39,28 @@ export function quillEditor() {
       "list",
       "image",
       "size",
+      "block",
     ],
   };
   if (document.getElementById("editor")) {
     const quill = new Quill("#editor", options);
 
+    // format DIV to P
+    quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
+      if (node.tagName === "DIV") {
+        const newDelta = new Delta();
+        delta.ops.forEach((op) => {
+          if (op.insert) {
+            newDelta.insert(op.insert, { ...op.attributes, block: "p" });
+          } else {
+            newDelta.retain(op.retain, { ...op.attributes, block: "p" });
+          }
+        });
+        return newDelta;
+      }
+      return delta;
+    });
+    //
     quill.root.innerHTML = document.getElementById("editorHTML").value;
     let buttonSelector = document.getElementById("button-selector");
     let clickedIndex = null;

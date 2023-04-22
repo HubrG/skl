@@ -130,7 +130,18 @@
 			</li>
 		</ol>
 	</nav>
-	<section class="col-start-0 lg:col-start-2 -mt-5">
+	<section
+		class="col-start-0 lg:col-start-2 -mt-5">
+		{# Si l'utilisateur est admin #}
+		{% if (is_granted('ROLE_ADMIN') and infoPub.user.username != app.user.username) %}
+			<div class="bg-yellow-300 p-3 py-3 text-center mb-8 w-2/6 mx-auto text-sm text-yellow-800 rounded">
+				Vue admin
+				<i class="fa-duotone fa-screwdriver-wrench px-2"></i>
+				récit de
+				<a href="{{path("app_user", {username:infoPub.user.username})}}" class="hover:underline font-semibold" target="_top">{{ infoPub.user.username }}</a>
+			</div>
+		{% endif %}
+		{# end #}
 		<div class="relative mb-5 md:mb-0">
 			<div class="items-baseline -mb-14 md:mb-10 relative grid grid-cols-12 auto-rows-auto">
 				<input type="text" id="title" name="title" class="dark:bg-transparent dark:text-slate-200 col-span-12 lg:col-span-8  order-2 lg:order-1 active:caret-none focus:ring-0  font-normal text-slate-600 text-4xl overflow-hidden h-16 [font-family:'Merriweather'] mt-0 lg:mt-10 border-0  mb-0 pb-0 border-b-2 border-b-slate-600 dark:border-b-slate-600 {% if (infoPub.status < 2 or infoChap.status < 2) %}axiosChapterAS{% endif %} axiosSpy" value="{{ infoChap.title }}" placeholder="Titre de la feuille">

@@ -30,16 +30,16 @@
 <turbo-frame id="frame-user" class="col-span-12 lg:col-span-10 lg:col-start-2   mt-14 justify-evenly min-h-[50vh] h-full z-50 ">
 	<div class="absolute bg-white dark:bg-slate-800 w-full min-h-[100%] left-0 right-0 -z-10  ">&nbsp;</div>
 	<div class="w-full bg-transparent">
-		{% if app.user and app.user.id == userInfo.id %}
+		{% if app.user and app.user.id == userInfo.id or is_granted('ROLE_ADMIN') %}
 			<ul class="flex-row absolute justify-center items-center left-0 flex w-full">
 				<li class="li-user-menu ">
-					<a href="{{ path("app_user", { username : app.user.username}) }}" data-turbo-frame="_self" class="item-user-menu {{ app.request.attributes.get('_route') == 'app_user' or app.request.attributes.get('_route') == 'app_user_edit' ? " item-user-menu-selected"}}">
+					<a href="{{ path("app_user", { username : userInfo.username}) }}" data-turbo-frame="_self" class="item-user-menu {{ app.request.attributes.get('_route') == 'app_user' or app.request.attributes.get('_route') == 'app_user_edit' ? " item-user-menu-selected"}}">
 						<i class="{{ app.request.attributes.get('_route') == 'app_user' ? "fa-duotone" : "fa-regular" }} fa-user-vneck"></i>
 						<span class="hidden   md:inline">Profil public</span>
 					</a>
 				</li>
 				<li class="li-user-menu">
-					<a href="{{ path("app_user_show_publications") }}" data-turbo-frame="_self" class="item-user-menu {{ app.request.attributes.get('_route') == 'app_user_show_publications' ? " item-user-menu-selected"}}">
+					<a href="{{ path("app_user_show_publications", {username:userInfo.username, order:"desc", sort:"created"}) }}" data-turbo-frame="_self" class="item-user-menu {{ app.request.attributes.get('_route') == 'app_user_show_publications' ? " item-user-menu-selected"}}">
 						<i class="{{ app.request.attributes.get('_route') == 'app_user_show_publications' ? "fa-duotone" : "fa-regular" }} fa-book-copy"></i>
 						<span class="hidden   md:inline">Mes récits</span>
 					</a>

@@ -11,8 +11,6 @@ use App\Entity\PublicationChapterView;
 use App\Services\PublicationPopularity;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
-use App\Form\PublicationChapterCommentType;
-use App\Entity\PublicationChapterCommentLike;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,9 +20,6 @@ use App\Repository\PublicationBookmarkRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 use App\Repository\PublicationChapterLikeRepository;
 use App\Repository\PublicationChapterNoteRepository;
-use App\Repository\PublicationChapterViewRepository;
-use App\Repository\PublicationChapterCommentRepository;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ChapterShowController extends AbstractController
@@ -271,16 +266,36 @@ class ChapterShowController extends AbstractController
         // * On met à jour la popularité de la publication
         $this->publicationPopularity->PublicationPopularity($chapter->getPublication());
     }
+    /**
+     * Met en forme le contenu d'un chapitre en effectuant les opérations suivantes :
+     *
+     * 1. Remplacer les balises <div> par des balises <p>.
+     * 2. Ajouter un attribut id unique à chaque balise <p>.
+     * 3. Ajuster les URL des images pour un redimensionnement et une mise à l'échelle automatiques.
+     *
+     * @param object $chapter L'objet chapitre contenant le contenu à formater
+     *
+     * @return string Le contenu formaté
+     */
     public function formatChapter($chapter)
     {
         $id = 0;
+        $content = $chapter->getContent();
+
+        // Remplace les balises <div> par des balises <p>
+        $content = preg_replace('/<div\s*(.*?)>(.*?)<\/div>/', '<p $1>$2</p>', $content);
+
+        // Ajoute un attribut id aux balises <p>
         $newText = preg_replace_callback('/<p\s*(.*?)>(.*?)<\/p>/', function ($matches) use (&$id) {
             return '<p id="paragraphe-' . $id++ . '" ' . $matches[1] . '>' . $matches[2] . '</p>';
-        }, $chapter->getContent());
+        }, $content);
+
+        // Modifie les URL des images
         $newText = str_replace('/image/upload/', '/image/upload/w_auto,c_scale/', $newText);
 
         return $newText;
     }
+
     #[Route('/recit/chapter/getnote', name: 'app_chapter_get_note', methods: ['POST'])]
     public function Axios_getNotes(Request $request, PublicationChapterNoteRepository $pcnRepo, PublicationChapterRepository $pchRepo)
     {

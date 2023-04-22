@@ -78,7 +78,13 @@ class ChapterShowController extends AbstractController
         }
         // ! Si toutes les conditions sont réunies, on traitre les données
         $previous = $pchRepo->findOneBy(['publication' => $publication->getId(), 'status' => 2, 'order_display' => $chapter->getOrderDisplay() - 1]);
+        if (!$previous) {
+            $previous = $pchRepo->findOneBy(['publication' => $publication->getId(), 'status' => 2, 'order_display' => $chapter->getOrderDisplay() - 2]);
+        }
         $next = $pchRepo->findOneBy(['publication' => $publication->getId(), 'status' => 2, 'order_display' => $chapter->getOrderDisplay() + 1]);
+        if (!$next) {
+            $next = $pchRepo->findOneBy(['publication' => $publication->getId(), 'status' => 2, 'order_display' => $chapter->getOrderDisplay() + 2]);
+        }
         $comments = $pcomRepo->findBy(['chapter' => $chapter], ['published_at' => 'DESC'], $nbrShowCom, 0);
         $nbrCom = count($pcomRepo->findBy(['chapter' => $chapter]));
         // * 

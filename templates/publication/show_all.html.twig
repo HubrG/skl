@@ -94,12 +94,19 @@
 					{% endif %}
 				</h4>
 				<div class="-mt-3 w-full md:w-auto flex  gap-x-2">
-					<button id="sortButton" data-dropdown-toggle="sortHover" class="flex justify-center items-center ring-1 bg-none  focus:ring-4 focus:outline-none font-medium w-full text-center rounded-lg text-xs lg:text-sm lg:mt-0 mt-2 px-4 py-2.5  {{ querySortby == 'pop' ? 'ring-sky-600 hover:bg-sky-50  text-sky-800 focus:ring-sky-300 dark:text-sky-500 dark:hover:text-sky-400 dark:ring-sky-400 dark:hover:bg-sky-900 dark:hover:ring-sky-500' : 'ring-yellow-600 hover:bg-yellow-50  text-yellow-800 focus:ring-amber-300 dark:text-yellow-400 dark:ring-yellow-400 dark:hover:bg-yellow-900 dark:hover:text-yellow-400 dark:hover:ring-yellow-500'}}    " type="button">
+					<button id="sortButton" data-dropdown-toggle="sortHover" class="flex justify-center items-center ring-1 bg-none  focus:ring-4 focus:outline-none font-medium w-full text-center rounded-lg text-xs lg:text-sm lg:mt-0 mt-2 px-4 py-2.5  {{ querySortby == 'pop' ? 'ring-sky-600 hover:bg-sky-50  text-sky-800 focus:ring-sky-300 dark:text-sky-500 dark:hover:text-sky-400 dark:ring-sky-400 dark:hover:bg-sky-900 dark:hover:ring-sky-500' : querySortby == 'published' ? 'ring-yellow-600 hover:bg-yellow-50  text-yellow-800 focus:ring-amber-300 dark:text-yellow-400 dark:ring-yellow-400 dark:hover:bg-yellow-900 dark:hover:text-yellow-400 dark:hover:ring-yellow-500' : 'ring-green-600 hover:bg-green-50  text-green-800 focus:ring-amber-300 dark:text-green-400 dark:ring-green-400 dark:hover:bg-green-900 dark:hover:text-green-400 dark:hover:ring-green-500'}}    " type="button">
 						{% set popIcon = '<i class="fa-duotone fa-fire text-sky-800 dark:text-sky-500"></i> ' %}
 						{% set newIcon = '<i class="fa-duotone fa-sparkles text-yellow-800 dark:text-yellow-400"></i>' %}
-						{% set sortText = 
-						querySortby == 'pop' ? popIcon|raw ~ " &nbsp;&nbsp;Les plus populaires d'abord" :
-						querySortby == 'published'  ? newIcon|raw ~ " &nbsp;&nbsp;Les nouveautés d'abord" %}
+						{% set lastChapterIcon = '<i class="fa-duotone fa-file-plus text-green-800 dark:text-green-400"></i>' %}
+						{% if querySortby == 'pop' %}
+							{% set sortText = popIcon|raw ~ " &nbsp;&nbsp;Les plus populaires d'abord" %}
+						{% endif %}
+						{% if querySortby == 'published' %}
+							{% set sortText = newIcon|raw ~ " &nbsp;&nbsp;Les nouveautés d'abord" %}
+						{% endif %}
+						{% if querySortby == 'sheet' %}
+							{% set sortText = lastChapterIcon|raw ~ " &nbsp;&nbsp;Les dernières feuilles publiées" %}
+						{% endif %}
 						{{ sortText|raw }}
 						<svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -140,6 +147,13 @@
 								'class': '',
 								'icon': newIcon
 							},
+							{
+								'text': 'Les dernières feuilles publiées',
+								'order': 'desc',
+								'sortby': 'sheet',
+								'class': '',
+								'icon': lastChapterIcon
+							},
 							
 						] %}
 						<ul class="text-sm  text-slate-700 shadow-2xl rounded-lg" aria-labelledby="sortButton">
@@ -148,7 +162,9 @@
 									{% if querySortby == "pop" %}
 										{% set activeClass = "bg-sky-100 text-sky-800 hover:bg-sky-100 dark:bg-sky-900 dark:hover:bg-sky-900 dark:text-sky-300" %}
 									{% elseif querySortby == "published" %}
-										{% set activeClass = "bg-yellow-100 text-yellow-800 hover:bg-yellow-100 dark:bg-yellow-800 dark:hover:bg-yellow-800 rounded-b-lg dark:text-yellow-400" %}
+										{% set activeClass = "bg-yellow-100 text-yellow-800 hover:bg-yellow-100 dark:bg-yellow-800 dark:hover:bg-yellow-800  dark:text-yellow-400" %}
+									{% elseif querySortby == "sheet" %}
+										{% set activeClass = "bg-green-100 text-green-800 hover:bg-green-100 dark:bg-green-800 dark:hover:bg-green-800 rounded-b-lg dark:text-green-400" %}
 									{% endif %}
 								{% else %}
 									{% set activeClass = "hover:bg-slate-200 dark:bg-slate-500 dark:hover:bg-slate-700 dark:text-slate-300 grayscale" %}

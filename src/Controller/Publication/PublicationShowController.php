@@ -52,6 +52,10 @@ class PublicationShowController extends AbstractController
 		$slug = $slug ?? "all";
 		if ($sortby == "published") {
 			$sortby = "p.published_date";
+		} elseif ($sortby == "pop") {
+			$sortby = "p.pop";
+		} elseif ($sortby == "sheet") {
+			$sortby = "p.sheet";
 		} else {
 			$sortby = "p.pop";
 		}
@@ -102,8 +106,17 @@ class PublicationShowController extends AbstractController
 				}
 				if ($sortby == "p.pop") {
 					$publications = $pRepo->findBy(["id" => $publicationsAll], ["pop" => $order], $nbr_by_page, $start);
-				} else {
+				} elseif ($sortby == "p.published_date") {
 					$publications = $pRepo->findBy(["id" => $publicationsAll], ["published_date" => $order], $nbr_by_page, $start);
+				} elseif ($sortby == "p.sheet") {
+					$qb = $pRepo->createQueryBuilder('p')
+						->leftJoin('p.publicationChapters', 'pc')
+						->where('p IN (:publicationsAll)')
+						->andWhere('pc.status = 2')
+						->orderBy('pc.published', $order)
+						->setParameter('publicationsAll', $publicationsAll)
+						->setFirstResult($start);
+					$publications = $qb->getQuery()->getResult();
 				}
 				$keywString = null;
 			}

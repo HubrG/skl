@@ -343,6 +343,11 @@ class ChapterController extends AbstractController
         }
         //
         $chapter->setStatus($newStatus);
+        if ($newStatus == 2) {
+            $chapter->setPublished(new \DateTime('now'));
+        } else {
+            $chapter->setPublished(null);
+        }
         $em->persist($chapter);
         $em->flush();
         return $this->json([

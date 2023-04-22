@@ -106,8 +106,8 @@
 									{% endif %}
 								</a>
 							</th>
-							<th data-tippy-content="Nombre de j'aime" scope="col" class="py-3 pl-2 flex">
-								<a class="flex justify-center items-center gap-x-2" href="{{path("app_user_show_publications", {sort:"likes", order:order})}}">
+							<th data-tippy-content="Nombre de j'aime" scope="col" class="py-3 pl-2">
+								<a class="flex justify-center items-left items-center gap-x-2" href="{{path("app_user_show_publications", {sort:"likes", order:order})}}">
 									<i class="fa-{{sort == 'likes' ? 'solid' : 'regular'}} fa-thumbs-up"></i>
 									{% if sort == "likes" %}
 										{{chevron|raw}}
@@ -201,14 +201,13 @@
 								<td class="px-6 py-3  {{item.status < 2 ? " opacity-60"}}">
 									{{item.PublicationDownloads|length}}
 								</td>
-								<td class="px-6 py-3 flex justify-left text-center gap-x-2  {{item.status < 2 ? " opacity-60"}}">
+								<td class="px-6 py-3 text-left {{item.status < 2 ? " opacity-60"}}">
 									{% set lastPopularity = 0 %}
 									{% if item.PublicationPopularities|length > 1 %}
 										{% set nbr = item.PublicationPopularities|length %}
 										{% set nbr = nbr - 1 %}
 										{% set lastPopularity = item.PublicationPopularities[nbr].popularity %}
 									{% endif %}
-									<span>{{item.pop}}</span>
 									{% if item.pop < lastPopularity %}
 
 										<i class="fa-regular fa-circle-down text-red-700"></i>

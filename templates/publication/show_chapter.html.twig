@@ -73,7 +73,27 @@
 				&nbsp;&nbsp;<i class="fa-solid fa-caret-down active:text-xl"></i>
 			</button>
 		</div>
+		{% if app.user and infoChap.Publication.status == 2 and (app.user.id == infoPub.user.id or is_granted('ROLE_ADMIN')) %}
+			<div class="flex justify-center -mt-5 text-xs absolute right-0 top-12">
+				{% if is_granted('ROLE_ADMIN') and app.user.id != infoPub.user.id %}
+					<a data-tippy-content="Éditer le chapitre" href="{{ path("app_publication_edit_chapter", { idPub:infoPub.id, idChap:infoChap.id }) }}" class="p-2 rounded  bg-opacity-50 hover:bg-opacity-100 bg-yellow-300 dark:bg-yellow-900 dark:text-yellow-300 dark:bg-opacity-50 dark:hover:bg-opacity-100 justify-center flex flex-row px-4 gap-x-2 items-center">
+						<span class="hidden md:inline">
+							Admin
+						</span>
+						<i class="fa-duotone fa-screwdriver-wrench"></i>
+						<span class="hidden md:inline">
+							Éditer le chapitre
+						</span>
 
+					</a>
+				{% else %}
+					<a data-tippy-content="Éditer le chapitre" href="{{ path("app_publication_edit_chapter", { idPub:infoPub.id, idChap:infoChap.id }) }}" class="p-2 rounded  bg-opacity-50 hover:bg-opacity-100 bg-slate-300 dark:bg-slate-900 dark:text-slate-300 dark:bg-opacity-50 dark:hover:bg-opacity-100 justify-center flex flex-row px-4 gap-x-2 items-center">
+						<i class="fa-duotone fa-pen-to-square"></i>
+						<span class="hidden md:inline">Éditer le chapitre</span>
+					</a>
+				{% endif %}
+			</div>
+		{% endif %}
 		<div id="dropdownChapter" class="z-[99999] hidden overflow-y-auto max-h-48 bg-white divide-y divide-gray-100 shadow w-5/6 sm:w-2/6 dark:bg-gray-700 dark:divide-gray-600">
 			{% for item in infoPub.publicationChapters|sort((a, b) => a.orderDisplay < b.orderDisplay ? -1 : 1) %}
 				{% if item.status > 1 %}

@@ -25,25 +25,25 @@
 		<li class="navbar-home-item" {% if not app.user %} data-micromodal-trigger="popup-register" {% endif %}>
 			{% if app.user %}
 				<a href="{{path("app_publication_add")}}">
-					<i class="fa-duotone fa-square-rss text-emerald-500"></i>
-					<span>Créez votre blog</span>
+					<i class="fa-duotone fa-people-arrows text-emerald-500"></i>
+					<span>Tissez des liens littéraires</span>
 				</a>
 			{% else %}
 				<button>
-					<i class="fa-duotone fa-square-rss text-emerald-500"></i>
-					<span>Créez votre blog</span>
+					<i class="fa-duotone fa-people-arrows text-emerald-500"></i>
+					<span>Tissez des liens littéraires</span>
 				</button>
 			{% endif %}
 		</li>
 		<li class="navbar-home-item" {% if not app.user %} data-micromodal-trigger="popup-register" {% endif %}>
 			{% if app.user %}
 				<a href="{{path("app_publication_add")}}">
-					<i class="fa-duotone fa-comment-music text-purple-500"></i>
+					<i class="fa-duotone fa-hand-holding-skull text-purple-500"></i>
 					<span>Déclamez votre poésie</span>
 				</a>
 			{% else %}
 				<button>
-					<i class="fa-duotone fa-comment-music text-purple-500"></i>
+					<i class="fa-duotone fa-hand-holding-skull text-purple-500"></i>
 					<span>Déclamez votre poésie</span>
 				</button>
 			{% endif %}

@@ -22,7 +22,7 @@
 				<div class="flex justify-center order-4 text-2xl mt-5 mb-2 -ml-2 gap-x-5">&nbsp;
 					{% if userInfo.website %}
 						<a href="{{userInfo.website}}" target="_blank">
-							<i data-tippy-content="Visiter le site web de {{userInfo.nickname}}" class="fa-regular fill-slate-800 fa-earth-europe "></i>
+							<i data-tippy-content="Visiter le site web de {{userInfo.nickname}}" class="fa-duotone  text-slate-800 dark:text-slate-300 fa-earth-europe hover:fa-spin transition transform hover:rotate-360"></i>
 						</a>
 					{% endif %}
 					{% if userInfo.twitter %}

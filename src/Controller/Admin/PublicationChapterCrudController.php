@@ -54,6 +54,7 @@ class PublicationChapterCrudController extends AbstractCrudController
             AssociationField::new('publication', 'Publication référente')->formatValue(function ($value, $entity) {
                 return $entity->getPublication()->getTitle() . "<br><small><small>(" . $entity->getPublication()->getUser()->getUsername() . ")</small></small>";
             }),
+            IntegerField::new('order_display', 'Ordre')->setSortable(true),
             TextField::new('slug', "Slug")->hideOnIndex(),
             DateTimeField::new('created', 'Créé le'),
             DateTimeField::new('updated', 'Modifié le'),

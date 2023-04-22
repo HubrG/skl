@@ -21,7 +21,10 @@
 body {
 	@apply bg-white dark:bg-slate-800 h-screen w-full;
 }
-
+.turbo-progress-bar {
+	height:5px;
+	background-color: #0f9a42;
+}
 body.turbo-loading, body.turbo-loaded {
 	opacity: 0.5;
 	@apply dark:bg-slate-800
@@ -958,4 +961,8 @@ button.hover\:border-b-2:hover {
 }
 main button {
 	@apply gap-x-2 flex flex-row items-center justify-center; 
+}
+
+.fa-earth-europe:hover {
+	animation: fa-spin 2s linear infinite;
 }

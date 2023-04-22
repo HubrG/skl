@@ -57,7 +57,7 @@ class PublicationShowController extends AbstractController
 		} elseif ($sortby == "sheet") {
 			$sortby = "p.sheet";
 		} else {
-			$sortby = "p.pop";
+			$sortby = "p.published_date";
 		}
 		$pcRepo = ($slug != "all") ? $pcRepo->findOneBy(["slug" => $slug]) : $pcRepo->findAll();
 		if ($slug != "all") {

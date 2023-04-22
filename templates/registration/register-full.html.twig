@@ -29,7 +29,7 @@
 			<div class="text-left -mt-5">
 				<turbo-frame id="register-full-frame">
 
-					{{ form_start(registrationFormFull, {attr: {'novalidate': 'novalidate','action':path("app_register_full")}}) }}
+					{{ form_start(registrationFormFull, {attr: {'novalidate': 'novalidate'}}) }}
 					{% include "./partials/_form-row.html.twig" with {'form': registrationFormFull.username, 'icon':"fa-user-vneck"} %}
 					{% include "./partials/_form-row.html.twig" with {'form': registrationFormFull.email, 'icon':"fa-envelope"} %}
 					{% include "./partials/_form-row.html.twig" with {'form': registrationFormFull.plainPassword, 'icon':"fa-lock-keyhole"} %}

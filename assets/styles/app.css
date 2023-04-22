@@ -801,7 +801,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 	@apply flex flex-row gap-x-2 items-center;
 }
  .flex-row-custom-gapx-3 {
-	@apply flex flex-row gap-x-3 items-center;
+	@apply flex flex-row gap-x-3 items-center  ;
  }
  .flex-row-custom-gapx-4 {
 	@apply flex flex-row gap-x-4 items-center;

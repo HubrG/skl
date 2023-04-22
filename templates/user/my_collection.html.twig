@@ -10,7 +10,7 @@
 	<div class=" gap-x-5 gap-y-5 w-full grid grid-cols-1 md:grid-cols-3 pt-10">
 		<ul class="w-full">
 			<li>
-				<h1 class="text-2xl font-medium flex-row-custom-gapx-3 justify-left">
+				<h1 class="text-2xl font-medium flex-row-custom-gapx-3 justify-center md:justify-start">
 					<i class="fa-duotone fa-bookmark"></i>
 					<span>Mes récits favoris</span>
 				</h1>
@@ -37,18 +37,17 @@
 						{% endif %}
 					{% endif %}
 				{% endfor %}
-
 				{% if n == 0 %}
-					<li class="text-center dark:text-slate-500">
+					<li class="text-center md:text-left dark:text-slate-500">
 						Aucun récit
 					</li>
 				{% endif %}
 			</ul>
 		</ul>
-
+		<hr class="mb-5 block md:hidden">
 		<ul class="w-full">
 			<li>
-				<h1 class="text-2xl font-medium flex-row-custom-gapx-3 justify-left">
+				<h1 class="text-2xl font-medium flex-row-custom-gapx-3  justify-center md:justify-start">
 					<i class="fa-duotone fa-folder-bookmark"></i>
 					<span>Mes marque-pages</span>
 				</h1>
@@ -71,15 +70,17 @@
 				{% endfor %}
 
 				{% if n == 0 %}
-					<li class="text-center dark:text-slate-500">
+					<li class="text-center md:text-left dark:text-slate-500">
 						Aucune page
 					</li>
 				{% endif %}
 			</ul>
 		</ul>
+		<hr class="mb-5 block md:hidden">
+
 		<ul class="w-full">
 			<li>
-				<h1 class="text-2xl font-medium flex-row-custom-gapx-3 justify-left">
+				<h1 class="text-2xl font-medium flex-row-custom-gapx-3  justify-center md:justify-start">
 					<i class="fa-duotone fa-thumbs-up"></i>
 					<span>Les feuilles que j'aime</span>
 				</h1>
@@ -101,14 +102,14 @@
 					{% endif %}
 				{% endfor %}
 				{% if n == 0 %}
-					<li class="text-center dark:text-slate-500">
+					<li class="text-center md:text-left dark:text-slate-500">
 						Aucune feuille
 					</li>
 				{% endif %}
 			</ul>
 		</ul>
 	</div>
-	<hr class="mb-0 mt-10 border-1">
+	<hr class="mb-0 mt-10 border-4 md:border-2">
 	<div class="gap-x-5 gap-y-5 w-full grid grid-cols-1 md:grid-cols-3 pt-10">
 		<ul class="w-full">
 			<li>
@@ -149,6 +150,8 @@
 				{% endif %}
 			</ul>
 		</ul>
+		<hr class="mb-5 block md:hidden">
+
 		<ul class="w-full">
 			<li>
 				<h1 class="text-2xl font-medium flex-row-custom-gapx-3 justify-center">
@@ -188,6 +191,8 @@
 				{% endif %}
 			</ul>
 		</ul>
+		<hr class="mb-5 block md:hidden">
+
 		<ul class="w-full">
 			<li>
 				<h1 class="text-2xl font-medium flex-row-custom-gapx-3 justify-center">

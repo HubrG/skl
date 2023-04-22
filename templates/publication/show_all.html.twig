@@ -59,7 +59,7 @@
 	{% set random = random(0,999) %}
 	<turbo-frame id="pagination-{{random}}" class="grid {% if pubShowKw %}grid-cols-2 {% else %}grid-cols-1{% endif %}  grid-rows-auto gap-4 col-span-full xl:gap-x-10 container -mt-12 xl:-mt-12 ">
 		{% if pubShowKw %}
-			<aside class="{{kwString ? " md:bg-inherit dark:bg-slate-900 md:dark:bg-inherit" }} row-span-12 -mt-5 pr-5 dark:border-r-slate-700 dark:p-1 col-span-12 xl:col-span-5 xl:row-span-5 mb-10 xl:mb-0 {{kwString ? " order-1 md:border-b-0 border-b-4 border-slate-400 dark:border-slate-800 " : " order-2" }} xl:order-1 snap-y ">
+			<aside class="{{kwString ? " md:bg-inherit dark:bg-slate-900 md:dark:bg-inherit" }} row-span-12 min-w-[10] -mt-5 pr-5 dark:border-r-slate-700 dark:p-1 col-span-12 xl:col-span-5 xl:row-span-5 mb-10 xl:mb-0 {{kwString ? " order-1 md:border-b-0 border-b-4 border-slate-400 dark:border-slate-800 " : " order-2" }} xl:order-1 snap-y ">
 				<hr class="xl:hidden mb-5 h-[0.3rem] bg-slate-400 dark:bg-slate-800 dark:border-none hidden"/>
 				<h2 class="{{kwString ? "hidden " }} my-10 border-t pt-10 xl:hidden text-center font-bold dark:text-slate-100">Mots-clés</h2>
 				{% if kwString %}
@@ -77,7 +77,7 @@
 			</aside>
 		{% endif %}
 		{# ! Affichage des récits #}
-		<section class="{% if not pubShowKw %}col-start-0 xl:col-start-1 col-span-12 {% else %}row-span-12 col-span-12 xl:col-span-7 xl:row-span-7{% endif %} order-1 xl:order-2 justify-around -mt-5 grayscale-[2px]" style="--animate-duration: 1s;">
+		<section class="{% if not pubShowKw %}col-start-0 xl:col-start-1 col-span-12 {% else %}row-span-12 col-span-12 md:col-span-7 xl:row-span-7{% endif %} order-1 xl:order-2 justify-around -mt-5 grayscale-[2px]" style="--animate-duration: 1s;">
 			<hr class="block md:hidden mb-3 -mt-8">
 			<div class="flex flex-col md:flex-row mb-10 justify-between">
 				<h4 class="w-full md:w-3/6 text-center md:text-left mb-5 ml-2  font-light text-lg text-slate-500 dark:text-slate-300">

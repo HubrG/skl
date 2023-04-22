@@ -122,7 +122,7 @@
 				{% for item in app.user.publicationChapterNotes %}
 					{% if item.color == 1 %}
 						<li class="flex-col flex">
-							<p class="text-slate-700 dark:text-slate-400 italic">{{item.pContent}}
+							<p class="text-slate-700 dark:text-slate-400 italic">{{item.selection}}
 								...</p>
 							<span class="text-slate-600 dark:text-slate-300">
 								<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug}) }}">
@@ -163,7 +163,7 @@
 				{% for item in app.user.publicationChapterNotes %}
 					{% if item.color == 2 %}
 						<li class="flex-col flex">
-							<p class="text-slate-700 dark:text-slate-400 italic">{{item.pContent}}
+							<p class="text-slate-700 dark:text-slate-400 italic">{{item.selection}}
 								...</p>
 							<span class="text-slate-600 dark:text-slate-300">
 								<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug}) }}">
@@ -203,7 +203,7 @@
 				{% for item in app.user.publicationChapterNotes %}
 					{% if item.color == 3 %}
 						<li class="flex-col flex">
-							<p class="text-slate-700 dark:text-slate-400 italic">{{item.pContent}}
+							<p class="text-slate-700 dark:text-slate-400 italic">{{item.selection}}
 								...</p>
 							<span class="text-slate-600 dark:text-slate-300">
 								<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug}) }}">

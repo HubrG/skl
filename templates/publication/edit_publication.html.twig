@@ -33,7 +33,7 @@
 			</li>
 		</ol>
 	</nav>
-	{% if (infoPub.user.username == app.user.username) %}
+	{% if (infoPub.user.username == app.user.username and infoPub.status < 2) %}
 		<div class="bg-slate-200 p-3 font-semibold mb-5 -mt-3 block md:hidden mx-auto text-sm text-slate-800 rounded text-center py-2">
 			<i class="fa-duotone fa-lightbulb text-slate-800"></i>&nbsp;&nbsp;Lorsque votre récit sera prêt, n'oubliez pas de le publier !<br>
 			<small class="font-normal">Vous pouvez demander la publication

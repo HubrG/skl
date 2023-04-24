@@ -562,7 +562,8 @@ class ChapterShowController extends AbstractController
         foreach ($chapters as $chapter) {
             $rawContent = $chapter->getContent();
             // Suppression des attributs des balises p, h1, h2, h3, h4 etc.
-            $cleanContent = preg_replace('/(<(p|h1|h2|h3|h4)[^>]*>)/i', '<$2>', $rawContent);
+            // $cleanContent = preg_replace('/(<(p|h1|h2|h3|h4)[^>]*>)/i', '<$2>', $rawContent);
+            $cleanContent = $rawContent;
             $content = $content_start . "<h1>" . $chapter->getTitle() . "</h1>\n" . $cleanContent . $bookEnd;
             $book->addChapter($chapter->getTitle(), $chapter->getSlug() . '.html', $content, true, EPub::EXTERNAL_REF_ADD);
         }

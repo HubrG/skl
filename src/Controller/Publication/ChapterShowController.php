@@ -3,16 +3,23 @@
 namespace App\Controller\Publication;
 
 use PHPePub\Core\EPub;
+use PHPePub\Core\Logger;
+use PHPZip\Zip\File\Zip;
+use PHPePub\Helpers\URLHelper;
 use PHPePub\Helpers\CalibreHelper;
 use App\Entity\PublicationBookmark;
 use App\Form\PublicationCommentType;
 use App\Services\NotificationSystem;
+use App\Services\HtmlToEpubConverter;
+use PHPePub\Core\EPubChapterSplitter;
 use App\Entity\PublicationChapterLike;
 use App\Entity\PublicationChapterNote;
 use App\Entity\PublicationChapterView;
 use App\Services\PublicationPopularity;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
+use PHPePub\Core\Structure\OPF\MetaValue;
+use PHPePub\Core\Structure\OPF\DublinCore;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -524,10 +531,7 @@ class ChapterShowController extends AbstractController
             . "<body>\n";
 
         $bookEnd = "</body>\n</html>\n";
-        // setting timezone for time functions used for logging to work properly
-        date_default_timezone_set('Europe/Paris');
 
-        $fileDir = './PHPePub';
 
         $book = new EPub(); // no arguments gives us the default ePub 2, lang=en and dir="ltr"
 
@@ -555,18 +559,12 @@ class ChapterShowController extends AbstractController
         // On récupère le contenu de chaque chapitre avec le status 2
         $chapters = $this->pchRepo->findBy(['publication' => $publication, 'status' => 2], ['order_display' => 'ASC']);
         // On récupère le contenu de chacun d'entre eux
-
-        // foreach ($chapters as $chapter) {
-        //     $rawContent = $chapter->getContent();
-        //     // Suppression des attributs des balises p, h1, h2, h3, h4 etc.
-        //     // $cleanContent = preg_replace('/(<(p|h1|h2|h3|h4)[^>]*>)/i', '<$2>', $rawContent);
-        //     $cleanContent = $rawContent;
-        //     $content = $content_start . "<h1>" . $chapter->getTitle() . "</h1>\n" . $cleanContent . $bookEnd;
-        //     $book->addChapter($chapter->getTitle(), $chapter->getSlug() . '.html', $content, true, EPub::EXTERNAL_REF_ADD);
-        // }
-
         foreach ($chapters as $chapter) {
-            $content = $content_start . $chapter->getContent() . $bookEnd;
+            $rawContent = $chapter->getContent();
+            // Suppression des attributs des balises p, h1, h2, h3, h4 etc.
+            $cleanContent = preg_replace('/(<(p|h1|h2|h3|h4)[^>]*>)/i', '<$2>', $rawContent);
+            $cleanContent = $rawContent;
+            $content = $content_start . "<h1>" . $chapter->getTitle() . "</h1>\n" . $cleanContent . $bookEnd;
             $book->addChapter($chapter->getTitle(), $chapter->getSlug() . '.html', $content, true, EPub::EXTERNAL_REF_ADD);
         }
 

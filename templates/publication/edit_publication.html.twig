@@ -33,6 +33,14 @@
 			</li>
 		</ol>
 	</nav>
+	{% if (infoPub.user.username == app.user.username) %}
+		<div class="bg-slate-200 p-3 font-semibold mb-5 -mt-3 block md:hidden mx-auto text-sm text-slate-800 rounded text-center py-2">
+			<i class="fa-duotone fa-lightbulb text-slate-800"></i>&nbsp;&nbsp;Lorsque votre récit sera prêt, n'oubliez pas de le publier !<br>
+			<small class="font-normal">Vous pouvez demander la publication
+				<a href="#publishText" class="underline">en bas de cette page</a>. Sans quoi, il ne sera pas visible par les lecteurs.</small>
+		</div>
+		<hr class="mb-5 block md:hidden">
+	{% endif %}
 	<h1 class=" mb-20 text-center relative">
 		<span
 			id="pubTitle" class="text-4xl font-serif flex flex-col">
@@ -44,7 +52,6 @@
 					récit de
 					<a href="{{path("app_user", {username:infoPub.user.username})}}" class="hover:underline font-semibold" target="_top">{{ infoPub.user.username }}</a>
 				</div>
-
 			{% endif %}
 			{# end #}
 			{{ infoPub.title|capitalize }}
@@ -76,6 +83,7 @@
 				<span class="sr-only">Loading...</span>
 			</div>
 		</aside>
+
 		<section class="relative sm:w-full lg:w-6/12  lg:ml-7 lg:-mt-[3.34rem] mb-14 ">
 			<div class="mb-4 border-b border-gray-200 dark:border-gray-700">
 				<ul class="flex justify-center  lg:text-md -mb-px font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
@@ -155,6 +163,7 @@
 							</li>
 						</ul>
 					{% endif %}
+
 					<div id="accordion-flush" data-accordion="open" data-active-classes="text-gray-900 dark:text-white" class="list-group " data-inactive-classes="text-gray-500 dark:text-gray-400">
 						<h2 id="accordion-flush-heading-1" class=" border-emerald-600  px-5 bg-white border-b-2 mt-5 dark:border-b-green-300 mb-5  dark:bg-transparent  ">
 							<button type="button" class="flex items-center  justify-between w-full py-2 font-medium text-left text-base  dark:border-gray-700 dark:text-gray-400" data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">

@@ -175,7 +175,10 @@ form button:disabled {
 	@apply z-0 border-0 border-b-[2px] border-b-slate-300 min-h-[66.67vh] text-slate-700 focus:ring-0 text-base focus:border-slate-300 block w-full md:w-9/12 mx-auto pt-16 md:pt-0 dark:bg-transparent dark:border-gray-600 dark:placeholder-gray-400 dark:text-slate-50;
 	overflow: visible; /* Permet à l'éditeur de s'agrandir en fonction de son contenu */
   }
-  #editor h1 {
+  #editor p {
+	@apply indent-5;
+   }
+   #editor h1 {
 	@apply text-5xl font-serif;
    }
    #editor h2 {
@@ -911,7 +914,7 @@ nav.breadcrumb ol li i:first-child{
 	@apply list-none;
 }
 .cgu-full li p {
-	@apply pl-5 p-0 my-4;
+	@apply pl-5 p-0 my-4 ;
 }
 .cgu-full li ul {
 	@apply pl-10;

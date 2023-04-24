@@ -30,7 +30,10 @@ services:
     App\Controller\ErrorController:
         tags: ['controller.service_arguments']
 
-
+    App\Services\HtmlToEpubConverter: # Remplacez "App\Service\HtmlToEpubConverter" par "App\Services\HtmlToEpubConverter"
+        autowire: true
+        autoconfigure: true
+        public: false
             
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

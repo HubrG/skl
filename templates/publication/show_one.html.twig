@@ -20,7 +20,7 @@
 	Récit |
 	{{ pubShow.title }}
 	({{ pubShow.user.nickname }})
-																																																																																																																																																																																												-
+																																																																																																																																																																																																						-
 	{{ parent() }}
 {% endblock %}
 
@@ -157,6 +157,14 @@
 							<i class="fa-regular fa-chevron-down float-right text-slate-700 dark:text-slate-400"></i>
 						</span>
 					</button>
+					<button id="dropdownDownloadButton" data-dropdown-toggle="dropdownDownload" class="block mt-5 not-italic py-2 text-center  px-5    text-slate-800  hover:text-slate-800 dark:text-slate-100  dark:hover:bg-slate-900 rounded-lg">
+						<span class="font-light flex flex-row justify-center items-center w-full">
+							<span class="w-full">
+								<i class="fa-duotone fa-download"></i>&nbsp;&nbsp;Télécharger
+							</span>
+							<i class="fa-regular fa-chevron-down float-right text-slate-700 dark:text-slate-400"></i>
+						</span>
+					</button>
 					{# Dropdown menu #}
 					<div id="dropdownBuyBook" class="hidden bg-white divide-y divide-gray-100 z-50 rounded-lg shadow w-auto dark:bg-gray-700">
 						<ul class="text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownBuyBookButton">
@@ -185,12 +193,28 @@
 							{% endif %}
 						</ul>
 					</div>
-					<a target="_top" href="{{ path("app_publication_show_one", {id:pubShow.id, slug:"download"}) }}" class="block mt-5 not-italic py-2 text-center  px-5    text-slate-800  hover:text-slate-800 dark:text-slate-100  dark:hover:bg-slate-900 rounded-lg">
-						<i class="fa-duotone fa-file-pdf"></i>
-						<span class="font-light">
-							Télécharger
-						</span>
-					</a>
+					{# Dropdown menu #}
+					<div id="dropdownDownload" class="hidden bg-white divide-y divide-gray-100 z-50 rounded-lg shadow w-auto dark:bg-gray-700">
+						<ul class="text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDownloadButton">
+
+							<li class="flex flex-row items-center gap-x-2 px-5 rounded  hover:bg-gray-100  dark:hover:bg-gray-600 dark:hover:text-white">
+								<i class="fa-regular fa-tablet-screen py-4"></i>
+								<a href="{{ path("download_epub", {id:pubShow.id}) }}" class="block" target="_blank">Télécharger au
+									<strong>format ePub</strong>
+
+								</a>
+							</li>
+
+							<li class="flex flex-row items-center gap-x-2 px-5 rounded  hover:bg-gray-100  dark:hover:bg-gray-600 dark:hover:text-white">
+								<i class="fa-regular fa-file-pdf py-4"></i>
+								<a href="{{ path("app_publication_show_one", {id:pubShow.id, slug:"download"}) }}" class="block" target="_blank">Télécharger au
+									<strong>format PDF</strong>
+								</a>
+							</li>
+
+						</ul>
+					</div>
+
 				</div>
 			</div>
 		</div>

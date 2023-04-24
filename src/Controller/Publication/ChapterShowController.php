@@ -2,15 +2,24 @@
 
 namespace App\Controller\Publication;
 
+use PHPePub\Core\EPub;
+use PHPePub\Core\Logger;
+use PHPZip\Zip\File\Zip;
+use PHPePub\Helpers\URLHelper;
+use PHPePub\Helpers\CalibreHelper;
 use App\Entity\PublicationBookmark;
 use App\Form\PublicationCommentType;
 use App\Services\NotificationSystem;
+use App\Services\HtmlToEpubConverter;
+use PHPePub\Core\EPubChapterSplitter;
 use App\Entity\PublicationChapterLike;
 use App\Entity\PublicationChapterNote;
 use App\Entity\PublicationChapterView;
 use App\Services\PublicationPopularity;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
+use PHPePub\Core\Structure\OPF\MetaValue;
+use PHPePub\Core\Structure\OPF\DublinCore;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,15 +39,20 @@ class ChapterShowController extends AbstractController
     private $notificationSystem;
     private $publicationPopularity;
     private $requestStack;
+    private $pRepo;
+
+    private $pchRepo;
 
 
-    public function __construct(RequestStack $requestStack, NotificationSystem $notificationSystem, EntityManagerInterface $em, PublicationChapterNoteRepository $chapterNote, PublicationPopularity $publicationPopularity)
+    public function __construct(PublicationChapterRepository $pchRepo, PublicationRepository $pRepo, RequestStack $requestStack, NotificationSystem $notificationSystem, EntityManagerInterface $em, PublicationChapterNoteRepository $chapterNote, PublicationPopularity $publicationPopularity)
     {
         $this->em = $em;
         $this->chapterNote = $chapterNote;
         $this->publicationPopularity = $publicationPopularity;
         $this->notificationSystem = $notificationSystem;
         $this->requestStack = $requestStack;
+        $this->pchRepo = $pchRepo;
+        $this->pRepo = $pRepo;
     }
 
     #[Route('/recit-{slugPub}/{user}/{idChap}/{slug?}/{nbrShowCom?}', name: 'app_chapter_show')]
@@ -494,5 +508,72 @@ class ChapterShowController extends AbstractController
             'nbrBm' => $pbRepo->count(['chapter' => $pch]),
             'message' => 'Le chapitre a bien été ajouté aux bookmarks',
         ], 200);
+    }
+
+    #[Route('/download_epub/{id?}', name: 'download_epub')]
+    public function downloadEpub($id = null)
+    {
+
+        // On recherche la publication via l'ID
+        $publication = $this->pRepo->find($id);
+        //
+
+        $content_start =
+            "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+            . "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\n"
+            . "    \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n"
+            . "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n"
+            . "<head>"
+            . "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n"
+            . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\" />\n"
+            . "<title>" . $publication->getTitle() . "</title>\n"
+            . "</head>\n"
+            . "<body>\n";
+
+        $bookEnd = "</body>\n</html>\n";
+
+        // setting timezone for time functions used for logging to work properly
+        date_default_timezone_set('Europe/Paris');
+
+        $fileDir = './PHPePub';
+
+        $book = new EPub(); // no arguments gives us the default ePub 2, lang=en and dir="ltr"
+
+        // Title and Identifier are mandatory!
+        $book->setTitle($publication->getTitle());
+        // $book->setIdentifier("http://JohnJaneDoePublications.com/books/TestBookSimple.html", EPub::IDENTIFIER_URI); // Could also be the ISBN number, preferrd for published books, or a UUID.
+        $book->setLanguage("fr"); // Not needed, but included for the example, Language is mandatory, but EPub defaults to "en". Use RFC3066 Language codes, such as "en", "da", "fr" etc.
+        $book->setDescription($publication->getSummary());
+        $book->setAuthor($publication->getUser()->getNickname(), $publication->getUser()->getNickname());
+        $book->setPublisher("Scrilab", "https://scrilab.com"); // I hope this is a non existent address :)
+        $book->setDate(time()); // Strictly not needed as the book date defaults to time().
+        // $book->setRights("Copyright and licence information specific for the book."); // As this is generated, this _could_ contain the name or licence information of the user who purchased the book, if needed. If this is used that way, the identifier must also be made unique for the book.
+        $book->setSourceURL($this->generateUrl('app_publication_show_one', ['id' => $publication->getId(), 'slug' => $publication->getSlug(), 'nbrShowCom' => 10])); // Sets the link to the book's source on the web.
+
+
+        // Insert custom meta data to the book, in this case, Calibre series index information.
+        CalibreHelper::setCalibreMetadata($book, "Scrilab Ebook", "5");
+
+        // A book need styling, in this case we use static text, but it could have been a file.
+        $cssData = "body {\n  margin-left: .5em;\n  margin-right: .5em;\n  text-align: justify;\n}\n\np {\n  font-family: serif;\n  font-size: 10pt;\n  text-align: justify;\n  text-indent: 1em;\n  margin-top: 0px;\n  margin-bottom: 1ex;\n}\n\nh1, h2 {\n  font-family: sans-serif;\n  font-style: italic;\n  text-align: center;\n  background-color: #6b879c;\n  color: white;\n  width: 100%;\n}\n\nh1 {\n    margin-bottom: 2px;\n}\n\nh2 {\n    margin-top: -2px;\n    margin-bottom: 2px;\n}\n";
+        $book->addCSSFile("styles.css", "css1", $cssData);
+
+        // Add cover page
+        $cover = $content_start . "<h1>" . $publication->getTitle() . "</h1>\n<h2>" . $publication->getUser()->getNickname() . "</h2>\n" . $bookEnd;
+        $book->addChapter("Notices", "Cover.html", $cover);
+
+        // On récupère le contenu de chaque chapitre avec le status 2
+        $chapters = $this->pchRepo->findBy(['publication' => $publication, 'status' => 2], ['order_display' => 'ASC']);
+        // On récupère le contenu de chacun d'entre eux
+        foreach ($chapters as $chapter) {
+            $content = $content_start . $chapter->getContent() . $bookEnd;
+            $book->addChapter($chapter->getTitle(), $chapter->getSlug() . '.html', $content, true, EPub::EXTERNAL_REF_ADD);
+        }
+
+        $book->finalize(); // Finalize the book, and build the archive.
+
+        // Send the book to the client. ".epub" will be appended if missing.
+        $zipData = $book->sendBook($publication->getTitle() . " - " . $publication->getUser()->getNickname());
+        return $zipData;
     }
 }

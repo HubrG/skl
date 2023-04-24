@@ -575,4 +575,5 @@ class ChapterShowController extends AbstractController
         // Send the book to the client. ".epub" will be appended if missing.
         $zipData = $book->sendBook($publication->getTitle() . " - " . $publication->getUser()->getNickname());
         return $zipData;
+    }
 }

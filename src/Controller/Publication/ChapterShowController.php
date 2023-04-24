@@ -560,16 +560,13 @@ class ChapterShowController extends AbstractController
         // Add cover page
         $cover = $content_start . "<h1>" . $publication->getTitle() . "</h1>\n<h2>" . $publication->getUser()->getNickname() . "</h2>\n" . $bookEnd;
         $book->addChapter("Notices", "Cover.html", $cover);
-
         // On récupère le contenu de chaque chapitre avec le status 2
         $chapters = $this->pchRepo->findBy(['publication' => $publication, 'status' => 2], ['order_display' => 'ASC']);
         // On récupère le contenu de chacun d'entre eux
         foreach ($chapters as $chapter) {
             $rawContent = $chapter->getContent();
-
             // Suppression des attributs des balises p, h1, h2, h3, h4 etc.
             $cleanContent = preg_replace('/(<(p|h1|h2|h3|h4)[^>]*>)/i', '<$2>', $rawContent);
-
             $content = $content_start . "<h1>" . $chapter->getTitle() . "</h1>\n" . $cleanContent . $bookEnd;
             $book->addChapter($chapter->getTitle(), $chapter->getSlug() . '.html', $content, true, EPub::EXTERNAL_REF_ADD);
         }

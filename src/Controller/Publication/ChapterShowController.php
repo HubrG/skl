@@ -532,10 +532,6 @@ class ChapterShowController extends AbstractController
 
         $bookEnd = "</body>\n</html>\n";
 
-        // setting timezone for time functions used for logging to work properly
-        date_default_timezone_set('Europe/Paris');
-
-        $fileDir = './PHPePub';
 
         $book = new EPub(); // no arguments gives us the default ePub 2, lang=en and dir="ltr"
 

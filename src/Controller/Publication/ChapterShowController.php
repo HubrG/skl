@@ -532,10 +532,6 @@ class ChapterShowController extends AbstractController
 
         $bookEnd = "</body>\n</html>\n";
 
-        // setting timezone for time functions used for logging to work properly
-        date_default_timezone_set('Europe/Paris');
-
-        $fileDir = './PHPePub';
 
         $book = new EPub(); // no arguments gives us the default ePub 2, lang=en and dir="ltr"
 
@@ -550,7 +546,6 @@ class ChapterShowController extends AbstractController
         // $book->setRights("Copyright and licence information specific for the book."); // As this is generated, this _could_ contain the name or licence information of the user who purchased the book, if needed. If this is used that way, the identifier must also be made unique for the book.
         $book->setSourceURL($this->generateUrl('app_publication_show_one', ['id' => $publication->getId(), 'slug' => $publication->getSlug(), 'nbrShowCom' => 10])); // Sets the link to the book's source on the web.
 
-
         // Insert custom meta data to the book, in this case, Calibre series index information.
         CalibreHelper::setCalibreMetadata($book, "Scrilab Ebook", "5");
 
@@ -561,12 +556,15 @@ class ChapterShowController extends AbstractController
         // Add cover page
         $cover = $content_start . "<h1>" . $publication->getTitle() . "</h1>\n<h2>" . $publication->getUser()->getNickname() . "</h2>\n" . $bookEnd;
         $book->addChapter("Notices", "Cover.html", $cover);
-
         // On récupère le contenu de chaque chapitre avec le status 2
         $chapters = $this->pchRepo->findBy(['publication' => $publication, 'status' => 2], ['order_display' => 'ASC']);
         // On récupère le contenu de chacun d'entre eux
         foreach ($chapters as $chapter) {
-            $content = $content_start . $chapter->getContent() . $bookEnd;
+            $rawContent = $chapter->getContent();
+            // Suppression des attributs des balises p, h1, h2, h3, h4 etc.
+            $cleanContent = preg_replace('/(<(p|h1|h2|h3|h4)[^>]*>)/i', '<$2>', $rawContent);
+            $cleanContent = $rawContent;
+            $content = $content_start . "<h1>" . $chapter->getTitle() . "</h1>\n" . $cleanContent . $bookEnd;
             $book->addChapter($chapter->getTitle(), $chapter->getSlug() . '.html', $content, true, EPub::EXTERNAL_REF_ADD);
         }
 

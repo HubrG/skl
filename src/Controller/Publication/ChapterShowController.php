@@ -559,19 +559,19 @@ class ChapterShowController extends AbstractController
         // On récupère le contenu de chaque chapitre avec le status 2
         $chapters = $this->pchRepo->findBy(['publication' => $publication, 'status' => 2], ['order_display' => 'ASC']);
         // On récupère le contenu de chacun d'entre eux
-        foreach ($chapters as $chapter) {
-            $rawContent = $chapter->getContent();
-            // Suppression des attributs des balises p, h1, h2, h3, h4 etc.
-            $cleanContent = preg_replace('/(<(p|h1|h2|h3|h4)[^>]*>)/i', '<$2>', $rawContent);
-            $cleanContent = $rawContent;
-            $content = $content_start . "<h1>" . $chapter->getTitle() . "</h1>\n" . $cleanContent . $bookEnd;
-            $book->addChapter($chapter->getTitle(), $chapter->getSlug() . '.html', $content, true, EPub::EXTERNAL_REF_ADD);
-        }
+        // foreach ($chapters as $chapter) {
+        //     $rawContent = $chapter->getContent();
+        //     // Suppression des attributs des balises p, h1, h2, h3, h4 etc.
+        //     $cleanContent = preg_replace('/(<(p|h1|h2|h3|h4)[^>]*>)/i', '<$2>', $rawContent);
+        //     $cleanContent = $rawContent;
+        //     $content = $content_start . "<h1>" . $chapter->getTitle() . "</h1>\n" . $cleanContent . $bookEnd;
+        //     $book->addChapter($chapter->getTitle(), $chapter->getSlug() . '.html', $content, true, EPub::EXTERNAL_REF_ADD);
+        // }
 
-        $book->finalize(); // Finalize the book, and build the archive.
+        // $book->finalize(); // Finalize the book, and build the archive.
 
-        // Send the book to the client. ".epub" will be appended if missing.
-        $zipData = $book->sendBook($publication->getTitle() . " - " . $publication->getUser()->getNickname());
-        return $zipData;
+        // // Send the book to the client. ".epub" will be appended if missing.
+        // $zipData = $book->sendBook($publication->getTitle() . " - " . $publication->getUser()->getNickname());
+        // return $zipData;
     }
 }

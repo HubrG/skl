@@ -55,309 +55,230 @@
 			</a>
 		</li>
 	</ul>
-	<div class="glide-top glide mt-10  left-0 z-50">
-		<div data-glide-el="track" class="glide__track rounded-lg ring-0 dark:ring-slate-600">
-			<div class="glide__slides min-h-[40vh] relative">
-				{% for item in publications %}
-					{% if item.cover %}
-						{% set cover = item.cover|replace({'/upload/c_fill,h_793,w_529': '/upload/c_fill_pad,g_auto,w_1.0,e_improve:outdoor,f_jpg,e_blur:1500'}) %}
-					{% endif %}
-					<a href="{{path("app_publication_show_one", {id:item.id, slug:item.slug})}}" class="bg-cover bg-center grayscale-[30%] dark:grayscale-[80%] {{ not item.cover ? " bg-slate-50 dark:bg-slate-900"}}" {% if item.cover %} style="background-image:url('{{cover}};')" {% endif %} {{ item.cover ? "backdrop-blur-md" : "" }}>
-						<div class="glide__slide p-10">
-							<div class=" flex flex-col items-center justify-center {{item.cover ? " text-white" : " dark:text-slate-100 text-slate-900"}}" {% if item.cover %} style="text-shadow: 1px 1px 0px #000" {% endif %}>
-								<h1 class=" text-center pt-20 {{item.cover ? " text-white" : " text-slate-900"}}">{{ item.title }}</h1>
-								<h2 class="-mt-5 text-base font-bold ">par
-									{{item.user.nickname}}
-								</h2>
-							</div>
-						</div>
-					</a>
-				{% endfor %}
-			</div>
-		</div>
-		<div class="glide__bullets" data-glide-el="controls[nav]">
-			{% set n = 0 %}
-			{% for item in publications %}
-				<button class="glide__bullet" aria-label="Afficher la diapositive numéro {{n}}" data-glide-dir="={{n}}"></button>
-				{% set n = n + 1 %}
-			{% endfor %}
-		</div>
-	</div>
-	<div class="flex flex-col">
-		<section class="order-2 md:order-1 mt-10 md:mt-10">
-			<div class="my-special-hr mt-12">
-				<hr>
-				<span>
-					Pourquoi écrire ici ?
-					<i class="fa-duotone fa-question-circle"></i>
-				</span>
-				<hr>
-			</div>
-			<div class="glide-market glide -mt-10 md:-mb-2 mb-12 left-0">
-				<div data-glide-el="track" class="glide__track mx-16">
-					<div class="glide__slides">
-						<div class="glide__slide  w-full  mt-10 lg:mt-0 p-0 lg:p-10 mx-auto flex justify-center rounded-lg ">
-							<div class="grid flex-col mx-auto lg:flex-row grid-cols-1 lg:grid-cols-4 gap-y-5 lg:gap-y-0 gap-x-0 lg:gap-x-5 justify-center ">
-								<div class="slide-card">
-									<h5>
-										<i class="fa-duotone fa-pen-swirl"></i><br>
-										Éditeur de texte avancé
-									</h5>
-									<p>
-										Libérez votre créativité  grâce à notre éditeur de texte avancé. Sauvegarde automatique, système de révision, création illimitée.
-									</p>
-								</div>
-								<div class="slide-card">
-									<h5>
-										<i class="fa-duotone fa-badge-check"></i><br>
-										Textes protégés
-									</h5>
-									<p>
-										Vos textes sont votre propriété intellectuelle et sont systématiquement protégés grâce à des certifications inviolables.
-									</p>
-								</div>
-								<div class="slide-card">
-									<h5>
-										<i class="fa-duotone fa-up-down-left-right"></i><br>
-										Organisation flexible
-									</h5>
-									<p>
-										Organisez efficacement le contenu de vos histoires pour une lecture fluide et agréable, grâce à nos outils de structuration et de mise en page.
-									</p>
-								</div>
-								<div class="slide-card">
-									<h5>
-										<i class="fa-duotone fa-fire"></i><br>
-										Mesure de popularité
-									</h5>
-									<p>
-										Mesurez l'impact de vos textes grâce à nos outils statistiques qui vous permettent de suivre leur popularité.
-									</p>
+	<div class="glide-top glide mt-10  left-0 z-0 h-auto cursor-default">
+		<div class="flex flex-col">
+			<section class="order-2 md:order-1 mt-10 md:mt-0">
+				<div class="my-special-hr mt-12">
+					<hr>
+					<span>
+						Pourquoi écrire ici ?
+						<i class="fa-duotone fa-question-circle"></i>
+					</span>
+					<hr>
+				</div>
+				<div class="glide-market glide -mt-10 md:-mb-2 mb-12 left-0">
+					<div data-glide-el="track" class="glide__track mx-16">
+						<div class="glide__slides">
+							<div class="glide__slide  w-full  mt-10 lg:mt-0 p-0 lg:p-10 mx-auto flex justify-center rounded-lg ">
+								<div class="grid flex-col mx-auto lg:flex-row grid-cols-1 lg:grid-cols-4 gap-y-5 lg:gap-y-0 gap-x-0 lg:gap-x-5 justify-center ">
+									<div class="slide-card">
+										<h5>
+											<i class="fa-duotone fa-people-line"></i><br>
+											Communauté littéraire
+										</h5>
+										<p>
+											Rejoignez un cercle d'écrivains passionnés et développez votre talent avec notre communauté. Partagez vos œuvres, recevez des conseils précieux.
+										</p>
+									</div>
+									<div class="slide-card">
+										<h5>
+											<i class="fa-duotone fa-pen-swirl"></i><br>
+											Éditeur de texte avancé
+										</h5>
+										<p>
+											Libérez votre créativité  grâce à notre éditeur de texte avancé. Sauvegarde automatique, système de révision, création illimitée.
+										</p>
+									</div>
+									<div class="slide-card">
+										<h5>
+											<i class="fa-duotone fa-badge-check"></i><br>
+											Textes protégés
+										</h5>
+										<p>
+											Vos textes sont votre propriété intellectuelle et sont systématiquement protégés grâce à des certifications inviolables.
+										</p>
+									</div>
+									<div class="slide-card">
+										<h5>
+											<i class="fa-duotone fa-up-down-left-right"></i><br>
+											Organisation flexible
+										</h5>
+										<p>
+											Organisez efficacement le contenu de vos histoires pour une lecture fluide et agréable, grâce à nos outils de structuration et de mise en page.
+										</p>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="glide__slide w-full  mb-10 mt-10 lg:mt-0 p-0 lg:p-10  rounded-lg ">
-							<h1 class="hidden">Confort de lecture</h1>
-							<div class="grid flex-col lg:flex-row grid-cols-1 lg:grid-cols-4 gap-y-5 lg:gap-y-0 gap-x-0 lg:gap-x-5 justify-center mx-auto">
-								<div class="slide-card">
-									<h5>
-										<i class="fa-duotone fa-lightbulb-on"></i><br>
-										Des textes mis en valeur
-									</h5>
-									<p>
-										Notre interface épurée met en valeur les histoires et offre à nos lecteurs une expérience de lecture immersive.
-									</p>
-								</div>
-								<div class="slide-card">
-									<h5>
-										<i class="fa-duotone fa-couch"></i><br>
-										Confort de lecture
-									</h5>
-									<p>
-										Nos lecteurs jouissent d'une expérience de lecture optimale grâce à notre mode sombre, qui réduit la fatigue oculaire et offre un confort de lecture accru.
-									</p>
-								</div>
-								<div class="slide-card">
-									<h5>
-										<i class="fa-duotone fa-folder-bookmark"></i><br>
-										Collection de textes
-									</h5>
-									<p>
-										Nos outils de citation, de surlignage, d'annotation, de commentaire et de partage vous permettent de consigner tout ce que vous lisez.
-									</p>
-								</div>
-								<div class="slide-card">
-									<h5>
-										<i class="fa-duotone fa-bell"></i><br>
-										Suivi et notifications
-									</h5>
-									<p>
-										Abonnez-vous à un auteur, un blog ou à n'importe quel récit pour êtes notifié de la publication d'un nouveau billet ou d'un nouveau chapitre.
-									</p>
+							<div class="glide__slide w-full  mb-10 mt-10 lg:mt-0 p-0 lg:p-10  rounded-lg ">
+								<h1 class="hidden">Confort de lecture</h1>
+								<div class="grid flex-col lg:flex-row grid-cols-1 lg:grid-cols-4 gap-y-5 lg:gap-y-0 gap-x-0 lg:gap-x-5 justify-center mx-auto">
+									<div class="slide-card">
+										<h5>
+											<i class="fa-duotone fa-lightbulb-on"></i><br>
+											Des textes mis en valeur
+										</h5>
+										<p>
+											Notre interface épurée met en valeur les histoires et offre à nos lecteurs une expérience de lecture immersive.
+										</p>
+									</div>
+									<div class="slide-card">
+										<h5>
+											<i class="fa-duotone fa-couch"></i><br>
+											Confort de lecture
+										</h5>
+										<p>
+											Nos lecteurs jouissent d'une expérience de lecture optimale grâce à notre mode sombre, qui réduit la fatigue oculaire et offre un confort de lecture accru.
+										</p>
+									</div>
+									<div class="slide-card">
+										<h5>
+											<i class="fa-duotone fa-folder-bookmark"></i><br>
+											Collection de textes
+										</h5>
+										<p>
+											Nos outils de citation, de surlignage, d'annotation, de commentaire et de partage vous permettent de consigner tout ce que vous lisez.
+										</p>
+									</div>
+									<div class="slide-card">
+										<h5>
+											<i class="fa-duotone fa-bell"></i><br>
+											Suivi et notifications
+										</h5>
+										<p>
+											Abonnez-vous à un auteur, un blog ou à n'importe quel récit pour êtes notifié de la publication d'un nouveau billet ou d'un nouveau chapitre.
+										</p>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="glide__slide  mb-10 mt-10 lg:mt-0 p-0 lg:p-10  rounded-lg ">
-							<h1 class="hidden">Confort de lecture</h1>
-							<div class="grid flex-col lg:flex-row grid-cols-1 lg:grid-cols-4 gap-y-5 lg:gap-y-0 gap-x-0 lg:gap-x-5 justify-center mx-auto">
-								<div class="slide-card">
-									<h5>
-										<i class="fa-duotone fa-chart-network"></i><br>
-										Un grand réseau de distribution
-									</h5>
-									<p>
-										Scrilab garantit la diffusion de vos récits sur tous les media à sa disposition, ce qui vous permet de toucher un public plus large et diversifié.
-									</p>
-								</div>
-								<div class="slide-card">
-									<h5>
-										<i class="fa-duotone fa-store"></i><br>
-										Percer en librairie
-									</h5>
-									<p>
-										Attirez l'attention des maisons d'édition traditionnelles. Vous avez ainsi l'opportunité de saisir des connexions précieuses et de voir vos œuvres publiées en librairie.
-									</p>
-								</div>
-								<div class="slide-card">
-									<h5>
-										<i class="fa-brands fa-google"></i><br>
-										Un référencement optimisé
-									</h5>
-									<p>
-										Nous optimisons votre contenu pour les moteurs de recherche, pour vous permettre d'atteindre un public plus large et mieux ciblé.
-									</p>
-								</div>
-								<div class="slide-card">
-									<h5>
-										<i class="fa-duotone fa-viruses"></i><br>
-										Une viralité maximale
-									</h5>
-									<p>
-										Nos outils de partage et de recommandation de contenus favorisent la propagation rapide de vos histoires sur les réseaux sociaux.
-									</p>
+							<div class="glide__slide  mb-10 mt-10 lg:mt-0 p-0 lg:p-10  rounded-lg ">
+								<h1 class="hidden">Confort de lecture</h1>
+								<div class="grid flex-col lg:flex-row grid-cols-1 lg:grid-cols-4 gap-y-5 lg:gap-y-0 gap-x-0 lg:gap-x-5 justify-center mx-auto">
+									<div class="slide-card">
+										<h5>
+											<i class="fa-duotone fa-chart-network"></i><br>
+											Un grand réseau de distribution
+										</h5>
+										<p>
+											Scrilab garantit la diffusion de vos récits sur tous les media à sa disposition, ce qui vous permet de toucher un public plus large et diversifié.
+										</p>
+									</div>
+									<div class="slide-card">
+										<h5>
+											<i class="fa-duotone fa-store"></i><br>
+											Percer en librairie
+										</h5>
+										<p>
+											Attirez l'attention des maisons d'édition traditionnelles. Vous avez ainsi l'opportunité de saisir des connexions précieuses et de voir vos œuvres publiées en librairie.
+										</p>
+									</div>
+									<div class="slide-card">
+										<h5>
+											<i class="fa-brands fa-google"></i><br>
+											Un référencement optimisé
+										</h5>
+										<p>
+											Nous optimisons votre contenu pour les moteurs de recherche, pour vous permettre d'atteindre un public plus large et mieux ciblé.
+										</p>
+									</div>
+									<div class="slide-card">
+										<h5>
+											<i class="fa-duotone fa-viruses"></i><br>
+											Une viralité maximale
+										</h5>
+										<p>
+											Nos outils de partage et de recommandation de contenus favorisent la propagation rapide de vos histoires sur les réseaux sociaux.
+										</p>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
+					<div class="glide__arrows text-xl" data-glide-el="controls">
+						<button class="glide__arrow glide__arrow--left mr-10" aria-label="Passer à la diapositive précédente" data-glide-dir="&lt;">
+							<i class="fa-regular fa-arrow-left"></i>
+						</button>
+						<button class="glide__arrow glide__arrow--right" aria-label="Passer à la diapositive suivante" data-glide-dir="&gt;">
+							<i class="fa-regular fa-arrow-right"></i>
+						</button>
+					</div>
 				</div>
-				<div class="glide__arrows text-xl" data-glide-el="controls">
-					<button class="glide__arrow glide__arrow--left mr-10" aria-label="Passer à la diapositive précédente" data-glide-dir="&lt;">
-						<i class="fa-regular fa-arrow-left"></i>
-					</button>
-					<button class="glide__arrow glide__arrow--right" aria-label="Passer à la diapositive suivante" data-glide-dir="&gt;">
-						<i class="fa-regular fa-arrow-right"></i>
-					</button>
-				</div>
-			</div>
-		</section>
-		<secion class=" mt-10 md:-mt-12 z-50 order-1 md:order-2">
-			<div class="my-special-hr">
-				<hr>
-				<span>
-					Derniers récits
-					<i class="fa-duotone fa-book-open"></i>
-				</span>
-				<hr>
-			</div>
-			<div class="animate__animated animate__fadeIn publications-container small two-col ">
-				{% for item in pub_last %}
-					{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'all', 'queryPage':1, 'sortBy':'published', 'querySortby':'published', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
-				{% endfor %}
-				{% if pub_last|length < 7 %}
-					{% for i in pub_last|length..6 - 1 %}
-						{% include "publication/_partials/_show_all-fake-publication.html.twig" %}
-					{% endfor %}
-				{% endif %}
-			</div>
-			<div class="mt-10 text-right">
-				<a href="{{ path("app_publication_show_all_category", {slug:"all", sortby:"published", order:"desc", page:1})}}" class="button-classic button-gray w-full md:w-2/6 mx-auto" style="font-weight:600">
-					<i class="fa-duotone fa-stars"></i>
-					Voir tous les récits récents
-				</a>
-			</div>
-		</secion>
-		<section class="md:mt-20 -mt-20 z-50 order-3 md:order-3">
-			<div class="my-special-hr">
-				<hr>
-				<span>Les plus populaires
-					<i class="fa-duotone fa-fire"></i>
-				</span>
-				<hr class="mb-20">
-			</div>
-			<div class="animate__animated animate__fadeIn publications-container small two-col">
-				{% for item in pub_pop %}
-					{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'all', 'queryPage':1, 'sortBy':'pop', 'querySortby':'pop', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
-				{% endfor %}
-				{% if pub_pop|length < 7 %}
-					{% for i in pub_pop|length..6 - 1 %}
-						{% include "publication/_partials/_show_all-fake-publication.html.twig" %}
-					{% endfor %}
-				{% endif %}
-			</div>
-			<div class="mt-10 text-right">
-				<a href="{{ path("app_publication_show_all_category", {slug:"all", sortby:"pop", order:"desc", page:1})}}" class="button-classic button-gray w-full md:w-2/6 mx-auto" style="font-weight:600">
-					<i class="fa-duotone fa-fire"></i>
-					<span>Voir tous les récits populaires</span>
-				</a>
-			</div>
-		</section>
-		<section class="grid grid-cols-1 md:grid-cols-2 gap-x-5 mt-20 order-4 md:order-4 w-full">
-			<div class="w-full">
+			</section>
+			<secion class=" -mt-0 md:-mt-10 z-50 order-1 md:order-2">
 				<div class="my-special-hr">
 					<hr>
 					<span>
-						<span>Dernières feuilles publiées</span>
-						<i class="fa-duotone fa-files"></i>
+						Derniers récits
+						<i class="fa-duotone fa-book-open"></i>
 					</span>
-					<hr class="mb-5">
+					<hr>
 				</div>
-				<div class="grid grid-cols-2 gap-x-2">
-					{% for item in chaps_last %}
-						<div class="flex flex-col w-auto my-2 bg-slate-50 dark:bg-slate-900 p-4 rounded">
-							<div class=" w-full flex flex-col">
-								<span
-									class="flex flex-row">
-									{# <img class="h-5 object-fill" src="{{item.publication.cover}}"/> #}
-									<a href="{{ path("app_chapter_show", {idChap:item.id, user:item.publication.user.username, slugPub:item.publication.slug, slug:item.slug}) }}" target="_top" class="w-full text-base hover:underline dark:text-slate-200">{{item.title}}</a>
-								</span>
-								<span class="text-slate-500 dark:text-slate-400 flex flex-row gap-x-2 items-center">
-									<i class="fa-regular fa-arrow-turn-down-right"></i>
-									<i class="fa-light fa-book text-[0.75rem]"></i>
-									<a href="{{ path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug}) }}" class="w-full text-sm hover:underline">{{item.publication.title}}</a>
-								</span>
-							</div>
+				<div class="animate__animated animate__fadeIn publications-container small two-col ">
+					{% for item in pub_last %}
+						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'all', 'queryPage':1, 'sortBy':'published', 'querySortby':'published', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
+					{% endfor %}
+					{% if pub_last|length < 7 %}
+						{% for i in pub_last|length..6 - 1 %}
+							{% include "publication/_partials/_show_all-fake-publication.html.twig" %}
+						{% endfor %}
+					{% endif %}
+				</div>
+				<div class="mt-10 text-right">
+					<a href="{{ path("app_publication_show_all_category", {slug:"all", sortby:"published", order:"desc", page:1})}}" class="button-classic button-gray w-full md:w-2/6 mx-auto" style="font-weight:600">
+						<i class="fa-duotone fa-stars"></i>
+						En voir davantage
+					</a>
+				</div>
+			</secion>
+			<section class="md:mt-20 -mt-20 z-50 order-3 md:order-3">
+				<div class="my-special-hr">
+					<hr>
+					<span>Dernières feuilles publiées !
+						<i class="fa-duotone fa-newspaper"></i>
+					</span>
+					<hr class="mb-20">
+				</div>
+				<div class="animate__animated animate__fadeIn publications-container small two-col">
+					{% for item in pub_updated %}
+						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':'pop', 'querySortby':'pop', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
+					{% endfor %}
+					{% if pub_updated|length < 7 %}
+						{% for i in pub_updated|length..6 - 1 %}
+							{% include "publication/_partials/_show_all-fake-publication.html.twig" %}
+						{% endfor %}
+					{% endif %}
+				</div>
+				<div class="mt-10 text-right">
+					<a href="{{ path("app_publication_show_all_category", {slug:"all", sortby:"sheet", order:"desc", page:1})}}" class="button-classic button-gray w-full md:w-2/6 mx-auto" style="font-weight:600">
+						<i class="fa-duotone fa-newspaper"></i>
+						<span>En voir davantage</span>
+					</a>
+				</div>
+			</section>
+			<section class="md:mt-20 -mt-20 z-50 order-3 md:order-3">
+				<div class="my-special-hr">
+					<hr>
+					<span>Récits populaires
+						<i class="fa-duotone fa-fire"></i>
+					</span>
+					<hr class="mb-20">
+				</div>
+				<div class="animate__animated animate__fadeIn publications-container small two-col">
+					{% for item in pub_pop %}
+						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'all', 'queryPage':1, 'sortBy':'pop', 'querySortby':'pop', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
+					{% endfor %}
+					{% if pub_pop|length < 7 %}
+						{% for i in pub_pop|length..6 - 1 %}
+							{% include "publication/_partials/_show_all-fake-publication.html.twig" %}
+						{% endfor %}
+					{% endif %}
+				</div>
+				<div class="mt-10 text-right">
+					<a href="{{ path("app_publication_show_all_category", {slug:"all", sortby:"pop", order:"desc", page:1})}}" class="button-classic button-gray w-full md:w-2/6 mx-auto" style="font-weight:600">
+						<i class="fa-duotone fa-fire"></i>
+						<span>En voir davantage</span>
+					</a>
+				</div>
+			</section>
 
-						</div>
-					{% endfor %}
-				</div>
-			</div>
-			<div class="w-full mt-14 md:mt-0">
-				<div class="my-special-hr">
-					<hr>
-					<span>
-						Derniers commentaires
-						<i class="fa-duotone fa-comment-lines"></i>
-					</span>
-					<hr class="mb-5">
-				</div>
-				<div class="flex gap-x-2 flex-wrap  justify-items-stretch justify-evenly">
-					{% for item in coms_last %}
-						<div class="flex flex-col  my-2 bg-blue-50 dark:bg-slate-900 p-4 rounded">
-							<div class=" w-full flex flex-col">
-								<span class="flex flex-col mb-2 gap-y-2">
-									<span class="text-xs text-slate-500">par
-										<a href="{{path("app_user", {username:item.user.username})}}" target="_top" class="font-semibold hover:underline">{{item.user.nickname}}</a>
-									</span>
-									<span class="dark:text-slate-200">
-										«
-										{{item.content}}
-										»
-										{% if item.quote %}
-											<blockquote class="mt-4 border-l-4 border-emerald-200 pl-4 italic text-slate-500 mb-2">
-												<p class="font-serif quoteComment cursor-pointer text-[0.85rem]">
-													<a href="{{ path("app_chapter_show", {idChap:item.chapter.id, user:item.publication.user.username, slugPub:item.publication.slug, slug:item.chapter.slug}) }}" target="_top">{{ item.quote }}</a>
-												</p>
-											</blockquote>
-										{% endif %}
-									</span>
-								</span>
-								<span class="text-slate-500 dark:text-slate-400 flex flex-row gap-x-2 items-center">
-									{% if item.chapter is not null %}
-										<i class="fa-regular fa-arrow-turn-down-right"></i>
-										<i class="fa-regular fa-file  text-[0.75rem]"></i>
-										<a href="{{ path("app_chapter_show", {idChap:item.chapter.id, user:item.publication.user.username, slugPub:item.publication.slug, slug:item.chapter.slug}) }}" target="_top" class="w-full text-sm hover:underline">{{item.chapter.title}}</a>
-									{% endif %}
-								</span>
-								<span class="text-slate-500 dark:text-slate-400 flex flex-row gap-x-2 items-center {% if item.chapter is not null %}ml-5{% endif %}">
-									<i class="fa-regular fa-arrow-turn-down-right"></i>
-									<i class="fa-light fa-book text-[0.75rem]"></i>
-									<a href="{{ path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug}) }}" target="_top" class="w-full text-sm hover:underline">{{item.publication.title}}</a>
-								</span>
-							</div>
-						</div>
-					{% endfor %}
-				</div>
-			</div>
-		</section>
-	</div>
-{% endblock %}
+		</div>
+	{% endblock %}

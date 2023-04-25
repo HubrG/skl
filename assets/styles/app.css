@@ -688,7 +688,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 	@apply w-2/12;
 }
 .publications-container.small .publication-header {
-	@apply min-h-[96px];
+	@apply min-h-[6.938rem];
 }
 .publications-container.small .publication-header .right {
 	@apply hidden;
@@ -777,7 +777,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
     @apply dark:bg-slate-700;
 }
 .publications-container.small .write-and-publish {
-	@apply  min-h-[7rem];
+	@apply  min-h-[8.938rem];
  }
  .publications-container.small .item-fake {
 	@apply  text-xs md:text-sm;
@@ -866,10 +866,11 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 }
 .my-special-hr span {
 	@apply gap-y-0 mt-0.5 text-2xl md:text-3xl   px-4  text-center bg-white dark:bg-slate-800 dark:text-slate-200 font-serif flex flex-col;
+	/* @apply gap-y-0 md:-mt-[0.29rem] -mt-[0.05rem] text-2xl md:text-3xl   px-4  text-center bg-white dark:bg-slate-800 dark:text-slate-200 font-serif flex flex-col; */
 }
 .my-special-hr span i {
-	@apply text-3xl order-first -mt-9 opacity-50;
-	/* @apply text-3xl order-first -mt-10; */
+	@apply md:text-3xl text-2xl order-first -mt-9 opacity-50;
+	/* @apply md:text-3xl text-2xl order-last mt-1 opacity-50; */
 }
 article#chapContent p img {
 	@apply w-full;

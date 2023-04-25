@@ -161,6 +161,7 @@
 						<span id="nbrComSmall" class="toggleSidebar nbr-com nbr-com-let" data-nbr-com="{{infoChap.publicationComments|length}}">{{ infoChap.publicationComments|length }}</span>
 					</div>
 					<span class="dark:text-slate-500">|</span>
+
 					{% set userLikesChapter = app.user and app.user.id != infoPub.user.id %}
 					{% set userCanBookmark = app.user and app.user.id != infoPub.user.id %}
 
@@ -168,12 +169,18 @@
 					{% set bm = userCanBookmark ? infoChap.publicationBookmarks|map(item => item.user.id)|contains(app.user.id) : false %}
 
 					{% set likeTooltip = app.user.id is not defined ? "Connectez-vous pour aimer cette feuille !" : (infoPub is not null and infoPub.user.id == app.user.id) ? 'Vous ne pouvez pas aimer votre feuille.' : (liked ? "Je n'aime plus cette feuille" : "J'aime cette feuille") %}
+					{% set dislikeTooltip = app.user.id is not defined ? "Connectez-vous pour dévaloriser  cette feuille !" : (infoPub is not null and infoPub.user.id == app.user.id) ? 'Vous ne pouvez pas dévaloriser votre feuille.' : (liked ? "Je ne dévalorise plus cette feuille" : "Je n'aime pas cette feuille") %}
 					{% set bmTooltip = app.user.id is not defined ? "Connectez-vous pour marquer cette feuille !" : infoPub.user.id == app.user.id ? 'Vous ne pouvez pas marquer votre feuille.' : bm ? "Retirer cette feuille de ma collection" : "Ajouter cette feuille à ma collection" %}
 
 					<div class="{% if userLikesChapter %}hover:text-blue-600 cursor-pointer{% endif %} {% if app.user.id is not defined %}cursor-pointer{% endif %}" id="likeThisChapter" data-tippy-content="{{ likeTooltip }}" {% if app.user.id is not defined %} data-micromodal-trigger="popup-login" {% endif %} data-id="{{ infoChap.id }}">
-						<i class="{{ liked ? 'fa-duotone text-rose-400' : 'fa-regular' }} fa-thumbs-up" id="likeChapterThumb"></i>
-						&nbsp;<span id="nbrLike">{{ infoChap.publicationChapterLikes|length }}</span>
+						<span id="nbrLike">{{ infoChap.publicationChapterLikes|length }}</span>&nbsp;
+						<i class="{{ liked ? 'fa-duotone text-rose-400' : 'fa-regular' }} fa-thumbs-up fa-flip-horizontal" id="likeChapterThumb"></i>
 					</div>
+					{# <span class="dark:text-slate-500">|</span>
+										<div class="{% if userLikesChapter %}hover:text-blue-600 cursor-pointer{% endif %} {% if app.user.id is not defined %}cursor-pointer{% endif %}" id="likeThisChapter" data-tippy-content="{{ dislikeTooltip }}" {% if app.user.id is not defined %} data-micromodal-trigger="popup-login" {% endif %} data-id="{{ infoChap.id }}">
+											&nbsp;<i class="{{ liked ? 'fa-duotone text-rose-400' : 'fa-regular' }} fa-thumbs-down" id="likeChapterThumb"></i>
+											<span id="nbrLike">{{ infoChap.publicationChapterLikes|length }}</span>&nbsp;
+										</div> #}
 					<span class="dark:text-slate-500">|</span>
 					<div class="{% if userCanBookmark %}hover:text-blue-600 cursor-pointer{% endif %} {% if app.user.id is not defined %}cursor-pointer{% endif %}" id="bmThisChapter" data-tippy-content="{{ bmTooltip }}" {% if app.user.id is not defined %} data-micromodal-trigger="popup-login" {% endif %} data-id="{{ infoChap.id }}">
 						<i class="{{ bm ? 'fa-duotone text-purple-400' : 'fa-regular' }} fa-bookmark" id="bmChapter"></i>

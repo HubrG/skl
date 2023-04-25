@@ -41,13 +41,13 @@ class HomeController extends AbstractController
             ->orderBy("p.pop", "DESC");
         $publications = $qb->getQuery()->getResult();
         $publications_pop = $pRepo->findBy(["id" => $publications], ["pop" => "desc"], 6);
-        // Derniers chapitres publiés en status 2, limités à 8, et dont la publication est publiée
-        $qb = $pchRepo->createQueryBuilder("pch")
-            ->innerJoin("pch.publication", "p", "WITH", "p.status = 2")
-            ->where("pch.status = 2")
-            ->orderBy("pch.published", "DESC");
-        $publications_chapters = $qb->getQuery()->getResult();
-        $publications_chapters = $pchRepo->findBy(["id" => $publications_chapters], ["published" => "desc"], 8);
+        // // Derniers chapitres publiés en status 2, limités à 8, et dont la publication est publiée
+        // $qb = $pchRepo->createQueryBuilder("pch")
+        //     ->innerJoin("pch.publication", "p", "WITH", "p.status = 2")
+        //     ->where("pch.status = 2")
+        //     ->orderBy("pch.published", "DESC");
+        // $publications_chapters = $qb->getQuery()->getResult();
+        // $publications_chapters = $pchRepo->findBy(["id" => $publications_chapters], ["published" => "desc"], 8);
         // Derniers commentaires publiés, limités à 8, et dont le chapitre ou la publication est publiée
         $qb = $qb = $pcomRepo->createQueryBuilder("pcom")
             ->leftJoin("pcom.chapter", "pch", "WITH", "pch.status = 2")
@@ -56,6 +56,15 @@ class HomeController extends AbstractController
         $publications_comments = $qb->getQuery()->getResult();
         $publications_comments = $pcomRepo->findBy(["id" => $publications_comments], ["published_at" => "desc"], 8);
         //
+        // Derniers chapitres publiés en status 2, limités à 8, et dont la publication est publiée (last version)
+        $qb = $pRepo->createQueryBuilder('p')
+            ->leftJoin('p.publicationChapters', 'pc')
+            ->where('p.status = 2')
+            ->andWhere('pc.status = 2')
+            ->orderBy('pc.published', 'DESC');
+        $publications_updated = $qb->getQuery()->getResult();
+        // dd($publications_updated);
+        //
         return $this->render('home/home.html.twig', [
             'controller_name' => "d",
             "publications" => $publications,
@@ -63,8 +72,9 @@ class HomeController extends AbstractController
             'pub_last' => $publications_last, // Retourne les dernières publications
             'pub_pop' => $publications_pop, // Retourne les dernières publications
             'is_homepage' => true,
-            'chaps_last' => $publications_chapters,
+            // 'chaps_last' => $publications_chapters,
             'coms_last' => $publications_comments,
+            'pub_updated' => $publications_updated
         ]);
     }
     #[Route('/clearnotification', name: 'app_notification_clear', methods: ['POST'])]

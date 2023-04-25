@@ -8,7 +8,7 @@
 
 {# END #}
 <div class="flex flex-col relative bg-slate-50 dark:bg-slate-900 rounded p-3 gap-y-2 border-l-4 catColorBorder-{{item.category.color}} border-opacity-40">
-	<i class="fa-duotone fa-memo-circle-info text-base absolute text-slate-500 dark:text-slate-400 -right-[0.43rem] top-[0.01rem]" data-tippy-content="{{chap_content|raw}}"></i>
+	<i class="fa-duotone fa-memo-circle-info text-base absolute text-slate-500 dark:text-slate-400 -right-[0.43rem] top-[0.01rem]" data-tippy-content="{{chap_content}}"></i>
 	<div class="flex flex-col gap-y-2 text-slate-700 dark:text-slate-400">
 		<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" class="hover:underline w-full " aria-label="Lire {{item.title}}, par {{item.user.nickname}}">
 			<h2 class="font-semibold text-base md:text-xl">{{item.title}}</h2>

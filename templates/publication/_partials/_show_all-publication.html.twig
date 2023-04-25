@@ -10,26 +10,33 @@
 {% endif %}
 {# END #}
 <div class="flex flex-col relative bg-slate-50 dark:bg-slate-900 rounded p-3 gap-y-2 border-l-4 catColorBorder-{{item.category.color}} border-opacity-40">
-	<i class="fa-duotone fa-memo-circle-info text-base absolute text-slate-500 dark:text-slate-400 -right-[0.43rem] top-[0.01rem]" data-tippy-content="{{chap_content}}"></i>
-	<div class="flex flex-col gap-y-2 text-slate-700 dark:text-slate-400">
-		<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" class="hover:underline w-full " aria-label="Lire {{item.title}}, par {{item.user.nickname}}">
-			<h2 class="font-semibold text-base md:text-xl">{{item.title}}</h2>
-		</a>
-		<a href="{{path("app_user", {username:item.user.username})}}" class=" hover:underline w-full" aria-label="Voir le profil de {{item.user.nickname}}">
-			<h3 class="text-sm flex flex-row gap-x-2">
-				{% if item.user.profilPicture %}
-					<img class="h-5 items-center rounded" src="{{item.user.profilPicture}}"/>
-				{% endif %}
-				{{item.user.nickname}}
-			</h3>
-		</a>
+	<i class="fa-duotone fa-memo-circle-info text-base absolute catColorText-{{item.category.color}}  -right-[0.43rem] top-[0.01rem]" data-tippy-content="{{chap_content}}"></i>
+	<div class="{{item.cover ? "flex flex-row gap-x-4 items-start" }}">
+		{% if item.cover %}
+			<div class="w-9 h-8">
+				<img class=" object-cover rounded-sm mt-1" src="{{item.cover}}"/>
+			</div>
+		{% endif %}
+		<div class="flex flex-col gap-y-2 text-slate-700 dark:text-slate-400">
+			<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" class="hover:underline w-full " aria-label="Lire {{item.title}}, par {{item.user.nickname}}">
+				<h2 class="font-semibold text-base md:text-xl">{{item.title}}</h2>
+			</a>
+			<a href="{{path("app_user", {username:item.user.username})}}" class=" hover:underline w-full" aria-label="Voir le profil de {{item.user.nickname}}">
+				<h3 class="text-sm flex flex-row gap-x-2">
+					{% if item.user.profilPicture %}
+						<img class="h-5 items-center rounded-full" src="{{item.user.profilPicture}}"/>
+					{% endif %}
+					{{item.user.nickname}}
+				</h3>
+			</a>
+		</div>
 	</div>
-	<div class="flex flex-row justify-between text-sm">
+	<div class="flex flex-row justify-between text-xs">
 		<span class=" text-slate-400  justify-start dark:text-slate-500 w-1/2">
 			Publié il y a
 			{{item.publishedDate|since}}
 		</span>
-		<span class="flex flex-row items-baseline justify-end gap-x-2  w-1/2 dark:text-slate-400">
+		<span class="flex flex-row items-baseline justify-end gap-x-2 text-sm w-1/2 dark:text-slate-400">
 			{% set chapterWithOrderDisplayZero = item.publicationChapters|filter(chapter => chapter.orderDisplay == 0)|first %}
 			{% set firstChap = chapterWithOrderDisplayZero ? chapterWithOrderDisplayZero : item.publicationChapters|first %}
 			<i class="fa-regular fa-book-open-reader"></i>

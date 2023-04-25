@@ -1087,7 +1087,7 @@ main button {
 	animation: fa-spin 2s linear infinite;
 }
 .display_publications {
-	@apply grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 -mt-14 md:-mt-0 items-baseline md:gap-10 sm:gap-7 gap-5;
+	@apply grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 -mt-14 md:-mt-0  md:gap-10 sm:gap-7 gap-5;
 }
 .display_publications.twoMax {
 	@apply xl:grid-cols-2;

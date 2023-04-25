@@ -4,7 +4,9 @@
 namespace App\Twig;
 
 use DateTime;
+use Exception;
 use Twig\TwigFilter;
+use DateTimeInterface;
 use Twig\Extension\AbstractExtension;
 
 class TwigDate extends AbstractExtension
@@ -15,7 +17,18 @@ class TwigDate extends AbstractExtension
     }
     public function sinceFilter($date): string
     {
-        $dateTime1 =  new DateTime("now");
+        // Vérifie si la date n'est pas une instance de DateTimeInterface
+        if (!$date instanceof DateTimeInterface) {
+            // Si ce n'est pas le cas, essayez de convertir $date en un objet DateTime
+            try {
+                $date = new DateTime($date);
+            } catch (Exception $e) {
+                // Si la conversion échoue, retournez une chaîne vide ou un message d'erreur approprié
+                return '';
+            }
+        }
+
+        $dateTime1 = new DateTime("now");
         $dateTime2 = $date;
         $date = $dateTime1->diff($dateTime2);
         if ($date->format("%y") == 1) {

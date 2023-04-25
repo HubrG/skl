@@ -63,34 +63,28 @@
 		</li>
 	</ul>
 {% else %}
-	<p class="text-xs text-slate-500 -mt-6 pb-2 text-center">Page
+	<p class="text-xs text-slate-500 dark:text-slate-300 -mt-3 mb-2 md:mb-1 pb-2 text-center">Page
 		{{ page }}
 		sur
 		{{ countPage }}
 	</p>
-	<ul class="inline-flex items-center -space-x-px">
+	<ul class="flex justify-center items-center  font-medium w-full text-center rounded-lg">
 		<li>
 			{% if pageAct == 1 or pageAct is null  %}
-				<span class="block px-3  py-[0.5rem] mt-[0.13rem] leading-tight disabled text-slate-300 bg-white border border-gray-300 rounded-l-lg  dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-					<svg aria-hidden="true" class="w-5 " fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-						<path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-					</svg>
+				<span class="previousPageTop pageButtonTop disabled">
+					<i class="fa-duotone fa-circle-arrow-left"></i>
 				</span>
 			{% else %}
 				{% set ii = pageAct - 1 %}
-				<a href="{{ path("app_publication_show_all_category", { slug:querySlug, page:ii,sortby:querySortby, order:queryOrder, keystring:queryKeystring }) }}" class="block px-3 py-[0.5rem] mt-[0.13rem] leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-					<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-						<path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-					</svg>
+				<a href="{{ path("app_publication_show_all_category", { slug:querySlug, page:ii,sortby:querySortby, order:queryOrder, keystring:queryKeystring }) }}" class="previousPageTop pageButtonTop">
+					<i class="fa-duotone fa-circle-arrow-left"></i>
 				</a>
 			{% endif %}
 		</li>
 		<li>
 			{% if pageAct == countPage  %}
-				<span class="block px-3 disabled  py-[0.513rem] mt-[0.15rem]  text-slate-300 bg-white border border-gray-300 rounded-r-lg  dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-					<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-						<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-					</svg>
+				<span class="disabled nextPageTop pageButtonTop">
+					<i class="fa-duotone fa-circle-arrow-right"></i>
 				</span>
 			{% else %}
 				{% if pageAct is null %}
@@ -98,10 +92,8 @@
 				{% else %}
 					{% set ii = pageAct + 1 %}
 				{% endif %}
-				<a href="{{ path("app_publication_show_all_category", { slug:querySlug, page:ii,sortby:querySortby, order:queryOrder, keystring:queryKeystring }) }}" class="block px-3  py-[0.5rem] mt-[0.12rem]  text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-					<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-						<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-					</svg>
+				<a href="{{ path("app_publication_show_all_category", { slug:querySlug, page:ii,sortby:querySortby, order:queryOrder, keystring:queryKeystring }) }}" class="nextPageTop pageButtonTop">
+					<i class="fa-duotone fa-circle-arrow-right"></i>
 				</a>
 			{% endif %}
 		</li>

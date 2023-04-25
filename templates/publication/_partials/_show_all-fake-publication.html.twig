@@ -1,8 +1,7 @@
-<div class="flex ">
+<div class="flex flex-col relative bg-slate-50 dark:bg-slate-900  items-center rounded gap-y-2 border-l-4 border-opacity-40">
 	{% if not app.user %}
-		<div data-micromodal-trigger="popup-register" class="item-fake">
-			<span class="write-and-publish w-2/6"></span>
-			<span class=" w-4/6 items-center flex flex-col justify-center text-slate-800 dark:text-slate-400">
+		<div data-micromodal-trigger="popup-register" class="item-fake ">
+			<span class=" w-full  items-center flex flex-col justify-center text-slate-800  min-h-[9.6rem] dark:text-slate-400 text-sm">
 				<span>
 					<i class="fa-duotone fa-feather"></i>
 				</span>
@@ -11,8 +10,7 @@
 		</div>
 	{% else %}
 		<a href="{{path("app_publication_add")}}" target="_top" class="item-fake">
-			<span class="write-and-publish w-2/6"></span>
-			<span class=" w-4/6 items-center flex flex-col justify-center text-slate-800 dark:text-slate-400 text-xs">
+			<span class=" w-full  items-center flex flex-col justify-center text-slate-800  min-h-[9.6rem] dark:text-slate-400 text-sm">
 				<span>
 					<i class="fa-duotone fa-feather"></i>
 				</span>

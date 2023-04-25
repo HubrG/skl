@@ -46,7 +46,7 @@ class PublicationShowController extends AbstractController
 	public function show_all(SessionInterface $session, PublicationCategoryRepository $pcRepo, PublicationKeywordRepository $kwRepo, PublicationRepository $pRepo, $sortby = "p.pop", $page = 1, $slug = "all", $keystring = null, $order = "desc"): Response
 	{
 		// * On set les variables si elles ne sont pas dans l'url
-		$nbr_by_page = 10;
+		$nbr_by_page = 12;
 		$page = $page ?? 1;
 		$order = $order ?? "desc";
 		$slug = $slug ?? "all";

@@ -26,54 +26,46 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(PublicationRepository $pRepo, PublicationChapterRepository $pchRepo, PublicationCommentRepository $pcomRepo): Response
     {
+        // *
+        // * DERNIÈRES PUBLICATIONS
+        $qb = $pRepo->createQueryBuilder("p")
+            ->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
+            ->where("p.status = 2")
+            ->orderBy("p.published_date", "DESC")
+            ->groupBy('p.id')
+            ->orderBy('MAX(p.published_date)', 'DESC')
+            ->setMaxResults(9);
+        $publications_last = $qb->getQuery()->getResult();
 
-        // On récupère les publications qui ont le status 2 (publié) et un chapitre publié
+        // *
+        // * PUBLICATIONS LES PLUS POPULAIRES
         $qb = $pRepo->createQueryBuilder("p")
             ->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
             ->where("p.status = 2")
-            ->orderBy("p.published_date", "DESC");
-        $publications = $qb->getQuery()->getResult();
-        $publications_last = $pRepo->findBy(["id" => $publications], ["published_date" => "desc"], 6);
-        //
-        $qb = $pRepo->createQueryBuilder("p")
-            ->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
-            ->where("p.status = 2")
-            ->orderBy("p.pop", "DESC");
-        $publications = $qb->getQuery()->getResult();
-        $publications_pop = $pRepo->findBy(["id" => $publications], ["pop" => "desc"], 6);
-        // // Derniers chapitres publiés en status 2, limités à 8, et dont la publication est publiée
-        // $qb = $pchRepo->createQueryBuilder("pch")
-        //     ->innerJoin("pch.publication", "p", "WITH", "p.status = 2")
-        //     ->where("pch.status = 2")
-        //     ->orderBy("pch.published", "DESC");
-        // $publications_chapters = $qb->getQuery()->getResult();
-        // $publications_chapters = $pchRepo->findBy(["id" => $publications_chapters], ["published" => "desc"], 8);
-        // Derniers commentaires publiés, limités à 8, et dont le chapitre ou la publication est publiée
-        $qb = $qb = $pcomRepo->createQueryBuilder("pcom")
-            ->leftJoin("pcom.chapter", "pch", "WITH", "pch.status = 2")
-            ->innerJoin("pcom.publication", "p", "WITH", "p.status = 2")
-            ->where("pcom.replyTo IS NULL");
-        $publications_comments = $qb->getQuery()->getResult();
-        $publications_comments = $pcomRepo->findBy(["id" => $publications_comments], ["published_at" => "desc"], 8);
-        //
-        // Derniers chapitres publiés en status 2, limités à 8, et dont la publication est publiée (last version)
+            ->groupBy('p.id')
+            ->orderBy('MAX(p.pop)', 'DESC')
+            ->setMaxResults(9);
+        $publications_pop = $qb->getQuery()->getResult();
+
+        // *
+        // * PUBLICATIONS MISES À JOUR
         $qb = $pRepo->createQueryBuilder('p')
             ->leftJoin('p.publicationChapters', 'pc')
             ->where('p.status = 2')
             ->andWhere('pc.status = 2')
-            ->orderBy('pc.published', 'DESC');
+            ->groupBy('p.id')
+            ->orderBy('MAX(pc.published)', 'DESC')
+            ->setMaxResults(9);
         $publications_updated = $qb->getQuery()->getResult();
-        // dd($publications_updated);
-        //
+
+        // !
+        // * RENDER
         return $this->render('home/home.html.twig', [
             'controller_name' => "d",
-            "publications" => $publications,
             "canonicalUrl" => $this->generateUrl('app_home', array(), true),
-            'pub_last' => $publications_last, // Retourne les dernières publications
-            'pub_pop' => $publications_pop, // Retourne les dernières publications
+            'pub_last' => $publications_last,
+            'pub_pop' => $publications_pop,
             'is_homepage' => true,
-            // 'chaps_last' => $publications_chapters,
-            'coms_last' => $publications_comments,
             'pub_updated' => $publications_updated
         ]);
     }

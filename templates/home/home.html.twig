@@ -60,10 +60,10 @@
 			<section class="order-2 md:order-1 mt-10 md:mt-0">
 				<div class="my-special-hr mt-12">
 					<hr>
-					<span>
+					<h1>
 						Pourquoi écrire ici ?
-						<i class="fa-duotone fa-question-circle"></i>
-					</span>
+						<i class="fa-duotone fa-question-circle text-blue-500"></i>
+					</h1>
 					<hr>
 				</div>
 				<div class="glide-market glide -mt-10 md:-mb-2 mb-12 left-0">
@@ -206,79 +206,73 @@
 			<secion class=" -mt-0 md:-mt-10 z-50 order-1 md:order-2">
 				<div class="my-special-hr">
 					<hr>
-					<span>
+					<h1>
 						Derniers récits
-						<i class="fa-duotone fa-book-open"></i>
-					</span>
+						<i class="fa-duotone fa-stars text-yellow-500"></i>
+					</h1>
 					<hr>
 				</div>
-				<div class="animate__animated animate__fadeIn publications-container small two-col ">
+				<div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 -mt-14 md:-mt-0 items-baseline md:gap-10 sm:gap-7 gap-5">
 					{% for item in pub_last %}
-						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'all', 'queryPage':1, 'sortBy':'published', 'querySortby':'published', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
+						{% include "publication/_partials/_show_all-publication2.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':'published', 'querySortby':'published', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
 					{% endfor %}
-					{% if pub_last|length < 7 %}
-						{% for i in pub_last|length..6 - 1 %}
-							{% include "publication/_partials/_show_all-fake-publication.html.twig" %}
-						{% endfor %}
-					{% endif %}
 				</div>
-				<div class="mt-10 text-right">
+				<div class="mt-20 text-right">
 					<a href="{{ path("app_publication_show_all_category", {slug:"all", sortby:"published", order:"desc", page:1})}}" class="button-classic button-gray w-full md:w-2/6 mx-auto" style="font-weight:600">
-						<i class="fa-duotone fa-stars"></i>
-						En voir davantage
+						<span class="text-base">
+							<i class="fa-duotone fa-stars"></i>
+							Voir plus de récits !
+						</span>
 					</a>
 				</div>
 			</secion>
 			<section class="md:mt-20 -mt-20 z-50 order-3 md:order-3">
 				<div class="my-special-hr">
 					<hr>
-					<span>Dernières feuilles publiées !
-						<i class="fa-duotone fa-newspaper"></i>
-					</span>
+					<h1>
+						Dernières feuilles publiées !
+						<i class="fa-duotone fa-newspaper text-green-500"></i>
+					</h1>
 					<hr class="mb-20">
 				</div>
-				<div class="animate__animated animate__fadeIn publications-container small two-col">
+				<div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 -mt-14 md:-mt-0 items-baseline md:gap-10 sm:gap-7 gap-5">
 					{% for item in pub_updated %}
-						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':'pop', 'querySortby':'pop', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
+						{% include "publication/_partials/_show_all-publication2.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':'sheet', 'querySortby':'sheet', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
 					{% endfor %}
-					{% if pub_updated|length < 7 %}
-						{% for i in pub_updated|length..6 - 1 %}
-							{% include "publication/_partials/_show_all-fake-publication.html.twig" %}
-						{% endfor %}
-					{% endif %}
 				</div>
-				<div class="mt-10 text-right">
-					<a href="{{ path("app_publication_show_all_category", {slug:"all", sortby:"sheet", order:"desc", page:1})}}" class="button-classic button-gray w-full md:w-2/6 mx-auto" style="font-weight:600">
-						<i class="fa-duotone fa-newspaper"></i>
-						<span>En voir davantage</span>
-					</a>
-				</div>
-			</section>
-			<section class="md:mt-20 -mt-20 z-50 order-3 md:order-3">
-				<div class="my-special-hr">
-					<hr>
-					<span>Récits populaires
-						<i class="fa-duotone fa-fire"></i>
+			</div>
+			<div class="mt-20 text-right">
+				<a href="{{ path("app_publication_show_all_category", {slug:"all", sortby:"sheet", order:"desc", page:1})}}" class="button-classic button-gray w-full md:w-2/6 mx-auto" style="font-weight:600">
+					<span class="text-base">
+						<i class="fa-duotone fa-stars"></i>
+						Voir plus de récits !
 					</span>
-					<hr class="mb-20">
-				</div>
-				<div class="animate__animated animate__fadeIn publications-container small two-col">
-					{% for item in pub_pop %}
-						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'all', 'queryPage':1, 'sortBy':'pop', 'querySortby':'pop', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
-					{% endfor %}
-					{% if pub_pop|length < 7 %}
-						{% for i in pub_pop|length..6 - 1 %}
-							{% include "publication/_partials/_show_all-fake-publication.html.twig" %}
-						{% endfor %}
-					{% endif %}
-				</div>
-				<div class="mt-10 text-right">
-					<a href="{{ path("app_publication_show_all_category", {slug:"all", sortby:"pop", order:"desc", page:1})}}" class="button-classic button-gray w-full md:w-2/6 mx-auto" style="font-weight:600">
-						<i class="fa-duotone fa-fire"></i>
-						<span>En voir davantage</span>
-					</a>
-				</div>
-			</section>
+				</a>
+			</div>
+		</section>
+		<section class="md:mt-22 mt-24 z-50 order-3 md:order-3">
+			<div class="my-special-hr">
+				<hr>
+				<h1>
+					Récits populaires
+					<i class="fa-duotone fa-fire text-red-500"></i>
+				</h1>
+				<hr class="mb-20">
+			</div>
+			<div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 -mt-14 md:-mt-0 items-baseline md:gap-10 sm:gap-7 gap-5">
+				{% for item in pub_pop %}
+					{% include "publication/_partials/_show_all-publication2.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':'pop', 'querySortby':'pop', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
+				{% endfor %}
+			</div>
+			<div class="mt-20 text-right">
+				<a href="{{ path("app_publication_show_all_category", {slug:"all", sortby:"pop", order:"desc", page:1})}}" class="button-classic button-gray w-full md:w-2/6 mx-auto" style="font-weight:600">
+					<span class="text-base">
+						<i class="fa-duotone fa-stars"></i>
+						Voir plus de récits !
+					</span>
+				</a>
+			</div>
+		</section>
 
-		</div>
-	{% endblock %}
+	</div>
+{% endblock %}

@@ -659,7 +659,6 @@ function bmChapterData(bmChapterId) {
     }
   });
 }
+toggleDrawer();
 ShowChapter();
 targetQuote();
-toggleDrawer();
-DropdownMenu();

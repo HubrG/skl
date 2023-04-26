@@ -251,4 +251,3 @@ const nl2br = (str = "", isXHTML = true) => {
   const breakTag = isXHTML ? "<br />" : "<br>";
   return str.replace(/(\r\n|\n\r|\r|\n)/g, `$1${breakTag}`);
 };
-Comment();

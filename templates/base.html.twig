@@ -19,7 +19,7 @@
 		</title>
 		<link rel="icon" href="/images/favicon.png">
 		<script src="https://kit.fontawesome.com/5e2ac7f1ef.js" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.turbo.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.turbo.min.js" data-turbo="false"></script>
 		<link rel="stylesheet" href="https://kit.fontawesome.com/5e2ac7f1ef.css" crossorigin="anonymous">
 		{{ encore_entry_link_tags('app') }}
 		{% block stylesheets %}{% endblock %}
@@ -33,7 +33,6 @@
 		<div class="flex flex-col min-h-screen relative">
 			{% include "partials/_navbar.html.twig" %}
 			{% include "partials/_confirm-email.html.twig" %}
-
 			{# FLASHES #}
 			{% include "partials/_notif.html.twig" %}
 			{# END_FLASHESd #}

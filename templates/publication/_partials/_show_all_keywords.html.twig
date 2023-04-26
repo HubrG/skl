@@ -25,7 +25,7 @@
 				{% set kwStringNew = kwStringNew|slice(0,var) %}
 			{% endif %}
 			{# * affichage des keywords #}
-			<a href="{{ path("app_publication_show_all_category", {slug:slugCat, keystring:kwStringNew, page:1, order:orderSort, sortby:querySortby}) }}" target="_self" class="  w-full justify-items-between text-center kwTag bg-slate-900 hover:text-slate-800  text-slate-700 text-sm font-semibold ">
+			<a href="{{ path("app_publication_show_all_category", {slug:slugCat, keystring:kwStringNew, page:1, order:orderSort, sortby:querySortby}) }}" target="showAllFrame" class="  w-full justify-items-between text-center kwTag bg-slate-900 hover:text-slate-800  text-slate-700 text-sm font-semibold ">
 				<span class=" leading-[1.7rem]   dark:text-slate-300 flex-row flex justify-between">
 					{{item.keyword}}
 					<i class="fa-duotone fa-delete-left hover:text-slate-900 pt-[0.37rem]"></i>
@@ -50,7 +50,7 @@
 	{% if (item.keyword not in alreadyKeyw) and (item.keyword|lower in kwString == false) %}
 		<!-- Si le keyword n'est pas dans la variable, on le supprime (éviter les doublons) -->
 		{% set kwString = kwString|replace({separator_d:separator}) %}
-		<a href="{{ path("app_publication_show_all_category", {slug:slugCat, sortby:querySortby, keystring:kwString ~ kwAdd, order:orderSort, page:1}) }}" class="kwTag " target="_self">
+		<a href="{{ path("app_publication_show_all_category", {slug:slugCat, sortby:querySortby, keystring:kwString ~ kwAdd, order:orderSort, page:1}) }}" class="kwTag " target="showAllFrame">
 			<span class="font-normal  dark:text-blue-300">{{item.keyword}}</span>
 		</a>
 	{% endif %}

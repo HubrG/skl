@@ -64,7 +64,7 @@
 				<h2 class="{{kwString ? "hidden " }} my-10 border-t pt-10 dark:border-t-slate-700 md:hidden text-center font-bold dark:text-slate-100">Mots-clés</h2>
 				{% if kwString %}
 					<p class="text-center text-md md:mt-0">
-						<a target="_self" href="{{ path("app_publication_show_all_category", {slug:slugCat, page:1, order:orderSort, sortby:querySortby}) }}" class="text-slate-600 dark:text-slate-100 text-sm font-medium">
+						<a target="showAllFrame" href="{{ path("app_publication_show_all_category", {slug:slugCat, page:1, order:orderSort, sortby:querySortby}) }}" class="text-slate-600 dark:text-slate-100 text-sm font-medium">
 							<i class="fa-duotone fa-delete-left"></i>
 							<span class="hover:underline">Réinitialiser</span>
 						</a>
@@ -86,7 +86,7 @@
 					{% if count == 0 and app.user %}
 						<span class="hidden lg:inline">|</span>
 						<span class="block md:hidden"></span>
-						<a href="{{ path("app_publication_add") }}" target="_top" class="text-sky-800 dark:text-sky-400 font-medium hover:underline">N'hésitez pas à publier le vôtre !</a>
+						<a href="{{ path("app_publication_add") }}" class="text-sky-800 dark:text-sky-400 font-medium hover:underline">N'hésitez pas à publier le vôtre !</a>
 					{% elseif count == 0 and not app.user %}
 						<span class="hidden lg:inline">|</span>
 						<span class="block md:hidden"></span>
@@ -153,7 +153,7 @@
 									{% set activeClass = "hover:bg-slate-200 dark:bg-slate-500 dark:hover:bg-slate-700 dark:text-slate-300 grayscale" %}
 								{% endif %}
 								<li class="py-2 {{ option.class }} {{ activeClass }} ">
-									<a href="{{ path("app_publication_show_all_category", {slug: slugCat, keystring: queryKeystring, page: page, order: option.order, sortby: option.sortby}) }}" target="_self" class="block px-4 py-2 ">
+									<a href="{{ path("app_publication_show_all_category", {slug: slugCat, keystring: queryKeystring, page: page, order: option.order, sortby: option.sortby}) }}" target="showAllFrame" class="block px-4 py-2 ">
 										{{ option.icon|raw }}
 										&nbsp;{{ option.text }}</a>
 								</li>

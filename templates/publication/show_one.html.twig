@@ -31,7 +31,7 @@
 	Récit |
 	{{ pubShow.title }}
 	({{ pubShow.user.nickname }})
-																																																																																																																																																																																																																								-
+																																																																																																																																																																																																																										-
 	{{ parent() }}
 {% endblock %}
 
@@ -155,7 +155,7 @@
 						{% endif %}
 					</p>
 				</div>
-				<a href="{{ path("app_chapter_show", {idChap:orderChap.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:orderChap.slug}) }}" target="_top" class=" block mt-5 not-italic py-5 text-center w-full lg:w-3/6 px-10 bg-white  text-base hover:bg-white text-slate-800 shadow hover:text-slate-800 bg-opacity-50 dark:bg-opacity-80 hover:bg-opacity-100 dark:bg-slate-700 dark:text-slate-100  dark:hover:bg-slate-900 rounded-lg">
+				<a href="{{ path("app_chapter_show", {idChap:orderChap.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:orderChap.slug}) }}" class=" block mt-5 not-italic py-5 text-center w-full lg:w-3/6 px-10 bg-white  text-base hover:bg-white text-slate-800 shadow hover:text-slate-800 bg-opacity-50 dark:bg-opacity-80 hover:bg-opacity-100 dark:bg-slate-700 dark:text-slate-100  dark:hover:bg-slate-900 rounded-lg">
 					<i class="fa-regular fa-book-open-reader"></i>
 					<br/><span class="font-semibold">Commencer la lecture</span>
 				</a>
@@ -333,7 +333,6 @@
 											{{ chapter.title|default("Feuille n°" ~ (chapter.orderDisplay + 1))|capitalize }}
 										</a>
 										{% set chapterIdToCheck = chapter.id %}
-										{# Remplacez cette ligne par la méthode pour obtenir l'ID du chapitre à vérifier #}
 										{% if app.user and app.user.hasReadChapter(chapterIdToCheck) %}
 											&nbsp;&nbsp;<span class="text-xs text-green-500 dark:text-green-400">
 												<i class="fa-duotone fa-badge-check"></i>&nbsp;&nbsp;lu</span>

@@ -31,7 +31,7 @@
 	Récit |
 	{{ pubShow.title }}
 	({{ pubShow.user.nickname }})
-																																																																																																																																																																																																																										-
+																																																																																																																																																																																																																																-
 	{{ parent() }}
 {% endblock %}
 
@@ -155,10 +155,23 @@
 						{% endif %}
 					</p>
 				</div>
-				<a href="{{ path("app_chapter_show", {idChap:orderChap.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:orderChap.slug}) }}" class=" block mt-5 not-italic py-5 text-center w-full lg:w-3/6 px-10 bg-white  text-base hover:bg-white text-slate-800 shadow hover:text-slate-800 bg-opacity-50 dark:bg-opacity-80 hover:bg-opacity-100 dark:bg-slate-700 dark:text-slate-100  dark:hover:bg-slate-900 rounded-lg">
-					<i class="fa-regular fa-book-open-reader"></i>
-					<br/><span class="font-semibold">Commencer la lecture</span>
-				</a>
+				{% set currentPublicationId = pubShow.id %}
+				{% if app.user %}
+					{% set lastReadChapter = app.user.getLastReadChapterByPublication(currentPublicationId) %}
+				{% else %}
+					{% set lastReadChapter = null %}
+				{% endif %}
+				{% if lastReadChapter %}
+					<a href="{{ path("app_chapter_show", {idChap:lastReadChapter.id, user:pubShow.user.username, slugPub:pubShow.slug, slug:lastReadChapter.slug}) }}" class=" block mt-5 not-italic py-5 text-center w-full lg:w-3/6 px-10 bg-white  text-base hover:bg-white text-slate-800 shadow hover:text-slate-800 bg-opacity-50 dark:bg-opacity-80 hover:bg-opacity-100 dark:bg-slate-700 dark:text-slate-100  dark:hover:bg-slate-900 rounded-lg">
+						<i class="fa-regular fa-book-open-reader"></i>
+						<br/><span class="font-semibold">Reprendre la lecture</span>
+					</a>
+				{% else %}
+					<a href="{{ path("app_chapter_show", {idChap:orderChap.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:orderChap.slug}) }}" class=" block mt-5 not-italic py-5 text-center w-full lg:w-3/6 px-10 bg-white  text-base hover:bg-white text-slate-800 shadow hover:text-slate-800 bg-opacity-50 dark:bg-opacity-80 hover:bg-opacity-100 dark:bg-slate-700 dark:text-slate-100  dark:hover:bg-slate-900 rounded-lg">
+						<i class="fa-regular fa-book-open-reader"></i>
+						<br/><span class="font-semibold">Commencer la lecture</span>
+					</a>
+				{% endif %}
 				<div class="grid {{ pubShow.sale ? " grid-cols-2" : " grid-cols-1" }} w-full md:w-3/6 text-sm items-center justify-center gap-x-2">
 					<button id="dropdownBuyBookButton" data-dropdown-toggle="dropdownBuyBook" class="{{ pubShow.sale ? "block" : "hidden" }} block mt-5 not-italic py-2 text-center px-5 text-slate-800 hover:text-slate-800 dark:text-slate-100 dark:hover:bg-slate-900 rounded-lg">
 						<span class="font-light flex flex-row justify-center items-center w-full">

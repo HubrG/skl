@@ -70,8 +70,7 @@ class PublicationShowController extends AbstractController
 		} else {
 			$qb = $pRepo->createQueryBuilder("p")
 				->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
-				->where("p.status = 2")
-				->andWhere("p.category is not null");
+				->where("p.status = 2");
 		}
 		try {
 			$count = count($qb->getQuery()->getResult());
@@ -115,8 +114,12 @@ class PublicationShowController extends AbstractController
 						->andWhere('pc.status = 2')
 						->orderBy('pc.published', $order)
 						->setParameter('publicationsAll', $publicationsAll)
+						->groupBy('p.id')
+						->orderBy('MAX(pc.published)', 'DESC')
+						->setMaxResults($nbr_by_page)
 						->setFirstResult($start);
 					$publications = $qb->getQuery()->getResult();
+					// $publications = $pRepo->findBy(["id" => $publications], [], $nbr_by_page, $start);
 				}
 				$keywString = null;
 			}

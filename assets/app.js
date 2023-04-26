@@ -46,15 +46,3 @@ if (document.querySelector(".glide-top")) {
   glideMarket.mount();
   glideTop.mount();
 }
-// window.addEventListener("scroll", () => {
-//   const nav = document.getElementById("nav");
-//   const progressAt = window.innerHeight * 2; // 50vh
-//   const scrollY = window.scrollY;
-
-//   // Calculez la progression du défilement entre 0 et 1
-//   let progress = scrollY / progressAt;
-//   progress = Math.min(Math.max(progress, 0), 1);
-
-//   // Ajustez la position et l'opacité de la barre de navigation en fonction de la progression
-//   nav.style.transform = `translateY(${-progress * 150}%)`;
-// });

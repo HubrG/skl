@@ -212,7 +212,7 @@
 					</h1>
 					<hr>
 				</div>
-				<div class="grid  grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 -mt-14 md:-mt-0 items-baseline md:gap-10 sm:gap-7 gap-5">
+				<div class="display_publications">
 					{% for item in pub_last %}
 						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':'published', 'querySortby':'published', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
 					{% endfor %}
@@ -235,7 +235,7 @@
 					</h1>
 					<hr class="mb-20">
 				</div>
-				<div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 -mt-14 md:-mt-0 items-baseline md:gap-10 sm:gap-7 gap-5">
+				<div class="display_publications">
 					{% for item in pub_updated %}
 						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':'sheet', 'querySortby':'sheet', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
 					{% endfor %}
@@ -259,7 +259,7 @@
 				</h1>
 				<hr class="mb-20">
 			</div>
-			<div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 -mt-14 md:-mt-0 items-baseline md:gap-10 sm:gap-7 gap-5">
+			<div class="display_publications">
 				{% for item in pub_pop %}
 					{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':'pop', 'querySortby':'pop', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
 				{% endfor %}

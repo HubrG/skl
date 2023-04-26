@@ -1,6 +1,5 @@
 {% extends "base.html.twig" %}
 {% set pic = pubShow.cover %}
-
 {% if pic %}
 	{% set pic_bg = pic|replace({'/upload/': '/upload/c_fill_pad,g_auto,w_1.0,e_improve:outdoor,f_jpg,e_blur:400,'}) %}
 {% else %}
@@ -16,11 +15,23 @@
 		{% set pic = "/images/no-cover.png" %}
 	{% endif %}
 {% endif %}
+{% if pubShow.category.slug is defined %}
+	{% set slug = pubShow.category.slug %}
+	{% set slugName = pubShow.category.name|capitalize %}
+{% else %}
+	{% set slug = "all" %}
+	{% set slugName = "Sans catégorie" %}
+{% endif %}
+{% if pubShow.category.color is defined %}
+	{% set color = pubShow.category.color %}
+{% else %}
+	{% set color = 11 %}
+{% endif %}
 {% block title %}
 	Récit |
 	{{ pubShow.title }}
 	({{ pubShow.user.nickname }})
-																																																																																																																																																																																																						-
+																																																																																																																																																																																																									-
 	{{ parent() }}
 {% endblock %}
 
@@ -410,7 +421,7 @@
 						{% endfor %}
 						{% set hashtag = hashtags|join(" ") %}
 						{% set url = app.request.schemeAndHttpHost ~ app.request.requestUri %}
-						{% set text = "« " ~ pubShow.title ~ " » #" ~ pubShow.category.name ~ " " ~ hashtag %}
+						{% set text = "« " ~ pubShow.title ~ " » #" ~ slugName ~ " " ~ hashtag %}
 						{% set via = "ScrilabEditions" %}
 						<li class="inline-flex items-center  gap-x-2 mt-0 px-4 pb-5 pt-5 font-normal justify-center dark:text-white">
 							<ul class="flex-row flex justify-between w-full">
@@ -453,19 +464,7 @@
 							<i class="fa-regular fa-masks-theater"></i>
 							Genre
 						</span>
-						{% if pubShow.category.slug is defined %}
-							{% set slug = pubShow.category.slug %}
-							{% set slugName = pubShow.category.name|capitalize %}
 
-						{% else %}
-							{% set slug = "all" %}
-							{% set slugName = "Sans catégorie" %}
-						{% endif %}
-						{% if pubShow.category.color is defined %}
-							{% set color = pubShow.category.color %}
-						{% else %}
-							{% set color = 11 %}
-						{% endif %}
 						<a href="{{path("app_publication_show_all_category", {slug:slug})}}" class="catColor-{{color}} rounded px-2 py-1 text-xs">
 							<span>{{ slugName }}</span>
 						</a>

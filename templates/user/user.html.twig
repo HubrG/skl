@@ -61,7 +61,7 @@
 				<span>{{pubInfo|length > 1 ? pubInfo|length ~ " récits" : pubInfo|length == 0 ? "Aucun récit" : pubInfo|length ~ " récit"}}</span>
 				<hr class="mb-5">
 			</div>
-			<div class="publications-container small profil">
+			<div class="display_publications twoMax  profil">
 				{% for item in pubInfo %}
 					{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'all', 'queryPage':1, 'sortBy':'pop', 'querySortby':'pop', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
 				{% endfor %}

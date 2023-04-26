@@ -68,16 +68,16 @@ export function darkMode() {
       "PublicationShowContent"
     );
     gridSmall.addEventListener("click", function () {
-      if (!PublicationShowContent.classList.contains("small")) {
-        PublicationShowContent.classList.add("small");
+      if (!PublicationShowContent.classList.contains("big")) {
+        PublicationShowContent.classList.add("big");
         grid.classList.remove("active");
         gridSmall.classList.add("active");
         setGrid(1);
       }
     });
     grid.addEventListener("click", function () {
-      if (PublicationShowContent.classList.contains("small")) {
-        PublicationShowContent.classList.remove("small");
+      if (PublicationShowContent.classList.contains("big")) {
+        PublicationShowContent.classList.remove("big");
         grid.classList.add("active");
         gridSmall.classList.remove("active");
         setGrid(0);
@@ -91,16 +91,16 @@ export function darkMode() {
       "PublicationShowContent"
     );
     gridSmall.addEventListener("click", function () {
-      if (!PublicationShowContent.classList.contains("small")) {
-        PublicationShowContent.classList.add("small");
+      if (!PublicationShowContent.classList.contains("big")) {
+        PublicationShowContent.classList.add("big");
         grid.classList.remove("active");
         gridSmall.classList.add("active");
         setGrid(1);
       }
     });
     grid.addEventListener("click", function () {
-      if (PublicationShowContent.classList.contains("small")) {
-        PublicationShowContent.classList.remove("small");
+      if (PublicationShowContent.classList.contains("big")) {
+        PublicationShowContent.classList.remove("big");
         grid.classList.add("active");
         gridSmall.classList.remove("active");
         setGrid(0);

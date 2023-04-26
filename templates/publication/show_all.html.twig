@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{# INIT #}
+{# ! INIT #}
 {% set slugCat = category.slug|default('all') %}
 {% set slugCatName = category.name|default('Tous les récits') %}
 {% set route_params = app.request.attributes.get('_route_params') %}
@@ -8,11 +8,33 @@
 {% set queryOrder = route_params.order|default('desc') %}
 {% set queryKeystring = route_params.keystring %}
 {% set querySortby = route_params.sortby|default('published') %}
-{# ! Séparateur de mots clés dans l'URL & page #}
+{# * Séparateur de mots clés dans l'URL & page #}
 {% set separator = "—" %}
 {% set separator_d = "——" %}
 {% set pageAct = app.request.get('_route_params')['page'] is defined ? app.request.get('_route_params')['page'] : null %}
 {% set random = random(0,999) %}
+{# * GRID Session #}
+{% if app.user %}
+	{% if app.user.userParameters is defined and app.user.userParameters.gridShow == true %}
+		{% set grid_status = "big" %}
+		{% set grid_button_left = null %}
+		{% set grid_button_right = "active" %}
+	{% else %}
+		{% set grid_status = null %}
+		{% set grid_button_left = "active" %}
+		{% set grid_button_right = null %}
+	{% endif %}
+{% else %}
+	{% if app.session.get('grid') and not app.user and app.session.get('grid') == true %}
+		{% set grid_status = "big" %}
+		{% set grid_button_left = null %}
+		{% set grid_button_right = "active" %}
+	{% else %}
+		{% set grid_status = null %}
+		{% set grid_button_left = "active" %}
+		{% set grid_button_right = null %}
+	{% endif %}
+{% endif %}
 {# end #}
 {% block title %}Récits |
 	{{ slugCatName }}
@@ -56,9 +78,9 @@
 		{% endif %}
 		<section class="w-full flex-col flex gap-y-12 md:gap-y-3 order-1 md:order-2" style="--animate-duration: 1s;">
 			<div
-				class="flex flex-col md:flex-row mb-10 justify-between px-2 pr-5">
+				class="flex flex-col xl:flex-row mb-10 justify-between px-2 pr-5">
 				{# ! COUNT PUBLICATIONS #}
-				<h4 class="w-full md:w-3/6 text-center md:text-left mb-5 ml-2  font-light text-lg text-slate-500 dark:text-slate-300">
+				<h4 class="w-full md:w-2/6 text-center md:text-left mb-5 ml-2  font-light text-lg text-slate-500 dark:text-slate-300">
 					{% set recount = count == 1 ? "1 récit" : count == 0 ? "Aucun récit" : count ~ " récits" %}
 					{{ recount | default('Aucun récit.') }}
 					{% if count == 0 and app.user %}
@@ -71,8 +93,8 @@
 						<button data-micromodal-trigger="popup-register" class="text-blue-800 dark:text-sky-400 hover:underline text-left">N'hésitez pas à publier le vôtre !</button>
 					{% endif %}
 				</h4>
-				{# ! SORT BUTTON #}
-				<div class="-mt-3 w-full md:w-auto flex  gap-x-2">
+				{# ! START - SORT BUTTON #}
+				<div class="-mt-3 w-full md:w-auto flex flex-col md:flex-row gap-y-8 items-baseline gap-x-2">
 					<button id="sortButton" data-dropdown-toggle="sortHover" class="flex justify-center items-center ring-1 bg-none  focus:ring-4 focus:outline-none font-medium w-full text-center rounded-lg text-xs lg:text-sm lg:mt-0 mt-2 px-4 py-2.5  {{ querySortby == 'pop' ? 'ring-sky-600 hover:bg-sky-50  text-sky-800 focus:ring-sky-300 dark:text-sky-500 dark:hover:text-sky-400 dark:ring-sky-400 dark:hover:bg-sky-900 dark:hover:ring-sky-500' : querySortby == 'published' ? 'ring-yellow-600 hover:bg-yellow-50  text-yellow-800 focus:ring-amber-300 dark:text-yellow-400 dark:ring-yellow-400 dark:hover:bg-yellow-900 dark:hover:text-yellow-400 dark:hover:ring-yellow-500' : 'ring-green-600 hover:bg-green-50  text-green-800 focus:ring-green-300 dark:text-green-400 dark:ring-green-400 dark:hover:bg-green-900 dark:hover:text-green-400 dark:hover:ring-green-500'}}    " type="button">
 						{% set popIcon = '<i class="fa-duotone fa-fire text-sky-800 dark:text-sky-500"></i> ' %}
 						{% set newIcon = '<i class="fa-duotone fa-sparkles text-yellow-800 dark:text-yellow-400"></i>' %}
@@ -84,7 +106,7 @@
 							{% set sortText = newIcon|raw ~ " &nbsp;&nbsp;Les nouveautés" %}
 						{% endif %}
 						{% if querySortby == 'sheet' %}
-							{% set sortText = lastChapterIcon|raw ~ " &nbsp;&nbsp;Les dernières feuilles publiées" %}
+							{% set sortText = lastChapterIcon|raw ~ " &nbsp;&nbsp;Les dernières feuilles" %}
 						{% endif %}
 						{{ sortText|raw }}
 						<svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -138,15 +160,35 @@
 							{% endfor %}
 						</ul>
 					</div>
-					{# ! PAGINATION TOP #}
-					{% if countPage > 1 %}
-						<div class="-mt-5 -mr-5">
-							{% include "publication/_partials/_show_all_pagination.html.twig" with {'type': "top"}  %}
+					<div class="flex flex-row items-center w-full md:w-auto justify-between gap-x-2">
+						<div class="flex flex-row rounded-md mt-2 md:mt-0">
+							{% if app.user %}
+								<button aria-label="Affichage ressérré" data-tippy-content="Affichage ressérré" id="grid" type="button" class="button-grid-show-all left {{grid_button_left}} ">
+									<i class="fa-regular fa-table-cells"></i>
+								</button>
+								<button aria-label="Affichage détaillé" data-tippy-content="Affichage large et détaillé" id="gridSmall" type="button" class="button-grid-show-all right  {{grid_button_right}}">
+									<i class="fa-regular fa-table-cells-large"></i>
+								</button>
+							{% else %}
+								<button aria-label="Affichage ressérré" data-tippy-content="Affichage ressérré" id="grid" type="button" class="button-grid-show-all left  {{grid_button_left}}">
+									<i class="fa-regular fa-table-cells"></i>
+								</button>
+								<button aria-label="Affichage détaillé" data-tippy-content="Affichage large et détaillé" id="gridSmallSession" type="button" class="button-grid-show-all right  {{grid_button_right}}">
+									<i class="fa-regular fa-table-cells-large"></i>
+								</button>
+							{% endif %}
 						</div>
-					{% endif %}
+						{% if countPage > 1 %}
+							<div class="flex flex-col self-start -mt-[1.25rem] xl:-mt-[1.35rem]">
+								{% include "publication/_partials/_show_all_pagination.html.twig" with {'type': "top"}  %}
+							</div>
+						{% endif %}
+					</div>
 				</div>
+				{# ! PAGINATION TOP #}
 			</div>
-			<div class="display_publications twoMax" id="PublicationShowContent">
+
+			<div class="display_publications twoMax {{grid_status}} showAll" id="PublicationShowContent">
 				{% for item in pubShow %}
 					{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'sortBy':querySortby} %}
 				{% endfor %}

@@ -98,6 +98,9 @@ class Publication
     #[ORM\Column(nullable: true)]
     private ?bool $sale = null;
 
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationRead::class)]
+    private Collection $publicationReads;
+
 
 
 
@@ -113,6 +116,7 @@ class Publication
         $this->publicationRatings = new ArrayCollection();
         $this->publicationFollows = new ArrayCollection();
         $this->notifications = new ArrayCollection();
+        $this->publicationReads = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -606,6 +610,36 @@ class Publication
     public function setSale(?bool $sale): self
     {
         $this->sale = $sale;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationRead>
+     */
+    public function getPublicationReads(): Collection
+    {
+        return $this->publicationReads;
+    }
+
+    public function addPublicationRead(PublicationRead $publicationRead): self
+    {
+        if (!$this->publicationReads->contains($publicationRead)) {
+            $this->publicationReads->add($publicationRead);
+            $publicationRead->setPublication($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationRead(PublicationRead $publicationRead): self
+    {
+        if ($this->publicationReads->removeElement($publicationRead)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationRead->getPublication() === $this) {
+                $publicationRead->setPublication(null);
+            }
+        }
 
         return $this;
     }

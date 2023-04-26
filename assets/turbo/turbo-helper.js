@@ -45,7 +45,6 @@ const TurboHelper = class {
   constructor() {
     // * Turbo before-cache sert à faire des actions avant le cache
     document.addEventListener("turbo:before-cache", () => {
-      console.log("before cache");
       DropdownMenu();
       Dropdown();
     });
@@ -160,7 +159,6 @@ const TurboHelper = class {
       }
     });
     document.addEventListener("turbo:frame-render", () => {
-      console.log("frame render");
       Comment();
       DropdownMenu();
       Dropdown();
@@ -168,19 +166,13 @@ const TurboHelper = class {
     // * Turbo Visit sert à faire des actions avant le chargement de la page
     document.addEventListener("turbo:visit", () => {
       document.body.classList.add("turbo-loading");
-      console.log("visit");
     });
     // * Turbo Before Render sert à faire des actions après le chargement de la page
-    document.addEventListener("turbo:after-render", (event) => {
-      console.log("after render");
-    });
+    document.addEventListener("turbo:after-render", (event) => {});
     // * Turbo Before Render sert à faire des actions avant le chargement de la page
-    document.addEventListener("turbo:submit-end", (event) => {
-      console.log("submit end");
-    });
+    document.addEventListener("turbo:submit-end", (event) => {});
 
     document.addEventListener("turbo:before-render", (event) => {
-      console.log("before render");
       // Récupérer tous les dropdowns de Flowbite
       const dropdowns = document.querySelectorAll(".navbar-dropdown");
 

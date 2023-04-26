@@ -31,7 +31,7 @@
 	Récit |
 	{{ pubShow.title }}
 	({{ pubShow.user.nickname }})
-																																																																																																																																																																																																										-
+																																																																																																																																																																																																																								-
 	{{ parent() }}
 {% endblock %}
 
@@ -327,10 +327,18 @@
 							{% set chapterSlug = chapter.slug ?: "feuille-n0" ~ (chapter.orderDisplay + 1) %}
 							<li class="inline-flex items-center gap-x-2 py-1 px-4 font-medium text-slate-900 -mt-px dark:bg-inherit dark:text-white">
 								<div class="flex justify-between w-full">
-									<a href="{{ path("app_chapter_show", {idChap:chapter.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:chapterSlug}) }}" class="h-full w-4/6 font-normal  text-lg hover:underline">
-										<span class="font-bold">{{ loop.index }}.</span>
-										{{ chapter.title|default("Feuille n°" ~ (chapter.orderDisplay + 1))|capitalize }}
-									</a>
+									<div>
+										<a href="{{ path("app_chapter_show", {idChap:chapter.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:chapterSlug}) }}" class="h-full w-4/6 font-normal  text-lg hover:underline">
+											<span class="font-bold">{{ loop.index }}.</span>
+											{{ chapter.title|default("Feuille n°" ~ (chapter.orderDisplay + 1))|capitalize }}
+										</a>
+										{% set chapterIdToCheck = chapter.id %}
+										{# Remplacez cette ligne par la méthode pour obtenir l'ID du chapitre à vérifier #}
+										{% if app.user and app.user.hasReadChapter(chapterIdToCheck) %}
+											&nbsp;&nbsp;<span class="text-xs text-green-500 dark:text-green-400">
+												<i class="fa-duotone fa-badge-check"></i>&nbsp;&nbsp;lu</span>
+										{% endif %}
+									</div>
 									<div class="w-2/6 justify-items-end opacity-80 dark:opacity-100">
 										<div class="py-1 px-2 rounded-full flex justify-between items-center mt-0 md:-mt-2 text-xs text-slate-500 font-medium opacity-80 dark:opacity-100 dark:text-slate-400">
 											<div class=" flex flex-col md:flex-col items-center gap-x-1">

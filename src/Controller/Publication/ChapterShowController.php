@@ -2,24 +2,20 @@
 
 namespace App\Controller\Publication;
 
+use DateTimeImmutable;
 use PHPePub\Core\EPub;
-use PHPePub\Core\Logger;
-use PHPZip\Zip\File\Zip;
-use PHPePub\Helpers\URLHelper;
+use App\Entity\PublicationRead;
 use PHPePub\Helpers\CalibreHelper;
 use App\Entity\PublicationBookmark;
 use App\Form\PublicationCommentType;
 use App\Services\NotificationSystem;
-use App\Services\HtmlToEpubConverter;
-use PHPePub\Core\EPubChapterSplitter;
 use App\Entity\PublicationChapterLike;
 use App\Entity\PublicationChapterNote;
 use App\Entity\PublicationChapterView;
 use App\Services\PublicationPopularity;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
-use PHPePub\Core\Structure\OPF\MetaValue;
-use PHPePub\Core\Structure\OPF\DublinCore;
+use App\Repository\PublicationReadRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -56,7 +52,7 @@ class ChapterShowController extends AbstractController
     }
 
     #[Route('/recit-{slugPub}/{user}/{idChap}/{slug?}/{nbrShowCom?}', name: 'app_chapter_show')]
-    public function showChapter(Request $request, PublicationCommentRepository $pcomRepo, PublicationChapterRepository $pchRepo, EntityManagerInterface $em, PublicationChapterNoteRepository $pcnRepo, PublicationRepository $pRepo, $slugPub = null, $slug = null, $idChap = null, $user = null, $nbrShowCom = null): response
+    public function showChapter(PublicationReadRepository $pReadRepo, Request $request, PublicationCommentRepository $pcomRepo, PublicationChapterRepository $pchRepo, EntityManagerInterface $em, PublicationChapterNoteRepository $pcnRepo, PublicationRepository $pRepo, $slugPub = null, $slug = null, $idChap = null, $user = null, $nbrShowCom = null): response
     {
         if (!$nbrShowCom) {
             $nbrShowCom = 10;
@@ -107,7 +103,7 @@ class ChapterShowController extends AbstractController
             $comment->setQuote($quote);
             $comment->setUser($this->getUser());
             $comment->setPublication($publication);
-            $comment->setPublishedAt(new \DateTimeImmutable());
+            $comment->setPublishedAt(new DateTimeImmutable());
             $em->persist($comment);
             $em->flush();
             // * On met à jour la popularité de la publication
@@ -122,10 +118,16 @@ class ChapterShowController extends AbstractController
             $this->addFlash('danger', 'Vous devez être connecté pour pouvoir commenter.');
             return $this->redirectToRoute('app_chapter_show', ['slugPub' => $publication->getSlug(), 'user' => $publication->getUser()->getUsername(), 'idChap' => $chapter->getId(), 'slug' => $chapter->getSlug()]);
         }
+        // * On vérifie si l'auteur du chapitre n'est pas l'utilisateur connecté et s'il a déjà lu le chapitre dans PublicationRead
+        $current_user = $this->getUser();
+        if ($current_user && $chapter->getPublication()->getUser() != $current_user) {
+            $alreadyRead = $pReadRepo->findOneBy(['user' => $current_user, 'chapter' => $chapter]) ? true : null;
+        } else {
+            $alreadyRead = null;
+        }
         // * On ajoute un view pour le chapitre (si l'utilisateur n'est pas l'auteur de la publication)
         $this->viewChapter($chapter);
         // * On formate les notes du chapitre de l'utilisateur connecté
-
         if ($this->getUser()) {
             $chapterContent = $this->formatChapter($chapter);
             $chapterContent = $this->formatHL($chapterContent, $chapter);
@@ -133,7 +135,7 @@ class ChapterShowController extends AbstractController
             $chapterContent = $this->formatChapter($chapter);
         }
         // * La vue
-        return $this->renderForm('publication/show_chapter.html.twig', [
+        return $this->render('publication/show_chapter.html.twig', [
             'infoPub' => $publication,
             'infoChap' => $chapter,
             'previousChap' => $previous,
@@ -144,7 +146,8 @@ class ChapterShowController extends AbstractController
             "nbrShowCom" => $nbrShowCom,
             "nbrCom" => $nbrCom,
             "chapterContent" => $chapterContent,
-            "canonicalUrl" => $this->generateUrl('app_chapter_show', ["slugPub" => $slugPub, "user" => $user, "idChap" => $idChap, "slug" => $slug], true)
+            "canonicalUrl" => $this->generateUrl('app_chapter_show', ["slugPub" => $slugPub, "user" => $user, "idChap" => $idChap, "slug" => $slug], true),
+            "alreadyRead" => $alreadyRead
         ]);
     }
 
@@ -226,6 +229,17 @@ class ChapterShowController extends AbstractController
     }
     public function viewChapter($chapter)
     {
+        //  ! On ajoute la lecture pour la reprise
+        // * On ajoute la vue du chapitre à la BDD dans PublicationRead
+        $read = new PublicationRead();
+        $read->setUser($this->getUser())
+            ->setReadAt(new DateTimeImmutable('now'))
+            ->setChapter($chapter)
+            ->setPublication($chapter->getPublication());
+        $this->em->persist($read);
+        $this->em->flush();
+
+        //  ! On ajoute la vue
         $view = new PublicationChapterView();
         // * SESSIONS
         if (!$this->getUser()) {
@@ -262,6 +276,8 @@ class ChapterShowController extends AbstractController
                     ])
                     ->getQuery()
                     ->getResult();
+
+                // 
                 // * S'il y en a on ne fait rien:
                 if ($views) {
                     return;
@@ -449,7 +465,7 @@ class ChapterShowController extends AbstractController
         $like = new PublicationChapterLike();
         $like->setChapter($pch);
         $like->setUser($this->getUser());
-        $like->setCreatedAt(new \DateTimeImmutable('now'));
+        $like->setCreatedAt(new DateTimeImmutable('now'));
         $em->persist($like);
         $em->flush();
         // * On met à jour la popularité de la publication
@@ -494,7 +510,7 @@ class ChapterShowController extends AbstractController
         $bm = new PublicationBookmark();
         $bm->setChapter($pch);
         $bm->setUser($this->getUser());
-        $bm->setCreatedAt(new \DateTimeImmutable('now'));
+        $bm->setCreatedAt(new DateTimeImmutable('now'));
         $em->persist($bm);
         $em->flush();
         // * On met à jour la popularité de la publication

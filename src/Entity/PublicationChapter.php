@@ -78,6 +78,9 @@ class PublicationChapter
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $trashAt = null;
 
+    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationRead::class)]
+    private Collection $publicationReads;
+
     public function __construct()
     {
         $this->publicationChapterVersionings = new ArrayCollection();
@@ -88,6 +91,7 @@ class PublicationChapter
         $this->publicationBookmarks = new ArrayCollection();
         $this->notifications = new ArrayCollection();
         $this->pictures = new ArrayCollection();
+        $this->publicationReads = new ArrayCollection();
     }
 
 
@@ -486,6 +490,36 @@ class PublicationChapter
     public function setTrashAt(?\DateTimeImmutable $trashAt): self
     {
         $this->trashAt = $trashAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationRead>
+     */
+    public function getPublicationReads(): Collection
+    {
+        return $this->publicationReads;
+    }
+
+    public function addPublicationRead(PublicationRead $publicationRead): self
+    {
+        if (!$this->publicationReads->contains($publicationRead)) {
+            $this->publicationReads->add($publicationRead);
+            $publicationRead->setChapter($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationRead(PublicationRead $publicationRead): self
+    {
+        if ($this->publicationReads->removeElement($publicationRead)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationRead->getChapter() === $this) {
+                $publicationRead->setChapter(null);
+            }
+        }
 
         return $this;
     }

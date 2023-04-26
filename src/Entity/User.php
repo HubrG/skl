@@ -142,6 +142,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $googleId;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationRead::class)]
+    private Collection $publicationReads;
+
     public function __construct()
     {
         $this->publications = new ArrayCollection();
@@ -157,6 +160,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->notifications = new ArrayCollection();
         $this->UserFrom = new ArrayCollection();
         $this->publicationFollows = new ArrayCollection();
+        $this->publicationReads = new ArrayCollection();
     }
 
 
@@ -877,5 +881,58 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString()
     {
         return $this->username;
+    }
+
+    /**
+     * @return Collection<int, PublicationRead>
+     */
+    public function getPublicationReads(): Collection
+    {
+        return $this->publicationReads;
+    }
+
+    public function addPublicationRead(PublicationRead $publicationRead): self
+    {
+        if (!$this->publicationReads->contains($publicationRead)) {
+            $this->publicationReads->add($publicationRead);
+            $publicationRead->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationRead(PublicationRead $publicationRead): self
+    {
+        if ($this->publicationReads->removeElement($publicationRead)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationRead->getUser() === $this) {
+                $publicationRead->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+    public function getLastReadChapterByPublication(int $publicationId): ?PublicationChapter
+    {
+        $lastPublicationRead = null;
+
+        foreach ($this->publicationReads as $read) {
+            if ($read->getChapter()->getPublication()->getId() === $publicationId) {
+                if ($lastPublicationRead === null || $read->getReadAt() > $lastPublicationRead->getReadAt()) {
+                    $lastPublicationRead = $read;
+                }
+            }
+        }
+        return $lastPublicationRead ? $lastPublicationRead->getChapter() : null;
+    }
+    public function hasReadChapter(int $chapterId): bool
+    {
+        foreach ($this->publicationReads as $read) {
+            if ($read->getChapter()->getId() === $chapterId) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

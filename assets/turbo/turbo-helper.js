@@ -181,6 +181,13 @@ const TurboHelper = class {
 
     document.addEventListener("turbo:before-render", (event) => {
       console.log("before render");
+      // Récupérer tous les dropdowns de Flowbite
+      const dropdowns = document.querySelectorAll(".navbar-dropdown");
+
+      // Appliquer la classe 'hidden' pour masquer les dropdowns
+      dropdowns.forEach((dropdown) => {
+        dropdown.classList.add("hidden");
+      });
     });
   }
 

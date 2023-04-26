@@ -37,10 +37,10 @@
 			</div>
 		{% endif %}
 		<div class="header-info">
-			<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" class="hover:underline w-full " aria-label="Lire {{item.title}}, par {{item.user.nickname}}">
+			<a target="_top" href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" class="hover:underline w-full " aria-label="Lire {{item.title}}, par {{item.user.nickname}}">
 				<h2 class="font-semibold text-base md:text-xl">{{item.title}}</h2>
 			</a>
-			<a href="{{path("app_user", {username:item.user.username})}}" class=" hover:underline w-full" aria-label="Voir le profil de {{item.user.nickname}}">
+			<a target="_top" href="{{path("app_user", {username:item.user.username})}}" class=" hover:underline w-full" aria-label="Voir le profil de {{item.user.nickname}}">
 				<h3 class="text-sm flex flex-row gap-x-2">
 					{% if item.user.profilPicture %}
 						<img class="h-5 items-center rounded-full" src="{{item.user.profilPicture}}"/>
@@ -62,7 +62,7 @@
 			{% set chapterWithOrderDisplayZero = item.publicationChapters|filter(chapter => chapter.orderDisplay == 0)|first %}
 			{% set firstChap = chapterWithOrderDisplayZero ? chapterWithOrderDisplayZero : item.publicationChapters|first %}
 			<i class="fa-regular fa-book-open-reader"></i>
-			<a href="{{ path("app_chapter_show", {idChap:firstChap.id, user:item.user.username, slugPub:item.slug, slug:firstChap.slug}) }}" class="hover:underline font-semibold">Lire</a>
+			<a target="_top" href="{{ path("app_chapter_show", {idChap:firstChap.id, user:item.user.username, slugPub:item.slug, slug:firstChap.slug}) }}" class="hover:underline font-semibold">Lire</a>
 		</span>
 	</div>
 	{% if sortBy == "sheet" %}
@@ -72,14 +72,14 @@
 			{% set sortedChapters = filteredChapters|sort((a, b) => b.published <=> a.published) %}
 			{% set lastChapter = sortedChapters|first %}
 			<span class="font-semibold">Dernière feuille :</span>
-			<a href="{{ path("app_chapter_show", {idChap:lastChapter.id, user:item.user.username, slugPub:item.slug, slug:lastChapter.slug}) }}" class="hover:underline">{{lastChapter.title}}</a>
+			<a target="_top" href="{{ path("app_chapter_show", {idChap:lastChapter.id, user:item.user.username, slugPub:item.slug, slug:lastChapter.slug}) }}" class="hover:underline">{{lastChapter.title}}</a>
 		</span>
 		<hr class="mt-0 mb-0">
 	{% endif %}
 	<div>
 		<ul class="flex flex-row mt-2 gap-x-2 md:text-xs text-xs w-full">
 			<li>
-				<a href="{{ path("app_publication_show_all_category", {slug:cat_slug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:queryKeystring}) }}" {% if cat_name|length > 16 %} target="_top" data-tippy-content="{{item.categegory.name}}" {% endif %} class="flex flex-row gap-x-1 items-center rounded">
+				<a target="_top" href="{{ path("app_publication_show_all_category", {slug:cat_slug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:queryKeystring}) }}" {% if cat_name|length > 16 %} target="_top" data-tippy-content="{{item.categegory.name}}" {% endif %} class="flex flex-row gap-x-1 items-center rounded">
 					<span class="flex w-3 h-3  rounded-full {% if item.category %}catColor-{{cat_color}}{% endif %}"></span>
 					<span class="text-slate-600 dark:text-slate-400 hover:underline">{{cat_name}}</span>
 				</a>

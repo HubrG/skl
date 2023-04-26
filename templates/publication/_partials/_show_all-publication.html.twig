@@ -28,19 +28,18 @@
 <div class="card catColorBorder-{{cat_color}}">
 	<i class="summary-small fa-duotone fa-memo-circle-info catColorText-{{cat_color}}" data-tippy-content="{{chap_content}}"></i>
 
-	{% if item.cover %}
-		<div class="img-header-big -mt-2">
+	{% if item.cover  %}
+		<div class="img-header-big">
 			<img src="{{item.cover}}">
 		</div>
 	{% endif %}
-	<div class="{{item.cover ? "header-cover" }} header">
+	<div class="{{item.cover ? "header-cover -mt-2" }} header">
 		{% if item.cover %}
 			<div class="img-div">
 				<img src="{{item.cover}}"/>
 			</div>
 		{% endif %}
 		<div class="header-info">
-
 			<h2 class="font-semibold text-base md:text-xl  flex flex-row items-center gap-x-2 ">
 				{% if app.user %}
 					{% set currentPublicationId = item.id %}

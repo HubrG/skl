@@ -1,8 +1,20 @@
 {# Init code #}
-{% set chap_content = item.summary|default("Aucun contenu") %}
-{% if chap_content == "Aucun contenu" %}
-	{% set chap = item.publicationChapters|sort((a, b) => a.orderDisplay <=> b.orderDisplay)|filter(chap => chap.status == 2)|first %}
-	{% set chap_content = (chap.content|regex_replace('/<p.*?>/i', ' ')|length < 10) ? "<span class='italic'>Aucun contenu</span>" : chap.content|slice(0,300) ~ "..." %}
+{% set chap_content = "Aucun contenu" %}
+{% if item.summary %}
+	{% set chap_content = item.summary %}
+{% else %}
+	{% set nbr = 0 %}
+	{% for chap in item.publicationChapters|sort((a, b) => a.orderDisplay <=> b.orderDisplay) %}
+		{% if nbr == 0 and chap.status == 2 %}
+			{% set chap_content = chap.content|regex_replace('/<p.*?>/i', ' ') %}
+			{% if chap_content|length < 10 %}
+				{% set chap_content = "Aucun contenu" %}
+			{% else %}
+				{% set chap_content = chap_content|striptags|slice(0,300) ~ "..." %}
+			{% endif %}
+			{% set nbr = nbr + 1 %}
+		{% endif %}
+	{% endfor %}
 {% endif %}
 {% set cat_name = item.category ? item.category.name|length > 16 ? item.category.name|slice(0,16) ~ "..." : item.category.name %}
 {% set cat_color = item.category ? item.category.color : 10 %}
@@ -39,7 +51,7 @@
 		</div>
 	</div>
 	<p class="summary">
-		{{item.summary}}
+		{{chap_content}}
 	</p>
 	<div class="flex flex-row justify-between text-xs">
 		<span class=" text-slate-400  justify-start dark:text-slate-500 w-1/2">

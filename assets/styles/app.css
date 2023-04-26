@@ -294,7 +294,7 @@ opacity: 0.4;
 	@apply min-w-[50%] block rounded-lg mx-auto my-3;
 }
 #chapContent {
-	@apply text-base text-slate-800 dark:text-slate-300 font-serif ;
+	@apply text-base text-slate-800 dark:text-slate-300 font-serif;
 }
 #chapContent h1 {
  @apply text-4xl  font-serif text-left;
@@ -1161,7 +1161,7 @@ main button {
 }
 /* * BIG */
 .display_publications.big .card  p.summary {
-	@apply  block text-xs text-justify px-3 my-2 dark:text-slate-400;
+	@apply  block text-xs line-clamp-5 text-justify px-3 my-2 dark:text-slate-400;
 }
 .display_publications.big .card .summary-small {
 @apply hidden;

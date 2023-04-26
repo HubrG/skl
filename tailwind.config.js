@@ -49,5 +49,9 @@ module.exports = {
     "leading-9",
     "shadow-lg",
   ],
-  plugins: [require("flowbite/plugin"), require("@tailwindcss/line-clamp")],
+  plugins: [
+    require("flowbite/plugin"),
+    require("@tailwindcss/line-clamp"),
+    require("@tailwindcss/typography"),
+  ],
 };

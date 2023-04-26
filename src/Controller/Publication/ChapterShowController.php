@@ -229,16 +229,20 @@ class ChapterShowController extends AbstractController
     }
     public function viewChapter($chapter)
     {
-        //  ! On ajoute la lecture pour la reprise
-        // * On ajoute la vue du chapitre à la BDD dans PublicationRead
-        $read = new PublicationRead();
-        $read->setUser($this->getUser())
-            ->setReadAt(new DateTimeImmutable('now'))
-            ->setChapter($chapter)
-            ->setPublication($chapter->getPublication());
-        $this->em->persist($read);
-        $this->em->flush();
-
+        if ($this->getUser()) {
+            // * Si l'utilisateur n'est pas l'auteur du chapitre
+            if ($this->getUser() != $chapter->getPublication()->getUser()) {
+                //  ! On ajoute la lecture pour la reprise
+                // * On ajoute la vue du chapitre à la BDD dans PublicationRead
+                $read = new PublicationRead();
+                $read->setUser($this->getUser())
+                    ->setReadAt(new DateTimeImmutable('now'))
+                    ->setChapter($chapter)
+                    ->setPublication($chapter->getPublication());
+                $this->em->persist($read);
+                $this->em->flush();
+            }
+        }
         //  ! On ajoute la vue
         $view = new PublicationChapterView();
         // * SESSIONS

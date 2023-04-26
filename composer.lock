@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "22ee374481237404d50eebb44c2f04c9",
+    "content-hash": "c76a438346ac8f16842cba17debbaa35",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.268.16",
+            "version": "3.268.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "b59134c9ca64dcb9de6f7dbbcb9d5a75ed665a98"
+                "reference": "086934b1009a8d9a9ae15dc89eafe1a25b1e8b45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/b59134c9ca64dcb9de6f7dbbcb9d5a75ed665a98",
-                "reference": "b59134c9ca64dcb9de6f7dbbcb9d5a75ed665a98",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/086934b1009a8d9a9ae15dc89eafe1a25b1e8b45",
+                "reference": "086934b1009a8d9a9ae15dc89eafe1a25b1e8b45",
                 "shasum": ""
             },
             "require": {
@@ -151,9 +151,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.268.16"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.268.18"
             },
-            "time": "2023-04-21T21:37:05+00:00"
+            "time": "2023-04-25T18:20:08+00:00"
         },
         {
             "name": "babdev/pagerfanta-bundle",
@@ -2664,58 +2664,6 @@
             "time": "2015-08-13T06:14:41+00:00"
         },
         {
-            "name": "grandt/phpepub",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/HubrG/PHPePub.git",
-                "reference": "5a7767afa70eecab3841e7b3a55c97d100b28324"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/HubrG/PHPePub/zipball/5a7767afa70eecab3841e7b3a55c97d100b28324",
-                "reference": "5a7767afa70eecab3841e7b3a55c97d100b28324",
-                "shasum": ""
-            },
-            "require": {
-                "grandt/phpresizegif": "~1.0.3",
-                "grandt/relativepath": "~1.0.1",
-                "php": ">=5.3.0",
-                "phpzip/phpzip": "~2.0.7"
-            },
-            "default-branch": true,
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "PHPePub\\": "src/PHPePub"
-                },
-                "classmap": [
-                    "src/lib.uuid.php"
-                ]
-            },
-            "license": [
-                "LGPL-2.1"
-            ],
-            "authors": [
-                {
-                    "name": "A. Grandt",
-                    "email": "php@grandt.com",
-                    "homepage": "http://grandt.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Package to create and stream e-books in the ePub 2.0 and 3.0 formats.",
-            "homepage": "https://github.com/Grandt/PHPZip",
-            "keywords": [
-                "e-book",
-                "epub"
-            ],
-            "support": {
-                "source": "https://github.com/HubrG/PHPePub/tree/stable"
-            },
-            "time": "2023-04-24T14:54:59+00:00"
-        },
-        {
             "name": "grandt/phpresizegif",
             "version": "1.0.3",
             "source": {
@@ -3693,26 +3641,24 @@
         },
         {
             "name": "masterminds/html5",
-            "version": "2.7.6",
+            "version": "2.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Masterminds/html5-php.git",
-                "reference": "897eb517a343a2281f11bc5556d6548db7d93947"
+                "reference": "3c5d5a56d56f48a1ca08a0670f0f80c1dad368f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Masterminds/html5-php/zipball/897eb517a343a2281f11bc5556d6548db7d93947",
-                "reference": "897eb517a343a2281f11bc5556d6548db7d93947",
+                "url": "https://api.github.com/repos/Masterminds/html5-php/zipball/3c5d5a56d56f48a1ca08a0670f0f80c1dad368f3",
+                "reference": "3c5d5a56d56f48a1ca08a0670f0f80c1dad368f3",
                 "shasum": ""
             },
             "require": {
-                "ext-ctype": "*",
                 "ext-dom": "*",
-                "ext-libxml": "*",
                 "php": ">=5.3.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8.35 || ^5.7.21 || ^6 || ^7"
+                "phpunit/phpunit": "^4.8.35 || ^5.7.21 || ^6 || ^7 || ^8"
             },
             "type": "library",
             "extra": {
@@ -3756,9 +3702,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Masterminds/html5-php/issues",
-                "source": "https://github.com/Masterminds/html5-php/tree/2.7.6"
+                "source": "https://github.com/Masterminds/html5-php/tree/2.8.0"
             },
-            "time": "2022-08-18T16:18:26+00:00"
+            "time": "2023-04-26T07:27:39+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -4709,16 +4655,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "1.20.2",
+            "version": "1.20.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "90490bd8fd8530a272043c4950c180b6d0cf5f81"
+                "reference": "6c04009f6cae6eda2f040745b6b846080ef069c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/90490bd8fd8530a272043c4950c180b6d0cf5f81",
-                "reference": "90490bd8fd8530a272043c4950c180b6d0cf5f81",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/6c04009f6cae6eda2f040745b6b846080ef069c2",
+                "reference": "6c04009f6cae6eda2f040745b6b846080ef069c2",
                 "shasum": ""
             },
             "require": {
@@ -4748,9 +4694,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.20.2"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.20.3"
             },
-            "time": "2023-04-22T12:59:35+00:00"
+            "time": "2023-04-25T09:01:03+00:00"
         },
         {
             "name": "phpzip/phpzip",
@@ -14212,9 +14158,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "grandt/phpepub": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

@@ -10,7 +10,6 @@
                 }
             }
         },
-        
         "@symfony/ux-chartjs": {
             "chart": {
                 "enabled": true,

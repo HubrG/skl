@@ -31,7 +31,7 @@
 	Récit |
 	{{ pubShow.title }}
 	({{ pubShow.user.nickname }})
-																																																																																																																																																																																																																																-
+																																																																																																																																																																																																																																							-
 	{{ parent() }}
 {% endblock %}
 
@@ -126,7 +126,17 @@
 				</div>
 			{% endif %}
 		{% endif %}
-		<h1 class="text-center text-4xl font-semibold bg-center text-slate-700 font-serif pt-5" style="text-shadow: 0 0.5px 1px blanchedalmond;">{{ pubShow.title }}</h1>
+		<h1 class="text-center text-4xl font-semibold bg-center flex flex-col items-center justify-center text-slate-700 font-serif pt-5" style="text-shadow: 0 0.5px 1px blanchedalmond;">
+			{% if app.user %}
+				{% set currentPublicationId = pubShow.id %}
+				{% if app.user|read_all_chapters(currentPublicationId) %}
+					{% set allRead = true %}
+				{% endif %}
+				{% if allRead is defined %}
+					<i class="fa-duotone fa-badge-check text-green-500 dark:text-green-400 text-sm" data-tippy-content="Lu intégralement"></i>
+				{% endif %}
+			{% endif %}
+			{{ pubShow.title }}</h1>
 		<h2 class="text-center -mt-8">
 			<span class="font-light">
 				<a href="{{ path("app_user", {username:pubShow.user.username}) }}" class="font-sans hover:underline dark:text-slate-200">{{ pubShow.user.nickname }}</a>

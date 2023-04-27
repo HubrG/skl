@@ -125,7 +125,7 @@ const TurboHelper = class {
           location.hash = "";
         }, 2500);
       }
-      if (document.querySelector(".glide-top")) {
+      if (document.getElementById("glide")) {
         var glideMarket = new Glide(".glide-market", {
           type: "slider",
           autoplay: false,
@@ -158,6 +158,7 @@ const TurboHelper = class {
         glideMarket.mount();
         glideTop.mount();
       }
+
       Search();
     });
     document.addEventListener("turbo:frame-render", () => {

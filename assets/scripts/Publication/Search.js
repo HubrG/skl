@@ -1,6 +1,7 @@
 import * as Turbo from "@hotwired/turbo";
 
 export function Search() {
+  if (!document.getElementById("search-form")) return;
   // Sélectionnez le formulaire en utilisant l'identifiant que vous avez ajouté
   var form = document.getElementById("search-form");
 

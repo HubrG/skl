@@ -41,9 +41,9 @@
 
 {% block body %}
 	<h1 class="text-center font-serif">Rechercher</h1>
-	<div class="flex flex-row items-start gap-x-10 pt-10">
-		<aside class="w-3/12  border-r-4 border-slate-200 dark:border-slate-700    p-5">
-			<form class="gap-y-2 flex flex-col items-start justify-items-start" action="" id="search-form" method="get">
+	<div class="flex flex-col md:flex-row items-start gap-x-10 pt-10">
+		<aside class="md:w-3/12 w-full   border-r-4 border-slate-200 dark:border-slate-700    p-5">
+			<form class="gap-y-2 flex flex-col justify-center w-full gap-x-3 items-baseline md:items-start justify-items-center" action="" id="search-form" method="get">
 				<div class="flex flex-row items-center gap-x-2">
 					{% include "./partials/_form-row.html.twig" with {
                 model:"input",
@@ -88,7 +88,8 @@
 						<label for="timeLong" class="-mt-2 font-normal">Long</label>
 					</div>
 				</div>
-				{% include "./partials/_form-row.html.twig" with {
+				<div>
+					{% include "./partials/_form-row.html.twig" with {
             model:"select",
             type:"select",
             label:"Trier par :",
@@ -112,7 +113,7 @@
             {"value": "view", "label": "Nombre de lectures", "selected": sortBy == 'view' ? 'selected'},
             ]
         } %}
-				{% include "./partials/_form-row.html.twig" with {
+					{% include "./partials/_form-row.html.twig" with {
             model:"select",
             type:"select",
             name:"orderBy",
@@ -127,9 +128,10 @@
             {"value": "DESC", "label": "Décroissant", "selected": orderBy == 'DESC' ? 'selected'},
             ]
             } %}
-				<div class="flex flex-row items-baseline gap-x-2 mb-2 -mt-3">
-					<input type="checkbox" name="notNull" id="notNull" {{ notNullChecked }}>
-					<label for="notNull" class="-mt-2 pt-0 font-normal">Ne pas afficher les résultats nuls</label>
+					<div class="flex flex-row items-baseline gap-x-2 mb-2 pt-5">
+						<input type="checkbox" name="notNull" id="notNull" {{ notNullChecked }}>
+						<label for="notNull" class=" pt-0 font-normal">Ne pas afficher les résultats nuls</label>
+					</div>
 				</div>
 			</form>
 		</aside>

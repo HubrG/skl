@@ -73,7 +73,6 @@ const TurboHelper = class {
       darkMode();
     });
     document.addEventListener("turbo:load", () => {
-      Search();
       MicroModal.init();
       DropdownMenu();
       Dropdown();
@@ -159,6 +158,7 @@ const TurboHelper = class {
         glideMarket.mount();
         glideTop.mount();
       }
+      Search();
     });
     document.addEventListener("turbo:frame-render", () => {
       Comment();

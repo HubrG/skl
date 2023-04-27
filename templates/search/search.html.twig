@@ -1,0 +1,196 @@
+{# ! INIT #}
+{% set searchText = app.request.query.get('searchText') %}
+{% set submitted = app.request.query.all|length > 0 %}
+{% set publicationsChecked = submitted ? (app.request.query.get('publications') == 'on' ? 'checked' : '') : 'checked' %}
+{% set notNullChecked = submitted ? (app.request.query.get('notNull') == 'on' ? 'checked' : '') : 'checked' %}
+{% set authorsChecked = submitted ? (app.request.query.get('authors') == 'on' ? 'checked' : '') : 'checked' %}
+{% set timeShortChecked = submitted ? (app.request.query.get('timeShort') == 'on' ? 'checked' : '') : 'checked' %}
+{% set timeMediumChecked = submitted ? (app.request.query.get('timeMedium') == 'on' ? 'checked' : '') : 'checked' %}
+{% set timeLongChecked = submitted ? (app.request.query.get('timeLong') == 'on' ? 'checked' : '') : 'checked' %}
+{% set sortBy = app.request.query.get('sortBy') %}
+{% set orderBy = app.request.query.get('orderBy') %}
+
+{# * GRID #}
+{% if app.user %}
+	{% if app.user.userParameters is defined and app.user.userParameters.gridShow == true %}
+		{% set grid_status = "big" %}
+		{% set grid_button_left = null %}
+		{% set grid_button_right = "active" %}
+	{% else %}
+		{% set grid_status = null %}
+		{% set grid_button_left = "active" %}
+		{% set grid_button_right = null %}
+	{% endif %}
+{% else %}
+	{% if app.session.get('grid') and not app.user and app.session.get('grid') == true %}
+		{% set grid_status = "big" %}
+		{% set grid_button_left = null %}
+		{% set grid_button_right = "active" %}
+	{% else %}
+		{% set grid_status = null %}
+		{% set grid_button_left = "active" %}
+		{% set grid_button_right = null %}
+	{% endif %}
+{% endif %}
+
+{# ! END init #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Recherche
+{% endblock %}
+
+{% block body %}
+	<h1 class="text-center font-serif">Rechercher</h1>
+	<div class="flex flex-row items-start gap-x-10 pt-10">
+		<aside class="w-3/12  border-r-4 border-slate-200 dark:border-slate-700    p-5">
+			<form class="gap-y-2 flex flex-col items-start justify-items-start" action="" id="search-form" method="get">
+				<div class="flex flex-row items-center gap-x-2">
+					{% include "./partials/_form-row.html.twig" with {
+                model:"input",
+                type:"text",
+                icon:"fa-radar",
+                label:"Rechercher",
+                name:"searchText",
+                class:"w-full font-semibold",
+                classField:"w-full",
+                placeholder:"Terme de recherche",
+                checked:"",
+                error:"",
+                help:"",
+                value: searchText
+            } %}
+					<button class="btn hidden btn-primary" id="submit-form" type="submit">Ok</button>
+				</div>
+
+				<div class="hidden">
+					<h2 class="font-semibold mb-2 -mt-10 dark:text-slate-300">Afficher :</h2>
+					<div class="flex flex-row items-center gap-x-2 mb-2">
+						<input type="checkbox" name="publications" id="publications" {{ publicationsChecked }}>
+						<label for="publications" class="-mt-2 font-normal">Les récits</label>
+					</div>
+					<div class="flex flex-row items-center gap-x-2 mb-2">
+						<input type="checkbox" name="authors" id="authors" {{authorsChecked}}>
+						<label for="authors" class="-mt-2 font-normal">Les auteurs</label>
+					</div>
+				</div>
+				<div class="-mt-5">
+					<h2 class="font-semibold mb-2 mt-2 dark:text-slate-300">Temps de lecture :</h2>
+					<div class="flex flex-row items-center gap-x-2 mb-2">
+						<input type="checkbox" name="timeShort" id="timeShort" {{timeShortChecked}}>
+						<label for="timeShort" class="-mt-2 font-normal">Court</label>
+					</div>
+					<div class="flex flex-row items-center gap-x-2 mb-2">
+						<input type="checkbox" name="timeMedium" id="timeMedium" {{timeMediumChecked}}>
+						<label for="timeMedium" class="-mt-2 font-normal">Moyen</label>
+					</div>
+					<div class="flex flex-row items-center gap-x-2 mb-4">
+						<input type="checkbox" name="timeLong" id="timeLong" {{timeLongChecked}}>
+						<label for="timeLong" class="-mt-2 font-normal">Long</label>
+					</div>
+				</div>
+				{% include "./partials/_form-row.html.twig" with {
+            model:"select",
+            type:"select",
+            label:"Trier par :",
+            name:"sortBy",
+            icon:"fa-shapes",
+            class:"w-full",
+            classField:"w-full",
+            checked:"",
+            error:"",
+            help:"",
+            options: [
+            {"value": "published", "label": "Date de publication", "selected": sortBy == 'published' ? 'selected'},
+            {"value": "title", "label": "Titre", "selected": sortBy == 'title' ? 'selected'},
+            {"value": "user", "label": "Auteur", "selected": sortBy == 'user' ? 'selected'},
+            {"value": "sheet", "label": "Dernière feuille publiée", "selected": sortBy == 'sheet' ? 'selected'},
+            {"value": "pop", "label": "Popularité", "selected": sortBy == 'pop' ? 'selected'},
+            {"value": "time", "label": "Temps de lecture", "selected": sortBy == 'time' ? 'selected'},
+            {"value": "comment", "label": "Nombre de commentaires", "selected": sortBy == 'comment' ? 'selected'},
+            {"value": "nbrSheet", "label": "Nombre de feuilles", "selected": sortBy == 'nbrSheet' ? 'selected'},
+            {"value": "like", "label": "Nombre de « j'aime »", "selected": sortBy == 'like' ? 'selected'},
+            {"value": "view", "label": "Nombre de lectures", "selected": sortBy == 'view' ? 'selected'},
+            ]
+        } %}
+				{% include "./partials/_form-row.html.twig" with {
+            model:"select",
+            type:"select",
+            name:"orderBy",
+            icon:"fa-sort",
+            class:"w-full",
+            classField:"w-full",
+            checked:"",
+            error:"",
+            help:"",
+            options: [
+            {"value": "ASC", "label": "Croissant", "selected": orderBy == 'ASC' ? 'selected'},
+            {"value": "DESC", "label": "Décroissant", "selected": orderBy == 'DESC' ? 'selected'},
+            ]
+            } %}
+				<div class="flex flex-row items-baseline gap-x-2 mb-2 -mt-3">
+					<input type="checkbox" name="notNull" id="notNull" {{ notNullChecked }}>
+					<label for="notNull" class="-mt-2 pt-0 font-normal">Ne pas afficher les résultats nuls</label>
+				</div>
+			</form>
+		</aside>
+		<section class="w-full">
+			<div
+				class="flex flex-col xl:flex-row mb-10 justify-between items-baseline px-2 pr-5">
+				{# ! COUNT PUBLICATIONS #}
+				{% if publicationsChecked %}
+					<h4 class="items-baseline  flex flex-col md:flex-row  gap-x-2 text-center md:text-left mb-5 ml-2  font-light text-lg text-slate-500 dark:text-slate-300">
+						{% set count = results|length %}
+						{% set recount = count == 1 ? "1 récit" : count == 0 ? "Aucun récit" : count ~ " récits" %}
+						<div>
+							{{ recount | default('Aucun récit') }}
+						</div>
+						<div class="flex flex-row md:gap-x-2 gap-x-0 items-baseline">
+							{% if count == 0 and app.user %}
+								<span class="hidden lg:inline">|</span>
+								<span class="inline md:hidden"></span>
+								<a href="{{ path("app_publication_add") }}" class="text-sky-800 dark:text-sky-400 font-medium hover:underline">N'hésitez pas à publier le vôtre !</a>
+							{% elseif count == 0 and not app.user %}
+								<span class="hidden lg:inline">|</span>
+								<span class="inline md:hidden"></span>
+								<button data-micromodal-trigger="popup-register" class="text-blue-800 dark:text-sky-400 hover:underline text-left">N'hésitez pas à publier le vôtre !</button>
+							{% endif %}
+						</div>
+					</h4>
+					<div class="-mt-3  flex flex-col md:flex-row md:mb-0 mb-10 gap-y-8 items-baseline gap-x-2">
+						<div class="flex flex-row items-center w-full justify-between md:justify-center gap-x-2">
+							<div class="flex flex-row rounded-md mt-2 md:mt-0">
+								{% if app.user %}
+									<button aria-label="Affichage ressérré" data-tippy-content="Affichage ressérré" id="grid" type="button" class="button-grid-show-all left {{grid_button_left}} ">
+										<i class="fa-regular fa-table-cells"></i>
+									</button>
+									<button aria-label="Affichage détaillé" data-tippy-content="Affichage large et détaillé" id="gridSmall" type="button" class="button-grid-show-all right  {{grid_button_right}}">
+										<i class="fa-regular fa-table-cells-large"></i>
+									</button>
+								{% else %}
+									<button aria-label="Affichage ressérré" data-tippy-content="Affichage ressérré" id="grid" type="button" class="button-grid-show-all left  {{grid_button_left}}">
+										<i class="fa-regular fa-table-cells"></i>
+									</button>
+									<button aria-label="Affichage détaillé" data-tippy-content="Affichage large et détaillé" id="gridSmallSession" type="button" class="button-grid-show-all right  {{grid_button_right}}">
+										<i class="fa-regular fa-table-cells-large"></i>
+									</button>
+								{% endif %}
+							</div>
+							{# {% if countPage > 1 %} #}
+						{# <div class="flex flex-col self-start -mt-[1.25rem] xl:-mt-[1.35rem]"> #}
+							{# {% include "publication/_partials/_show_all_pagination.html.twig" with {'type': "top"}  %} #}
+							{# </div> #}
+							{# {% endif %} #}
+						</div>
+					</div>
+				{% endif %}
+			</div>
+			{% if publicationsChecked %}
+				<div class="display_publications twoMax {{grid_status}} showAll" id="PublicationShowContent">
+					{% for item in results %}
+						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':sortBy, 'querySortby':'published', 'queryOrder':'desc','queryKeystring':'', 'querySlug':item.slug, "search":true} %}
+					{% endfor %}
+				</div>
+			{% endif %}
+		</section>
+	</div>
+{% endblock %}

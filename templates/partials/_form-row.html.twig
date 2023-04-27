@@ -3,23 +3,49 @@
 {% set id = id is defined ? id : null %}
 {% set disabled = disabled is defined ? disabled : false %}
 {% set checkText = checkText is defined ? checkText : null %}
-{% if check is defined %}
-	<label class="relative w-full flex flex-row  items-center cursor-pointer mb-2" {{disabled}}>
-		{{ form_widget(form, {attr:{"class":"sr-only peer"}}) }}
-		<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-blue-600"></div>
-		<span class="ml-3 text-lg font-medium flex gap-x-1 -mt-6 text-slate-900 dark:text-slate-300 {{class}}">{{checkText|raw}}</span>
-	</label>
-	<span class="form_error">{{ form_errors(form) }}</span>
+{% if form is defined %}
+	{% if check is defined %}
+		<label class="relative w-full flex flex-row  items-center cursor-pointer mb-2" {{disabled}}>
+			{{ form_widget(form, {attr:{"class":"sr-only peer"}}) }}
+			<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-blue-600"></div>
+			<span class="ml-3 text-lg font-medium flex gap-x-1 -mt-6 text-slate-900 dark:text-slate-300 {{class}}">{{checkText|raw}}</span>
+		</label>
+		<span class="form_error">{{ form_errors(form) }}</span>
+	{% else %}
+		<div class="mb-5 {{class}}">
+			{{ form_label(form) }}
+			<div class="relative">
+				<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
+					<i class="fa-regular text-slate-800 dark:text-slate-300 mt-1 {{icon}}"></i>
+				</div>
+				{{ form_widget(form, {attr:{"disabled":disabled, "id":id}}) }}
+			</div>
+			<span class="form_error">{{ form_errors(form) }}</span>
+		</div>
+		{{ form_help(form) }}
+	{% endif %}
 {% else %}
-	<div class="mb-5 {{class}}">
-		{{ form_label(form) }}
-		<div class="relative">
+	<div class="{{class}}">
+		{% if label is defined %}
+			<label for="publication_title">{{label}}</label>
+		{% endif %}
+		<div class="relative {{ label is not defined ? " -mt-12"}}">
 			<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
 				<i class="fa-regular text-slate-800 dark:text-slate-300 mt-1 {{icon}}"></i>
 			</div>
-			{{ form_widget(form, {attr:{"disabled":disabled, "id":id}}) }}
+			{% if model == "input" %}
+				<input type="{{type}}" name="{{name}}" value="{{value}}" id="{{name}}" class="{{classField}}" placeholder="{{placeholder}}">
+			{% elseif  model == "textarea"  %}
+				<textarea name="{{name}}" id="{{id}}" cols="30" rows="10">{{value}}</textarea>
+			{% elseif  model == "select"  %}
+				<select name="{{name}}" id="{{id}}">
+					{% for option in options %}
+						<option value="{{option.value}}" {{option.selected == "selected" ? "selected" }}>{{option.label}}</option>
+					{% endfor %}
+				</select>
+			{% endif %}
 		</div>
-		<span class="form_error">{{ form_errors(form) }}</span>
+		<span class="form_error">{{error}}</span>
+		<div class="help-text pt-0">{{help}}</div>
 	</div>
-	{{ form_help(form) }}
 {% endif %}

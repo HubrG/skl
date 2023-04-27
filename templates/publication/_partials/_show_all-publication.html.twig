@@ -68,6 +68,7 @@
 		</span>
 		{% set chapterWithOrderDisplayZero = item.publicationChapters|filter(chapter => chapter.orderDisplay == 0)|first %}
 		{% set firstChap = chapterWithOrderDisplayZero ? chapterWithOrderDisplayZero : item.publicationChapters|first %}
+
 		{% set currentPublicationId = item.id %}
 		{% if app.user %}
 			{% set lastReadChapter = app.user.getLastReadChapterByPublication(currentPublicationId) %}
@@ -78,7 +79,6 @@
 			<i class="fa-regular fa-book-open-reader "></i>
 			<a {{ user_in_url ? "target='_top'" }} {% if lastReadChapter %} href="{{ path("app_chapter_show", {idChap:lastReadChapter.id, user:item.user.username, slugPub:item.slug, slug:lastReadChapter.slug}) }}" {% else %} href="{{ path("app_chapter_show", {idChap:firstChap.id, user:item.user.username, slugPub:item.slug, slug:firstChap.slug}) }}" {% endif %} class="hover:underline font-semibold ">
 				{{lastReadChapter ? "Reprendre" : "Lire" }}
-				{# Remplacez cette ligne par la méthode pour obtenir l'ID de la publication actuelle #}
 			</a>
 			{% if app.user %}
 				{% set currentPublicationId = item.id %}
@@ -126,14 +126,35 @@
 						{{totalViews}}
 					</span>
 				</li>
-				|
-				<li class="flex flex-row gap-x-1 items-center">
-					{% set totalLikes = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterLikes|length, 0) %}
-					<i class="fa-regular fa-comments"></i>
-					<span>
-						{{totalLikes}}
-					</span>
-				</li>
+				{% if sortBy == "like" %}
+					|
+					<li class="flex flex-row gap-x-1 items-center">
+						{% set totalLikes = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterLikes|length, 0) %}
+						<i class="fa-regular fa-thumbs-up"></i>
+						<span>
+							{{totalLikes}}
+						</span>
+					</li>
+				{% endif %}
+				{% if sortBy == "comment" %}
+					|
+					<li class="flex flex-row gap-x-1 items-center">
+						{% set totalComments = item.publicationComments|reduce((accumulator, chapter) => accumulator + chapter.publicationComments|length, 0) %}
+						<i class="fa-regular fa-comments"></i>
+						<span>
+							{{totalComments}}
+						</span>
+					</li>
+				{% endif %}
+				{% if sortBy == "time" %}
+					|
+					<li class="flex flex-row gap-x-1 items-center">
+						<i class="fa-regular fa-timer"></i>
+						<span>
+							{{ item.publicationChapters|chapter("rt", "ft") }}
+						</span>
+					</li>
+				{% endif %}
 				{% if sortBy == "pop" %}
 					{% set lastPopularity = item.PublicationPopularities|last.popularity|default(0) %}
 					{% if item.pop < lastPopularity %}

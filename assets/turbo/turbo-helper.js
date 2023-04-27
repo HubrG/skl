@@ -22,6 +22,7 @@ import { darkMode } from "../scripts/Darkmode";
 import { ReadTime } from "../scripts/Publication/ChapterStats";
 import { quillEditor } from "../scripts/Quill.js";
 import { Sortables } from "../scripts/Publication/Sortable";
+import { Search } from "../scripts/Publication/Search";
 import { LazyLoad } from "../scripts/LazyLoad";
 import { TippyC } from "../scripts/Tippy";
 import { PublicationShow } from "../scripts/Publication/PublicationShow";
@@ -70,6 +71,7 @@ const TurboHelper = class {
       toggleDrawer();
       targetQuote();
       darkMode();
+      Search();
     });
     document.addEventListener("turbo:load", () => {
       MicroModal.init();

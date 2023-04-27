@@ -71,9 +71,9 @@ const TurboHelper = class {
       toggleDrawer();
       targetQuote();
       darkMode();
-      Search();
     });
     document.addEventListener("turbo:load", () => {
+      Search();
       MicroModal.init();
       DropdownMenu();
       Dropdown();

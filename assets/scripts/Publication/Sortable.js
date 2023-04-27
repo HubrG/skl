@@ -4,18 +4,19 @@ import { Sortable } from "sortablejs";
 import { NotyDisplay } from "../Noty";
 
 export function Sortables() {
-  if (document.getElementById("itemsChap")) {
-    createMainSortable();
-    createSecondSortable();
-    createTrashSortable();
-
-    addTrashClickListener();
-    addTrashEverClickListener();
-
-    document.addEventListener("DOMContentLoaded", function () {
-      axiosGoSortable();
-    });
+  if (!document.getElementById("itemsChap")) {
+    return;
   }
+  createMainSortable();
+  createSecondSortable();
+  createTrashSortable();
+
+  addTrashClickListener();
+  addTrashEverClickListener();
+
+  document.addEventListener("DOMContentLoaded", function () {
+    axiosGoSortable();
+  });
 }
 
 function createMainSortable() {

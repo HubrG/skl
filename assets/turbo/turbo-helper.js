@@ -13,11 +13,10 @@ if (document.getElementById("flashbag-success")) {
 }
 
 //!
-import Glide from "@glidejs/glide";
 import { addKeyword } from "../scripts/Publication/AddKeyword";
 import { Comment } from "../scripts/Publication/Comment";
-import { axiosSaveChapter } from "../scripts/Publication/Chapter";
 import { AxiosSavePublication } from "../scripts/Publication/Publication";
+import { GlideModule } from "../scripts/Glide";
 import { darkMode } from "../scripts/Darkmode";
 import { ReadTime } from "../scripts/Publication/ChapterStats";
 import { quillEditor } from "../scripts/Quill.js";
@@ -32,7 +31,6 @@ import { Charts } from "../scripts/Charts";
 import { NotyDisplay } from "../scripts/Noty";
 import { PublicationShowOne } from "../scripts/Publication/PublicationShowOne";
 import MicroModal from "micromodal"; // es6 module
-MicroModal.init();
 import { Navbar } from "../scripts/Navbar";
 import {
   ShowChapter,
@@ -40,7 +38,6 @@ import {
   targetQuote,
   DropdownMenu,
 } from "../scripts/Publication/ChapterShow";
-import axios from "axios";
 
 const TurboHelper = class {
   constructor() {
@@ -83,20 +80,14 @@ const TurboHelper = class {
       Navbar();
       PublicationShowOne();
       User();
-      if (document.getElementById("hideIdPub")) {
-        addKeyword();
-        AxiosSavePublication();
-      }
-      if (document.getElementById("editorHTML")) {
-        ReadTime();
-        quillEditor();
-      }
-      if (document.querySelector(".list-group-item")) {
-        Sortables();
-      }
-      if (document.getElementById("PublicationShowContent")) {
-        PublicationShow();
-      }
+      addKeyword();
+      AxiosSavePublication();
+      ReadTime();
+      quillEditor();
+      Search();
+      Sortables();
+      PublicationShow();
+      GlideModule();
       // ! Flashes
       if (document.getElementById("flashbag-success")) {
         if (
@@ -116,50 +107,6 @@ const TurboHelper = class {
             .setAttribute("data-count", 2);
         }
       }
-      if (document.location.href.includes("#first")) {
-        document.getElementById("itemsChap2").classList.add("animate__swing");
-        setTimeout(() => {
-          document
-            .getElementById("itemsChap2")
-            .classList.remove("animate__swing");
-          location.hash = "";
-        }, 2500);
-      }
-      if (document.getElementById("glide")) {
-        var glideMarket = new Glide(".glide-market", {
-          type: "slider",
-          autoplay: false,
-          hoverpause: true,
-          perView: 1,
-          breakpoints: {
-            1024: {
-              perView: 1,
-            },
-            600: {
-              perView: 1,
-            },
-          },
-        });
-        var glideTop = new Glide(".glide-top", {
-          type: "slider",
-          autoplay: 5000,
-          hoverpause: true,
-          perView: 1,
-          keyboard: false,
-          breakpoints: {
-            1024: {
-              perView: 1,
-            },
-            600: {
-              perView: 1,
-            },
-          },
-        });
-        glideMarket.mount();
-        glideTop.mount();
-      }
-
-      Search();
     });
     document.addEventListener("turbo:frame-render", () => {
       Comment();

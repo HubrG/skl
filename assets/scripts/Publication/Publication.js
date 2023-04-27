@@ -1,8 +1,23 @@
 import { NotyDisplay } from "../Noty";
 import axios from "axios";
 export function AxiosSavePublication() {
+  if (!document.getElementById("hideIdPub")) {
+    return;
+  }
   if (document.getElementById("togglePubAS")) {
     axiosGoSortable();
+    // ! FIRST PUB
+    if (document.location.href.includes("#first")) {
+      if (document.getElementById("itemsChap2")) {
+        document.getElementById("itemsChap2").classList.add("animate__swing");
+        setTimeout(() => {
+          document
+            .getElementById("itemsChap2")
+            .classList.remove("animate__swing");
+          location.hash = "";
+        }, 2500);
+      }
+    }
     // ! Suppression de la couverture
     var deleteCover = document.getElementById("deleteCover");
     if (deleteCover) {
@@ -102,7 +117,6 @@ export function AxiosSavePublication() {
       const task = document.getElementById("task");
       const taskCategory = document.getElementById("taskCategory");
       const taskPublish = document.getElementById("taskPublish");
-
       const publicationCategory = document.getElementById(
         "publication_category"
       );

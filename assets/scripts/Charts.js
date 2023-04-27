@@ -9,7 +9,6 @@ export function Charts() {
   const hideIdPub = document.getElementById("hideIdPub");
   const data = new FormData();
   data.append("idPub", hideIdPub.value);
-  console.log(hideIdPub.value);
   axios
     .post("/publication/chart", data, {
       headers: {
@@ -22,7 +21,6 @@ export function Charts() {
       const nbrLikes = JSON.parse(response.data.likes);
       const nbrComments = JSON.parse(response.data.comments);
       const popularity = JSON.parse(response.data.popularity);
-      console.log(popularity);
       // On map
       let n = 0;
       const respView = Object.keys(nbrView);

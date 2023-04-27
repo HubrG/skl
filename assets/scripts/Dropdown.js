@@ -1,5 +1,5 @@
 export function Dropdown() {
-  if (!document.querySelectorAll(".dropdown-button")) return;
+  if (!document.querySelector(".dropdown-button")) return;
   const button = document.querySelectorAll(".dropdown-button");
   const dropdownmenu = document.querySelectorAll(".dropdown-content");
   let activeDropdown = null;

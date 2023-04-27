@@ -551,6 +551,7 @@ export function toggleDrawer() {
   });
 }
 export function targetQuote() {
+  if (!document.getElementById("chapArticle")) return;
   var quotes = document.querySelectorAll(".quoteComment");
   quotes.forEach((elements) => {
     elements.addEventListener("click", () => {
@@ -585,6 +586,7 @@ export function targetQuote() {
   });
 }
 export function DropdownMenu() {
+  if (!document.querySelector(".dropdown-button")) return;
   const button = document.querySelectorAll(".dropdown-button");
   const dropdownmenu = document.querySelectorAll(".dropdown-content");
   //

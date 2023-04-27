@@ -2,6 +2,9 @@
 // ajout de keywords sur AddPublication
 //
 export function addKeyword() {
+  if (!document.getElementById("hideIdPub")) {
+    return;
+  }
   if (document.getElementById("keyValue")) {
     const inputKey = document.getElementById("keyValue");
     const inputPost = document.getElementById("hideId");

@@ -1,6 +1,9 @@
 // fonction de temps de lecture
 import Quill from "quill";
 export function ReadTime() {
+  if (!document.getElementById("editorHTML")) {
+    return;
+  }
   if (document.getElementById("editor")) {
     var div = document.getElementById("editor");
     div.addEventListener("keyup", function () {

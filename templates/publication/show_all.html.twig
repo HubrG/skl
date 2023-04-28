@@ -161,6 +161,11 @@
 						</ul>
 					</div>
 					<div class="flex flex-row items-center w-full md:w-auto justify-between gap-x-2">
+						<a href="{{path("app_search", {sortBy:querySortby,pubOrAuthor:"publication", orderBy:queryOrder|upper, timeShort:"on",timeMedium:"on",timeLong:"on"})}}">
+							<div class="bg-slate-50 py-2 px-2 pl-3 rounded-lg border-[1px] border-slate-200 cursor-pointer hover:bg-slate-200 hover:border-slate-400" data-tippy-content="Rechercher">
+								<i class="fa-kit fa-regular-book-magnifying-glass"></i>
+							</div>
+						</a>
 						<div class="flex flex-row rounded-md mt-2 md:mt-0">
 							{% if app.user %}
 								<button aria-label="Affichage ressérré" data-tippy-content="Affichage ressérré" id="grid" type="button" class="button-grid-show-all left {{grid_button_left}} ">
@@ -178,6 +183,7 @@
 								</button>
 							{% endif %}
 						</div>
+
 						{% if countPage > 1 %}
 							<div class="flex flex-col self-start -mt-[1.25rem] xl:-mt-[1.35rem]">
 								{% include "publication/_partials/_show_all_pagination.html.twig" with {'type': "top"}  %}

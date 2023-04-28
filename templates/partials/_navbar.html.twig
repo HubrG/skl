@@ -50,8 +50,8 @@
 					{# </button> #}
 					{# </li> #}
 						<li>
-							<a href="{{path("app_search", {sortBy:querySortby,pubOrAuthor:"publication", orderBy:queryOrder|upper, timeShort:"on",timeMedium:"on",timeLong:"on"})}}" aria-label="Recherche" class="navbar-button" data-tippy-content="Rechercher"> <i class="fa-duotone fa-telescope"></i>
-							Rechercher
+							<a href="{{path("app_search", {sortBy:querySortby,pubOrAuthor:"publication", orderBy:queryOrder|upper, timeShort:"on",timeMedium:"on",timeLong:"on"})}}" aria-label="Recherche" class="navbar-button {{ not app.user ? " mt-1"}}" data-tippy-content="Rechercher"> <i class="fa-duotone fa-telescope {{ not app.user ? " mt-0"}}"></i>
+							<span class="{{ not app.user ? "hidden" : "inline"}}">Rechercher</span>
 						</a>
 					</li>
 					{% if app.user %}

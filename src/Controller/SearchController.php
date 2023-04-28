@@ -305,6 +305,9 @@ class SearchController extends AbstractController
             $alreadyPublished = $request->query->get('alreadyPublished');
             if ($sortBy == 'alpha') {
                 $sortByQuery = 'u.nickname';
+            }
+            if ($sortBy == 'joinDate') {
+                $sortByQuery = 'u.join_date';
             } else {
                 $sortByQuery = 'u.nickname';
             }

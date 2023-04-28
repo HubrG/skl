@@ -26,11 +26,6 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(PublicationRepository $pRepo, PublicationChapterRepository $pchRepo, PublicationCommentRepository $pcomRepo): Response
     {
-        // On recherche toutes les publications et on met à jour le wordcount avec la méthode WordCountInit de $wordCount
-        $publications = $pRepo->findAll();
-        foreach ($publications as $publication) {
-            $this->wordCount->wordCountInit($publication);
-        }
 
         // *
         // * DERNIÈRES PUBLICATIONS

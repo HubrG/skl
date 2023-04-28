@@ -98,7 +98,7 @@ class Publication
     #[ORM\Column(nullable: true)]
     private ?bool $sale = null;
 
-    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationRead::class)]
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationRead::class, orphanRemoval: true)]
     private Collection $publicationReads;
 
     #[ORM\Column(nullable: true)]

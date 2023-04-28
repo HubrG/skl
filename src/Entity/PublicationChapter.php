@@ -78,7 +78,7 @@ class PublicationChapter
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $trashAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationRead::class)]
+    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationRead::class, orphanRemoval: true)]
     private Collection $publicationReads;
 
     #[ORM\Column(nullable: true)]

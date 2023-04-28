@@ -40,7 +40,7 @@ class TwigChapter extends AbstractExtension
                     $word += str_word_count(strip_tags($a->getContent()));
                 }
             }
-            $minutes = floor($word / 200);
+            $minutes = floor($word / 250);
             $hours = floor($minutes / 60);
             $minutes = $minutes % 60;
             if ($format == "ft") {

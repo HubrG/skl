@@ -24,7 +24,7 @@ class SearchController extends AbstractController
         if ($sortBy == 'published') {
             $sortByQuery = 'p.published_date';
         } elseif ($sortBy == 'time') {
-            $sortByQuery = 'p.published_date';
+            $sortByQuery = 'p.wordCount';
         } elseif ($sortBy == 'pop') {
             $sortByQuery = 'p.pop';
         } elseif ($sortBy == 'title') {
@@ -49,7 +49,6 @@ class SearchController extends AbstractController
             $qb->expr()->like('a.username', ':searchText'),
             $qb->expr()->like('a.nickname', ':searchText')
         );
-
         $qb->andWhere($orX)
             ->setParameter('searchText', '%' . $searchText . '%');
         $qb->orderBy($sortByQuery, $orderBy);
@@ -57,11 +56,74 @@ class SearchController extends AbstractController
         // Execute the query and fetch the results
         $results = $qb->getQuery()->getResult();
 
+        // ! Filtrage des résultats par durée (checkbox)
+        // 5000 mots = 20 minutes de lecture = court
+        // 10000 mots = 40 minutes de lecture = moyen
+        // 20000 mots = 80 minutes de lecture = long
+        if (($timeShort and $timeMedium and $timeLong) or (!$timeShort and !$timeMedium and !$timeLong)) {
+        } else {
+            if ($timeShort and !$timeMedium and !$timeLong) {
+                // On supprime de results les publications qui ont un wordCount > 5000
+                $i = 0;
+                foreach ($results as $result) {
+                    if ($result->getWordCount() > 5000) {
+                        unset($results[$i]);
+                    }
+                    $i++;
+                }
+            } elseif (!$timeShort and $timeMedium and !$timeLong) {
+                // On supprime de results les publications qui ont un wordCount < 5000 et de > 20000
+                $i = 0;
+                foreach ($results as $result) {
+                    if ($result->getWordCount() < 5000 or $result->getWordCount() > 20000) {
+                        unset($results[$i]);
+                    }
+                    $i++;
+                }
+            } elseif (!$timeShort and !$timeMedium and $timeLong) {
+                // On supprime de results les publications qui ont un wordCount < 20000
+                $i = 0;
+                foreach ($results as $result) {
+                    if ($result->getWordCount() < 20000) {
+                        unset($results[$i]);
+                    }
+                    $i++;
+                }
+            } elseif ($timeShort and $timeMedium and !$timeLong) {
+                // On supprime de results les publications qui ont un wordCount > 20000
+                $i = 0;
+                foreach ($results as $result) {
+                    if ($result->getWordCount() > 20000) {
+                        unset($results[$i]);
+                    }
+                    $i++;
+                }
+            } elseif ($timeShort and !$timeMedium and $timeLong) {
+                // On supprime de results les publications qui ont un wordCount entre 10000 et 20000
+                $i = 0;
+                foreach ($results as $result) {
+                    if ($result->getWordCount() > 10000 and $result->getWordCount() < 20000) {
+                        unset($results[$i]);
+                    }
+                    $i++;
+                }
+            } elseif (!$timeShort and $timeMedium and $timeLong) {
+                // On supprime de results les publications qui ont un wordCount < 10000
+                $i = 0;
+                foreach ($results as $result) {
+                    if ($result->getWordCount() < 10000) {
+                        unset($results[$i]);
+                    }
+                    $i++;
+                }
+            }
+        }
 
         // ! Filtr par nombre de likes
         if ($sortBy == 'like') {
-            // Si la publication est publiée et que le chapitre est publié, on récupère le nombre de like par chapitre dans publicationChapterLikes, on ajoute 1 au nombre
-            $i = 0;
+            // Créez un tableau associatif pour stocker les résultats avec leurs likes
+            $resultsWithLikes = [];
+
             foreach ($results as $result) {
                 $likes = 0;
                 foreach ($result->getPublicationChapters() as $chapter) {
@@ -69,38 +131,42 @@ class SearchController extends AbstractController
                         $likes += count($chapter->getPublicationChapterLikes());
                     }
                 }
-                // On ajoute cette donnée aux résultats de la recherche
-                $results[$i]->likes = $likes;
-                $i++;
+                // Ajoutez cette donnée aux résultats de la recherche
+                $resultsWithLikes[] = ['result' => $result, 'likes' => $likes];
             }
-            // On trie les résultats
+            // Triez les résultats
             if ($orderBy == 'ASC') {
-                usort($results, function ($a, $b) {
-                    if ($a->likes == $b->likes) {
+                usort($resultsWithLikes, function ($a, $b) {
+                    if ($a['likes'] == $b['likes']) {
                         // Si les deux publications ont le même nombre de likes, comparez leurs dates de publication
-                        return $b->getPublishedDate() <=> $a->getPublishedDate();
+                        return $b['result']->getPublishedDate() <=> $a['result']->getPublishedDate();
                     }
-                    return $a->likes <=> $b->likes;
+                    return $a['likes'] <=> $b['likes'];
                 });
             } else {
-                usort($results, function ($a, $b) {
-                    if ($a->likes == $b->likes) {
+                usort($resultsWithLikes, function ($a, $b) {
+                    if ($a['likes'] == $b['likes']) {
                         // Si les deux publications ont le même nombre de likes, comparez leurs dates de publication
-                        return $b->getPublishedDate() <=> $a->getPublishedDate();
+                        return $b['result']->getPublishedDate() <=> $a['result']->getPublishedDate();
                     }
-                    return $b->likes <=> $a->likes;
+                    return $b['likes'] <=> $a['likes'];
                 });
             }
             if ($notNull) {
-                $results = array_filter($results, function ($result) {
-                    return $result->likes > 0;
+                $resultsWithLikes = array_filter($resultsWithLikes, function ($resultWithLikes) {
+                    return $resultWithLikes['likes'] > 0;
                 });
             }
+            // Remplacez les résultats d'origine par ceux du tableau associatif
+            $results = array_map(function ($resultWithLikes) {
+                return $resultWithLikes['result'];
+            }, $resultsWithLikes);
         }
         // ! Filtr par nombre de chapitres
         if ($sortBy == 'nbrSheet') {
-            // Si la publication est publiée et que le chapitre est publié, on ajoute 1 au nombre de chapitres
-            $i = 0;
+            // Créez un tableau associatif pour stocker les résultats avec leurs sheets
+            $resultsWithSheets = [];
+
             foreach ($results as $result) {
                 $sheets = 0;
                 foreach ($result->getPublicationChapters() as $chapter) {
@@ -108,38 +174,43 @@ class SearchController extends AbstractController
                         $sheets++;
                     }
                 }
-                // On ajoute cette donnée aux résultats de la recherche
-                $results[$i]->sheets = $sheets;
-                $i++;
+                // Ajoutez cette donnée aux résultats de la recherche
+                $resultsWithSheets[] = ['result' => $result, 'sheets' => $sheets];
             }
-            // On trie les résultats
+            // Triez les résultats
             if ($orderBy == 'ASC') {
-                usort($results, function ($a, $b) {
-                    if ($a->sheets == $b->sheets) {
+                usort($resultsWithSheets, function ($a, $b) {
+                    if ($a['sheets'] == $b['sheets']) {
                         // Si les deux publications ont le même nombre de chapitres, comparez leurs dates de publication
-                        return $b->getPublishedDate() <=> $a->getPublishedDate();
+                        return $b['result']->getPublishedDate() <=> $a['result']->getPublishedDate();
                     }
-                    return $a->sheets <=> $b->sheets;
+                    return $a['sheets'] <=> $b['sheets'];
                 });
             } else {
-                usort($results, function ($a, $b) {
-                    if ($a->sheets == $b->sheets) {
+                usort($resultsWithSheets, function ($a, $b) {
+                    if ($a['sheets'] == $b['sheets']) {
                         // Si les deux publications ont le même nombre de chapitres, comparez leurs dates de publication
-                        return $b->getPublishedDate() <=> $a->getPublishedDate();
+                        return $b['result']->getPublishedDate() <=> $a['result']->getPublishedDate();
                     }
-                    return $b->sheets <=> $a->sheets;
+                    return $b['sheets'] <=> $a['sheets'];
                 });
             }
             if ($notNull) {
-                $results = array_filter($results, function ($result) {
-                    return $result->sheets > 0;
+                $resultsWithSheets = array_filter($resultsWithSheets, function ($resultWithSheets) {
+                    return $resultWithSheets['sheets'] > 0;
                 });
             }
+            // Remplacez les résultats d'origine par ceux du tableau associatif
+            $results = array_map(function ($resultWithSheets) {
+                return $resultWithSheets['result'];
+            }, $resultsWithSheets);
         }
+
         // ! Filtr par nombre de lectures
         if ($sortBy == 'view') {
-            // Si la publication est publiée et que le chapitre est publié, on ajoute 1 au nombre de lectures
-            $i = 0;
+            // Créez un tableau associatif pour stocker les résultats avec leurs views
+            $resultsWithViews = [];
+
             foreach ($results as $result) {
                 $views = 0;
                 foreach ($result->getPublicationChapters() as $chapter) {
@@ -147,62 +218,78 @@ class SearchController extends AbstractController
                         $views += count($chapter->getPublicationChapterViews());
                     }
                 }
-                // On ajoute cette donnée aux résultats de la recherche
-                $results[$i]->views = $views;
-                $i++;
+                // Ajoutez cette donnée aux résultats de la recherche
+                $resultsWithViews[] = ['result' => $result, 'views' => $views];
             }
-            // On trie les résultats
+            // Triez les résultats
             if ($orderBy == 'ASC') {
-                usort($results, function ($a, $b) {
-                    if ($a->views == $b->views) {
-                        // Si les deux publications ont le même nombre de lectures, comparez leurs dates de publication
-                        return $b->getPublishedDate() <=> $a->getPublishedDate();
+                usort($resultsWithViews, function ($a, $b) {
+                    if ($a['views'] == $b['views']) {
+                        // Si les deux publications ont le même nombre de vues, comparez leurs dates de publication
+                        return $b['result']->getPublishedDate() <=> $a['result']->getPublishedDate();
                     }
-                    return $a->views <=> $b->views;
+                    return $a['views'] <=> $b['views'];
                 });
             } else {
-                usort($results, function ($a, $b) {
-                    if ($a->views == $b->views) {
-                        // Si les deux publications ont le même nombre de lectures, comparez leurs dates de publication
-                        return $b->getPublishedDate() <=> $a->getPublishedDate();
+                usort($resultsWithViews, function ($a, $b) {
+                    if ($a['views'] == $b['views']) {
+                        // Si les deux publications ont le même nombre de vues, comparez leurs dates de publication
+                        return $b['result']->getPublishedDate() <=> $a['result']->getPublishedDate();
                     }
-                    return $b->views <=> $a->views;
+                    return $b['views'] <=> $a['views'];
                 });
             }
             if ($notNull) {
-                $results = array_filter($results, function ($result) {
-                    return $result->views > 0;
+                $resultsWithViews = array_filter($resultsWithViews, function ($resultWithViews) {
+                    return $resultWithViews['views'] > 0;
                 });
             }
+            // Remplacez les résultats d'origine par ceux du tableau associatif
+            $results = array_map(function ($resultWithViews) {
+                return $resultWithViews['result'];
+            }, $resultsWithViews);
         }
+
         // ! Filtr par nombre de commentaires
         if ($sortBy == 'comment') {
-            // Si la publication est publiée et que le chapitre est publié, on ajoute 1 au nombre de commentaires
-            $i = 0;
+            // Créez un tableau associatif pour stocker les résultats avec leurs commentaires
+            $resultsWithComments = [];
+
             foreach ($results as $result) {
                 $comments = 0;
                 foreach ($result->getPublicationComments() as $comment) {
                     $comments += count($comment->getPublicationComments());
                 }
-                // On ajoute cette donnée aux résultats de la recherche
-                $results[$i]->comments = $comments;
-                $i++;
+                // Ajoutez cette donnée aux résultats de la recherche
+                $resultsWithComments[] = ['result' => $result, 'comments' => $comments];
             }
-            // On trie les résultats
-            if ($orderBy == 'asc') {
-                usort($results, function ($a, $b) {
-                    return $a->comments <=> $b->comments;
+            // Triez les résultats
+            if ($orderBy == 'ASC') {
+                usort($resultsWithComments, function ($a, $b) {
+                    if ($a['comments'] == $b['comments']) {
+                        // Si les deux publications ont le même nombre de commentaires, comparez leurs dates de publication
+                        return $b['result']->getPublishedDate() <=> $a['result']->getPublishedDate();
+                    }
+                    return $a['comments'] <=> $b['comments'];
                 });
             } else {
-                usort($results, function ($a, $b) {
-                    return $b->comments <=> $a->comments;
+                usort($resultsWithComments, function ($a, $b) {
+                    if ($a['comments'] == $b['comments']) {
+                        // Si les deux publications ont le même nombre de commentaires, comparez leurs dates de publication
+                        return $b['result']->getPublishedDate() <=> $a['result']->getPublishedDate();
+                    }
+                    return $b['comments'] <=> $a['comments'];
                 });
             }
             if ($notNull) {
-                $results = array_filter($results, function ($result) {
-                    return $result->comments > 0;
+                $resultsWithComments = array_filter($resultsWithComments, function ($resultWithComments) {
+                    return $resultWithComments['comments'] > 0;
                 });
             }
+            // Remplacez les résultats d'origine par ceux du tableau associatif
+            $results = array_map(function ($resultWithComments) {
+                return $resultWithComments['result'];
+            }, $resultsWithComments);
         }
 
 

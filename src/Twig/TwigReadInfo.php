@@ -17,8 +17,8 @@ class TwigReadInfo extends AbstractExtension
     {
         $stringOrigin = trim($string);
         $word = str_word_count(strip_tags($string));
-        $m = floor($word / 200);
-        $s = floor($word % 202 / (202 / 60));
+        $m = floor($word / 250);
+        $s = floor($word % 250 / (250 / 60));
         if ($type == "ri_mn") { // compteur de minutes
             return ($m < 10 ? "0" . $m : $m);
         } elseif ($type == "ri_sc") { // compteur de secondes

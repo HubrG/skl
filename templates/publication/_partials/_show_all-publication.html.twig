@@ -77,7 +77,9 @@
 			{% set lastReadChapter = null %}
 		{% endif %}
 		<span class="flex flex-row items-baseline justify-end gap-x-2 text-sm w-1/2 dark:text-slate-400  ">
-			<i class="fa-regular fa-book-open-reader "></i>
+
+			<i class="{{item.mature ? "fa-kit fa-regular-book-open-reader-circle-exclamation text-rose-400 dark:text-rose-300" :"fa-regular fa-book-open-reader" }} " {% if item.mature %} data-tippy-content="Contenu sensible" {% endif %}></i>
+
 			<a {{ user_in_url ? "target='_top'" }} {% if lastReadChapter %} href="{{ path("app_chapter_show", {idChap:lastReadChapter.id, user:item.user.username, slugPub:item.slug, slug:lastReadChapter.slug}) }}" {% else %} href="{{ path("app_chapter_show", {idChap:firstChap.id, user:item.user.username, slugPub:item.slug, slug:firstChap.slug}) }}" {% endif %} class="hover:underline font-semibold ">
 				{{lastReadChapter ? "Reprendre" : "Lire" }}
 			</a>
@@ -86,9 +88,11 @@
 				{% if app.user|read_all_chapters(currentPublicationId) %}
 					{% set allRead = true %}
 				{% endif %}
+
 				{% if allRead is defined %}
 					<i class="fa-duotone fa-badge-check text-green-500 dark:text-green-400 text-xs" data-tippy-content="Lu intégralement"></i>
 				{% endif %}
+
 			{% endif %}
 		</span>
 	</div>

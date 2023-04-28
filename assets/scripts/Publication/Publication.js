@@ -192,7 +192,8 @@ function AxiosPublication() {
     var salePaper = document.getElementById("publication_sale_paper").value;
   }
   //!
-  var mature = document.getElementById("publication_mature").value;
+  var mature = document.getElementById("publication_mature").checked;
+  console.log(mature);
   var hideIdPub = document.getElementById("hideIdPub").value;
   // * Gestion de la photo (si changement de photo)
   var spinCover = document.getElementById("spinCover").classList;
@@ -243,6 +244,7 @@ function AxiosPublication() {
     })
     .then(function (response) {
       if (response.data.code == 200) {
+        console.log(response.data);
         var notyText =
           "<span class='text-base font-medium'>Récit enregistré</span><br />Votre récit est à jour.";
         var notyTimeout = 4500;

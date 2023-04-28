@@ -347,6 +347,11 @@ class PublicationController extends AbstractController
         $dtSalePaper = $request->get("sale_paper");
         $dtCategory = $request->get("category");
         $dtMature = $request->get("mature");
+        if ($dtMature == "true") {
+            $dtMature = 1;
+        } else {
+            $dtMature = 0;
+        }
         $dtCover = $request->files->get("cover");
         //
         $pub = $pRepo->find($idPub);
@@ -377,7 +382,8 @@ class PublicationController extends AbstractController
             ]);
         }
         return $this->json([
-            "code" => 200 // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
+            "code" => 200,
+            "mature" => $dtMature // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde
         ]);
     }
     #[Route('/publication/chart', name: 'app_publication_getchart', methods: "POST")]

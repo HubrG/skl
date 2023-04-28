@@ -5,17 +5,20 @@
 {% endblock %}
 
 {% block body %}
-	{# ! INIT #}
+	{# ! GÉNÉRAL #}
+	{% set pubOrAuthor = app.request.query.get('pubOrAuthor')|default("publication") %}
 	{% set searchText = app.request.query.get('searchText') %}
+	{% set orderBy = app.request.query.get('orderBy')|default("desc") %}
 	{% set submitted = app.request.query.all|length > 0 %}
-	{% set publicationsChecked = submitted ? (app.request.query.get('publications') == 'on' ? 'checked' : '') : 'checked' %}
+	{# ! USER #}
+	{% set sortByUser = app.request.query.get('sortByUser')|default("alpha") %}
+	{% set alreadyPublished = submitted ? (app.request.query.get('alreadyPublished') == 'on' ? 'checked' : '') : 'checked' %}
+	{# ! PUBLICATION #}
+	{% set sortBy = app.request.query.get('sortBy')|default("published") %}
 	{% set notNullChecked = submitted ? (app.request.query.get('notNull') == 'on' ? 'checked' : '') : 'checked' %}
-	{% set authorsChecked = submitted ? (app.request.query.get('authors') == 'on' ? 'checked' : '') : 'checked' %}
 	{% set timeShortChecked = submitted ? (app.request.query.get('timeShort') == 'on' ? 'checked' : '') : 'checked' %}
 	{% set timeMediumChecked = submitted ? (app.request.query.get('timeMedium') == 'on' ? 'checked' : '') : 'checked' %}
 	{% set timeLongChecked = submitted ? (app.request.query.get('timeLong') == 'on' ? 'checked' : '') : 'checked' %}
-	{% set sortBy = app.request.query.get('sortBy')|default("published") %}
-	{% set orderBy = app.request.query.get('orderBy')|default("desc") %}
 
 	{# * GRID #}
 	{% if app.user %}
@@ -45,100 +48,151 @@
 			<form class="gap-y-2 flex flex-col justify-center w-full gap-x-3 items-baseline md:items-start justify-items-center" action="" id="search-form" method="get">
 				<div class="flex flex-row items-center gap-x-2">
 					{% include "./partials/_form-row.html.twig" with {
-                model:"input",
-                type:"text",
-                icon:"fa-radar",
-                label:"Rechercher",
-                name:"searchText",
-                class:"w-full font-semibold",
-                classField:"w-full",
-                placeholder:"Terme de recherche",
-                checked:"",
-                error:"",
-                help:"",
-                value: searchText
-            } %}
+						model:"input",
+						type:"text",
+						icon:"fa-radar",
+						label:"Rechercher",
+						name:"searchText",
+						class:"w-full font-semibold",
+						classField:"w-full",
+						placeholder:"Terme de recherche",
+						checked:"",
+						error:"",
+						help:"",
+						value: searchText
+					} %}
 					<button class="btn hidden btn-primary" id="submit-form" type="submit">Ok</button>
 				</div>
 
-				<div class="hidden">
+				<div>
 					<h2 class="font-semibold mb-2 -mt-10 dark:text-slate-300">Afficher :</h2>
 					<div class="flex flex-row items-center gap-x-2 mb-2">
-						<input type="checkbox" name="publications" id="publications" {{ publicationsChecked }}>
+						<input type="radio" name="pubOrAuthor" value="publication" id="publications" {{ pubOrAuthor == "publication" ? "checked" }}>
 						<label for="publications" class="-mt-2 font-normal">Les récits</label>
 					</div>
 					<div class="flex flex-row items-center gap-x-2 mb-2">
-						<input type="checkbox" name="authors" id="authors" {{authorsChecked}}>
-						<label for="authors" class="-mt-2 font-normal">Les auteurs</label>
+						<input type="radio" name="pubOrAuthor" value="user" id="authors" {{pubOrAuthor == "user" ? "checked" }}>
+						<label for="authors" class="-mt-2 font-normal">Les utilisateurs</label>
 					</div>
 				</div>
-				<div class="-mt-5">
-					<h2 class="font-semibold mb-2 mt-2 dark:text-slate-300">Temps de lecture :</h2>
-					<div class="flex flex-row items-center gap-x-2 mb-2">
-						<input type="checkbox" name="timeShort" id="timeShort" {{timeShortChecked}}>
-						<label for="timeShort" class="-mt-2 font-normal">Court</label>
+
+				{% if pubOrAuthor == "publication" %}
+					<div class="-mt-5">
+						<h2 class="font-semibold mb-2 mt-2 dark:text-slate-300">Temps de lecture :</h2>
+						<div class="flex flex-row items-center gap-x-2 mb-2">
+							<input type="checkbox" name="timeShort" id="timeShort" {{timeShortChecked}}>
+							<label for="timeShort" class="-mt-2 font-normal">Court (0 - 20mn)</label>
+						</div>
+						<div class="flex flex-row items-center gap-x-2 mb-2">
+							<input type="checkbox" name="timeMedium" id="timeMedium" {{timeMediumChecked}}>
+							<label for="timeMedium" class="-mt-2 font-normal">Moyen (20 - 80mn)</label>
+						</div>
+						<div class="flex flex-row items-center gap-x-2 mb-4">
+							<input type="checkbox" name="timeLong" id="timeLong" {{timeLongChecked}}>
+							<label for="timeLong" class="-mt-2 font-normal">Long (min. 80mn)</label>
+						</div>
 					</div>
-					<div class="flex flex-row items-center gap-x-2 mb-2">
-						<input type="checkbox" name="timeMedium" id="timeMedium" {{timeMediumChecked}}>
-						<label for="timeMedium" class="-mt-2 font-normal">Moyen</label>
+
+					<div>
+						{% include "./partials/_form-row.html.twig" with {
+						model:"select",
+						type:"select",
+						label:"Trier par :",
+						name:"sortBy",
+						icon:"fa-shapes",
+						class:"w-full",
+						classField:"w-full",
+						checked:"",
+						error:"",
+						help:"",
+						options: [
+						{"value": "published", "label": "Date de publication", "selected": sortBy == 'published' ? 'selected'},
+						{"value": "title", "label": "Titre", "selected": sortBy == 'title' ? 'selected'},
+						{"value": "user", "label": "Auteur", "selected": sortBy == 'user' ? 'selected'},
+						{"value": "sheet", "label": "Dernière feuille publiée", "selected": sortBy == 'sheet' ? 'selected'},
+						{"value": "pop", "label": "Popularité", "selected": sortBy == 'pop' ? 'selected'},
+						{"value": "time", "label": "Temps de lecture", "selected": sortBy == 'time' ? 'selected'},
+						{"value": "comment", "label": "Nombre de commentaires", "selected": sortBy == 'comment' ? 'selected'},
+						{"value": "nbrSheet", "label": "Nombre de feuilles", "selected": sortBy == 'nbrSheet' ? 'selected'},
+						{"value": "like", "label": "Nombre de « j'aime »", "selected": sortBy == 'like' ? 'selected'},
+						{"value": "view", "label": "Nombre de lectures", "selected": sortBy == 'view' ? 'selected'},
+						]
+						} %}
+						{% include "./partials/_form-row.html.twig" with {
+						model:"select",
+						type:"select",
+						name:"orderBy",
+						icon:"fa-sort",
+						class:"w-full",
+						classField:"w-full",
+						checked:"",
+						error:"",
+						help:"",
+						options: [
+						{"value": "ASC", "label": "Croissant", "selected": orderBy == 'ASC' ? 'selected'},
+						{"value": "DESC", "label": "Décroissant", "selected": orderBy == 'DESC' ? 'selected'},
+						]
+						} %}
+						<hr class="mb-5">
+						<div class="flex flex-row items-baseline gap-x-2 mb-2 -mt-0">
+							<input type="checkbox" name="notNull" id="notNull" {{ notNullChecked }}>
+							<label for="notNull" class="-mt-2 pt-0 font-normal dark:text-slate-400">Ne pas afficher les résultats nuls</label>
+						</div>
 					</div>
-					<div class="flex flex-row items-center gap-x-2 mb-4">
-						<input type="checkbox" name="timeLong" id="timeLong" {{timeLongChecked}}>
-						<label for="timeLong" class="-mt-2 font-normal">Long</label>
+				{% elseif pubOrAuthor == "user" %}
+					<div class="-mt-5">
+						<h2 class="font-semibold mb-2 mt-2 dark:text-slate-300">Qui ont :</h2>
+						<div class="flex flex-row items-center gap-x-2 mb-2">
+							<input type="checkbox" name="alreadyPublished" id="alreadyPublished" {{alreadyPublished}}>
+							<label for="alreadyPublished" class="-mt-2 font-normal">Déjà publié sur Scrilab</label>
+						</div>
 					</div>
-				</div>
-				<div>
-					{% include "./partials/_form-row.html.twig" with {
-            model:"select",
-            type:"select",
-            label:"Trier par :",
-            name:"sortBy",
-            icon:"fa-shapes",
-            class:"w-full",
-            classField:"w-full",
-            checked:"",
-            error:"",
-            help:"",
-            options: [
-            {"value": "published", "label": "Date de publication", "selected": sortBy == 'published' ? 'selected'},
-            {"value": "title", "label": "Titre", "selected": sortBy == 'title' ? 'selected'},
-            {"value": "user", "label": "Auteur", "selected": sortBy == 'user' ? 'selected'},
-            {"value": "sheet", "label": "Dernière feuille publiée", "selected": sortBy == 'sheet' ? 'selected'},
-            {"value": "pop", "label": "Popularité", "selected": sortBy == 'pop' ? 'selected'},
-            {"value": "time", "label": "Temps de lecture", "selected": sortBy == 'time' ? 'selected'},
-            {"value": "comment", "label": "Nombre de commentaires", "selected": sortBy == 'comment' ? 'selected'},
-            {"value": "nbrSheet", "label": "Nombre de feuilles", "selected": sortBy == 'nbrSheet' ? 'selected'},
-            {"value": "like", "label": "Nombre de « j'aime »", "selected": sortBy == 'like' ? 'selected'},
-            {"value": "view", "label": "Nombre de lectures", "selected": sortBy == 'view' ? 'selected'},
-            ]
-        } %}
-					{% include "./partials/_form-row.html.twig" with {
-            model:"select",
-            type:"select",
-            name:"orderBy",
-            icon:"fa-sort",
-            class:"w-full",
-            classField:"w-full",
-            checked:"",
-            error:"",
-            help:"",
-            options: [
-            {"value": "ASC", "label": "Croissant", "selected": orderBy == 'ASC' ? 'selected'},
-            {"value": "DESC", "label": "Décroissant", "selected": orderBy == 'DESC' ? 'selected'},
-            ]
-            } %}
-					<div class="flex flex-row items-baseline gap-x-2 mb-2 -mt-3">
-						<input type="checkbox" name="notNull" id="notNull" {{ notNullChecked }}>
-						<label for="notNull" class="-mt-2 pt-0 font-normal">Ne pas afficher les résultats nuls</label>
+					<div>
+						{% include "./partials/_form-row.html.twig" with {
+						model:"select",
+						type:"select",
+						label:"Trier par :",
+						name:"sortByUser",
+						icon:"fa-shapes",
+						class:"w-full",
+						classField:"w-full",
+						checked:"",
+						error:"",
+						help:"",
+						options: [
+						{"value": "alpha", "label": "Ordre alphabétique", "selected": sortByUser == 'alpha' ? 'selected'},
+						{"value": "nbPub", "label": "Nombre de récits publiés", "selected": sortByUser == 'nbPub' ? 'selected'},
+						]
+						} %}
+						{% include "./partials/_form-row.html.twig" with {
+						model:"select",
+						type:"select",
+						name:"orderBy",
+						icon:"fa-sort",
+						class:"w-full",
+						classField:"w-full",
+						checked:"",
+						error:"",
+						help:"",
+						options: [
+						{"value": "ASC", "label": "Croissant", "selected": orderBy == 'ASC' ? 'selected'},
+						{"value": "DESC", "label": "Décroissant", "selected": orderBy == 'DESC' ? 'selected'},
+						]
+						} %}
+						<hr class="mb-5">
+						<div class="flex flex-row items-baseline gap-x-2 mb-2 -mt-3">
+							<input type="checkbox" name="notNull" id="notNull" {{ notNullChecked }}>
+							<label for="notNull" class="-mt-2 pt-0 font-normal dark:text-slate-400">Ne pas afficher les résultats nuls</label>
+						</div>
 					</div>
-				</div>
+				{% endif %}
 			</form>
 		</aside>
 		<section class="w-full">
 			<div
 				class="flex flex-col xl:flex-row mb-10 justify-between items-baseline px-2 pr-5">
 				{# ! COUNT PUBLICATIONS #}
-				{% if publicationsChecked %}
+				{% if pubOrAuthor == "publication" %}
 					<h4 class="items-baseline  flex flex-col md:flex-row  gap-x-2 text-center md:text-left mb-5 ml-2  font-light text-lg text-slate-500 dark:text-slate-300">
 						{% set count = results|length %}
 						{% set recount = count == 1 ? "1 récit" : count == 0 ? "Aucun récit" : count ~ " récits" %}
@@ -183,12 +237,69 @@
 							{# {% endif %} #}
 						</div>
 					</div>
+				{% elseif  pubOrAuthor == "user"  %}
+					<h4 class="items-baseline  flex flex-col md:flex-row  gap-x-2 text-center md:text-left mb-5 ml-2  font-light text-lg text-slate-500 dark:text-slate-300">
+						{% set count = results|length %}
+						{% set recount = count == 1 ? "1 utilisateur" : count == 0 ? "Aucun utilisateur" : count ~ " utilisateurs" %}
+						<div>
+							{{ recount | default('Aucun utilisateur') }}
+						</div>
+
+					</h4>
 				{% endif %}
 			</div>
-			{% if publicationsChecked %}
+			{% if pubOrAuthor == "publication" %}
 				<div class="display_publications twoMax {{grid_status}} showAll" id="PublicationShowContent">
 					{% for item in results %}
 						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':sortBy, 'querySortby':sortBy, 'queryOrder':'desc','queryKeystring':'', 'querySlug':item.slug, "search":true} %}
+					{% endfor %}
+				</div>
+			{% elseif pubOrAuthor == "user" %}
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-baseline">
+					{% for item in results %}
+						<div class="w-full p-5 bg-slate-50 dark:bg-slate-900 rounded flex flex-col gap-y-2">
+							<div class="flex flex-row items-center justify-between">
+								<div class="flex flex-row items-center gap-x-2">
+									{% if item.profilPicture %}
+										<img src="{{item.profilPicture}}" class="w-5 h-5 rounded-full" alt="Photo de profil de {{item.nickname}}"/>
+									{% endif %}
+									<a href="{{path("app_user", {username:item.username})}}" class="hover:underline font-semibold dark:text-slate-300" target="_blank">{{item.nickname}}</a>
+								</div>
+								<span class="opacity-50 text-xs dark:text-slate-300">@{{item.username}}</span>
+							</div>
+							<hr class="mt-2 mb-0">
+							<div class="flex flex-col gap-y-2">
+								{% set nbrPublication = item|nbrPublication|length %}
+								<span class=" flex flex-row items-center gap-x-2 text-sm {{nbrPublication == 0 ? " text-slate-400 dark:text-slate-600" : " text-slate-600 dark:text-slate-400" }}">
+									<i class="fa-regular {{nbrPublication == 0 ? " hidden" }} {{nbrPublication == 1 ? " fa-book" : " fa-book-copy" }}"></i>
+									<a href="{{path("app_search", {sortBy:"published",orderBy:"DESC",searchText:item.username,pubOrAuthor:"publication"})}}" class="hover:underline">
+										{{nbrPublication > 0 ? nbrPublication : "Aucun récit publié" }}
+										{{nbrPublication < 2 and nbrPublication > 0 ? "récit publié" : nbrPublication > 1 ? "récit publiés"}}
+									</a>
+								</span>
+							</div>
+							{% if nbrPublication > 0 %}
+								<div class="flex flex-col gap-y-2">
+									<span class=" flex flex-row items-center gap-x-2 text-sm  text-slate-600 dark:text-slate-400">
+										<i class="fa-regular fa-fire"></i>
+										{% set mostPopular = item|mostPopularPublication %}
+										<span class="flex flex-row gap-x-2">
+											<span class=" font-semibold">Populaire :</span>
+											<a href="{{ path("app_publication_show_one", {id:mostPopular.id, slug:mostPopular.slug}) }}" class="text-slate-800 hover:underline dark:text-slate-400" target="_blank">{{mostPopular.title}}</a>
+										</span>
+									</span>
+								</div>
+							{% endif %}
+							<div class="flex flex-col gap-y-2">
+								<span class=" flex flex-row justify-end items-baseline justify-items-end gap-x-2 text-xs mt-2  text-slate-400 dark:text-slate-400">
+									<i class="fa-regular fa-fire"></i>
+									<span class="flex flex-row gap-x-2">
+										Inscrit(e) depuis
+										{{item.joinDate|since}}
+									</span>
+								</span>
+							</div>
+						</div>
 					{% endfor %}
 				</div>
 			{% endif %}

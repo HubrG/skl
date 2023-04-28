@@ -53,6 +53,15 @@ export function Search() {
     });
   });
 
+  // Ajoutez un écouteur d'événements 'change' pour les cases à cocher
+  var radios = form.querySelectorAll('input[type="radio"]');
+  radios.forEach(function (radio) {
+    radio.addEventListener("change", function () {
+      lastModifiedInput = false;
+      submitForm();
+    });
+  });
+
   // Ajoutez un écouteur d'événements 'change' pour l'élément select
   var select = form.querySelectorAll("select");
   select.forEach(function (select) {

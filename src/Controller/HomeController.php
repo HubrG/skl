@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Cloudinary\Cloudinary;
+use App\Services\WordCount;
 use App\Services\NotificationSystem;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
@@ -16,16 +17,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class HomeController extends AbstractController
 {
 
-    private $notification;
 
-    public function __construct(NotificationSystem $notification)
+
+    public function __construct(private NotificationSystem $notification, private WordCount $wordCount)
     {
-        $this->notification = $notification;
     }
 
     #[Route('/', name: 'app_home')]
     public function index(PublicationRepository $pRepo, PublicationChapterRepository $pchRepo, PublicationCommentRepository $pcomRepo): Response
     {
+        // On recherche toutes les publications et on met à jour le wordcount avec la méthode WordCountInit de $wordCount
+        $publications = $pRepo->findAll();
+        foreach ($publications as $publication) {
+            $this->wordCount->wordCountInit($publication);
+        }
+
         // *
         // * DERNIÈRES PUBLICATIONS
         $qb = $pRepo->createQueryBuilder("p")

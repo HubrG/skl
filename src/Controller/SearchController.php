@@ -10,12 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SearchController extends AbstractController
 {
-    #[Route('/recherche', name: 'app_search')]
-    public function index(Request $request, PublicationRepository $pRepo): Response
+    #[Route('/search', name: 'app_search')]
+    public function searchIndex(Request $request, PublicationRepository $pRepo): Response
     {
         $searchText = $request->query->get('searchText');
-        $publications = $request->query->get('publications');
-        $authors = $request->query->get('authors');
         $timeShort = $request->query->get('timeShort');
         $timeMedium = $request->query->get('timeMedium');
         $notNull = $request->query->get('notNull');
@@ -38,12 +36,6 @@ class SearchController extends AbstractController
         }
 
         // ! Recherche
-        // * On réparti les mots de la recherche dans un tableau
-        $searchText = explode(' ', $searchText);
-        // * On supprime les espaces vides
-        $searchText = array_filter($searchText);
-        // * On supprime les doublons
-        $searchText = array_unique($searchText);
 
         // * On récupère les publications qui correspondent à la recherche
         $qb = $pRepo->createQueryBuilder('p')
@@ -59,7 +51,7 @@ class SearchController extends AbstractController
         );
 
         $qb->andWhere($orX)
-            ->setParameter('searchText', '%' . implode('%', $searchText) . '%');
+            ->setParameter('searchText', '%' . $searchText . '%');
         $qb->orderBy($sortByQuery, $orderBy);
 
         // Execute the query and fetch the results
@@ -212,61 +204,7 @@ class SearchController extends AbstractController
                 });
             }
         }
-        // ! Filtr par durée
-        // On récupère tous les chapitres des publications qui correspondent à la recherche, on calcul le nombre de mots et on les ajoute à la publication
-        $i = 0;
-        foreach ($results as $result) {
-            $chapters = $result->getPublicationChapters();
-            $words = 0;
-            foreach ($chapters as $chapter) {
-                if ($chapter->getStatus() == 2) {
-                    $words += str_word_count($chapter->getContent());
-                }
-            }
-            // On ajoute cette donnée aux résultats de la recherche
-            $results[$i]->words = $words;
-            $i++;
-        }
-        if ($sortBy == 'time') {
-            if ($orderBy == 'asc') {
-                usort($results, function ($a, $b) {
-                    return $a->words <=> $b->words;
-                });
-            } else {
-                usort($results, function ($a, $b) {
-                    return $b->words <=> $a->words;
-                });
-            }
-        }
-        // ! Classement par durée (checkboxes)
-        if (($timeShort and $timeMedium and $timeLong)) {
-        } else {
-            if ($timeShort and !$timeMedium and !$timeLong) {
-                $results = array_filter($results, function ($result) {
-                    return $result->words <= 2500;
-                });
-            } elseif (!$timeShort and $timeMedium and !$timeLong) {
-                $results = array_filter($results, function ($result) {
-                    return $result->words > 2500 and $result->words <= 5000;
-                });
-            } elseif (!$timeShort and !$timeMedium and $timeLong) {
-                $results = array_filter($results, function ($result) {
-                    return $result->words > 5000;
-                });
-            } elseif ($timeShort and $timeMedium and !$timeLong) {
-                $results = array_filter($results, function ($result) {
-                    return $result->words <= 5000;
-                });
-            } elseif ($timeShort and !$timeMedium and $timeLong) {
-                $results = array_filter($results, function ($result) {
-                    return $result->words <= 2500 or $result->words > 5000;
-                });
-            } elseif (!$timeShort and $timeMedium and $timeLong) {
-                $results = array_filter($results, function ($result) {
-                    return $result->words > 2500;
-                });
-            }
-        }
+
 
         return $this->render('search/search.html.twig', [
             'results' => $results

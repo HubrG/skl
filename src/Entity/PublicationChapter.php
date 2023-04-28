@@ -81,6 +81,9 @@ class PublicationChapter
     #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationRead::class)]
     private Collection $publicationReads;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $wordCount = null;
+
     public function __construct()
     {
         $this->publicationChapterVersionings = new ArrayCollection();
@@ -520,6 +523,18 @@ class PublicationChapter
                 $publicationRead->setChapter(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getWordCount(): ?int
+    {
+        return $this->wordCount;
+    }
+
+    public function setWordCount(?int $wordCount): self
+    {
+        $this->wordCount = $wordCount;
 
         return $this;
     }

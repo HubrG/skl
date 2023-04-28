@@ -66,6 +66,7 @@
 			Publié il y a
 			{{item.publishedDate|since}}
 		</span>
+
 		{% set chapterWithOrderDisplayZero = item.publicationChapters|filter(chapter => chapter.orderDisplay == 0)|first %}
 		{% set firstChap = chapterWithOrderDisplayZero ? chapterWithOrderDisplayZero : item.publicationChapters|first %}
 
@@ -105,7 +106,7 @@
 	<div>
 		<ul class="flex flex-row mt-2 gap-x-2 md:text-xs text-xs w-full">
 			<li>
-				<a {{ user_in_url ? "target='_top'" }} href="{{ path("app_publication_show_all_category", {slug:cat_slug, page:queryPage,sortby:querySortby, order:queryOrder, keystring:queryKeystring}) }}" {% if cat_name|length > 16 %} data-tippy-content="{{item.categegory.name}}" {% endif %} class="flex flex-row gap-x-1 items-center rounded">
+				<a {{ user_in_url ? "target='_top'" }} href="{{ path("app_publication_show_all_category", {slug:cat_slug, page:queryPage,sortby:sortBy, order:queryOrder, keystring:queryKeystring}) }}" {% if cat_name|length > 16 %} data-tippy-content="{{item.categegory.name}}" {% endif %} class="flex flex-row gap-x-1 items-center rounded">
 					<span class="flex w-3 h-3  rounded-full {% if item.category %}catColor-{{cat_color}}{% endif %}"></span>
 					<span class="text-slate-600 dark:text-slate-400 hover:underline">{{cat_name}}</span>
 				</a>
@@ -151,7 +152,7 @@
 					<li class="flex flex-row gap-x-1 items-center">
 						<i class="fa-regular fa-timer"></i>
 						<span>
-							{{ item.publicationChapters|chapter("rt", "ft") }}
+							{{ pubShow.publicationChapters|chapter("rt", "ft") }}
 						</span>
 					</li>
 				{% endif %}

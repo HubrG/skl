@@ -142,8 +142,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $googleId;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationRead::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationRead::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationReads;
+
 
     public function __construct()
     {
@@ -932,7 +933,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 return true;
             }
         }
-
         return false;
     }
 }

@@ -292,7 +292,7 @@ class PublicationController extends AbstractController
      * 2) Elle gère également l'incrémentation/décrémentation des mots clés liés à la publication (uniquement si l'articel est publié au moment de sa suppression) 
      */
     #[Route('/story/delete/{id}', name: 'app_publication_delete')]
-    public function DeletePublication(Request $request, PublicationRepository $pubRepo, PublicationChapterRepository $pcRepo, EntityManagerInterface $em, $id = null): Response
+    public function DeletePublication(PublicationRepository $pubRepo, EntityManagerInterface $em, $id = null): Response
     {
 
         $publication = $pubRepo->find($id);

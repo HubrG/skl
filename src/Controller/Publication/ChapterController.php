@@ -4,6 +4,7 @@ namespace App\Controller\Publication;
 
 use Exception;
 use Cloudinary\Cloudinary;
+use App\Services\WordCount;
 use App\Services\ImageService;
 use App\Entity\PublicationChapter;
 use App\Repository\UserRepository;
@@ -25,7 +26,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ChapterController extends AbstractController
 {
-    public function __construct(private EntityManagerInterface $em, private PublicationChapterRepository $pchRepo, private PicturesRepository $picRepo, private PublicationRepository $pRepo, private Cloudinary $cloudinary, private ImageService $uploadImage, private NotificationSystem $notificationSystem)
+    public function __construct(private WordCount $wordCount, private EntityManagerInterface $em, private PublicationChapterRepository $pchRepo, private PicturesRepository $picRepo, private PublicationRepository $pRepo, private Cloudinary $cloudinary, private ImageService $uploadImage, private NotificationSystem $notificationSystem)
     {
     }
 
@@ -62,6 +63,7 @@ class ChapterController extends AbstractController
                             ->setTitle("Feuille n°" . $nbrChap . $chapAdd)
                             ->setSlug("feuille-n0" . $nbrChap . $chapAdd)
                             ->setPop(0)
+                            ->setWordCount(0)
                             ->setOrderDisplay($nbrChap);
                         $em->persist($publicationChapter);
                         // ! on l'ajoute au versioning
@@ -180,6 +182,8 @@ class ChapterController extends AbstractController
         $this->cloudinary->uploadApi()->destroy("chapter/" . $idChap, ['invalidate' => true,]);
         $this->em->remove($infoChapitre);
         $this->em->flush();
+        // * On fait appel à la fonction WordCount pour mettre à jour le nombre de mots de la publication
+        $this->wordCount->WordCountPublication($infoChapitre->getPublication());
     }
     #[Route('/story/chapter/autosave', name: 'app_chapter_autosave', methods: "POST")]
     public function Axios_ChapAutoSave(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, PublicationChapterRepository $pcRepo, PublicationRepository $pRepo): response
@@ -212,6 +216,8 @@ class ChapterController extends AbstractController
                 ->setChapter($chapter);
             $em->persist($chapterVersioning);
             $em->flush();
+            // * On fait appel à la fonction WordCount pour mettre à jour le nombre de mots du chapitre
+            $this->wordCount->WordCountChapter($chapter);
             //!SECTION
         } else {
             return $this->json([
@@ -263,6 +269,8 @@ class ChapterController extends AbstractController
         }
         $em->persist($chapter);
         $em->flush();
+        // * On fait appel à la fonction WordCount pour mettre à jour le nombre de mots du chapitre
+        $this->wordCount->WordCountChapter($chapter);
         return $this->json([
             "code" => $dataPublish
         ]);
@@ -350,6 +358,8 @@ class ChapterController extends AbstractController
         }
         $em->persist($chapter);
         $em->flush();
+        // * On fait appel à la fonction WordCount pour mettre à jour le nombre de mots du chapitre
+        $this->wordCount->WordCountChapter($chapter);
         return $this->json([
             "status" => $newStatus,
             "order" => $chapter->getOrderDisplay() + 1, // dataName = permet de n'afficher qu'une seule fois le message de sauvegarde

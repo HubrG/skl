@@ -101,6 +101,9 @@ class Publication
     #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationRead::class)]
     private Collection $publicationReads;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $wordCount = null;
+
 
 
 
@@ -640,6 +643,18 @@ class Publication
                 $publicationRead->setPublication(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getWordCount(): ?int
+    {
+        return $this->wordCount;
+    }
+
+    public function setWordCount(?int $wordCount): self
+    {
+        $this->wordCount = $wordCount;
 
         return $this;
     }

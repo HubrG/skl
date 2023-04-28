@@ -28,7 +28,7 @@ class Publication
     #[ORM\Column]
     private ?int $status = null;
 
-    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationChapter::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationChapter::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationChapters;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -43,7 +43,7 @@ class Publication
     #[ORM\ManyToOne(inversedBy: 'publications')]
     private ?PublicationCategory $category = null;
 
-    #[ORM\ManyToMany(targetEntity: PublicationKeyword::class, mappedBy: 'publication')]
+    #[ORM\ManyToMany(targetEntity: PublicationKeyword::class, mappedBy: 'publication', orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationKeywords;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
@@ -62,28 +62,28 @@ class Publication
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 3, nullable: true)]
     private ?string $pop = null;
 
-    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationDownload::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationDownload::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationDownloads;
 
-    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationPopularity::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationPopularity::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationPopularities;
 
-    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationComment::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationComment::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationComments;
 
-    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationBookmark::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationBookmark::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationBookmarks;
 
-    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationRating::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationRating::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationRatings;
 
     #[ORM\Column(nullable: true)]
     private ?bool $finished = null;
 
-    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationFollow::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationFollow::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationFollows;
 
-    #[ORM\OneToMany(mappedBy: 'publication_follow_add', targetEntity: Notification::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'publication_follow_add', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $notifications;
 
     #[ORM\Column(nullable: true)]
@@ -98,7 +98,7 @@ class Publication
     #[ORM\Column(nullable: true)]
     private ?bool $sale = null;
 
-    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationRead::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationRead::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationReads;
 
     #[ORM\Column(nullable: true)]

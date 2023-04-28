@@ -28,7 +28,7 @@ class PublicationComment
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $published_at = null;
 
-    #[ORM\OneToMany(mappedBy: 'comment', targetEntity: PublicationCommentLike::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'comment', targetEntity: PublicationCommentLike::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationCommentLikes;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'publicationComments')]
@@ -46,10 +46,10 @@ class PublicationComment
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $quote = null;
 
-    #[ORM\OneToMany(mappedBy: 'comment', targetEntity: Notification::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'comment', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $notifications;
 
-    #[ORM\OneToMany(mappedBy: 'reply_comment', targetEntity: Notification::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'reply_comment', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $notificationsReply;
 
     public function __construct()

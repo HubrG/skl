@@ -24,7 +24,7 @@ class PublicationChapterLike
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $CreatedAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'chapter_like', targetEntity: Notification::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'chapter_like', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $notifications;
 
     public function __construct()

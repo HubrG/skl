@@ -30,7 +30,7 @@ class PublicationBookmark
     #[ORM\ManyToOne(inversedBy: 'publicationBookmarks')]
     private ?PublicationBookmarkCollection $collection = null;
 
-    #[ORM\OneToMany(mappedBy: 'publication_bookmark', targetEntity: Notification::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'publication_bookmark', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $notifications;
 
     public function __construct()

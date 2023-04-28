@@ -40,36 +40,36 @@ class PublicationChapter
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $published = null;
 
-    #[ORM\OneToMany(mappedBy: 'chapter', orphanRemoval: true, targetEntity: PublicationChapterVersioning::class)]
+    #[ORM\OneToMany(mappedBy: 'chapter', orphanRemoval: true, cascade: ['persist', 'remove'], targetEntity: PublicationChapterVersioning::class)]
     private Collection $publicationChapterVersionings;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $slug = null;
 
 
-    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationChapterView::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationChapterView::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationChapterViews;
 
-    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationChapterNote::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationChapterNote::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationChapterNotes;
 
-    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationChapterLike::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationChapterLike::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationChapterLikes;
 
 
-    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationComment::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationComment::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationComments;
 
-    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationBookmark::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationBookmark::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationBookmarks;
 
-    #[ORM\OneToMany(mappedBy: 'publication_follow', targetEntity: Notification::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'publication_follow', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $notifications;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $pdf = null;
 
-    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: Pictures::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: Pictures::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $pictures;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 3)]
@@ -78,7 +78,7 @@ class PublicationChapter
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $trashAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationRead::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationRead::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationReads;
 
     #[ORM\Column(nullable: true)]

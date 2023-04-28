@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\PublicationBookmarkCollectionRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use App\Repository\PublicationBookmarkCollectionRepository;
 
 #[ORM\Entity(repositoryClass: PublicationBookmarkCollectionRepository::class)]
 class PublicationBookmarkCollection
@@ -24,7 +24,7 @@ class PublicationBookmarkCollection
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $CreatedAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'collection', targetEntity: PublicationBookmark::class)]
+    #[ORM\OneToMany(mappedBy: 'collection', targetEntity: PublicationBookmark::class,  orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationBookmarks;
 
     public function __construct()

@@ -24,7 +24,7 @@ class PublicationDownload
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $dlAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'download', targetEntity: Notification::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'download', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $notifications;
 
     public function __construct()

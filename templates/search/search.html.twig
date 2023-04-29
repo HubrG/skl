@@ -6,10 +6,10 @@
 
 {% block body %}
 	{# ! GÉNÉRAL #}
+	{% set submitted = app.request.query.all|length > 0 %}
 	{% set pubOrAuthor = app.request.query.get('pubOrAuthor')|default("publication") %}
 	{% set searchText = app.request.query.get('searchText') %}
 	{% set orderBy = app.request.query.get('orderBy')|default("desc") %}
-	{% set submitted = app.request.query.all|length > 0 %}
 	{# ! USER #}
 	{% set sortByUser = app.request.query.get('sortByUser')|default("alpha") %}
 	{% set alreadyPublished = submitted ? (app.request.query.get('alreadyPublished') == 'on' ? 'checked' : '') : 'checked' %}
@@ -42,26 +42,26 @@
 			{% set grid_button_right = null %}
 		{% endif %}
 	{% endif %}
-	<h1 class="text-center font-serif">Rechercher</h1>
-	<div class="flex flex-col md:flex-row items-start gap-x-10 pt-5">
-		<aside class="md:w-3/12 w-full    border-r-none md:border-r-4 border-slate-200 dark:border-slate-700    p-5">
-			<form class="gap-y-2 flex flex-col justify-center w-full gap-x-3 items-baseline md:items-start justify-items-center" action="" id="search-form" method="get">
+	<h1 class="text-center font-serif -mt-5 md:mt-0">Rechercher</h1>
+	<div class="flex flex-col lg:flex-row items-start gap-x-10 pt-5">
+		<aside class="lg:w-3/12 lg:p-5 py-3 w-auto mx-auto  border-r-none lg:border-r-4 border-slate-200 dark:border-slate-700">
+			<form class="gap-y-2 flex flex-col justify-center w-full gap-x-3 items-baseline  lg:ml-0 lg:items-start justify-items-center" action="" id="search-form" method="get">
 				<div class="flex flex-row items-center gap-x-2">
 					{% include "./partials/_form-row.html.twig" with {
 						model:"input",
 						type:"text",
 						icon:"fa-radar",
-						label:"Rechercher",
+						label:"Rechercher...",
 						name:"searchText",
 						class:"w-full font-semibold",
-						classField:"w-full",
-						placeholder:"Terme de recherche",
+						classField:"w-full  placeholder:text-xs",
+						placeholder:pubOrAuthor == "publication" ? "Titre, résumé, auteur" : "Nom d'auteur, d'utilisateur",
 						checked:"",
 						error:"",
 						help:"",
 						value: searchText
 					} %}
-					<button class="btn hidden btn-primary" id="submit-form" type="submit">Ok</button>
+
 				</div>
 
 				<div>
@@ -76,7 +76,8 @@
 					</div>
 				</div>
 
-				{% if pubOrAuthor == "publication" %}
+
+				<div class="{{pubOrAuthor != "publication" ? "hidden"}}">
 					<div class="-mt-5">
 						<h2 class="font-semibold mb-2 mt-2 dark:text-slate-300">Temps de lecture :</h2>
 						<div class="flex flex-row items-center gap-x-2 mb-2">
@@ -133,13 +134,11 @@
 						{"value": "DESC", "label": "Décroissant", "selected": orderBy == 'DESC' ? 'selected'},
 						]
 						} %}
-						<hr class="mb-5">
-						<div class="flex flex-row items-baseline gap-x-2 mb-2 -mt-0">
-							<input type="checkbox" name="notNull" id="notNull" {{ notNullChecked }}>
-							<label for="notNull" class="-mt-2 pt-0 font-normal dark:text-slate-400">Ne pas afficher les résultats nuls</label>
-						</div>
+
 					</div>
-				{% elseif pubOrAuthor == "user" %}
+				</div>
+
+				<div class="{{pubOrAuthor != "user" ? "hidden"}}">
 					<div class="-mt-5">
 						<h2 class="font-semibold mb-2 mt-2 dark:text-slate-300">Qui ont :</h2>
 						<div class="flex flex-row items-center gap-x-2 mb-2">
@@ -180,19 +179,19 @@
 						{"value": "DESC", "label": "Décroissant", "selected": orderBy == 'DESC' ? 'selected'},
 						]
 						} %}
-						<hr class="mb-5">
-						<div class="flex flex-row items-baseline gap-x-2 mb-2 -mt-3">
-							<input type="checkbox" name="notNull" id="notNull" {{ notNullChecked }}>
-							<label for="notNull" class="-mt-2 pt-0 font-normal dark:text-slate-400">Ne pas afficher les résultats nuls</label>
-						</div>
 					</div>
-				{% endif %}
+				</div>
+				<hr class="-mt-14">
+				<div class="flex flex-row items-baseline gap-x-2 mb-2 -mt-0">
+					<input type="checkbox" name="notNull" id="notNull" {{ notNullChecked }}>
+					<label for="notNull" class="-mt-2 pt-0 font-normal dark:text-slate-400">Ne pas afficher les résultats nuls</label>
+				</div>
+				<button class="btn hidden btn-primary" id="submit-form" type="submit">Ok</button>
 			</form>
 		</aside>
 		<section class="w-full">
-
 			<div
-				class="flex flex-col xl:flex-row mb-10 justify-between items-baseline px-2 pr-5 md:border-none -mt-4 md:-mt-1 dark:border-slate-700 pt-4 md:pt-0 border-t-4">
+				class="flex flex-col xl:flex-row mb-10 mt-5 justify-between items-baseline px-2 pr-5 md:border-none  md:-mt-1 dark:border-slate-700 pt-4 md:pt-0 border-t-4">
 				{# ! COUNT PUBLICATIONS #}
 				{% if pubOrAuthor == "publication" %}
 					<h4 class="items-baseline  flex flex-col md:flex-row  gap-x-2 text-center md:text-left mb-5 ml-2  font-light text-lg text-slate-500 dark:text-slate-300">

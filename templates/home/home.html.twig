@@ -8,7 +8,7 @@
 {% block javascripts %}{% endblock %}
 {% block body %}
 	<div class="bg-home dark:hidden opacity-50 -z-50 left-0 fixed h-screen w-full bg-repeat"></div>
-	<ul class=" shadow dark:shadow-xl rounded-lg flex flex-row justify-between items-start  mb-8 xl:mb-0 space-x-5 z-50 text-slate-900 dark:text-indigo-300">
+	<ul class=" shadow dark:shadow-xl rounded-lg grid grid-cols-4 justify-between items-baseline  mb-8 xl:mb-0 space-x-5 z-50 text-slate-900 dark:text-indigo-300">
 		<li class="navbar-home-item" {% if not app.user %} data-micromodal-trigger="popup-register" {% endif %}>
 			{% if app.user %}
 				<a href="{{path("app_publication_add")}}">

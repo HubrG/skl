@@ -1,0 +1,9 @@
+{% if app.user %}
+	{% set currentPublicationId = id %}
+	{% if app.user|read_all_chapters(currentPublicationId) %}
+		{% set allRead = true %}
+	{% endif %}
+	{% if allRead is defined %}
+		<i class="fa-duotone fa-badge-check text-green-500 dark:text-green-400 {{class is defined ? class}}" data-tippy-content="Lu intégralement"></i>
+	{% endif %}
+{% endif %}

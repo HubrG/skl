@@ -85,6 +85,7 @@ export function User() {
   });
 }
 function UpdateProfilPicture(file, type) {
+  console.log("couocu");
   if (type === "pp") {
     var image = document.getElementById("profil_picture");
   } else if (type === "pbg") {
@@ -116,6 +117,7 @@ function UpdateProfilPicture(file, type) {
       },
     })
     .then((response) => {
+      console.log(response);
       if (response.data.code === 200) {
         if (type === "pp") {
           image.src = response.data.cloudinary;

@@ -70,6 +70,7 @@ const TurboHelper = class {
       darkMode();
     });
     document.addEventListener("turbo:load", () => {
+      User();
       MicroModal.init();
       DropdownMenu();
       Dropdown();
@@ -79,7 +80,6 @@ const TurboHelper = class {
       Comment();
       Navbar();
       PublicationShowOne();
-      User();
       addKeyword();
       AxiosSavePublication();
       ReadTime();

@@ -107,8 +107,7 @@ class NotificationSystem extends AbstractController
                 $email->subject($textSubject)
                     ->context([
                         'content' => "<a href='https://www.scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
-                     vient d'écrire un commentaire " . $textChapter . $textPublication . "<br/>
-                     <blockquote style='font-style: italic;text-align:center;'>« " . $notification->getComment()->getContent() . " »</blockquote>",
+                     vient d'écrire un commentaire " . $textChapter . $textPublication . "<br/>",
                         'subject' => "Nouveau commentaire sur l'une de vos publications.",
                     ]);
                 //
@@ -139,8 +138,7 @@ class NotificationSystem extends AbstractController
                 $email->subject($textSubject)
                     ->context([
                         'content' => "<a href='https://www.scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
-                        vient d'écrire un commentaire " . $textChapter . $textPublication . "<br/>
-                        <blockquote style='font-style: italic;text-align:center;'>« " . $notification->getComment()->getContent() . " »</blockquote>",
+                        vient d'écrire un commentaire " . $textChapter . $textPublication . "<br/>",
                         'subject' => "Nouveau commentaire sur l'une de vos publications.",
                     ]);
                 //

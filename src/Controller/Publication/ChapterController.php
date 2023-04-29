@@ -381,8 +381,10 @@ class ChapterController extends AbstractController
         }
     }
     #[Route('/story/chapter/deleteimg', name: 'app_chapter_delete_img', methods: "POST")]
-    public function Axios_delImg(Request $request, EntityManagerInterface $em, PicturesRepository $picRepo, PublicationChapterRepository $pcRepo): response
+    public function Axios_delImg(Request $request, UserRepository $userRepo, EntityManagerInterface $em, PicturesRepository $picRepo, PublicationChapterRepository $pcRepo): response
     {
+
+
         $chapter = $pcRepo->find($request->get("id"));
         if ($this->getUser() == $chapter->getPublication()->getUser() or $this->isGranted("ROLE_ADMIN")) {
             $dtPic = $request->get("pic");

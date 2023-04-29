@@ -16,7 +16,12 @@ class SearchController extends AbstractController
     {
         $pubOrAuthor = $request->query->get('pubOrAuthor');
         $searchText = $request->query->get('searchText');
-        $orderBy = $request->query->get('orderBy');
+        if ($request->query->get('orderBy')) {
+            $orderBy = $request->query->get('orderBy');
+        } else {
+
+            $orderBy = $request->query->get('orderByUser');
+        }
         $notNull = $request->query->get('notNull');
         // !
         // * Recherche par publication

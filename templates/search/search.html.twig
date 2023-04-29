@@ -9,8 +9,9 @@
 	{% set submitted = app.request.query.all|length > 0 %}
 	{% set pubOrAuthor = app.request.query.get('pubOrAuthor')|default("publication") %}
 	{% set searchText = app.request.query.get('searchText') %}
-	{% set orderBy = app.request.query.get('orderBy')|default("desc") %}
+	{% set orderBy = app.request.query.get('orderBy')|default("DESC") %}
 	{# ! USER #}
+	{% set orderByUser = app.request.query.get('orderByUser')|default("DESC") %}
 	{% set sortByUser = app.request.query.get('sortByUser')|default("alpha") %}
 	{% set alreadyPublished = submitted ? (app.request.query.get('alreadyPublished') == 'on' ? 'checked' : '') : 'checked' %}
 	{# ! PUBLICATION #}
@@ -72,7 +73,7 @@
 					</div>
 					<div class="flex flex-row items-center gap-x-2 mb-2">
 						<input type="radio" name="pubOrAuthor" value="user" id="authors" {{pubOrAuthor == "user" ? "checked" }}>
-						<label for="authors" class="-mt-2 font-normal">Les utilisateurs</label>
+						<label for="authors" class="-mt-2 font-normal">Les scrilabeurs</label>
 					</div>
 				</div>
 
@@ -167,7 +168,7 @@
 						{% include "./partials/_form-row.html.twig" with {
 						model:"select",
 						type:"select",
-						name:"orderBy",
+						name:"orderByUser",
 						icon:"fa-sort",
 						class:"w-full",
 						classField:"w-full",
@@ -175,8 +176,8 @@
 						error:"",
 						help:"",
 						options: [
-						{"value": "ASC", "label": "Croissant", "selected": orderBy == 'ASC' ? 'selected'},
-						{"value": "DESC", "label": "Décroissant", "selected": orderBy == 'DESC' ? 'selected'},
+						{"value": "ASC", "label": "Croissant", "selected": orderByUser == 'ASC' ? 'selected'},
+						{"value": "DESC", "label": "Décroissant", "selected": orderByUser == 'DESC' ? 'selected'},
 						]
 						} %}
 					</div>

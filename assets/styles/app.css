@@ -1138,10 +1138,10 @@ main button {
 }
 /* Show all Big Mansoury */
 .display_publications.big.showAll {
-	@apply md:columns-2 sm:columns-1  -mt-14 md:-mt-0  md:gap-10 sm:gap-7 gap-5 !important;
+	@apply md:columns-2 sm:columns-1  -mt-14 md:-mt-0  md:gap-10 sm:gap-7 gap-7 !important;
 }
 .display_publications.big.showAll .card   {
-	@apply mb-5;
+	@apply mb-10;
 }
 /* END Show all Big Mansoury */
 .display_publications .card   {

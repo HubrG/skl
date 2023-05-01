@@ -21,9 +21,6 @@ export function User() {
         data.append("type", checkbox.getAttribute("data-notif-type"));
         data.append("nb", checkbox.getAttribute("data-notif-nb"));
         data.append("value", event.target.checked);
-        // console.log(event.target.getAttribute("data-notif-type"));
-        // console.log(event.target.getAttribute("data-notif-nb"));
-        // console.log(event.target.checked);
         axios
           .post(url, data, {
             headers: {
@@ -85,7 +82,6 @@ export function User() {
   });
 }
 function UpdateProfilPicture(file, type) {
-  console.log("couocu");
   if (type === "pp") {
     var image = document.getElementById("profil_picture");
   } else if (type === "pbg") {
@@ -117,7 +113,6 @@ function UpdateProfilPicture(file, type) {
       },
     })
     .then((response) => {
-      console.log(response);
       if (response.data.code === 200) {
         if (type === "pp") {
           image.src = response.data.cloudinary;

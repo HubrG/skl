@@ -10,19 +10,19 @@
 		<div class="mb-4 border-b border-gray-200 dark:border-gray-700">
 			<ul class="flex justify-center -mb-px  text-sm lg:text-base font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
 				<li class="mr-2" role="presentation">
-					<button class=" p-4 border-b-2 rounded-t-lg" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">
+					<button class=" p-4 border-b-2 rounded-t-lg tab-button" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">
 						<i class="fa-regular fa-circle-user"></i>
 						<span>Compte</span>
 					</button>
 				</li>
 				<li class="mr-2" role="presentation">
-					<button class=" p-4 border-b-2 rounded-t-lg" id="password-tab" data-tabs-target="#password" type="button" role="tab" aria-controls="password" aria-selected="false">
+					<button class=" p-4 border-b-2 rounded-t-lg tab-button" id="password-tab" data-tabs-target="#password" type="button" role="tab" aria-controls="password" aria-selected="false">
 						<i class="fa-regular fa-lock-keyhole"></i>
 						<span>Mot de passe</span>
 					</button>
 				</li>
 				<li role="notif-account">
-					<button class=" p-4 border-b-2 rounded-t-lg" id="contacts-tab" data-tabs-target="#notif-account" type="button" role="tab" aria-controls="notif-account" aria-selected="false">
+					<button class=" p-4 border-b-2 rounded-t-lg tab-button" id="notification-tab" data-tabs-target="#notif-account" type="button" role="tab" aria-controls="notif-account" aria-selected="false">
 						<i class="fa-regular fa-bell-exclamation"></i>
 						<span>Notifications</span>
 					</button>
@@ -105,7 +105,7 @@
 				</div>
 			</turbo-frame>
 		</div>
-		<div class="hidden p-4 rounded-lg dark:bg-gray-800" id="notif-account" role="tabpanel" aria-labelledby="contacts-tab">
+		<div class="hidden p-4 rounded-lg dark:bg-gray-800" id="notif-account" role="tabpanel" aria-labelledby="notification-tab">
 			<div class="flex flex-col gap-y-4 text-xs lg:text-sm">
 				<div class="flex flex-row text-base pb-5">
 					<div class="w-10/12 font-semibold dark:text-slate-100">Type de notification</div>

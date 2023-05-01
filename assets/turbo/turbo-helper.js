@@ -18,6 +18,7 @@ import { Comment } from "../scripts/Publication/Comment";
 import { AxiosSavePublication } from "../scripts/Publication/Publication";
 import { GlideModule } from "../scripts/Glide";
 import { darkMode } from "../scripts/Darkmode";
+import { Tabs } from "../scripts/Tabs";
 import { ReadTime } from "../scripts/Publication/ChapterStats";
 import { quillEditor } from "../scripts/Quill.js";
 import { Sortables } from "../scripts/Publication/Sortable";
@@ -64,13 +65,14 @@ const TurboHelper = class {
           document.body.classList.remove("turbo-loading");
         }, 10);
       }
+      User();
       ShowChapter();
       toggleDrawer();
       targetQuote();
       darkMode();
+      Tabs();
     });
     document.addEventListener("turbo:load", () => {
-      User();
       MicroModal.init();
       DropdownMenu();
       Dropdown();
@@ -88,6 +90,7 @@ const TurboHelper = class {
       Sortables();
       PublicationShow();
       GlideModule();
+
       // ! Flashes
       if (document.getElementById("flashbag-success")) {
         if (

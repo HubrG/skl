@@ -19,7 +19,6 @@ class SearchController extends AbstractController
         if ($request->query->get('orderBy')) {
             $orderBy = $request->query->get('orderBy');
         } else {
-
             $orderBy = $request->query->get('orderByUser');
         }
         $notNull = $request->query->get('notNull');

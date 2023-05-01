@@ -253,7 +253,7 @@
 			{% if pubOrAuthor == "publication" %}
 				<div class="display_publications twoMax {{grid_status}} showAll" id="PublicationShowContent">
 					{% for item in results %}
-						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':sortBy, 'querySortby':sortBy, 'queryOrder':'desc','queryKeystring':'', 'querySlug':item.slug, "search":true} %}
+						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':sortBy, 'querySortby':sortBy, 'queryOrder':'DESC','queryKeystring':'', 'querySlug':item.slug, "search":true} %}
 					{% endfor %}
 				</div>
 			{% elseif pubOrAuthor == "user" %}

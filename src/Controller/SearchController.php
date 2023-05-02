@@ -14,6 +14,8 @@ class SearchController extends AbstractController
     #[Route('/search', name: 'app_search')]
     public function searchIndex(Request $request, PublicationRepository $pRepo, UserRepository $userRepo): Response
     {
+
+        // ! Recherche par publication ou par auteur
         $pubOrAuthor = $request->query->get('pubOrAuthor');
         $searchText = $request->query->get('searchText');
         if ($request->query->get('orderBy')) {
@@ -412,10 +414,25 @@ class SearchController extends AbstractController
             }, $resultsWithNbPub);
         }
 
+        // ! PAGINATION
+        // ! PAGINATION
+        $nbr_by_page = 12;
+        $page = $request->query->get('page') ?? 1;
+        $count = count($results);
+        if ($count > $nbr_by_page) {
+            $countPage = ceil($count / $nbr_by_page);
+            $start = ($page - 1) * $nbr_by_page;
+        } else {
+            $start = 0;
+            $countPage = 1;
+        }
+        $results = array_slice($results, $start, $nbr_by_page);
 
 
         return $this->render('search/search.html.twig', [
-            'results' => $results
+            'results' => $results,
+            'countPage' => $countPage,
+            'page' => $page
         ]);
     }
 }

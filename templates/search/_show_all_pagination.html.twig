@@ -1,0 +1,99 @@
+{% if type == "bottom" %}
+	{% set ii = 0 %}
+	<ul class="inline-flex items-center -space-x-px grayscale">
+		<li>
+			{% if pageAct == 1 or pageAct is null  %}
+				<span class="previousPageBottom pageButtonBottom disabled ">
+					<i class="fa-duotone fa-circle-arrow-left"></i>
+				</span>
+			{% else %}
+				{% set ii = pageAct - 1 %}
+				<a href="{{prevPageUrl}}" class="previousPageBottom pageButtonBottom">
+					<i class="fa-duotone fa-circle-arrow-left"></i>
+				</a>
+			{% endif %}
+		</li>
+		{% set show_nbr_pages = 3 %}
+		{% for i in 1..countPage %}
+			{% if i < show_nbr_pages or i > countPage - show_nbr_pages + 1  %}
+				<li>
+					{% if pageAct == i or (pageAct == null and i == 1) %}
+						<span class="pageBottom pageButtonBottom disabled ">{{ i }}</span>
+					{% else %}
+						{% set queryParamsPage = queryParams|merge({page: i}) %}
+						{% set queryParamsPageClick = app.request.schemeAndHttpHost ~ app.request.basePath ~ app.request.pathInfo ~ '?' ~ queryParamsPage|url_encode %}
+						<a href="{{queryParamsPageClick}}" class="pageBottom pageButtonBottom ">{{ i }}</a>
+					{% endif %}
+				</li>
+			{% elseif i < pageAct + show_nbr_pages and i > pageAct - show_nbr_pages  %}
+				<li>
+					{% if pageAct == i or (pageAct == null and i == 1) %}
+						<span class="pageBottom pageButtonBottom disabled ">{{ i }}</span>
+					{% else %}
+						{% set queryParamsPage = queryParams|merge({page: i}) %}
+						{% set queryParamsPageClick = app.request.schemeAndHttpHost ~ app.request.basePath ~ app.request.pathInfo ~ '?' ~ queryParamsPage|url_encode %}
+						<a href="{{queryParamsPageClick}}" class="pageBottom pageButtonBottom ">{{ i }}</a>
+					{% endif %}
+				</li>
+			{% elseif i == pageAct + show_nbr_pages or i == pageAct - show_nbr_pages  %}
+				<li>
+					{% set queryParamsPage = queryParams|merge({page: i}) %}
+					{% set queryParamsPageClick = app.request.schemeAndHttpHost ~ app.request.basePath ~ app.request.pathInfo ~ '?' ~ queryParamsPage|url_encode %}
+					<a href="{{queryParamsPageClick}}" class="pageBottom pageButtonBottom ">...</a>
+				</li>
+			{% endif %}
+		{% endfor %}
+		<li>
+			{% if pageAct == countPage  %}
+				<span class="nextPageBottom pageButtonBottom disabled">
+					<i class="fa-duotone fa-circle-arrow-right"></i>
+				</span>
+			{% else %}
+				{% if pageAct is null %}
+					{% set ii = 2 %}
+				{% else %}
+					{% set ii = pageAct + 1 %}
+				{% endif %}
+				<a href="{{nextPageUrl}}" class="nextPageBottom pageButtonBottom ">
+					<i class="fa-duotone fa-circle-arrow-right"></i>
+				</a>
+			{% endif %}
+		</li>
+	</ul>
+{% else %}
+	<p class="text-xs text-slate-500 dark:text-slate-300  mb-2 md:mb-1 pb-2 text-center">Page
+		{{ page }}
+		sur
+		{{ countPage }}
+	</p>
+	<ul class="flex justify-center items-center  font-medium w-full text-center rounded-lg">
+		<li>
+			{% if pageAct == 1 or pageAct is null  %}
+				<span class="previousPageTop pageButtonTop disabled">
+					<i class="fa-duotone fa-circle-arrow-left"></i>
+				</span>
+			{% else %}
+				{% set ii = pageAct - 1 %}
+				<a href="{{prevPageUrl}}" class="previousPageTop pageButtonTop">
+					<i class="fa-duotone fa-circle-arrow-left"></i>
+				</a>
+			{% endif %}
+		</li>
+		<li>
+			{% if pageAct == countPage  %}
+				<span class="disabled nextPageTop pageButtonTop">
+					<i class="fa-duotone fa-circle-arrow-right"></i>
+				</span>
+			{% else %}
+				{% if pageAct is null %}
+					{% set ii = 2 %}
+				{% else %}
+					{% set ii = pageAct + 1 %}
+				{% endif %}
+				<a href="{{nextPageUrl}}" class="nextPageTop pageButtonTop">
+					<i class="fa-duotone fa-circle-arrow-right"></i>
+				</a>
+			{% endif %}
+		</li>
+	</ul>
+{% endif %}

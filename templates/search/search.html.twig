@@ -20,7 +20,15 @@
 	{% set timeShortChecked = submitted ? (app.request.query.get('timeShort') == 'on' ? 'checked' : '') : 'checked' %}
 	{% set timeMediumChecked = submitted ? (app.request.query.get('timeMedium') == 'on' ? 'checked' : '') : 'checked' %}
 	{% set timeLongChecked = submitted ? (app.request.query.get('timeLong') == 'on' ? 'checked' : '') : 'checked' %}
-
+	{# ! DIVERS #}
+	{% set pageAct = page %}
+	{% set queryParams = app.request.query.all %}
+	{# Incrémentez le paramètre "page" pour passer à la page suivante #}
+	{% set queryParamsNext = queryParams|merge({page: (queryParams.page|default(1) + 1)}) %}
+	{% set queryParamsPrev = queryParams|merge({page: (queryParams.page|default(1) - 1)}) %}
+	{# Reconstruisez l'URL avec les nouveaux paramètres #}
+	{% set prevPageUrl = app.request.schemeAndHttpHost ~ app.request.basePath ~ app.request.pathInfo ~ '?' ~ queryParamsPrev|url_encode %}
+	{% set nextPageUrl = app.request.schemeAndHttpHost ~ app.request.basePath ~ app.request.pathInfo ~ '?' ~ queryParamsNext|url_encode %}
 	{# * GRID #}
 	{% if app.user %}
 		{% if app.user.userParameters is defined and app.user.userParameters.gridShow == true %}
@@ -73,7 +81,7 @@
 					</div>
 					<div class="flex flex-row items-center gap-x-2 mb-2">
 						<input type="radio" name="pubOrAuthor" value="user" id="authors" {{pubOrAuthor == "user" ? "checked" }}>
-						<label for="authors" class="-mt-2 font-normal">Les scrilabeurs</label>
+						<label for="authors" class="-mt-2 font-normal">Les utilisateur(ice)</label>
 					</div>
 				</div>
 
@@ -232,11 +240,12 @@
 									</button>
 								{% endif %}
 							</div>
-							{# {% if countPage > 1 %} #}
-						{# <div class="flex flex-col self-start -mt-[1.25rem] xl:-mt-[1.35rem]"> #}
-							{# {% include "publication/_partials/_show_all_pagination.html.twig" with {'type': "top"}  %} #}
-							{# </div> #}
-							{# {% endif %} #}
+							{% if countPage > 1 %}
+								<input type="hidden" id="countPage" value="{{ page }}">
+								<div class="flex flex-col self-start -mt-[1.25rem] xl:-mt-[1.35rem]">
+									{% include "search/_show_all_pagination.html.twig" with {'type': "top"}  %}
+								</div>
+							{% endif %}
 						</div>
 					</div>
 				{% elseif  pubOrAuthor == "user"  %}
@@ -248,6 +257,12 @@
 						</div>
 
 					</h4>
+					{% if countPage > 1 %}
+						<input type="hidden" id="countPage" value="{{ page }}">
+						<div class="flex flex-col self-start -mt-[1.25rem] xl:-mt-[1.35rem]">
+							{% include "search/_show_all_pagination.html.twig" with {'type': "top"}  %}
+						</div>
+					{% endif %}
 				{% endif %}
 			</div>
 			{% if pubOrAuthor == "publication" %}
@@ -305,5 +320,10 @@
 				</div>
 			{% endif %}
 		</section>
+	</div>
+	<div class="pt-20 flex justify-center">
+		{% if countPage > 1 %}
+			{% include "search/_show_all_pagination.html.twig" with {'type': "bottom"}  %}
+		{% endif %}
 	</div>
 {% endblock %}

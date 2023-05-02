@@ -89,13 +89,13 @@
 	</div>
 	{% if sortBy == "sheet" %}
 		<hr class="mt-0 mb-0">
-		<span class=" text-slate-500 text-xs justify-start dark:text-slate-400 w-full flex flex-row items-center gap-x-1">
+		<span class=" text-slate-500 text-xs  dark:text-slate-400 w-full flex flex-row justify-between items-center gap-x-1">
 			{% set filteredChapters = item.publicationChapters|filter(chapter => chapter.status == 2) %}
 			{% set sortedChapters = filteredChapters|sort((a, b) => b.published <=> a.published) %}
 			{% set lastChapter = sortedChapters|first %}
-			<span class="font-semibold">Dernière feuille :</span>
+			<span class="font-semibold">Dernière feuille</span>
 			<a {{ user_in_url ? "target='_top'" }} href="{{ path("app_chapter_show", {idChap:lastChapter.id, user:item.user.username, slugPub:item.slug, slug:lastChapter.slug}) }}" class="hover:underline">{{lastChapter.title}}</a>
-			<small class="text-slate-400 dark:text-slate-500">— il y a
+			<small class="text-slate-400 dark:text-slate-500">il y a
 				{{lastChapter.published|since}}</small>
 		</span>
 		<hr class="mt-0 mb-0">

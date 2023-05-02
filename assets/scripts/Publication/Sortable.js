@@ -257,22 +257,37 @@ function updateTaskDisplay() {
   const taskPublish = document.getElementById("taskPublish");
   const taskCategory = document.getElementById("taskCategory");
   const task = document.getElementById("task");
+  const publishPaidAttention = document.getElementById(
+    "publish-paid-attention"
+  );
+  const publishPaidAttentionPub = document.getElementById(
+    "publish-paid-attention-pub"
+  );
+  const publishPaidAttentionCat = document.getElementById(
+    "publish-paid-attention-cat"
+  );
+  const publicationCategory = document.getElementById("publication_category");
   let nbrPublished = document.getElementById("nbrPublished").innerHTML;
   //
 
   if (nbrPublished > 0) {
     taskPublish.classList.add("hidden");
+    publishPaidAttentionPub.classList.add("hidden");
     if (taskCategory.classList.contains("hidden")) {
       task.classList.add("hidden");
+      publishPaidAttention.classList.add("hidden");
     } else {
       task.classList.remove("hidden");
+      publishPaidAttention.classList.remove("hidden");
     }
   } else {
+    publishPaidAttentionPub.classList.remove("hidden");
     taskPublish.classList.remove("hidden");
     if (taskCategory.classList.contains("hidden")) {
       task.classList.remove("hidden");
+      publishPaidAttention.classList.remove("hidden");
     } else {
-      task.classList.add("hidden");
+      // task.classList.add("hidden");
     }
   }
 }

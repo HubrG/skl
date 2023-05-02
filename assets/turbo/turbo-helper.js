@@ -71,6 +71,7 @@ const TurboHelper = class {
       targetQuote();
       darkMode();
       Tabs();
+      addKeyword();
     });
     document.addEventListener("turbo:load", () => {
       MicroModal.init();
@@ -82,7 +83,6 @@ const TurboHelper = class {
       Comment();
       Navbar();
       PublicationShowOne();
-      addKeyword();
       AxiosSavePublication();
       ReadTime();
       quillEditor();

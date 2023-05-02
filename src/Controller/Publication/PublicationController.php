@@ -342,9 +342,13 @@ class PublicationController extends AbstractController
         $dtTitle = $request->get("title");
         $dtSummary = $request->get("summary");
         $dtFinished = $request->get("finished") == "true" ? true : false;
+        //
         $dtSale = $request->get("sale") == "true" ? 1 : 0;
         $dtSaleWeb = $request->get("sale_web");
         $dtSalePaper = $request->get("sale_paper");
+        $dtSaleWeb = ($dtSaleWeb === "undefined") ? null : $dtSaleWeb;
+        $dtSalePaper = ($dtSalePaper === "undefined") ? null : $dtSalePaper;
+        //
         $dtCategory = $request->get("category");
         $dtMature = $request->get("mature");
         if ($dtMature == "true") {

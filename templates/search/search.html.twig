@@ -276,18 +276,17 @@
 									<i class="fa-regular {{nbrPublication == 0 ? " hidden" }} {{nbrPublication == 1 ? " fa-book" : " fa-book-copy" }}"></i>
 									<a href="{{path("app_search", {sortBy:"published",orderBy:"DESC",searchText:item.username,pubOrAuthor:"publication"})}}" class="hover:underline">
 										{{nbrPublication > 0 ? nbrPublication : "Aucun récit publié" }}
-										{{nbrPublication < 2 and nbrPublication > 0 ? "récit publié" : nbrPublication > 1 ? "récit publiés"}}
+										{{nbrPublication < 2 and nbrPublication > 0 ? "récit publié" : nbrPublication > 1 ? "récits publiés"}}
 									</a>
 								</span>
 							</div>
 							{% if nbrPublication > 0 %}
 								<div class="flex flex-col gap-y-2">
 									<span class=" flex flex-row items-center gap-x-2 text-sm  text-slate-600 dark:text-slate-400">
-										<i class="fa-regular fa-fire"></i>
+										<i class="fa-duotone fa-fire" data-tippy-content="Récit le plus populaire"></i>
 										{% set mostPopular = item|mostPopularPublication %}
 										<span class="flex flex-row gap-x-2">
-											<span class=" font-semibold">Populaire :</span>
-											<a href="{{ path("app_publication_show_one", {id:mostPopular.id, slug:mostPopular.slug}) }}" class="text-slate-800 hover:underline dark:text-slate-400" target="_blank">{{mostPopular.title}}</a>
+											<a href="{{ path("app_publication_show_one", {id:mostPopular.id, slug:mostPopular.slug}) }}" class="text-slate-800 hover:underline dark:text-slate-400 font-semibold" target="_blank">{{mostPopular.title}}</a>
 										</span>
 									</span>
 								</div>

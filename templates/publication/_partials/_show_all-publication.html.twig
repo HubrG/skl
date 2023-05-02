@@ -2,6 +2,7 @@
 {% set current_path = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
 {% set user_in_url = 'user/' in current_path ? true : false %}
 {% set chap_content = "Aucun contenu" %}
+{% set title = item.title|length > 55 ? item.title|slice(0,56) ~ "..." : item.title %}
 {% if item.summary %}
 	{% set chap_content = item.summary %}
 {% else %}
@@ -45,8 +46,8 @@
 		{% endif %}
 		<div class="header-info">
 			<h2 class="font-semibold text-base md:text-xl  flex flex-row items-center gap-x-2 ">
-				<a {{ user_in_url ? "target='_top'" }} href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" class="hover:underline" aria-label="Lire {{item.title}}, par {{item.user.nickname}}">
-					{{item.title}}
+				<a {{ user_in_url ? "target='_top'" }} href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" {% if title|length > 58 %} data-tippy-content="{{item.title}}" {% endif %} class="hover:underline" aria-label="Lire {{item.title}}, par {{item.user.nickname}}">
+					{{title}}
 				</a>
 			</h2>
 			<h3>
@@ -88,12 +89,14 @@
 	</div>
 	{% if sortBy == "sheet" %}
 		<hr class="mt-0 mb-0">
-		<span class=" text-slate-500 text-xs justify-start dark:text-slate-400 w-full flex flex-row gap-x-1">
+		<span class=" text-slate-500 text-xs justify-start dark:text-slate-400 w-full flex flex-row items-center gap-x-1">
 			{% set filteredChapters = item.publicationChapters|filter(chapter => chapter.status == 2) %}
 			{% set sortedChapters = filteredChapters|sort((a, b) => b.published <=> a.published) %}
 			{% set lastChapter = sortedChapters|first %}
 			<span class="font-semibold">Dernière feuille :</span>
 			<a {{ user_in_url ? "target='_top'" }} href="{{ path("app_chapter_show", {idChap:lastChapter.id, user:item.user.username, slugPub:item.slug, slug:lastChapter.slug}) }}" class="hover:underline">{{lastChapter.title}}</a>
+			<small class="text-slate-400 dark:text-slate-500">— il y a
+				{{lastChapter.published|since}}</small>
 		</span>
 		<hr class="mt-0 mb-0">
 	{% endif %}

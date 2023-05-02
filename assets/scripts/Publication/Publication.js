@@ -30,7 +30,7 @@ export function AxiosSavePublication() {
       var saleLinks = document.getElementById("saleLinks");
       var sale = document.getElementById("publication_sale");
       sale.addEventListener("change", () => {
-        if (saleLinks.classList.contains("hidden")) {
+        if (sale.checked) {
           saleLinks.classList.remove("hidden");
         } else {
           saleLinks.classList.add("hidden");
@@ -65,7 +65,6 @@ export function AxiosSavePublication() {
 
           if (updatedTitle.trim() != oldTitle) {
             axiosChangeTitle(titleDataId, updatedTitle);
-            console.log("ok");
           }
         });
 
@@ -81,7 +80,6 @@ export function AxiosSavePublication() {
 
             if (updatedTitle.trim() != oldTitle) {
               axiosChangeTitle(titleDataId, updatedTitle);
-              console.log("ok");
             }
           }
         });
@@ -117,6 +115,15 @@ export function AxiosSavePublication() {
       const task = document.getElementById("task");
       const taskCategory = document.getElementById("taskCategory");
       const taskPublish = document.getElementById("taskPublish");
+      const publishPaidAttention = document.getElementById(
+        "publish-paid-attention"
+      );
+      const publishPaidAttentionPub = document.getElementById(
+        "publish-paid-attention-pub"
+      );
+      const publishPaidAttentionCat = document.getElementById(
+        "publish-paid-attention-cat"
+      );
       const publicationCategory = document.getElementById(
         "publication_category"
       );
@@ -124,19 +131,23 @@ export function AxiosSavePublication() {
         if (publicationCategory.value) {
           taskCategory.classList.add("animate__fadeOut");
           setTimeout(() => {
+            publishPaidAttentionCat.classList.add("hidden");
             taskCategory.classList.add("hidden");
             taskCategory.classList.remove("animate__fadeOut");
             if (taskPublish.classList.contains("hidden")) {
               task.classList.add("hidden");
+              publishPaidAttention.classList.add("hidden");
             }
           }, 1500);
         } else {
           taskCategory.classList.add("animate__fadeIn");
           if (taskPublish.classList.contains("hidden")) {
             task.classList.remove("hidden");
+            publishPaidAttention.classList.remove("hidden");
           }
           setTimeout(() => {
             taskCategory.classList.remove("hidden");
+            publishPaidAttentionCat.classList.remove("hidden");
           }, 1500);
         }
       });
@@ -193,7 +204,6 @@ function AxiosPublication() {
   }
   //!
   var mature = document.getElementById("publication_mature").checked;
-  console.log(mature);
   var hideIdPub = document.getElementById("hideIdPub").value;
   // * Gestion de la photo (si changement de photo)
   var spinCover = document.getElementById("spinCover").classList;
@@ -244,7 +254,6 @@ function AxiosPublication() {
     })
     .then(function (response) {
       if (response.data.code == 200) {
-        console.log(response.data);
         var notyText =
           "<span class='text-base font-medium'>Récit enregistré</span><br />Votre récit est à jour.";
         var notyTimeout = 4500;
@@ -307,7 +316,9 @@ function togglePubASfunc() {
 function publishPublication(ev) {
   // * Variables
   var hidePubStatus = document.getElementById("hidePubStatus");
+  //
   var publish = document.getElementById("PublicationPublishButton");
+  //
   var publishText = document.getElementById("publishText");
   var publishButton = document.getElementById("publishButton");
   var publishDiv = document.getElementById("publishDiv");
@@ -329,6 +340,7 @@ function publishPublication(ev) {
     if (publishButton.checked) {
       PublicationPublishModalText.innerHTML =
         "Êtes-vous certain(e) de vouloir <span class='text-red-500 dark:text-red-500'>dépublier</span> de votre récit ?";
+
       publishToggle.classList.add("peer-checked:bg-red-600");
       publish.classList.add("button-red");
       badgePubStatus.classList.toggle("badge-published");
@@ -487,7 +499,6 @@ async function axiosChangeTitle(id, title) {
       },
     });
   } catch (error) {
-    console.log(error);
     let notyText =
       "<span class='text-base font-medium'>Erreur</span><br />Une erreur est survenue lors de la modification du titre de votre récit";
     let notyType = "error";

@@ -22,11 +22,12 @@ export function addKeyword() {
             }
             let result = response.data["value"];
             let newKey = document.createElement("div");
-            newKey.setAttribute("id", "keyw_" + result.toUpperCase());
+            let newID = "keyw_" + result.replace(/ /g, "_").toUpperCase();
+            newKey.setAttribute("id", newID);
             let key = document.createTextNode(result);
             newKey.appendChild(key);
             document.getElementById("keyList").appendChild(newKey);
-            document.getElementById("keyw_" + result.toUpperCase()).innerHTML =
+            document.getElementById(newID).innerHTML =
               result +
               ' &nbsp;<a href="/story/' +
               page +

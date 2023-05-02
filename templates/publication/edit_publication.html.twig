@@ -552,6 +552,24 @@
 						<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400" id="PublicationPublishModalText">
 							Êtes-vous certain(e) de vouloir publier votre récit ?
 						</h3>
+						<div id="publish-paid-attention" class="{{infoPub.category and chaptersWithStatus2|length > 0 ? "hidden"}} mb-4 text-sm text-red-500 text-left">
+							<hr class="mb-5">
+							<p>Attention, si vous souhaitez que votre récits soit visible par vos lecteurs, vous devriez...</p>
+						</div>
+						<ul class="flex flex-col gap-y-3 list-disc px-[10%] text-left text-sm">
+							<li id="publish-paid-attention-cat" class="{{infoPub.category ? " hidden" : " " }} flex flex-row items-center gap-x-3">
+								<i class="fa-solid fa-arrow-right-to-arc"></i>
+								<span>
+									<strong>Choisir une catégorie</strong>
+									dans l'onglet « Informations »</span>
+							</li>
+							<li id="publish-paid-attention-pub" class="{{chaptersWithStatus2|length > 0 ? " hidden" : " " }} flex flex-row items-center gap-x-3">
+								<i class="fa-solid fa-arrow-right-to-arc"></i>
+								<span>
+									<strong>Publier au moins un chapitre</strong>
+									en en glissant un dans la section « Feuilles publiées »</span>
+							</li>
+						</ul>
 						{% if infoPub.category == null or infoPub.publicationChapters|filter(c => c.status == 2)|length == 0 %}
 							{% set classHidden = "hidden" %}
 						{% else %}

@@ -1190,3 +1190,46 @@ main button {
 /* ! */
 /* ! END */
 /* ! */
+
+.dark nav.breadcrumb ol li a:hover.not-underline {
+	@apply  bg-slate-800;
+    text-decoration: none;
+}
+nav.breadcrumb ol li a:hover.not-underline {
+	@apply  bg-slate-200;
+    text-decoration: none;
+}
+
+.header-nav-chap {
+    font-weight: 800!important;
+}
+.title-chap-breadcrumb {
+	@apply font-semibold text-sm !important;
+}
+.summary-chap {
+	@apply text-xs line-clamp-2 px-2 w-full text-slate-400 dark:text-slate-500 !important;
+}
+.content-database  {
+	@apply rounded-none mt-1 !important;
+}
+.title-chap-breadcrumb.actual {
+	@apply text-emerald-800 dark:text-emerald-300  !important;
+}
+.summary-chap.actual {
+	@apply text-emerald-800 dark:text-emerald-400 !important;
+}
+.chap-list-item-bread.actual {
+	@apply bg-green-100 dark:bg-emerald-800  border-b-[1px] border-t-[1px] border-green-300 dark:border-green-600 !important;
+}
+.suggestion-list-item {
+	@apply p-2 cursor-pointer dark:hover:bg-slate-700 hover:bg-slate-200;
+}
+#kwSelected span.kwTag {
+	@apply w-full cursor-pointer bg-slate-200 hover:bg-slate-300 !important;
+}
+#kwSelected div  {
+	@apply bg-slate-200 w-full text-slate-600 text-xs  mr-1 leading-8 mb-2 px-2.5 py-[0.2rem] rounded dark:bg-slate-600 dark:text-slate-400 dark:hover:bg-slate-500 dark:hover:text-slate-50 hover:bg-slate-300 ;
+}
+#kwSelected div:hover span.kwTag  {
+	@apply bg-slate-300 dark:bg-slate-500 !important;
+}

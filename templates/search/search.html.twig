@@ -15,6 +15,8 @@
 	{% set sortByUser = app.request.query.get('sortByUser')|default("alpha") %}
 	{% set alreadyPublished = submitted ? (app.request.query.get('alreadyPublished') == 'on' ? 'checked' : '') : 'checked' %}
 	{# ! PUBLICATION #}
+	{% set category = app.request.query.get('category')|default(null) %}
+	{% set keywords = app.request.query.get('keyword')|default(null) %}
 	{% set sortBy = app.request.query.get('sortBy')|default("published") %}
 	{% set notNullChecked = submitted ? (app.request.query.get('notNull') == 'on' ? 'checked' : '') : 'checked' %}
 	{% set timeShortChecked = submitted ? (app.request.query.get('timeShort') == 'on' ? 'checked' : '') : 'checked' %}
@@ -102,14 +104,38 @@
 							<label for="timeLong" class="-mt-2 font-normal">Long (min. 80mn)</label>
 						</div>
 					</div>
-
 					<div>
+						{% set all_categories = publicationCategoryRepository.findAll()|sort((a, b) => a.slug < b.slug ? -1 : 1) %}
+
+						{% set options = [
+							{"value": "", "label": "Toutes les catégories", "selected": category == '' ? 'selected'}
+						] %}
+
+						{% for item in all_categories %}
+							{% set options = options|merge([{"value": item.slug, "label": item.name, "selected": category == item.slug ? 'selected'}]) %}
+						{% endfor %}
+						{% include "./partials/_form-row.html.twig" with {
+						model:"select",
+						type:"select",
+						name:"category",
+						label:"Dans la catégorie :",
+						icon:"fa-shapes",
+						class:"w-full",
+						classField:"w-full",
+						checked:"",
+						error:"",
+						help:"",
+						options: options
+						} %}
+					</div>
+
+					<div class="mt-10">
 						{% include "./partials/_form-row.html.twig" with {
 						model:"select",
 						type:"select",
 						label:"Trier par :",
 						name:"sortBy",
-						icon:"fa-shapes",
+						icon:"fa-books",
 						class:"w-full",
 						classField:"w-full",
 						checked:"",
@@ -143,10 +169,52 @@
 						{"value": "DESC", "label": "Décroissant", "selected": orderBy == 'DESC' ? 'selected'},
 						]
 						} %}
-
 					</div>
-				</div>
+					<div>
+						<div class="w-full  mx-auto relative">
+							<div id="input-container" class="relative w-full rounded">
+								<div class="flex flex-col relative py-2">
 
+									<div class="flex flex-row justify-between items-center relative">
+										{% include "./partials/_form-row.html.twig" with {
+											model:"input",
+											type:"text",
+											icon:"fa-tags",
+											label:"Mots-clés",
+											name:"keyword-input",
+											class:"w-full font-semibold mt-4",
+											classField:"w-full  placeholder:text-xs no-search",
+											formOption:"nonexistent-form",
+											placeholder:"",
+											help:"",
+											value: "",
+											error:"",
+										} %}
+										{# <input type="text" id="keyword-input" form="nonexistent-form" class=" no-search w-full bg-transparent outline-none" placeholder="Tapez un mot clé" contenteditable="true"> #}
+										<button type="button" id="arrow-icon" class="focus:outline-none absolute  right-2 top-[51.5%]">
+											<i class="fas fa-chevron-down cursor-pointer dark:text-slate-500"></i>
+										</button>
+										<ul
+											id="suggestion-list" class="hidden w-full mt-2 border border-slate-300 dark:border-slate-700 z-50  bg-white dark:bg-slate-900 dark:text-slate-300 absolute top-[5.7rem] overflow-y-auto min-h-96">{# résultats ici #}
+										</ul>
+									</div>
+									<div id="kwSelected" class="flex flex-wrap  gap-x-2 -mt-10 justify-evenly relative">
+										{% if keywords %}
+											{% set keywordList = keywords|split(',') %}
+											{% for keyword in keywordList %}
+												{% if keyword %}
+													<span class="kwTag" data-tippy-content="Supprimer ce mot-clé">{{ keyword }}</span>
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<input type="hidden" name="keyword" id="keyword" value="{{keywords}}">
+				</div>
 				<div class="{{pubOrAuthor != "user" ? "hidden"}}">
 					<div class="-mt-5">
 						<h2 class="font-semibold mb-2 mt-2 dark:text-slate-300">Qui ont :</h2>
@@ -190,10 +258,10 @@
 						} %}
 					</div>
 				</div>
-				<hr class="-mt-14">
-				<div class="flex flex-row items-baseline gap-x-2 mb-2 -mt-0">
+				<hr class="{{pubOrAuthor != "user" ? "-mt-24" : "-mt-14 "}}">
+				<div class="flex flex-row items-start gap-x-2 mb-2 -mt-0">
 					<input type="checkbox" name="notNull" id="notNull" {{ notNullChecked }}>
-					<label for="notNull" class="-mt-2 pt-0 font-normal dark:text-slate-400">Ne pas afficher les résultats nuls</label>
+					<label for="notNull" class="-mt-1 pt-0 font-semibold dark:text-slate-400">Ne pas afficher les résultats nuls</label>
 				</div>
 				<button class="btn hidden btn-primary" id="submit-form" type="submit">Ok</button>
 			</form>

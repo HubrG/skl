@@ -2,6 +2,8 @@
 {% set route_params = app.request.attributes.get('_route_params') %}
 {% set queryOrder = route_params.order|default('desc') %}
 {% set querySortby = route_params.sortby|default('published') %}
+{% set queryPage = route_params.page|default(1) %}
+{% set querySlug = route_params.slug|default('all') %}
 {% if app.request.query.get('sortBy') %}
 	{% set querySortby = app.request.query.get('sortBy') %}
 	{% set queryOrder = app.request.query.get('orderBy') %}
@@ -51,7 +53,7 @@
 				{# </button> #}
 				{# </li> #}
 					<li>
-						<a href="{{path("app_search", {sortBy:querySortby,pubOrAuthor:"publication", orderBy:queryOrder|upper, timeShort:"on",timeMedium:"on",timeLong:"on", alreadyPublished:"on",sortByUser:"joinDate"})}}" aria-label="Recherche" class="navbar-button" data-tippy-content="Rechercher"> <i class="fa-duotone fa-telescope {{ not app.user ? " mt-0"}}"></i>
+						<a href="{{path("app_search", {sortBy:querySortby,pubOrAuthor:"publication",page:queryPage,category:querySlug, orderBy:queryOrder|upper, timeShort:"on",timeMedium:"on",timeLong:"on", alreadyPublished:"on",sortByUser:"joinDate"})}}" aria-label="Recherche" class="navbar-button" data-tippy-content="Rechercher"> <i class="fa-duotone fa-telescope {{ not app.user ? " mt-0"}}"></i>
 						<span>Rechercher</span>
 					</a>
 				</li>

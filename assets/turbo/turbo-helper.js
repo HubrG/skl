@@ -28,11 +28,13 @@ import { TippyC } from "../scripts/Tippy";
 import { PublicationShow } from "../scripts/Publication/PublicationShow";
 import { User } from "../scripts/User/User";
 import { Dropdown } from "../scripts/Dropdown";
+import { axiosSaveChapter } from "../scripts/Publication/Chapter";
 import { Charts } from "../scripts/Charts";
 import { NotyDisplay } from "../scripts/Noty";
 import { PublicationShowOne } from "../scripts/Publication/PublicationShowOne";
 import MicroModal from "micromodal"; // es6 module
 import { Navbar } from "../scripts/Navbar";
+import { searchPredictionKw } from "../scripts/Publication/SearchPredictionKw";
 import {
   ShowChapter,
   toggleDrawer,
@@ -72,24 +74,27 @@ const TurboHelper = class {
       darkMode();
       Tabs();
       addKeyword();
+      axiosSaveChapter();
+
+      searchPredictionKw();
     });
     document.addEventListener("turbo:load", () => {
-      MicroModal.init();
-      DropdownMenu();
-      Dropdown();
-      Charts();
-      LazyLoad();
-      TippyC();
-      Comment();
-      Navbar();
-      PublicationShowOne();
       AxiosSavePublication();
-      ReadTime();
+      Charts();
+      Comment();
+      Dropdown();
+      DropdownMenu();
+      GlideModule();
+      LazyLoad();
+      MicroModal.init();
+      Navbar();
+      PublicationShow();
+      PublicationShowOne();
       quillEditor();
+      ReadTime();
       Search();
       Sortables();
-      PublicationShow();
-      GlideModule();
+      TippyC();
 
       // ! Flashes
       if (document.getElementById("flashbag-success")) {

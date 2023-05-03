@@ -1,5 +1,3 @@
-import * as Turbo from "@hotwired/turbo";
-
 export function Search() {
   if (!document.getElementById("search-form")) return;
   // Sélectionnez le formulaire en utilisant l'identifiant que vous avez ajouté
@@ -30,6 +28,7 @@ export function Search() {
 
   textInputs.forEach(function (input) {
     input.addEventListener("input", function () {
+      if (input.classList.contains("no-search")) return;
       lastModifiedInput = input;
 
       // Annulez le précédent setTimeout, s'il en existe un
@@ -76,5 +75,4 @@ export function Search() {
     refocusSearchTextElement();
   });
 }
-
 Search();

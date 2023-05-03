@@ -7,16 +7,19 @@ use App\Repository\PublicationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\PublicationKeywordRepository;
+use App\Repository\PublicationCategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SearchController extends AbstractController
 {
     #[Route('/search', name: 'app_search')]
-    public function searchIndex(Request $request, PublicationRepository $pRepo, UserRepository $userRepo): Response
+    public function searchIndex(Request $request, PublicationRepository $pRepo, PublicationKeywordRepository $pkwRepo, PublicationCategoryRepository $pcatRepo, UserRepository $userRepo): Response
     {
 
         // ! Recherche par publication ou par auteur
         $pubOrAuthor = $request->query->get('pubOrAuthor');
+        $keywords = $request->query->get('keyword');
         $searchText = $request->query->get('searchText');
         if ($request->query->get('orderBy')) {
             $orderBy = $request->query->get('orderBy');
@@ -29,6 +32,7 @@ class SearchController extends AbstractController
         // !
         if ($pubOrAuthor == "publication") {
             $sortBy = $request->query->get('sortBy');
+            $category = $request->query->get('category');
             $timeShort = $request->query->get('timeShort');
             $timeMedium = $request->query->get('timeMedium');
             $timeLong = $request->query->get('timeLong');
@@ -55,6 +59,15 @@ class SearchController extends AbstractController
                 ->leftJoin('p.user', 'a')
                 ->where('p.status = 2')
                 ->andWhere('pc.status = 2');
+            if ($category) {
+                // Récupérer l'objet de catégorie par le slug
+                $categoryObject = $pcatRepo->findOneBy(['slug' => $category]);
+
+                if ($categoryObject) {
+                    $qb->andWhere('p.category = :category')
+                        ->setParameter('category', $categoryObject);
+                }
+            }
             $orX = $qb->expr()->orX(
                 $qb->expr()->like('p.title', ':searchText'),
                 $qb->expr()->like('p.summary', ':searchText'),
@@ -304,9 +317,9 @@ class SearchController extends AbstractController
                 }, $resultsWithComments);
             }
         } else {
-            // !
+            // !!!!!!!!!!!!!!!!!
             // * Recherche par auteur
-            // !
+            // !!!!!!!!!!!!!!!!!
             $sortBy = $request->query->get('sortByUser');
             $alreadyPublished = $request->query->get('alreadyPublished');
             if ($sortBy == 'alpha') {
@@ -414,7 +427,36 @@ class SearchController extends AbstractController
             }, $resultsWithNbPub);
         }
 
-        // ! PAGINATION
+
+        // ! MOTS CLÉS
+        if ($pubOrAuthor == "publication" && $keywords) {
+            // * On explode les mots clés, séparés par des virgules
+            $explodedKeywords = explode(',', $keywords);
+            // * Suppression des valeurs nulles ou vides
+            $explodedKeywords = array_filter($explodedKeywords, function ($value) {
+                return !empty(trim($value));
+            });
+
+            // * S'il y a des mots clés dans la requête, on supprime de $results toutes les publications qui ne contiennent pas ces mots clés
+            foreach ($results as $key => $publication) {
+                $publicationKeywords = $publication->getPublicationKeywords();
+                $foundKeyword = false;
+
+                foreach ($publicationKeywords as $pkw) {
+                    if (in_array($pkw->getKeyword(), $explodedKeywords)) {
+                        $foundKeyword = true;
+                        break;
+                    }
+                }
+
+                if (!$foundKeyword) {
+                    unset($results[$key]);
+                }
+            }
+        }
+
+
+
         // ! PAGINATION
         $nbr_by_page = 12;
         $page = $request->query->get('page') ?? 1;
@@ -428,11 +470,49 @@ class SearchController extends AbstractController
         }
         $results = array_slice($results, $start, $nbr_by_page);
 
+        // Keywords
+
 
         return $this->render('search/search.html.twig', [
             'results' => $results,
             'countPage' => $countPage,
-            'page' => $page
+            'page' => $page,
         ]);
+    }
+    #[Route('/search/getkw', name: 'app_search_getkw', methods: ['POST'])]
+    public function getKw(Request $request, PublicationKeywordRepository $pkwRepo, PublicationRepository $pRepo): Response
+    {
+        $publications = $pRepo->createQueryBuilder("p")
+            ->leftJoin("p.publicationChapters", "pc")
+            ->where("p.status = 2")
+            ->andWhere("pc.status = 2")
+            ->getQuery()
+            ->getResult();
+
+        // On récupère les keywords de chaque publication et on stocke dans un tableau
+        $keywords = [];
+        foreach ($publications as $publication) {
+            foreach ($publication->getPublicationKeywords() as $keyword) {
+                // On récupère l'ID du keyword, le count et le nom du keyword
+                $id = $keyword->getId();
+                $count = $keyword->getCount();
+                $name = $keyword->getKeyword();
+                // On stocke dans un tableau
+                $keywords[$id] = [
+                    "count" => $count,
+                    "name" => $name,
+                ];
+            }
+        }
+        // On trie par "count" décroissant
+        uasort($keywords, function ($a, $b) {
+            return $b['count'] <=> $a['count'];
+        });
+
+        // retour en json
+        return $this->json([
+            "code" => 200,
+            "keywords" => array_values($keywords),
+        ], 200);
     }
 }

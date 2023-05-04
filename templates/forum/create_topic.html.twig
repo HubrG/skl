@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Création d'un sujet |
+	{{category.name}}
+	| Forum — Scrilab
+{% endblock %}
+
+{% block body %}
+	<div class="lg:w-9/12 mx-auto">
+
+		<nav class="breadcrumb" aria-label="Breadcrumb">
+			<ol>
+
+				<li>
+					<a href="{{path("app_forum")}}">
+						Forums
+					</a>
+				</li>
+				<li>
+					<div>
+						<i class="fa-duotone fa-angle-right"></i>
+						<a href="{{path("app_forum_topic", {slug:category.slug})}}">
+							{{category.name}}
+						</a>
+					</div>
+				</li>
+				<li aria-current="page">
+					<div>
+						<i class="fa-duotone fa-angle-right"></i>
+						<span>Création d'un sujet</span>
+					</div>
+				</li>
+			</ol>
+		</nav>
+		<div>
+			{{ form_start(form, {attr: {'novalidate': 'novalidate'}}) }}
+			{% include "./partials/_form-row.html.twig" with {'form': form.title, 'icon':"fa-h1"} %}
+			{% include "./partials/_form-row.html.twig" with {'form': form.content, 'icon':null, classWidget:"h-96"} %}
+			<button type="submit" class="button-classic button-blue w-full">Créer le sujet</button>
+			{{ form_end(form) }}
+		</div>
+	</div>
+{% endblock %}

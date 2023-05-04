@@ -4,15 +4,12 @@ namespace App\Services;
 
 use Twig\Environment;
 use App\Entity\Notification;
-use Symfony\Component\Mime\Email;
 use App\Repository\UserRepository;
 use Symfony\Component\Mime\Address;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\NotificationRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 

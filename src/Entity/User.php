@@ -145,6 +145,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationRead::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationReads;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ForumTopic::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $forumTopics;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ForumMessage::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $forumMessages;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ForumTopicRead::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $forumTopicReads;
+
 
     public function __construct()
     {
@@ -162,6 +171,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->UserFrom = new ArrayCollection();
         $this->publicationFollows = new ArrayCollection();
         $this->publicationReads = new ArrayCollection();
+        $this->forumTopics = new ArrayCollection();
+        $this->forumMessages = new ArrayCollection();
+        $this->forumTopicReads = new ArrayCollection();
     }
 
 
@@ -934,5 +946,95 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             }
         }
         return false;
+    }
+
+    /**
+     * @return Collection<int, ForumTopic>
+     */
+    public function getForumTopics(): Collection
+    {
+        return $this->forumTopics;
+    }
+
+    public function addForumTopic(ForumTopic $forumTopic): self
+    {
+        if (!$this->forumTopics->contains($forumTopic)) {
+            $this->forumTopics->add($forumTopic);
+            $forumTopic->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeForumTopic(ForumTopic $forumTopic): self
+    {
+        if ($this->forumTopics->removeElement($forumTopic)) {
+            // set the owning side to null (unless already changed)
+            if ($forumTopic->getUser() === $this) {
+                $forumTopic->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ForumMessage>
+     */
+    public function getForumMessages(): Collection
+    {
+        return $this->forumMessages;
+    }
+
+    public function addForumMessage(ForumMessage $forumMessage): self
+    {
+        if (!$this->forumMessages->contains($forumMessage)) {
+            $this->forumMessages->add($forumMessage);
+            $forumMessage->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeForumMessage(ForumMessage $forumMessage): self
+    {
+        if ($this->forumMessages->removeElement($forumMessage)) {
+            // set the owning side to null (unless already changed)
+            if ($forumMessage->getUser() === $this) {
+                $forumMessage->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ForumTopicRead>
+     */
+    public function getForumTopicReads(): Collection
+    {
+        return $this->forumTopicReads;
+    }
+
+    public function addForumTopicRead(ForumTopicRead $forumTopicRead): self
+    {
+        if (!$this->forumTopicReads->contains($forumTopicRead)) {
+            $this->forumTopicReads->add($forumTopicRead);
+            $forumTopicRead->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeForumTopicRead(ForumTopicRead $forumTopicRead): self
+    {
+        if ($this->forumTopicReads->removeElement($forumTopicRead)) {
+            // set the owning side to null (unless already changed)
+            if ($forumTopicRead->getUser() === $this) {
+                $forumTopicRead->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

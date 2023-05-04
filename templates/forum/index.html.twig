@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Forums — Scrilab
+{% endblock %}
+
+{% block body %}
+
+	<div class="lg:w-9/12 mx-auto">
+
+		<h1 class="text-center font-serif  md:mt-0">Forums</h1>
+		<div class="flex flex-col items-start gap-x-10 pt-5 gap-y-5">
+			{% for item in category %}
+				<div class="p-10 bg-slate-50 dark:bg-slate-700 rounded-lg flex flex-col w-full">
+					<div class="flex flex-row gap-x-5 items-start">
+						<div>
+							<i class="fa-duotone {{item.icon}} text-4xl  dark:text-slate-300"></i>
+						</div>
+						<div class="flex flex-col w-full dark:text-slate-300">
+							<h2 class="text-base font-semibold flex flex-row justify-between items-baseline">
+								<a href="{{path("app_forum_topic", {slug:item.slug})}}" class=" hover:underline text-xl">{{item.name}}</a>
+								<span class="text-sm">
+									{{item.forumTopics|length == 0 ? "Aucun sujet" : item.forumTopics|length == 1 ? "1 sujet" : item.forumTopics|length ~ " sujets"}}
+								</span>
+							</h2>
+							<p>{{item.description|raw}}</p>
+						</div>
+					</div>
+					<div></div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}

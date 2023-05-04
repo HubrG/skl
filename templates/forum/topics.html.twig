@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{category.name}}
+	| Forum — Scrilab
+{% endblock %}
+
+{% block body %}
+	<div class="lg:w-9/12 mx-auto">
+
+		<nav class="breadcrumb" aria-label="Breadcrumb">
+			<ol>
+
+				<li>
+					<i class="fa-regular fa-comments"></i>
+					<a href="{{path("app_forum")}}">
+						Forums
+					</a>
+				</li>
+				<li aria-current="page">
+					<div>
+						<i class="fa-duotone fa-angle-right"></i>
+						<span>
+							{{category.name}}
+						</span>
+					</div>
+				</li>
+			</ol>
+		</nav>
+		<div class="flex flex-col mx-auto justify-center w-full">
+			{% if app.user %}
+				<a href="{{path("app_forum_topic_create", {slug:category.slug})}}" class="button-classic button-slate">Créer un topic</a>
+			{% else %}
+				<button class="button-classic button-slate" data-micromodal-trigger="popup-login">
+					Créer un topic
+				</button>
+			{% endif %}
+			{% if topics|length == 0 %}
+				Aucun topic
+			{% else %}
+				{% for item in topics %}
+					<div>
+						<a href="{{path("app_forum_topic_read", {slug:item.category.slug, slugTopic:item.slug, id:item.id})}}">{{item.title}}</a>
+					</div>
+				{% endfor %}
+			{% endif %}
+			<a href=""></a>
+		</div>
+	</div>
+{% endblock %}

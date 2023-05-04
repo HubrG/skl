@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{category.name}}
+	| Forum — Scrilab
+{% endblock %}
+
+{% block body %}
+	<div class="lg:w-9/12 mx-auto">
+		<nav class="breadcrumb" aria-label="Breadcrumb">
+			<ol>
+
+				<li>
+					<i class="fa-regular fa-comments"></i>
+					<a href="{{path("app_forum")}}">
+						Forums
+					</a>
+				</li>
+				<li>
+					<i class="fa-duotone fa-angle-right"></i>
+					<a href="{{path("app_forum_topic", {slug:category.slug})}}">
+						{{category.name}}
+					</a>
+				</li>
+				<li aria-current="page">
+					<i class="fa-duotone fa-angle-right"></i>
+					<div>
+
+						<span>{{topic.title}}</span>
+					</div>
+				</li>
+			</ol>
+		</nav>
+		<div class="flex flex-col gap-y-10 mx-auto justify-center w-full">
+			<div class="flex flex-col gap-y-3">
+				<h1 class="text-4xl mb-0">{{topic.title}}</h1>
+				<h2 class="flex flex-row items-center gap-x-3">
+					{% if topic.user.profilPicture %}
+						<img class="rounded-full h-6" src="{{topic.user.profilPicture }}"/>
+					{% endif %}
+					<a href="{{path("app_user", {username:topic.user.username})}}" class="hover:underline font-semibold dark:text-slate-300">{{topic.user.nickname}}</a>
+					<span class="text-slate-500 dark:text-slate-400">
+						— il y a
+						{{topic.createdAt|since}}</span>
+				</h2>
+			</div>
+			<p class="text-base text-justify text-slate-600 dark:text-slate-400">{{topic.content|smiley_to_emoji|nl2br}}</p>
+			<hr class="mb-0 mt-0 border-2">
+			<turbo-frame id="messages-frame" class="-mt-5">
+				{{ form_start(form, {attr: {'novalidate': 'novalidate'}}) }}
+				{% include "./partials/_form-row.html.twig" with {'form': form.content, 'icon':null, classWidget:"h-32"} %}
+				<button type="submit" class="button-classic button-blue w-full" onclick="setTimeout(function() { document.getElementById('forum_message_content').innerHTML = ''},300)">
+					Envoyer la réponse
+					<i class="fa-duotone fa-reply fa-flip-horizontal"></i>
+				</button>
+				{{ form_end(form) }}
+				<hr>
+				<div class="flex flex-col gap-y-5">
+					{% for item in topic.forumMessages|sort((a, b) => b.createdAt <=> a.createdAt) %}
+						<div class=" bg-slate-50 dark:bg-slate-900 p-5 rounded">
+							<div class="flex flex-row gap-x-3">
+								{% if item.user.profilPicture %}
+									<div>
+										<img class="rounded-full h-6" src="{{item.user.profilPicture }}"/>
+									</div>
+								{% endif %}
+								<div class="flex flex-row items-center justify-between w-full">
+									<a href="{{path("app_user", {username:item.user.username})}}" class="hover:underline font-semibold dark:text-slate-300" data-turbo-frame="_top">{{item.user.nickname}}</a>
+									<span class="text-slate-500 dark:text-slate-400 text-xs">
+										il y a
+										{{item.createdAt|since}}
+									</span>
+
+								</div>
+							</div>
+							<div class="text-sm text-justify text-slate-600 dark:text-slate-400">
+								<hr class="mb-5">
+								<p>{{item.content ? item.content|smiley_to_emoji|markdown}}</p>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</turbo-frame>
+
+		</div>
+	</div>
+{% endblock %}

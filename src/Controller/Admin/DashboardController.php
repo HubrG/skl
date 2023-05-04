@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Entity\Publication;
 use App\Entity\BlogCategory;
 use App\Entity\Notification;
+use App\Entity\ForumCategory;
 use App\Entity\UserParameters;
 use App\Entity\PublicationFollow;
 use App\Entity\PublicationRating;
@@ -98,6 +99,12 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Rating', 'fas fa-star', PublicationRating::class),
         ]);
 
+
+        yield MenuItem::section('Forum', 'fas fa-comments');
+        yield MenuItem::subMenu('Catégories', 'fas fa-masks-theater')->setSubItems([
+            MenuItem::linkToCrud('Voir les catégories', 'fas fa-eye', ForumCategory::class),
+            MenuItem::linkToCrud('Créer une catégorie', 'fas fa-add', ForumCategory::class)->setAction(Crud::PAGE_NEW),
+        ]);
         // yield MenuItem::linkToCrud('Publication Categories', 'fas fa-list', PublicationCategoryCrudController::class);
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
     }

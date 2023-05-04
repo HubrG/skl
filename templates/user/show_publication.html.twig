@@ -19,7 +19,7 @@
 		<div class="flex flex-col gap-y-5 items-center justify-center mt-[6.8rem] pt-10 dark:text-slate-300">
 			<i class="fa-duotone fa-cloud-slash  text-5xl"></i>
 			<h2 class="text-2xl ">Vous n'avez pas encore publié de récit</h2>
-			<a href="{{path("app_publication_add")}}" target="_top" class="btn btn-primary mt-5 hover:underline flex flex-row items-center gap-x-3">
+			<a href="{{path("app_publication_add")}}" data-turbo-frame="_top" class="btn btn-primary mt-5 hover:underline flex flex-row items-center gap-x-3">
 				<span>Publier un récit</span>
 				<i class="fa-duotone fa-pen-to-square"></i>
 			</a>
@@ -156,11 +156,11 @@
 								</td>
 
 								<td class="px-6 py-3 text-left {{item.status < 2 ? " opacity-60"}}">
-									<a target="_top" {% if item.title|length > 30 %} data-tippy-content="{{item.title}}" {% endif %} href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug} ) }}" class=" hover:underline">{{ item.title|slice(0,30) }}{{item.title|length > 30 ? "..."}}</a>
+									<a data-turbo-frame="_top" {% if item.title|length > 30 %} data-tippy-content="{{item.title}}" {% endif %} href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug} ) }}" class=" hover:underline">{{ item.title|slice(0,30) }}{{item.title|length > 30 ? "..."}}</a>
 								</td>
 								{#  #}
 								<td class="px-6 py-3 relative">
-									<a data-tippy-content="Éditer ce récit" href="{{ path("app_publication_edit", {id:item.id}) }}" target="_top" class="w-full text-sky-600 dark:text-slate-300">
+									<a data-tippy-content="Éditer ce récit" href="{{ path("app_publication_edit", {id:item.id}) }}" data-turbo-frame="_top" class="w-full text-sky-600 dark:text-slate-300">
 										<i class="fa-duotone fa-pen-to-square"></i>
 									</a>
 								</td>
@@ -181,7 +181,7 @@
 									{% else %}
 										{% set slug = "all" %}
 									{% endif %}
-									<a href="{{path("app_publication_show_all_category", {slug:slug})}}" target="_top">
+									<a href="{{path("app_publication_show_all_category", {slug:slug})}}" data-turbo-frame="_top">
 										<span {% if item.category %} {% if item.category.name|length > 9 %} data-tippy-content="{{item.category.name}}" {% endif %} {% endif %} class="text-xs catTag catColor-{{item.category.color is defined ? item.category.color : 11}} ">{{item.category.name is not defined ? "Aucune" : item.category.name|length > 9 ? item.category.name|slice(0,9) ~ "..." : item.category.name }}</a>
 									</td>
 								</td>

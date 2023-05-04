@@ -1,11 +1,20 @@
 export function Search() {
   if (!document.getElementById("search-form")) return;
+
+  const submited = document.getElementById("submited");
+  if (
+    submited.getAttribute("data-submited") == "ok" &&
+    window.innerWidth < 1024
+  ) {
+    var element = document.getElementById("results");
+    element.scrollIntoView({ behavior: "smooth" });
+  }
+
   // Sélectionnez le formulaire en utilisant l'identifiant que vous avez ajouté
   var form = document.getElementById("search-form");
 
   // Stockez le dernier input modifié
   var lastModifiedInput = null;
-
   function submitForm() {
     document.getElementById("submit-form").click();
   }

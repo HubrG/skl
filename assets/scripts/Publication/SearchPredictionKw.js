@@ -168,11 +168,7 @@ export function searchPredictionKw() {
           filteredKeywords.forEach((keyword) => {
             const listItem = document.createElement("li");
             listItem.textContent = keyword;
-            listItem.classList.add(
-              "p-2",
-              "cursor-pointer",
-              "hover:bg-gray-200"
-            );
+            listItem.classList.add("suggestion-list-item");
 
             listItem.addEventListener("mousedown", (e) => {
               e.preventDefault();

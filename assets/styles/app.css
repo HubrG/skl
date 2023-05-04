@@ -418,7 +418,7 @@ opacity: 0.4;
 	display: block;
 }
 .chapterComment {
-	@apply py-5 text-slate-700 dark:text-slate-200;
+	@apply py-5 text-slate-700 dark:text-slate-200 text-sm;
 }
 .chapterCommentEdit {
 	@apply mt-5  z-0 h-28 text-sm    block w-full  p-2.5 dark:bg-slate-700 bg-slate-50 dark:text-slate-300 rounded-lg border border-slate-300 dark:border-slate-500  focus:outline-none focus:border-blue-500 ;
@@ -1222,7 +1222,7 @@ nav.breadcrumb ol li a:hover.not-underline {
 	@apply bg-green-100 dark:bg-emerald-800  border-b-[1px] border-t-[1px] border-green-300 dark:border-green-600 !important;
 }
 .suggestion-list-item {
-	@apply p-2 cursor-pointer dark:hover:bg-slate-700 hover:bg-slate-200;
+	@apply p-2 cursor-pointer dark:hover:bg-slate-700 hover:bg-slate-200 text-sm italic;
 }
 #kwSelected span.kwTag {
 	@apply w-full cursor-pointer bg-slate-200 hover:bg-slate-300 !important;

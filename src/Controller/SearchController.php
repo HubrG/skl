@@ -477,6 +477,7 @@ class SearchController extends AbstractController
             'results' => $results,
             'countPage' => $countPage,
             'page' => $page,
+            'submited' => $request->query->get('submited')
         ]);
     }
     #[Route('/search/getkw', name: 'app_search_getkw', methods: ['POST'])]

@@ -56,7 +56,7 @@
 	<h1 class="text-center font-serif  md:mt-0">Rechercher</h1>
 	<div class="flex flex-col lg:flex-row items-start gap-x-10 pt-5">
 		<aside class="lg:w-3/12 lg:p-5 py-3 w-auto mx-auto  border-r-none lg:border-r-4 border-slate-200 dark:border-slate-700">
-			<form class="gap-y-2 flex flex-col justify-center w-full gap-x-3 items-baseline  lg:ml-0 lg:items-start justify-items-center" action="" id="search-form" method="get">
+			<form class="gap-y-2 flex flex-col justify-center w-full gap-x-3 items-baseline  lg:ml-0 lg:items-start justify-items-center" action="#PublicationShowContent" id="search-form" method="get">
 				<div class="flex flex-row items-center gap-x-2">
 					{% include "./partials/_form-row.html.twig" with {
 						model:"input",
@@ -74,6 +74,8 @@
 					} %}
 
 				</div>
+
+				<input type="hidden" id="submited" name="submited" data-submited="{{submited == "submit" ? "ok" : false}}" value="submit">
 
 				<div>
 					<h2 class="font-semibold mb-2 -mt-10 dark:text-slate-300">Afficher :</h2>
@@ -191,11 +193,11 @@
 											error:"",
 										} %}
 										{# <input type="text" id="keyword-input" form="nonexistent-form" class=" no-search w-full bg-transparent outline-none" placeholder="Tapez un mot clé" contenteditable="true"> #}
-										<button type="button" id="arrow-icon" class="focus:outline-none absolute  right-2 top-[51.5%]">
-											<i class="fas fa-chevron-down cursor-pointer dark:text-slate-500"></i>
+										<button type="button" id="arrow-icon" class="focus:outline-none absolute  right-[0.8rem] top-[52%]">
+											<i class="fas fa-chevron-down cursor-pointer text-[0.78rem] text-slate-600 dark:text-slate-500"></i>
 										</button>
 										<ul
-											id="suggestion-list" class="hidden w-full mt-2 border border-slate-300 dark:border-slate-700 z-50  bg-white dark:bg-slate-900 dark:text-slate-300 absolute top-[5.7rem] overflow-y-auto min-h-96">{# résultats ici #}
+											id="suggestion-list" class="hidden w-full mt-2 border border-slate-300 dark:border-slate-700 z-50  bg-white dark:bg-slate-900 dark:text-slate-300 absolute top-[5.7rem] overflow-y-auto max-h-[24rem]">{# résultats ici #}
 										</ul>
 									</div>
 									<div id="kwSelected" class="flex flex-wrap  gap-x-2 -mt-10 justify-evenly relative">
@@ -266,9 +268,9 @@
 				<button class="btn hidden btn-primary" id="submit-form" type="submit">Ok</button>
 			</form>
 		</aside>
-		<section class="w-full">
+		<section class="w-full" id="results">
 			<div
-				class="flex flex-col xl:flex-row mb-10 mt-5 justify-between items-baseline px-2 pr-5 md:border-none  md:-mt-1 dark:border-slate-700 pt-4 md:pt-0 border-t-4">
+				class="flex flex-col xl:flex-row mb-10 mt-10 justify-between items-baseline px-0 md:px-2 pr-5 lg:border-none  md:-mt-1 dark:border-slate-700 pt-4 lg:pt-0 border-t-4">
 				{# ! COUNT PUBLICATIONS #}
 				{% if pubOrAuthor == "publication" %}
 					<h4 class="items-baseline  flex flex-col md:flex-row  gap-x-2 text-center md:text-left mb-5 ml-2  font-light text-lg text-slate-500 dark:text-slate-300">
@@ -289,7 +291,7 @@
 							{% endif %}
 						</div>
 					</h4>
-					<div class="-mt-3  flex flex-col md:flex-row md:mb-0 mb-10 gap-y-8 items-baseline gap-x-2">
+					<div class="-mt-3  flex flex-col md:flex-row w-full md:w-auto md:mb-0 mb-10 gap-y-8 items-baseline gap-x-2">
 						<div class="flex flex-row items-center w-full justify-between md:justify-center gap-x-2">
 							<div class="flex flex-row rounded-md mt-2 md:mt-0">
 								{% if app.user %}
@@ -333,6 +335,7 @@
 					{% endif %}
 				{% endif %}
 			</div>
+
 			{% if pubOrAuthor == "publication" %}
 				<div class="display_publications twoMax {{grid_status}} showAll" id="PublicationShowContent">
 					{% for item in results %}

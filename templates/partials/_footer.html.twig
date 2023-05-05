@@ -10,8 +10,8 @@
 		<div class="md:flex md:flex-row grid grid-cols-2 py-10 gap-y-10 w-full  md:text-left text-center justify-evenly ">
 			<div>
 				<h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Récits</h2>
-				<ul class="text-gray-600 dark:text-gray-400">
-					<li class="mb-4">
+				<ul class="text-gray-600 flex flex-col gap-y-4 dark:text-gray-400">
+					<li>
 						<i class="fa-duotone fa-glasses-round"></i>
 						<a href="{{path("app_publication_show_all_category")}}" class="hover:underline">Tous les récits</a>
 					</li>
@@ -24,15 +24,9 @@
 							<button data-micromodal-trigger="popup-register" class="hover:underline">Écrire & publier</button>
 						{% endif %}
 					</li>
-				</ul>
-			</div>
-			<div>
-				<h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Faire un don</h2>
-				<ul class="text-gray-600 dark:text-gray-400">
-					<li class="mb-4">
-						<i class="fa-solid fa-circle-euro"></i>
-						<a href="https://fr.tipeee.com/scrilab/" target="_blank" class="hover:underline ">
-							sur Tipee</a>
+					<li>
+						<i class="fa-duotone fa-search"></i>
+						<a href="{{path("app_search", {sortBy:"published",pubOrAuthor:"publication",page:1,category:"all", orderBy:"DESC", timeShort:"on",timeMedium:"on",timeLong:"on", alreadyPublished:"on",sortByUser:"joinDate"})}}" class="hover:underline">Recherche</a>
 					</li>
 				</ul>
 			</div>
@@ -48,6 +42,20 @@
 						<i class="fa-brands fa-twitter"></i>
 						<a href="https://twitter.com/ScrilabEditions" target="_blank" class="hover:underline">
 							Sur Twitter</a>
+					</li>
+				</ul>
+			</div>
+			<div>
+				<h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Communauté</h2>
+				<ul class="text-gray-600 flex flex-col gap-y-4 dark:text-gray-400">
+					<li>
+						<i class="fa-duotone fa-comments"></i>
+						<a href="{{path("app_forum")}}" class="hover:underline">Forums</a>
+					</li>
+					<li>
+						<i class="fa-brands fa-discord"></i>
+						<a href="https://discord.gg/HStGhZGxzJ" data-turbo="false" target="_blank" class="hover:underline">
+							Chatter sur Discord</a>
 					</li>
 				</ul>
 			</div>
@@ -93,6 +101,16 @@
 					</li>
 				</ul>
 			</div>
+			<div>
+				<h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Faire un don</h2>
+				<ul class="text-gray-600 dark:text-gray-400">
+					<li class="mb-4">
+						<i class="fa-solid fa-circle-euro"></i>
+						<a href="https://fr.tipeee.com/scrilab/" target="_blank" class="hover:underline ">
+							sur Tipee</a>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</div>
 	<hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8 "/>
@@ -101,7 +119,6 @@
 			<a href="http://scrilab.org" class="hover:underline">Scrilab</a>. Tous droits réservés.
 		</span>
 		<div class="flex mt-4 space-x-6 sm:justify-center justify-center sm:mt-0">
-
 			<a href="https://fr.tipeee.com/scrilab/" data-tippy-content="Faire un don sur Tippy" target="_blank" class="text-gray-500 hover:text-gray-900 dark:hover:text-white">
 				<i class="fa-solid fa-circle-euro"></i>
 				<span class="sr-only">Tipee page</span>

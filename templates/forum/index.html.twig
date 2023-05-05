@@ -9,7 +9,7 @@
 
 		<h1 class="text-center font-serif  md:mt-0">Forums</h1>
 		<div class="flex flex-col items-start gap-x-10 pt-5 gap-y-5">
-			{% for item in category %}
+			{% for item in category|sort((b, a) => b.orderDisplay <=> a.orderDisplay) %}
 				<div class="p-10 py-7 bg-slate-50 dark:bg-slate-900 rounded-lg flex flex-col w-full">
 					<div class="flex flex-row gap-x-10 items-center">
 						<div class="min-w-[3rem] md:min-w-[4.8rem]">

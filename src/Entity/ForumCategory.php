@@ -34,6 +34,9 @@ class ForumCategory
     #[ORM\Column(nullable: true)]
     private ?int $color = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $orderDisplay = null;
+
     public function __construct()
     {
         $this->forumTopics = new ArrayCollection();
@@ -134,6 +137,18 @@ class ForumCategory
     public function setColor(?int $color): self
     {
         $this->color = $color;
+
+        return $this;
+    }
+
+    public function getOrderDisplay(): ?int
+    {
+        return $this->orderDisplay;
+    }
+
+    public function setOrderDisplay(?int $orderDisplay): self
+    {
+        $this->orderDisplay = $orderDisplay;
 
         return $this;
     }

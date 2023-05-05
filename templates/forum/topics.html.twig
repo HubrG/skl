@@ -56,7 +56,7 @@
 						<i class="fa-duotone  fa-plus-square"></i>
 					</a>
 				{% else %}
-					<button class="button-classic button-sky button-create-topic" data-micromodal-trigger="popup-login">
+					<button class="button-classic button-sky button-create-topic w-full" data-micromodal-trigger="popup-login">
 						Créer un nouveau sujet
 						<i class="fa-duotone  fa-plus-square"></i>
 					</button>
@@ -64,7 +64,10 @@
 				<div class="border-b-4 w-full border-slate-300 dark:bg-slate-800 bg-white dark:border-slate-700 h-5 bg-opacity-90 dark:bg-opacity-90">&nbsp;</div>
 			</div>
 			{% if topics|length == 0 %}
-				Aucun topic
+				<h2 class="p-10 text-center text-xl dark:text-slate-400 text-slate-500 flex flex-col gap-y-2">
+					<i class="fa-duotone fa-comment-slash text-3xl"></i>
+					Aucun sujet de discussion, soyez le premier à en créer un !
+				</h2>
 			{% else %}
 				<div class="flex flex-col gap-y-5 mt-7">
 					{% for item in topics|sort((a, b) => b.createdAt <=> a.createdAt) %}

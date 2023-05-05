@@ -158,6 +158,9 @@ form input[type=text],input[type=email],input[type=date],input[type=password], .
 form textarea {
 	@apply mt-5  rounded   z-0 text-justify   selection:bg-slate-800   border border-slate-600  dark:bg-slate-700 focus:outline-none focus:border-blue-500  text-sm  block w-full p-2.5 pb-5    dark:border-slate-700 dark:placeholder-gray-400  dark:text-slate-300;
 }
+.textarea {
+	@apply mt-5  rounded   z-0 text-justify   selection:bg-slate-800   border border-slate-600  dark:bg-slate-700 focus:outline-none focus:border-blue-500  text-sm  block w-full p-2.5 pb-5    dark:border-slate-700 dark:placeholder-gray-400  dark:text-slate-300;
+}
 form select, .select {
 	@apply mt-5  rounded   z-0 text-justify   selection:bg-slate-800   border border-slate-600  dark:bg-slate-700 text-sm h-12 focus:border-blue-500   block w-full pl-10 p-2.5    dark:border-slate-700 dark:placeholder-gray-400 dark:text-slate-300 ;
 }
@@ -428,6 +431,15 @@ opacity: 0.4;
 }
 .chapterCommentEditCancelButton {
 	@apply  float-right font-sans rounded-full -mt-[6.9rem] mr-[0.2rem]  px-1 text-slate-600  text-center text-xs ;
+}
+.topicCommentEditValidButton {
+	@apply   z-50 dark:text-slate-300 text-slate-800   mr-1 font-sans  p-1 px-2 mt-1 mb-2 text-center text-sm rounded hover:text-emerald-600 hover:dark:text-emerald-400 ;
+}
+.topicCommentEditCancelButton {
+	@apply   z-50 dark:text-slate-300 text-slate-800   mr-1 font-sans  p-1 px-2 mt-1 mb-2 text-center text-sm rounded hover:text-red-600 hover:dark:text-red-400 ;
+}
+.topicComment {
+	@apply text-sm dark:text-slate-200
 }
 .kwTag {
 	@apply bg-slate-200 text-slate-600 text-xs  mr-1 leading-8 mb-2 px-2.5 py-[0.2rem] rounded dark:bg-slate-600 dark:text-slate-400 dark:hover:bg-slate-500 dark:hover:text-slate-50 hover:bg-slate-300 ;
@@ -1232,4 +1244,13 @@ nav.breadcrumb ol li a:hover.not-underline {
 }
 #kwSelected div:hover span.kwTag  {
 	@apply bg-slate-300 dark:bg-slate-500 !important;
+}
+.button-create-topic {
+	@apply rounded-t-none !important;
+}
+.roundedTnone {
+	@apply rounded-t-none !important;
+}
+.roundedBnone {
+	@apply rounded-b-none !important;
 }

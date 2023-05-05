@@ -25,7 +25,7 @@ class ForumMessageType extends AbstractType
                         'message' => 'Veuillez remplir ce champ.',
                     ]),
                 ],
-                'help' => 'Vous pouvez utiliser du Markdown pour mettre en forme votre message.'
+
             ]);
     }
 

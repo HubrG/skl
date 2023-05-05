@@ -240,5 +240,4 @@ function toggleASfunc() {
     });
   }
 }
-axiosSaveChapter();
 export { axiosChapter };

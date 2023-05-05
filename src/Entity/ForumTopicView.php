@@ -2,30 +2,25 @@
 
 namespace App\Entity;
 
+use App\Repository\ForumTopicViewRepository;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\ForumTopicReadRepository;
 
-#[ORM\Entity(repositoryClass: ForumTopicReadRepository::class)]
-class ForumTopicRead
+#[ORM\Entity(repositoryClass: ForumTopicViewRepository::class)]
+class ForumTopicView
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'forumTopicReads')]
+    #[ORM\ManyToOne(inversedBy: 'forumTopicViews')]
     private ?User $user = null;
 
-    #[ORM\ManyToOne(inversedBy: 'forumTopicReads')]
+    #[ORM\ManyToOne(inversedBy: 'forumTopicViews')]
     private ?ForumTopic $topic = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $readAt = null;
-
     #[ORM\Column(nullable: true)]
-    private ?int $nbrMessage = null;
-
-
+    private ?\DateTimeImmutable $viewDate = null;
 
     public function getId(): ?int
     {
@@ -56,26 +51,14 @@ class ForumTopicRead
         return $this;
     }
 
-    public function getReadAt(): ?\DateTimeImmutable
+    public function getViewDate(): ?\DateTimeImmutable
     {
-        return $this->readAt;
+        return $this->viewDate;
     }
 
-    public function setReadAt(\DateTimeImmutable $readAt): self
+    public function setViewDate(?\DateTimeImmutable $viewDate): self
     {
-        $this->readAt = $readAt;
-
-        return $this;
-    }
-
-    public function getNbrMessage(): ?int
-    {
-        return $this->nbrMessage;
-    }
-
-    public function setNbrMessage(?int $nbrMessage): self
-    {
-        $this->nbrMessage = $nbrMessage;
+        $this->viewDate = $viewDate;
 
         return $this;
     }

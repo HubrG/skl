@@ -35,6 +35,7 @@ import { PublicationShowOne } from "../scripts/Publication/PublicationShowOne";
 import MicroModal from "micromodal"; // es6 module
 import { Navbar } from "../scripts/Navbar";
 import { searchPredictionKw } from "../scripts/Publication/SearchPredictionKw";
+import { ForumTopicRead } from "../scripts/Forum/ForumTopicRead";
 import {
   ShowChapter,
   toggleDrawer,
@@ -74,8 +75,6 @@ const TurboHelper = class {
       darkMode();
       Tabs();
       addKeyword();
-      axiosSaveChapter();
-
       searchPredictionKw();
     });
     document.addEventListener("turbo:load", () => {
@@ -95,6 +94,8 @@ const TurboHelper = class {
       Search();
       Sortables();
       TippyC();
+      axiosSaveChapter();
+      ForumTopicRead();
 
       // ! Flashes
       if (document.getElementById("flashbag-success")) {

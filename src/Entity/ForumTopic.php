@@ -43,11 +43,18 @@ class ForumTopic
     #[ORM\OneToMany(mappedBy: 'topic', targetEntity: ForumTopicRead::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $forumTopicReads;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\OneToMany(mappedBy: 'topic', targetEntity: ForumTopicView::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $forumTopicViews;
+
 
     public function __construct()
     {
         $this->forumMessages = new ArrayCollection();
         $this->forumTopicReads = new ArrayCollection();
+        $this->forumTopicViews = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -193,6 +200,48 @@ class ForumTopic
             // set the owning side to null (unless already changed)
             if ($forumTopicRead->getTopic() === $this) {
                 $forumTopicRead->setTopic(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ForumTopicView>
+     */
+    public function getForumTopicViews(): Collection
+    {
+        return $this->forumTopicViews;
+    }
+
+    public function addForumTopicView(ForumTopicView $forumTopicView): self
+    {
+        if (!$this->forumTopicViews->contains($forumTopicView)) {
+            $this->forumTopicViews->add($forumTopicView);
+            $forumTopicView->setTopic($this);
+        }
+
+        return $this;
+    }
+
+    public function removeForumTopicView(ForumTopicView $forumTopicView): self
+    {
+        if ($this->forumTopicViews->removeElement($forumTopicView)) {
+            // set the owning side to null (unless already changed)
+            if ($forumTopicView->getTopic() === $this) {
+                $forumTopicView->setTopic(null);
             }
         }
 

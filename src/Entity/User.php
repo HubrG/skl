@@ -154,6 +154,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ForumTopicRead::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $forumTopicReads;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ForumTopicView::class)]
+    private Collection $forumTopicViews;
+
 
     public function __construct()
     {
@@ -174,6 +177,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->forumTopics = new ArrayCollection();
         $this->forumMessages = new ArrayCollection();
         $this->forumTopicReads = new ArrayCollection();
+        $this->forumTopicViews = new ArrayCollection();
     }
 
 
@@ -1032,6 +1036,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($forumTopicRead->getUser() === $this) {
                 $forumTopicRead->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ForumTopicView>
+     */
+    public function getForumTopicViews(): Collection
+    {
+        return $this->forumTopicViews;
+    }
+
+    public function addForumTopicView(ForumTopicView $forumTopicView): self
+    {
+        if (!$this->forumTopicViews->contains($forumTopicView)) {
+            $this->forumTopicViews->add($forumTopicView);
+            $forumTopicView->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeForumTopicView(ForumTopicView $forumTopicView): self
+    {
+        if ($this->forumTopicViews->removeElement($forumTopicView)) {
+            // set the owning side to null (unless already changed)
+            if ($forumTopicView->getUser() === $this) {
+                $forumTopicView->setUser(null);
             }
         }
 

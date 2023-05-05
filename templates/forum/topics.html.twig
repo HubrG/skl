@@ -7,7 +7,6 @@
 
 {% block body %}
 	<div class="lg:w-9/12 mx-auto">
-
 		<nav class="breadcrumb" aria-label="Breadcrumb">
 			<ol>
 
@@ -20,31 +19,105 @@
 				<li aria-current="page">
 					<div>
 						<i class="fa-duotone fa-angle-right"></i>
-						<span>
-							{{category.name}}
-						</span>
+						<div class="flex flex-row gap-x-0 items-center">
+							<i class="fa-regular {{category.icon}}"></i>
+							<span>
+								{{category.name}}
+							</span>
+						</div>
 					</div>
 				</li>
 			</ol>
 		</nav>
-		<div class="flex flex-col mx-auto justify-center w-full">
-			{% if app.user %}
-				<a href="{{path("app_forum_topic_create", {slug:category.slug})}}" class="button-classic button-slate">Créer un topic</a>
-			{% else %}
-				<button class="button-classic button-slate" data-micromodal-trigger="popup-login">
-					Créer un topic
-				</button>
-			{% endif %}
+		<div class="flex flex-col mx-auto justify-center w-full -mt-10 relative">
+			<div class=" sticky top-12 bg-white dark:bg-slate-800 z-50">
+				<div class="p-10 py-7 bg-slate-50 dark:bg-slate-900 rounded-lg rounded-b-none flex flex-col w-full">
+					<div class="flex flex-row gap-x-10 items-center">
+						<div class="min-w-[3rem] md:min-w-[4.8rem]">
+							<div class="rounded-full p-2 md:p-5 catColor-{{category.color ? category.color}} icon-topic text-lg md:text-xl font-semibold w-full flex justify-center">
+								<i class="fa-duotone {{category.icon}} text-2xl md:text-4xl catColorText-{{category.color ? category.color}} dark:text-slate-300"></i>
+							</div>
+						</div>
+						<div class="flex flex-col w-full gap-y-2 dark:text-slate-300">
+							<h2 class="text-base flex flex-row justify-between gap-x-2 items-baseline relative">
+								<span class="  text-lg md:text-xl font-semibold ">{{category.name}}</span>
+								<span class="text-xs  opacity-60">
+									<i class="fa-regular fa-layer-group {{category.forumTopics|length == 0 ? " hidden" }}"></i>
+									{{category.forumTopics|length == 0 ? "Aucun sujet" : category.forumTopics|length == 1 ? "1 sujet" : category.forumTopics|length ~ " sujets"}}
+								</span>
+							</h2>
+							<p class="dark:text-slate-400">{{category.description|striptags}}</p>
+						</div>
+					</div>
+				</div>
+				{% if app.user %}
+					<a href="{{path("app_forum_topic_create", {slug:category.slug})}}" class="button-classic button-sky button-create-topic">
+						Créer un nouveau sujet
+						<i class="fa-duotone  fa-plus-square"></i>
+					</a>
+				{% else %}
+					<button class="button-classic button-sky button-create-topic" data-micromodal-trigger="popup-login">
+						Créer un nouveau sujet
+						<i class="fa-duotone  fa-plus-square"></i>
+					</button>
+				{% endif %}
+				<div class="border-b-4 w-full border-slate-300 dark:bg-slate-800 bg-white dark:border-slate-700 h-5 bg-opacity-90 dark:bg-opacity-90">&nbsp;</div>
+			</div>
 			{% if topics|length == 0 %}
 				Aucun topic
 			{% else %}
-				{% for item in topics %}
-					<div>
-						<a href="{{path("app_forum_topic_read", {slug:item.category.slug, slugTopic:item.slug, id:item.id})}}">{{item.title}}</a>
-					</div>
-				{% endfor %}
+				<div class="flex flex-col gap-y-5 mt-7">
+					{% for item in topics|sort((a, b) => b.createdAt <=> a.createdAt) %}
+						<div class="flex flex-row gap-x-5 items-center justify-between">
+							{% if item.user.profilPicture %}
+								<img src="{{item.user.profilPicture}}" class="h-12 rounded-full" alt="Photo de profil de {{item.user.nickname}}">
+							{% endif %}
+							<div class="flex flex-col gap-y-0 w-9/12">
+								<a href="{{path("app_forum_topic_read", {slug:item.category.slug, slugTopic:item.slug, id:item.id})}}" class="hover:underline text-base font-semibold dark:text-slate-300">{{item.title}}</a>
+								<p class="flex flex-col  justify-start gap-x-2">
+									<a href="{{path("app_user", {username:item.user.username})}}" class="hover:underline dark:text-slate-500 text-slate-500">{{item.user.nickname}}</a>
+									<span class="text-[0.75rem] text-slate-500 flex flex-row justify-between items-center w-full">
+										<span>
+											Crée il y a
+											{{item.createdAt|since}}
+										</span>
+										<span>
+											Dernière réponse il y a
+											{% set lastMessage = item.forumMessages|last %}
+											{{lastMessage ? lastMessage.createdAt|since : item.createdAt|since }}
+										</span>
+									</span>
+								</p>
+							</div>
+							<div class="grid grid-cols-3  text-sm items-center gap-x-5">
+								<div class="flex flex-col items-center">
+									<span class="dark:text-slate-500 text-slate-500">
+										<i class="fa-duotone  fa-comment-alt" data-tippy-content="Nombre de réponses"></i>
+									</span>
+									<span class="dark:text-slate-500 text-slate-500 ">{{item.forumMessages|length}}</span>
+								</div>
+
+								<div class="flex flex-col items-center">
+									<span class="dark:text-slate-500 text-slate-500">
+										<i class="fa-duotone fa-eye" data-tippy-content="Nombre de vues"></i>
+									</span>
+									<span class="dark:text-slate-500 text-slate-500 ">{{item.forumTopicViews|length}}</span>
+								</div>
+								{% if app.user %}
+									<div class="flex flex-col items-center {{unreadMessageCounts[item.id] > 0 ? " dark:text-green-500 text-green-500 " : " dark:text-slate-500 text-slate-500 opacity-30"}}">
+										<span>
+											<i class="fa-duotone fa-comment-dots" data-tippy-content="Nouveaux messages depuis votre dernière visite"></i>
+										</span>
+										<span>{{ unreadMessageCounts[item.id] }}</span>
+									</div>
+								{% endif %}
+
+							</div>
+						</div>
+						<hr class="my-2">
+					{% endfor %}
+				</div>
 			{% endif %}
-			<a href=""></a>
 		</div>
 	</div>
 {% endblock %}

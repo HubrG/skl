@@ -18,6 +18,10 @@ class TwigEmoji extends AbstractExtension
     public function convertSmileyToEmoji(string $text): string
     {
         $smileyToEmojiMap = [
+            'xD' => '😆',
+            'XD' => '😆',
+            'x-D' => '😆',
+            'X-D' => '😆',
             ':-)' => '🙂',
             ':)' => '🙂',
             ':-D' => '😃',
@@ -78,9 +82,20 @@ class TwigEmoji extends AbstractExtension
             ':-j' => '😏',
             ':j' => '😏',
             ':D-' => '😆',
-            'XD' => '😆',
             ':-.' => '😐',
             ':.' => '😐',
+            ':-,' => '😐',
+            ':,' => '😐',
+            ':-<' => '😒',
+            ':<' => '😒',
+            ':->' => '😏',
+            ':>' => '😏',
+            ':-0' => '😮',
+            ':0' => '😮',
+            ':-()' => '😮',
+            ':-[]' => '😮',
+            ':-{}' => '😮',
+
         ];
 
         return str_replace(array_keys($smileyToEmojiMap), array_values($smileyToEmojiMap), $text);

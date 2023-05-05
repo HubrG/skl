@@ -21,6 +21,8 @@ class ForumCategoryCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm(),
             TextField::new('name'),
+            TextField::new('icon'),
+            TextField::new('slug'),
             TextEditorField::new('description'),
         ];
     }

@@ -2,9 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
+use App\Entity\ForumTopic;
 use App\Entity\ForumMessage;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<ForumMessage>
@@ -39,28 +41,53 @@ class ForumMessageRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return ForumMessage[] Returns an array of ForumMessage objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('f.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function getUnreadMessageCountForUser(User $user, ForumTopic $topic): int
+    {
+        $entityManager = $this->getEntityManager();
 
-//    public function findOneBySomeField($value): ?ForumMessage
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        // Obtenez la dernière date de lecture du topic par l'utilisateur
+        $subQuery = $entityManager->createQueryBuilder()
+            ->select('MAX(ftr.readAt)')
+            ->from('App\Entity\ForumTopicRead', 'ftr')
+            ->where('ftr.user = :user')
+            ->andWhere('ftr.topic = :topic')
+            ->getDQL();
+
+        $query = $this->createQueryBuilder('fm')
+            ->select('COUNT(fm.id)')
+            ->where('fm.topic = :topic')
+            ->andWhere('fm.createdAt > (' . $subQuery . ')')
+            ->setParameters([
+                'user' => $user,
+                'topic' => $topic,
+            ])
+            ->getQuery();
+
+        return (int) $query->getSingleScalarResult();
+    }
+
+    //    /**
+    //     * @return ForumMessage[] Returns an array of ForumMessage objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('f')
+    //            ->andWhere('f.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('f.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?ForumMessage
+    //    {
+    //        return $this->createQueryBuilder('f')
+    //            ->andWhere('f.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

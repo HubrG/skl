@@ -31,6 +31,9 @@ class ForumCategory
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $slug = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $color = null;
+
     public function __construct()
     {
         $this->forumTopics = new ArrayCollection();
@@ -121,5 +124,17 @@ class ForumCategory
     public function __toString(): string
     {
         return $this->name;
+    }
+
+    public function getColor(): ?int
+    {
+        return $this->color;
+    }
+
+    public function setColor(?int $color): self
+    {
+        $this->color = $color;
+
+        return $this;
     }
 }

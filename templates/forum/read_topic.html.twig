@@ -18,38 +18,66 @@
 				</li>
 				<li>
 					<i class="fa-duotone fa-angle-right"></i>
-					<a href="{{path("app_forum_topic", {slug:category.slug})}}">
-						{{category.name}}
-					</a>
+					<div class="flex flex-row gap-x-0 items-center">
+						<i class="fa-regular {{category.icon}}"></i>
+						<a href="{{path("app_forum_topic", {slug:category.slug})}}">
+							{{category.name}}
+						</a>
+					</div>
 				</li>
 				<li aria-current="page">
 					<i class="fa-duotone fa-angle-right"></i>
 					<div>
 
-						<span>{{topic.title}}</span>
+						<span>{{topic.title|length < 16 ? topic.title : topic.title|slice(0,15) ~ "..." }}</span>
 					</div>
 				</li>
 			</ol>
 		</nav>
 		<div class="flex flex-col gap-y-10 mx-auto justify-center w-full">
 			<div class="flex flex-col gap-y-3">
-				<h1 class="text-4xl mb-0">{{topic.title}}</h1>
-				<h2 class="flex flex-row items-center gap-x-3">
-					{% if topic.user.profilPicture %}
-						<img class="rounded-full h-6" src="{{topic.user.profilPicture }}"/>
+				<h1 class="text-3xl mb-0">{{topic.title}}</h1>
+				<h2 class="flex flex-row items-center justify-between gap-x-3">
+					<div class="flex flex-row gap-x-2 items-center">
+						{% if topic.user.profilPicture %}
+							<img class="rounded-full h-6" src="{{topic.user.profilPicture }}"/>
+						{% endif %}
+						<a href="{{path("app_user", {username:topic.user.username})}}" class="hover:underline font-semibold dark:text-slate-300">{{topic.user.nickname}}</a>
+						<span class="text-slate-500 dark:text-slate-400 text-xs">
+							— il y a
+							{{topic.createdAt|since}}</span>
+					</div>
+					{% if app.user and app.user.id == topic.user.id %}
+						<div class="text-slate-800 dark:text-slate-400">
+							<button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" type="button">
+								<i class="fa-duotone fa-chevron-down ml-2"></i>
+							</button>
+							<div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+								<ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+									<li>
+										<a href="{{path("app_forum_topic_update", {id:topic.id, slug:topic.category.slug})}}" class=" flex flex-row gap-x-2 items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+											<i class="fa-regular fa-edit"></i>
+											Modifier le sujet
+										</a>
+									</li>
+									<li>
+										<button data-micromodal-trigger="popup-confirm-delete-topic" class="flex flex-row gap-x-2 items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+											<i class="fa-regular fa-trash"></i>
+											Supprimer le sujet
+										</button>
+									</li>
+								</ul>
+							</div>
+						</div>
 					{% endif %}
-					<a href="{{path("app_user", {username:topic.user.username})}}" class="hover:underline font-semibold dark:text-slate-300">{{topic.user.nickname}}</a>
-					<span class="text-slate-500 dark:text-slate-400">
-						— il y a
-						{{topic.createdAt|since}}</span>
 				</h2>
 			</div>
-			<p class="text-base text-justify text-slate-600 dark:text-slate-400">{{topic.content|smiley_to_emoji|nl2br}}</p>
+			<p class=" text-justify text-slate-600 dark:text-slate-400 text-base">{{topic.content|smiley_to_emoji|nl2br}}</p>
 			<hr class="mb-0 mt-0 border-2">
 			<turbo-frame id="messages-frame" class="-mt-5">
-				{{ form_start(form, {attr: {'novalidate': 'novalidate'}}) }}
-				{% include "./partials/_form-row.html.twig" with {'form': form.content, 'icon':null, classWidget:"h-32"} %}
-				<button type="submit" class="button-classic button-blue w-full" onclick="setTimeout(function() { document.getElementById('forum_message_content').innerHTML = ''},300)">
+				{{ form_start(form, {attr: {'novalidate': 'novalidate', 'data-turbo-frame=':'_top'}}) }}
+				{% include "./partials/_form-row.html.twig" with {'form': form.content, 'icon':null, classWidget:"h-32 roundedBnone"} %}
+				<button type="submit" class="-mt-[1.5rem] button-classic button-blue w-full roundedTnone" onclick="setTimeout(function() { document.getElementById('forum_message_content').innerHTML = ''},300)">
 					Envoyer la réponse
 					<i class="fa-duotone fa-reply fa-flip-horizontal"></i>
 				</button>
@@ -57,7 +85,7 @@
 				<hr>
 				<div class="flex flex-col gap-y-5">
 					{% for item in topic.forumMessages|sort((a, b) => b.createdAt <=> a.createdAt) %}
-						<div class=" bg-slate-50 dark:bg-slate-900 p-5 rounded">
+						<div class=" bg-slate-50 dark:bg-slate-900 p-5 rounded" id="comment-{{item.id}}">
 							<div class="flex flex-row gap-x-3">
 								{% if item.user.profilPicture %}
 									<div>
@@ -66,22 +94,93 @@
 								{% endif %}
 								<div class="flex flex-row items-center justify-between w-full">
 									<a href="{{path("app_user", {username:item.user.username})}}" class="hover:underline font-semibold dark:text-slate-300" data-turbo-frame="_top">{{item.user.nickname}}</a>
-									<span class="text-slate-500 dark:text-slate-400 text-xs">
+									<div class="text-slate-500 dark:text-slate-400 text-xs flex flex-row items-center gap-x-2">
 										il y a
 										{{item.createdAt|since}}
-									</span>
-
+										{% if item.updatedAt %}
+											<div class=" text-slate-400 dark:text-slate-500">
+												|
+												<span class="text-[0.75rem] ml-2">
+													modifié il y a
+													{{item.updatedAt|since}}
+												</span>
+											</div>
+										{% endif %}
+										<div class="dropdown">
+											<button aria-label="Afficher les options du commentaire de {{item.user.nickname}} — numéro {{item.id}}" class="text-gray-600 hover:text-gray-900   focus:outline-none focus:text-gray-900">
+												<svg class="w-6 h-6 dropdown-button dark:hover:fill-white hover:fill-slate-900" fill="currentColor" viewbox="0 0 20 20" id="ddb-{{ item.id }}">
+													<path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+												</svg>
+											</button>
+											<div id="ddm-{{ item.id }}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-56 dark:bg-gray-700 dropdown-content">
+												<ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+													{% if app.user is defined and item.user.id == app.user.id %}
+														<li>
+															<button type="button" data-update-path="{{path("app_forum_message_update")}}" id="updateButton-{{ item.id }}" class="updateButton w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+																<i class="fa-regular fa-pen-to-square"></i>
+																&nbsp;Modifier le message
+															</button>
+														</li>
+														<li>
+															<button data-delete-path="{{path("app_forum_message_delete")}}" data-comment-id="{{item.id}}" class=" w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white deleteCommentButton">
+																<i class="fa-regular fa-trash-can"></i>
+																&nbsp;Supprimer le message
+															</button>
+														</li>
+													{% else %}
+														<li>
+															<button data-turbo-frame="_self" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+																<i class="fa-regular fa-regular fa-flag"></i>
+																&nbsp;Signaler
+															</button>
+														</li>
+													{% endif %}
+												</ul>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 							<div class="text-sm text-justify text-slate-600 dark:text-slate-400">
 								<hr class="mb-5">
-								<p>{{item.content ? item.content|smiley_to_emoji|markdown}}</p>
+								<div id="updateCom-{{ item.id }}" class="text-base">
+									<p id="comShow-{{ item.id }}" class="topicComment">
+										{{item.content ? item.content}}
+									</p>
+								</div>
+								{# <div class="flex flex-row justify-end gap-x-2 mt-5 items-center"> #}
+							{# <div> #}
+								{# <i class="fa-duotone fa-heart"></i> #}
+								{# </div> #}
+								{# </div> #}
 							</div>
 						</div>
 					{% endfor %}
 				</div>
 			</turbo-frame>
 
+		</div>
+	</div>
+	<div class="modal micromodal-slide z-50" id="popup-confirm-delete-topic" aria-hidden="true">
+		<div class="modal__overlay" tabindex="-1" data-micromodal-close>
+			<div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="popup-confirm-delete-topic-title">
+				<div class="py-3 text-center w-42  rounded-2xl">
+					<div class="text-4xl mb-5 text-red-600 dark:text-red-400">
+						<i class="fa-duotone fa-trash"></i>
+					</div>
+					<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-slate-300">Êtes-vous certain(e) de vouloir supprimer<br/>
+						ce sujet ?</h3>
+					<p class="text-center text-red-500 font-normal">
+						Cette action est irréversible.</p>
+					<div class="mt-10 flex justify-center gap-x-3">
+						<button id="confirm-delete-button" onclick='MicroModal.close("popup-confirm-delete-topic")' data-delete-path="{{path("app_forum_topic_delete", {id:topic.id})}}" type="button" class="button-classic button-red">
+							Oui, je suis certain(e)
+						</button>
+						<button type="button" data-micromodal-close class="button-classic button-slate">Non, j'annule</button>
+					</div>
+				</div>
+
+			</div>
 		</div>
 	</div>
 {% endblock %}

@@ -122,6 +122,7 @@ const TurboHelper = class {
     document.addEventListener("turbo:frame-render", () => {
       Comment();
       DropdownMenu();
+      ForumTopicRead();
     });
     // * Turbo Visit sert à faire des actions avant le chargement de la page
     document.addEventListener("turbo:visit", () => {

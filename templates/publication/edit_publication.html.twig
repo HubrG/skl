@@ -8,9 +8,8 @@
 {% endblock %}
 
 {% block body %}
-	<nav class="breadcrumb" aria-label="Breadcrumb">
+	<nav class="breadcrumb -z-0" aria-label="Breadcrumb">
 		<ol>
-
 			<li>
 				<a href="{{path("app_user_show_publications")}}">
 					Mes récits
@@ -182,6 +181,12 @@
 							</button>
 						</h2>
 						<div id="accordion-flush-body-1" class="hidden" aria-labelledby="accordion-flush-heading-1">
+							{% if chaptersWithStatus2|length > 0 %}
+								<p class="text-center text-xs text-slate-500 -mt-2 flex flex-row gap-x-2 justify-center items-center">
+									<i class="fa-light fa-lightbulb"></i>
+									<span>Organisez l'ordre de lecture en déplaçant les feuilles</span>
+								</p>
+							{% endif %}
 							<div id="itemsChap" class=" flex-col grid-cols-1 md:grid-cols-2 grid justify-center gap-x-5">
 								{% if publicationChapters|length == 0 %}
 									<div class="w-full text-center bg-slate-100 dark:bg-slate-700 items-center justify-center justify-items-center flex-cols dark:text-slate-100 text-slate-600 rounded  mt-3 opacity-80 hover:opacity-100 border-2 border-slate-200 dark:border-slate-900" id="noPublication">
@@ -262,6 +267,7 @@
 											</p>
 										</div>
 									{% endif %}
+
 								{% endif %}
 								{% include "publication/_partials/_edit_publication_show_chapters.html.twig" with {withStatus:2} %}
 							</div>
@@ -566,7 +572,7 @@
 									<strong>Choisir une catégorie</strong>
 									dans l'onglet « Informations »</span>
 							</li>
-							<li id="publish-paid-attention-pub" class="{{chaptersWithStatus2|length > 0 ? " hidden" : " " }} flex flex-row items-center gap-x-3">
+							<li id="publish-paid-attention-pub" class="{{chaptersWithStatus2|length > 0 ? " hidden" : " " }} dark:text-slate-400 flex flex-row items-center gap-x-3">
 								<i class="fa-solid fa-arrow-right-to-arc"></i>
 								<span>
 									<strong>Publier au moins un chapitre</strong>

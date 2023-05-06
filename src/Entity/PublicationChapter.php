@@ -84,6 +84,9 @@ class PublicationChapter
     #[ORM\Column(nullable: true)]
     private ?int $wordCount = null;
 
+    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationAnnotation::class)]
+    private Collection $publicationAnnotations;
+
     public function __construct()
     {
         $this->publicationChapterVersionings = new ArrayCollection();
@@ -95,6 +98,7 @@ class PublicationChapter
         $this->notifications = new ArrayCollection();
         $this->pictures = new ArrayCollection();
         $this->publicationReads = new ArrayCollection();
+        $this->publicationAnnotations = new ArrayCollection();
     }
 
 
@@ -535,6 +539,36 @@ class PublicationChapter
     public function setWordCount(?int $wordCount): self
     {
         $this->wordCount = $wordCount;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationAnnotation>
+     */
+    public function getPublicationAnnotations(): Collection
+    {
+        return $this->publicationAnnotations;
+    }
+
+    public function addPublicationAnnotation(PublicationAnnotation $publicationAnnotation): self
+    {
+        if (!$this->publicationAnnotations->contains($publicationAnnotation)) {
+            $this->publicationAnnotations->add($publicationAnnotation);
+            $publicationAnnotation->setChapter($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationAnnotation(PublicationAnnotation $publicationAnnotation): self
+    {
+        if ($this->publicationAnnotations->removeElement($publicationAnnotation)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationAnnotation->getChapter() === $this) {
+                $publicationAnnotation->setChapter(null);
+            }
+        }
 
         return $this;
     }

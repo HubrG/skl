@@ -3,11 +3,13 @@
 {% block title %}Scrilab | Web-éditeur
 {% endblock %}
 {% block stylesheets %}
-	<link rel="canonical" href="https://scrilab.com{{ canonicalUrl }}"/>
+	<link rel="canonical" href="https://scrilab.com"/>
 {% endblock %}
 {% block javascripts %}{% endblock %}
 {% block body %}
 	<div class="col-span-12">
-		{{test|raw}}
+		<article data-annotable id="article">
+			{{article|raw}}
+		</article>
 	</div>
 {% endblock %}

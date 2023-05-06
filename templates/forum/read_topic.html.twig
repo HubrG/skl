@@ -4,7 +4,7 @@
 	{{topic.title}}
 	|
 	{{category.name}}
-	| Forum — Scrilab
+	| Discuter — Scrilab
 {% endblock %}
 
 {% block body %}
@@ -77,14 +77,16 @@
 			<p class=" text-justify text-slate-600 dark:text-slate-400 text-base">{{topic.content|smiley_to_emoji|nl2br}}</p>
 			<hr class="mb-0 mt-0 border-2">
 			<turbo-frame id="messages-frame" class="-mt-5">
-				{{ form_start(form, {attr: {'novalidate': 'novalidate', 'data-turbo-frame=':'_top'}}) }}
-				{% include "./partials/_form-row.html.twig" with {'form': form.content, 'icon':null, classWidget:"h-32 roundedBnone"} %}
-				<button type="submit" class="-mt-[1.5rem] button-classic button-blue w-full roundedTnone" onclick="setTimeout(function() { document.getElementById('forum_message_content').innerHTML = ''},300)">
-					Envoyer la réponse
-					<i class="fa-duotone fa-reply fa-flip-horizontal"></i>
-				</button>
-				{{ form_end(form) }}
-				<hr>
+				{% if app.user  %}
+					{{ form_start(form, {attr: {'novalidate': 'novalidate', 'data-turbo-frame=':'_top'}}) }}
+					{% include "./partials/_form-row.html.twig" with {'form': form.content, 'icon':null, classWidget:"h-32 roundedBnone"} %}
+					<button type="submit" class="-mt-[1.5rem] button-classic button-blue w-full roundedTnone" onclick="setTimeout(function() { document.getElementById('forum_message_content').innerHTML = ''},300)">
+						Envoyer la réponse
+						<i class="fa-duotone fa-reply fa-flip-horizontal"></i>
+					</button>
+					{{ form_end(form) }}
+					<hr>
+				{% endif %}
 				<div class="flex flex-col gap-y-5">
 					{% for item in topic.forumMessages|sort((a, b) => b.createdAt <=> a.createdAt) %}
 						<div class=" bg-slate-50 dark:bg-slate-900 p-5 rounded" id="comment-{{item.id}}">

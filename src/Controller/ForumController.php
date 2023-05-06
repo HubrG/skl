@@ -124,7 +124,7 @@ class ForumController extends AbstractController
         // ! form
         $form = $this->createForm(ForumMessageType::class);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() and $this->getUser() != null) {
             // Créez une nouvelle instance de PublicationTopic
             $message = $form->getData();
             // Définissez les propriétés supplémentaires

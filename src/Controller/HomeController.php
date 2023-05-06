@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
 use App\Repository\PublicationCommentRepository;
+use App\Repository\PublicationAnnotationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
@@ -113,6 +114,47 @@ class HomeController extends AbstractController
         return $this->render('home/privacy.html.twig', [
             'controller_name' => "d",
             "canonicalUrl" => $this->generateUrl('app_privacy', array(), true)
+        ]);
+    }
+    #[Route('/test', name: 'app_test')]
+    public function test(PublicationAnnotationRepository $paRepo): Response
+    {
+
+        // récupérer le dernier ID de l'annotation
+        $lastId = $paRepo->createQueryBuilder("pa")
+            ->select("MAX(pa.id)")
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        if (!$lastId) {
+            $content =  "<h1>Exemple d'article</h1>
+                <p>
+                    Ceci est un exemple de texte annotable avec différentes balises HTML, comme des
+                    <strong>mots en gras</strong>
+                    ou des
+                    <em>mots en italique</em>.
+                </p>
+                <p>
+                    Voici un autre paragraphe annotable. Vous pouvez sélectionner plusieurs paragraphes et les annoter en même temps.
+                </p>
+                <p>
+                    N'hésitez pas à
+                    <a href='#'>utiliser des liens</a>
+                    dans vos paragraphes. Ils ne seront pas affectés par le système d'annotation.
+                </p>";
+        } else {
+            $content = $paRepo->find($lastId)->getContent();
+            $pattern = '/<mark[^>]*><\/mark>/';
+            $replacement = '';
+            $content = preg_replace($pattern, $replacement, $content);
+        }
+
+
+        return $this->render('home/test.html.twig', [
+            'controller_name' => "d",
+
+            "article" => $content
+
         ]);
     }
 }

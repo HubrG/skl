@@ -157,6 +157,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ForumTopicView::class)]
     private Collection $forumTopicViews;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationAnnotation::class)]
+    private Collection $publicationAnnotations;
+
 
     public function __construct()
     {
@@ -178,6 +181,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->forumMessages = new ArrayCollection();
         $this->forumTopicReads = new ArrayCollection();
         $this->forumTopicViews = new ArrayCollection();
+        $this->publicationAnnotations = new ArrayCollection();
     }
 
 
@@ -1066,6 +1070,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($forumTopicView->getUser() === $this) {
                 $forumTopicView->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationAnnotation>
+     */
+    public function getPublicationAnnotations(): Collection
+    {
+        return $this->publicationAnnotations;
+    }
+
+    public function addPublicationAnnotation(PublicationAnnotation $publicationAnnotation): self
+    {
+        if (!$this->publicationAnnotations->contains($publicationAnnotation)) {
+            $this->publicationAnnotations->add($publicationAnnotation);
+            $publicationAnnotation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationAnnotation(PublicationAnnotation $publicationAnnotation): self
+    {
+        if ($this->publicationAnnotations->removeElement($publicationAnnotation)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationAnnotation->getUser() === $this) {
+                $publicationAnnotation->setUser(null);
             }
         }
 

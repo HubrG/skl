@@ -34,6 +34,7 @@ import { NotyDisplay } from "../scripts/Noty";
 import { PublicationShowOne } from "../scripts/Publication/PublicationShowOne";
 import MicroModal from "micromodal"; // es6 module
 import { Navbar } from "../scripts/Navbar";
+import { Annotation } from "../scripts/Publication/Annotations";
 import { searchPredictionKw } from "../scripts/Publication/SearchPredictionKw";
 import { ForumTopicRead } from "../scripts/Forum/ForumTopicRead";
 import {
@@ -96,7 +97,9 @@ const TurboHelper = class {
       TippyC();
       axiosSaveChapter();
       ForumTopicRead();
-
+      //
+      Annotation();
+      //
       // ! Flashes
       if (document.getElementById("flashbag-success")) {
         if (

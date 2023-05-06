@@ -207,7 +207,7 @@
 					</h1>
 					<hr>
 				</div>
-				<div class="display_publications">
+				<div class="display_publications big">
 					{% for item in pub_last %}
 						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':'published', 'querySortby':'published', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
 					{% endfor %}

@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export function Annotation() {
+  if (!document.getElementById("article")) return;
   restoreAnnotations();
 
   document.addEventListener("mouseup", function (event) {

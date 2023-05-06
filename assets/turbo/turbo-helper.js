@@ -49,7 +49,6 @@ const TurboHelper = class {
     // * Turbo before-cache sert à faire des actions avant le cache
     document.addEventListener("turbo:before-cache", () => {
       DropdownMenu();
-      Dropdown();
     });
     // * Turbo Frame Missing sert à recharger la page si le frame est manquant
     document.addEventListener("turbo:frame-missing", (event) => {
@@ -123,7 +122,6 @@ const TurboHelper = class {
     document.addEventListener("turbo:frame-render", () => {
       Comment();
       DropdownMenu();
-      Dropdown();
     });
     // * Turbo Visit sert à faire des actions avant le chargement de la page
     document.addEventListener("turbo:visit", () => {

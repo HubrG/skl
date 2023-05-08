@@ -113,19 +113,19 @@
 	<div class="gap-x-5 gap-y-5 w-full grid grid-cols-1 md:grid-cols-3 pt-10">
 		<ul class="w-full">
 			<li>
-				<h1 class="text-2xl font-medium flex-row-custom-gapx-3 justify-center">
+				<h1 class="text-2xl font-medium flex-row-custom-gapx-3 justify-center md:justify-start">
 					<i class="fa-solid fa-bookmark text-emerald-200"></i>
 				</h1>
 			</li>
 			<ul class="flex-col flex gap-y-5">
 				{% set n = 0 %}
-				{% for item in app.user.publicationChapterNotes %}
+				{% for item in app.user.publicationAnnotations %}
 					{% if item.color == 1 %}
 						<li class="flex-col flex">
-							<p class="text-slate-700 dark:text-slate-400 italic">{{item.selection}}
+							<p class="text-slate-700 dark:text-slate-400 italic">{{item.contentPlain}}
 								...</p>
 							<span class="text-slate-600 dark:text-slate-300">
-								<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug}) }}">
+								<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug, "version":item.version.id|url_encode}) }}">
 									<i class="fa-light fa-arrow-turn-down-right"></i>
 									&nbsp;<span class=" text-sm">{{ item.chapter.title }}</span>
 								</a>
@@ -154,16 +154,16 @@
 
 		<ul class="w-full">
 			<li>
-				<h1 class="text-2xl font-medium flex-row-custom-gapx-3 justify-center">
+				<h1 class="text-2xl font-medium flex-row-custom-gapx-3 justify-center md:justify-start">
 					<i class="fa-solid fa-bookmark text-yellow-200"></i>
 				</h1>
 			</li>
 			<ul class="flex-col flex gap-y-5">
 				{% set n = 0 %}
-				{% for item in app.user.publicationChapterNotes %}
+				{% for item in app.user.publicationAnnotations %}
 					{% if item.color == 2 %}
 						<li class="flex-col flex">
-							<p class="text-slate-700 dark:text-slate-400 italic">{{item.selection}}
+							<p class="text-slate-700 dark:text-slate-400 italic">{{item.contentPlain}}
 								...</p>
 							<span class="text-slate-600 dark:text-slate-300">
 								<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug}) }}">
@@ -195,15 +195,16 @@
 
 		<ul class="w-full">
 			<li>
-				<h1 class="text-2xl font-medium flex-row-custom-gapx-3 justify-center">
+				<h1 class="text-2xl font-medium flex-row-custom-gapx-3  justify-center md:justify-start">
 					<i class="fa-solid fa-bookmark text-red-200"></i>
 				</h1>
 			</li>
 			<ul class="flex-col flex gap-y-5">
-				{% for item in app.user.publicationChapterNotes %}
+
+				{% for item in app.user.publicationAnnotations %}
 					{% if item.color == 3 %}
 						<li class="flex-col flex">
-							<p class="text-slate-700 dark:text-slate-400 italic">{{item.selection}}
+							<p class="text-slate-700 dark:text-slate-400 italic">{{item.contentPlain}}
 								...</p>
 							<span class="text-slate-600 dark:text-slate-300">
 								<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug}) }}">

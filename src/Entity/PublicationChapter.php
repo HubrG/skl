@@ -84,7 +84,7 @@ class PublicationChapter
     #[ORM\Column(nullable: true)]
     private ?int $wordCount = null;
 
-    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationAnnotation::class)]
+    #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: PublicationAnnotation::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationAnnotations;
 
     public function __construct()

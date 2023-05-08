@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\PublicationAnnotationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\PublicationAnnotationRepository;
 
 #[ORM\Entity(repositoryClass: PublicationAnnotationRepository::class)]
 class PublicationAnnotation
@@ -23,14 +23,30 @@ class PublicationAnnotation
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $content = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $startOffset = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $endOffset = null;
 
     #[ORM\ManyToOne(inversedBy: 'publicationAnnotations')]
     private ?PublicationChapter $chapter = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $color = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $content_plain = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $mode = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $comment = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $reviewType = null;
+
+    #[ORM\ManyToOne(inversedBy: 'publicationAnnotations')]
+    private ?PublicationChapterVersioning $version = null;
 
     public function getId(): ?int
     {
@@ -73,29 +89,6 @@ class PublicationAnnotation
         return $this;
     }
 
-    public function getStartOffset(): ?int
-    {
-        return $this->startOffset;
-    }
-
-    public function setStartOffset(?int $startOffset): self
-    {
-        $this->startOffset = $startOffset;
-
-        return $this;
-    }
-
-    public function getEndOffset(): ?int
-    {
-        return $this->endOffset;
-    }
-
-    public function setEndOffset(?int $endOffset): self
-    {
-        $this->endOffset = $endOffset;
-
-        return $this;
-    }
 
     public function getChapter(): ?PublicationChapter
     {
@@ -105,6 +98,90 @@ class PublicationAnnotation
     public function setChapter(?PublicationChapter $chapter): self
     {
         $this->chapter = $chapter;
+
+        return $this;
+    }
+
+    public function getColor(): ?int
+    {
+        return $this->color;
+    }
+
+    public function setColor(?int $color): self
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    public function getContentPlain(): ?string
+    {
+        return $this->content_plain;
+    }
+
+    public function setContentPlain(?string $content_plain): self
+    {
+        $this->content_plain = $content_plain;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getMode(): ?int
+    {
+        return $this->mode;
+    }
+
+    public function setMode(?int $mode): self
+    {
+        $this->mode = $mode;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): self
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getReviewType(): ?int
+    {
+        return $this->reviewType;
+    }
+
+    public function setReviewType(?int $reviewType): self
+    {
+        $this->reviewType = $reviewType;
+
+        return $this;
+    }
+
+    public function getVersion(): ?PublicationChapterVersioning
+    {
+        return $this->version;
+    }
+
+    public function setVersion(?PublicationChapterVersioning $version): self
+    {
+        $this->version = $version;
 
         return $this;
     }

@@ -9,10 +9,12 @@ use PHPePub\Helpers\CalibreHelper;
 use App\Entity\PublicationBookmark;
 use App\Form\PublicationCommentType;
 use App\Services\NotificationSystem;
+use App\Entity\PublicationAnnotation;
 use App\Entity\PublicationChapterLike;
 use App\Entity\PublicationChapterNote;
 use App\Entity\PublicationChapterView;
 use App\Services\PublicationPopularity;
+use App\Controller\AnnotationController;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
 use App\Repository\PublicationReadRepository;
@@ -23,8 +25,10 @@ use App\Repository\PublicationChapterRepository;
 use App\Repository\PublicationCommentRepository;
 use App\Repository\PublicationBookmarkRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
+use App\Repository\PublicationAnnotationRepository;
 use App\Repository\PublicationChapterLikeRepository;
 use App\Repository\PublicationChapterNoteRepository;
+use App\Repository\PublicationChapterVersioningRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ChapterShowController extends AbstractController
@@ -39,8 +43,9 @@ class ChapterShowController extends AbstractController
 
     private $pchRepo;
 
+    private $annotation;
 
-    public function __construct(PublicationChapterRepository $pchRepo, PublicationRepository $pRepo, RequestStack $requestStack, NotificationSystem $notificationSystem, EntityManagerInterface $em, PublicationChapterNoteRepository $chapterNote, PublicationPopularity $publicationPopularity)
+    public function __construct(AnnotationController $annotation, private PublicationChapterVersioningRepository $pchvRepo, PublicationChapterRepository $pchRepo, PublicationRepository $pRepo, RequestStack $requestStack, NotificationSystem $notificationSystem, EntityManagerInterface $em, PublicationChapterNoteRepository $chapterNote, PublicationPopularity $publicationPopularity)
     {
         $this->em = $em;
         $this->chapterNote = $chapterNote;
@@ -49,6 +54,7 @@ class ChapterShowController extends AbstractController
         $this->requestStack = $requestStack;
         $this->pchRepo = $pchRepo;
         $this->pRepo = $pRepo;
+        $this->annotation = $annotation;
     }
 
     #[Route('/recit-{slugPub}/{user}/{idChap}/{slug?}/{nbrShowCom?}', name: 'app_chapter_show')]
@@ -128,12 +134,55 @@ class ChapterShowController extends AbstractController
         // * On ajoute un view pour le chapitre (si l'utilisateur n'est pas l'auteur de la publication)
         $this->viewChapter($chapter);
         // * On formate les notes du chapitre de l'utilisateur connecté
-        if ($this->getUser()) {
-            $chapterContent = $this->formatChapter($chapter);
-            $chapterContent = $this->formatHL($chapterContent, $chapter);
+
+        // !
+        $version = null;
+        if ($request->get('version')) {
+            $version = $request->get('version');
+            // On recherche la version 
+            $chapterContent = $this->pchvRepo->findOneBy(['chapter' => $chapter, 'id' => $version], ['id' => 'DESC']);
+
+            // 
+            $annotation = $this->annotation->getAnnotation($chapter, "mark-for-me", $version);
+            if ($annotation) {
+                $chapterContent = $this->formatChapter($annotation);
+            } else {
+                $chapterContent = $this->formatChapter($chapterContent->getContent());
+            }
         } else {
-            $chapterContent = $this->formatChapter($chapter);
+            $version = $this->pchvRepo->findOneBy(['chapter' => $chapter], ['id' => 'DESC']);
+            $version = $version->getId();
+            $chapterContent = $this->pchvRepo->findOneBy(['chapter' => $chapter, 'id' => $version], ['id' => 'DESC']);
+            // S'il y a des annotations
+            $annotation = $this->annotation->getAnnotation($chapter, "mark-for-me", $version);
+            if ($annotation) {
+                $chapterContent =  $this->formatChapter($annotation);
+            } else {
+
+                $chapterContent = $this->formatChapter($chapterContent->getContent());
+            }
         }
+
+
+        // // ! récupérer le dernier ID de l'annotation (à mettre dans une fonction)
+        // $lastId = $paRepo->createQueryBuilder("pa")
+        //     ->select("MAX(pa.id)")
+        //     ->where("pa.chapter = :chapter")
+        //     ->setParameter("chapter", $chapter)
+        //     ->getQuery()
+        //     ->getSingleScalarResult();
+        // if ($lastId != null) {
+        //     $chapterContent = $paRepo->find($lastId)->getContent();
+        //     // On cherche l'utilisateur connecté
+
+        //     $class = $paRepo->findBy(['chapter' => $chapter, 'user' => $this->getUser()]);
+        //     // On remplace toutes les annotation-X et on ajoute la classe "me"
+        //     // foreach ($class as $value) {
+        //     //     $chapterContent = str_replace($value->getAnnotationClass(), $value->getAnnotationClass() . "", $chapterContent);
+        //     // }
+        // }
+        // !
+
         // * La vue
         return $this->render('publication/show_chapter.html.twig', [
             'infoPub' => $publication,
@@ -143,6 +192,7 @@ class ChapterShowController extends AbstractController
             'form' => $form,
             'formQuote' => $form,
             "pCom" => $comments,
+            "version" => $version,
             "nbrShowCom" => $nbrShowCom,
             "nbrCom" => $nbrCom,
             "chapterContent" => $chapterContent,
@@ -311,10 +361,10 @@ class ChapterShowController extends AbstractController
      *
      * @return string Le contenu formaté
      */
-    public function formatChapter($chapter)
+    public function formatChapter($content)
     {
         $id = 0;
-        $content = $chapter->getContent();
+
 
         // Remplace les balises <div> par des balises <p>
         $content = preg_replace('/<div\s*(.*?)>(.*?)<\/div>/', '<p $1>$2</p>', $content);

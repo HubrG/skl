@@ -274,7 +274,6 @@
 				{# ! COUNT PUBLICATIONS #}
 				{% if pubOrAuthor == "publication" %}
 					<h4 class="items-baseline  flex flex-col md:flex-row  gap-x-2 text-center md:text-left mb-5 ml-2  font-light text-lg text-slate-500 dark:text-slate-300">
-						{% set count = results|length %}
 						{% set recount = count == 1 ? "1 récit" : count == 0 ? "Aucun récit" : count ~ " récits" %}
 						<div>
 							{{ recount | default('Aucun récit') }}
@@ -320,12 +319,10 @@
 					</div>
 				{% elseif  pubOrAuthor == "user"  %}
 					<h4 class="items-baseline  flex flex-col md:flex-row  gap-x-2 text-center md:text-left mb-5 ml-2  font-light text-lg text-slate-500 dark:text-slate-300">
-						{% set count = results|length %}
 						{% set recount = count == 1 ? "1 utilisateur" : count == 0 ? "Aucun utilisateur" : count ~ " utilisateurs" %}
 						<div>
 							{{ recount | default('Aucun utilisateur') }}
 						</div>
-
 					</h4>
 					{% if countPage > 1 %}
 						<input type="hidden" id="countPage" value="{{ page }}">

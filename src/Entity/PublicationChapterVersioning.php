@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use App\Repository\PublicationChapterVersioningRepository;
 
 #[ORM\Entity(repositoryClass: PublicationChapterVersioningRepository::class)]
@@ -25,6 +27,14 @@ class PublicationChapterVersioning
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $created = null;
+
+    #[ORM\OneToMany(mappedBy: 'version', targetEntity: PublicationAnnotation::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $publicationAnnotations;
+
+    public function __construct()
+    {
+        $this->publicationAnnotations = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -76,6 +86,36 @@ class PublicationChapterVersioning
     public function setCreated(?\DateTimeInterface $created): self
     {
         $this->created = $created;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationAnnotation>
+     */
+    public function getPublicationAnnotations(): Collection
+    {
+        return $this->publicationAnnotations;
+    }
+
+    public function addPublicationAnnotation(PublicationAnnotation $publicationAnnotation): self
+    {
+        if (!$this->publicationAnnotations->contains($publicationAnnotation)) {
+            $this->publicationAnnotations->add($publicationAnnotation);
+            $publicationAnnotation->setVersion($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationAnnotation(PublicationAnnotation $publicationAnnotation): self
+    {
+        if ($this->publicationAnnotations->removeElement($publicationAnnotation)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationAnnotation->getVersion() === $this) {
+                $publicationAnnotation->setVersion(null);
+            }
+        }
 
         return $this;
     }

@@ -154,10 +154,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ForumTopicRead::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $forumTopicReads;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ForumTopicView::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ForumTopicView::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $forumTopicViews;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationAnnotation::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationAnnotation::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationAnnotations;
 
 

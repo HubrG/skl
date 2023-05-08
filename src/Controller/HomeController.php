@@ -144,9 +144,6 @@ class HomeController extends AbstractController
                 </p>";
         } else {
             $content = $paRepo->find($lastId)->getContent();
-            $pattern = '/<mark[^>]*><\/mark>/';
-            $replacement = '';
-            $content = preg_replace($pattern, $replacement, $content);
         }
 
 

@@ -475,6 +475,7 @@ class SearchController extends AbstractController
 
         return $this->render('search/search.html.twig', [
             'results' => $results,
+            'count' => $count,
             'countPage' => $countPage,
             'page' => $page,
             'submited' => $request->query->get('submited')

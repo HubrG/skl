@@ -58,15 +58,6 @@ export function ShowChapter() {
     const tooltip = document.getElementById("tools");
     const highlight = document.querySelectorAll("ul > li.hl");
 
-    const highlightedOptions = document.getElementById("highlighted-options");
-    const highlightedSpans = document.querySelectorAll("span.highlighted");
-    activeClickTooltipHL(highlightedOptions, highlightedSpans);
-
-    window.addEventListener("click", () => {
-      if (!highlightedOptions.classList.contains("hidden")) {
-        highlightedOptions.classList.add("hidden");
-      }
-    });
     const handleClick = (callback) => (element) =>
       element.addEventListener("click", callback);
 
@@ -99,11 +90,7 @@ export function ShowChapter() {
         document.getElementById("drawerNoteQuote").value = get;
       })
     );
-    // commentBAlready.forEach(handleClick(() => updateDrawerContent()));
-    // ! Bouton permettant la suppression de Highlights
-    document.getElementById("delete-hl").addEventListener("click", () => {
-      deleteHighlight();
-    });
+
     // ! Traitement de la selection (affichage de la tooltip avec toutes les options et récupération de toutes les infos de la sélection)
 
     let selectedText = "";
@@ -113,22 +100,22 @@ export function ShowChapter() {
     let selectedTextP = "";
 
     //*ANCHOR - partage sur les réseaux sociaux
-    const twitterB = document.querySelectorAll(".shareTwitter");
-    twitterB.forEach(handleClick(() => shareNw("twitter")));
+    // const twitterB = document.querySelectorAll(".shareTwitter");
+    // twitterB.forEach(handleClick(() => shareNw("twitter")));
 
-    const fbB = document.querySelectorAll(".shareFb");
-    fbB.forEach(handleClick(() => shareNw("facebook")));
+    // const fbB = document.querySelectorAll(".shareFb");
+    // fbB.forEach(handleClick(() => shareNw("facebook")));
 
-    const lkB = document.querySelectorAll(".shareLk");
-    lkB.forEach(handleClick(() => shareNw("linkedin")));
-    //*
+    // const lkB = document.querySelectorAll(".shareLk");
+    // lkB.forEach(handleClick(() => shareNw("linkedin")));
+    // //*
 
     chapArticle.addEventListener("mouseup", (e) => {
-      if (window.getSelection().toString().length > 0) {
-        tooltip.classList.remove("hidden");
-      } else {
-        tooltip.classList.add("hidden");
-      }
+      // if (window.getSelection().toString().length > 0) {
+      //   tooltip.classList.remove("hidden");
+      // } else {
+      //   tooltip.classList.add("hidden");
+      // }
       const selection = window.getSelection();
       let selectionShare = "";
       selectionShare = selection.toString();
@@ -165,8 +152,8 @@ export function ShowChapter() {
       if (selectedText) {
         const range = selection.getRangeAt(0);
         const rect = range.getBoundingClientRect();
-        tooltip.style.left = rect.left + window.scrollX - 130 + "px";
-        tooltip.style.top = rect.top + window.scrollY - 30 + "px";
+        // tooltip.style.left = rect.left + window.scrollX - 130 + "px";
+        // tooltip.style.top = rect.top + window.scrollY - 30 + "px";
       } else {
         tooltip.style.display = "none";
         selectedText = "";
@@ -221,250 +208,7 @@ const nl2br = (str = "", isXHTML = true) => {
   const breakTag = isXHTML ? "<br />" : "<br>";
   return str.replace(/(\r\n|\n\r|\r|\n)/g, `$1${breakTag}`);
 };
-// ! Fonction qui permet d'envoyer une highlight en base de données
-const highlightData = (
-  tooltip,
-  selectedTextP,
-  selectedText,
-  selectedTextEl,
-  selectedTextContext,
-  selectedTextEnd,
-  color
-) => {
-  const url = "/recit/chapter/note";
-  const data = new FormData();
-  data.append("p", selectedTextP);
-  data.append("idChapter", document.getElementById("chapId").value);
-  data.append("selection", selectedText.replace(/\n/g, "").trimEnd());
-  data.append("color", color);
-  data.append("contentEl", selectedTextEl.replace(/\n/g, "").trimEnd());
-  data.append("context", selectedTextContext);
-  data.append("end", selectedTextEnd);
-  data.append("type", "highlight");
-  axios
-    .post(url, data, { headers: { "Content-Type": "multipart/form-data" } })
-    .then((response) => {
-      tooltip.classList.add("hidden");
-      let pr = response.data.p || "0";
-      const chapArticle = document.getElementById(`paragraphe-${pr}`);
-      showHighlightDom(
-        chapArticle,
-        response.data.contextSel,
-        color,
-        response.data.selection,
-        response.data.selectionEl,
-        response.data.idNote,
-        response.data.p
-      );
-      activeClickTooltipHL();
-      // * On stocke l'id de la note dans un input pour pouvoir la récupérer dans le formulaire de commentaire
-      document.getElementById("drawerNoteQuote").value =
-        response.data.selection;
-    });
-};
 
-const activeClickTooltipHL = () => {
-  const tooltiped = document.getElementById("highlighted-options");
-  const highlighted = document.querySelectorAll("span.highlighted");
-  highlighted.forEach((element) => {
-    element.addEventListener("click", (e) => {
-      e.stopPropagation();
-      highlightedOptions(element, tooltiped);
-      tooltiped.classList.remove("hidden");
-    });
-  });
-};
-function handleClick(shareFn) {
-  return function (selection) {
-    return function (event) {
-      event.preventDefault();
-      shareFn(selection);
-    };
-  };
-}
-function highlightedOptions(element, tooltiped) {
-  const parts = element.id.split("-");
-  const result = parts[1];
-  const deleteBtn = document.getElementById("delete-hl");
-  deleteBtn.setAttribute("data-note-id", result);
-  const selection = window.getSelection();
-  const range = selection.getRangeAt(0);
-  const rect = range.getBoundingClientRect();
-  tooltiped.style.left = `${rect.left + window.scrollX - 80}px`;
-  tooltiped.style.top = `${rect.top + window.scrollY - 50}px`;
-  const styles = {
-    "hl-1": ["text-emerald-400"],
-    "hl-2": ["text-amber-400"],
-    "hl-3": ["text-red-400"],
-    default: ["text-blue-400"],
-  };
-  deleteBtn.className = "";
-  const classes =
-    styles[
-      element.classList.contains("hl-1")
-        ? "hl-1"
-        : element.classList.contains("hl-2")
-        ? "hl-2"
-        : element.classList.contains("hl-3")
-        ? "hl-3"
-        : "default"
-    ];
-  deleteBtn.classList.add(...classes);
-}
-// ! fonction de partage sur les réseaux
-let selectedText = "";
-
-document.addEventListener("selectionchange", () => {
-  const selection = window.getSelection();
-  if (selection.toString().length > 0) {
-    selectedText = "« " + selection.toString() + " »\n";
-  }
-});
-function shareNw(nw) {
-  let url = window.location.href;
-  let urlShare = "";
-  switch (nw) {
-    case "twitter":
-      urlShare = `https://twitter.com/share?url=${url}&via=ScrilabEditions&text=${encodeURIComponent(
-        selectedText
-      )}`;
-      window.open(urlShare, "_blank");
-      break;
-    case "facebook":
-      urlShare = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-      window.open(urlShare, "_blank");
-      break;
-    case "linkedin":
-      urlShare = `https://www.linkedin.com/shareArticle/?mini=true&url=${url}`;
-      window.open(urlShare, "_blank");
-      break;
-    default:
-      return;
-  }
-}
-// ! Fonction d'affichage sur le dom des highlights
-function showHighlightDom(
-  chapArticle,
-  contextSel,
-  color,
-  selection,
-  selectionEl,
-  idNote,
-  p
-) {
-  if (selectionEl.includes("</p>")) {
-    //!SECTION
-    const bigArticle = document.getElementById("chapArticle");
-    var regex = '<p id="paragraphe-' + p + '"(.*?)>(.*?)</p>';
-    var match = bigArticle.innerHTML.match(regex);
-    if (selectionEl.indexOf("</p>") !== -1) {
-      if (selectionEl.indexOf("</p>")) {
-        var selectionEl2 = selectionEl.substr(0, selectionEl.indexOf("</p>"));
-        var matches = selectionEl2.match(/<[^>]*>|[^<]+/g);
-        var n = 0;
-        for (var key in matches) {
-          if (matches[key].indexOf("<") === -1) {
-            matches[key] =
-              "<span id='hl-" +
-              idNote +
-              "' class='hlId-" +
-              idNote +
-              " highlighted hl-" +
-              color +
-              " hlMultiple'>" +
-              matches[key] +
-              "</span>";
-          }
-          n++;
-        }
-        // Join
-        var selectionEl3 = matches.join("");
-        bigArticle.innerHTML = bigArticle.innerHTML.replace(
-          selectionEl2,
-          "<span id='hl-" +
-            idNote +
-            "' class='class='hlId-" +
-            idNote +
-            " highlighted hl-" +
-            color +
-            "'>" +
-            selectionEl3 +
-            "</span>"
-        );
-      } else {
-        bigArticle.innerHTML = bigArticle.innerHTML.replace(
-          selectionEl,
-          "<span id='hl-" +
-            idNote +
-            "' class='hlId-" +
-            idNote +
-            " highlighted hl-" +
-            color +
-            "'>" +
-            selectionEl +
-            "</span>"
-        );
-      }
-    }
-    bigArticle.innerHTML = bigArticle.innerHTML.replace(
-      selectionEl,
-      `<span id='hl-${idNote}' class='highlighted hlId-${idNote}"  hl-${color}'>${selectionEl}</span>`
-    );
-  } else {
-    let contextAndSel = contextSel + selection;
-    let newHTML = chapArticle.innerHTML.replace(
-      contextAndSel,
-      `${contextSel}<span id='hl-${idNote}' class='highlighted  hlId-${idNote} hl-${color}'>${selection}</span>`
-    );
-    chapArticle.innerHTML = newHTML;
-    if (chapArticle.innerHTML === newHTML) {
-      newHTML = chapArticle.innerHTML.replace(
-        selectionEl,
-        `<span id='hl-${idNote}' class='highlighted  hlId-${idNote} hl-${color}'>${selection}</span>`
-      );
-    }
-    if (chapArticle.innerHTML === newHTML) {
-      newHTML = chapArticle.innerHTML.replace(
-        selectionEl,
-        `<span id='hl-${idNote}' class='highlighted  hlId-${idNote} hl-${color}'>${selection}</span>`
-      );
-    }
-  }
-}
-// ! Fonction qui permet de supprimer les highlights en base de données
-async function deleteHighlight() {
-  const hlId = document
-    .getElementById("delete-hl")
-    .getAttribute("data-note-id");
-  const url = "/recit/chapter/delnote";
-  const data = new FormData();
-  data.append("idNote", hlId);
-
-  try {
-    await axios.post(url, data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-  } catch (error) {
-    console.error(error);
-  }
-
-  // * Remove the highlight from the DOM
-  const el = document.getElementById("hl-" + hlId);
-  const parent = el.parentNode;
-  while (el.firstChild) parent.insertBefore(el.firstChild, el);
-  parent.removeChild(el);
-  if (document.getElementById("hl-" + hlId)) {
-    const el2 = document.querySelectorAll(".hlId-" + hlId);
-    el2.forEach((element) => {
-      let parent = element.parentNode;
-      while (element.firstChild)
-        parent.insertBefore(element.firstChild, element);
-      parent.removeChild(element);
-    });
-  }
-}
 function updateDrawerContent(
   selectedText,
   selectedTextP,
@@ -495,15 +239,6 @@ function updateDrawerContent(
   drawerSelectedTextEl.value = selectedTextEl;
   drawerSelectedTextContext.value = selectedTextContext;
   // !
-  highlightData(
-    tooltip,
-    selectedTextP,
-    selectedText,
-    selectedTextEl,
-    selectedTextContext,
-    "",
-    "4"
-  );
 }
 function toggleSidebar(sidebar) {
   sidebar.classList.toggle("hidden");

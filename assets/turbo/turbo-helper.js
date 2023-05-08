@@ -69,6 +69,7 @@ const TurboHelper = class {
         }, 10);
       }
       User();
+      Annotation();
       ShowChapter();
       toggleDrawer();
       targetQuote();
@@ -96,8 +97,9 @@ const TurboHelper = class {
       TippyC();
       axiosSaveChapter();
       ForumTopicRead();
-      //
       Annotation();
+
+      //
       //
       // ! Flashes
       if (document.getElementById("flashbag-success")) {

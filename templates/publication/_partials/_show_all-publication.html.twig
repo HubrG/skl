@@ -28,6 +28,8 @@
 	<i class="summary-small fa-duotone fa-memo-circle-info catColorText-{{cat_color}}" data-tippy-content="{{chap_content}}"></i>
 
 	{% if item.cover  %}
+
+
 		<div class="img-header-big">
 			<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" aria-label="Lire {{item.title}}, par {{item.user.nickname}}">
 				<img src="{{item.cover}}" alt="Couverture du récit {{item.title}}, écrit par {{item.user.nickname}}">

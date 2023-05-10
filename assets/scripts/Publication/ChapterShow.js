@@ -14,11 +14,15 @@ export function ShowChapter() {
       if (nav.getBoundingClientRect().top < 0) {
         stickyDiv.style.position = "sticky";
         stickyDiv.style.top = "0";
-        sidebarScroll.style.paddingTop = "1rem";
+        if (sidebarScroll) {
+          sidebarScroll.style.paddingTop = "1rem";
+        }
       } else {
         stickyDiv.style.position = "sticky";
         stickyDiv.style.top = "3.5rem";
-        sidebarScroll.style.paddingTop = "5rem";
+        if (sidebarScroll) {
+          sidebarScroll.style.paddingTop = "5rem";
+        }
       }
     }
   });
@@ -259,31 +263,32 @@ export function toggleDrawer() {
   // ! Sidebar
   const toggleButton = document.querySelectorAll(".toggleSidebar");
   var sidebar = document.getElementById("sidebar");
-
-  toggleButton.forEach((element) => {
-    element.addEventListener("click", () => {
-      toggleSidebar(sidebar);
+  if (sidebar) {
+    toggleButton.forEach((element) => {
+      element.addEventListener("click", () => {
+        toggleSidebar(sidebar);
+      });
     });
-  });
-  window.addEventListener("click", (event) => {
-    // On désactive le clic si le click est sur un élément possedant la classe ".toggleSidebar"
-    if (
-      event.target.classList.contains("toggleSidebar") ||
-      event.target.id == "sidebar" ||
-      event.target.closest("#sidebar")
-    ) {
-      return;
-    }
-    if (!sidebar.classList.contains("hidden")) {
-      if (document.getElementById("insightQuote")) {
-        // * Si l'utilisateur est connecté
-        document.getElementById("insightQuote").classList.add("hidden");
-        document.getElementById("insightQuote").innerHTML = "";
-        document.getElementById("drawerNoteQuote").value = "";
+    window.addEventListener("click", (event) => {
+      // On désactive le clic si le click est sur un élément possedant la classe ".toggleSidebar"
+      if (
+        event.target.classList.contains("toggleSidebar") ||
+        event.target.id == "sidebar" ||
+        event.target.closest("#sidebar")
+      ) {
+        return;
       }
-      toggleSidebar(sidebar);
-    }
-  });
+      if (!sidebar.classList.contains("hidden")) {
+        if (document.getElementById("insightQuote")) {
+          // * Si l'utilisateur est connecté
+          document.getElementById("insightQuote").classList.add("hidden");
+          document.getElementById("insightQuote").innerHTML = "";
+          document.getElementById("drawerNoteQuote").value = "";
+        }
+        toggleSidebar(sidebar);
+      }
+    });
+  }
 }
 export function targetQuote() {
   if (!document.getElementById("chapArticle")) return;

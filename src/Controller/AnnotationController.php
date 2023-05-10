@@ -57,6 +57,7 @@ class AnnotationController extends AbstractController
         $annotation->setUser($this->getUser());
         $annotation->setColor($data['color']);
         $annotation->setMode($data['mode'] == "mark-for-me" ? 0 : 1);
+        $annotation->setComment($data['comment']);
         $annotation->setContentPlain($data['content_plain']);
         $annotation->setVersion($version);
         $annotation->setChapter($chapter);
@@ -265,5 +266,20 @@ class AnnotationController extends AbstractController
         }
         // On retourne l'annotation
         return $annotation;
+    }
+    #[Route('/reload-revision', name: 'reload_revision', methods: ['POST'])]
+    public function reloadArticle(Request $request): Response
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $content = $this->getAnnotation($data['chapter'], 1, $data['version']);
+        if (trim($content) == trim($data['article'])) {
+            $content = false;
+        }
+
+        return $this->json([
+            'code' => 200,
+            'message' => $content
+        ], 200);
     }
 }

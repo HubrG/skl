@@ -2,7 +2,11 @@ import axios from "axios";
 import { NotyDisplay } from "../Noty";
 
 export function Annotation() {
-  if (!document.querySelector("article")) return;
+  if (
+    !document.querySelector("article") &&
+    !document.querySelector("article").getAttribute("data-annotable")
+  )
+    return;
 
   // * Informations préalables
   /** À propos de "data-mode"
@@ -20,16 +24,16 @@ export function Annotation() {
    * ayant la même classe aléatoire d'annotation.
    */
   const annotationElements = document.querySelectorAll("mark");
-  let mainArticle = document.querySelector("article");
-  console.log(mainArticle.getAttribute("data-mode"));
   // Ajouter des gestionnaires d'événements "mouseenter" et "mouseleave" pour chaque élément
   annotationElements.forEach((element) => {
     element.addEventListener("mouseenter", function () {
       handleAnnotationHover(element, true);
+      stopInterval();
     });
 
     element.addEventListener("mouseleave", function () {
       handleAnnotationHover(element, false);
+      startInterval();
     });
   });
 
@@ -66,30 +70,50 @@ export function Annotation() {
    * près de la sélection contenant des outils pour interagir avec le texte sélectionné.
    * Si aucune sélection n'est présente, l'info-bulle est masquée.
    */
+  const markForMe = document.querySelectorAll(".mark-for-me");
+  const markForAll = document.querySelectorAll(".mark-for-all");
+
   let currentSelectedText = "";
   const tooltip = document.getElementById("tools");
-  document.addEventListener("mouseup", function (event) {
-    const selection = window.getSelection();
-    if (selection.toString().trim() !== "") {
-      currentSelectedText = selection.toString();
-      tooltip.classList.remove("hidden");
-      const range = selection.getRangeAt(0);
-      const rect = range.getBoundingClientRect();
-      tooltip.style.left = rect.left + window.scrollX - 130 + "px";
-      tooltip.style.top = rect.top + window.scrollY - 30 + "px";
-    } else {
-      tooltip.classList.add("hidden");
-    }
-  });
+
+  document
+    .querySelector("article")
+    .addEventListener("mouseup", function (event) {
+      const selection = window.getSelection();
+
+      // Trouver l'élément parent avec l'attribut data-annotable
+      const annotableElement = document.querySelector('[data-annotable=""]');
+
+      // Vérifier si la sélection se fait à l'intérieur de l'élément annotable
+      const isSelectionInAnnotableElement =
+        annotableElement && selection.containsNode(selection.anchorNode, true);
+
+      if (selection.toString().trim() !== "" && isSelectionInAnnotableElement) {
+        currentSelectedText = selection.toString();
+        tooltip.classList.remove("hidden");
+        const range = selection.getRangeAt(0);
+        const rect = range.getBoundingClientRect();
+        if (mainArticle.getAttribute("data-mode") === "mark-for-me") {
+          tooltip.style.left = rect.left + window.scrollX - 130 + "px";
+          tooltip.style.top = rect.top + window.scrollY - 30 + "px";
+        } else {
+          tooltip.style.left = rect.left + window.scrollX - 130 + "px";
+          tooltip.style.top = rect.top + window.scrollY + 60 + "px";
+        }
+      } else {
+        tooltip.classList.add("hidden");
+        resetMarkForAll();
+      }
+    });
+
   // *
   // * Ce code gère les interactions utilisateur avec les annotations de texte sur la page.
+  // ! MarkforMe
   // Il permet à l'utilisateur de créer des annotations en sélectionnant du texte et en cliquant sur un élément "mark-for-me".
   // Il affiche également une tooltip avec des options d'annotation lorsque l'utilisateur clique sur une annotation existante,
   // et masque la tooltip lorsque l'utilisateur clique en dehors de l'annotation.
   //
   // Sélectionner tous les éléments avec la classe "mark-for-me"
-  const markForMe = document.querySelectorAll(".mark-for-me");
-  const markForAll = document.querySelectorAll(".mark-for-all");
   // Ajouter un écouteur d'événements "click" pour chaque élément "mark-for-me"
   markForMe.forEach((mark) => {
     mark.addEventListener("click", function () {
@@ -101,17 +125,133 @@ export function Annotation() {
       tooltip.classList.add("hidden");
     });
   });
+  // *
+  // * Ce code gère les interactions utilisateur avec les annotations de texte sur la page.
+  // ! MarkforAll
+  // Il permet à l'utilisateur de créer des annotations en sélectionnant du texte et en cliquant sur un élément "mark-for-me".
+  // Il affiche également une tooltip avec des options d'annotation lorsque l'utilisateur clique sur une annotation existante,
+  // et masque la tooltip lorsque l'utilisateur clique en dehors de l'annotation.
+  //
+  // Sélectionner tous les éléments avec la classe "mark-for-me"
+  // Ajoutez cette fonction pour supprimer les écouteurs d'événements précédents
+  function removeEventListeners(element, event, listener) {
+    const clone = element.cloneNode(true);
+    element.parentNode.replaceChild(clone, element);
+    return clone;
+  }
+
   // Ajouter un écouteur d'événements "click" pour chaque élément "mark-for-all"
+  let selectionSave = null;
   markForAll.forEach((mark) => {
-    mark.addEventListener("click", function () {
+    mark.addEventListener("click", function (event) {
       // Obtenir la sélection actuelle de texte
       const selection = window.getSelection();
-      // Créer une annotation à partir de la sélection de texte et de l'élément "mark"
-      createAnnotation(selection, mark);
-      // Cacher la tooltip en ajoutant la classe "hidden"
-      tooltip.classList.add("hidden");
+      if (selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0);
+        selectionSave = range; // Mettez à jour la variable globale avec un objet Range
+      }
+      const revisionCommentTextarea = document.getElementById(
+        "revision-comment-textarea"
+      );
+      markForAll.forEach((mark2) => {
+        mark2.classList.remove("bg-emerald-600");
+        mark2.classList.remove("bg-yellow-600");
+        mark2.classList.remove("bg-blue-600");
+      });
+      if (mark.classList.contains("text-emerald-200")) {
+        mark.classList.add("bg-emerald-600");
+        revisionCommentTextarea.classList.add(
+          "border-emerald-600",
+          "bg-emerald-100",
+          "text-emerald-800",
+          "rounded-tl-none"
+        );
+        revisionCommentTextarea.classList.remove(
+          "border-yellow-600",
+          "bg-yellow-100",
+          "text-yellow-800",
+          "border-blue-600",
+          "bg-blue-100",
+          "text-blue-800",
+          "rounded-tr-none"
+        );
+      } else if (mark.classList.contains("text-yellow-200")) {
+        mark.classList.add("bg-yellow-600");
+        revisionCommentTextarea.classList.add(
+          "border-yellow-600",
+          "bg-yellow-100",
+          "text-yellow-800"
+        );
+        revisionCommentTextarea.classList.remove(
+          "border-blue-600",
+          "bg-blue-100",
+          "text-blue-800",
+          "rounded-tl-none",
+          "rounded-tr-none",
+          "border-emerald-600",
+          "bg-emerald-100",
+          "text-emerald-800"
+        );
+      } else {
+        mark.classList.add("bg-blue-600");
+        revisionCommentTextarea.classList.add(
+          "border-blue-600",
+          "bg-blue-100",
+          "text-blue-800",
+          "rounded-tr-none"
+        );
+        revisionCommentTextarea.classList.remove(
+          "border-yellow-600",
+          "bg-yellow-100",
+          "text-yellow-800",
+          "border-emerald-600",
+          "bg-emerald-100",
+          "text-emerald-800",
+          "border-tl-none"
+        );
+      }
+
+      document.getElementById("revision-comment").style = "display: block;";
+      const sendRevision = document.getElementById("send-revision");
+      const newSendRevision = removeEventListeners(sendRevision, "click");
+      newSendRevision.addEventListener("click", function () {
+        var revisionComment = document.getElementById(
+          "revision-comment-textarea"
+        ).value;
+        if (selectionSave) {
+          const newSelection = document.createRange();
+          newSelection.setStart(
+            selectionSave.startContainer,
+            selectionSave.startOffset
+          );
+          newSelection.setEnd(
+            selectionSave.endContainer,
+            selectionSave.endOffset
+          );
+          console.log(newSelection);
+          createAnnotationRevision(newSelection, mark, revisionComment);
+          tooltip.classList.add("hidden");
+        }
+      });
     });
   });
+  function resetMarkForAll() {
+    markForAll.forEach((mark) => {
+      mark.classList.remove("bg-emerald-600");
+      mark.classList.remove("bg-yellow-600");
+      mark.classList.remove("bg-blue-600");
+      document.getElementById("revision-comment").style = "display: none;";
+      document.getElementById("revision-comment-textarea").value = "";
+      document
+        .getElementById("revision-comment-textarea")
+        .classList.remove(
+          "border-emerald-600",
+          "bg-emerald-100",
+          "text-emerald-800"
+        );
+    });
+    selectionSave = null;
+  }
 
   // Sélectionner l'élément avec l'ID "highlighted-options"
   const tooltiped = document.getElementById("highlighted-options");
@@ -123,6 +263,7 @@ export function Annotation() {
   // Initialiser une chaîne vide pour stocker le texte concaténé des annotations
   let concatenatedAnnotationText = "";
   // Ajouter un écouteur d'événements "click" au document
+
   document.addEventListener("click", function (event) {
     // Si l'élément sur lequel l'utilisateur a cliqué a la classe "annotation"
     if (event.target.matches(".annotation")) {
@@ -135,8 +276,14 @@ export function Annotation() {
         window.pageYOffset + annotationRect.top - tooltiped.offsetHeight;
 
       // Positionner la tooltiped en utilisant les coordonnées calculées
-      tooltiped.style.left = `${tooltipedX}px`;
-      tooltiped.style.top = `${tooltipedY}px`;
+      if (mainArticle.getAttribute("data-mode") === "mark-for-me") {
+        tooltiped.style.left = `${tooltipedX}px`;
+        tooltiped.style.top = `${tooltipedY}px`;
+      } else {
+        tooltiped.style.left = `${tooltipedX}px`;
+        var ssss = tooltipedY + 50;
+        tooltiped.style.top = ssss + `px`;
+      }
 
       // Afficher la tooltiped en supprimant la classe "hidden"
       tooltiped.classList.remove("hidden");
@@ -168,8 +315,64 @@ export function Annotation() {
       const annotationClass = event.target.className;
 
       // Récupérer tous les éléments avec la même classe d'annotation
+
+      // ! Récupérer le commentaire de l'annotation
+      // 1. Récupérer tous les éléments ayant la classe 'annotationClass'
       const annotationElements =
         document.getElementsByClassName(annotationClass);
+
+      // 2. Définir une expression régulière pour la structure de la classe annotation recherchée
+      const annotationRegex = /^annotation-\d+-\d+$/;
+
+      // 3. Créer une fonction pour récupérer la classe annotation correspondant à la structure recherchée
+      function findAnnotationClass(element) {
+        const classNames = element.classList;
+
+        for (let i = 0; i < classNames.length; i++) {
+          if (annotationRegex.test(classNames[i])) {
+            return classNames[i];
+          }
+        }
+
+        return null;
+      }
+      let annotationClassComment;
+      // 4. Parcourir les éléments et récupérer la classe annotation
+      for (const annotationElement of annotationElements) {
+        const annotationClass = findAnnotationClass(annotationElement);
+        if (annotationClass) {
+          annotationClassComment = annotationClass;
+        }
+      }
+
+      document
+        .querySelectorAll(".one-revision-comment")
+        .forEach((annotation) => {
+          if (
+            annotation.getAttribute("data-annotation-class") ===
+            annotationClassComment
+          ) {
+            // On récupère le commentaire de l'annotation à l'intérieur de l'élément qui possède la classe : annotation-comment-user
+            const annotationCommentUser = annotation.querySelector(
+              ".annotation-comment-user"
+            ).innerHTML;
+            document.getElementById("hl-comment-user").innerHTML =
+              annotationCommentUser;
+            // On récupère le commentaire de l'annotation à l'intérieur de l'élément qui possède la classe : annotation-comment-user
+            const annotationComment = annotation.querySelector(
+              ".annotation-comment-content"
+            ).innerHTML;
+            document.getElementById("hl-comment-content").innerHTML =
+              annotationComment;
+            // On récupère l'avatar s'il existe
+            const annotationCommentUserAvatar = annotation.querySelector(
+              ".annotation-comment-pp"
+            ).innerHTML;
+            document.getElementById("hl-comment-avatar").innerHTML =
+              annotationCommentUserAvatar;
+          }
+        });
+      //
 
       // Concaténer le contenu de tous les éléments d'annotation
       for (const elem of annotationElements) {
@@ -190,9 +393,10 @@ export function Annotation() {
    * @param {Selection} selection - L'instance de Selection dont le contenu doit être annoté.
    * @param {Element} mark - L'élément <mark> représentant l'annotation.
    */
-  function createAnnotation(selection, mark) {
+  function createAnnotation(selection, mark, comment = null) {
     const range = selection.getRangeAt(0);
     const commonAncestor = range.commonAncestorContainer;
+
     let random = Math.floor(Math.random() * 1000) + 1;
     const annotationClass = "annotation-" + Date.now() + "-" + random;
     let textNodeRanges;
@@ -218,15 +422,13 @@ export function Annotation() {
     const annotationMode = mainArticle.getAttribute("data-mode");
     const version = mainArticle.getAttribute("data-version");
     var url = null;
-    if (annotationMode === "mark-for-me") {
-      url = "/save-annotation";
-    } else {
-      url = "/save-review";
-    }
+
+    url = "/save-annotation";
 
     const annotationData = {
       annotation_class: annotationClass,
       content: article,
+      comment: comment,
       mode: annotationMode,
       version: version,
       content_plain: combinedContent,
@@ -247,10 +449,82 @@ export function Annotation() {
             "info",
             5000
           );
+        } else {
         }
       });
 
     selection.removeAllRanges();
+  }
+  /**
+   * * Cette fonction prend en entrée une instance de Selection et un élément <mark> représentant
+   * * l'annotation, puis crée et enregistre une annotation en enveloppant le contenu de la sélection
+   * * dans un élément <mark>. Elle rassemble également les données d'annotation et envoie une
+   * * requête pour enregistrer l'annotation sur le serveur.
+   *
+   * @param {Selection} selection - L'instance de Selection dont le contenu doit être annoté.
+   * @param {Element} mark - L'élément <mark> représentant l'annotation.
+   */
+  function createAnnotationRevision(selection, mark, comment) {
+    const range = selection;
+    const commonAncestor = range.commonAncestorContainer;
+
+    let random = Math.floor(Math.random() * 1000) + 1;
+    const annotationClass = "annotation-" + Date.now() + "-" + random;
+    let textNodeRanges;
+    if (commonAncestor.nodeType === Node.TEXT_NODE) {
+      textNodeRanges = [range];
+    } else {
+      textNodeRanges = getTextNodesInRange(range);
+    }
+
+    let combinedContent = "";
+
+    textNodeRanges.forEach((nodeRange) => {
+      wrapAnnotation(
+        nodeRange,
+        annotationClass,
+        mark.getAttribute("data-color")
+      );
+      const content = nodeRange.toString();
+      combinedContent += content;
+    });
+    const article = document.querySelector("article").innerHTML;
+    const chapter = mainArticle.getAttribute("data-chapter");
+    const annotationMode = mainArticle.getAttribute("data-mode");
+    const version = mainArticle.getAttribute("data-version");
+    var url = null;
+
+    url = "/save-annotation";
+
+    const annotationData = {
+      annotation_class: annotationClass,
+      content: article,
+      comment: comment,
+      mode: annotationMode,
+      version: version,
+      content_plain: combinedContent,
+      color: mark.getAttribute("data-color"),
+      chapter: chapter,
+    };
+    axios
+      .post(url, annotationData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        // Si erreur 403
+        stopInterval();
+        document.getElementById("comment-reload").click();
+        if (response.data.code === 403) {
+          NotyDisplay(
+            "Vous avez marqué le texte, toutefois ce marquage n'est pas enregistré car vous n'être pas connecté(e).",
+            "info",
+            5000
+          );
+        }
+      });
+    resetMarkForAll();
   }
   /**
    * * Cette fonction prend en entrée une instance de Range, une classe d'annotation et une couleur,
@@ -338,6 +612,7 @@ export function Annotation() {
   // 4. Met à jour le contenu de l'article et le chapitre.
   // 5. Envoie une requête POST au serveur pour supprimer l'annotation, en incluant le contenu mis à jour de l'article, le chapitre et la classe d'annotation unique.
   function removeAnnotation(annotation) {
+    console.log(annotation);
     const uniqueClass = Array.from(annotation.classList).find((className) =>
       className.startsWith("annotation-")
     );
@@ -377,12 +652,58 @@ export function Annotation() {
         },
       })
       .then(() => {
-        console.log("Annotation Supprimée");
+        // On supprime l'annotation en commentaire
+        removeAnnotationComment(uniqueClass);
+        startInterval();
       })
       .catch((error) => {
         console.error("Erreur lors de la suppression de l'annotation :", error);
       });
   }
+
+  const comments = document.querySelectorAll(".one-revision-comment");
+
+  // ! Hover sur un commentaire
+  // ! Hover sur un commentaire
+  let scrollTimeout; // Ajoutez cette variable pour stocker l'ID renvoyé par setTimeout
+  comments.forEach((comment) => {
+    comment.addEventListener("mouseenter", function () {
+      const annotationClass = comment.getAttribute("data-annotation-class");
+      const annotationElements = document.querySelectorAll(
+        "." + annotationClass
+      );
+      annotationElements.forEach((element) => {
+        element.classList.add("hovered");
+      });
+
+      // Faites défiler la page vers le premier élément avec la classe annotation-X
+      if (annotationElements.length > 0) {
+        scrollTimeout = setTimeout(() => {
+          // Stockez l'ID renvoyé par setTimeout dans scrollTimeout
+          annotationElements[0].scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+            inline: "nearest",
+          });
+        }, 1000);
+      }
+
+      stopInterval(); // Arrêtez l'intervalle lorsque la souris survole un commentaire
+    });
+
+    comment.addEventListener("mouseleave", function () {
+      const annotationClass = comment.getAttribute("data-annotation-class");
+      const annotationElements = document.querySelectorAll(
+        "." + annotationClass
+      );
+      annotationElements.forEach((element) => {
+        element.classList.remove("hovered");
+      });
+
+      clearTimeout(scrollTimeout); // Annulez le setTimeout en utilisant scrollTimeout
+      startInterval(); // Redémarrez l'intervalle lorsque la souris quitte un commentaire
+    });
+  });
 
   // ! Partager sur les réseaux sociaux
   const twitterB = document.querySelectorAll(".shareTwitter");
@@ -451,7 +772,115 @@ export function Annotation() {
   delHl.addEventListener("click", function () {
     if (currentAnnotation) {
       removeAnnotation(currentAnnotation);
-      console.log("ok");
     }
   });
+  // ! Changement de version de l'article en mode révision avec Select
+  const versionSelect = document.querySelector("#version-select");
+  if (versionSelect) {
+    versionSelect.addEventListener("change", function () {
+      changeVersion(this);
+    });
+  }
+  function changeVersion(selectElement) {
+    const version = selectElement.value;
+    const url = new URL(window.location.href);
+    url.searchParams.set("version", version);
+    window.location.href = url.toString();
+  }
+  // ! RELOAD ARTICLE si changement
+  let mainArticle = document.querySelector("article");
+
+  let intervalId;
+  let isMouseOver = false;
+  //  ! interval pour reload en cas de nouveau contenu
+
+  function stopInterval() {
+    if (intervalId) {
+      clearInterval(intervalId);
+    }
+  }
+  let previousContent = mainArticle.innerHTML;
+
+  if (
+    document.querySelector("article").getAttribute("data-mode") ==
+    "mark-for-all"
+  ) {
+    startInterval();
+  }
+  function startInterval(stop = false) {
+    if (
+      document.querySelector("article").getAttribute("data-mode") ==
+      "mark-for-all"
+    ) {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+      if (stop === "stop") {
+        return; // On arrête ici si stop est égal à "stop"
+      }
+      intervalId = setInterval(function () {
+        const version = mainArticle.getAttribute("data-version");
+        const chapter = mainArticle.getAttribute("data-chapter");
+        const annotationData = {
+          version: version,
+          article: document.querySelector("article").innerHTML,
+          chapter: chapter,
+        };
+        const url = "/reload-revision";
+        axios
+          .post(url, annotationData, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+          .then((response) => {
+            if (
+              response.data.message != false &&
+              response.data.message != previousContent
+            ) {
+              if (!document.querySelector(".noty_type__info")) {
+                NotyDisplay(
+                  "Un utilisateur vient d'ajouter ou de supprimer une annotation sur cette feuille, la page va se recharger automatiquement.",
+                  "info",
+                  4000
+                );
+              }
+              setTimeout(function () {
+                previousContent = response.data.message;
+                document.querySelector("article").innerHTML =
+                  response.data.message;
+                document.getElementById("tools-frame").classList.add("hidden");
+                document.getElementById("comment-reload").click();
+              }, 5000);
+            }
+          })
+          .catch((error) => {
+            console.error(
+              "Erreur lors du chargement du contenu de l'article:",
+              error
+            );
+          });
+      }, 1000);
+    }
+  }
+  //  ! Suppression depuis les commentaires
+  const delComment = document.querySelectorAll(".del-comment");
+  delComment.forEach((del) => {
+    del.addEventListener("click", function () {
+      const dataAnnotation = del.getAttribute("data-annotation-class");
+      const annotationElements = document.querySelector("." + dataAnnotation);
+      removeAnnotation(annotationElements);
+      removeAnnotationComment(dataAnnotation);
+      stopInterval();
+      //
+    });
+  });
+  function removeAnnotationComment(annotationElements) {
+    const oneComment = document.querySelectorAll(".one-revision-comment");
+    oneComment.forEach((comment) => {
+      if (comment.getAttribute("data-annotation-class") == annotationElements) {
+        comment.remove();
+      }
+    });
+  }
 }

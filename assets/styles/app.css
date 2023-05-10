@@ -306,7 +306,7 @@ opacity: 0.4;
 	@apply bg-emerald-100  dark:bg-emerald-800  text-emerald-900 dark:text-emerald-200 hover:dark:bg-emerald-700 hover:bg-emerald-200   bg-opacity-80 dark:bg-opacity-80;
 }
 #chapContent mark.hl-2 {
-	@apply bg-yellow-100  dark:bg-yellow-800  dark:text-yellow-200 hover:dark:bg-yellow-700 hover:bg-yellow-200   bg-opacity-80 dark:bg-opacity-80 ;
+	@apply bg-yellow-100  dark:bg-yellow-800  text-yellow-900 dark:text-yellow-200 hover:dark:bg-yellow-700 hover:bg-yellow-200   bg-opacity-80 dark:bg-opacity-80 ;
 }
 #chapContent mark.hl-3 {
 	@apply bg-rose-100  dark:bg-rose-800  text-rose-900 dark:text-rose-200 hover:dark:bg-rose-700 hover:bg-rose-200   bg-opacity-80 dark:bg-opacity-80;
@@ -1275,3 +1275,26 @@ nav.breadcrumb ol li a:hover.not-underline {
 .dark .DarkCatColorNoBg {
 	@apply bg-transparent !important;
 }
+.hovered {
+	@apply bg-slate-900 text-slate-200 dark:bg-slate-200 dark:text-slate-900 !important;
+}
+#del-hl.del-hl {
+	@apply cursor-pointer bg-transparent flex flex-row gap-x-3 items-baseline !important;
+}
+#highlighted-options.revision {
+	@apply absolute p-3  bg-slate-700 text-slate-200 max-w-lg -mt-6 rounded-2xl shadow dark:bg-slate-900 dark:text-slate-300  !important;
+	}
+#highlighted-options.revision ul {
+	@apply  items-center flex gap-2 justify-between !important;
+}
+#tools.revision li {
+	@apply mx-[0.3rem] block cursor-pointer !important;
+}
+#tools.revision, #highlighted-options.revision {
+	@apply  text-lg !important;
+}
+#highlighted-options.revision .infoComment {
+	@apply  text-sm flex flex-col !important;
+}
+
+

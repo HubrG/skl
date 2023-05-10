@@ -1,0 +1,53 @@
+<div class="flex flex-col gap-x-2 justify-start text-left p-2 rounded one-revision-comment comment-{{item.annotationClass}}" data-annotation-class="{{item.annotationClass}}">
+	<div class="flex flex-row items-center justify-start gap-x-2 dark:opacity-80">
+		{% if item.user.profilPicture %}
+			<div class="annotation-comment-pp w-6 h-5 self-baseline rounded-full">
+				<img class="rounded-full w-5 h-5 mt-1 " src="{{item.user.profilPicture}}"/>
+			</div>
+		{% endif %}
+		<div class="flex flex-col gap-y-1 text-xs w-full">
+			<div class="flex flex-row  gap-x-2 items-center justify-between">
+				<div class="annotation-comment-user">
+					<a href="{{path("app_user", {username:item.user.username})}}" class="hover:underline dark:text-slate-300 font-semibold text-sm">{{item.user.nickname}}</a>
+					<span class="text-slate-500 text-[0.75rem]">il y a
+						{{item.createdAt|since}}
+					</span>
+				</div>
+			</div>
+			<p class="flex flex-col items-start gap-x-1 dark:text-slate-300">
+				<span class="bg-slate-100  dark:bg-slate-700  text-slate-500 dark:text-slate-400 rounded px-2">{{item.contentPlain|trim}}</span>
+				<span class="pl-2 annotation-comment-content">{{item.comment}}</span>
+			</p>
+		</div>
+		<div class="dropdown">
+			<button aria-label="Afficher les options du commentaire de {{item.user.nickname}} — numéro {{item.id}}" class="text-gray-600 hover:text-gray-900   focus:outline-none focus:text-gray-900">
+				<i class="fa-regular fa-chevron-down text-[0.65rem] cursor-pointer  text-slate-500 -mt-10 dropdown-button" id="ddb-{{ item.id }}"></i>
+			</button>
+			<div id="ddm-{{ item.id }}" style="z-index:99999999" class="z-50 -mt-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dropdown-content">
+				<ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+					{% if app.user and item.user.id == app.user.id %}
+						<li class="hidden">
+							<button type="button" data-update-path="{{path("app_comment_update")}}" id="updateButton-{{ item.id }}" class="updateButton w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+								<i class="fa-solid fa-pen-to-square"></i>
+								&nbsp;Modifier
+							</button>
+						</li>
+						<li>
+							<button data-annotation-class="{{item.annotationClass}}" class="del-comment w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white deleteCommentButton">
+								<i class="fa-regular fa-trash-can"></i>
+								&nbsp;Supprimer
+							</button>
+						</li>
+					{% else %}
+						<li>
+							<a data-turbo-frame="_self" href="{{path("app_comment_delete")}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+								<i class="fa-regular fa-regular fa-flag"></i>
+								&nbsp;Signaler
+							</a>
+						</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

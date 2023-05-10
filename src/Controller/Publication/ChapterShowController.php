@@ -34,31 +34,23 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ChapterShowController extends AbstractController
 {
 
-    private $em;
-    private $chapterNote;
-    private $notificationSystem;
-    private $publicationPopularity;
-    private $requestStack;
-    private $pRepo;
 
-    private $pchRepo;
 
-    private $annotation;
-
-    public function __construct(AnnotationController $annotation, private PublicationChapterVersioningRepository $pchvRepo, PublicationChapterRepository $pchRepo, PublicationRepository $pRepo, RequestStack $requestStack, NotificationSystem $notificationSystem, EntityManagerInterface $em, PublicationChapterNoteRepository $chapterNote, PublicationPopularity $publicationPopularity)
-    {
-        $this->em = $em;
-        $this->chapterNote = $chapterNote;
-        $this->publicationPopularity = $publicationPopularity;
-        $this->notificationSystem = $notificationSystem;
-        $this->requestStack = $requestStack;
-        $this->pchRepo = $pchRepo;
-        $this->pRepo = $pRepo;
-        $this->annotation = $annotation;
+    public function __construct(
+        private AnnotationController $annotation,
+        private PublicationChapterVersioningRepository $pchvRepo,
+        private PublicationChapterRepository $pchRepo,
+        private PublicationRepository $pRepo,
+        private RequestStack $requestStack,
+        private NotificationSystem $notificationSystem,
+        private EntityManagerInterface $em,
+        private PublicationChapterNoteRepository $chapterNote,
+        private PublicationPopularity $publicationPopularity
+    ) {
     }
 
     #[Route('/recit-{slugPub}/{user}/{idChap}/{slug?}/{nbrShowCom?}', name: 'app_chapter_show')]
-    public function showChapter(PublicationReadRepository $pReadRepo, Request $request, PublicationCommentRepository $pcomRepo, PublicationChapterRepository $pchRepo, EntityManagerInterface $em, PublicationChapterNoteRepository $pcnRepo, PublicationRepository $pRepo, $slugPub = null, $slug = null, $idChap = null, $user = null, $nbrShowCom = null): response
+    public function showChapter(PublicationReadRepository $pReadRepo, Request $request, PublicationCommentRepository $pcomRepo, PublicationChapterRepository $pchRepo, EntityManagerInterface $em, PublicationRepository $pRepo, $slugPub = null, $slug = null, $idChap = null, $user = null, $nbrShowCom = null): response
     {
         if (!$nbrShowCom) {
             $nbrShowCom = 10;
@@ -163,26 +155,6 @@ class ChapterShowController extends AbstractController
             }
         }
 
-
-        // // ! récupérer le dernier ID de l'annotation (à mettre dans une fonction)
-        // $lastId = $paRepo->createQueryBuilder("pa")
-        //     ->select("MAX(pa.id)")
-        //     ->where("pa.chapter = :chapter")
-        //     ->setParameter("chapter", $chapter)
-        //     ->getQuery()
-        //     ->getSingleScalarResult();
-        // if ($lastId != null) {
-        //     $chapterContent = $paRepo->find($lastId)->getContent();
-        //     // On cherche l'utilisateur connecté
-
-        //     $class = $paRepo->findBy(['chapter' => $chapter, 'user' => $this->getUser()]);
-        //     // On remplace toutes les annotation-X et on ajoute la classe "me"
-        //     // foreach ($class as $value) {
-        //     //     $chapterContent = str_replace($value->getAnnotationClass(), $value->getAnnotationClass() . "", $chapterContent);
-        //     // }
-        // }
-        // !
-
         // * La vue
         return $this->render('publication/show_chapter.html.twig', [
             'infoPub' => $publication,
@@ -201,82 +173,186 @@ class ChapterShowController extends AbstractController
         ]);
     }
 
-    /** Status des notes :
-     * 0 = Highlight
-     */
-    #[Route('/recit/chapter/note', name: 'app_chapter_note', methods: ['POST'])]
-    public function chapterNote(Request $request, PublicationChapterRepository $pchRepo, PublicationChapterNoteRepository $pcnRepo, EntityManagerInterface $em): response
+    #[Route('/revision/recit-{slugPub}/{user}/{idChap}/{slug}', name: 'app_chapter_revision')]
+    public function showChapterRevision(PublicationAnnotationRepository $paRepo, PublicationReadRepository $pReadRepo, Request $request, PublicationCommentRepository $pcomRepo, PublicationChapterRepository $pchRepo, EntityManagerInterface $em, PublicationRepository $pRepo, $slugPub = null, $slug = null, $idChap = null, $user = null, $nbrShowCom = null): response
     {
-        // * On récupère les données
-        $dtIdChapter = $request->get("idChapter");
-        $dtType = $request->get("type");
-        $dtP = $request->get("p");
-        $dtContext = $request->get("context");
-        $dtColor = $request->get("color");
-        $dtSelection = $request->get("selection");
-        $dtContentEl = $request->get("contentEl");
-        if ($dtContext == "undefined") {
-            $dtContext = null;
+        if (!$nbrShowCom) {
+            $nbrShowCom = 10;
         }
-        // * On supprimer les balises HTML en début et fin de chaîne
-        $dtPContent = strip_tags($dtContentEl, "<p>");
-        $dtContentEl = preg_replace('/^(?:<[^>]+>)+|(?:<\/[^>]+>)+$/', '', $dtContentEl);
-        // * On supprime les retours à la ligne en début et fin de chaîne sur $Content
-        $lines = explode("\n", $dtSelection);
-        $dtSelection = reset($lines);
-        // * On récupère le chapitre
-        $chapter = $pchRepo->find($dtIdChapter);
-        // * On traire les paragraphes multiples
+        if (!$slug) {
+            $slug = "feuille-sans-titre";
+        }
+        // * On recherche le chapitre
+        $chapter = $pchRepo->find($idChap);
+        // ! Test des conditions pour afficher le chapitre
+        // * Si le chapitre existe, qu'il est publié, on récupère la publication
+        if ($chapter && $chapter->getStatus() == 2) {
+            $publication = $pRepo->find($chapter->getPublication());
+        } else {
+            // * Sinon on redirige vers la page d'acceuil
+            return $this->redirectToRoute("app_home");
+        }
+        // * Si la publication n'est pas publiée, on redirige vers la page d'acceuil — Uniquement si l'utilisateur n'est pas l'auteur de la publication
+        if ($publication->getStatus() != 2 && $publication->getUser() != $this->getUser()) {
+            // On redirige vers la page précédente 
+            return $this->redirectToRoute("app_home");
+        }
+        // * Si le chapitre n'est pas publié, on redirige vers la page d'acceuil — Uniquement si l'utilisateur n'est pas l'auteur de la publication
 
-        // *
-        // * Si le chapitre existe et que l'utilisateur est connecté, on traite
-        if ($chapter and $this->getUser()) {
-            // Si le type est "highlight", on ajoute la valeur de $dtContent dans la bdd en statut 0
-            if ($dtType == "highlight") {
-                // * On envoie l'highlight dans la BDD
-                $note = new PublicationChapterNote();
-                $note->setUser($this->getUser())
-                    ->setChapter($chapter)
-                    ->setType(0)
-                    ->setColor($dtColor)
-                    ->setP($dtP)
-                    ->setContext($dtContext)
-                    ->setSelection($dtSelection)
-                    ->setSelectionEl($dtContentEl)
-                    ->setPContent($dtPContent)
-                    ->setAddDate(new \DateTime('now'));
-                $em->persist($note);
-                $em->flush();
+        elseif ($chapter->getStatus() != 2 && $publication->getUser() != $this->getUser()) {
+            // On redirige vers la page précédente 
+            return $this->redirectToRoute("app_home");
+        }
+        // ! Si toutes les conditions sont réunies, on traitre les données
+        $previous = $pchRepo->findOneBy(['publication' => $publication->getId(), 'status' => 2, 'order_display' => $chapter->getOrderDisplay() - 1]);
+        if (!$previous) {
+            $previous = $pchRepo->findOneBy(['publication' => $publication->getId(), 'status' => 2, 'order_display' => $chapter->getOrderDisplay() - 2]);
+        }
+        $next = $pchRepo->findOneBy(['publication' => $publication->getId(), 'status' => 2, 'order_display' => $chapter->getOrderDisplay() + 1]);
+        if (!$next) {
+            $next = $pchRepo->findOneBy(['publication' => $publication->getId(), 'status' => 2, 'order_display' => $chapter->getOrderDisplay() + 2]);
+        }
+        $comments = $pcomRepo->findBy(['chapter' => $chapter], ['published_at' => 'DESC'], $nbrShowCom, 0);
+        $nbrCom = count($pcomRepo->findBy(['chapter' => $chapter]));
+        // * 
+        $form = $this->createForm(PublicationCommentType::class);
+        $form->handleRequest($request);
+        // ON récupère le champ "quote" depuis la request
+        if ($form->isSubmitted() && $form->isValid() && $this->getUser()) {
+            $quote = $request->request->get('quote');
+            $comment = $form->getData();
+            $comment->setChapter($chapter);
+            $comment->setQuote($quote);
+            $comment->setUser($this->getUser());
+            $comment->setPublication($publication);
+            $comment->setPublishedAt(new DateTimeImmutable());
+            $em->persist($comment);
+            $em->flush();
+            // * On met à jour la popularité de la publication
+            $this->publicationPopularity->PublicationPopularity($comment->getPublication());
+            // * Envoi d'une notification
+            $this->notificationSystem->addNotification(2, $comment->getPublication()->getUser(), $this->getUser(), $comment);
+            //
 
-                // * On récupère l'ID de l'highlight
-                $idNote = $note->getId();
-                $selectedTextEl = $note->getSelectionEl();
-                $selectedText = $note->getSelection();
-                $context = $note->getContext();
-                $p = $note->getP();
-                // * On renvoie l'ID de l'highlight
-                return $this->json([
-                    'code' => 201,
-                    'message' => 'L\'highlight a bien été ajouté.',
-                    'idNote' => $idNote,
-                    'selectionEl' => $selectedTextEl,
-                    'selection' => $selectedText,
-                    'contextSel' => $context,
-                    'p' => $p,
-                ], 200);
+            $this->addFlash('success', 'Votre commentaire a bien été ajouté.');
+            return $this->redirectToRoute('app_chapter_show', ['slugPub' => $publication->getSlug(), 'user' => $publication->getUser()->getUsername(), 'idChap' => $chapter->getId(), 'slug' => $chapter->getSlug()]);
+        } elseif ($form->isSubmitted() && !$this->getUser()) {
+            $this->addFlash('danger', 'Vous devez être connecté pour pouvoir commenter.');
+            return $this->redirectToRoute('app_chapter_show', ['slugPub' => $publication->getSlug(), 'user' => $publication->getUser()->getUsername(), 'idChap' => $chapter->getId(), 'slug' => $chapter->getSlug()]);
+        }
+        // * On vérifie si l'auteur du chapitre n'est pas l'utilisateur connecté et s'il a déjà lu le chapitre dans PublicationRead
+        $current_user = $this->getUser();
+        if ($current_user && $chapter->getPublication()->getUser() != $current_user) {
+            $alreadyRead = $pReadRepo->findOneBy(['user' => $current_user, 'chapter' => $chapter]) ? true : null;
+        } else {
+            $alreadyRead = null;
+        }
+        // * On ajoute un view pour le chapitre (si l'utilisateur n'est pas l'auteur de la publication)
+        $this->viewChapter($chapter);
+        // * On formate les notes du chapitre de l'utilisateur connecté
+
+        // !
+        $version = null;
+        if ($request->get('version')) {
+            $version = $request->get('version');
+            // On recherche la version 
+            $chapterContent = $this->pchvRepo->findOneBy(['chapter' => $chapter, 'id' => $version], ['id' => 'DESC']);
+
+            // 
+            $annotation = $this->annotation->getAnnotation($chapter, "mark-for-all", $version);
+            if ($annotation) {
+                $chapterContent = $this->formatChapter($annotation);
+            } else {
+                $chapterContent = $this->formatChapter($chapterContent->getContent());
             }
         } else {
-            return $this->json([
-                'code' => 403,
-                'message' => 'Vous n\'avez pas les droits pour modifier ce commentaire.',
-            ], 403);
+            $version = $this->pchvRepo->findOneBy(['chapter' => $chapter], ['id' => 'DESC']);
+
+            $version = $version->getId();
+            $chapterContent = $this->pchvRepo->findOneBy(['chapter' => $chapter, 'id' => $version], ['id' => 'DESC']);
+            // S'il y a des annotations
+            $annotation = $this->annotation->getAnnotation($chapter, "mark-for-all", $version);
+            if ($annotation) {
+                $chapterContent =  $this->formatChapter($annotation);
+            } else {
+
+                $chapterContent = $this->formatChapter($chapterContent->getContent());
+            }
         }
-        //
-        return $this->json([
-            'code' => 201,
-            'message' => "L'action a bien été effectuée."
-        ], 200);
+
+        // $versions = $this->pchvRepo->findBy(['chapter' => $chapter], ['id' => 'DESC']);
+        // On recherche les versions qui ont été annotées
+        $chapterId = $chapter->getId();
+
+        // Requête pour récupérer les versions avec des annotations
+        $versionsWithAnnotations = $this->pchvRepo->createQueryBuilder('v1')
+            ->select('v1')
+            ->innerJoin('v1.chapter', 'c1')
+            ->innerJoin('v1.publicationAnnotations', 'a1')
+            ->where('c1.id = :chapterId1')
+            ->setParameter('chapterId1', $chapterId)
+            ->groupBy('v1.id')
+            ->orderBy('v1.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        // Requête pour récupérer la dernière version, indépendamment des annotations
+        $lastVersion = $this->pchvRepo->createQueryBuilder('v2')
+            ->select('v2')
+            ->innerJoin('v2.chapter', 'c2')
+            ->where('c2.id = :chapterId2')
+            ->setParameter('chapterId2', $chapterId)
+            ->orderBy('v2.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        // Combiner les résultats et supprimer les doublons
+        $versions = array_unique(array_merge($versionsWithAnnotations, [$lastVersion]), SORT_REGULAR);
+
+        // ! On récupère le texte de la version de l'annotation
+        $annotations = $this->annotation->getAnnotation($chapter, 1, $version);
+        // ! On récupère toutes les annotations du chapitre de la version actuelle
+        $allAnnotations = $paRepo->findBy(['chapter' => $chapter, 'version' => $version], ['id' => 'DESC']);
+        // Parcourir les annotations et les ajouter aux tableaux correspondants en fonction de leur valeur de 'color'
+
+        $langAnnotations = [];
+        $styleAnnotations = [];
+        $generalAnnotations = [];
+        foreach ($allAnnotations as $annotation) {
+            switch ($annotation->getColor()) {
+                case 1:
+                    $langAnnotations[] = $annotation;
+                    break;
+                case 2:
+                    $styleAnnotations[] = $annotation;
+                    break;
+                case 4:
+                    $generalAnnotations[] = $annotation;
+                    break;
+            }
+        }
+        // ! reload URL
+        $routeName = $request->attributes->get('_route');
+
+
+        // * La vue
+        return $this->render('publication/show_chapter_revision.html.twig', [
+            'infoPub' => $publication,
+            'infoChap' => $chapter,
+            "version" => $version,
+            "versions" => $versions,
+            "annotations" => $annotations,
+            "chapterContent" => $chapterContent,
+            "canonicalUrl" => $this->generateUrl('app_chapter_show', ["slugPub" => $slugPub, "user" => $user, "idChap" => $idChap, "slug" => $slug], true),
+            "alreadyRead" => $alreadyRead,
+            "langAnnotations" => $langAnnotations,
+            "styleAnnotations" => $styleAnnotations,
+            "generalAnnotations" => $generalAnnotations,
+
+        ]);
     }
+
     public function viewChapter($chapter)
     {
         if ($this->getUser()) {
@@ -380,116 +456,11 @@ class ChapterShowController extends AbstractController
         return $newText;
     }
 
-    #[Route('/recit/chapter/getnote', name: 'app_chapter_get_note', methods: ['POST'])]
-    public function Axios_getNotes(Request $request, PublicationChapterNoteRepository $pcnRepo, PublicationChapterRepository $pchRepo)
-    {
-        $dtIdChapter = $request->get("idChapter");
-        // on cherche le chapitre 
-        $chapter = $pchRepo->find($dtIdChapter);
-        // je récupère toutes les notes en statut 0 du chapitre de l'utilisateur connecté 
-        $note = $pcnRepo->findBy(['chapter' => $chapter, 'type' => 0]);
-        // Je récupère toutes les données de $note et je les mets dans un tableau
-        $note = array_map(function ($note) {
-            return [
-                'id' => $note->getId(),
-                'contextSel' => $note->getContext(),
-                'selection' => $note->getSelection(),
-                'selectionEl' => $note->getSelectionEl(),
-                'color' => $note->getColor(),
-                'p' => $note->getP(),
-            ];
-        }, $note);
-        // Je renvoie les notes en json
-        return $this->json([
-            'code' => 200,
-            'message' => $note,
-        ], 200);
-    }
-    private function getNoteToDelete(Request $request, PublicationChapterNoteRepository $pcnRepo)
-    {
-        $dtIdNote = $request->get("idNote");
-        return $pcnRepo->find($dtIdNote);
-    }
 
-    private function checkUserHasRights(PublicationChapterNote $note)
-    {
-        return $note->getUser() == $this->getUser();
-    }
 
-    #[Route('/recit/chapter/delnote', name: 'app_chapter_delete_note', methods: ['POST'])]
-    public function Axios_DeleteNotes(Request $request, PublicationChapterRepository $pchRepo, PublicationChapterNoteRepository $pcnRepo, EntityManagerInterface $em): response
-    {
-        $note = $this->getNoteToDelete($request, $pcnRepo);
-        if ($this->checkUserHasRights($note)) {
-            $em->remove($note);
-            $em->flush();
-            return $this->json([
-                'code' => 200,
-                'message' => 'La note a bien été supprimée.',
-            ], 200);
-        } else {
-            return $this->json([
-                'code' => 403,
-                'message' => 'Vous n\'avez pas les droits pour supprimer cette note.',
-            ], 403);
-        }
-    }
 
-    public function formatHL($chapter, $chapterTab)
-    {
-        $notes = $this->chapterNote->findBy(['chapter' => $chapterTab, 'type' => 0, 'user' => $this->getUser()]);
-        if (!$notes) {
-            return $chapter;
-        }
-        $chapterText = $chapter;
-        foreach ($notes as $note) {
-            $contextSel = $note->getContext();
-            $selection = $note->getSelection();
-            $color = $note->getColor();
-            $selectionEl = $note->getSelectionEl();
-            $idNote = $note->getId();
-            $tests = $contextSel . $selection;
-            $regex = '/<p id="paragraphe-' . $note->getP() . '"(.*?)>(.*?)<\/p>/';
-            preg_match($regex, $chapterText, $match);
-            // On reformate le $selectionEl pour ne conserver que ce qui précède la première balise fermante </p> de la chaîne
-            if (strpos($selectionEl, "</p>") !== false) {
-                if (strpos($selectionEl, "</p>")) {
-                    $selectionEl2 = substr($selectionEl, 0, strpos($selectionEl, "</p>"));
-                    preg_match_all('/<[^>]*>|[^<]+/', $selectionEl2, $matches);
-                    $n = 0;
-                    foreach ($matches[0] as $key => $value) {
-                        if (strpos($value, "<") === false) {
-                            $matches[0][$key] = "<span id='hl-" . $idNote . "' class='hlId-" . $idNote . " highlighted hl-" . $color . " hlMultiple'>" . $value . "</span>";
-                        }
-                        $n++;
-                    }
-                    // on immlode
-                    $selectionEl3 = implode("", $matches[0]);
 
-                    $chapterText = str_replace($selectionEl2, "<span id='hl-" . $idNote . "' class='hlId-" . $idNote . " highlighted hl-" . $color . "'>" . $selectionEl3 . "</span>", $chapterText);
-                } else {
-                    $chapterText = str_replace($selectionEl, "<span id='hl-" . $idNote . "' class='hlId-" . $idNote . " highlighted hl-" . $color . "'>" . $selectionEl . "</span>", $chapterText);
-                }
-                $chapterText = str_replace(
-                    $selectionEl,
-                    `<span id='hl-" . $idNote . "' class='highlighted hlId-" . $idNote . " hl-" . $color . "'>" . $selectionEl . "</span>`,
-                    $chapterText
-                );
-            } else {
-                if (strpos($match[0], $tests)) {
-                    $test = str_replace($tests, $contextSel . "<span id='hl-" . $idNote . "' class='hlId-" . $idNote . " highlighted hl-" . $color . "'>" . $selection . "</span>", $match[0]);
-                    $chapterText = str_replace($match[0], $test, $chapterText);
-                } elseif (strpos($match[0], $selectionEl)) {
-                    $test = str_replace($selectionEl, "<span id='hl-" . $idNote . "' class='highlighted hlId-" . $idNote . " hl-" . $color . "'>" . $selection . "</span>", $match[0]);
-                    $chapterText = str_replace($match[0], $test, $chapterText);
-                } else {
-                    $test = str_replace($selection, "<span id='hl-" . $idNote . "' class='highlighted hlId-" . $idNote . " hl-" . $color . "'>" . $selection . "</span>", $match[0]);
-                    $chapterText = str_replace($match[0], $test, $chapterText);
-                }
-            }
-        }
-        return $chapterText;
-    }
+
     #[Route('/recit/chapter/like', name: 'app_chapter_like', methods: ['POST'])]
     public function Axios_ChapterLike(Request $request, PublicationChapterRepository $pchRepo, PublicationChapterLikeRepository $pclRepo, EntityManagerInterface $em): response
     {

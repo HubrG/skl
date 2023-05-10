@@ -1,0 +1,261 @@
+{% set title = infoPub.title|length > 45 ? infoPub.title|slice(0,46) ~ "..." : infoPub.title %}
+{% set pic = infoChap.publication.cover %}
+{% if pic %}
+	{% set pic_bg = pic|replace({'/upload/': '/upload/e_vectorize:colors:3,'}) %}
+{% else %}
+	{% set pic_bg = "/images/no-cover-bg.png" %}
+	{% if app.user and app.user.userParameters is defined and app.user.userParameters.darkmode == true %}
+		{% set pic = "/images/no-cover-dark.png" %}
+	{% else %}
+		{% set pic = "/images/no-cover.png" %}
+	{% endif %}
+	{% if app.session.get('darkmode') and not app.user  and app.session.get('darkmode') == true %}
+		{% set pic = "/images/no-cover-dark.png" %}
+	{% else %}
+		{% set pic = "/images/no-cover.png" %}
+	{% endif %}
+{% endif %}
+
+{% extends 'base.html.twig' %}
+
+{% block metatags %}
+	<link rel="canonical" href="https://scrilab.com{{ canonicalUrl }}"/>
+	<meta name="description" content="Lecture de la feuille « {{infoChap.title}} » du récit « {{infoPub.title}} » | Par {{infoPub.user.nickname}}">
+	<meta name="author" content="{{infoPub.user.nickname}}">
+	<meta name="twitter:image" content="{{pic}}">
+	<meta property="og:title" content="{{infoPub.title}} ({{infoChap.title}})">
+	<meta property="og:description" content="{{ infoPub.summary|trim }}">
+	<meta property="og:url" content="https://scrilab.com{{ canonicalUrl }}">
+	<meta property="og:image" content="{{pic}}">
+	<meta property="og:image:width" content="529">
+	<meta property="og:image:height" content="730">
+{% endblock %}
+
+{% block title %}
+	{{ infoPub.title ~ ' (' ~ infoChap.title|trim ~ ')' }}
+	-
+	{{ parent() }}
+{% endblock %}
+
+{% block body %}
+	<section id="titleChapter" data-title="{{infoChap.title}}" class=" {{ infoChap.Publication.status < 2 ? " -mt-20 top-16" : " top-14" }}  bg-white dark:bg-slate-800 dark:bg-transparent dark:bg-opacity-50 bg-transparent bg-opacity-50 backdrop-blur-sm">
+		<div class="md:text-left  w-full text-center mb-10 mt-0 md:mt-3 ">
+			<h3 class="justify-center md:justify-start flex flex-row gap-x-2 items-center text-lg">
+				<a id="pubTitle" class="font-serif  hover:underline dark:text-white" href="{{ path("app_publication_show_one", {id:infoPub.id, slug:infoPub.slug}) }}" {% if title|length > 48 %} data-tippy-content="{{infoPub.title}}" {% endif %}>{{ title }}</a>
+				{% if infoPub.mature %}
+					<i class="fa-kit fa-regular-book-open-reader-circle-exclamation text-rose-400 text-xs dark:text-rose-300" data-tippy-content="Contenu sensible"></i>
+				{% endif %}
+			</h3>
+			<div class="text-xs dark:text-white">
+				<small>par</small>
+				<span class="font-medium dark:text-white">
+					<a class="dark:text-white hover:underline" href="{{ path("app_user", {username:infoPub.user.username}) }}">{{ infoPub.user.nickname }}</a>
+				</span>
+			</div>
+		</div>
+		<div class="flex pl-10 justify-center mt-14 md:-mt-6">
+			<button class="text-base md:text-2xl font-serif -mt-[4rem] text-slate-800 dark:text-white" id="chapListButton" data-dropdown-toggle="dropdownChapter">
+				{{ infoChap.title }}
+				{{alreadyRead ? '<span class="text-xs  text-green-500 dark:text-green-400"><i class="fa-duotone fa-badge-check"></i>&nbsp;&nbsp;lu</span>'}}
+				&nbsp;&nbsp;<i class="fa-solid fa-caret-down active:text-xl"></i>
+			</button>
+		</div>
+		{% if app.user and infoChap.Publication.status == 2 and (app.user.id == infoPub.user.id or is_granted('ROLE_ADMIN')) %}
+			<div class="flex justify-center -mt-5 text-xs absolute right-0 top-12">
+				{% if is_granted('ROLE_ADMIN') and app.user.id != infoPub.user.id %}
+					<a data-tippy-content="Éditer le chapitre" href="{{ path("app_publication_edit_chapter", { idPub:infoPub.id, idChap:infoChap.id }) }}" class="p-2 rounded  bg-opacity-50 hover:bg-opacity-100 bg-yellow-300 dark:bg-yellow-900 dark:text-yellow-300 dark:bg-opacity-50 dark:hover:bg-opacity-100 justify-center flex flex-row px-4 gap-x-2 items-center">
+						<span class="hidden md:inline">
+							Admin
+						</span>
+						<i class="fa-duotone fa-screwdriver-wrench"></i>
+						<span class="hidden md:inline">
+							Éditer la feuille
+						</span>
+
+					</a>
+				{% else %}
+					<a data-tippy-content="Éditer le chapitre" href="{{ path("app_publication_edit_chapter", { idPub:infoPub.id, idChap:infoChap.id }) }}" class="p-2 rounded  bg-opacity-50 hover:bg-opacity-100 bg-slate-300 dark:bg-slate-900 dark:text-slate-300 dark:bg-opacity-50 dark:hover:bg-opacity-100 justify-center flex flex-row px-4 gap-x-2 items-center">
+						<i class="fa-duotone fa-pen-to-square"></i>
+						<span class="hidden md:inline">Éditer la feuille</span>
+					</a>
+				{% endif %}
+			</div>
+		{% endif %}
+		<div id="dropdownChapter" class="z-[999999999] hidden overflow-y-auto max-h-48 bg-white divide-y divide-gray-100 shadow w-5/6 sm:w-2/6 dark:bg-gray-700 dark:divide-gray-600" style="z-index:999999 !important">
+			{% for item in infoPub.publicationChapters|sort((a, b) => a.orderDisplay < b.orderDisplay ? -1 : 1) %}
+				{% if item.status > 1 %}
+					<div>
+						<a href="{{ path("app_chapter_show", {idChap:item.id, slugPub:infoPub.slug, user:infoPub.user.username, slug:item.slug}) }}" class="block px-4 py-4 text-sm text-gray-700 {% if item.id == infoChap.id %}bg-slate-50 dark:bg-slate-900{% endif %} hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+							{% if item.id == infoChap.id %}
+								<i class="fa-solid fa-file-lines"></i>
+							{% else %}
+								<i class="fa-light fa-file-lines"></i>
+							{% endif %}
+							&nbsp;&nbsp;{{ item.title }}
+							{% set chapterIdToCheck = item.id %}
+							{% if app.user and app.user.hasReadChapter(chapterIdToCheck) %}
+								&nbsp;&nbsp;<span class="text-xs text-green-500 dark:text-green-400">
+									<i class="fa-duotone fa-badge-check"></i>&nbsp;&nbsp;lu</span>
+							{% endif %}
+						</a>
+					</div>
+				{% endif %}
+			{% endfor %}
+		</div>
+	</section>
+	<section class="w-full md:w-12/12 pt-10 row-start-2 backdrop:blur-sm px-1 relative">
+		<div class="flex flex-col md:flex-row gap-x-5 px-5 items-stretch relative">
+			<div class="md:w-8/12 w-full order-2 md:order-1">
+				<turbo-frame id="chapContent" class="-z-50">
+					<a href="{{ url("app_chapter_revision", {slugPub:infoPub.slug, user:infoPub.user.username, idChap:infoChap.id, slug:infoChap.slug}) }}" target="_top" class="hidden" id="reload-article">Reload</a>
+					<span class="text-xs flex flex-row gap-x-2 items-baseline mb-2 text-slate-500 -ml-5">
+						<i class="fa-duotone text-yellow-400 fa-lightbulb-exclamation-on"></i>
+						<div class="flex flex-col gap-y-3">
+							<div class="text-justify">Sélectionnez un mot ou une partie du texte pour l'annoter et informer l'auteur-ice de votre proposition</div>
+							<div class="text-justify block md:hidden">Attention,
+								<strong class="underline">vous ne pouvez pas annoter depuis un smartphone ou une tablette</strong>, vous devez utiliser un ordinateur</div>
+						</div>
+					</span>
+					<article class="flex flex-col justify-center data-annotable -z-50" data-chapter="{{infoChap.id}}" data-version="{{version}}" data-mode="mark-for-all" data-annotable id="chapArticle">
+						{{ chapterContent|raw }}
+					</article>
+				</turbo-frame>
+
+			</div>
+			<turbo-frame class="md:w-4/12 order-1 md:order-2  w-full flex flex-col  gap-y-5 border-b-2 md:border-b-0 mb-10 md:mb-0 md:border-l-2 dark:border-slate-700 md:pl-5 pl-0 md:pr-2 pr-0 sticky top-14 md:pt-0 pt-5 md:top-20 overflow-y-auto h-[40vh] dark:bg-slate-800 bg-white md:h-[87vh]" id="revision-frame">
+				<a href="{{ url("app_chapter_revision", {slugPub:infoPub.slug, user:infoPub.user.username, idChap:infoChap.id, slug:infoChap.slug}) }}" class="hidden" id="comment-reload">Reload</a>
+				<select id="version-select" class=" text-xs text-center italic  dark:bg-slate-700 dark:rounded-b border-t-0 border-l-0 border-r-0 border-b-2 dark:text-slate-300" onchange="">
+					{% set latest_version = versions|sort((a, b) => b.created <=> a.created)|first %}
+					{% for vers in versions %}
+						{% if vers == latest_version %}
+							<option value="{{vers.id}}" {{version == vers.id ? "selected"}}>
+								Version actuelle (v.{{vers.id}}) — Mise à jour il y a
+								{{ vers.created|since }}
+							</option>
+						{% else %}
+							<option value="{{vers.id}}" {{version == vers.id ? "selected"}}>
+								v.{{vers.id}}
+								— Mise à jour il y a
+								{{vers.created|since}}
+							</option>
+						{% endif %}
+					{% endfor %}
+				</select>
+				<div class="flex flex-col gap-y-2">
+					<div class="sticky  z-30  top-0 p-2 text-center border-b-[1px] border-b-emerald-300 dark:border-emerald-600 dark:border-[1px] bg-emerald-100  dark:bg-emerald-800  text-emerald-900 dark:text-emerald-400 w-full rounded text-sm font-semibold flex flex-row gap-x-2 items-center justify-center">
+						<i class="fa-duotone fa-spell-check"></i>
+						<span>Langue</span>
+					</div>
+					{% if langAnnotations|length == 0 %}
+						<div class="text-center">
+							<span class="text-sm  dark:text-slate-500 text-slate-500">Aucune remarque</span>
+						</div>
+					{% else %}
+						<div>
+							{% for item in langAnnotations %}
+								{% include "publication/_partials/_comment_review.html.twig" %}
+							{% endfor %}
+						</div>
+					{% endif %}
+				</div>
+				<div class="flex flex-col gap-y-5">
+					<div class="sticky z-30 top-0  p-2  border-b-[1px] border-b-yellow-300 dark:border-yellow-400 bg-yellow-100 dark:border-[1px]  dark:bg-yellow-800  text-yellow-900 dark:text-yellow-400 w-full rounded text-sm font-semibold flex flex-row gap-x-2 items-center justify-center">
+						<i class="fa-duotone fa-palette"></i>
+						<span>Style</span>
+					</div>
+					{% if styleAnnotations|length == 0 %}
+						<div class="text-center">
+							<span class="text-sm  dark:text-slate-500 text-slate-500">Aucune remarque</span>
+						</div>
+					{% else %}
+						<div>
+							{% for item in styleAnnotations %}
+								{% include "publication/_partials/_comment_review.html.twig" %}
+							{% endfor %}
+						</div>
+					{% endif %}
+				</div>
+				<div class="flex flex-col gap-y-5">
+					<div class="sticky  z-30  top-0  p-2 text-center border-b-[1px] border-b-blue-300 dark:border-blue-600 bg-blue-100 dark:border-[1px]   dark:bg-blue-800  text-blue-900 dark:text-blue-400 w-full rounded text-sm font-semibold flex flex-row gap-x-2 items-center justify-center">
+						<i class="fa-duotone fa-thought-bubble"></i>
+						<span>Général</span>
+					</div>
+					{% if generalAnnotations|length == 0 %}
+						<div class="text-center">
+							<span class="text-sm  dark:text-slate-500 text-slate-500">Aucune remarque</span>
+						</div>
+					{% else %}
+						<div>
+							{% for item in generalAnnotations %}
+								{% include "publication/_partials/_comment_review.html.twig" %}
+							{% endfor %}
+						</div>
+					{% endif %}
+				</div>
+			</turbo-frame>
+		</div>
+		{# On affiche uniquement si la publication est publiée #}
+		{% if infoChap.Publication.status > 1 %}
+			<div class="sticky bottom-10 mt-10 flex ml-0 md:ml-5 justify-center place-content-center z-10  w-6/6 md:w-auto">
+				<div class="bg-slate-700 hover:bg-slate-900 text-slate-200 dark:bg-slate-700 dark:hover:bg-slate-900 rounded-xl shadow  flex justify-center gap-3 items-center text-xs md:text-base ">
+					<div data-tippy-content="<strong>Quitter le mode « Révision »</strong>" data-id="{{ infoChap.id }}">
+						<a href="{{path("app_chapter_show", {slugPub:infoPub.slug, user:infoPub.user.username, idChap:infoChap.id, slug:infoChap.slug})}}" target="_top" class="p-3  flex flex-row gap-x-5 items-center">
+							<i class="fa-duotone fa-highlighter-line text-amber-400"></i>
+							<strong>Quitter le mode révision</strong>
+						</a>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+	</section>
+	<turbo-frame id="tools-frame">
+		{% if infoChap.Publication.status > 1 %}
+			<div id="tools" class="hidden" style="z-index:999999">
+				<ul>
+					<li>
+						<button class="mark-for-all flex flex-row gap-x-2 p-2 py-3  rounded text-emerald-200" data-color="1">
+							<i data-tippy-content="Marquer ce passage en vert" class="fa-solid fa-spell-check"></i>
+							<span class="text-xs self-end">Langue</span>
+						</button>
+					</li>
+					<li class="text-slate-400">|</li>
+					<li>
+						<button class="mark-for-all flex flex-row gap-x-2  p-2 py-3  rounded text-yellow-200" data-color="2">
+							<i data-tippy-content="Marquer ce passage en vert" class="fa-solid fa-palette"></i>
+							<span class="text-xs self-end">Style</span>
+						</button>
+					</li>
+					<li class="text-slate-400">|</li>
+					<li>
+						<button class="mark-for-all flex flex-row gap-x-2 p-2  py-3 rounded text-blue-200" data-color="4">
+							<i data-tippy-content="Marquer ce passage en vert" class="fa-solid fa-thought-bubble"></i>
+							<span class="text-xs self-end">Général</span>
+						</button>
+					</li>
+				</ul>
+				<ul>
+					<li id="revision-comment" class="w-full flex flex-col gap-y-1" style="display:none">
+						<textarea class="w-full rounded -mt-[0.2rem] text-xs" id="revision-comment-textarea"></textarea>
+						<div class="text-center bg-slate-600 p-2 py-1 rounded hover:bg-slate-500 w-full text-xs" id="send-revision">Envoyer la révision</div>
+					</li>
+				</ul>
+			</div>
+			<div id="highlighted-options" class="hidden revision">
+				<ul>
+					<li id="del-hl" class="del-hl">
+						<i data-tippy-content="Supprimer la remarque" class="bg-none cursor-pointer fa-solid fa-square-minus"></i>
+					</li>
+					<li class="infoComment border-l-2 pl-2 border-slate-600">
+						<div class=" flex flex-row gap-x-2 items-center">
+							<div id="hl-comment-avatar"></div>
+							<div id="hl-comment-user" class="w-full flex flex-row justify-between items-center"></div>
+						</div>
+						<div class="text-xs" id="hl-comment-content">Lorem ipsum dolor concectetur sit amter dolor concecter.</div>
+					</li>
+				</ul>
+			</div>
+		{% endif %}
+	</turbo-frame>
+	{# TODO: ajouter temps de lecture restant dans le chapitre + temps de lecture total de la publication #}
+
+{% endblock %}

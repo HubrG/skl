@@ -76,7 +76,7 @@ const TurboHelper = class {
       Tabs();
       addKeyword();
       searchPredictionKw();
-      Annotation();
+      // Annotation();
     });
     document.addEventListener("turbo:load", () => {
       AxiosSavePublication();

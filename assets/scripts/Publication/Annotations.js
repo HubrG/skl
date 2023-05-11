@@ -876,7 +876,7 @@ function removeAnnotation(annotation) {
     .then(() => {
       // On supprime l'annotation en commentaire
       removeAnnotationComment(uniqueClass);
-      stopInterval();
+      startInterval();
     })
     .catch((error) => {
       console.error("Erreur lors de la suppression de l'annotation :", error);

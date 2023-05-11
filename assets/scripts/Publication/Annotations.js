@@ -828,6 +828,8 @@ function startInterval(articleNew = false, stop = false) {
           );
         });
     }, 3000);
+  } else {
+    clearInterval(intervalId);
   }
 }
 function removeAnnotationComment(annotationElements) {

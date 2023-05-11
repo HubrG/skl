@@ -53,21 +53,22 @@ nav {
 main {
 	@apply  container items-start mx-auto px-5 z-50 pt-10 xl:px-[10%] ;
 }
-#titleChapter {
-	@apply  py-2 col-span-12 rounded items-center -mt-10 ;
+#titleChapter, #titleChapterRevision {
+	@apply  py-2 col-span-12 rounded items-center -mt-10 z-50 ;
 }
-#titleChapter>h1 {
+#titleChapter>h1, #titleChapterRevision>h1 {
 	@apply text-left text-2xl font-normal font-serif pt-4 text-slate-900 ;
 }
-#titleChapter h1>a {
+#titleChapter h1>a, #titleChapterRevision h1>a {
 	@apply text-slate-900 hover:underline font-serif text-xl;
 }
-#titleChapter>h2 {
+#titleChapter>h2, #titleChapterRevision>h2 {
 	@apply text-left font-light text-sm  font-serif -mt-9 ;
 }
-#titleChapter>h2>*>a {
+#titleChapter>h2>*>a, #titleChapterRevision>h2>*>a {
 	@apply text-slate-700 hover:underline font-serif ;
 }
+
 dialog {
 	@apply bg-white backdrop-blur-sm border-2 rounded border-slate-800 bg-opacity-25 text-left  ;
 }

@@ -123,7 +123,7 @@
 				</div>
 
 			</div>
-			<div class="md:w-4/12 order-1 md:order-2  w-full flex flex-col  gap-y-5 border-b-2 md:border-b-0 mb-10 md:mb-0 md:border-l-2 dark:border-slate-700 md:pl-5 pl-0 md:pr-2 pr-0 sticky top-14 md:pt-0 pt-5 md:top-20 overflow-y-auto h-[40vh] dark:bg-slate-800 bg-white md:h-[87vh]" id="revision-frame">
+			<div class="md:w-4/12 order-1 md:order-2 blank w-full flex flex-col  gap-y-5 border-b-2 md:border-b-0 mb-10 md:mb-0 md:border-l-2 dark:border-slate-700 md:pl-5 pl-0 md:pr-2 pr-0 sticky top-14 md:pt-0 pt-5 md:top-20 overflow-y-auto h-[40vh] dark:bg-slate-800 bg-white md:h-[87vh]" id="revision-frame">
 				<a href="{{ url("app_chapter_revision", {slugPub:infoPub.slug, user:infoPub.user.username, idChap:infoChap.id, slug:infoChap.slug}) }}" class="hidden" id="comment-reload">Reload</a>
 				<select id="version-select" class=" text-xs text-center italic  dark:bg-slate-700 dark:rounded-b border-t-0 border-l-0 border-r-0 border-b-2 dark:text-slate-300" onchange="">
 					{% set latest_version = versions|sort((a, b) => b.created <=> a.created)|first %}

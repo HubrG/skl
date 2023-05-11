@@ -22,6 +22,7 @@ export function Annotation(stop = null) {
   } else {
     startInterval();
   }
+  mainArticle = document.querySelector("article");
   // * Informations préalables
   /** À propos de "data-mode"
    * Le mode de l'annotation est défini par l'attribut "data-mode" de l'élément <article>.
@@ -794,9 +795,12 @@ function startInterval(articleNew = false, stop = false) {
           },
         })
         .then((response) => {
+          // console.log(response.data);
+          // On vérifie qu'il y a un élément avec la classe annotation
+          var anotexist = document.querySelector(".annotation");
           if (
             response.data.message.trim() == response.data.compar.trim() ||
-            response.data.message.trim() == ""
+            (response.data.message.trim() == "" && !anotexist)
           ) {
           } else {
             if (!document.querySelector(".noty_type__info")) {
@@ -813,6 +817,7 @@ function startInterval(articleNew = false, stop = false) {
               document.getElementById("tools-frame").classList.add("hidden");
               // document.getElementById("comment-reload").click();
               document.getElementById("reload-article").click();
+              // window.location.reload();
             }, 5000);
           }
         })

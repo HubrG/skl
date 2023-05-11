@@ -235,7 +235,7 @@ export function Annotation(stop = null) {
             selectionSave.endContainer,
             selectionSave.endOffset
           );
-          console.log(newSelection);
+          // console.log(newSelection);
           createAnnotationRevision(newSelection, mark, revisionComment);
           tooltip.classList.add("hidden");
         }
@@ -621,7 +621,7 @@ export function Annotation(stop = null) {
   // 4. Met à jour le contenu de l'article et le chapitre.
   // 5. Envoie une requête POST au serveur pour supprimer l'annotation, en incluant le contenu mis à jour de l'article, le chapitre et la classe d'annotation unique.
   function removeAnnotation(annotation) {
-    console.log(annotation);
+    // console.log(annotation);
     const uniqueClass = Array.from(annotation.classList).find((className) =>
       className.startsWith("annotation-")
     );
@@ -846,7 +846,7 @@ function startInterval(stop = false) {
       return; // On arrête ici si stop est égal à "stop"
     }
     intervalId = setInterval(function () {
-      console.log("interval");
+      // console.log("interval");
       const version = mainArticle.getAttribute("data-version");
       const chapter = mainArticle.getAttribute("data-chapter");
       const annotationData = {
@@ -889,7 +889,7 @@ function startInterval(stop = false) {
             error
           );
         });
-    }, 1000);
+    }, 5000);
   }
 }
 Annotation();

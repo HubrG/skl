@@ -142,7 +142,7 @@ class AnnotationController extends AbstractController
             return $this->json([
                 'code' => 403,
                 'message' => "Vous n'êtes pas autorisé à supprimer cette annotation"
-            ], 403);
+            ]);
         }
         // On supprime toutes les annotations du chapitre avec la classe donnée si l'utilisteur est propriétaire de l'annotation
         $annotations = $paRepo->findBy(['chapter' => $chapter, 'AnnotationClass' => $class]);

@@ -74,9 +74,9 @@ const TurboHelper = class {
       targetQuote();
       darkMode();
       Tabs();
+      // Annotation();
       addKeyword();
       searchPredictionKw();
-      // Annotation();
     });
     document.addEventListener("turbo:load", () => {
       AxiosSavePublication();
@@ -97,22 +97,6 @@ const TurboHelper = class {
       TippyC();
       axiosSaveChapter();
       ForumTopicRead();
-      // ! Annotation Mode
-      var articleElement = document.querySelector("article");
-      if (
-        articleElement &&
-        articleElement.getAttribute("data-mode") === "mark-for-me"
-      ) {
-        Annotation();
-      }
-      if (
-        articleElement &&
-        articleElement.getAttribute("data-mode") === "mark-for-all"
-      ) {
-        Annotation();
-      }
-      //
-      //
       // ! Flashes
       if (document.getElementById("flashbag-success")) {
         if (
@@ -133,16 +117,19 @@ const TurboHelper = class {
         }
       }
     });
-    document.addEventListener("turbo:frame-render", () => {
-      Comment();
+
+    document.addEventListener("turbo:frame-render", (event) => {
       Annotation();
+      Comment();
       DropdownMenu();
       ForumTopicRead();
+    });
+    document.addEventListener("turbo:frame-load", (event) => {
+      // Annotation();
     });
     // * Turbo Visit sert à faire des actions avant le chargement de la page
     document.addEventListener("turbo:visit", () => {
       document.body.classList.add("turbo-loading");
-      // Annotation();
     });
     // * Turbo Before Render sert à faire des actions après le chargement de la page
     document.addEventListener("turbo:after-render", (event) => {});

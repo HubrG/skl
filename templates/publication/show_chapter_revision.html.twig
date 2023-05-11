@@ -32,7 +32,8 @@
 {% endblock %}
 
 {% block title %}
-	{{ infoPub.title ~ ' (' ~ infoChap.title|trim ~ ')' }}
+	Révision |
+	{{ infoChap.title|trim ~ ' (récit : ' ~ infoPub.title ~ ')' }}
 	-
 	{{ parent() }}
 {% endblock %}
@@ -107,7 +108,7 @@
 		<div class="flex flex-col md:flex-row gap-x-5 px-5 items-stretch relative">
 			<div class="md:w-8/12 w-full order-2 md:order-1">
 				<turbo-frame id="chapContent" class="-z-50">
-					<a href="{{ url("app_chapter_revision", {slugPub:infoPub.slug, user:infoPub.user.username, idChap:infoChap.id, slug:infoChap.slug}) }}" target="_top" class="hidden" id="reload-article">Reload</a>
+					<a href="{{ url("app_chapter_revision", {slugPub:infoPub.slug, user:infoPub.user.username, idChap:infoChap.id, slug:infoChap.slug}) }}" class="hidden" target="_top" id="reload-article">Reload</a>
 					<span class="text-xs flex flex-row gap-x-2 items-baseline mb-2 text-slate-500 -ml-5">
 						<i class="fa-duotone text-yellow-400 fa-lightbulb-exclamation-on"></i>
 						<div class="flex flex-col gap-y-3">

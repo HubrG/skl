@@ -1,13 +1,20 @@
 import axios from "axios";
 import { NotyDisplay } from "../Noty";
+let intervalId;
+let mainArticle = document.querySelector("article");
+let previousContent = mainArticle.innerHTML;
 
-export function Annotation() {
+export function Annotation(stop = null) {
   if (
     !document.querySelector("article") &&
     !document.querySelector("article").getAttribute("data-annotable")
   )
     return;
-
+  if (stop === "stop") {
+    stopInterval();
+  } else {
+    startInterval();
+  }
   // * Informations préalables
   /** À propos de "data-mode"
    * Le mode de l'annotation est défini par l'attribut "data-mode" de l'élément <article>.
@@ -27,13 +34,13 @@ export function Annotation() {
   // Ajouter des gestionnaires d'événements "mouseenter" et "mouseleave" pour chaque élément
   annotationElements.forEach((element) => {
     element.addEventListener("mouseenter", function () {
-      handleAnnotationHover(element, true);
       stopInterval();
+      handleAnnotationHover(element, true);
     });
 
     element.addEventListener("mouseleave", function () {
-      handleAnnotationHover(element, false);
       startInterval();
+      handleAnnotationHover(element, false);
     });
   });
 
@@ -547,10 +554,12 @@ export function Annotation() {
     // Ajouter des gestionnaires d'événements "mouseenter" et "mouseleave" pour chaque élément
     annotationElements.forEach((element) => {
       element.addEventListener("mouseenter", function () {
+        stopInterval();
         handleAnnotationHover(element, true);
       });
 
       element.addEventListener("mouseleave", function () {
+        startInterval();
         handleAnnotationHover(element, false);
       });
     });
@@ -668,6 +677,7 @@ export function Annotation() {
   let scrollTimeout; // Ajoutez cette variable pour stocker l'ID renvoyé par setTimeout
   comments.forEach((comment) => {
     comment.addEventListener("mouseenter", function () {
+      stopInterval();
       const annotationClass = comment.getAttribute("data-annotation-class");
       const annotationElements = document.querySelectorAll(
         "." + annotationClass
@@ -687,11 +697,10 @@ export function Annotation() {
           });
         }, 1000);
       }
-
-      stopInterval(); // Arrêtez l'intervalle lorsque la souris survole un commentaire
     });
 
     comment.addEventListener("mouseleave", function () {
+      startInterval(); // Redémarrez l'intervalle lorsque la souris quitte un commentaire
       const annotationClass = comment.getAttribute("data-annotation-class");
       const annotationElements = document.querySelectorAll(
         "." + annotationClass
@@ -701,7 +710,6 @@ export function Annotation() {
       });
 
       clearTimeout(scrollTimeout); // Annulez le setTimeout en utilisant scrollTimeout
-      startInterval(); // Redémarrez l'intervalle lorsque la souris quitte un commentaire
     });
   });
 
@@ -788,9 +796,7 @@ export function Annotation() {
     window.location.href = url.toString();
   }
   // ! RELOAD ARTICLE si changement
-  let mainArticle = document.querySelector("article");
 
-  let intervalId;
   let isMouseOver = false;
   //  ! interval pour reload en cas de nouveau contenu
 
@@ -799,70 +805,14 @@ export function Annotation() {
       clearInterval(intervalId);
     }
   }
-  let previousContent = mainArticle.innerHTML;
 
   if (
     document.querySelector("article").getAttribute("data-mode") ==
     "mark-for-all"
   ) {
-    startInterval();
+    // startInterval();
   }
-  function startInterval(stop = false) {
-    if (
-      document.querySelector("article").getAttribute("data-mode") ==
-      "mark-for-all"
-    ) {
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
-      if (stop === "stop") {
-        return; // On arrête ici si stop est égal à "stop"
-      }
-      intervalId = setInterval(function () {
-        const version = mainArticle.getAttribute("data-version");
-        const chapter = mainArticle.getAttribute("data-chapter");
-        const annotationData = {
-          version: version,
-          article: document.querySelector("article").innerHTML,
-          chapter: chapter,
-        };
-        const url = "/reload-revision";
-        axios
-          .post(url, annotationData, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-          .then((response) => {
-            if (
-              response.data.message != false &&
-              response.data.message != previousContent
-            ) {
-              if (!document.querySelector(".noty_type__info")) {
-                NotyDisplay(
-                  "Un utilisateur vient d'ajouter ou de supprimer une annotation sur cette feuille, la page va se recharger automatiquement.",
-                  "info",
-                  4000
-                );
-              }
-              setTimeout(function () {
-                previousContent = response.data.message;
-                document.querySelector("article").innerHTML =
-                  response.data.message;
-                document.getElementById("tools-frame").classList.add("hidden");
-                document.getElementById("comment-reload").click();
-              }, 5000);
-            }
-          })
-          .catch((error) => {
-            console.error(
-              "Erreur lors du chargement du contenu de l'article:",
-              error
-            );
-          });
-      }, 1000);
-    }
-  }
+
   //  ! Suppression depuis les commentaires
   const delComment = document.querySelectorAll(".del-comment");
   delComment.forEach((del) => {
@@ -884,3 +834,62 @@ export function Annotation() {
     });
   }
 }
+function startInterval(stop = false) {
+  if (
+    document.querySelector("article").getAttribute("data-mode") ==
+    "mark-for-all"
+  ) {
+    if (intervalId) {
+      clearInterval(intervalId);
+    }
+    if (stop === "stop") {
+      return; // On arrête ici si stop est égal à "stop"
+    }
+    intervalId = setInterval(function () {
+      console.log("interval");
+      const version = mainArticle.getAttribute("data-version");
+      const chapter = mainArticle.getAttribute("data-chapter");
+      const annotationData = {
+        version: version,
+        article: document.querySelector("article").innerHTML,
+        chapter: chapter,
+      };
+      const url = "/reload-revision";
+      axios
+        .post(url, annotationData, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          if (
+            response.data.message != false &&
+            response.data.message != previousContent
+          ) {
+            if (!document.querySelector(".noty_type__info")) {
+              NotyDisplay(
+                "Un utilisateur vient d'ajouter ou de supprimer une annotation sur cette feuille, la page va se recharger automatiquement.",
+                "info",
+                4000
+              );
+            }
+            setTimeout(function () {
+              previousContent = response.data.message;
+              document.querySelector("article").innerHTML =
+                response.data.message;
+              document.getElementById("tools-frame").classList.add("hidden");
+              // document.getElementById("comment-reload").click();
+              document.getElementById("reload-article").click();
+            }, 5000);
+          }
+        })
+        .catch((error) => {
+          console.error(
+            "Erreur lors du chargement du contenu de l'article:",
+            error
+          );
+        });
+    }, 1000);
+  }
+}
+Annotation();

@@ -917,3 +917,14 @@ document.addEventListener("turbo:load", (event) => {
     delHl.addEventListener("click", handleDeleteClick);
   }
 });
+// Lorsque la frame se recharge
+document.addEventListener("turbo:render", (event) => {
+  if (document.querySelector("article")) {
+    Annotation();
+    const delHl = document.getElementById("del-hl");
+    // Supprimez d'abord l'écouteur d'événements existant
+    delHl.removeEventListener("click", handleDeleteClick);
+    // Ajoutez ensuite le nouvel écouteur d'événements
+    delHl.addEventListener("click", handleDeleteClick);
+  }
+});

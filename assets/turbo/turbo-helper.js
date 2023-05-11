@@ -74,7 +74,6 @@ const TurboHelper = class {
       targetQuote();
       darkMode();
       Tabs();
-      // Annotation();
       addKeyword();
       searchPredictionKw();
     });
@@ -97,7 +96,6 @@ const TurboHelper = class {
       TippyC();
       axiosSaveChapter();
       ForumTopicRead();
-      // Annotation();
       // ! Flashes
       if (document.getElementById("flashbag-success")) {
         if (
@@ -120,14 +118,11 @@ const TurboHelper = class {
     });
 
     document.addEventListener("turbo:frame-render", (event) => {
-      // Annotation();
       Comment();
       DropdownMenu();
       ForumTopicRead();
     });
-    document.addEventListener("turbo:frame-load", (event) => {
-      // Annotation();
-    });
+    document.addEventListener("turbo:frame-load", (event) => {});
     // * Turbo Visit sert à faire des actions avant le chargement de la page
     document.addEventListener("turbo:visit", () => {
       document.body.classList.add("turbo-loading");

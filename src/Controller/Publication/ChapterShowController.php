@@ -313,7 +313,7 @@ class ChapterShowController extends AbstractController
         // ! On récupère le texte de la version de l'annotation
         $annotations = $this->annotation->getAnnotation($chapter, 1, $version);
         // ! On récupère toutes les annotations du chapitre de la version actuelle
-        $allAnnotations = $paRepo->findBy(['chapter' => $chapter, 'version' => $version], ['id' => 'DESC']);
+        $allAnnotations = $paRepo->findBy(['chapter' => $chapter, 'mode' => 1, 'version' => $version], ['id' => 'DESC']);
         // Parcourir les annotations et les ajouter aux tableaux correspondants en fonction de leur valeur de 'color'
 
         $langAnnotations = [];
@@ -334,6 +334,10 @@ class ChapterShowController extends AbstractController
         }
         // ! reload URL
         $routeName = $request->attributes->get('_route');
+        // On supprime les balises images de $chapterContent avec une regex
+        $chapterContent = preg_replace('/<img[^>]*>/i', "", $chapterContent);
+
+
 
 
         // * La vue

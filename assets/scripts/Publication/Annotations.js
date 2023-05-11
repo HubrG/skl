@@ -1,11 +1,15 @@
 import axios from "axios";
 import { NotyDisplay } from "../Noty";
+let mainArticle;
 let intervalId;
-let mainArticle = document.querySelector("article");
-let previousContent = mainArticle.innerHTML;
 let currentAnnotation;
-// Initialiser une chaîne vide pour stocker le texte concaténé des annotations
+let previousContent;
 let concatenatedAnnotationText = "";
+if (document.querySelector("article")) {
+  mainArticle = document.querySelector("article");
+  previousContent = mainArticle.innerHTML;
+  // Initialiser une chaîne vide pour stocker le texte concaténé des annotations
+}
 // Ajouter un écouteur d'événements "click" au document
 export function Annotation(stop = null) {
   if (
@@ -797,7 +801,7 @@ function startInterval(articleNew = false, stop = false) {
           } else {
             if (!document.querySelector(".noty_type__info")) {
               NotyDisplay(
-                `<i class="fa-regular fa-rotate-right"></i><br/>Un utilisateur vient d'ajouter ou de supprimer une annotation sur cette feuille, le texte va automatiquement se recharger.`,
+                "Un utilisateur vient d'ajouter ou de supprimer une annotation sur cette feuille, la page va se recharger automatiquement.",
                 "info",
                 4000
               );
@@ -892,30 +896,24 @@ function stopInterval() {
 }
 // Lorsque la frame se recharge
 document.addEventListener("turbo:frame-load", (event) => {
-  Annotation();
-  const delHl = document.getElementById("del-hl");
-  // Supprimez d'abord l'écouteur d'événements existant
-  delHl.removeEventListener("click", handleDeleteClick);
-  // Ajoutez ensuite le nouvel écouteur d'événements
-  delHl.addEventListener("click", handleDeleteClick);
+  if (document.querySelector("article")) {
+    Annotation();
+    const delHl = document.getElementById("del-hl");
+    // Supprimez d'abord l'écouteur d'événements existant
+    delHl.removeEventListener("click", handleDeleteClick);
+    // Ajoutez ensuite le nouvel écouteur d'événements
+    delHl.addEventListener("click", handleDeleteClick);
+  }
 }); // Lorsque la frame se recharge
 
 // Lorsque la frame se recharge
 document.addEventListener("turbo:load", (event) => {
-  Annotation();
-  const delHl = document.getElementById("del-hl");
-  // Supprimez d'abord l'écouteur d'événements existant
-  delHl.removeEventListener("click", handleDeleteClick);
-  // Ajoutez ensuite le nouvel écouteur d'événements
-  delHl.addEventListener("click", handleDeleteClick);
+  if (document.querySelector("article")) {
+    Annotation();
+    const delHl = document.getElementById("del-hl");
+    // Supprimez d'abord l'écouteur d'événements existant
+    delHl.removeEventListener("click", handleDeleteClick);
+    // Ajoutez ensuite le nouvel écouteur d'événements
+    delHl.addEventListener("click", handleDeleteClick);
+  }
 });
-// Lorsque la frame se recharge
-document.addEventListener("turbo:render", (event) => {
-  Annotation();
-  const delHl = document.getElementById("del-hl");
-  // Supprimez d'abord l'écouteur d'événements existant
-  delHl.removeEventListener("click", handleDeleteClick);
-  // Ajoutez ensuite le nouvel écouteur d'événements
-  delHl.addEventListener("click", handleDeleteClick);
-});
-// Annotation();

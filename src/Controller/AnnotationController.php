@@ -273,6 +273,7 @@ class AnnotationController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         $content = $this->getAnnotation($data['chapter'], 1, $data['version']);
+        // On supprime les balises images de $chapterContent avec une regex
 
 
         return $this->json([

@@ -104,11 +104,11 @@
 			{% endfor %}
 		</div>
 	</section>
-	<section class="w-full md:w-12/12 pt-10 row-start-2 backdrop:blur-sm px-1 relative">
+	<turbo-frame class="w-full md:w-12/12 pt-10 row-start-2 backdrop:blur-sm px-1 relative" id="rell">
 		<div class="flex flex-col md:flex-row gap-x-5 px-5 items-stretch relative">
 			<div class="md:w-8/12 w-full order-2 md:order-1">
-				<turbo-frame id="chapContent" class="-z-50">
-					<a href="{{ url("app_chapter_revision", {slugPub:infoPub.slug, user:infoPub.user.username, idChap:infoChap.id, slug:infoChap.slug}) }}" class="hidden" target="_top" id="reload-article">Reload</a>
+				<div id="chapContent" class="-z-50">
+					<a href="{{ url("app_chapter_revision", {slugPub:infoPub.slug, user:infoPub.user.username, idChap:infoChap.id, slug:infoChap.slug}) }}" data-turbo-frame="_top" class="hidden" id="reload-article">Reload</a>
 					<span class="text-xs flex flex-row gap-x-2 items-baseline mb-2 text-slate-500 -ml-5">
 						<i class="fa-duotone text-yellow-400 fa-lightbulb-exclamation-on"></i>
 						<div class="flex flex-col gap-y-3">
@@ -120,10 +120,10 @@
 					<article class="flex flex-col justify-center data-annotable -z-50" data-chapter="{{infoChap.id}}" data-version="{{version}}" data-mode="mark-for-all" data-annotable id="chapArticle">
 						{{ chapterContent|raw }}
 					</article>
-				</turbo-frame>
+				</div>
 
 			</div>
-			<turbo-frame class="md:w-4/12 order-1 md:order-2  w-full flex flex-col  gap-y-5 border-b-2 md:border-b-0 mb-10 md:mb-0 md:border-l-2 dark:border-slate-700 md:pl-5 pl-0 md:pr-2 pr-0 sticky top-14 md:pt-0 pt-5 md:top-20 overflow-y-auto h-[40vh] dark:bg-slate-800 bg-white md:h-[87vh]" id="revision-frame">
+			<div class="md:w-4/12 order-1 md:order-2  w-full flex flex-col  gap-y-5 border-b-2 md:border-b-0 mb-10 md:mb-0 md:border-l-2 dark:border-slate-700 md:pl-5 pl-0 md:pr-2 pr-0 sticky top-14 md:pt-0 pt-5 md:top-20 overflow-y-auto h-[40vh] dark:bg-slate-800 bg-white md:h-[87vh]" id="revision-frame">
 				<a href="{{ url("app_chapter_revision", {slugPub:infoPub.slug, user:infoPub.user.username, idChap:infoChap.id, slug:infoChap.slug}) }}" class="hidden" id="comment-reload">Reload</a>
 				<select id="version-select" class=" text-xs text-center italic  dark:bg-slate-700 dark:rounded-b border-t-0 border-l-0 border-r-0 border-b-2 dark:text-slate-300" onchange="">
 					{% set latest_version = versions|sort((a, b) => b.created <=> a.created)|first %}
@@ -193,7 +193,7 @@
 						</div>
 					{% endif %}
 				</div>
-			</turbo-frame>
+			</div>
 		</div>
 		{# On affiche uniquement si la publication est publiée #}
 		{% if infoChap.Publication.status > 1 %}
@@ -208,7 +208,7 @@
 				</div>
 			</div>
 		{% endif %}
-	</section>
+	</turbo-frame>
 	<turbo-frame id="tools-frame">
 		{% if infoChap.Publication.status > 1 %}
 			<div id="tools" class="hidden" style="z-index:999999">
@@ -251,7 +251,7 @@
 							<div id="hl-comment-avatar"></div>
 							<div id="hl-comment-user" class="w-full flex flex-row justify-between items-center"></div>
 						</div>
-						<div class="text-xs" id="hl-comment-content">Lorem ipsum dolor concectetur sit amter dolor concecter.</div>
+						<div class="text-xs" id="hl-comment-content">Commentaire supprimé</div>
 					</li>
 				</ul>
 			</div>

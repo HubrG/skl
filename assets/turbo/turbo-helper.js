@@ -97,6 +97,7 @@ const TurboHelper = class {
       TippyC();
       axiosSaveChapter();
       ForumTopicRead();
+      // Annotation();
       // ! Flashes
       if (document.getElementById("flashbag-success")) {
         if (
@@ -119,7 +120,7 @@ const TurboHelper = class {
     });
 
     document.addEventListener("turbo:frame-render", (event) => {
-      Annotation();
+      // Annotation();
       Comment();
       DropdownMenu();
       ForumTopicRead();

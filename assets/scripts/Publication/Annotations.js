@@ -3,7 +3,10 @@ import { NotyDisplay } from "../Noty";
 let intervalId;
 let mainArticle = document.querySelector("article");
 let previousContent = mainArticle.innerHTML;
-
+let currentAnnotation;
+// Initialiser une chaîne vide pour stocker le texte concaténé des annotations
+let concatenatedAnnotationText = "";
+// Ajouter un écouteur d'événements "click" au document
 export function Annotation(stop = null) {
   if (
     !document.querySelector("article") &&
@@ -265,11 +268,6 @@ export function Annotation(stop = null) {
   // Sélectionner l'élément avec l'ID "del-hl"
   const delHl = document.getElementById("del-hl");
   // Initialiser la variable pour stocker l'annotation actuelle
-  let currentAnnotation;
-
-  // Initialiser une chaîne vide pour stocker le texte concaténé des annotations
-  let concatenatedAnnotationText = "";
-  // Ajouter un écouteur d'événements "click" au document
 
   document.addEventListener("click", function (event) {
     // Si l'élément sur lequel l'utilisateur a cliqué a la classe "annotation"
@@ -620,55 +618,6 @@ export function Annotation(stop = null) {
   // 3. Pour chaque élément d'annotation, déplace son contenu dans le parent et supprime l'élément d'annotation.
   // 4. Met à jour le contenu de l'article et le chapitre.
   // 5. Envoie une requête POST au serveur pour supprimer l'annotation, en incluant le contenu mis à jour de l'article, le chapitre et la classe d'annotation unique.
-  function removeAnnotation(annotation) {
-    // console.log(annotation);
-    const uniqueClass = Array.from(annotation.classList).find((className) =>
-      className.startsWith("annotation-")
-    );
-    const annotations = document.querySelectorAll(".annotation." + uniqueClass);
-    annotations.forEach((annotation) => {
-      const parent = annotation.parentNode;
-      while (annotation.firstChild) {
-        parent.insertBefore(annotation.firstChild, annotation);
-      }
-      parent.removeChild(annotation);
-    });
-    // Mettre à jour la variable 'article' après avoir supprimé l'annotation du DOM
-    const article = document.querySelector("article").innerHTML;
-    const chapter = document
-      .querySelector("article")
-      .getAttribute("data-chapter");
-    const version = mainArticle.getAttribute("data-version");
-
-    let annotationMode = mainArticle.getAttribute("data-mode");
-    var url = null;
-    if (annotationMode === "mark-for-me") {
-      url = "/delete-annotation";
-    } else {
-      url = "/delete-review";
-    }
-    const annotationData = {
-      content: article,
-      chapter: chapter,
-      mode: annotationMode,
-      version: version,
-      annotation_class: uniqueClass,
-    };
-    axios
-      .post(url, annotationData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then(() => {
-        // On supprime l'annotation en commentaire
-        removeAnnotationComment(uniqueClass);
-        startInterval();
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la suppression de l'annotation :", error);
-      });
-  }
 
   const comments = document.querySelectorAll(".one-revision-comment");
 
@@ -776,12 +725,6 @@ export function Annotation(stop = null) {
         return;
     }
   }
-  // ! SUppression d'annotation
-  delHl.addEventListener("click", function () {
-    if (currentAnnotation) {
-      removeAnnotation(currentAnnotation);
-    }
-  });
   // ! Changement de version de l'article en mode révision avec Select
   const versionSelect = document.querySelector("#version-select");
   if (versionSelect) {
@@ -799,12 +742,6 @@ export function Annotation(stop = null) {
 
   let isMouseOver = false;
   //  ! interval pour reload en cas de nouveau contenu
-
-  function stopInterval() {
-    if (intervalId) {
-      clearInterval(intervalId);
-    }
-  }
 
   if (
     document.querySelector("article").getAttribute("data-mode") ==
@@ -825,16 +762,8 @@ export function Annotation(stop = null) {
       //
     });
   });
-  function removeAnnotationComment(annotationElements) {
-    const oneComment = document.querySelectorAll(".one-revision-comment");
-    oneComment.forEach((comment) => {
-      if (comment.getAttribute("data-annotation-class") == annotationElements) {
-        comment.remove();
-      }
-    });
-  }
 }
-function startInterval(stop = false) {
+function startInterval(articleNew = false, stop = false) {
   if (
     document.querySelector("article").getAttribute("data-mode") ==
     "mark-for-all"
@@ -846,7 +775,6 @@ function startInterval(stop = false) {
       return; // On arrête ici si stop est égal à "stop"
     }
     intervalId = setInterval(function () {
-      // console.log("interval");
       const version = mainArticle.getAttribute("data-version");
       const chapter = mainArticle.getAttribute("data-chapter");
       const annotationData = {
@@ -863,12 +791,13 @@ function startInterval(stop = false) {
         })
         .then((response) => {
           if (
-            response.data.message != false &&
-            response.data.message != previousContent
+            response.data.message.trim() == response.data.compar.trim() ||
+            response.data.message.trim() == ""
           ) {
+          } else {
             if (!document.querySelector(".noty_type__info")) {
               NotyDisplay(
-                "Un utilisateur vient d'ajouter ou de supprimer une annotation sur cette feuille, la page va se recharger automatiquement.",
+                `<i class="fa-regular fa-rotate-right"></i><br/>Un utilisateur vient d'ajouter ou de supprimer une annotation sur cette feuille, le texte va automatiquement se recharger.`,
                 "info",
                 4000
               );
@@ -889,7 +818,104 @@ function startInterval(stop = false) {
             error
           );
         });
-    }, 5000);
+    }, 3000);
   }
 }
-Annotation();
+function removeAnnotationComment(annotationElements) {
+  const oneComment = document.querySelectorAll(".one-revision-comment");
+  oneComment.forEach((comment) => {
+    if (comment.getAttribute("data-annotation-class") == annotationElements) {
+      comment.remove();
+    }
+  });
+}
+function removeAnnotation(annotation) {
+  // console.log(annotation);
+  const uniqueClass = Array.from(annotation.classList).find((className) =>
+    className.startsWith("annotation-")
+  );
+  const annotations = document.querySelectorAll(".annotation." + uniqueClass);
+  annotations.forEach((annotation) => {
+    const parent = annotation.parentNode;
+    while (annotation.firstChild) {
+      parent.insertBefore(annotation.firstChild, annotation);
+    }
+    parent.removeChild(annotation);
+  });
+  // Mettre à jour la variable 'article' après avoir supprimé l'annotation du DOM
+  const article = document.querySelector("article").innerHTML;
+  const chapter = document
+    .querySelector("article")
+    .getAttribute("data-chapter");
+  const version = mainArticle.getAttribute("data-version");
+
+  let annotationMode = mainArticle.getAttribute("data-mode");
+  var url = null;
+  if (annotationMode === "mark-for-me") {
+    url = "/delete-annotation";
+  } else {
+    url = "/delete-review";
+  }
+  const annotationData = {
+    content: article,
+    chapter: chapter,
+    mode: annotationMode,
+    version: version,
+    annotation_class: uniqueClass,
+  };
+  axios
+    .post(url, annotationData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then(() => {
+      // On supprime l'annotation en commentaire
+      removeAnnotationComment(uniqueClass);
+      stopInterval();
+    })
+    .catch((error) => {
+      console.error("Erreur lors de la suppression de l'annotation :", error);
+    });
+}
+// ! SUppression d'annotation
+
+function handleDeleteClick() {
+  if (currentAnnotation) {
+    removeAnnotation(currentAnnotation);
+  }
+}
+function stopInterval() {
+  if (intervalId) {
+    clearInterval(intervalId);
+  }
+}
+// Lorsque la frame se recharge
+document.addEventListener("turbo:frame-load", (event) => {
+  Annotation();
+  const delHl = document.getElementById("del-hl");
+  // Supprimez d'abord l'écouteur d'événements existant
+  delHl.removeEventListener("click", handleDeleteClick);
+  // Ajoutez ensuite le nouvel écouteur d'événements
+  delHl.addEventListener("click", handleDeleteClick);
+}); // Lorsque la frame se recharge
+
+// Lorsque la frame se recharge
+document.addEventListener("turbo:load", (event) => {
+  Annotation();
+  const delHl = document.getElementById("del-hl");
+  // Supprimez d'abord l'écouteur d'événements existant
+  delHl.removeEventListener("click", handleDeleteClick);
+  // Ajoutez ensuite le nouvel écouteur d'événements
+  delHl.addEventListener("click", handleDeleteClick);
+});
+// Lorsque la frame se recharge
+document.addEventListener("turbo:render", (event) => {
+  Annotation();
+  const delHl = document.getElementById("del-hl");
+  // Supprimez d'abord l'écouteur d'événements existant
+  delHl.removeEventListener("click", handleDeleteClick);
+  // Ajoutez ensuite le nouvel écouteur d'événements
+  delHl.addEventListener("click", handleDeleteClick);
+});
+// Annotation();

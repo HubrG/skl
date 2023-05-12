@@ -38,7 +38,7 @@
 {% endblock %}
 
 {% block body %}
-	<section id="titleChapter" data-title="{{infoChap.title}}" class=" {{ infoChap.Publication.status < 2 ? " -mt-20 top-16" : " top-14" }} block md:sticky bg-white dark:bg-slate-800 dark:bg-transparent dark:bg-opacity-50 bg-transparent bg-opacity-50 backdrop-blur-sm z-50">
+	<section id="titleChapter" data-title="{{infoChap.title}}" class=" {{ infoChap.Publication.status < 2 ? " -mt-20 top-16" : " lg:top-[4.05rem] top-[3.5rem]" }} block md:sticky bg-white dark:bg-slate-800 dark:bg-transparent dark:bg-opacity-50 bg-transparent bg-opacity-50 backdrop-blur-sm z-50">
 		{% if infoChap.Publication.status < 2 %}
 			<div class="mb-0">
 				<div class="w-6/6 mx-auto -mt-2 h-10  bg-slate-100 dark:bg-slate-700 dark:text-slate-200  ring-1 ring-slate-700 opacity-80 right-0 rounded-b-sm">
@@ -57,19 +57,19 @@
 				</div>
 			</div>
 		{% endif %}
-		<div class="flex md:flex-row gap-x-5 flex-col justify-between items-center">
-			<div class="w-auto flex flex-row items-center gap-x-2">
+		<div class="flex md:flex-row pt-2 gap-x-5 flex-col  justify-between mx-auto flex-wrap items-center">
+			<div class="md:w-3/12 w-full flex md:flex-row  md:border-b-0 border-b-2 md:pb-0 pb-5 md:mb-0 mb-5 opacity-80  justify-center md:justify-start items-start gap-x-2">
 				{% if infoPub.cover %}
-					<a href="{{ path("app_publication_show_one", {id:infoPub.id, slug:infoPub.slug}) }}"><img src="{{infoPub.cover}}" class="h-10 rounded"></a>
+					<a href="{{ path("app_publication_show_one", {id:infoPub.id, slug:infoPub.slug}) }}"><img src="{{infoPub.cover}}" class="max-w-[2rem] self-center mt-1 rounded"></a>
 				{% endif %}
-				<div>
+				<div class="relative">
 					<h3 class="justify-center md:justify-start flex flex-row gap-x-2 items-center text-lg">
 						<a id="pubTitle" class="font-serif  hover:underline dark:text-white" href="{{ path("app_publication_show_one", {id:infoPub.id, slug:infoPub.slug}) }}" {% if title|length > 48 %} data-tippy-content="{{infoPub.title}}" {% endif %}>{{ title }}</a>
 						{% if infoPub.mature %}
 							<i class="fa-kit fa-regular-book-open-reader-circle-exclamation text-rose-400 text-xs dark:text-rose-300" data-tippy-content="Contenu sensible"></i>
 						{% endif %}
 					</h3>
-					<div class="text-xs md:text-left text-center dark:text-white">
+					<div class="text-xs md:text-left  dark:text-white">
 						<small>par</small>
 						<span class="font-medium dark:text-white">
 							<a class="dark:text-white hover:underline" href="{{ path("app_user", {username:infoPub.user.username}) }}">{{ infoPub.user.nickname }}</a>
@@ -77,14 +77,14 @@
 					</div>
 				</div>
 			</div>
-			<div class="flex  justify-center mt-16">
-				<button class="text-xl md:text-2xl font-serif -mt-[4rem] ml-12 text-slate-800 dark:text-white" id="chapListButton" data-dropdown-toggle="dropdownChapter">
+			<div class="flex md:w-5/12 w-full justify-center mt-16">
+				<button class="text-xl md:text-2xl  flex flex-row items-baseline font-serif -mt-[4rem] ml-12 text-slate-800 dark:text-white" id="chapListButton" data-dropdown-toggle="dropdownChapter">
 					{{ infoChap.title }}
 					{{alreadyRead ? '<span class="text-xs flex flex-col items-center gap-x-1 md:flex-row text-green-500 dark:text-green-400"><i class="fa-duotone fa-badge-check"></i><span class="md:inline hidden">lu</span></span>'}}
 					<i class="fa-solid fa-caret-down active:text-xl"></i>
 				</button>
 			</div>
-			<div class="flex justify-right items-center  text-xs mt-2 md:mt-0">
+			<div class="flex flex-row justify-end  w-3/12 items-left  text-xs mt-2 md:mt-0">
 				<div class="flex flex-row gap-x-2">
 					{% set shareUrl = "https://scrilab.com" ~ canonicalUrl %}
 					{% set shareCat = infoPub.category ? "\n #" ~ infoPub.category.name : "" %}

@@ -42,7 +42,7 @@
 			</div>
 		{% endif %}
 		{% set n = 0 %}
-		{% for item in pCom %}
+		{% for item in pCom|sort((a, b) => a.id <=> b.id) %}
 			{% include "publication/_partials/_comment.html.twig" with { item:item, n:n, pcom:nbrCom} %}
 			{% set n = n + 1  %}
 		{% endfor %}

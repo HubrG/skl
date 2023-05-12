@@ -132,7 +132,7 @@
 			</div>
 			<turbo-frame id="comment-section-{{item.id}}" class="opacity-80">
 				{% set n = 0 %}
-				{% for reply in pCom %}
+				{% for reply in pCom|sort((a, b) => a.id <=> b.id) %}
 					{# likes #}
 					{% set userLogId = app.user.id is defined ? app.user.id : null %}
 					{% set class = "fa-regular fa-heart" %}

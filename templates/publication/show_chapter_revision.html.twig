@@ -198,8 +198,8 @@
 			<div class="sticky bottom-10 mt-10 flex ml-0 md:ml-5 justify-center place-content-center z-10  w-6/6 md:w-auto">
 				<div class="bg-slate-700 hover:bg-slate-900 text-slate-200 dark:bg-slate-700 dark:hover:bg-slate-900 rounded-xl shadow  flex justify-center gap-3 items-center text-xs md:text-base ">
 					<div data-tippy-content="<strong>Quitter le mode « Révision »</strong>" data-id="{{ infoChap.id }}">
-						<a href="{{path("app_chapter_show", {slugPub:infoPub.slug, user:infoPub.user.username, idChap:infoChap.id, slug:infoChap.slug})}}" data-turbo-frame="_top" class="p-3  flex flex-row gap-x-5 items-center">
-							<i class="fa-duotone fa-highlighter-line text-amber-400"></i>
+						<a href="{{path("app_chapter_show", {slugPub:infoPub.slug, user:infoPub.user.username, idChap:infoChap.id, slug:infoChap.slug})}}" target="_top" class="p-3  flex flex-row gap-x-5 items-center">
+							<i class="fa-kit fa-regular-highlighter-line-slash text-blue-400"></i>
 							<strong>Quitter le mode révision</strong>
 						</a>
 					</div>

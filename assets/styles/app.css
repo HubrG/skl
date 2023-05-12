@@ -22,8 +22,8 @@ body {
 	@apply bg-white dark:bg-slate-800 h-screen w-full;
 }
 .turbo-progress-bar {
+	@apply bg-emerald-500 dark:bg-slate-500;
 	height:5px;
-	background-color: #0f9a42;
 }
 body.turbo-loading, body.turbo-loaded {
 	opacity: 1;

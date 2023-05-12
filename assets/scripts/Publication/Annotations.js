@@ -4,6 +4,7 @@ let mainArticle;
 let intervalId;
 let currentAnnotation;
 let previousContent;
+let range;
 let concatenatedAnnotationText = "";
 if (document.querySelector("article")) {
   mainArticle = document.querySelector("article");
@@ -404,7 +405,11 @@ export function Annotation(stop = null) {
    * @param {Element} mark - L'élément <mark> représentant l'annotation.
    */
   function createAnnotation(selection, mark, comment = null) {
-    const range = selection.getRangeAt(0);
+    if (selection.rangeCount > 0) {
+      range = selection.getRangeAt(0);
+    } else {
+      range = document.createRange();
+    }
     const commonAncestor = range.commonAncestorContainer;
 
     let random = Math.floor(Math.random() * 1000) + 1;

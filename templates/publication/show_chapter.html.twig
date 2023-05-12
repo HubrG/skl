@@ -197,9 +197,9 @@
 						&nbsp;<span id="nbrBm">{{ infoChap.publicationBookmarks|length }}</span>
 					</div>
 					<span class="dark:text-slate-500">|</span>
-					<div data-tippy-content="<strong>Passer en mode « Révision »</strong><br/>pour aider l'auteur-ice à améliorer son texte" {% if app.user.id is not defined %} data-micromodal-trigger="popup-login" {% endif %} data-id="{{ infoChap.id }}">
+					<div data-tippy-content="<strong>Passer en mode « Révision »</strong><br/>pour aider l'auteur-ice à améliorer son texte" data-id="{{ infoChap.id }}">
 						<a href="{{path("app_chapter_revision", {slugPub:infoPub.slug, user:infoPub.user.username, idChap:infoChap.id, slug:infoChap.slug})}}" data-turbo-frame="_top">
-							<i class="fa-duotone fa-highlighter-line text-amber-700 dark:text-amber-500"></i>
+							<i class="fa-duotone fa-highlighter-line text-blue-700 dark:text-blue-400"></i>
 						</a>
 					</div>
 				</div>
@@ -225,11 +225,15 @@
 						<i data-tippy-content="Marquer ce passage en rouge" class="fa-solid fa-bookmark text-red-200"></i>
 					</button>
 				</li>
-				<li class="text-slate-400">|</li>
+				<li class="text-slate-500">|</li>
+				<a href="{{path("app_chapter_revision", {slugPub:infoPub.slug, user:infoPub.user.username, idChap:infoChap.id, slug:infoChap.slug})}}" data-tippy-content="Accéder au mode « Révision » pour aider l'auteur à améliorer son texte" data-turbo-frame="_top">
+					<i class="fa-duotone fa-highlighter-line text-blue-200 dark:text-blue-400"></i>
+				</a>
+				<li class="text-slate-500">|</li>
 				<li class="commentQuote">
 					<i data-tippy-content="Citer ce passage pour écrire un commentaire" class="fa-solid fa-comment-quote  toggleSidebar" style="--fa-secondary-color: #b6c5dd;"></i>
 				</li>
-				<li>|</li>
+				<li class="text-slate-500">|</li>
 				<li>
 					<i data-tippy-content="Partager sur Twitter" class="fa-brands fa-twitter cursor-pointer shareTwitter" style="color:#1da1f2"></i>
 				</li>

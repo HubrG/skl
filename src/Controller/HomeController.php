@@ -27,7 +27,7 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(PublicationRepository $pRepo): Response
     {
-
+        sleep(1);
         // *
         // * DERNIÈRES PUBLICATIONS
         $qb = $pRepo->createQueryBuilder("p")

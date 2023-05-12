@@ -46,7 +46,9 @@
 		<div class="one-comment" {% if lastComment %} id="lastComment" {% endif %}>
 			<div class="flex items-start">
 				{% set profilPic = item.user.profilPicture ? item.user.profilPicture : 'https://picsum.photos/200/300' %}
-				<img class="w-12 h-12 rounded-full mr-4" src="{{ profilPic }}" alt="avatar">
+				{% if item.user.profilPicture %}
+					<img class="w-12 h-12 rounded-full mr-4" src="{{ profilPic }}" alt="avatar">
+				{% endif %}
 				<div class="flex-1">
 					<h4 class="font-medium text-sm dark:text-white">
 						<a href="{{ path("app_user", {username:item.user.username}) }}" target="_top" class="hover:underline">{{ item.user.nickname }}</a>
@@ -159,7 +161,7 @@
 					{% endif %}
 					{# endlikes #}
 					{% if reply.replyTo == item %}
-						{% set profilPic = reply.user.profilPicture ? reply.user.profilPicture : 'https://picsum.photos/200/300' %}
+						{% set profilPic = reply.user.profilPicture ? reply.user.profilPicture %}
 						{% if n == 0 %}
 							<hr class="mb-5 border-[1px] border-dashed border-slate-500 dark:border-slate-700 opacity-50" id="hr-comment-{{reply.id}}">
 						{% else %}
@@ -167,7 +169,9 @@
 						{% endif %}
 						<div class="flex relative flex-row w-full justify-between items-center" id="comment-{{reply.id}}">
 							<span class="flex flex-col items-center justify-center w-3/12">
-								<img class="w-6 h-6  rounded-full" src="{{ profilPic }}" alt="avatar">
+								{% if reply.user.profilPicture %}
+									<img class="w-6 h-6  rounded-full" src="{{ profilPic }}" alt="avatar">
+								{% endif %}
 								<span class="text-sm text-slate-600 text-center dark:text-slate-400">
 									<a href="{{ path('app_user', {'username': reply.user.username}) }}" target="_top" class="hover:underline">{{ reply.user.nickname }}</a>
 								</span>

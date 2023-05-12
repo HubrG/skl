@@ -58,18 +58,23 @@
 			</div>
 		{% endif %}
 		<div class="flex md:flex-row gap-x-5 flex-col justify-between items-center">
-			<div class="w-auto">
-				<h3 class="justify-center md:justify-start flex flex-row gap-x-2 items-center text-lg">
-					<a id="pubTitle" class="font-serif  hover:underline dark:text-white" href="{{ path("app_publication_show_one", {id:infoPub.id, slug:infoPub.slug}) }}" {% if title|length > 48 %} data-tippy-content="{{infoPub.title}}" {% endif %}>{{ title }}</a>
-					{% if infoPub.mature %}
-						<i class="fa-kit fa-regular-book-open-reader-circle-exclamation text-rose-400 text-xs dark:text-rose-300" data-tippy-content="Contenu sensible"></i>
-					{% endif %}
-				</h3>
-				<div class="text-xs md:text-left text-center dark:text-white">
-					<small>par</small>
-					<span class="font-medium dark:text-white">
-						<a class="dark:text-white hover:underline" href="{{ path("app_user", {username:infoPub.user.username}) }}">{{ infoPub.user.nickname }}</a>
-					</span>
+			<div class="w-auto flex flex-row items-center gap-x-2">
+				{% if infoPub.cover %}
+					<a href="{{ path("app_publication_show_one", {id:infoPub.id, slug:infoPub.slug}) }}"><img src="{{infoPub.cover}}" class="h-10 rounded"></a>
+				{% endif %}
+				<div>
+					<h3 class="justify-center md:justify-start flex flex-row gap-x-2 items-center text-lg">
+						<a id="pubTitle" class="font-serif  hover:underline dark:text-white" href="{{ path("app_publication_show_one", {id:infoPub.id, slug:infoPub.slug}) }}" {% if title|length > 48 %} data-tippy-content="{{infoPub.title}}" {% endif %}>{{ title }}</a>
+						{% if infoPub.mature %}
+							<i class="fa-kit fa-regular-book-open-reader-circle-exclamation text-rose-400 text-xs dark:text-rose-300" data-tippy-content="Contenu sensible"></i>
+						{% endif %}
+					</h3>
+					<div class="text-xs md:text-left text-center dark:text-white">
+						<small>par</small>
+						<span class="font-medium dark:text-white">
+							<a class="dark:text-white hover:underline" href="{{ path("app_user", {username:infoPub.user.username}) }}">{{ infoPub.user.nickname }}</a>
+						</span>
+					</div>
 				</div>
 			</div>
 			<div class="flex  justify-center mt-16">

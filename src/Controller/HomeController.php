@@ -70,7 +70,7 @@ class HomeController extends AbstractController
         // * DERNIERS commentaires
         $qb = $pcomRepo->createQueryBuilder("pcom")
             ->orderBy("pcom.published_at", "DESC")
-            ->where("pcom.replyTo != ''")
+            ->where("pcom.replyTo is NULL")
             ->setMaxResults(5);
         $comments_last = $qb->getQuery()->getResult();
         // !

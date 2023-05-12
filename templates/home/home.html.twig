@@ -198,7 +198,7 @@
 					</div>
 				</div>
 			</section>
-			<secion class=" -mt-0 md:-mt-10 z-50 order-1 md:order-2">
+			<section class=" -mt-0 md:-mt-10 z-50 order-1 md:order-2">
 				<div class="my-special-hr">
 					<hr>
 					<h1>
@@ -220,8 +220,114 @@
 						</span>
 					</a>
 				</div>
-			</secion>
-			<section class="md:mt-20 -mt-20 z-50 order-3 md:order-3">
+			</section>
+			<section class="w-full md:mt-20 z-50  order-3 md:order-3 flex flex-col md:flex-row gap-x-5 mb-16 md:mb-0">
+				<div class="w-full md:w-3/6 mb-0 md:mb-8">
+					<div class="my-special-hr">
+						<hr>
+						<h1>
+							Derniers sujets
+							<i class="fa-duotone fa-comments text-slate-500"></i>
+						</h1>
+						<hr>
+					</div>
+					<div class="flex flex-col gap-y-6 -mt-14 md:-mt-0">
+						{% for item in topics_last %}
+							<div class="flex flex-row  items-start gap-x-3 rounded  p-3 bg-slate-50 dark:bg-slate-700">
+								<div class="flex flex-col w-full">
+									<p class=" font-semibold text-sm md:text-base dark:text-slate-300 lg:text-left text-center">
+										<a href="{{path("app_forum_topic_read", {slug:item.category.slug, slugTopic:item.slug, id:item.id})}}" class="hover:underline">
+											{{item.title}}
+										</a>
+									</p>
+									<div class="flex  text-[0.75rem] flex-col lg:flex-row items-center  text-slate-500  border-[1px] border-l-0 border-r-0 dark:border-slate-600 border-slate-200 justify-between gap-x-1 gap-y-1 mt-2 px-2 py-2 w-full ">
+										<div class="flex flex-row gap-x-5 justify-between  lg:order-1 order-2">
+											<div class="flex flex-row items-center gap-x-1">
+												{% if item.user.profilPicture %}
+													<div class="max-w-[1rem]">
+														<a href="{{path('app_user', {username:item.user.username})}}">
+															<img class="object-cover rounded w-full h-full" src="{{item.user.profilPicture}}"/>
+														</a>
+													</div>
+												{% endif %}
+												<a href="{{path('app_user', {username:item.user.username})}}" class="hover:underline text-slate-900 dark:text-slate-200">{{item.user.nickname}}</a>
+											</div>
+											<span class="flex flex-row items-center gap-x-1 {{item.forumMessages|length > 0 ? " dark:text-slate-300 text-slate-800" : " text-slate-400 dark:text-slate-500"}}">
+												<i class="fa-duotone fa-comment-alt"></i>
+												{{item.forumMessages|length == 0 ? "Aucune réponse" : item.forumMessages|length == 1 ? "1 réponse" : item.forumMessages|length ~ " réponses"}}
+											</span>
+											<span>
+												<i class="fa-regular fa-clock"></i>
+												{{item.createdAt|since}}
+											</span>
+										</div>
+										<p class="text-xs font-semibold lg:order-2 order-1 catColorText-{{item.category.color}} flex flex-row gap-x-2 items-center">
+											<i class="fa-duotone {{item.category.icon}}"></i>
+											<a href="{{path('app_forum_topic', {slug:item.category.slug})}}" class=" hover:underline">
+												{{item.category.name}}
+											</a>
+										</p>
+									</div>
+									<div class="flex flex-col gap-x-2 items-baseline  w-full">
+										<p class="text-sm text-slate-500 dark:text-slate-400 line-clamp-3  mt-2 w-full">
+											{{item.content}}...
+										</p>
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+						<p class="text-center mt-5 flex flex-row gap-x-3 font-semibold items-center justify-center">
+							<i class="fa-duotone fa-list text-slate-500"></i>
+							<a href="{{path("app_forum")}}" class="hover:underline dark:text-slate-300">Voir tous les sujets</a>
+						</p>
+					</div>
+				</div>
+				<div class="w-full md:w-3/6 mt-5 md:mt-0">
+					<div class="my-special-hr">
+						<hr>
+						<h1>
+							Derniers commentaires
+							<i class="fa-duotone fa-comment text-blue-500"></i>
+						</h1>
+						<hr>
+					</div>
+					<div class="flex flex-col gap-y-6 -mt-14 md:-mt-0">
+						{% for item in comments_last %}
+							<div class="flex flex-row  items-start gap-x-3 rounded  p-3 bg-slate-50 dark:bg-slate-700">
+								<div class="flex flex-col w-full">
+									<div class="font-semibold  text-sm md:text-base dark:text-slate-300">
+										<a href="{{ path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug}) }}">{{item.publication.title}}</a>
+									</div>
+									<div class="flex  text-sm flex-row items-center  text-slate-500 dark:border-slate-600 border-slate-200 justify-between gap-x-1  mt-2 px-2 py-2 w-full ">
+										<div class="flex flex-row gap-x-5 justify-between lg:order-1 order-2">
+											<div class="flex flex-row items-center gap-x-1">
+												{% if item.user.profilPicture %}
+													<div class="max-w-[1rem]">
+														<a href="{{path('app_user', {username:item.user.username})}}">
+															<img class="object-cover rounded w-full h-full" src="{{item.user.profilPicture}}"/>
+														</a>
+													</div>
+												{% endif %}
+												<a href="{{path('app_user', {username:item.user.username})}}" class="hover:underline text-slate-900 dark:text-slate-200">{{item.user.nickname}}</a>
+											</div>
+											<span>
+												<i class="fa-regular fa-clock"></i>
+												{{item.publishedAt|since}}
+											</span>
+										</div>
+									</div>
+									<div class="flex flex-col gap-x-2 items-baseline  w-full">
+										<p class="text-sm text-slate-500 dark:text-slate-400 line-clamp-3  mt-2 w-full">
+											{{item.content}}...
+										</p>
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</section>
+			<section class="md:mt-12 -mt-8 z-50 order-4 md:order-4">
 				<div class="my-special-hr">
 					<hr>
 					<h1>
@@ -235,39 +341,38 @@
 						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':'sheet', 'querySortby':'sheet', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
 					{% endfor %}
 				</div>
-			</div>
-			<div class="mt-20 text-right">
-				<a href="{{ path("app_publication_show_all_category", {slug:"all", sortby:"sheet", order:"desc", page:1})}}" class="button-classic button-gray w-full md:w-2/6 mx-auto" style="font-weight:600">
-					<span class="text-base">
-						<i class="fa-duotone fa-stars"></i>
-						Voir plus de récits !
-					</span>
-				</a>
-			</div>
-		</section>
-		<section class="md:mt-22 mt-24 z-50 order-3 md:order-3">
-			<div class="my-special-hr">
-				<hr>
-				<h1>
-					Récits populaires
-					<i class="fa-duotone fa-fire text-red-500"></i>
-				</h1>
-				<hr class="mb-20">
-			</div>
-			<div class="display_publications">
-				{% for item in pub_pop %}
-					{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':'pop', 'querySortby':'pop', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
-				{% endfor %}
-			</div>
-			<div class="mt-20 text-right">
-				<a href="{{ path("app_publication_show_all_category", {slug:"all", sortby:"pop", order:"desc", page:1})}}" class="button-classic button-gray w-full md:w-2/6 mx-auto" style="font-weight:600">
-					<span class="text-base">
-						<i class="fa-duotone fa-stars"></i>
-						Voir plus de récits !
-					</span>
-				</a>
-			</div>
-		</section>
 
-	</div>
-{% endblock %}
+				<div class="mt-20 text-right">
+					<a href="{{ path("app_publication_show_all_category", {slug:"all", sortby:"sheet", order:"desc", page:1})}}" class="button-classic button-gray w-full md:w-2/6 mx-auto" style="font-weight:600">
+						<span class="text-base">
+							<i class="fa-duotone fa-stars"></i>
+							Voir plus de récits !
+						</span>
+					</a>
+				</div>
+			</section>
+			<section class="md:mt-22 mt-24 z-50 order-5 md:order-5">
+				<div class="my-special-hr">
+					<hr>
+					<h1>
+						Récits populaires
+						<i class="fa-duotone fa-fire text-red-500"></i>
+					</h1>
+					<hr class="mb-20">
+				</div>
+				<div class="display_publications">
+					{% for item in pub_pop %}
+						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':'pop', 'querySortby':'pop', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
+					{% endfor %}
+				</div>
+				<div class="mt-20 text-right">
+					<a href="{{ path("app_publication_show_all_category", {slug:"all", sortby:"pop", order:"desc", page:1})}}" class="button-classic button-gray w-full md:w-2/6 mx-auto" style="font-weight:600">
+						<span class="text-base">
+							<i class="fa-duotone fa-stars"></i>
+							Voir plus de récits !
+						</span>
+					</a>
+				</div>
+			</section>
+		</div>
+	{% endblock %}

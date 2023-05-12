@@ -5,6 +5,7 @@ namespace App\Controller;
 use Cloudinary\Cloudinary;
 use App\Services\WordCount;
 use App\Services\NotificationSystem;
+use App\Repository\ForumTopicRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
 use App\Repository\NotificationRepository;
@@ -25,9 +26,8 @@ class HomeController extends AbstractController
     }
 
     #[Route('/', name: 'app_home')]
-    public function index(PublicationRepository $pRepo): Response
+    public function index(PublicationRepository $pRepo, ForumTopicRepository $ftRepo, PublicationCommentRepository $pcomRepo): Response
     {
-        sleep(1);
         // *
         // * DERNIÈRES PUBLICATIONS
         $qb = $pRepo->createQueryBuilder("p")
@@ -60,6 +60,19 @@ class HomeController extends AbstractController
             ->setMaxResults(9);
         $publications_updated = $qb->getQuery()->getResult();
 
+        // * 
+        // * DERNIERS TOPICS
+        $qb = $ftRepo->createQueryBuilder("ft")
+            ->orderBy("ft.createdAt", "DESC")
+            ->setMaxResults(9);
+        $topics_last = $qb->getQuery()->getResult();
+        // * 
+        // * DERNIERS commentaires
+        $qb = $pcomRepo->createQueryBuilder("pcom")
+            ->orderBy("pcom.published_at", "DESC")
+            ->where("pcom.replyTo != ''")
+            ->setMaxResults(5);
+        $comments_last = $qb->getQuery()->getResult();
         // !
         // * RENDER
         return $this->render('home/home.html.twig', [
@@ -68,7 +81,9 @@ class HomeController extends AbstractController
             'pub_last' => $publications_last,
             'pub_pop' => $publications_pop,
             'is_homepage' => true,
-            'pub_updated' => $publications_updated
+            'pub_updated' => $publications_updated,
+            'topics_last' => $topics_last,
+            'comments_last' => $comments_last
         ]);
     }
     #[Route('/clearnotification', name: 'app_notification_clear', methods: ['POST'])]

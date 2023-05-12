@@ -10,22 +10,23 @@ export function ShowChapter() {
     let nav = document.querySelector("nav");
     let stickyDiv = document.querySelector("#titleChapter");
     let sidebarScroll = document.getElementById("sidebar");
-    if (stickyDiv) {
-      if (nav.getBoundingClientRect().top < 0) {
-        stickyDiv.style.position = "sticky";
-        stickyDiv.style.top = "0";
-        if (sidebarScroll) {
-          sidebarScroll.style.paddingTop = "1rem";
-        }
-      } else {
-        stickyDiv.style.position = "sticky";
-        stickyDiv.style.top = "3.5rem";
-        if (sidebarScroll) {
-          sidebarScroll.style.paddingTop = "5rem";
-        }
-      }
-    }
+    // if (stickyDiv) {
+    //   if (nav.getBoundingClientRect().top < 0) {
+    //     stickyDiv.style.position = "sticky";
+    //     stickyDiv.style.top = "0";
+    //     if (sidebarScroll) {
+    //       sidebarScroll.style.paddingTop = "1rem";
+    //     }
+    //   } else {
+    //     stickyDiv.style.position = "sticky";
+    //     stickyDiv.style.top = "3.5rem";
+    //     if (sidebarScroll) {
+    //       sidebarScroll.style.paddingTop = "5rem";
+    //     }
+    //   }
+    // }
   });
+
   if (document.getElementById("insightQuote")) {
     // ! On vérifie que l'utilisateur est connecté
     const copyLink = document.getElementById("copyLink");
@@ -77,22 +78,6 @@ export function ShowChapter() {
           tooltip
         )
       )
-    );
-    // ! Permet de commenter un marquage déjà existant.
-    const commentBAlready = document.querySelectorAll(".commentAlreadyQuote");
-    commentBAlready.forEach(
-      handleClick(() => {
-        const idQuote = document
-          .getElementById("delete-hl")
-          .getAttribute("data-note-id");
-        let get = document.querySelector(".hlId-" + idQuote).innerHTML;
-        // On supprime les tags
-        get = get.replace(/<[^>]*>/g, "").trim();
-        // On supprime les espaces
-        document.getElementById("insightQuote").classList.remove("hidden");
-        document.getElementById("insightQuote").innerHTML = "« " + get + " »";
-        document.getElementById("drawerNoteQuote").value = get;
-      })
     );
 
     // ! Traitement de la selection (affichage de la tooltip avec toutes les options et récupération de toutes les infos de la sélection)
@@ -181,8 +166,18 @@ export function ShowChapter() {
       });
     });
   }
+  const deleteQuote = document.getElementById("deleteQuote");
+  if (deleteQuote) {
+    deleteQuote.addEventListener("click", () => {
+      document.getElementById("insightQuote").innerHTML = "";
+      document.getElementById("drawerNoteQuote").value = "";
+      deleteQuote.classList.add("hidden");
+      const quoteSection = document.getElementById("quoteSection");
+      quoteSection.classList.add("hidden");
+    });
+  }
   // ! Section qui permet de cacher la flèche "suivant" ou "précédent" si on est sur le dernier commentaire
-  const target = document.getElementById("footer");
+  const target = document.getElementById("comment-section");
 
   const hideArrow = (id, el) => {
     if (el) {
@@ -222,7 +217,11 @@ function updateDrawerContent(
 ) {
   let insightQuote = document.getElementById("insightQuote");
   insightQuote.innerHTML = "« " + selectedText + " »";
+  document.getElementById("drawerNoteQuote").value = selectedText.trim();
   insightQuote.classList.remove("hidden");
+  const deleteQuote = document.getElementById("deleteQuote");
+  deleteQuote.classList.remove("hidden");
+
   // Destructuring assignment to extract the elements from the DOM
   let {
     drawerSelectedText,
@@ -244,87 +243,7 @@ function updateDrawerContent(
   drawerSelectedTextContext.value = selectedTextContext;
   // !
 }
-function toggleSidebar(sidebar) {
-  sidebar.classList.toggle("hidden");
-  sidebar.classList.add("animate__animated", "animate__slideOutRight");
-  if (sidebar.classList.contains("animate__slideOutRight")) {
-    sidebar.classList.remove("animate__slideOutRight");
-    sidebar.classList.add("animate__slideInRight");
-  } else {
-    sidebar.classList.add("animate__slideOutRight");
-    sidebar.classList.remove("animate__slideInRight");
-  }
-  sidebar.classList.toggle("-translate-x-full");
-}
-export function toggleDrawer() {
-  const chapContentTurbo = document.getElementById("chapContentTurbo");
 
-  if (!chapContentTurbo) return;
-  // ! Sidebar
-  const toggleButton = document.querySelectorAll(".toggleSidebar");
-  var sidebar = document.getElementById("sidebar");
-  if (sidebar) {
-    toggleButton.forEach((element) => {
-      element.addEventListener("click", () => {
-        toggleSidebar(sidebar);
-      });
-    });
-    window.addEventListener("click", (event) => {
-      // On désactive le clic si le click est sur un élément possedant la classe ".toggleSidebar"
-      if (
-        event.target.classList.contains("toggleSidebar") ||
-        event.target.id == "sidebar" ||
-        event.target.closest("#sidebar")
-      ) {
-        return;
-      }
-      if (!sidebar.classList.contains("hidden")) {
-        if (document.getElementById("insightQuote")) {
-          // * Si l'utilisateur est connecté
-          document.getElementById("insightQuote").classList.add("hidden");
-          document.getElementById("insightQuote").innerHTML = "";
-          document.getElementById("drawerNoteQuote").value = "";
-        }
-        toggleSidebar(sidebar);
-      }
-    });
-  }
-}
-export function targetQuote() {
-  if (!document.getElementById("chapArticle")) return;
-  var quotes = document.querySelectorAll(".quoteComment");
-  quotes.forEach((elements) => {
-    elements.addEventListener("click", () => {
-      var element = elements.innerHTML;
-      // On supprime les signes "« »" et on récupère le texte
-      element = element.replace(/«|»/g, "").trim();
-      //
-      var chapArticle = document.getElementById("chapArticle");
-
-      // Récupération du texte "lorem ipsum" dans chapArticle
-      var targetText = chapArticle.textContent.trim().match(element);
-
-      // Vérification si le texte "lorem ipsum" se trouve dans chapArticle
-      if (targetText !== null) {
-        // Récupération de la position du texte dans chapArticle
-        var index = chapArticle.textContent.indexOf(targetText[0]);
-
-        // Récupération de la position du début de la première ligne de chapArticle
-        var lineStart = chapArticle.textContent.lastIndexOf("\n", index) + 1;
-
-        // Calcul de la position du texte dans chapArticle
-        var position =
-          chapArticle.offsetTop +
-          chapArticle.getBoundingClientRect().top +
-          index -
-          lineStart;
-        console.log(position);
-        // Déplacement vers la position du texte dans chapArticle
-        window.scrollTo(0, position);
-      }
-    });
-  });
-}
 export function DropdownMenu() {
   if (!document.querySelector(".dropdown-button")) return;
   const button = document.querySelectorAll(".dropdown-button");
@@ -401,6 +320,4 @@ function bmChapterData(bmChapterId) {
     }
   });
 }
-toggleDrawer();
 ShowChapter();
-targetQuote();

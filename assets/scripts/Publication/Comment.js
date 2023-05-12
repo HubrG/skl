@@ -169,7 +169,7 @@ export function Comment() {
       inner.innerHTML = `
          <textarea id='comShow-${result}' class='chapterCommentEdit'>${com.textContent.trim()}</textarea>
          <button id='validCom-${result}' class='chapterCommentEditValidButton'><i class="fa-light fa-circle-check"></i> &nbsp;Valider</button>
-         <button id='cancelCom-${result}' class="chapterCommentEditCancelButton toggleSidebar" data-tippy-content="Annuler la modification"><i class="fa-duotone fa-xmark  toggleSidebar"></i></button>
+         <button id='cancelCom-${result}' class="chapterCommentEditCancelButton" data-tippy-content="Annuler la modification"><i class="fa-duotone fa-xmark"></i></button>
        `;
 
       const buttonValid = document.getElementById(`validCom-${result}`);
@@ -201,23 +201,40 @@ export function Comment() {
       });
     });
   });
+  // !
+
+  const goToComment = document.querySelector(".goToComment");
+  if (goToComment) {
+    goToComment.addEventListener("click", () => {
+      const commentSection = document.querySelector("#bottomChap");
+      if (commentSection) {
+        commentSection.scrollIntoView({ behavior: "smooth" });
+      }
+    });
+  }
   // ! Fonction qui permet de mettre en exergue un nouveau commentaire
   const lastComment = document.getElementById("lastComment");
   if (lastComment) {
     lastComment.classList.add(
       "animate__animated",
       "animate__flipInX",
-      "bg-slate-50",
-      "dark:bg-slate-700",
-      "text-slate-600"
+      "lastComment",
+      "ease-in-out",
+      "duration-500",
+      "delay-500",
+      "transform"
     );
     setTimeout(() => {
-      lastComment.classList.remove(
-        "bg-slate-50",
-        "text-slate-600",
-        "dark:bg-slate-700"
-      );
+      lastComment.classList.remove("lastComment");
     }, 2000);
+    setTimeout(() => {
+      lastComment.classList.remove(
+        "ease-in-out",
+        "duration-500",
+        "delay-500",
+        "transform"
+      );
+    }, 4000);
   }
   // ! Fonction qui permet de modifeir la taille du textarea en fonction du contenu
   const textarea = document.getElementById("publication_comment_content");

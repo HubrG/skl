@@ -671,6 +671,42 @@ export function Annotation(stop = null) {
       clearTimeout(scrollTimeout); // Annulez le setTimeout en utilisant scrollTimeout
     });
   });
+  // ! Permet de commenter un marquage déjà existant.
+  const commentBAlready = document.querySelector(".commentAlreadyQuote");
+  if (commentBAlready) {
+    commentBAlready.addEventListener("click", function () {
+      if (concatenatedAnnotationText.trim() !== "") {
+        let get = concatenatedAnnotationText.trim();
+        // On supprime les tags
+        // On supprime les espaces
+        document.getElementById("insightQuote").classList.remove("hidden");
+        document.getElementById("insightQuote").innerHTML = "« " + get + " »";
+        document.getElementById("drawerNoteQuote").value = get;
+        const commentSection = document.querySelector("#bottomChap");
+        if (commentSection) {
+          const deleteQuote = document.getElementById("deleteQuote");
+          deleteQuote.classList.remove("hidden");
+          const quoteSection = document.getElementById("quoteSection");
+          quoteSection.classList.remove("hidden");
+          commentSection.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    });
+    // ! Permet de commenter un marquage déjà existant.
+    const commentQuote = document.querySelector(".commentQuote");
+    if (commentQuote) {
+      commentQuote.addEventListener("click", () => {
+        const commentSection = document.querySelector("#bottomChap");
+        if (commentSection) {
+          const deleteQuote = document.getElementById("deleteQuote");
+          deleteQuote.classList.remove("hidden");
+          const quoteSection = document.getElementById("quoteSection");
+          quoteSection.classList.remove("hidden");
+          commentSection.scrollIntoView({ behavior: "smooth" });
+        }
+      });
+    }
+  }
 
   // ! Partager sur les réseaux sociaux
   const twitterB = document.querySelectorAll(".shareTwitter");

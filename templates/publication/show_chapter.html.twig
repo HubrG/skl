@@ -38,7 +38,7 @@
 {% endblock %}
 
 {% block body %}
-	<section id="titleChapter" data-title="{{infoChap.title}}" class=" {{ infoChap.Publication.status < 2 ? " -mt-20 top-16" : " top-14" }}  bg-white dark:bg-slate-800 dark:bg-transparent dark:bg-opacity-50 bg-transparent bg-opacity-50 backdrop-blur-sm">
+	<section id="titleChapter" data-title="{{infoChap.title}}" class=" {{ infoChap.Publication.status < 2 ? " -mt-20 top-16" : " top-14" }} sticky bg-white dark:bg-slate-800 dark:bg-transparent dark:bg-opacity-50 bg-transparent bg-opacity-50 backdrop-blur-sm z-50">
 		{% if infoChap.Publication.status < 2 %}
 			<div class="mb-0">
 				<div class="w-6/6 mx-auto -mt-2 h-10  bg-slate-100 dark:bg-slate-700 dark:text-slate-200  ring-1 ring-slate-700 opacity-80 right-0 rounded-b-sm">
@@ -78,27 +78,43 @@
 				&nbsp;&nbsp;<i class="fa-solid fa-caret-down active:text-xl"></i>
 			</button>
 		</div>
-		{% if app.user and infoChap.Publication.status == 2 and (app.user.id == infoPub.user.id or is_granted('ROLE_ADMIN')) %}
-			<div class="flex justify-center -mt-5 text-xs absolute right-0 top-12">
-				{% if is_granted('ROLE_ADMIN') and app.user.id != infoPub.user.id %}
-					<a data-tippy-content="Éditer le chapitre" href="{{ path("app_publication_edit_chapter", { idPub:infoPub.id, idChap:infoChap.id }) }}" class="p-2 rounded  bg-opacity-50 hover:bg-opacity-100 bg-yellow-300 dark:bg-yellow-900 dark:text-yellow-300 dark:bg-opacity-50 dark:hover:bg-opacity-100 justify-center flex flex-row px-4 gap-x-2 items-center">
-						<span class="hidden md:inline">
-							Admin
-						</span>
-						<i class="fa-duotone fa-screwdriver-wrench"></i>
-						<span class="hidden md:inline">
-							Éditer la feuille
-						</span>
-
-					</a>
-				{% else %}
-					<a data-tippy-content="Éditer le chapitre" href="{{ path("app_publication_edit_chapter", { idPub:infoPub.id, idChap:infoChap.id }) }}" class="p-2 rounded  bg-opacity-50 hover:bg-opacity-100 bg-slate-300 dark:bg-slate-900 dark:text-slate-300 dark:bg-opacity-50 dark:hover:bg-opacity-100 justify-center flex flex-row px-4 gap-x-2 items-center">
-						<i class="fa-duotone fa-pen-to-square"></i>
-						<span class="hidden md:inline">Éditer la feuille</span>
-					</a>
+		<div class="flex justify-right md:-mt-5 text-xs md:absolute right-0 top-12 -mt-3">
+			<div class="flex flex-row gap-x-2">
+				{% set shareUrl = "https://scrilab.com" ~ canonicalUrl %}
+				{% set shareCat = infoPub.category ? "\n #" ~ infoPub.category.name : "" %}
+				{% set shareText = "« " ~ infoChap.title ~ " » | Par " ~ infoPub.user.nickname ~ shareCat ~ "\n" %}
+				<a href="https://twitter.com/intent/tweet?url={{shareUrl|url_encode}}&via=ScrilabEditions&text={{shareText|url_encode}}" target="_blank">
+					<div class="md:h-10 md:w-10 w-6 h-6 bg-[#1DA1F2] hover:bg-opacity-40 bg-opacity-20 rounded flex items-center justify-center" data-tippy-content="Partager sur Twitter">
+						<i class="fa-brands fa-twitter md:text-2xl text-sm text-[#1DA1F2]"></i>
+					</div>
+				</a>
+				<a href="https://www.facebook.com/sharer/sharer.php?u={{shareUrl|url_encode}}" target="_blank">
+					<div class="md:h-10 md:w-10 w-6 h-6  bg-[#4267B2] hover:bg-opacity-40 bg-opacity-20 rounded flex items-center justify-center" data-tippy-content="Partager sur Facebook">
+						<i class="fa-brands fa-facebook md:text-2xl text-sm text-[#4267B2]"></i>
+					</div>
+				</a>
+				{% if app.user and infoChap.Publication.status == 2 and (app.user.id == infoPub.user.id or is_granted('ROLE_ADMIN')) %}
+					{% if is_granted('ROLE_ADMIN') and app.user.id != infoPub.user.id %}
+						<a data-tippy-content="Éditer le chapitre" href="{{ path("app_publication_edit_chapter", { idPub:infoPub.id, idChap:infoChap.id }) }}" class="p-2 md:rounded rounded  bg-opacity-50 hover:bg-opacity-100 bg-yellow-300 dark:bg-yellow-900 dark:text-yellow-300 dark:bg-opacity-50 dark:hover:bg-opacity-100 justify-center flex flex-row px-4 gap-x-2 items-center">
+							<span class="hidden md:inline">
+								Admin
+							</span>
+							<i class="fa-duotone fa-screwdriver-wrench"></i>
+							<span class="hidden md:inline">
+								Éditer la feuille
+							</span>
+						</a>
+					{% else %}
+						<a data-tippy-content="Éditer le chapitre" href="{{ path("app_publication_edit_chapter", { idPub:infoPub.id, idChap:infoChap.id }) }}" class="h-6 md:h-auto md:rounded rounded  bg-opacity-50 hover:bg-opacity-100 bg-slate-300 dark:bg-slate-900 dark:text-slate-300 dark:bg-opacity-50 dark:hover:bg-opacity-100 justify-center flex flex-row px-4 gap-x-2 items-center">
+							<i class="fa-duotone fa-pen-to-square text-sm md:text-xl"></i>
+							<span class="hidden md:inline">Éditer la feuille</span>
+						</a>
+					{% endif %}
 				{% endif %}
+
+
 			</div>
-		{% endif %}
+		</div>
 		<div id="dropdownChapter" class="z-[99999] hidden overflow-y-auto max-h-48 bg-white divide-y divide-gray-100 shadow w-5/6 sm:w-2/6 dark:bg-gray-700 dark:divide-gray-600">
 			{% for item in infoPub.publicationChapters|sort((a, b) => a.orderDisplay < b.orderDisplay ? -1 : 1) %}
 				{% if item.status > 1 %}
@@ -166,9 +182,9 @@
 						&nbsp;{{ infoChap.publicationChapterViews|length }}
 					</div>
 					<span class="dark:text-slate-500">|</span>
-					<div data-tippy-content="Afficher les commentaires" class="hover:text-blue-600 cursor-pointer">
-						<i class="fa-duotone fa-comments toggleSidebar"></i>&nbsp;
-						<span id="nbrComSmall" class="toggleSidebar nbr-com nbr-com-let" data-nbr-com="{{infoChap.publicationComments|length}}">{{ infoChap.publicationComments|length }}</span>
+					<div data-tippy-content="Afficher les commentaires" class="hover:text-blue-600 cursor-pointer goToComment">
+						<i class="fa-duotone fa-comments"></i>
+						<span id="nbrComSmall" class="nbr-com nbr-com-let" data-nbr-com="{{infoChap.publicationComments|length}}">{{ infoChap.publicationComments|length }}</span>
 					</div>
 					<span class="dark:text-slate-500">|</span>
 
@@ -231,7 +247,7 @@
 				</a>
 				<li class="text-slate-500">|</li>
 				<li class="commentQuote">
-					<i data-tippy-content="Citer ce passage pour écrire un commentaire" class="fa-solid fa-comment-quote  toggleSidebar" style="--fa-secondary-color: #b6c5dd;"></i>
+					<i data-tippy-content="Citer ce passage pour écrire un commentaire" class="fa-solid fa-comment-quote" style="--fa-secondary-color: #b6c5dd;"></i>
 				</li>
 				<li class="text-slate-500">|</li>
 				<li>
@@ -254,7 +270,7 @@
 				</li>
 				<li class="text-slate-400">|</li>
 				<li class="commentAlreadyQuote">
-					<i data-tippy-content="Citer ce passage pour écrire un commentaire" class="fa-solid fa-comment-quote cursor-pointer toggleSidebar" style="--fa-secondary-color: #b6c5dd;"></i>
+					<i data-tippy-content="Citer ce passage pour écrire un commentaire" class="fa-solid fa-comment-quote cursor-pointer" style="--fa-secondary-color: #b6c5dd;"></i>
 				</li>
 				<li class="text-slate-400">|</li>
 				<li>
@@ -268,6 +284,85 @@
 				</li>
 			</ul>
 		</div>
-		{% include "publication/_partials/_show_drawer.html.twig" with {'type': "bottom"}  %}<input type="hidden" id="chapId" value="{{ infoChap.id }}">
+		<section class="bg-slate-50 -z-10  dark:bg-slate-900 border-[1px] rounded border-slate-200 dark:border-slate-900 mt-20  backdrop-sepia-0 mx-auto w-full md:w-9/12  shadow    bg-opacity-90 p-5  pt-5  " style="z-index:9999999999999" id="comment-section">
+			<turbo-frame id="comment-frame">
+				{% if app.user.id is defined %}
+					<div>
+						<div class="flex flex-row gap-x-2 items-center hidden" id="quoteSection">
+							<blockquote class="mt-4 border-l-4 w-full border-blue-200 pl-4 italic text-slate-500 " id="insightQuote">
+								<p class="font-serif  quoteComment cursor-alias  text-[0.85rem]" id="quotequote"></p>
+							</blockquote>
+							<div class="font-semibold not-italic cursor-pointer text-lg ml-2 dark:text-slate-500 hidden" data-tippy-content="Supprimer la citation" id="deleteQuote">
+								<i class="fa-regular fa-trash"></i>
+							</div>
+						</div>
+						{{ form_start(formQuote)}}
+						<label for="publication_chapter_comment_content" class="sr-only">Votre commentaire</label>
+						<div class="flex items-center py-2 w-full rounded-lg bg-gray-50 dark:bg-inherit">
+							{{ form_widget(formQuote.content, {attr:{"class":"block p-2.5 w-full text-sm text-gray-900 resize-none bg-white dark:bg-slate-800 pr-12 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"}}) }}
+							<button id="sendComment" type="submit" class="inline-flex justify-center p-2 text-slate-600 rounded-full cursor-pointer hover:bg-blue-100 dark:bg-slate-600 hover:text-blue-500 dark:text-blue-500 dark:hover:bg-gray-600 -ml-10 mt-4">
+								<svg aria-hidden="true" class="w-6 h-6 rotate-45" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+									<path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
+								</svg>
+								<span class="sr-only">Envoyer</span>
+							</button>
+						</div>
+						<input type="hidden" name="quote" id="drawerNoteQuote">
+						{{ form_end(formQuote) }}
+					</div>
+					<hr class="mb-5 border-4">
+				{% endif %}
+
+				{% if pCom|length == 0 %}
+					<div class="text-slate-500">
+						<p class="mb-3 text-center text-6xl font-semibold">
+							<i class="fa-duotone fa-comment-slash"></i>
+						</p>
+						<p class="mb-5 text-center italic">
+							Aucun commentaire pour le moment
+						</p>
+						{% if not app.user %}
+							<hr class="mb-5">
+							<p class="font-medium text-center flex flex-row  items-center gap-x-3 justify-center dark:text-slate-300 text-slate-800">
+								<i class="fa-duotone fa-user-circle"></i>
+								<button data-micromodal-trigger="popup-login" class="hover:underline text-center font-semibold">Connectez-vous pour commenter !</button>
+							</p>
+						{% endif %}
+					</div>
+				{% endif %}
+				{% if not app.user and pCom|length > 0  %}
+					<p class="font-medium text-center flex flex-row  items-center gap-x-3 justify-center dark:text-slate-300 text-slate-800">
+						<i class="fa-duotone fa-user-circle"></i>
+						<button data-micromodal-trigger="popup-login" class="hover:underline text-center font-semibold">Connectez-vous pour commenter !</button>
+					</p>
+					<hr class="mb-5">
+				{% endif %}
+				{% set n = 0 %}
+				{% for item in pCom %}
+					{% include "publication/_partials/_comment.html.twig" with { item:item, n:n, pcom:nbrCom} %}
+					{% set n = n + 1  %}
+				{% endfor %}
+				{% if nbrShowCom < nbrCom %}
+					{% if infoPub.slug %}
+						{% set chapterSlug = infoPub.slug %}
+					{% else %}
+						{% set chapterSlug = "feuille-n0" ~ (chapter.orderDisplay + 1) %}
+					{% endif %}
+					<p class="justify-center font-semibold mt-5 text-base  flex flex-row gap-x-2 items-center dark:text-slate-300 text-slate-600">
+						<span>
+							<i class="fa-duotone fa-chevron-down"></i>
+						</span>
+						<a href="{{path("app_chapter_show", {user:infoPub.user.id, slug:chapterSlug, slugPub:infoPub.slug, idChap:infoChap.id, nbrShowCom:nbrShowCom + 10})}}" class="hover:underline">Afficher plus de commentaires</a>
+					</p>
+				{% endif %}
+			</turbo-frame>
+		</aside>
+		<div class="hidden">
+			<input type="hidden" value="" id="drawerSelectedText"/>
+			<input type="hidden" value="" id="drawerSelectedTextP"/>
+			<input type="hidden" value="" id="drawerSelectedTextEl"/>
+			<input type="hidden" value="" id="drawerSelectedTextContext"/>
+			<input type="hidden" value="4" id="drawerColor"/></div>
+		{# {% include "publication/_partials/_show_drawer.html.twig" with {'type': "bottom"}  %}<input type="hidden" id="chapId" value="{{ infoChap.id }}"> #}
 	{% endif %}
 {% endblock %}

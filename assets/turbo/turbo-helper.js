@@ -37,12 +37,7 @@ import { Navbar } from "../scripts/Navbar";
 import { Annotation } from "../scripts/Publication/Annotations";
 import { searchPredictionKw } from "../scripts/Publication/SearchPredictionKw";
 import { ForumTopicRead } from "../scripts/Forum/ForumTopicRead";
-import {
-  ShowChapter,
-  toggleDrawer,
-  targetQuote,
-  DropdownMenu,
-} from "../scripts/Publication/ChapterShow";
+import { ShowChapter, DropdownMenu } from "../scripts/Publication/ChapterShow";
 
 const TurboHelper = class {
   constructor() {
@@ -70,8 +65,6 @@ const TurboHelper = class {
       }
       User();
       ShowChapter();
-      toggleDrawer();
-      targetQuote();
       darkMode();
       Tabs();
       addKeyword();

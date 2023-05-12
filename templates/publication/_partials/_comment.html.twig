@@ -43,7 +43,7 @@
 		</p>
 	{% endif %}
 	<div id="comment-{{item.id}}">
-		<div class="one-comment border border-slate-200 dark:border-slate-700 rounded {{ lastComment ? 'mb-3 animate__animated animate__fadeIn transition-colors duration-[1000ms] p-6 shadow-sm relative' : 'bg-white dark:bg-transparent dark:shadow-xl p-6 mb-3 shadow-sm relative' }}" {% if lastComment %} id="lastComment" {% endif %}>
+		<div class="one-comment" {% if lastComment %} id="lastComment" {% endif %}>
 			<div class="flex items-start">
 				{% set profilPic = item.user.profilPicture ? item.user.profilPicture : 'https://picsum.photos/200/300' %}
 				<img class="w-12 h-12 rounded-full mr-4" src="{{ profilPic }}" alt="avatar">
@@ -89,16 +89,16 @@
 					</div>
 				{% endif %}
 			</div>
+			{% if item.quote %}
+				<blockquote class="mt-6 border-l-4  border-blue-200 pl-4 italic text-slate-500">
+					<p class="font-serif quoteComment cursor-alias text-[0.85rem]">{{ item.quote }}</p>
+				</blockquote>
+			{% endif %}
 			<div id="updateCom-{{ item.id }}" class="text-base">
 				<p id="comShow-{{ item.id }}" class="chapterComment dark:text-slate-200">
 					{{ item.content|nl2br }}
 				</p>
 			</div>
-			{% if item.quote %}
-				<blockquote class="mt-4 border-l-4 border-emerald-200 pl-4 italic text-slate-500">
-					<p class="font-serif quoteComment cursor-alias text-[0.85rem]">{{ item.quote }}</p>
-				</blockquote>
-			{% endif %}
 			<div class="mt-4 flex items-center justify-between text-md dark:border-t-slate-700">
 				<div class="w-5/6">
 					<span class="w-4/6 flex-row flex items-center gap-x-2 text-sm">
@@ -177,7 +177,7 @@
 								</span>
 							</span>
 							<div id="updateCom-{{ reply.id }}" class=" w-8/12 h-full rounded flex items-center border-l dark:border-l-slate-700 pl-3">
-								<p id="comShow-{{ reply.id }}" class="chapterComment">
+								<p id="comShow-{{ reply.id }}" class="chapterComment reply">
 									{{ reply.content|nl2br }}
 								</p>
 							</div>

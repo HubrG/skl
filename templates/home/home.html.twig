@@ -270,7 +270,7 @@
 										</p>
 									</div>
 									<div class="flex flex-col gap-x-2 items-baseline  w-full">
-										<p class="text-sm text-slate-500 dark:text-slate-400 line-clamp-3  mt-2 w-full">
+										<p class="text-sm px-4 text-slate-500 dark:text-slate-400 line-clamp-3  mt-2 w-full">
 											{{item.content}}...
 										</p>
 									</div>
@@ -315,8 +315,10 @@
 											</span>
 										</div>
 									</div>
+									<hr class="mb-0 mt-0 dark:border-slate-600">
+
 									<div class="flex flex-col gap-x-2 gap-y-2 items-baseline text-slate-900 dark:text-slate-300  w-full my-3">
-										<p class="text-base  line-clamp-3 w-full italic">
+										<p class="text-base  line-clamp-3  px-4 w-full italic">
 											<sup class="mr-2 text-blue-500">
 												<i class="fa-regular fa-comment-quote fa-flip-horizontal"></i>
 											</sup>
@@ -328,8 +330,8 @@
 											</blockquote>
 										{% endif %}
 									</div>
-									<hr class="mb-0 mt-0 dark:border-slate-800">
-									<div class=" text-sm flex flex-row items-center gap-x-2 md:text-base dark:text-slate-500 text-slate-500">
+									<hr class="mb-0 mt-0 dark:border-slate-600">
+									<div class=" text-sm flex flex-row items-center gap-x-2 md:text-base dark:text-slate-400 text-slate-500">
 										{% if item.publication.cover %}
 											<div class="w-6">
 												<img src="{{item.publication.cover}}" class="w-6 h-9  rounded" alt="">

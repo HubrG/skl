@@ -242,7 +242,7 @@
 										</a>
 									</p>
 									<div class="flex  text-[0.75rem] flex-col lg:flex-row items-center  text-slate-500  border-[1px] border-l-0 border-r-0 dark:border-slate-600 border-slate-200 justify-between gap-x-1 gap-y-1 mt-2 px-2 py-2 w-full ">
-										<div class="flex flex-row gap-x-5 justify-between  lg:order-1 order-2">
+										<div class="flex flex-row gap-x-5 justify-between  lg:order-2 order-2">
 											<div class="flex flex-row items-center gap-x-1">
 												{% if item.user.profilPicture %}
 													<div class="max-w-[1rem]">
@@ -262,7 +262,7 @@
 												{{item.createdAt|since}}
 											</span>
 										</div>
-										<p class="text-xs font-semibold lg:order-2 order-1 catColorText-{{item.category.color}} flex flex-row gap-x-2 items-center">
+										<p class="text-xs font-semibold lg:order-1 order-1 catColorText-{{item.category.color}} flex flex-row gap-x-2 items-center">
 											<i class="fa-duotone {{item.category.icon}}"></i>
 											<a href="{{path('app_forum_topic', {slug:item.category.slug})}}" class=" hover:underline">
 												{{item.category.name}}
@@ -324,7 +324,7 @@
 										</p>
 										{% if item.quote %}
 											<blockquote class="mt-1 border-l-4 w-full border-blue-200 pl-4 italic  " id="insightQuote">
-												<p class="font-serif  quoteComment cursor-alias  text-[0.85rem]">{{item.quote}}</p>
+												<p class="font-serif  quoteComment   text-[0.85rem]">{{item.quote}}</p>
 											</blockquote>
 										{% endif %}
 									</div>

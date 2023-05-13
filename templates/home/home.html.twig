@@ -294,22 +294,9 @@
 					<div class="flex flex-col gap-y-6 -mt-14 md:-mt-0">
 						{% for item in comments_last %}
 							<div class="flex flex-row  items-start gap-x-3 rounded  p-3 bg-slate-50 dark:bg-slate-700">
-								<div class="flex flex-col w-full">
-									<div class="font-semibold flex flex-col text-sm md:text-base dark:text-slate-300">
-										{% if item.chapter.title %}
-											<span>
-												<a href="{{ path("app_chapter_show", {slugPub:item.publication.slug, user:item.publication.user.username, idChap:item.chapter.id, slug:item.chapter.slug}) }}#comment-{{item.id}}" class="text-xs">{{item.chapter.title}}</a>
-											</span>
-											<span class=" font-normal items-center flex flex-row gap-x-2">
-												<i class="fa-sharp fa-regular fa-arrow-turn-down-right"></i>
-												<a href="{{ path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug}) }}" class="text-xs">{{item.publication.title}}</a>
-											</span>
-										{% else %}
-											<a href="{{ path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug}) }}">{{item.publication.title}}</a>
-										{% endif %}
-									</div>
-									<div class="flex  text-sm flex-row items-center  text-slate-500 dark:border-slate-600 border-slate-200 justify-between gap-x-1  mt-2 px-2 py-2 w-full ">
-										<div class="flex flex-row gap-x-5 justify-between lg:order-1 order-2">
+								<div class="flex flex-col w-full gap-y-2">
+									<div class="flex  text-sm flex-row items-center  text-slate-500 dark:border-slate-600 border-slate-200 justify-between gap-x-1 px-2 w-full ">
+										<div class="text-xs flex flex-row gap-x-5 justify-between lg:order-1 order-2">
 											<div class="flex flex-row items-center gap-x-1">
 												{% if item.user.profilPicture %}
 													<div class="max-w-[1rem]">
@@ -322,19 +309,44 @@
 											</div>
 											<span>
 												<i class="fa-regular fa-clock"></i>
+												il y a
 												{{item.publishedAt|since}}
 											</span>
 										</div>
 									</div>
-									<div class="flex flex-col gap-x-2 items-baseline  w-full">
-										<p class="text-sm text-slate-500 dark:text-slate-400 line-clamp-3  mt-2 w-full">
+									<div class="flex flex-col gap-x-2 items-baseline text-slate-900 dark:text-slate-400  w-full my-3">
+										<p class="text-base font-semibold  line-clamp-3 w-full">
+											<sup class="mr-2">
+												<i class="fa-regular fa-comment-quote fa-flip-horizontal"></i>
+											</sup>
 											{{item.content}}...
 										</p>
 										{% if item.quote %}
-											<blockquote class="mt-4 border-l-4 w-full border-blue-200 pl-4 italic text-slate-500 " id="insightQuote">
+											<blockquote class="mt-1 border-l-4 w-full border-blue-200 pl-4 italic  " id="insightQuote">
 												<p class="font-serif  quoteComment cursor-alias  text-[0.85rem]">{{item.quote}}</p>
 											</blockquote>
 										{% endif %}
+									</div>
+									<hr class="mb-0 mt-0 dark:border-slate-800">
+									<div class=" text-sm flex flex-row items-center gap-x-2 md:text-base dark:text-slate-500 text-slate-500">
+										{% if item.publication.cover %}
+											<div class="w-6">
+												<img src="{{item.publication.cover}}" class="w-6 h-9  rounded" alt="">
+											</div>
+										{% endif %}
+										<div class="flex flex-col ">
+											{% if item.chapter.title %}
+												<span class="text-sm">
+													<a href="{{ path("app_chapter_show", {slugPub:item.publication.slug, user:item.publication.user.username, idChap:item.chapter.id, slug:item.chapter.slug}) }}#comment-{{item.id}}" class="hover:underline">{{item.chapter.title}}</a>
+												</span>
+												<span class=" font-normal items-center flex flex-row gap-x-2 text-xs">
+													<i class="fa-regular fa-book"></i>
+													<a href="{{ path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug}) }}" class="hover:underline">{{item.publication.title}}</a>
+												</span>
+											{% else %}
+												<a href="{{ path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug}) }}">{{item.publication.title}}</a>
+											{% endif %}
+										</div>
 									</div>
 								</div>
 							</div>

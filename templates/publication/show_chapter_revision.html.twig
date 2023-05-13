@@ -140,6 +140,27 @@
 						{% endif %}
 					{% endfor %}
 				</select>
+				<div class="flex flex-col gap-y-5">
+					<div class="sticky  z-30  top-0  p-2 text-center border-b-[1px] border-b-blue-300 dark:border-blue-600 bg-blue-100 dark:border-[1px]   dark:bg-blue-800  text-blue-900 dark:text-blue-400 w-full rounded text-sm font-semibold flex flex-row gap-x-2 items-center justify-center">
+						<i class="fa-duotone fa-thought-bubble"></i>
+						<span>
+							Général
+							<i class="fa-solid fa-circle-question text-xs ml-2" data-tippy-content="Remarques générales"></i>
+						</span>
+					</div>
+					{% if generalAnnotations|length == 0 %}
+						<div class="text-center">
+							<span class="text-sm  dark:text-slate-500 text-slate-500">Aucune remarque</span>
+						</div>
+					{% else %}
+						<div>
+							{% for item in generalAnnotations %}
+								{% include "publication/_partials/_comment_review.html.twig" %}
+							{% endfor %}
+						</div>
+					{% endif %}
+				</div>
+
 				<div class="flex flex-col gap-y-2">
 					<div class="sticky  z-30  top-0 p-2 text-center border-b-[1px] border-b-emerald-300 dark:border-emerald-600 dark:border-[1px] bg-emerald-100  dark:bg-emerald-800  text-emerald-900 dark:text-emerald-400 w-full rounded text-sm font-semibold flex flex-row gap-x-2 items-center justify-center">
 						<i class="fa-duotone fa-spell-check"></i>
@@ -175,26 +196,6 @@
 					{% else %}
 						<div>
 							{% for item in styleAnnotations %}
-								{% include "publication/_partials/_comment_review.html.twig" %}
-							{% endfor %}
-						</div>
-					{% endif %}
-				</div>
-				<div class="flex flex-col gap-y-5">
-					<div class="sticky  z-30  top-0  p-2 text-center border-b-[1px] border-b-blue-300 dark:border-blue-600 bg-blue-100 dark:border-[1px]   dark:bg-blue-800  text-blue-900 dark:text-blue-400 w-full rounded text-sm font-semibold flex flex-row gap-x-2 items-center justify-center">
-						<i class="fa-duotone fa-thought-bubble"></i>
-						<span>
-							Général
-							<i class="fa-solid fa-circle-question text-xs ml-2" data-tippy-content="Remarques générales"></i>
-						</span>
-					</div>
-					{% if generalAnnotations|length == 0 %}
-						<div class="text-center">
-							<span class="text-sm  dark:text-slate-500 text-slate-500">Aucune remarque</span>
-						</div>
-					{% else %}
-						<div>
-							{% for item in generalAnnotations %}
 								{% include "publication/_partials/_comment_review.html.twig" %}
 							{% endfor %}
 						</div>

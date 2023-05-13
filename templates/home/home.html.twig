@@ -335,7 +335,7 @@
 											</div>
 										{% endif %}
 										<div class="flex flex-col ">
-											{% if item.chapter.title %}
+											{% if item.chapter %}
 												<span class="text-sm">
 													<a href="{{ path("app_chapter_show", {slugPub:item.publication.slug, user:item.publication.user.username, idChap:item.chapter.id, slug:item.chapter.slug}) }}#comment-{{item.id}}" class="hover:underline">{{item.chapter.title}}</a>
 												</span>
@@ -344,7 +344,10 @@
 													<a href="{{ path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug}) }}" class="hover:underline">{{item.publication.title}}</a>
 												</span>
 											{% else %}
-												<a href="{{ path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug}) }}">{{item.publication.title}}</a>
+												<span class=" font-normal items-center flex flex-row gap-x-2 text-xs">
+													<i class="fa-regular fa-book"></i>
+													<a href="{{ path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug}) }}">{{item.publication.title}}</a>
+												</span>
 											{% endif %}
 										</div>
 									</div>

@@ -76,17 +76,17 @@
 			</div>
 			<p class=" text-justify text-slate-600 dark:text-slate-400 text-base">{{topic.content|smiley_to_emoji|nl2br}}</p>
 			<hr class="mb-0 mt-0 border-2">
+			{% if app.user  %}
+				{{ form_start(form, {attr: {'novalidate': 'novalidate', 'data-turbo-frame':'messages-frame'}}) }}
+				{% include "./partials/_form-row.html.twig" with {'form': form.content, 'icon':null, classWidget:"h-32 roundedBnone"} %}
+				<button type="submit" class="-mt-[1.5rem] button-classic button-blue w-full roundedTnone" onclick="setTimeout(function() { document.getElementById('forum_message_content').value = ''})">
+					Envoyer la réponse
+					<i class="fa-duotone fa-reply fa-flip-horizontal"></i>
+				</button>
+				{{ form_end(form) }}
+				<hr>
+			{% endif %}
 			<turbo-frame id="messages-frame" class="-mt-5">
-				{% if app.user  %}
-					{{ form_start(form, {attr: {'novalidate': 'novalidate', 'data-turbo-frame=':'_top'}}) }}
-					{% include "./partials/_form-row.html.twig" with {'form': form.content, 'icon':null, classWidget:"h-32 roundedBnone"} %}
-					<button type="submit" class="-mt-[1.5rem] button-classic button-blue w-full roundedTnone" onclick="setTimeout(function() { document.getElementById('forum_message_content').innerHTML = ''},300)">
-						Envoyer la réponse
-						<i class="fa-duotone fa-reply fa-flip-horizontal"></i>
-					</button>
-					{{ form_end(form) }}
-					<hr>
-				{% endif %}
 				<div class="flex flex-col gap-y-5">
 					{% for item in topic.forumMessages|sort((a, b) => b.createdAt <=> a.createdAt) %}
 						<div class=" bg-slate-50 dark:bg-slate-900 p-5 rounded" id="comment-{{item.id}}">
@@ -118,7 +118,7 @@
 											</button>
 											<div id="ddm-{{ item.id }}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-56 dark:bg-gray-700 dropdown-content">
 												<ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
-													{% if app.user is defined and item.user.id == app.user.id %}
+													{% if app.user and item.user.id == app.user.id %}
 														<li>
 															<button type="button" data-update-path="{{path("app_forum_message_update")}}" id="updateButton-{{ item.id }}" class="updateButton w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
 																<i class="fa-regular fa-pen-to-square"></i>

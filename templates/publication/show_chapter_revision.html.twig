@@ -143,7 +143,10 @@
 				<div class="flex flex-col gap-y-2">
 					<div class="sticky  z-30  top-0 p-2 text-center border-b-[1px] border-b-emerald-300 dark:border-emerald-600 dark:border-[1px] bg-emerald-100  dark:bg-emerald-800  text-emerald-900 dark:text-emerald-400 w-full rounded text-sm font-semibold flex flex-row gap-x-2 items-center justify-center">
 						<i class="fa-duotone fa-spell-check"></i>
-						<span>Langue</span>
+						<span>
+							Langue
+							<i class="fa-solid fa-circle-question text-xs ml-2" data-tippy-content="Orthographe, grammaire..."></i>
+						</span>
 					</div>
 					{% if langAnnotations|length == 0 %}
 						<div class="text-center">
@@ -160,7 +163,10 @@
 				<div class="flex flex-col gap-y-5">
 					<div class="sticky z-30 top-0  p-2  border-b-[1px] border-b-yellow-300 dark:border-yellow-400 bg-yellow-100 dark:border-[1px]  dark:bg-yellow-800  text-yellow-900 dark:text-yellow-400 w-full rounded text-sm font-semibold flex flex-row gap-x-2 items-center justify-center">
 						<i class="fa-duotone fa-palette"></i>
-						<span>Style</span>
+						<span>
+							Style
+							<i class="fa-solid fa-circle-question text-xs ml-2" data-tippy-content="Répétitions, tournures, vocabulaire, lisibilité etc."></i>
+						</span>
 					</div>
 					{% if styleAnnotations|length == 0 %}
 						<div class="text-center">
@@ -177,7 +183,10 @@
 				<div class="flex flex-col gap-y-5">
 					<div class="sticky  z-30  top-0  p-2 text-center border-b-[1px] border-b-blue-300 dark:border-blue-600 bg-blue-100 dark:border-[1px]   dark:bg-blue-800  text-blue-900 dark:text-blue-400 w-full rounded text-sm font-semibold flex flex-row gap-x-2 items-center justify-center">
 						<i class="fa-duotone fa-thought-bubble"></i>
-						<span>Général</span>
+						<span>
+							Général
+							<i class="fa-solid fa-circle-question text-xs ml-2" data-tippy-content="Remarques générales"></i>
+						</span>
 					</div>
 					{% if generalAnnotations|length == 0 %}
 						<div class="text-center">
@@ -226,7 +235,7 @@
 					</li>
 					<li class="text-slate-400">|</li>
 					<li>
-						<button class="mark-for-all flex flex-row gap-x-2 p-2  py-3 rounded text-blue-200" data-color="4">
+						<button class="mark-for-all flex flex-row gap-x-2 p-2  py-3 rounded text-blue-200" data-color="4" id="revision-default">
 							<i data-tippy-content="Marquer ce passage en vert" class="fa-solid fa-thought-bubble"></i>
 							<span class="text-xs self-end">Général</span>
 						</button>

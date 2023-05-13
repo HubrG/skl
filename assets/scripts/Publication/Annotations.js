@@ -113,6 +113,7 @@ export function Annotation(stop = null) {
           tooltip.style.left = rect.left + window.scrollX - 130 + "px";
           tooltip.style.top = rect.top + window.scrollY - 30 + "px";
         } else {
+          document.getElementById("revision-default").click();
           tooltip.style.left = rect.left + window.scrollX - 130 + "px";
           tooltip.style.top = rect.top + window.scrollY + 60 + "px";
         }

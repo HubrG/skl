@@ -305,7 +305,7 @@
 														</a>
 													</div>
 												{% endif %}
-												<a href="{{path('app_user', {username:item.user.username})}}" class="hover:underline text-slate-900 dark:text-slate-200">{{item.user.nickname}}</a>
+												<a href="{{path('app_user', {username:item.user.username})}}" class="hover:underline text-slate-900  dark:text-slate-200">{{item.user.nickname}}</a>
 											</div>
 											<span class="text-xs">
 												<i class="fa-regular fa-clock"></i>
@@ -314,9 +314,9 @@
 											</span>
 										</div>
 									</div>
-									<div class="flex flex-col gap-x-2 items-baseline text-slate-900 dark:text-slate-300  w-full my-3">
-										<p class="text-base  line-clamp-3 w-full">
-											<sup class="mr-2">
+									<div class="flex flex-col gap-x-2 gap-y-2 items-baseline text-slate-900 dark:text-slate-300  w-full my-3">
+										<p class="text-base  line-clamp-3 w-full italic">
+											<sup class="mr-2 text-blue-500">
 												<i class="fa-regular fa-comment-quote fa-flip-horizontal"></i>
 											</sup>
 											{{item.content}}...

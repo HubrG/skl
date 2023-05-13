@@ -295,8 +295,18 @@
 						{% for item in comments_last %}
 							<div class="flex flex-row  items-start gap-x-3 rounded  p-3 bg-slate-50 dark:bg-slate-700">
 								<div class="flex flex-col w-full">
-									<div class="font-semibold  text-sm md:text-base dark:text-slate-300">
-										<a href="{{ path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug}) }}">{{item.publication.title}}</a>
+									<div class="font-semibold flex flex-col text-sm md:text-base dark:text-slate-300">
+										{% if item.chapter.title %}
+											<span>
+												<a href="{{ path("app_chapter_show", {slugPub:item.publication.slug, user:item.publication.user.username, idChap:item.chapter.id, slug:item.chapter.slug}) }}#comment-{{item.id}}" class="text-xs">{{item.chapter.title}}</a>
+											</span>
+											<span class=" font-normal items-center flex flex-row gap-x-2">
+												<i class="fa-sharp fa-regular fa-arrow-turn-down-right"></i>
+												<a href="{{ path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug}) }}" class="text-xs">{{item.publication.title}}</a>
+											</span>
+										{% else %}
+											<a href="{{ path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug}) }}">{{item.publication.title}}</a>
+										{% endif %}
 									</div>
 									<div class="flex  text-sm flex-row items-center  text-slate-500 dark:border-slate-600 border-slate-200 justify-between gap-x-1  mt-2 px-2 py-2 w-full ">
 										<div class="flex flex-row gap-x-5 justify-between lg:order-1 order-2">
@@ -320,6 +330,11 @@
 										<p class="text-sm text-slate-500 dark:text-slate-400 line-clamp-3  mt-2 w-full">
 											{{item.content}}...
 										</p>
+										{% if item.quote %}
+											<blockquote class="mt-4 border-l-4 w-full border-blue-200 pl-4 italic text-slate-500 " id="insightQuote">
+												<p class="font-serif  quoteComment cursor-alias  text-[0.85rem]">{{item.quote}}</p>
+											</blockquote>
+										{% endif %}
 									</div>
 								</div>
 							</div>

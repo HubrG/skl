@@ -235,7 +235,8 @@
 						{% for item in topics_last %}
 							<div class="flex flex-row  items-start gap-x-3 rounded  p-3 bg-slate-50 dark:bg-slate-700">
 								<div class="flex flex-col w-full">
-									<p class=" font-semibold text-sm md:text-base dark:text-slate-300 lg:text-left text-center">
+									<p class=" font-semibold text-sm md:text-base flex flex-row gap-x-3 items-baseline dark:text-slate-300 lg:text-left text-center">
+										<i class="fa-duotone {{item.category.icon}} rounded-full p-1.5 dark:bg-slate-900 bg-slate-200"></i>
 										<a href="{{path("app_forum_topic_read", {slug:item.category.slug, slugTopic:item.slug, id:item.id})}}" class="hover:underline">
 											{{item.title}}
 										</a>

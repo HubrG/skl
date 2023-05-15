@@ -1207,7 +1207,7 @@ main button {
 }
 /* * BIG */
 .display_publications.big .card  p.summary {
-	@apply  block text-xs line-clamp-5 text-justify px-3 my-2 dark:text-slate-400;
+	@apply  block text-xs  text-justify px-3 my-2 dark:text-slate-400;
 }
 .display_publications.big .card .summary-small {
 @apply hidden;

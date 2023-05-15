@@ -59,8 +59,8 @@
 			</h3>
 		</div>
 	</div>
-	<p class="summary line-clamp-5">
-		{{chap_content|striptags|raw}}
+	<p class="summary">
+		{{chap_content|striptags|raw|length > 300 ? chap_content|striptags|raw|slice(0,300) ~ "..." : chap_content|striptags|raw}}
 	</p>
 	<div class="flex flex-row justify-between text-xs">
 		<span class=" text-slate-400  justify-start dark:text-slate-500 w-1/2">

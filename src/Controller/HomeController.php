@@ -8,6 +8,7 @@ use App\Services\NotificationSystem;
 use App\Repository\ForumTopicRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
+use App\Repository\ForumMessageRepository;
 use App\Repository\NotificationRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,7 +27,7 @@ class HomeController extends AbstractController
     }
 
     #[Route('/', name: 'app_home')]
-    public function index(PublicationRepository $pRepo, ForumTopicRepository $ftRepo, PublicationCommentRepository $pcomRepo): Response
+    public function index(PublicationRepository $pRepo, ForumMessageRepository $forumMessageRepository,  ForumTopicRepository $ftRepo, PublicationCommentRepository $pcomRepo): Response
     {
         // *
         // * DERNIÈRES PUBLICATIONS
@@ -66,6 +67,17 @@ class HomeController extends AbstractController
             ->orderBy("ft.createdAt", "DESC")
             ->setMaxResults(9);
         $topics_last = $qb->getQuery()->getResult();
+        // Nombre de nouveaux messages depuis la dernière visite
+        if ($this->getUser()) {
+            // Récupérer le nombre de messages non lus pour chaque topic
+            $unreadMessageCounts = [];
+            foreach ($topics_last as $topic) {
+                $unreadMessageCounts[$topic->getId()] = $forumMessageRepository->getUnreadMessageCountForUser($this->getUser(), $topic);
+            }
+        } else {
+
+            $unreadMessageCounts = 0;
+        }
         // * 
         // * DERNIERS commentaires
         $qb = $pcomRepo->createQueryBuilder("pcom")
@@ -83,7 +95,8 @@ class HomeController extends AbstractController
             'is_homepage' => true,
             'pub_updated' => $publications_updated,
             'topics_last' => $topics_last,
-            'comments_last' => $comments_last
+            'comments_last' => $comments_last,
+            'unreadMessageCounts' => $unreadMessageCounts
         ]);
     }
     #[Route('/clearnotification', name: 'app_notification_clear', methods: ['POST'])]

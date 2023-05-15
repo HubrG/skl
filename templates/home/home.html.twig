@@ -52,7 +52,7 @@
 	</ul>
 	<div class="glide-top glide mt-10  left-0 z-0 h-auto cursor-default" id="glide">
 		<div class="flex flex-col">
-			<section class="order-2 md:order-1 mt-10 md:mt-0">
+			<section class="order-3 md:order-3 mt-10 md:mt-20">
 				<div class="my-special-hr mt-12">
 					<hr>
 					<h1>
@@ -198,7 +198,7 @@
 					</div>
 				</div>
 			</section>
-			<section class=" -mt-0 md:-mt-10 z-50 order-1 md:order-2">
+			<section class=" -mt-0 md:-mt-10 z-50 order-1 md:order-1">
 				<div class="my-special-hr">
 					<hr>
 					<h1>
@@ -221,7 +221,31 @@
 					</a>
 				</div>
 			</section>
-			<section class="w-full md:mt-20 z-50  order-3 md:order-3 flex flex-col md:flex-row gap-x-12 mb-16 md:mb-0">
+			<section class="md:mt-12 mt-10 z-50 order-2 md:order-2">
+				<div class="my-special-hr">
+					<hr>
+					<h1>
+						Dernières feuilles publiées !
+						<i class="fa-duotone fa-newspaper text-green-500"></i>
+					</h1>
+					<hr class="mb-20">
+				</div>
+				<div class="display_publications">
+					{% for item in pub_updated %}
+						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':'sheet', 'querySortby':'sheet', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
+					{% endfor %}
+				</div>
+
+				<div class="mt-20 text-right">
+					<a href="{{ path("app_publication_show_all_category", {slug:"all", sortby:"sheet", order:"desc", page:1})}}" class="button-classic button-gray w-full md:w-2/6 mx-auto" style="font-weight:600">
+						<span class="text-base">
+							<i class="fa-duotone fa-stars"></i>
+							Voir plus de récits !
+						</span>
+					</a>
+				</div>
+			</section>
+			<section class="w-full md:mt-0 mt-0 z-50  order-4 md:order-4 flex flex-col md:flex-row gap-x-12 mb-0 md:mb-0">
 				<div class="w-full md:w-3/6 mb-0 md:mb-8">
 					<div class="my-special-hr">
 						<hr>
@@ -290,7 +314,7 @@
 						</p>
 					</div>
 				</div>
-				<div class="w-full md:w-3/6 mt-5 md:mt-0">
+				<div class="w-full md:w-3/6 mt-10 md:mt-0">
 					<div class="my-special-hr">
 						<hr>
 						<h1>
@@ -367,30 +391,7 @@
 					</div>
 				</div>
 			</section>
-			<section class="md:mt-12 -mt-8 z-50 order-4 md:order-4">
-				<div class="my-special-hr">
-					<hr>
-					<h1>
-						Dernières feuilles publiées !
-						<i class="fa-duotone fa-newspaper text-green-500"></i>
-					</h1>
-					<hr class="mb-20">
-				</div>
-				<div class="display_publications">
-					{% for item in pub_updated %}
-						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':'sheet', 'querySortby':'sheet', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
-					{% endfor %}
-				</div>
 
-				<div class="mt-20 text-right">
-					<a href="{{ path("app_publication_show_all_category", {slug:"all", sortby:"sheet", order:"desc", page:1})}}" class="button-classic button-gray w-full md:w-2/6 mx-auto" style="font-weight:600">
-						<span class="text-base">
-							<i class="fa-duotone fa-stars"></i>
-							Voir plus de récits !
-						</span>
-					</a>
-				</div>
-			</section>
 			<section class="md:mt-22 mt-24 z-50 order-5 md:order-5">
 				<div class="my-special-hr">
 					<hr>

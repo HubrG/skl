@@ -163,6 +163,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Inbox::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $inboxes;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: InboxGroupMember::class)]
+    private Collection $inboxGroupMembers;
+
+
 
     public function __construct()
     {
@@ -186,6 +190,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->forumTopicViews = new ArrayCollection();
         $this->publicationAnnotations = new ArrayCollection();
         $this->inboxes = new ArrayCollection();
+        $this->inboxGroupMembers = new ArrayCollection();
     }
 
 
@@ -1134,6 +1139,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($inbox->getUser() === $this) {
                 $inbox->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, InboxGroupMember>
+     */
+    public function getInboxGroupMembers(): Collection
+    {
+        return $this->inboxGroupMembers;
+    }
+
+    public function addInboxGroupMember(InboxGroupMember $inboxGroupMember): self
+    {
+        if (!$this->inboxGroupMembers->contains($inboxGroupMember)) {
+            $this->inboxGroupMembers->add($inboxGroupMember);
+            $inboxGroupMember->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInboxGroupMember(InboxGroupMember $inboxGroupMember): self
+    {
+        if ($this->inboxGroupMembers->removeElement($inboxGroupMember)) {
+            // set the owning side to null (unless already changed)
+            if ($inboxGroupMember->getUser() === $this) {
+                $inboxGroupMember->setUser(null);
             }
         }
 

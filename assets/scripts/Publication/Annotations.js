@@ -118,7 +118,7 @@ export function Annotation(stop = null) {
           tooltip.style.top = rect.top + window.scrollY + 60 + "px";
           document.getElementById("revision-comment-rap").innerHTML =
             currentSelectedText;
-          document.getElementById("revision-comment-textarea").focus();
+          // document.getElementById("revision-comment-textarea").focus();
         }
       } else {
         tooltip.classList.add("hidden");

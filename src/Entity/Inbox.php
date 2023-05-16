@@ -29,6 +29,9 @@ class Inbox
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $content = null;
 
+    #[ORM\ManyToOne(inversedBy: 'inboxes')]
+    private ?InboxGroup $grouped = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -90,6 +93,18 @@ class Inbox
     public function setContent(?string $content): self
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    public function getGrouped(): ?InboxGroup
+    {
+        return $this->grouped;
+    }
+
+    public function setGrouped(?InboxGroup $grouped): self
+    {
+        $this->grouped = $grouped;
 
         return $this;
     }

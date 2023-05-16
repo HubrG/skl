@@ -6,11 +6,11 @@
 
 
 {% block body %}
-	<div class="flex flex-row gap-x-10 w-full  -mt-10">
+	<div class="flex md:flex-row flex-col gap-x-10 w-full  -mt-10">
 		{% include "inbox/_partials/conversation.html.twig" with {item:conversations} %}
-		<div class="w-4/6 flex flex-col text-4xl justify-center items-center h-[95vh]">
+		<div class="md:w-4/6 w-full  text-slate-800 dark:text-slate-300 md:order-2 order-1 flex flex-col text-4xl justify-center items-center h-[95vh]">
 			<i class="fa-duotone fa-messages -mt-20"></i>
-			<h2 class=" text-slate-800 dark:text-slate-300">Choisissez une conversation</h2>
+			<h2 class="">Choisissez une conversation</h2>
 			<p>
 				<a href="{{path("app_inbox_create")}}" class="text-2xl hover:underline">Ou créez-en une !</a>
 			</p>

@@ -1303,5 +1303,12 @@ nav.breadcrumb ol li a:hover.not-underline {
 #highlighted-options.revision .infoComment {
 	@apply  text-sm flex flex-col !important;
 }
-
-
+.bottom-scroll {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	height: 100%; /* Ajustez cette valeur en fonction de la hauteur souhaitée pour votre cadre de messages */
+  }
+  #create_conversation  #results ul li {
+		@apply text-sm px-2 hover:bg-slate-500 hover:text-slate-50
+  }

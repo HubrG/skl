@@ -89,7 +89,7 @@ class ForumController extends AbstractController
             $topic->setCategory($category)
                 ->setUser($this->getUser())
                 ->setPermanent(0)
-                ->setCreatedAt(new \DateTimeImmutable())
+                ->setCreatedAt(new DateTimeImmutable())
                 ->setSlug(strtolower($slugger->slug($topic->getTitle())));
             // Persistez et enregistrez l'entité
             $em->persist($topic);

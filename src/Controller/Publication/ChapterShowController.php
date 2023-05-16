@@ -45,7 +45,8 @@ class ChapterShowController extends AbstractController
         private NotificationSystem $notificationSystem,
         private EntityManagerInterface $em,
         private PublicationChapterNoteRepository $chapterNote,
-        private PublicationPopularity $publicationPopularity
+        private PublicationPopularity $publicationPopularity,
+        private PublicationAnnotationRepository $paRepo,
     ) {
     }
 
@@ -155,6 +156,9 @@ class ChapterShowController extends AbstractController
             }
         }
 
+        // On compte le nombre de révisions pour cette version du chapitre
+        $nbrRevision = count($this->paRepo->findBy(['chapter' => $chapter, "version" => $version, 'mode' => 1]));
+
         // * La vue
         return $this->render('publication/show_chapter.html.twig', [
             'infoPub' => $publication,
@@ -169,7 +173,8 @@ class ChapterShowController extends AbstractController
             "nbrCom" => $nbrCom,
             "chapterContent" => $chapterContent,
             "canonicalUrl" => $this->generateUrl('app_chapter_show', ["slugPub" => $slugPub, "user" => $user, "idChap" => $idChap, "slug" => $slug], true),
-            "alreadyRead" => $alreadyRead
+            "alreadyRead" => $alreadyRead,
+            "nbrRevision" => $nbrRevision
         ]);
     }
 

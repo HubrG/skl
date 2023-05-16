@@ -74,7 +74,13 @@
 							</span>
 						</button>
 					</li>
-					<div class="flex flex-row justify-center">
+					<div class="flex flex-row justify-center items-center">
+						<li>
+							<a href="{{path("app_inbox")}}" data-turbo-frame="_top" class="text-gray-800 relative dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-semibold rounded-lg  px-4 py-2  md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+								<i class="fa-duotone fa-envelope  text-lg" id="icon-no-new-message"></i>
+								<i class="fa-duotone fa-envelope-dot  hidden text-lg" style="--fa-primary-color: #e71818;" id="icon-new-message"></i>
+							</a>
+						</li>
 						<li>
 							<button id="notification-menu-button" aria-label="Afficher les notifications" data-tippy-content="Notifications" data-dropdown-toggle="notification-menu" type="button" class="text-gray-800 relative dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-semibold rounded-lg  px-4 py-2  md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
 								{% if notificationRepository.findBy({"user":app.user.id,"ReadAt":null})|length > 0 %}

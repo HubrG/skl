@@ -116,6 +116,9 @@ export function Annotation(stop = null) {
           document.getElementById("revision-default").click();
           tooltip.style.left = rect.left + window.scrollX - 130 + "px";
           tooltip.style.top = rect.top + window.scrollY + 60 + "px";
+          document.getElementById("revision-comment-rap").innerHTML =
+            currentSelectedText;
+          document.getElementById("revision-comment-textarea").focus();
         }
       } else {
         tooltip.classList.add("hidden");
@@ -180,8 +183,7 @@ export function Annotation(stop = null) {
         revisionCommentTextarea.classList.add(
           "border-emerald-600",
           "bg-emerald-100",
-          "text-emerald-800",
-          "rounded-tl-none"
+          "text-emerald-800"
         );
         revisionCommentTextarea.classList.remove(
           "border-yellow-600",
@@ -190,6 +192,7 @@ export function Annotation(stop = null) {
           "border-blue-600",
           "bg-blue-100",
           "text-blue-800",
+          "rounded-tl-none",
           "rounded-tr-none"
         );
       } else if (mark.classList.contains("text-yellow-200")) {
@@ -197,14 +200,14 @@ export function Annotation(stop = null) {
         revisionCommentTextarea.classList.add(
           "border-yellow-600",
           "bg-yellow-100",
-          "text-yellow-800"
+          "text-yellow-800",
+          "rounded-tr-none"
         );
         revisionCommentTextarea.classList.remove(
           "border-blue-600",
           "bg-blue-100",
           "text-blue-800",
           "rounded-tl-none",
-          "rounded-tr-none",
           "border-emerald-600",
           "bg-emerald-100",
           "text-emerald-800"
@@ -215,7 +218,7 @@ export function Annotation(stop = null) {
           "border-blue-600",
           "bg-blue-100",
           "text-blue-800",
-          "rounded-tr-none"
+          "rounded-tl-none"
         );
         revisionCommentTextarea.classList.remove(
           "border-yellow-600",

@@ -219,10 +219,21 @@
 	</turbo-frame>
 	<turbo-frame id="tools-frame">
 		{% if infoChap.Publication.status > 1 %}
-			<div id="tools" class="hidden" style="z-index:999999">
+			<div id="tools" class="hidden max-w-[24rem]" style="z-index:999999">
+				<ul class="flex flex-row items-baseline gap-x-2  border-b-2 border-slate-500 pb-2 mb-2 ">
+					<i class="fa-duotone fa-quotes"></i>
+					<div id="revision-comment-rap" class="text-center text-sm w-full     italic"></div>
+				</ul>
 				<ul>
 					<li>
-						<button class="mark-for-all flex flex-row gap-x-2 p-2 py-3  rounded text-emerald-200" data-color="1">
+						<button class="mark-for-all flex flex-row gap-x-2 p-2  py-3 rounded text-blue-200" data-color="4" id="revision-default">
+							<i data-tippy-content="Marquer ce passage en vert" class="fa-solid fa-thought-bubble"></i>
+							<span class="text-xs self-end">Général</span>
+						</button>
+					</li>
+					<li class="text-slate-400">|</li>
+					<li>
+						<button class="mark-for-all flex flex-row gap-x-2 p-2 py-3 rounded text-emerald-200" data-color="1">
 							<i data-tippy-content="Marquer ce passage en vert" class="fa-solid fa-spell-check"></i>
 							<span class="text-xs self-end">Langue</span>
 						</button>
@@ -234,13 +245,7 @@
 							<span class="text-xs self-end">Style</span>
 						</button>
 					</li>
-					<li class="text-slate-400">|</li>
-					<li>
-						<button class="mark-for-all flex flex-row gap-x-2 p-2  py-3 rounded text-blue-200" data-color="4" id="revision-default">
-							<i data-tippy-content="Marquer ce passage en vert" class="fa-solid fa-thought-bubble"></i>
-							<span class="text-xs self-end">Général</span>
-						</button>
-					</li>
+
 				</ul>
 				<ul>
 					<li id="revision-comment" class="w-full flex flex-col gap-y-1" style="display:none">

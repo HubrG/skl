@@ -28,10 +28,12 @@ import { TippyC } from "../scripts/Tippy";
 import { PublicationShow } from "../scripts/Publication/PublicationShow";
 import { User } from "../scripts/User/User";
 import { Dropdown } from "../scripts/Dropdown";
+import { Notification } from "../scripts/Notification";
 import { axiosSaveChapter } from "../scripts/Publication/Chapter";
 import { Charts } from "../scripts/Charts";
 import { NotyDisplay } from "../scripts/Noty";
 import { PublicationShowOne } from "../scripts/Publication/PublicationShowOne";
+import { Inbox } from "../scripts/Inbox/Inbox";
 import MicroModal from "micromodal"; // es6 module
 import { Navbar } from "../scripts/Navbar";
 import { Annotation } from "../scripts/Publication/Annotations";
@@ -89,6 +91,8 @@ const TurboHelper = class {
       TippyC();
       axiosSaveChapter();
       ForumTopicRead();
+      Inbox();
+      Notification();
       // ! Flashes
       if (document.getElementById("flashbag-success")) {
         if (

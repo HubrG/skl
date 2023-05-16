@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+{% block title %}Conversation avec
+	{{userTo.nickname}}
+	-
+	{{ parent() }}
+{% endblock %}
+
+{% block body %}
+	<div class="flex flex-row w-full -mt-10">
+		{% include "inbox/_partials/conversation.html.twig" with {item:conversations} %}
+		<div class="w-[60%] flex flex-col justify-end items-start h-[96vh] pl-10">
+			<turbo-frame id="messages-frame" data-id="{{userTo.id}}" class="w-full overflow-y-scroll flex flex-col gap-y-2 pr-12 mr-5 pb-5">
+				{% for item in messages %}
+					<div class="w-full flex flex-row gap-x-4 items-center {{item.user.id == app.user.id ? " justify-end" : " justify-start"}}">
+						{% if item.user.profilPicture %}
+							<img class="h-8 w-8 rounded-full {{item.user.id == app.user.id ? " order-2" : " order-1"}}" src="{{item.user.profilPicture}}"/>
+						{% endif %}
+						<p class="p-1 rounded-xl px-2 {{item.user.id == app.user.id ? " order-1 bg-emerald-200 text-emerald-900 dark:bg-emerald-900 dark:text-emerald-100" : " order-2 bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-slate-100"}} ">
+							{{item.content|smiley_to_emoji|nl2br}}
+						</p>
+					</div>
+				{% endfor %}
+				<a href="{{path("app_inbox_message", {userTo:userTo.id})}}" class="hidden" data-turbo-frame="messages-frame" id="reload"></a>
+				{% set lastMessage = messages|last %}
+				<input
+				type="hidden" value="{{userTo.id}}" id="userTo">
+				{# Vérifiez si lastMessage existe et formatez la date avec le filtre date #}
+				<input type="hidden" value="{{ lastMessage ? lastMessage.createdAt|date('F j, Y H:i:s') }}" id="lastMessage"/>
+			</turbo-frame>
+			<div class="py-2 -ml-10 pl-10 pt-5 bg-slate-200 dark:bg-slate-900  w-full border-t-2 dark:border-t-slate-700 border-t-slate-300">
+				{{ form_start(form, {attr: {'class':'w-full pr-10 gap-x-2 items-center', 'data-turbo-frame':'messages-frame'}}) }}
+				<div class="flex flex-row gap-x-2 w-full items-center">
+					<div class="w-full">
+						{% include "./partials/_form-row.html.twig" with {'form': form.content,"dataId":userTo.id, 'icon':"fa-message",classWidget:"textarea w-full"} %}
+					</div>
+					<div>
+						<button type="submit" class="button-classic button-emerald py-2 -mt-1 rounded-full" onclick="setTimeout(function() { document.getElementById('inbox_content').value = ''})">
+							<i class="fa-regular fa-paper-plane-top my-1"></i>
+						</button>
+					</div>
+				</div>
+				{{ form_end(form) }}
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -160,6 +160,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationAnnotation::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationAnnotations;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Inbox::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $inboxes;
+
 
     public function __construct()
     {
@@ -182,6 +185,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->forumTopicReads = new ArrayCollection();
         $this->forumTopicViews = new ArrayCollection();
         $this->publicationAnnotations = new ArrayCollection();
+        $this->inboxes = new ArrayCollection();
     }
 
 
@@ -1100,6 +1104,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($publicationAnnotation->getUser() === $this) {
                 $publicationAnnotation->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Inbox>
+     */
+    public function getInboxes(): Collection
+    {
+        return $this->inboxes;
+    }
+
+    public function addInbox(Inbox $inbox): self
+    {
+        if (!$this->inboxes->contains($inbox)) {
+            $this->inboxes->add($inbox);
+            $inbox->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInbox(Inbox $inbox): self
+    {
+        if ($this->inboxes->removeElement($inbox)) {
+            // set the owning side to null (unless already changed)
+            if ($inbox->getUser() === $this) {
+                $inbox->setUser(null);
             }
         }
 

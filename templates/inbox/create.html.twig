@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Messagerie -
+	{{ parent() }}
+{% endblock %}
+
+
+{% block body %}
+	<div class="flex flex-row gap-x-10 w-full  -mt-10">
+		{% include "inbox/_partials/conversation.html.twig" with {item:conversations} %}
+		<div class="w-4/6 flex flex-col  text-slate-800 dark:text-slate-300 text-2xl justify-center items-center h-[95vh]">
+			<i class="fa-duotone fa-messages -mt-20"></i>
+			<h2 class="">Nouvelle conversation</h2>
+			<div class="flex flex-col gap-x-2 w-full justify-center items-center relative" id="create_conversation">
+				{% include "./partials/_form-row.html.twig" with {
+						model:"input",
+						type:"text",
+						icon:"fa-user",
+						label:"",
+						name:"chosenUser",
+						class:"w-full ",
+						classField:"input",
+						placeholder:"Sélectionnez un utilisateur",
+						checked:"",
+						error:"",
+						help:"",
+						value:"",
+					} %}
+				<div id="results" class="w-full absolute hidden top-[4.5rem] shadow border-[1px] bg-slate-100 z-50"></div>
+
+				{{ form_start(formNew, {attr: {'class':'w-full gap-x-2 items-center'}}) }}
+				<div class="w-full">
+					{% include "./partials/_form-row.html.twig" with {'form': formNew.content, 'icon':"",classWidget:"textarea w-full"} %}
+				</div>
+				<div>
+					<button type="submit" class="button-classic button-emerald py-2 -mt-1 rounded-full" onclick="setTimeout(function() { document.getElementById('inbox_content').value = ''})">
+						Créer la conversation
+					</button>
+				</div>
+				{{ form_row(formNew.UserTo, {attr:{'class':'hidden'}}) }}
+				{{ form_end(formNew) }}
+			</div>
+			<hr class="border-2 w-full">
+			<p class="text-sm dark:text-slate-400">
+				<i class="fa-solid fa-lightbulb-exclamation-on"></i>&nbsp;&nbsp;<span class="font-semibold">À venir</span>
+				: conversation de groupe</p>
+		</div>
+	</div>
+{% endblock %}

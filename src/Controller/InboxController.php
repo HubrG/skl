@@ -129,6 +129,7 @@ class InboxController extends AbstractController
             'userTo' => $userTo,
             'conversations' => $conversations,
             'nbUnreadMessages' => $nbUnreadMessages,
+            'dateTime' => new DateTimeImmutable(),
         ]);
     }
     #[Route('/inbox/search_user', name: 'app_inbox_search_user', methods: ['POST'])]

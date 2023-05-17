@@ -46,7 +46,7 @@ function interval() {
           document
             .getElementById("icon-no-new-message")
             .classList.remove("hidden");
-          document.title = title;
+          document.title = document.title;
         }
       });
   }, 5000);

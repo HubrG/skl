@@ -41,24 +41,24 @@ class InboxRepository extends ServiceEntityRepository
 
     // src/Repository/InboxRepository.php
 
-    // public function findDistinctUserToByUser($user)
-    // {
-    //     $entityManager = $this->getEntityManager();
+    public function findDistinctUserToByUser($user)
+    {
+        $entityManager = $this->getEntityManager();
 
 
-    //     $sql = '
-    //     SELECT i FROM App\Entity\Inbox i
-    //     WHERE i.id IN (
-    //         SELECT MAX(inbox.id) FROM App\Entity\Inbox inbox
-    //         WHERE (inbox.user = :user OR inbox.UserTo = :user)
-    //     )
-    // ';
+        $sql = '
+        SELECT i FROM App\Entity\Inbox i
+        WHERE i.id IN (
+            SELECT MAX(inbox.id) FROM App\Entity\Inbox inbox
+            WHERE (inbox.user = :user OR inbox.UserTo = :user)
+        )
+    ';
 
-    //     $query = $entityManager->createQuery($sql);
-    //     $query->setParameter('user', $user);
+        $query = $entityManager->createQuery($sql);
+        $query->setParameter('user', $user);
 
-    //     return $query->getResult();
-    // }
+        return $query->getResult();
+    }
 
     //    /**
     //     * @return Inbox[] Returns an array of Inbox objects

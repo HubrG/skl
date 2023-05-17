@@ -20,25 +20,7 @@ class InboxController extends AbstractController
     public function index(InboxRepository $inboxRepo, EntityManagerInterface $em): Response
     {
 
-        $conversations = $inboxRepo->createQueryBuilder('m')
-            ->where('m.user = :user')
-            ->setParameter('user', $this->getUser())
-            ->getQuery()
-            ->getResult();
-
-
-
-        $conversations2 = $inboxRepo->createQueryBuilder('m')
-            ->where('m.UserTo = :user')
-            ->setParameter('user', $this->getUser())
-            ->getQuery()
-            ->getResult();
-
-        // ON merge
-        $conversations = array_merge($conversations, $conversations2);
-
-
-
+        $conversations = $inboxRepo->findDistinctUserToByUser($this->getUser());
 
 
         // dd($conversations);
@@ -85,15 +67,15 @@ class InboxController extends AbstractController
     #[Route('/inbox/{userTo}', name: 'app_inbox_message', requirements: ['userTo' => '\d+'])]
     public function message(InboxRepository $inboxRepo, Request $request, UserRepository $uRepo, EntityManagerInterface $em, $userTo = null): Response
     {
+
+
         // On recherche l'utilisateur
         $userTo = $uRepo->find($userTo);
 
         // $conversations = $inboxRepo->findDistinctUserToByUser($this->getUser());
 
-        $conversations = $inboxRepo->findBy([
-            'user' => $this->getUser(),
-            'UserTo' => $userTo,
-        ]);
+        $conversations = $inboxRepo->findDistinctUserToByUser($this->getUser());
+
 
         // ! form
         $form = $this->createForm(InboxType::class);

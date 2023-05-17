@@ -182,8 +182,17 @@ form button:disabled {
 }
 /* ! QuillJS */
   #editor .ql-editor {
-	@apply z-0 border-0 border-b-[2px] border-b-slate-300 min-h-[66.67vh] text-slate-700 focus:ring-0 text-base focus:border-slate-300 block w-full md:w-9/12 mx-auto pt-16 md:pt-0 dark:bg-transparent dark:border-gray-600 dark:placeholder-gray-400 dark:text-slate-50;
+	@apply z-0 border-0 block break-words max-w-full  border-b-[2px] border-b-slate-300 min-h-[66.67vh] text-slate-700 focus:ring-0 text-base focus:border-slate-300  md:w-9/12 mx-auto pt-16 md:pt-0 dark:bg-transparent dark:border-gray-600 dark:placeholder-gray-400 dark:text-slate-50;
 	overflow: visible; /* Permet à l'éditeur de s'agrandir en fonction de son contenu */
+  }
+  #editor .ql-size-small {
+	font-size: 0.75em;
+  }
+  #editor .ql-size-large {
+	font-size: 1.5em;
+  }
+  #editor .ql-size-huge {
+	font-size: 2em;
   }
   #editor p {
 	@apply indent-5;

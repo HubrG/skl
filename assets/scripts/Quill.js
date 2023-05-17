@@ -1,4 +1,5 @@
 import Quill from "quill";
+import Delta from "quill-delta";
 import { NotyDisplay } from "./Noty";
 import { axiosChapter } from "./Publication/Chapter";
 
@@ -9,8 +10,7 @@ export function quillEditor() {
   var toolbarOptions = [
     ["bold", "italic", "underline", "strike"], // toggled buttons
     ["blockquote"],
-    [{ size: ["small", false, "large", "huge"] }],
-    [{ header: [2, 3, 4, 5, 6], size: ["small", false, "large", "huge"] }], // custom button values
+    [{ header: [false, 1, 2, 3, 4, 5, 6] }], // include 'false' or '1' here
     [{ list: "ordered" }, { list: "bullet" }],
     ["link"],
     [{ align: [] }],
@@ -44,21 +44,21 @@ export function quillEditor() {
   if (document.getElementById("editor")) {
     const quill = new Quill("#editor", options);
 
-    // // format DIV to P
-    // quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
-    //   if (node.tagName === "DIV") {
-    //     const newDelta = new Delta();
-    //     delta.ops.forEach((op) => {
-    //       if (op.insert) {
-    //         newDelta.insert(op.insert, { ...op.attributes, block: "p" });
-    //       } else {
-    //         newDelta.retain(op.retain, { ...op.attributes, block: "p" });
-    //       }
-    //     });
-    //     return newDelta;
-    //   }
-    //   return delta;
-    // });
+    // format DIV to P
+    quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
+      if (node.tagName === "DIV") {
+        const newDelta = new Delta();
+        delta.ops.forEach((op) => {
+          if (op.insert) {
+            newDelta.insert(op.insert, { ...op.attributes, block: "p" });
+          } else {
+            newDelta.retain(op.retain, { ...op.attributes, block: "p" });
+          }
+        });
+        return newDelta;
+      }
+      return delta;
+    });
     //
     quill.root.innerHTML = document.getElementById("editorHTML").value;
     let buttonSelector = document.getElementById("button-selector");

@@ -11,5 +11,8 @@ export const app = startStimulusApp(
 // ! differents modules Stimulus
 
 import { Application } from "@hotwired/stimulus";
+import LiveController from "@symfony/ux-live-component";
+import "@symfony/ux-live-component/styles/live.css";
 
 const application = Application.start();
+app.register("live", LiveController);

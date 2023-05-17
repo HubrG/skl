@@ -323,7 +323,7 @@ export function Annotation(stop = null) {
             : "default"
         ];
       delHl.classList.add(...classes);
-      delHl.classList.add("hidden");
+      // delHl.classList.add("hidden");
 
       // Stocker l'élément d'annotation actuel
       currentAnnotation = event.target;

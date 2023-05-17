@@ -118,6 +118,7 @@ export function Annotation(stop = null) {
           tooltip.style.top = rect.top + window.scrollY + 60 + "px";
           document.getElementById("revision-comment-rap").innerHTML =
             currentSelectedText;
+
           // document.getElementById("revision-comment-textarea").focus();
         }
       } else {
@@ -322,6 +323,7 @@ export function Annotation(stop = null) {
             : "default"
         ];
       delHl.classList.add(...classes);
+      delHl.classList.add("hidden");
 
       // Stocker l'élément d'annotation actuel
       currentAnnotation = event.target;

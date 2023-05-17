@@ -15,20 +15,38 @@
 		</a>
 	</div>
 	{% for item in conversations|sort((a, b) => b.createdAt <=> a.createdAt) %}
-		<a href="{{path("app_inbox_message", {userTo:item.userTo.id})}}" class="one-conversation" data-turbo-frame="_top" data-id="{{item.userTo.id}}">
-			<div class="relative flex flex-row cursor-pointer items-center gap-x-1 rounded-l   p-2 py-1 rounded dark:text-slate-300 text-slate-800 {{userTo is defined ? userTo.id == item.userTo.id ? " bg-slate-200 dark:bg-slate-700 " : " bg-slate-50 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-700" : " bg-slate-50 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-700"}}">
-				{% if item.userTo.profilPicture %}
-					<img src="{{item.userTo.profilPicture}}" class="rounded w-12 h-12"/>
-				{% endif %}
-				<div class="p-5 cursor-pointer {{userTo is defined ? userTo.id == item.userTo.id ? " font-semibold"}}">{{item.userTo.nickname}}</div>
-				{% set var = 0 %}
-				{% for ur in nbUnreadMessages %}
-					{% if ur.readAt == null and ur.user.id == item.userTo.id %}
-						{% set var = var + 1 %}
+		{% if item.userTo.id != app.user.id %}
+			<a href="{{path("app_inbox_message", {userTo:item.userTo.id})}}" class="one-conversation" data-turbo-frame="_top" data-id="{{item.userTo.id}}">
+				<div class="relative flex flex-row cursor-pointer items-center gap-x-1 rounded-l   p-2 py-1 rounded dark:text-slate-300 text-slate-800 {{userTo is defined ? userTo.id == item.userTo.id ? " bg-slate-200 dark:bg-slate-700 " : " bg-slate-50 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-700" : " bg-slate-50 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-700"}}">
+					{% if item.userTo.profilPicture %}
+						<img src="{{item.userTo.profilPicture}}" class="rounded w-12 h-12"/>
 					{% endif %}
-				{% endfor %}
-				<div class="absolute bg-red-500 rounded-bl p-1 top-0 right-0 text-red-50 text-xs {{var == 0 ? " hidden" }} font-semibold" id="nbrMessage-{{item.userTo.id}}">{{var}}</div>
-			</div>
-		</a>
+					<div class="p-5 cursor-pointer {{userTo is defined ? userTo.id == item.userTo.id ? " font-semibold"}}">{{item.userTo.nickname}}</div>
+					{% set var = 0 %}
+					{% for ur in nbUnreadMessages %}
+						{% if ur.readAt == null and ur.user.id == item.userTo.id %}
+							{% set var = var + 1 %}
+						{% endif %}
+					{% endfor %}
+					<div class="absolute bg-red-500 rounded-bl p-1 top-0 right-0 text-red-50 text-xs {{var == 0 ? " hidden" }} font-semibold" id="nbrMessage-{{item.userTo.id}}">{{var}}</div>
+				</div>
+			</a>
+		{% else %}
+			<a href="{{path("app_inbox_message", {userTo:item.user.id})}}" class="one-conversation" data-turbo-frame="_top" data-id="{{item.user.id}}">
+				<div class="relative flex flex-row cursor-pointer items-center gap-x-1 rounded-l   p-2 py-1 rounded dark:text-slate-300 text-slate-800 {{userTo is defined ? userTo.id == item.userTo.id ? " bg-slate-200 dark:bg-slate-700 " : " bg-slate-50 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-700" : " bg-slate-50 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-700"}}">
+					{% if item.user.profilPicture %}
+						<img src="{{item.userTo.profilPicture}}" class="rounded w-12 h-12"/>
+					{% endif %}
+					<div class="p-5 cursor-pointer {{userTo is defined ? userTo.id == item.user.id ? " font-semibold"}}">{{item.user.nickname}}</div>
+					{% set var = 0 %}
+					{% for ur in nbUnreadMessages %}
+						{% if ur.readAt == null and ur.user.id == item.user.id %}
+							{% set var = var + 1 %}
+						{% endif %}
+					{% endfor %}
+					<div class="absolute bg-red-500 rounded-bl p-1 top-0 right-0 text-red-50 text-xs {{var == 0 ? " hidden" }} font-semibold" id="nbrMessage-{{item.userTo.id}}">{{var}}</div>
+				</div>
+			</a>
+		{% endif %}
 	{% endfor %}
 </div>

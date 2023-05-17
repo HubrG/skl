@@ -20,7 +20,28 @@ class InboxController extends AbstractController
     public function index(InboxRepository $inboxRepo, Request $request, EntityManagerInterface $em): Response
     {
 
-        $conversations = $inboxRepo->findDistinctUserToByUser($this->getUser());
+        $conversations = $inboxRepo->createQueryBuilder('m')
+            ->where('m.user = :user')
+            ->setParameter('user', $this->getUser())
+            ->getQuery()
+            ->getResult();
+
+
+
+        $conversations2 = $inboxRepo->createQueryBuilder('m')
+            ->where('m.UserTo = :user')
+            ->setParameter('user', $this->getUser())
+            ->getQuery()
+            ->getResult();
+
+        // ON merge
+        $conversations = array_merge($conversations, $conversations2);
+
+
+
+
+
+        // dd($conversations);
         // NOmbre total de messages non lus
         $nbUnreadMessages = $inboxRepo->findBy(["UserTo" => $this->getUser(), "ReadAt" => null]);
 
@@ -67,7 +88,12 @@ class InboxController extends AbstractController
         // On recherche l'utilisateur
         $userTo = $uRepo->find($userTo);
 
-        $conversations = $inboxRepo->findDistinctUserToByUser($this->getUser());
+        // $conversations = $inboxRepo->findDistinctUserToByUser($this->getUser());
+
+        $conversations = $inboxRepo->findBy([
+            'user' => $this->getUser(),
+            'UserTo' => $userTo,
+        ]);
 
         // ! form
         $form = $this->createForm(InboxType::class);

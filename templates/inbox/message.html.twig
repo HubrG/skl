@@ -25,7 +25,7 @@
 				<input
 				type="hidden" value="{{userTo.id}}" id="userTo">
 				{# Vérifiez si lastMessage existe et formatez la date avec le filtre date #}
-				<input type="hidden" value="{{ lastMessage ? lastMessage.createdAt|date('F j, Y H:i:s') }}" id="lastMessage"/>
+				<input type="hidden" value="{{ lastMessage ? lastMessage.createdAt|date('F j, Y H:i:s') : dateTime|date('F j, Y H:i:s') }}" id="lastMessage"/>
 			</turbo-frame>
 			<div class="py-2 -ml-10 pl-10 pt-5 bg-slate-200 dark:bg-slate-900  w-full border-t-2 dark:border-t-slate-700 border-t-slate-300">
 				{{ form_start(form, {attr: {'class':'w-full pr-10 gap-x-2 items-center', 'data-turbo-frame':'messages-frame'}}) }}

@@ -7,9 +7,6 @@
 {% endblock %}
 {% block javascripts %}{% endblock %}
 {% block body %}
-	<div class="col-span-12">
-		<article data-annotable id="article">
-			{{article|raw}}
-		</article>
-	</div>
+
+	{{component("user_search")}}
 {% endblock %}

@@ -17,7 +17,7 @@ use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 class InboxController extends AbstractController
 {
     #[Route('/inbox', name: 'app_inbox')]
-    public function index(InboxRepository $inboxRepo, Request $request, EntityManagerInterface $em): Response
+    public function index(InboxRepository $inboxRepo, EntityManagerInterface $em): Response
     {
 
         $conversations = $inboxRepo->createQueryBuilder('m')

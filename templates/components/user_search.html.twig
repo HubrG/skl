@@ -1,0 +1,7 @@
+<div {{ attributes }}>
+	<input type="search" name="query" value="{{ query }}" data-model="query">
+	{% for user in this.users %}
+		{{ user.nickname }}
+		(@{{ user.username }})
+	{% endfor %}
+</div>

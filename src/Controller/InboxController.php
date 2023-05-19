@@ -35,13 +35,8 @@ class InboxController extends AbstractController
     #[Route('/inbox', name: 'app_inbox')]
     public function index(): Response
     {
-        $conversations = $this->igmRepo->findBy(['user' => $this->getUser()]);
-
-        return $this->render('inbox/index.html.twig', [
-            'conversations' => $conversations,
-
-
-        ]);
+        // On redirige vers la page de création de room
+        return $this->redirectToRoute('app_inbox_create');
     }
     #[Route('/inbox/create', name: 'app_inbox_create')]
     public function create(InboxRepository $inboxRepo, InboxGroupMemberRepository $igmRepo, InboxGroupRepository $inboxGRepo, Request $request, UserRepository $urepo, EntityManagerInterface $em): Response

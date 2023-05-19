@@ -1,9 +1,13 @@
-<div {{ attributes }} data-poll class="w-full flex flex-col gap-y-3 overflow-y-auto  pb-5 pr-5" id="messages-scroll">
+<div {{ attributes }} data-poll class="w-full flex flex-col gap-y-3 overflow-y-auto h-[74vh] md:h-[80vh]  pb-5 pr-5" id="messages-scroll">
 	{% set n = 0 %}
 	{% for item in this.messages %}
-		<div class="w-full flex flex-row gap-x-2 items-start {{ n == this.messages|length - 1 and item.user.id == app.user.id ? " animate__animated animate__fadein animate__faster" }} {{item.user.id == app.user.id ? 'justify-end ' : 'justify-start animate__animated animate__fadeIn animate__faster'}}">
+		<div class="w-full flex flex-row gap-x-2 items-start {{ n == this.messages|length - 1 and item.user.id == app.user.id ? " animate__animated animate__fadein animate__faster" }} {{item.user.id == app.user.id ? 'justify-end ' : 'justify-start pl-3 md:pl-0 animate__animated animate__fadeIn animate__faster'}}">
 			{% if item.user.profilPicture %}
 				<img class="h-8 w-8 rounded-full {{item.user.id == app.user.id ? " order-2" : " order-1"}}" src="{{item.user.profilPicture}}"/>
+			{% else %}
+				<div class="h-8 w-8 rounded-full {{item.user.id == app.user.id ? " order-2" : " order-1"}} flex items-center justify-center bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-100">
+					{{item.user.nickname|slice(0,1)|upper}}
+				</div>
 			{% endif %}
 			<div class="flex flex-col items-baseline gap-y-1  {{item.user.id == app.user.id ? " order-1" : " order-2" }}">
 				<a href="{{path("app_user", {username:item.user.username})}}" class=" hover:underline font-semibold text-sm  dark:text-slate-400 {{item.user.id == app.user.id ? " text-right self-end"  }}" data-turbo-frame="_top">{{item.user.nickname }}</a>

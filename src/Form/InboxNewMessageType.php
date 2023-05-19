@@ -29,14 +29,31 @@ class InboxNewMessageType extends AbstractType
                     'rows' => 5,
                 ],
             ])
-            ->add('UserTo', EntityType::class, [
+            ->add('UserTo', UserAutocompleteField::class, [
                 'label' => false,
-                'class' => User::class,
-                'choice_label' => function (User $user) {
-                    return $user->getUsername() . ' ' . $user->getNickname();
-                },
-                'placeholder' => 'Sélectionnez un utilisateur',
+                'multiple' => true,
+                'required' => true,
+                'attr' => [
+                    'placeholder' => 'Sélectionnez un utilisateur',
+                ],
             ]);
+        // ->add('UserTo', TextType::class, [
+        //     'autocomplete' => true,
+        //     'tom_select_options' => [
+        //         'create' => true,
+        //         'createOnBlur' => true,
+        //         'delimiter' => ',',
+        //     ],
+        //     // 'autocomplete_url' => '... optional: custom endpoint, see below',
+        // ]);
+        // ->add('UserTo', EntityType::class, [
+        //     'label' => false,
+        //     'class' => User::class,
+        //     'choice_label' => function (User $user) {
+        //         return $user->getUsername() . ' ' . $user->getNickname();
+        //     },
+        //     'placeholder' => 'Sélectionnez un utilisateur',
+        // ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -1,0 +1,8 @@
+<div class="flex -space-x-4">
+	<img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800" src="{{app.user.profilPicture}}" alt="">
+	{% for item in this.users %}
+		{% if item.user.id != app.user.id %}
+			<img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800" src="{{item.user.profilPicture}}" alt="">
+		{% endif %}
+	{% endfor %}
+</div>

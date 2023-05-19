@@ -163,10 +163,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Inbox::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $inboxes;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: InboxGroupMember::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: InboxGroupMember::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $inboxGroupMembers;
-
-
 
     public function __construct()
     {

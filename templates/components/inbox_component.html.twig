@@ -1,0 +1,22 @@
+<div {{ attributes }} data-poll class="w-full flex flex-col gap-y-3 overflow-y-auto  pb-5 pr-5" id="messages-scroll">
+	{% set n = 0 %}
+	{% for item in this.messages %}
+		<div class="w-full flex flex-row gap-x-2 items-start {{ n == this.messages|length - 1 and item.user.id == app.user.id ? " animate__animated animate__fadein animate__faster" }} {{item.user.id == app.user.id ? 'justify-end ' : 'justify-start animate__animated animate__fadeIn animate__faster'}}">
+			{% if item.user.profilPicture %}
+				<img class="h-8 w-8 rounded-full {{item.user.id == app.user.id ? " order-2" : " order-1"}}" src="{{item.user.profilPicture}}"/>
+			{% endif %}
+			<div class="flex flex-col items-baseline gap-y-1  {{item.user.id == app.user.id ? " order-1" : " order-2" }}">
+				<a href="{{path("app_user", {username:item.user.username})}}" class=" hover:underline font-semibold text-sm  dark:text-slate-400 {{item.user.id == app.user.id ? " text-right self-end"  }}" data-turbo-frame="_top">{{item.user.nickname }}</a>
+				<p class="p-1 px-3 flex flex-col gap-y-1 rounded-xl  {{item.user.id == app.user.id ? " rounded-tr-none bg-emerald-200 text-emerald-900 dark:bg-emerald-900 dark:text-emerald-100" : " rounded-tl-none bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-slate-100"}} ">
+					{{item.content|smiley_to_emoji|nl2br}}
+					<span class="text-[0.65rem] flex flex-row items-baseline pt-0  gap-x-1  {{item.user.id == app.user.id ? " justify-end" :" justify-start "}} opacity-60 dark:opacity-40">
+						<i class="fa-regular fa-clock"></i>
+						<span>{{item.createdAt|since}}</span>
+					</span>
+				</p>
+			</div>
+		</div>
+		<div class="hidden last-message" data-time="{{item.createdAt|date("D H:m:s")}}"></div>
+		{% set n = n + 1 %}
+	{% endfor %}
+</div>

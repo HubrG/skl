@@ -10,5 +10,6 @@ import "./bootstrap";
 import "./styles/app.css";
 import "./turbo/turbo-helper";
 window.axios = require("axios");
+// ON active jquery
 // TODO: refaire cette fonction
 import "./scripts/Noty";

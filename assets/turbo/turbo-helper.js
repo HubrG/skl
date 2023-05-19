@@ -117,6 +117,7 @@ const TurboHelper = class {
     document.addEventListener("turbo:frame-render", (event) => {
       Comment();
       DropdownMenu();
+      Inbox();
       ForumTopicRead();
     });
     document.addEventListener("turbo:frame-load", (event) => {});

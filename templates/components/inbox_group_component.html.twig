@@ -1,0 +1,28 @@
+<div class="w-full md:w-2/6 flex flex-row md:flex-col gap-x-5 pt-5 items-baseline border-b-2 border-b-slate-300 dark:border-b-slate-700 " id="inbox" {{ attributes }} data-poll>
+
+	<div class="items-center md:my-5 md:mt-2 md:mb-6 md:border-b-2  md:w-full md:pb-6 gap-x-2 flex justify-center self-center -mt-4 dark:text-slate-300 border-slate-300 dark:border-slate-700 border-r-2 md:border-r-0 pr-4">
+		<a href="{{path("app_inbox_create")}}" class="font-semibold flex flex-row gap-x-2 items-center" data-turbo-frame="_top" data-tippy-content="Créer une conversation">
+			<i class="fa-duotone fa-message-plus text-3xl"></i>
+			<span class="md:inline-block hidden">Créer une conversation</span>
+		</a>
+	</div>
+	<div class="flex flex-row md:flex-col items-baseline gap-x-5 relative overflow-auto pb-4 md:mr-2">
+		{% for item in this.conversations %}
+			<a href="{{path("app_inbox_message", {groupId:item.grouped.id})}}" class=" relative min-w-max md:min-w-min one-conversation rounded {{ item.grouped.id == this.group and item.unread == 0 ? " bg-slate-200 dark:bg-slate-900 dark:text-slate-400" : item.unread > 0 ? " bg-emerald-50 dark:bg-emerald-800 dark:text-emerald-200 text-emerald-800" : " bg-slate-50 dark:bg-slate-700 dark:text-slate-400"  }}  w-full py-2 md:mb-2 px-3 flex flex-row md:grid md:grid-cols-2 gap-x-1 md:gap-x-5 " data-id="{{item.grouped.id}}">
+				<div class="self-center md:min-w-max ">
+					{{component('inbox_group_member_component', {id:item.grouped.id})}}
+				</div>
+				<div class="text-sm self-center relative gap-x-2 md:col-span-full flex flex-row max-w-md  font-semibold md:font-normal pl-2" data-tippy-content="{{item.grouped.name}}">
+					<div class="md:line-clamp-1 md:-ml-2 md:w-full flex">
+						{{item.grouped.name}}
+					</div>
+				</div>
+				{% if item.unread > 0 %}
+					<div class="w-5 absolute right-0 top-0 rounded-bl rounded-tr bg-emerald-500 dark:bg-emerald-900 text-red-50 text-center text-[0.64rem] flex items-center justify-center">
+						{{item.unread}}
+					</div>
+				{% endif %}
+			</a>
+		{% endfor %}
+	</div>
+</div>

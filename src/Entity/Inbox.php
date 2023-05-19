@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\InboxRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\InboxRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: InboxRepository::class)]
 class Inbox
@@ -17,8 +18,7 @@ class Inbox
     #[ORM\ManyToOne(inversedBy: 'inboxes')]
     private ?User $user = null;
 
-    #[ORM\ManyToOne(inversedBy: 'inboxes')]
-    private ?User $UserTo = null;
+
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $CreatedAt = null;
@@ -31,6 +31,8 @@ class Inbox
 
     #[ORM\ManyToOne(inversedBy: 'inboxes')]
     private ?InboxGroup $grouped = null;
+
+
 
     public function getId(): ?int
     {
@@ -45,18 +47,6 @@ class Inbox
     public function setUser(?User $user): self
     {
         $this->user = $user;
-
-        return $this;
-    }
-
-    public function getUserTo(): ?User
-    {
-        return $this->UserTo;
-    }
-
-    public function setUserTo(?User $UserTo): self
-    {
-        $this->UserTo = $UserTo;
 
         return $this;
     }

@@ -19,6 +19,9 @@ class InboxGroupMember
     #[ORM\ManyToOne(inversedBy: 'inboxGroupMembers')]
     private ?InboxGroup $grouped = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $unread = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +47,18 @@ class InboxGroupMember
     public function setGrouped(?InboxGroup $grouped): self
     {
         $this->grouped = $grouped;
+
+        return $this;
+    }
+
+    public function getUnread(): ?int
+    {
+        return $this->unread;
+    }
+
+    public function setUnread(?int $unread): self
+    {
+        $this->unread = $unread;
 
         return $this;
     }

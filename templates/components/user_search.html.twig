@@ -1,7 +1,0 @@
-<div {{ attributes }}>
-	<input type="select-multiple" name="query" value="{{ query }}" data-model="query">
-	{% for user in this.users %}
-		{{ user.nickname }}
-		(@{{ user.username }})
-	{% endfor %}
-</div>

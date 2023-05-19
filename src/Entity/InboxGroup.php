@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\InboxGroupRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: InboxGroupRepository::class)]
 class InboxGroup
@@ -22,11 +22,14 @@ class InboxGroup
     #[ORM\Column(length: 255, nullable: true,  unique: true)]
     private ?string $room = null;
 
-    #[ORM\OneToMany(mappedBy: 'grouped', targetEntity: InboxGroupMember::class)]
+    #[ORM\OneToMany(mappedBy: 'grouped', targetEntity: InboxGroupMember::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $inboxGroupMembers;
 
-    #[ORM\OneToMany(mappedBy: 'grouped', targetEntity: Inbox::class)]
+    #[ORM\OneToMany(mappedBy: 'grouped', targetEntity: Inbox::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $inboxes;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $createdAt = null;
 
     public function __construct()
     {
@@ -124,6 +127,18 @@ class InboxGroup
                 $inbox->setGrouped(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

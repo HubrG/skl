@@ -7,7 +7,7 @@ export function Notification() {
     return;
   }
 
-  interval();
+  // interval();
 }
 function interval() {
   if (intervalId) {

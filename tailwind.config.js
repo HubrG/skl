@@ -13,6 +13,11 @@ module.exports = {
   ],
   theme: {
     extend: {
+      // Ajouter des classes pour le scroll snapping
+      scrollSnapType: {
+        x: "x mandatory",
+        y: "y mandatory",
+      },
       keyframes: {
         "fade-in": {
           "0%": { opacity: "0%" },

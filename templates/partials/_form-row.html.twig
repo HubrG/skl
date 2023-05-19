@@ -19,7 +19,7 @@
 				<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
 					<i class="fa-regular text-slate-800 dark:text-slate-300 mt-1 {{icon}}"></i>
 				</div>
-				{{ form_widget(form, {attr:{"disabled":disabled,"data-id":dataId is defined ? dataId, "id":id, "class":classWidget}}) }}
+				{{ form_widget(form, {attr:{"disabled":disabled,value:value, "data-id":dataId is defined ? dataId, "id":id, "class":classWidget}}) }}
 			</div>
 			<span class="form_error">{{ form_errors(form) }}</span>
 		</div>

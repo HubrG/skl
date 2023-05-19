@@ -67,6 +67,7 @@
         "stimulus-dropdown": "^2.1.0",
         "stimulus-notification": "^2.2.0",
         "swup": "^2.0.19",
+        "tailwindcss-scroll-snap": "^1.1.0",
         "tailwindcss-stimulus-components": "^3.0.4",
         "tippy.js": "^6.3.7",
         "turbolinks": "^5.2.0",

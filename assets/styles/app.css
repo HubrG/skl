@@ -7,6 +7,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Alegreya:wght@600&family=Lato:ital,wght@0,100;0,300;0,400;0,700;1,100;1,300;1,400;1,700&family=Noto+Serif+Lao:wght@100;200;300;400;500;600;700&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap');
 @import url('modal.css');
 @import url('glide.theme.css');
+@import "~tom-select/dist/css/tom-select.default.min.css";
 
 ::selection{
 	@apply bg-slate-700 text-slate-50 dark:bg-slate-700 px-2 font-light;
@@ -1321,3 +1322,86 @@ nav.breadcrumb ol li a:hover.not-underline {
   #create_conversation  #results ul li {
 		@apply text-sm px-2 hover:bg-slate-500 hover:text-slate-50
   }
+/* ! Gestion du choix multiple des utilisateurs pour le tchat */
+.ts-wrapper.multi .ts-control [data-value] {
+	background-repeat: repeat-x;
+    border-radius: 0px;
+    box-shadow: none;
+    text-shadow: none;
+	@apply bg-none bg-slate-500 dark:bg-slate-900 mr-1 text-sm rounded border-0 p-2;
+}
+.ts-wrapper.multi .ts-control [data-value].active {
+    background-color: #0085d4;
+    background-image: linear-gradient(180deg,#008fd8,#0075cf);
+    background-repeat: repeat-x;
+	@apply bg-none bg-slate-600 dark:bg-slate-800 text-sm rounded border-0 p-2 !important;
+}
+.ts-wrapper.plugin-remove_button .item .remove {
+	color: inherit;
+	text-decoration: none;
+	vertical-align: middle;
+	display: inline-block;
+	padding: 0 6px;
+	border-radius: 0 2px 2px 0;
+	box-sizing: border-box;
+@apply border-none  !important;  
+}
+  .ts-wrapper.plugin-remove_button .item .remove:hover {
+	background: none;
+  }
+
+.ts-wrapper.multi.has-items .ts-control {
+    --ts-pr-min: $padding-x;
+    padding-left: 5px;
+}
+.ts-wrapper.multi.has-items .ts-control {
+    padding: 5px 8px 2px;
+}
+.ts-control {
+    border: 1px solid #d0d0d0;
+    border-radius: 3px;
+   
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    padding: 8px;
+    position: relative;
+    width: 100%;
+    z-index: 1;
+	@apply rounded shadow-none inset-0 text-sm placeholder:text-sm dark:bg-slate-700 dark:border-slate-900 py-3 dark:placeholder:text-slate-700 !important;
+}
+.has-items .ts-control>input {
+    margin: 0 4px!important;
+	@apply dark:placeholder:text-slate-200 dark:text-slate-200 !important;
+}
+.ts-control, .ts-control input, .ts-dropdown {
+    color: #303030;
+    font-family: inherit;
+    font-size: 1;
+    line-height: 18px;
+	@apply text-base italic dark:placeholder:text-slate-200  dark:text-slate-200 py-2 !important;
+}
+.ts-dropdown {
+    background: #fff;
+    border: 1px solid #d0d0d0;
+    border-radius: 0 0 3px 3px;
+    border-top: 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,.1);
+    box-sizing: border-box;
+    left: 0;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    z-index: 10;
+	@apply -mt-6 mb-0 pb-0 dark:bg-slate-700 dark:border-slate-900 !important;
+}
+.ts-dropdown [data-selectable].option {
+    cursor: pointer;
+    opacity: 1;
+	@apply mb-0 p-3 dark:hover:bg-slate-600 dark:hover:text-slate-200 dark:active:bg-slate-600 !important;
+}
+
+.ts-dropdown-content form div {
+    margin-bottom: 0rem;
+}

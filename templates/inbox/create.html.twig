@@ -8,18 +8,18 @@
 {% block body %}
 	<div class="flex flex-col md:flex-row w-full -mt-10">
 		{{ component("inbox_group_component", {id:app.user.id, group:0})}}
-		<div class="w-5/6 flex flex-col gap-y-4  text-slate-800 dark:text-slate-300 text-4xl justify-start items-baseline h-[95vh]">
+		<div class="md:w-5/6 w-full flex flex-col gap-y-4  text-slate-800 dark:text-slate-300 text-4xl justify-start items-baseline h-[95vh]">
 			<div class="flex flex-col gap-y-1 justify-center items-center mx-auto ">
 				<i class="fa-duotone fa-messages  mt-20 text-6xl mx-auto"></i>
 				<h2 class="font-serif">Créer une conversation</h2>
 			</div>
 			<hr class="w-full border-2 mb-0">
 			{{ form_start(formNew, {attr: {'class':'w-full gap-x-2 items-center'}}) }}
-			<div class="flex flex-row gap-x-2 w-full justify-center items-baseline relative" id="create_conversation">
-				<div class="w-5/6">
+			<div class="flex flex-col md:flex-row gap-x-2 w-full justify-center items-baseline relative" id="create_conversation">
+				<div class="md:w-5/6  w-full">
 					{{ form_row(formNew.user, {attr:{'class':'hidden'}}) }}
 				</div>
-				<button type="submit" class="button-classic button-slate flex flex-row gap-x-2 items-center -mt-1.5 w-1/6 rounded-full" style="padding:0.55rem 0 0.55rem 0;" data-tippy-content="Créer la conversation">
+				<button type="submit" class="button-classic button-slate flex flex-row gap-x-2 items-center md:-mt-1.5 md:w-2/6 w-full -mt-14 rounded-full" style="padding:0.55rem 0 0.55rem 0;" data-tippy-content="Créer la conversation">
 					<i class="fa-duotone fa-paper-plane text-slate-100"></i>
 					On y va
 				</button>

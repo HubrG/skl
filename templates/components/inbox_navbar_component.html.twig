@@ -1,0 +1,13 @@
+<span {{ attributes }} data-poll>
+	{% if this.messages > 0 %}
+		<i class="fa-duotone fa-envelope-dot   text-xl" style="--fa-primary-color: #e71818;" id="icon-new-message"></i>
+		<div id="nbrInbox" data-nbr="{{this.messages}}" class="absolute inline-flex items-center justify-center w-5 h-5 text-[0.65rem] font-bold text-white bg-rose-500 border-2 border-white rounded-full -top-[0.01rem] right-2 dark:border-gray-900">
+			{{this.messages}}
+		</div>
+	{% else %}
+		<script>
+			document.title = document.title
+		</script>
+		<i class="fa-duotone fa-envelope  text-xl" id="icon-no-new-message"></i>
+	{% endif %}
+</span>

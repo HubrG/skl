@@ -1,5 +1,5 @@
 let intervalId;
-let title = document.title;
+
 let nbrNotif = 0;
 let nbrMessage = 0;
 export function Notification() {
@@ -7,9 +7,11 @@ export function Notification() {
     return;
   }
 
-  // interval();
+  const titled = document.title;
+  refreshInbox(titled);
+  interval(titled);
 }
-function interval() {
+function interval(titled) {
   if (intervalId) {
     clearInterval(intervalId);
   }
@@ -17,37 +19,18 @@ function interval() {
     return; // On arrête ici si stop est égal à "stop"
   }
   intervalId = setInterval(() => {
-    // const lastMessage = document.getElementById("lastMessage").value;
-    // const userTo = document.getElementById("userTo").value;
-    // console.log(lastMessage, userTo);
-    const inboxData = {
-      //   lastMessage: lastMessage,
-      //   userTo: userTo,
-    };
-    const url = "/live/notification";
-    axios
-      .post(url, inboxData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        if (response.data.newMessage > 0) {
-          document
-            .getElementById("icon-new-message")
-            .classList.remove("hidden");
-          document
-            .getElementById("icon-no-new-message")
-            .classList.add("hidden");
-          nbrMessage = response.data.newMessage + nbrNotif;
-          document.title = "(" + nbrMessage + ") " + title;
-        } else {
-          document.getElementById("icon-new-message").classList.add("hidden");
-          document
-            .getElementById("icon-no-new-message")
-            .classList.remove("hidden");
-          document.title = document.title;
-        }
-      });
-  }, 5000);
+    refreshInbox(titled);
+  }, 1000);
+}
+function refreshInbox(titled) {
+  let newTitle;
+  if (document.getElementById("nbrInbox")) {
+    if (document.getElementById("nbrInbox").getAttribute("data-nbr") > 0) {
+      let nbrMessage =
+        parseInt(document.getElementById("nbrInbox").getAttribute("data-nbr")) +
+        nbrNotif;
+      newTitle = "(" + nbrMessage + ") " + titled;
+      document.title = newTitle;
+    }
+  }
 }

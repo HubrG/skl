@@ -1,4 +1,4 @@
-<div {{ attributes }} data-poll class="w-full flex flex-col gap-y-3 overflow-y-auto h-[74vh] md:h-[80vh]  pb-5 pr-5" id="messages-scroll">
+<div {{ attributes }} data-poll class="w-full flex flex-col gap-y-3 overflow-y-auto h-[63vh] md:h-[80vh]  pb-5 pr-5" id="messages-scroll">
 	{% set n = 0 %}
 	{% for item in this.messages %}
 		<div class="w-full flex flex-row gap-x-2 items-start {{ n == this.messages|length - 1 and item.user.id == app.user.id ? " animate__animated animate__fadein animate__faster" }} {{item.user.id == app.user.id ? 'justify-end ' : 'justify-start pl-3 md:pl-0 animate__animated animate__fadeIn animate__faster'}}">

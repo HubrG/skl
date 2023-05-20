@@ -6,9 +6,9 @@
 
 
 {% block body %}
-	<div class="flex flex-col md:flex-row w-full -mt-10">
-		{{ component("inbox_group_component", {id:app.user.id, group:0})}}
-		<div class="md:w-5/6 w-full flex flex-col gap-y-4  text-slate-800 dark:text-slate-300 text-4xl justify-start items-baseline h-[95vh]">
+	<div class="flex flex-col w-full -mt-14">
+		{{ component("inbox_group_component", {id:app.user.id, group:0, big:1})}}
+		<div class="md:w-4/6 mx-auto w-full flex flex-col gap-y-4  text-slate-800 dark:text-slate-300 text-4xl justify-start items-baseline">
 			<div class="flex flex-col gap-y-1 justify-center items-center mx-auto ">
 				<i class="fa-duotone fa-messages  mt-20 text-6xl mx-auto"></i>
 				<h2 class="font-serif text-center">Créer une conversation</h2>
@@ -24,9 +24,8 @@
 					On y va
 				</button>
 			</div>
+			<hr class="w-full border-2 -mt-20 rounded-none mb-0">
 			{{ form_end(formNew) }}
-
-
 		</div>
 	</div>
 {% endblock %}

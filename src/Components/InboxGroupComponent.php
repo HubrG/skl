@@ -7,6 +7,7 @@ use App\Entity\InboxGroup;
 use App\Entity\InboxGroupMember;
 use Doctrine\ORM\Query\Expr\Join;
 use App\Repository\InboxRepository;
+use PhpParser\Node\Expr\Cast\Bool_;
 use App\Repository\InboxGroupRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
@@ -27,6 +28,9 @@ class InboxGroupComponent
     #[LiveProp]
     public ?int $group = null;
 
+    #[LiveProp]
+    public ?int $big = null;
+
     public function __construct(private InboxRepository $inboxRepo, private EntityManagerInterface $em, private InboxGroupRepository $igRepo, private InboxGroupMemberRepository $igmRepo)
     {
     }
@@ -45,6 +49,6 @@ class InboxGroupComponent
     }
     public function getGroup(): int
     {
-        return $this->group;
+        return $this->big;
     }
 }

@@ -1,7 +1,8 @@
-<div {{ attributes }} data-poll class="w-full flex flex-col gap-y-3 items-end md:pt-10 overflow-y-auto h-[70vh] md:h-[80vh]  pb-5 pr-5" id="messages-scroll">
+{# ! Fenêtre de messagerie #}
+<div {{ attributes }} data-poll class="w-full flex flex-col gap-y-3 items-end md:pt-10 pt-20 overflow-y-auto h-[68vh] md:h-[80vh] -z-0 pr-5" id="messages-scroll">
 	{% set n = 0 %}
 	{% for item in this.messages %}
-		<div class="w-full flex flex-row gap-x-2 self-end items-start {{ n == this.messages|length - 1 and item.user.id == app.user.id ? " animate__animated animate__fadein animate__faster" }} {{item.user.id == app.user.id ? 'justify-end ' : 'justify-start pl-3 md:pl-0 '}}">
+		<div class="w-full flex flex-row gap-x-2 items-end h-[68vh] md:h-[80vh] {{ n == this.messages|length - 1 and item.user.id == app.user.id ? " animate__animated animate__fadein animate__faster" }} {{item.user.id == app.user.id ? 'justify-end ' : 'justify-start pl-3 md:pl-0 '}}">
 			{% if item.user.profilPicture %}
 				<img class="h-8 w-8 rounded-full {{item.user.id == app.user.id ? " order-2" : " order-1"}}" src="{{item.user.profilPicture}}"/>
 			{% else %}

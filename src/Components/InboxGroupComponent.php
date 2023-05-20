@@ -49,6 +49,6 @@ class InboxGroupComponent
     }
     public function getGroup(): int
     {
-        return $this->big;
+        return $this->group;
     }
 }

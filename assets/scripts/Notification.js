@@ -31,6 +31,15 @@ function refreshInbox(titled) {
         nbrNotif;
       newTitle = "(" + nbrMessage + ") " + titled;
       document.title = newTitle;
+      // Modification de l'icone smartphone (dot)
+      if (nbrMessage > 0) {
+        document.getElementById("notif-sm").classList.remove("hidden");
+        document.getElementById("notif-sm").innerHTML = nbrMessage;
+      } else {
+        document.getElementById("notif-sm").classList.add("hidden");
+      }
     }
+  } else {
+    document.getElementById("notif-sm").classList.add("hidden");
   }
 }

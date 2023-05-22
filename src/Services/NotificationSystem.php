@@ -327,14 +327,14 @@ class NotificationSystem extends AbstractController
             // Envoi email
             if (is_null($userRepo->getUserParameters()->isNotif10Mail()) or $userRepo->getUserParameters()->isNotif10Mail() == 1) {
                 if ($notification->getRevisionComment()->getChapter()) {
-                    $pathChapter = $this->generateUrl('app_chapter_show', ['slugPub' => $notification->getRevisionComment()->getChapter()->getPublication()->getSlug(), "user" => $notification->getRevisionComment()->getUser()->getUsername(), "idChap" => $notification->getRevisionComment()->getChapter()->getId(), "slug" => $notification->getRevisionComment()->getChapter()->getSlug()]);
+                    $pathChapter = $this->generateUrl('app_chapter_revision', ['slug' => $notification->getRevisionComment()->getChapter()->getSlug(), "user" => $notification->getRevisionComment()->getChapter()->getPublication()->getUser()->getId(), "slugPub" => $notification->getRevisionComment()->getChapter()->getPublication()->getSlug(), "idChap" => $notification->getRevisionComment()->getChapter()->getId()]);
                     $textChapter = "de votre feuille <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getRevisionComment()->getChapter()->getTitle() . "</a>";
                 } else {
                     $pathChapter = "";
                     $textChapter = "";
                 }
                 $textSubject = "Nouveau commentaire de révision sur l'un de vos chapitres";
-                $pathPublication = $this->generateUrl('app_chapter_revision', ['slug' => $notification->getRevisionComment()->getChapter()->getPublication()->getSlug(), "user" => $notification->getRevisionComment()->getChapter()->getPublication()->getUser()->getId(), "slugPub" => $notification->getRevisionComment()->getChapter()->getPublication()->getSlug(), "idChap" => $notification->getRevisionComment()->getChapter()->getPublication()->getId()]);
+                $pathPublication = $this->generateUrl('app_publication_show_one', ['slug' => $notification->getRevisionComment()->getChapter()->getPublication()->getSlug(), "id" => $notification->getRevisionComment()->getChapter()->getPublication()->getId()]);
                 $textPublication = ", du récit <a href='https://scrilab.com" . $pathPublication . "' style='font-weight:600;'>" . $notification->getRevisionComment()->getChapter()->getPublication()->getTitle() . "</a>";
                 $email->subject($textSubject)
                     ->context([

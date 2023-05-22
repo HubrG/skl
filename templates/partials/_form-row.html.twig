@@ -19,7 +19,11 @@
 				<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
 					<i class="fa-regular text-slate-800 dark:text-slate-300 mt-1 {{icon}}"></i>
 				</div>
-				{{ form_widget(form, {attr:{"disabled":disabled,value:value, "data-id":dataId is defined ? dataId, "id":id, "class":classWidget}}) }}
+				{% if value is defined and value != "" %}
+					{{ form_widget(form, {attr:{"disabled":disabled,value:value, "data-id":dataId is defined ? dataId, "id":id, "class":classWidget}}) }}
+				{% else %}
+					{{ form_widget(form, {attr:{"disabled":disabled, "data-id":dataId is defined ? dataId, "id":id, "class":classWidget}}) }}
+				{% endif %}
 			</div>
 			<span class="form_error">{{ form_errors(form) }}</span>
 		</div>
@@ -35,7 +39,7 @@
 				<i class="fa-regular text-slate-800 dark:text-slate-300 mt-1 {{icon}}"></i>
 			</div>
 			{% if model == "input" %}
-				<input type="{{type}}" name="{{name}}" {% if formOption is defined %} form="{{formOption}}" {% endif %} value="{{value}}" id="{{name}}" class="{{classField}}" placeholder="{{placeholder}}">
+				<input type="{{type}}" name="{{name}}" {% if formOption is defined %} form="{{formOption}}" {% endif %} {% if value %} value="{{value}}" {% endif %} id="{{name}}" class="{{classField}}" placeholder="{{placeholder}}">
 			{% elseif  model == "textarea"  %}
 				<textarea name="{{name}}" id="{{id}}" cols="30" rows="10">{{value}}</textarea>
 			{% elseif  model == "select"  %}

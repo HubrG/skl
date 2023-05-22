@@ -51,7 +51,7 @@
 				</div>
 			{% endif %}
 			{{ form_start(form, {attr: {'novalidate': 'novalidate'}}) }}
-			{% include "./partials/_form-row.html.twig" with {'form': form.title, 'icon':"fa-heading"} %}
+			{% include "./partials/_form-row.html.twig" with {'form': form.title, value:topic.title is defined ? topic.title, 'icon':"fa-heading"} %}
 			{% include "./partials/_form-row.html.twig" with {'form': form.content, 'icon':null, classWidget:"h-96"} %}
 			<button type="submit" class="button-classic button-blue w-full">
 				{% if 'update' in current_url %}

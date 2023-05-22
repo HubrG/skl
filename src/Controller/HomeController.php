@@ -37,7 +37,7 @@ class HomeController extends AbstractController
             ->orderBy("p.published_date", "DESC")
             ->groupBy('p.id')
             ->orderBy('MAX(p.published_date)', 'DESC')
-            ->setMaxResults(9);
+            ->setMaxResults(10);
         $publications_last = $qb->getQuery()->getResult();
 
         // *

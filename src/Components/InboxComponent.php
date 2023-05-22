@@ -31,4 +31,8 @@ class InboxComponent
     {
         return $this->inboxRepo->findBy(["grouped" => $this->id]);
     }
+    public function getMembers(): array
+    {
+        return $this->igmRepo->findBy(["grouped" => $this->id]);
+    }
 }

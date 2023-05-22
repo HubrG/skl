@@ -8,6 +8,19 @@
 	{% endfor %}
 	{% set n = 0 %}
 	{% if memberAuthorize %}
+		{% if this.messages|length == 0 %}
+			<p class="text-center pt-2.5 italic opacity-70">
+				Vous entamnez une conversation avec
+				{# on fait la boucle de tous les utilisateurs #}
+				{% for item in this.members %}
+					<strong>{{item.user.nickname}}</strong>
+					{% if loop.index == this.members|length - 1 %}
+						et
+						{% elseif loop.index < this.members|length - 1 %},
+					{% endif %}
+				{% endfor %}...
+			</p>
+		{% endif %}
 		{% for item in this.messages %}
 			<div class="w-full flex flex-row gap-x-2 mt-4 {{ n == this.messages|length - 1 and item.user.id == app.user.id ? " animate__animated animate__fadein animate__faster" }} {{item.user.id == app.user.id ? 'justify-end ' : 'justify-start pl-3 md:pl-0 '}}">
 				{% if item.user.profilPicture %}

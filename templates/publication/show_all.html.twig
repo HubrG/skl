@@ -153,7 +153,7 @@
 									{% set activeClass = "hover:bg-slate-200 dark:bg-slate-500 dark:hover:bg-slate-700 dark:text-slate-300 grayscale" %}
 								{% endif %}
 								<li class="py-2 {{ option.class }} {{ activeClass }} ">
-									<a href="{{ path("app_publication_show_all_category", {slug: slugCat, keystring: queryKeystring, page: page, order: option.order, sortby: option.sortby}) }}" target="showAllFrame" class="block px-4 py-2 ">
+									<a href="{{ path("app_publication_show_all_category", {slug: slugCat, keystring: queryKeystring, page: page, order: option.order, sortby: option.sortby}) }}" class="block px-4 py-2 ">
 										{{ option.icon|raw }}
 										&nbsp;{{ option.text }}</a>
 								</li>

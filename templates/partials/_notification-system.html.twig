@@ -149,4 +149,34 @@
 			</p>
 		</span>
 	{% endif %}
+	{# Nouvelle révision sur un chapitre de votre publication  #}
+	{% if item.type == 10 %}
+		<i class="fa-regular fa-highlighter-line"></i>
+		<span>
+			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+			vient de vous suggérer une modification pour améliorer le texte de votre feuille
+																											«
+			<a href="{{path("app_chapter_revision", {slugPub:item.revisionComment.chapter.publication.slug,user:item.user.username,idChap:item.revisionComment.chapter.id,slug:item.revisionComment.chapter.slug})}}">{{item.revisionComment.chapter.title}}</a>
+			» pour le récit
+			<a href="{{path("app_publication_show_one", {id:item.revisionComment.chapter.publication.id, slug:item.revisionComment.chapter.publication.slug})}}">
+				{{item.revisionComment.chapter.publication.title}}
+			</a>
+			<p>il y a
+				{{item.createdAt|since}}
+			</p>
+		</span>
+	{% endif %}
+	{# Nouvelle réponse sur l'un de vos sujets de forum #}
+	{% if item.type == 11 %}
+		<i class="fa-regular fa-comment-alt"></i>
+		<span>
+			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+			vient de répondre à votre sujet de forum «
+			<a href="{{path("app_forum_topic_read", {slug:item.forumMessage.topic.category.slug,id:item.forumMessage.topic.id,slugTopic:item.forumMessage.topic.slug})}}">{{item.forumMessage.topic.title}}</a>
+			»
+			<p>il y a
+				{{item.createdAt|since}}
+			</p>
+		</span>
+	{% endif %}
 </div>

@@ -95,7 +95,7 @@ class InboxController extends AbstractController
                 // On modifie le nom de la room avec les nickname des utilisateurs, séparés par des virgules
                 $room = '';
                 foreach ($users as $user) {
-                    $room .= $user->getUsername() . ', ';
+                    $room .= $user->getNickname() . ', ';
                 }
                 // On supprime la dernière virgule
                 $room = substr($room, 0, -2);

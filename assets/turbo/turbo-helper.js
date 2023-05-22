@@ -73,6 +73,7 @@ const TurboHelper = class {
       Tabs();
       addKeyword();
       searchPredictionKw();
+      Dropdown();
     });
     document.addEventListener("turbo:load", () => {
       AxiosSavePublication();

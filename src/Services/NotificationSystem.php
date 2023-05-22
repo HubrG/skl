@@ -53,6 +53,10 @@ class NotificationSystem extends AbstractController
      * 8 : Nouvel abonnement à votre publication
      * 
      * 9 : Nouvelle réponse à un commentaire
+     * 
+     * 10 : Nouvelle révision sur un chapitre de votre publication
+     * 
+     * 11 : Nouvelle réponse sur l'un de vos sujets de forum
      * @param $user type
      * @param $message string
      * @param $fromUser type
@@ -307,6 +311,58 @@ class NotificationSystem extends AbstractController
                      <blockquote style='font-style: italic;text-align:center;'><strong>Votre commentaire :</strong><br>« " . $notification->getReplyComment()->getReplyTo()->getContent() . " »</blockquote>
                      <blockquote style='font-style: italic;text-align:center;'><strong>Réponse à votre commentaire :</strong><br>« " . $notification->getReplyComment()->getContent() . " »</blockquote>",
                         'subject' => "Nouvelle réponse sous l'un de vos commentaires",
+                    ]);
+                //
+                $this->mailer->send($email);
+            }
+        }
+        if ($type === 10) {
+            if (is_null($userRepo->getUserParameters()->isNotif10Web()) or $userRepo->getUserParameters()->isNotif10Web() == 1) {
+                $notification->setRevisionComment($idLink);
+                $this->em->persist($notification);
+                $this->em->flush();
+            } else {
+                $notification->setRevisionComment($idLink);
+            }
+            // Envoi email
+            if (is_null($userRepo->getUserParameters()->isNotif10Mail()) or $userRepo->getUserParameters()->isNotif10Mail() == 1) {
+                if ($notification->getRevisionComment()->getChapter()) {
+                    $pathChapter = $this->generateUrl('app_chapter_show', ['slugPub' => $notification->getRevisionComment()->getChapter()->getPublication()->getSlug(), "user" => $notification->getRevisionComment()->getUser()->getUsername(), "idChap" => $notification->getRevisionComment()->getChapter()->getId(), "slug" => $notification->getRevisionComment()->getChapter()->getSlug()]);
+                    $textChapter = "de votre feuille <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getRevisionComment()->getChapter()->getTitle() . "</a>";
+                } else {
+                    $pathChapter = "";
+                    $textChapter = "";
+                }
+                $textSubject = "Nouveau commentaire de révision sur l'un de vos chapitres";
+                $pathPublication = $this->generateUrl('app_chapter_revision', ['slug' => $notification->getRevisionComment()->getChapter()->getPublication()->getSlug(), "id" => $notification->getRevisionComment()->getChapter()->getPublication()->getId()]);
+                $textPublication = ", du récit <a href='https://scrilab.com" . $pathPublication . "' style='font-weight:600;'>" . $notification->getRevisionComment()->getChapter()->getPublication()->getTitle() . "</a>";
+                $email->subject($textSubject)
+                    ->context([
+                        'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
+                        vient de vous suggérer une modification pour améliorer le texte " . $textChapter . $textPublication,
+                        'subject' => "Nouveau commentaire de révision sur l'un de vos chapitres",
+                    ]);
+                //
+                $this->mailer->send($email);
+            }
+        }
+        if ($type === 11) {
+            if (is_null($userRepo->getUserParameters()->isNotif11Web()) or $userRepo->getUserParameters()->isNotif11Web() == 1) {
+                $notification->setForumMessage($idLink);
+                $this->em->persist($notification);
+                $this->em->flush();
+            } else {
+                $notification->setForumMessage($idLink);
+            }
+            // Envoi email
+            if (is_null($userRepo->getUserParameters()->isNotif11Mail()) or $userRepo->getUserParameters()->isNotif11Mail() == 1) {
+                $textSubject = "Nouvelle réponse sous votre sujet de forum";
+                $pathPublication = $this->generateUrl('app_forum_topic_read', ['slug' => $notification->getForumMessage()->getTopic()->getCategory()->getSlug(), "id" => $notification->getForumMessage()->getTopic()->getId(), "slugTopic" => $notification->getForumMessage()->getTopic()->getSlug()]);
+                $email->subject($textSubject)
+                    ->context([
+                        'content' => "<a href='https://scrilab.com" . $pathPublication . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
+                        vient d'envoyer une réponse sous votre sujet de forum <a href='" . $pathPublication . "'>" . $notification->getForumMessage()->getTopic()->getTitle() . "</a>",
+                        'subject' => "Nouvelle réponse sous votre sujet de forum",
                     ]);
                 //
                 $this->mailer->send($email);

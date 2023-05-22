@@ -182,8 +182,9 @@ form button:disabled {
 		opacity: 1;
 }
 /* ! QuillJS */
+
   #editor .ql-editor {
-	@apply z-0 border-0 block break-words max-w-full  border-b-[2px] border-b-slate-300 min-h-[66.67vh] text-slate-700 focus:ring-0 text-base focus:border-slate-300  md:w-9/12 mx-auto pt-16 md:pt-0 dark:bg-transparent dark:border-gray-600 dark:placeholder-gray-400 dark:text-slate-50;
+	@apply z-0 border-0 block break-words max-w-full  border-b-[2px] border-b-slate-300 min-h-[66.67vh] text-slate-700 focus:ring-0 text-base focus:border-slate-300  md:w-9/12 mx-auto pt-8 mt-10 md:mt-0 md:pt-0 dark:bg-transparent dark:border-gray-600 dark:placeholder-gray-400 dark:text-slate-50;
 	overflow: visible; /* Permet à l'éditeur de s'agrandir en fonction de son contenu */
   }
   #editor .ql-size-small {

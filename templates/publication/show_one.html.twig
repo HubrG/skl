@@ -31,7 +31,7 @@
 	Récit |
 	{{ pubShow.title }}
 	({{ pubShow.user.nickname }})
-																																																																																																																																																																																																																																																																																																		-
+																																																																																																																																																																																																																																																																																																																																		-
 	{{ parent() }}
 {% endblock %}
 
@@ -151,10 +151,14 @@
 								<div class="mt-5"></div>
 							{% endif %}
 						{% else %}
-							<center>
-								<i class="fa-solid fa-hourglass-half text-4xl font-thin text-slate-600"></i>
-							</center>
-							<br><span class="text-xl text-slate-500">Récit en cours de rédaction, aucune feuille pour le moment...</span>
+							<div class="w-full">
+								<hr class=" border-slate-300 mb-5">
+								<p class="text-xl py-2 text-center w-full text-slate-500 flex flex-row items-center gap-x-2 justify-center">
+									<i class="fa-kit fa-regular-file-slash"></i>
+									Récit en cours de rédaction, aucune feuille pour le moment...
+								</p>
+								<hr class=" border-slate-300">
+							</div>
 						{% endif %}
 					</p>
 				</div>
@@ -173,13 +177,23 @@
 						<span class="font-semibold">Reprendre la lecture</span>
 					</a>
 				{% else %}
-					<a href="{{ path("app_chapter_show", {idChap:orderChap.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:orderChap.slug}) }}" class=" gap-y-2 flex flex-col  mt-5 not-italic py-5 text-center w-full lg:w-3/6 px-10 bg-white  text-base hover:bg-white text-slate-800 shadow hover:text-slate-800 bg-opacity-50 dark:bg-opacity-80 hover:bg-opacity-100 dark:bg-slate-700 dark:text-slate-100  dark:hover:bg-slate-900 rounded-lg">
-						<i class="{{pubShow.mature ? "fa-kit fa-regular-book-open-reader-circle-exclamation text-rose-400 dark:text-rose-300" :"fa-regular fa-book-open-reader" }} text-4xl"></i>
-						<span class="font-semibold">Commencer la lecture</span>
-						{% if pubShow.mature %}
-							<span class="text-xs text-rose-300">Contenu sensible</span>
-						{% endif %}
-					</a>
+					{% if orderChap.id is defined %}
+						<a href="{{ path("app_chapter_show", {idChap:orderChap.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:orderChap.slug}) }}" class=" gap-y-2 flex flex-col  mt-5 not-italic py-5 text-center w-full lg:w-3/6 px-10 bg-white  text-base hover:bg-white text-slate-800 shadow hover:text-slate-800 bg-opacity-50 dark:bg-opacity-80 hover:bg-opacity-100 dark:bg-slate-700 dark:text-slate-100  dark:hover:bg-slate-900 rounded-lg">
+							<i class="{{pubShow.mature ? "fa-kit fa-regular-book-open-reader-circle-exclamation text-rose-400 dark:text-rose-300" :"fa-regular fa-book-open-reader" }} text-4xl"></i>
+							<span class="font-semibold">Commencer la lecture</span>
+							{% if pubShow.mature %}
+								<span class="text-xs text-rose-300">Contenu sensible</span>
+							{% endif %}
+						</a>
+					{% else %}
+						<button data-tippy-content="Vous ne pouvez pas commencer à lire ce récit, car aucun chapitre n'est publié" class=" gap-y-2 cursor-not-allowed flex flex-col  mt-5 not-italic py-5 text-center w-full lg:w-3/6 px-10 bg-white  text-base hover:bg-white text-slate-800 shadow hover:text-slate-800 bg-opacity-50 dark:bg-opacity-80 hover:bg-opacity-100 dark:bg-slate-700 dark:text-slate-100  dark:hover:bg-slate-900 rounded-lg">
+							<i class="{{pubShow.mature ? "fa-kit fa-regular-book-open-reader-circle-exclamation text-rose-400 dark:text-rose-300" :"fa-regular fa-book-open-reader" }} text-4xl"></i>
+							<span class="font-semibold">Commencer la lecture</span>
+							{% if pubShow.mature %}
+								<span class="text-xs text-rose-300">Contenu sensible</span>
+							{% endif %}
+						</button>
+					{% endif %}
 				{% endif %}
 				<div class="grid {{ pubShow.sale ? " grid-cols-2" : " grid-cols-1" }} w-full md:w-3/6 text-sm items-center justify-center gap-x-2">
 					<button id="dropdownBuyBookButton" data-dropdown-toggle="dropdownBuyBook" class="{{ pubShow.sale ? "block" : "hidden" }} block mt-5 not-italic py-2 text-center px-5 text-slate-800 hover:text-slate-800 dark:text-slate-100 dark:hover:bg-slate-900 rounded-lg">
@@ -392,7 +406,7 @@
 				</ul>
 				<div class="w-full" id="publicationShowOneComment">
 					<hr>
-					{% if app.user.id is defined %}
+					{% if app.user.id is defined and pubShow.status > 1 %}
 						{{ form_start(formQuote, {attr:{"data-turbo-frame":"comment-section"}}) }}
 						<label for="publication_chapter_comment_content" class="sr-only">Votre commentaire</label>
 						<div class="flex items-center w-full rounded-lg ">
@@ -408,30 +422,33 @@
 						{{ form_end(formQuote) }}
 						<hr>
 					{% endif %}
-					<ul>
-						<li class="text-center mb-5 -mt-3 block lg:hidden" onclick="let commentSection = document.getElementById('comment-section').classList; commentSection.toggle('hidden');if (commentSection.contains('hidden')) { document.getElementById('showComMd').innerHTML = 'Afficher' } else {  document.getElementById('showComMd').innerHTML = 'Masquer' }">
-							{% if nbrCom > 0 %}
-								<button class="text-base mx-auto text-slate-300 font-medium hover:underline">
-									<span id="showComMd">Afficher</span>
-									les
-									{{nbrCom}}
-									{{nbrCom > 1 ? "commentaires" : "commentaire" }}
-								</button>
-							{% else %}
-								Aucun commentaire
+					{% if pubShow.status > 1 %}
+
+						<ul>
+							<li class="text-center mb-5 -mt-3 block lg:hidden" onclick="let commentSection = document.getElementById('comment-section').classList; commentSection.toggle('hidden');if (commentSection.contains('hidden')) { document.getElementById('showComMd').innerHTML = 'Afficher' } else {  document.getElementById('showComMd').innerHTML = 'Masquer' }">
+								{% if nbrCom > 0 %}
+									<button class="text-base mx-auto text-slate-300 font-medium hover:underline">
+										<span id="showComMd">Afficher</span>
+										les
+										{{nbrCom}}
+										{{nbrCom > 1 ? "commentaires" : "commentaire" }}
+									</button>
+								{% else %}
+									Aucun commentaire
+								{% endif %}
+							</li>
+						</ul>
+						<turbo-frame id="comment-section" class=" hidden lg:block">
+							{% set n = 0 %}
+							{% for item in pCom %}
+								{% include "publication/_partials/_comment.html.twig" with { item:item, n:n, pcom:nbrCom} %}
+								{% set n = n + 1  %}
+							{% endfor %}
+							{% if nbrShowCom < nbrCom %}
+								{# <a href="{{path("app_chapter_show", {user:infoPub.user.id, slug:chapterSlug, slugPub:infoPub.slug, idChap:infoChap.id, nbrShowCom:nbrShowCom + 10})}}">Afficher plus de commentaires</a> #}
 							{% endif %}
-						</li>
-					</ul>
-					<turbo-frame id="comment-section" class=" hidden lg:block">
-						{% set n = 0 %}
-						{% for item in pCom %}
-							{% include "publication/_partials/_comment.html.twig" with { item:item, n:n, pcom:nbrCom} %}
-							{% set n = n + 1  %}
-						{% endfor %}
-						{% if nbrShowCom < nbrCom %}
-							{# <a href="{{path("app_chapter_show", {user:infoPub.user.id, slug:chapterSlug, slugPub:infoPub.slug, idChap:infoChap.id, nbrShowCom:nbrShowCom + 10})}}">Afficher plus de commentaires</a> #}
-						{% endif %}
-					</turbo-frame>
+						</turbo-frame>
+					{% endif %}
 				</div>
 			</div>
 			<div class="w-full opacity-100 dark:opacity-100  text-xs  z-50 mt-0 pt-5 px-2 lg:w-4/12  order-1 lg:order-2  shadow-slate-300 text-slate-900 border-slate-200 border-t-[1px] border-t-slate-200 dark:border-slate-900 dark:border-t-slate-900 lg:border-l-[1px] lg:border-t-0 ">

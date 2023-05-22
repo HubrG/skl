@@ -7,6 +7,7 @@ use App\Form\ForumTopicType;
 use App\Entity\ForumTopicRead;
 use App\Entity\ForumTopicView;
 use App\Form\ForumMessageType;
+use App\Services\NotificationSystem;
 use App\Repository\ForumTopicRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ForumMessageRepository;
@@ -22,8 +23,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ForumController extends AbstractController
 {
-    public function __construct(private RequestStack $requestStack, private EntityManagerInterface $em)
-    {
+    public function __construct(
+        private NotificationSystem $notificationSystem,
+        private RequestStack $requestStack,
+        private EntityManagerInterface $em
+    ) {
     }
     #[Route('/forum', name: 'app_forum')]
     public function index(ForumCategoryRepository $fcRepo): Response
@@ -134,6 +138,8 @@ class ForumController extends AbstractController
             // Persistez et enregistrez l'entité
             $em->persist($message);
             $em->flush();
+            // Envoi d'une notification
+            $this->notificationSystem->addNotification(11, $topic->getUser(), $this->getUser(), $message);
         }
         // * On ajoute un view pour le chapitre (si l'utilisateur n'est pas l'auteur de la publication)
         $this->viewTopic($topic);

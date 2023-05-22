@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use DateTimeImmutable;
+use App\Services\NotificationSystem;
 use App\Entity\PublicationAnnotation;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,8 +19,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class AnnotationController extends AbstractController
 {
 
-    public function __construct(private PublicationAnnotationRepository $paRepo, private PublicationChapterRepository $pchRepo, private PublicationChapterVersioningRepository $pchvRepo)
-    {
+    public function __construct(
+        private NotificationSystem $notificationSystem,
+        private PublicationAnnotationRepository $paRepo,
+        private PublicationChapterRepository $pchRepo,
+        private PublicationChapterVersioningRepository $pchvRepo
+    ) {
     }
 
     #[Route('/save-annotation', name: 'save_annotation', methods: ['POST'])]
@@ -65,9 +70,14 @@ class AnnotationController extends AbstractController
         $annotation->setContent(trim($data['content']));
 
 
+
         $em->persist($annotation);
         $em->flush();
 
+        if ($data['mode'] != "mark-for-me") {
+            // Envoi d'une notification
+            $this->notificationSystem->addNotification(10, $annotation->getChapter()->getPublication()->getUser(), $this->getUser(), $annotation);
+        }
 
         return $this->json([
             'code' => 200,

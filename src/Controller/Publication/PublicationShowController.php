@@ -196,7 +196,7 @@ class PublicationShowController extends AbstractController
 		if ($publication->getStatus() < 2 && $publication->getUser() != $this->getUser()) {
 			return $this->redirectToRoute('app_home');
 		}
-		if (!$chapters) {
+		if (!$chapters && $publication->getUser() != $this->getUser()) {
 			return $this->redirectToRoute('app_home');
 		}
 

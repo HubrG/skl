@@ -334,7 +334,7 @@ class NotificationSystem extends AbstractController
                     $textChapter = "";
                 }
                 $textSubject = "Nouveau commentaire de révision sur l'un de vos chapitres";
-                $pathPublication = $this->generateUrl('app_chapter_revision', ['slug' => $notification->getRevisionComment()->getChapter()->getPublication()->getSlug(), "id" => $notification->getRevisionComment()->getChapter()->getPublication()->getId()]);
+                $pathPublication = $this->generateUrl('app_chapter_revision', ['slug' => $notification->getRevisionComment()->getChapter()->getPublication()->getSlug(), "user" => $notification->getRevisionComment()->getChapter()->getPublication()->getUser()->getId(), "slugPub" => $notification->getRevisionComment()->getChapter()->getPublication()->getSlug(), "idChap" => $notification->getRevisionComment()->getChapter()->getPublication()->getId()]);
                 $textPublication = ", du récit <a href='https://scrilab.com" . $pathPublication . "' style='font-weight:600;'>" . $notification->getRevisionComment()->getChapter()->getPublication()->getTitle() . "</a>";
                 $email->subject($textSubject)
                     ->context([

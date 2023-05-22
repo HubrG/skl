@@ -48,6 +48,12 @@
 				{% set profilPic = item.user.profilPicture ? item.user.profilPicture : 'https://picsum.photos/200/300' %}
 				{% if item.user.profilPicture %}
 					<img class="w-12 h-12 rounded-full mr-4" src="{{ profilPic }}" alt="avatar">
+				{% else %}
+					<div class="w-12 h-12 rounded-full mr-4 bg-gray-200">
+						<div class="w-full h-full flex items-center justify-center text-2xl text-gray-400">
+							{{ item.user.nickname|slice(0,1)|upper }}
+						</div>
+					</div>
 				{% endif %}
 				<div class="flex-1">
 					<h4 class="font-medium text-sm dark:text-white">
@@ -171,6 +177,12 @@
 							<span class="flex flex-col items-center justify-center w-3/12">
 								{% if reply.user.profilPicture %}
 									<img class="w-6 h-6  rounded-full" src="{{ profilPic }}" alt="avatar">
+								{% else %}
+									<div class="w-6 h-6 rounded-full mr-4 bg-gray-200">
+										<div class="w-full h-full flex items-center justify-center text-sm text-gray-400">
+											{{ item.user.nickname|slice(0,1)|upper }}
+										</div>
+									</div>
 								{% endif %}
 								<span class="text-sm text-slate-600 text-center dark:text-slate-400">
 									<a href="{{ path('app_user', {'username': reply.user.username}) }}" target="_top" class="hover:underline">{{ reply.user.nickname }}</a>

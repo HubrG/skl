@@ -92,8 +92,10 @@
 						<div class=" bg-slate-50 dark:bg-slate-900 p-5 rounded" id="comment-{{item.id}}">
 							<div class="flex flex-row gap-x-3">
 								{% if item.user.profilPicture %}
-									<div>
-										<img class="rounded-full h-6" src="{{item.user.profilPicture }}"/>
+									<img class="rounded-full h-6" src="{{item.user.profilPicture }}"/>
+								{% else %}
+									<div class="rounded-full h-6 w-6 bg-gray-200 flex items-center justify-center dark:bg-gray-700">
+										{{item.user.nickname|slice(0,1) }}
 									</div>
 								{% endif %}
 								<div class="flex flex-row items-center justify-between w-full">

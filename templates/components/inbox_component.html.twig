@@ -52,8 +52,8 @@
 							<span class="text-[0.65rem] flex flex-row items-baseline pt-0  gap-x-1  {{item.user.id == app.user.id ? " justify-end" :" justify-start "}} opacity-60 dark:opacity-40">
 								<i class="fa-regular fa-clock"></i>
 								<span class="relative flex flex-row items-center gap-x-2">{{item.createdAt|since}}
-									|&nbsp;&nbsp;
 									{% if app.user.id == item.user.id %}
+										|&nbsp;&nbsp;
 										<div class="dropdown" style="position:absolute; right:0.28rem; bottom:0.6rem">
 											<button aria-label="Supprimer ce message" class="text-emerald-800 dark:text-emerald-300 text-[0.55rem]  focus:outline-none ">
 												<i class="fa-solid fa-angle-down dropdown-button  " id="ddb-{{ item.id }}"></i>

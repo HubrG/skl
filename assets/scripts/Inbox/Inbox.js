@@ -7,6 +7,7 @@ export function Inbox() {
   }
   scrollToBottom();
   interval();
+
   // ! Traitement du ReadAt
   // Au clic sur une conversation
   const oneConversation = document.querySelectorAll(".one-conversation");

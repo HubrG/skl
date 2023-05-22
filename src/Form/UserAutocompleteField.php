@@ -17,7 +17,9 @@ class UserAutocompleteField extends AbstractType
         $resolver->setDefaults([
             'class' => User::class,
             'placeholder' => 'Choisir un utilisateur',
-            //'choice_label' => 'name',
+            'choice_label' => function ($user) {
+                return $user->getNickname() . '&nbsp;&nbsp;<small>(@' . $user->getUsername() . ')</small>';
+            },
 
             'query_builder' => function (UserRepository $userRepository) {
                 return $userRepository->createQueryBuilder('user');

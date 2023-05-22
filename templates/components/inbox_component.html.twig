@@ -1,27 +1,90 @@
-{# ! Fenêtre de messagerie #}
-<div {{ attributes }} data-poll class="w-full flex flex-col gap-y-3 items-end md:pt-10 pt-20 overflow-y-auto h-[68vh] md:h-[80vh] -z-0 pr-5" id="messages-scroll">
-	{% set n = 0 %}
-	{% for item in this.messages %}
-		<div class="w-full flex flex-row gap-x-2 items-end h-[68vh] md:h-[80vh] {{ n == this.messages|length - 1 and item.user.id == app.user.id ? " animate__animated animate__fadein animate__faster" }} {{item.user.id == app.user.id ? 'justify-end ' : 'justify-start pl-3 md:pl-0 '}}">
-			{% if item.user.profilPicture %}
-				<img class="h-8 w-8 rounded-full {{item.user.id == app.user.id ? " order-2" : " order-1"}}" src="{{item.user.profilPicture}}"/>
-			{% else %}
-				<div class="h-8 w-8 rounded-full {{item.user.id == app.user.id ? " order-2" : " order-1"}} flex items-center justify-center bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-100">
-					{{item.user.nickname|slice(0,1)|upper}}
-				</div>
-			{% endif %}
-			<div class="flex flex-col items-baseline gap-y-1  {{item.user.id == app.user.id ? " order-1" : " order-2" }}">
-				<a href="{{path("app_user", {username:item.user.username})}}" class=" hover:underline font-semibold text-sm  dark:text-slate-400 {{item.user.id == app.user.id ? " text-right self-end"  }}" data-turbo-frame="_top">{{item.user.nickname }}</a>
-				<p class="p-1 px-3 flex flex-col gap-y-1 rounded-xl  {{item.user.id == app.user.id ? " rounded-tr-none bg-emerald-200 text-emerald-900 dark:bg-emerald-900 dark:text-emerald-100" : " rounded-tl-none bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-slate-100"}} ">
-					{{item.content|smiley_to_emoji|nl2br}}
-					<span class="text-[0.65rem] flex flex-row items-baseline pt-0  gap-x-1  {{item.user.id == app.user.id ? " justify-end" :" justify-start "}} opacity-60 dark:opacity-40">
-						<i class="fa-regular fa-clock"></i>
-						<span>{{item.createdAt|since}}</span>
-					</span>
-				</p>
-			</div>
-		</div>
-		<div class="hidden last-message" data-time="{{item.createdAt|date("D H:m:s")}}"></div>
-		{% set n = n + 1 %}
+<div {{ attributes }} data-poll class="w-full gap-y-3 items-end md:pt-10 pt-20 overflow-y-auto h-[68vh] md:h-[80vh] -z-0 pr-5" id="messages-scroll">
+
+	{% set memberAuthorize = false %}
+	{% for i in app.user.inboxGroupMembers %}
+		{% if i.grouped.id == this.id %}
+			{% set memberAuthorize = true %}
+		{% endif %}
 	{% endfor %}
-</div>
+	{% set n = 0 %}
+	{% if memberAuthorize %}
+		{% for item in this.messages %}
+			<div class="w-full flex flex-row gap-x-2 mt-4 {{ n == this.messages|length - 1 and item.user.id == app.user.id ? " animate__animated animate__fadein animate__faster" }} {{item.user.id == app.user.id ? 'justify-end ' : 'justify-start pl-3 md:pl-0 '}}">
+				{% if item.user.profilPicture %}
+					<img class="h-8 w-8 rounded-full self-start {{item.user.id == app.user.id ? " order-2" : " order-1"}}" src="{{item.user.profilPicture}}"/>
+				{% else %}
+					<div class="h-8 w-8 rounded-full self-start {{item.user.id == app.user.id ? " order-2" : " order-1"}} flex items-center justify-center bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-100">
+						{{item.user.nickname|slice(0,1)|upper}}
+					</div>
+				{% endif %}
+				<div class="flex relative flex-col items-baseline gap-y-1  {{item.user.id == app.user.id ? " order-1" : " order-2" }}">
+					<a href="{{path("app_user", {username:item.user.username})}}" class=" hover:underline font-semibold text-sm  dark:text-slate-400 {{item.user.id == app.user.id ? " text-right self-end"  }}" data-turbo-frame="_top">{{item.user.nickname }}</a>
+					<p
+						class="p-1 px-3 flex flex-col gap-y-1 rounded-xl {{ '<em>Message supprimé</em>' in item.content ? " opacity-50"}} {{item.user.id == app.user.id ? " self-end rounded-tr-none bg-emerald-200 text-emerald-900 dark:bg-emerald-900 dark:text-emerald-100" : " self-start rounded-tl-none bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-slate-100"}} {% if " a quitté la conversation" in item.content %} inbox-leave-conversation {% endif %}">
+						{# Si le message contient "USERNAME a quitté la conversation" #}
+
+						{% if " a quitté la conversation" in item.content %}
+							{# Affiche le contenu de l'item #}
+							<em>
+								{% if " supprimé" in item.content %}
+									<i class="fa-duotone fa-user-xmark"></i>
+									&nbsp;&nbsp;
+									<a href="{{path("app_user", {username:item.user.username})}}" class="hover:underline" data-turbo-frame="_top">
+										<strong>{{item.user.nickname}}</strong>
+									</a>
+									a été renvoyé de la conversation par un autre membre du groupe
+								{% else %}
+									<i class="fa-duotone fa-left-long-to-line"></i>
+									&nbsp;&nbsp;
+									<a href="{{path("app_user", {username:item.user.username})}}" class="hover:underline" data-turbo-frame="_top">
+										<strong>{{item.user.nickname}}</strong>
+									</a>
+									a quitté la conversation
+								{% endif %}
+							</em>
+							<span class="text-[0.65rem] flex flex-row items-baseline pt-0  gap-x-1  {{item.user.id == app.user.id ? " justify-end" :" justify-start "}} opacity-60 dark:opacity-40">
+								<i class="fa-regular fa-clock"></i>
+								<span>{{item.createdAt|since}}</span>
+							</span>
+						{% elseif "<em>Message supprimé</em>" in item.content %}
+							<em>Message supprimé</em>
+						{% else %}
+							{{item.content|smiley_to_emoji|nl2br}}
+							<span class="text-[0.65rem] flex flex-row items-baseline pt-0  gap-x-1  {{item.user.id == app.user.id ? " justify-end" :" justify-start "}} opacity-60 dark:opacity-40">
+								<i class="fa-regular fa-clock"></i>
+								<span class="relative flex flex-row items-center gap-x-2">{{item.createdAt|since}}
+									|
+									{% if app.user.id == item.user.id %}
+										<span class="dropdown " style="position:inline">
+											<button aria-label="Supprimer ce message" class="text-gray-600 hover:text-gray-900 text-[0.55rem]  focus:outline-none focus:text-gray-900">
+												<i class="fa-solid fa-angle-down dropdown-button  " id="ddb-{{ item.id }}"></i>
+											</button>
+											<div id="ddm-{{ item.id }}" class=" hidden z-50 bg-white divide-y divide-gray-100 rounded-lg mt-32 ml-24 shadow w-56 dark:bg-gray-700 dropdown-content">
+												<ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+													<li>
+														<a data-turbo-frame="_self" href="{{path("app_inbox_delete_message", {id:item.id, groupId:this.id})}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+															<i class="fa-regular fa-regular fa-trash"></i>
+															&nbsp;Supprimer ce message
+														</a>
+													</li>
+												</ul>
+											</div>
+										</span>
+									{% endif %}
+								</span>
+							</span>
+						{% endif %}
+					</p>
+				</div>
+			</div>
+			<div class="hidden last-message" data-time="{{item.createdAt|date("D H:m:s")}}"></div>
+			{% set n = n + 1 %}
+		{% endfor %}
+	{% else %}
+		<div class="w-full flex flex-col h-full items-center justify-center">
+			<div class="flex flex-col items-center justify-center gap-y-2">
+				<i class="fa-duotone fa-comment-slash text-6xl text-slate-300 dark:text-slate-700"></i>
+				<p class="text-xl text-slate-300 dark:text-slate-700">Vous avez été renvoyé de ce groupe</p>
+			</div>
+		{% endif %}
+	</div>

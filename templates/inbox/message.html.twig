@@ -5,17 +5,21 @@
 	{{ parent() }}
 {% endblock %}
 {% block body %}
-	<div class="flex flex-col md:flex-row w-full -mt-10">
+	<div
+		class="flex flex-col md:flex-row w-full -mt-10">
+		{# ! Fenêtre de messagerie #}
 		{{ component("inbox_group_component", {id:app.user.id, group:group.id, big:0})}}
 		{% set goup = group.id %}
-		<div class="w-full flex -mt-10 flex-col justify-end md:order-1 order-2 h-[88vh] md:h-[98vh] items-start bg-slate-50 dark:bg-slate-900  border-r-0 border-l-0 md:border-l-[1px] md:border-r-[1px] dark:border-slate-700 md:px-12">
-			<turbo-frame id="messages-frame" class="w-full flex scroll-smooth h-fit flex-col gap-y-2 pb-5" data-id="{{goup}}">
-				<div class="  flex flex-col justify-end items-start" id="message-box">
+		<div class="w-full relative flex -mt-10 flex-col justify-end md:order-1 order-2 items-start bg-slate-50 dark:bg-slate-900  border-r-0 border-l-0 md:border-l-[1px] md:border-r-[1px] dark:border-slate-700 md:px-12">
+			<turbo-frame id="messages-frame" class="w-full flex scroll-smooth  h-fit flex-col gap-y-2 pb-5" data-id="{{goup}}">
+				<div class="  flex flex-col justify-end items-start overflow-y-auto  h-[68vh] md:h-[80vh]" id="message-box">
+
 					{{ component("inbox_component", {id:goup})}}
+
 				</div>
 				{{ form_start(form, {attr: {'class':'w-full  gap-x-2 items-center'}}) }}
 				<div class="flex flex-row gap-x-2 px-4 md:px-0 mr-0 w-full items-center">
-					<div class="w-full">
+					<div class="w-[78%] md:w-full">
 						{% include "./partials/_form-row.html.twig" with {form: form.content,"dataId":goup, value:'', 'icon':"fa-message",classWidget:"textarea w-full"} %}
 					</div>
 					<div>
@@ -26,6 +30,53 @@
 				</div>
 				{{ form_end(form) }}
 			</turbo-frame>
+			<div class="absolute bottom-[5.8rem] right-[0.35rem] md:right-3">
+				<button type="button" class="button-classic bg-slate-700 text-slate-200 dark:bg-slate-800 dark:text-slate-200 py-4 -mt-1 rounded-full" id="multiLevelDropdownButton" data-dropdown-toggle="dropdown">
+					<i class="fa-regular fa-ellipsis-stroke-vertical my-1"></i>
+				</button>
+			</div>
+			<div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-[14rem] dark:bg-gray-700">
+				<ul class=" text-sm text-gray-700 dark:text-gray-200" aria-labelledby="multiLevelDropdownButton">
+
+					<li>
+						<button id="doubleDropdownButton" data-dropdown-trigger="hover" data-dropdown-toggle="doubleDropdown" data-dropdown-placement="right-start" type="button" class="flex items-center justify-start w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+							Renvoyer un utilisateur
+							<svg aria-hidden="true" class="w-4 h-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+								<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+							</svg>
+						</button>
+						<div id="doubleDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+							<ul class="text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
+								{% set n = 0 %}
+								{% for item in users %}
+									{% if item.user.id != app.user.id %}
+										<li>
+											<a href="{{path("app_inbox_remove_user", {userId:item.user.id, groupId:goup})}}" class=" {{ n == 0 ? " rounded-t-lg" }} px-4 py-2  hover:bg-gray-100  flex flex-row gap-x-2 items-center dark:hover:bg-gray-600 dark:hover:text-white">
+												{% if item.user.profilPicture %}
+													<img src="{{item.user.profilPicture}}" class="w-6 h-6 rounded-full">
+												{% else %}
+													<div class="w-6 h-6 rounded-full flex items-center justify-center bg-gray-200 dark:bg-gray-500 dark:text-gray-800">
+														{{item.user.nickname|slice(0,1)}}
+													</div>
+												{% endif %}
+												{{item.user.nickname}}
+											</a>
+										</li>
+									{% endif %}
+									{% set n = n + 1 %}
+								{% endfor %}
+							</ul>
+						</div>
+					</li>
+
+					<li>
+						<a href="{{path("app_inbox_leave_group", {groupId:goup})}}" class=" px-4 py-2 bg-red-600 border-t-2 border-t-red-400 text-red-50 hover:bg-red-700 rounded-b-lg flex flex-row gap-x-2 items-center dark:hover:text-white">
+							<i class="fa-regular fa-trash-xmark"></i>
+							<span>Quitter la conversation</span>
+						</a>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</div>
 {% endblock %}

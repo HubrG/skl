@@ -130,74 +130,6 @@ class InboxController extends AbstractController
 
         ]);
     }
-    #[Route('/inbox2/{userTo}', name: 'app_inbox_message2', requirements: ['userTo' => '\d+'])]
-    public function message2(InboxRepository $inboxRepo, Request $request, UserRepository $uRepo, EntityManagerInterface $em, $userTo = null): Response
-    {
-
-
-        // On recherche le groupe
-        $userTo = $uRepo->find($userTo);
-
-        // $conversations = $inboxRepo->findDistinctUserToByUser($this->getUser());
-
-        $conversations = $inboxRepo->findDistinctUserToByUser($this->getUser());
-
-
-        // ! form
-        $form = $this->createForm(InboxType::class);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Créez une nouvelle instance de PublicationTopic
-            $message = $form->getData();
-
-            // Définissez les propriétés supplémentaires
-            $message->setUser($this->getUser())
-                ->setUserTo($userTo)
-                ->setCreatedAt(new DateTimeImmutable());
-            // Persistez et enregistrez l'entité
-            $em->persist($message);
-            $em->flush();
-            // On redirige vers le topic
-            // return $this->render('inbox/index.html.twig', [
-            //     'slug' => $category->getSlug(),
-            //     'id' => $topic->getId(),
-            //     'slugTopic' => $topic->getSlug(),
-            // ]);
-        }
-        // On reprend tous les messages
-        $messagesSentByUser = $inboxRepo->findBy([
-            'user' => $this->getUser(),
-            'UserTo' => $userTo,
-        ]);
-
-        // Récupérez les messages envoyés par l'utilisateur userTo à l'utilisateur User
-        $messagesSentByUserTo = $inboxRepo->findBy([
-            'user' => $userTo,
-            'UserTo' => $this->getUser(),
-        ]);
-
-        // Fusionnez les deux tableaux de messages
-        $allMessages = array_merge($messagesSentByUser, $messagesSentByUserTo);
-
-        // Triez les messages par date, si nécessaire
-        usort($allMessages, function ($messageA, $messageB) {
-            return $messageA->getCreatedAt() <=> $messageB->getCreatedAt();
-        });
-
-        // NOmbre total de messages non lus
-        $nbUnreadMessages = $inboxRepo->findBy(["UserTo" => $this->getUser(), "ReadAt" => null]);
-
-        return $this->render('inbox/message2.html.twig', [
-            'controller_name' => 'InboxController',
-            'form' => $form,
-            'messages' => $allMessages,
-            'userTo' => $userTo,
-            'conversations' => $conversations,
-            'nbUnreadMessages' => $nbUnreadMessages,
-            'dateTime' => new DateTimeImmutable(),
-        ]);
-    }
     #[Route('/inbox/{groupId}', name: 'app_inbox_message', requirements: ['groupId' => '\d+'])]
     public function message(Request $request, $groupId = null): Response
     {
@@ -242,6 +174,8 @@ class InboxController extends AbstractController
                 }
             }
         }
+        // On récupère les utilisateurs de la room
+        $users = $this->igmRepo->findBy(['grouped' => $group]);
 
         return $this->render('inbox/message.html.twig', [
             'group' => $group,
@@ -249,12 +183,13 @@ class InboxController extends AbstractController
             'controller_name' => 'InboxController',
             'dateTime' => new DateTimeImmutable(),
             'form' => $form,
+            'users' => $users
         ]);
     }
 
 
     #[Route('/read_at', name: 'app_inbox_message_read_at', methods: ['POST'])]
-    public function ReadAt(InboxRepository $inboxRepo, InboxGroupRepository $igRepo, InboxGroupMemberRepository $igmRepo, Request $request, UserRepository $uRepo, EntityManagerInterface $em, $userTo = null): Response
+    public function ReadAt(InboxRepository $inboxRepo, InboxGroupRepository $igRepo, InboxGroupMemberRepository $igmRepo, Request $request, UserRepository $uRepo, EntityManagerInterface $em): Response
     {
         $data = json_decode($request->getContent(), true);
 
@@ -275,5 +210,117 @@ class InboxController extends AbstractController
             'code' => 200
 
         ], 200);
+    }
+
+    #[Route('/inbox/leave-group/{groupId}', name: 'app_inbox_leave_group')]
+    public function leave(InboxGroupRepository $igRepo, InboxGroupMemberRepository $igmRepo, UserRepository $uRepo, EntityManagerInterface $em, $groupId = null): Response
+    {
+        // On récupère le nom de l'utilisateur courant :
+        $user = $this->getUser();
+        // On vérifie que l'utilisateur courant est bien membre du groupe
+        $member = $igmRepo->findOneBy(['user' => $user, 'grouped' => $groupId]);
+        if (!$member) {
+            return $this->redirectToRoute('app_inbox_create');
+        }
+        $user = $uRepo->find($user);
+        // On récupère les infos du groupe
+        $group = $igRepo->find($groupId);
+        // On supprime l'utilisateur courant du groupe
+        $member = $igmRepo->findOneBy(['user' => $this->getUser(), 'grouped' => $group]);
+        $em->remove($member);
+        $em->flush();
+        // On récupère les membres du groupe restants
+        $members = $igmRepo->findBy(['grouped' => $group]);
+        // On renomme le groupe avec les membres restants
+        $name = '';
+        foreach ($members as $member) {
+            $name .= $member->getUser()->getNickname() . ', ';
+        }
+        // On supprime la dernière virgule
+        $name = substr($name, 0, -2);
+        // On ajoute un "et" avant le dernier nom
+        $name = preg_replace('/,([^,]*)$/', ' et$1', $name);
+        // On modifie le nom de la room
+        $group->setName($name);
+        // On persiste et flush
+        $em->persist($group);
+        $em->flush();
+        // On ajoute un message de notification dans la room
+        $message = new Inbox();
+        $message
+            ->setUser($user)
+            ->setGrouped($group)
+            ->setContent("<em>" . $user->getNickname() . ' a quitté la conversation</em>')
+            ->setCreatedAt(new DateTimeImmutable());
+        // On persiste et flush
+        $em->persist($message);
+        $em->flush();
+        // On récupère les membres du groupe
+        return $this->redirectToRoute('app_inbox_create');
+    }
+    #[Route('/inbox/remove-user/{groupId}/{userId}', name: 'app_inbox_remove_user')]
+    public function remove(InboxGroupRepository $igRepo, InboxGroupMemberRepository $igmRepo, UserRepository $uRepo, EntityManagerInterface $em, $groupId = null, $userId = null): Response
+    {
+        // On récupère le nom de l'utilisateur courant :
+        $user = $this->getUser();
+        // On vérifie que l'utilisateur courant est bien membre du groupe
+        $member = $igmRepo->findOneBy(['user' => $user, 'grouped' => $groupId]);
+        if (!$member) {
+            return $this->redirectToRoute('app_inbox_create');
+        }
+        $user = $uRepo->find($user);
+        // On récupère les infos de userId
+        $userToRemove = $uRepo->find($userId);
+        // On récupère les infos du groupe
+        $group = $igRepo->find($groupId);
+        // On supprime l'utilisateur  du groupe
+        $member = $igmRepo->findOneBy(['user' => $userToRemove, 'grouped' => $group]);
+        $em->remove($member);
+        $em->flush();
+        // On récupère les membres du groupe restants
+        $members = $igmRepo->findBy(['grouped' => $group]);
+        // On renomme le groupe avec les membres restants
+        $name = '';
+        foreach ($members as $member) {
+            $name .= $member->getUser()->getNickname() . ', ';
+        }
+        // On supprime la dernière virgule
+        $name = substr($name, 0, -2);
+        // On ajoute un "et" avant le dernier nom
+        $name = preg_replace('/,([^,]*)$/', ' et$1', $name);
+        // On modifie le nom de la room
+        $group->setName($name);
+        // On persiste et flush
+        $em->persist($group);
+        $em->flush();
+        // On ajoute un message de notification dans la room
+        $message = new Inbox();
+        $message
+            ->setUser($userToRemove)
+            ->setGrouped($group)
+            ->setContent($user->getNickname() . ' a quitté la conversation car il a été supprimé par ' . $user->getNickname())
+            ->setCreatedAt(new DateTimeImmutable());
+        // On persiste et flush
+        $em->persist($message);
+        $em->flush();
+        // On récupère les membres du groupe
+        return $this->redirectToRoute('app_inbox_message', ['groupId' => $groupId]);
+    }
+    #[Route('/inbox/delete-message/{id}/{groupId}', name: 'app_inbox_delete_message')]
+    public function removeMessage(InboxGroupRepository $igRepo, InboxGroupMemberRepository $igmRepo, UserRepository $uRepo, EntityManagerInterface $em, $groupId = null, $id = null): Response
+    {
+        // On vérifie que l'utilisateur courant est bien l'auteur du message
+        $message = $this->inboxRepo->find($id);
+        if ($message->getUser() != $this->getUser()) {
+            return $this->redirectToRoute('app_inbox_create');
+        }
+        // On modifie le contenu du message
+        $message->setContent('<em>Message supprimé</em>');
+        // On persiste et flush
+        $em->persist($message);
+        $em->flush();
+
+        // On redirige vers la page de la room
+        return $this->redirectToRoute('app_inbox_message', ['groupId' => $groupId]);
     }
 }

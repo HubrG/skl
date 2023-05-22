@@ -28,6 +28,7 @@ import { TippyC } from "../scripts/Tippy";
 import { PublicationShow } from "../scripts/Publication/PublicationShow";
 import { User } from "../scripts/User/User";
 import { Dropdown } from "../scripts/Dropdown";
+import { Dropdown as FlowbiteDropdown } from "flowbite";
 import { Notification } from "../scripts/Notification";
 import { axiosSaveChapter } from "../scripts/Publication/Chapter";
 import { Charts } from "../scripts/Charts";
@@ -39,6 +40,7 @@ import { Navbar } from "../scripts/Navbar";
 import { Annotation } from "../scripts/Publication/Annotations";
 import { searchPredictionKw } from "../scripts/Publication/SearchPredictionKw";
 import { ForumTopicRead } from "../scripts/Forum/ForumTopicRead";
+
 import { ShowChapter, DropdownMenu } from "../scripts/Publication/ChapterShow";
 
 const TurboHelper = class {

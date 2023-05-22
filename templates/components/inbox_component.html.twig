@@ -13,10 +13,12 @@
 				Vous entamnez une conversation avec
 				{# on fait la boucle de tous les utilisateurs #}
 				{% for item in this.members %}
-					<strong>{{item.user.nickname}}</strong>
-					{% if loop.index == this.members|length - 1 %}
-						et
-						{% elseif loop.index < this.members|length - 1 %},
+					{% if item.user.id != app.user.id  %}
+						<strong>{{item.user.nickname}}</strong>
+						{% if loop.index == this.members|length - 2 %}
+							et
+							{% elseif loop.index < this.members|length - 2 %},
+						{% endif %}
 					{% endif %}
 				{% endfor %}...
 			</p>

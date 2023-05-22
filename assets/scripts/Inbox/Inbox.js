@@ -9,13 +9,26 @@ export function Inbox() {
   interval();
   // ! Fonction qui permet de modifeir la taille du textarea en fonction du contenu
   const textarea = document.getElementById("inbox_content");
+  const form = document.getElementById("inbox-form"); // Remplacez par l'ID de votre formulaire
 
   if (textarea) {
     textarea.addEventListener("input", () => {
-      textarea.style.height = "";
+      // Réduisez la hauteur à chaque fois pour ne pas dépasser le contenu du textarea
+      textarea.style.height = "auto";
       textarea.style.height = `${textarea.scrollHeight}px`;
     });
+
+    textarea.addEventListener("keydown", function (e) {
+      // Lorsque l'utilisateur appuie sur Entrée sans la touche Maj
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        // Ici vous pouvez ajouter votre code pour envoyer le message
+        // par exemple soumettre le formulaire
+        document.getElementById("submit-message-inbox").click();
+      }
+    });
   }
+
   // ! Traitement du ReadAt
   // Au clic sur une conversation
   const oneConversation = document.querySelectorAll(".one-conversation");

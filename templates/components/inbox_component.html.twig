@@ -54,14 +54,14 @@
 								<span class="relative flex flex-row items-center gap-x-2">{{item.createdAt|since}}
 									|&nbsp;&nbsp;
 									{% if app.user.id == item.user.id %}
-										<div class="dropdown" style="position:absolute; right:0.25rem; bottom:0.6rem">
+										<div class="dropdown" style="position:absolute; right:0.28rem; bottom:0.6rem">
 											<button aria-label="Supprimer ce message" class="text-emerald-800 dark:text-emerald-300 text-[0.55rem]  focus:outline-none ">
 												<i class="fa-solid fa-angle-down dropdown-button  " id="ddb-{{ item.id }}"></i>
 											</button>
 											<div id="ddm-{{ item.id }}" class=" hidden z-50 bg-white divide-y divide-gray-100 rounded-lg right-0 absolute mt-5 shadow w-56 dark:bg-slate-700 dropdown-content">
 												<ul class="text-sm text-gray-700 dark:text-gray-200">
 													<li>
-														<a data-turbo-frame="_self" href="{{path("app_inbox_delete_message", {id:item.id, groupId:this.id})}}" class="block rounded-lg px-4 py-2 hover:bg-slate-100 text-xs dark:hover:bg-slate-600 dark:hover:text-white">
+														<a href="{{path("app_inbox_delete_message", {id:item.id, groupId:this.id})}}" class="block rounded-lg px-4 py-2 hover:bg-slate-100 text-xs dark:hover:bg-slate-600 dark:hover:text-white">
 															<i class="fa-regular fa-regular fa-trash text-red-500"></i>
 															&nbsp;Supprimer ce message
 														</a>

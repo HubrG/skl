@@ -86,6 +86,27 @@ export function axiosSaveChapter() {
   }
 }
 // !
+// ! Fonction qui annule le CTRL + S par défaut
+// !
+window.addEventListener(
+  "keydown",
+  function (e) {
+    // 83 est le code de touche pour 's' ou 'S'
+    if (e.keyCode == 83 && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      // Appeler la fonction spécifique ici
+      myFunction();
+    }
+  },
+  false
+);
+
+// Définir la fonction spécifique
+function myFunction() {
+  axiosChapter();
+}
+
+// !
 // ! Fonction de sauvegarde
 // !
 function axiosChapter() {

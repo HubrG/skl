@@ -9,7 +9,7 @@
 	{% set n = 0 %}
 	{% if memberAuthorize %}
 		{% if this.messages|length == 0 %}
-			<p class="text-center pt-2.5 italic opacity-70">
+			<p class="text-center pt-2.5 italic opacity-70 dark:text-slate-200">
 				Vous entamnez une conversation avec
 				{# on fait la boucle de tous les utilisateurs #}
 				{% for item in this.members %}

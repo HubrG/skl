@@ -7,7 +7,15 @@ export function Inbox() {
   }
   scrollToBottom();
   interval();
+  // ! Fonction qui permet de modifeir la taille du textarea en fonction du contenu
+  const textarea = document.getElementById("inbox_content");
 
+  if (textarea) {
+    textarea.addEventListener("input", () => {
+      textarea.style.height = "";
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    });
+  }
   // ! Traitement du ReadAt
   // Au clic sur une conversation
   const oneConversation = document.querySelectorAll(".one-conversation");
@@ -92,6 +100,7 @@ document.addEventListener("turbo:frame-render", () => {
     clearInterval(intervalId);
     return;
   }
+  document.getElementById("inbox_content").value = "";
   const messagesFrame = document.getElementById("messages-frame");
   if (messagesFrame) {
     scrollToBottom(messagesFrame);

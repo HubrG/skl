@@ -14,11 +14,11 @@ class InboxType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('content', TextType::class, [
+            ->add('content', TextareaType::class, [
                 'label' => false,
                 'attr' => [
                     'placeholder' => 'Votre message',
-                    'rows' => 2,
+                    'rows' => 1,
                 ],
             ]);
     }

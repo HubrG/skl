@@ -1178,7 +1178,7 @@ main button {
 /* ! */
 /* ! DISPLAY ONE PUBLICATION CARD */
 /* ! */
-.display_publications:not(.big.showAll) {
+.display_publications:not(.big.showAll):not(.big.showHome) {
 	 @apply grid grid-cols-1 items-start sm:grid-cols-1 md:grid-cols-2  xl:grid-cols-3 -mt-14 md:-mt-0  md:gap-10 sm:gap-7 gap-5;
 }
 .display_publications.twoMax {
@@ -1188,7 +1188,12 @@ main button {
 .display_publications.big.showAll {
 	@apply md:columns-2 sm:columns-1  -mt-14 md:-mt-0  md:gap-10 sm:gap-7 gap-7 !important;
 }
+.display_publications.big.showHome {
+	@apply lg:columns-3 md:columns-2 columns-1  -mt-14 md:-mt-0  md:gap-10 sm:gap-7 gap-7 !important;
+}
 .display_publications.big.showAll .card   {
+	@apply mb-10;
+}.display_publications.big.showHome .card   {
 	@apply mb-10;
 }
 /* END Show all Big Mansoury */

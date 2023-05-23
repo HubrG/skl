@@ -255,6 +255,8 @@ class InboxController extends AbstractController
         // On persiste et flush
         $em->persist($message);
         $em->flush();
+        // Message flash
+        $this->addFlash('info', 'Vous avez quitté la conversation du groupe « ' . $group->getName() . " »");
         // On récupère les membres du groupe
         return $this->redirectToRoute('app_inbox_create');
     }

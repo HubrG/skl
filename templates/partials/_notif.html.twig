@@ -1,8 +1,17 @@
 {% for message in app.session.flashBag.get('success') %}
-	<div id="flashbag-success" class="hidden" data-count="1" data-status="success">
+	<div id="flashbag-success" class=" flex flex-col gap-x-2 items-center" data-count="1" data-status="success">
 		<i class="fa-light fa-circle-check"></i>
-		{{ message|raw }}</div>
+		<span>{{ message|raw }}</span>
+	</div>
+{% endfor %}
+{% for message in app.session.flashBag.get('info') %}
+	<div id="flashbag-success" class=" flex flex-col gap-x-2 items-center" data-count="1" data-status="info">
+		<i class="fa-light fa-circle-check"></i>
+		<span>{{ message|raw }}</span>
+	</div>
 {% endfor %}
 {% for message in app.session.flashBag.get('error') %}
-	<div id="flashbag-success" class="hidden" data-count="1" data-status="error">{{ message|raw }}</div>
+	<div id="flashbag-success" class=" flex flex-row gap-x-2 items-center" data-count="1" data-status="error">
+		{{ message|raw }}
+	</div>
 {% endfor %}

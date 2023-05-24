@@ -31,7 +31,7 @@
 	Récit |
 	{{ pubShow.title }}
 	({{ pubShow.user.nickname }})
-																																																																																																																																																																																																																																																																																																																																																																																																																																													-
+																																																																																																																																																																																																																																																																																																																																																																																																																																																									-
 	{{ parent() }}
 {% endblock %}
 
@@ -85,10 +85,10 @@
 			z-index: -99999999999;
 			background-image: url('{{ pic_bg }}');
 			background-position: center;
-			background-color: rgb(51 65 85 / var(--tw-bg-opacity));
+			background-color: black;
 		}
 	</style>
-	<section class=" before:bg-cover before:-z-[9999]dark:before:grayscale  col-span-12 col-start-0 lg:col-span-10 lg:col-start-2 gap-10 " id="PublicationShowOneContent">
+	<section class=" before:bg-cover before:-z-[9999]  dark:before:grayscale  col-span-12 col-start-0 lg:col-span-10 lg:col-start-2 gap-10 " id="PublicationShowOneContent">
 		{% if pubShow.status < 2 %}
 			<div class="mb-0">
 				<div class="w-full -mt-10 mb-5 h-10 bg-slate-100 ring-1 ring-slate-500 dark:bg-slate-700 dark:shadow dark:text-slate-200 opacity-80 dark:opacity-100 right-0 rounded-b-sm">
@@ -132,7 +132,7 @@
 		</h1>
 		<h5 class="text-center -mt-5 mb-0">
 			<div class="my-special-hr">
-				<hr class="border-slate-400">
+				<hr class="border-none">
 				<h1 class="bg-none  flex flex-row gap-x-2 items-baseline" style="background:none;font-size:1.2rem;display: flex;    flex-direction: row; column-gap: 0.5rem">
 					{% if pubShow.user.profilPicture %}
 						<div class="self-start flex mt-2">
@@ -141,7 +141,7 @@
 					{% endif %}
 					<a href="{{ path("app_user", {username:pubShow.user.username}) }}" class="font-sans hover:underline dark:text-slate-200">{{ pubShow.user.nickname }}</a>
 				</h1>
-				<hr class="border-slate-400">
+				<hr class="border-none">
 			</div>
 		</h5>
 		{% if pubShow.cover != "" %}

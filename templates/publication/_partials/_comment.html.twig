@@ -139,7 +139,9 @@
 				<textarea rows="1" placeholder="Votre réponse..." id="reply-to-{{item.id}}" class="assign-user  block -mt-5 p-2.5 w-full text-sm text-gray-900 resize-none bg-white pr-12 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
 				<div class="assign-user-dropdown" style="display: none;margin-top:-1.5rem "></div>
 				<button data-reply-path="{{path("app_comment_reply")}}" onclick="setTimeout(function() { document.getElementById('click-reply-{{item.id}}').click() },100)" id="send-reply-to-{{item.id}}" type="button" class="inline-flex justify-center p-2  dark:hover:text-gray-300 text-slate-600 rounded-full cursor-pointer  hover:text-blue-500 dark:text-sky-500   -ml-10 mt-4">
-					<i class="fa-duotone fa-chevron-down ml-2"></i>
+					<svg aria-hidden="true" class="w-6 h-6 -mt-10 rotate-45" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+						<path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
+					</svg>
 					<span class="sr-only">Envoyer</span>
 				</button>
 				{% set currentRoute = app.request.attributes.get('_route') %}

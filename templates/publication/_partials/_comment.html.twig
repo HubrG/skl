@@ -203,10 +203,19 @@
 									<span class="text-gray-400 text-[0.70rem]">{{reply.updatedAt ? "modifié"}}</span>
 								</span>
 							</span>
-							<div id="updateCom-{{ reply.id }}" class=" w-8/12 h-full rounded flex items-center border-l dark:border-l-slate-700 pl-3">
-								<p id="comShow-{{ reply.id }}" class="chapterComment reply">
-									{{ reply.content|nl2br }}
+
+							<div id="updateCom-{{ reply.id }}" class=" w-8/12 h-full rounded items-center border-l dark:border-l-slate-700 pl-3">
+								<p class="chapterComment reply">
+									{{reply.content ? reply.content|nl2br|assign|smiley_to_emoji|raw|markdown}}
 								</p>
+							</div>
+							<p id="comShow-{{ reply.id }}" class="hidden reply chapterComment">
+								{{reply.content ? reply.content|nl2br}}
+								{# ajouter filtre twig ici #}
+							</p>
+							<div id="comShow2-{{ reply.id }}" class="hidden chapterComment">
+								{{reply.content ? reply.content|assign|smiley_to_emoji|nl2br|raw}}
+								{# ajouter filtre twig ici #}
 							</div>
 							{% if userLogId is not null %}
 								<div class="dropdown float-right">

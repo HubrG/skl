@@ -366,7 +366,7 @@ class NotificationSystem extends AbstractController
                 $email->subject($textSubject)
                     ->context([
                         'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
-                        vient d'envoyer une réponse sous votre sujet de forum <a href='" . $pathPublication . "'>" . $notification->getForumMessage()->getTopic()->getTitle() . "</a>",
+                        vient d'envoyer une réponse sous votre sujet de forum <a href='https://scrilab.com" . $pathPublication . "'>" . $notification->getForumMessage()->getTopic()->getTitle() . "</a>",
                         'subject' => "Nouvelle réponse sous votre sujet de forum",
                     ]);
                 //
@@ -388,7 +388,7 @@ class NotificationSystem extends AbstractController
                 $email->subject($textSubject)
                     ->context([
                         'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
-                        vient de vous mentionner dans une réponse sous un sujet du forum <a href='" . $pathPublication . "'>" . $notification->getAssignForumMessage()->getTopic()->getTitle() . "</a>",
+                        vient de vous mentionner dans une réponse sous un sujet du forum <a href='https://scrilab.com" . $pathPublication . "'>" . $notification->getAssignForumMessage()->getTopic()->getTitle() . "</a>",
                         'subject' => "Nouvelle mention dans une réponse d'un sujet du forum",
                     ]);
                 //
@@ -410,7 +410,7 @@ class NotificationSystem extends AbstractController
                 $email->subject($textSubject)
                     ->context([
                         'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
-                        vient de vous mentionner dans son sujet du forum <a href='" . $pathPublication . "'>" . $notification->getAssignForumTopic()->getTitle() . "</a>",
+                        vient de vous mentionner dans son sujet du forum <a href='https://scrilab.com" . $pathPublication . "'>" . $notification->getAssignForumTopic()->getTitle() . "</a>",
                         'subject' => "Nouvelle mention dans un sujet du forum",
                     ]);
                 //
@@ -425,19 +425,28 @@ class NotificationSystem extends AbstractController
             } else {
                 $notification->setAssignComment($idLink);
             }
-            // // Envoi email
-            // if (is_null($userRepo->getUserParameters()->isNotif14Mail()) or $userRepo->getUserParameters()->isNotif14Mail() == 1) {
-            //     $textSubject = "Nouvelle mention dans un sujet du forum";
-            //     $pathPublication = $this->generateUrl('app_forum_topic_read', ['slug' => $notification->getAssignComment()->getCategory()->getSlug(), "id" => $notification->getAssignComment()->getId(), "slugTopic" => $notification->getAssignComment()->getSlug()]);
-            //     $email->subject($textSubject)
-            //         ->context([
-            //             'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
-            //             vient de vous mentionner dans son sujet du forum <a href='" . $pathPublication . "'>" . $notification->getAssignComment()->getTitle() . "</a>",
-            //             'subject' => "Nouvelle mention dans un sujet du forum",
-            //         ]);
-            //     //
-            //     $this->mailer->send($email);
-            // }
+            // Envoi email
+            if (is_null($userRepo->getUserParameters()->isNotif14Mail()) or $userRepo->getUserParameters()->isNotif14Mail() == 1) {
+                if ($notification->getAssignComment()->getChapter()) {
+                    $pathChapter = $this->generateUrl('app_chapter_show', ['slugPub' => $notification->getAssignComment()->getPublication()->getSlug(), "user" => $notification->getAssignComment()->getUser()->getUsername(), "idChap" => $notification->getAssignComment()->getChapter()->getSlug()]);
+                    $textChapter = "sur la feuille <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getAssignComment()->getChapter()->getTitle() . "</a>";
+                } else {
+                    $pathChapter = "";
+                    $textChapter = "";
+                }
+                $textSubject = "Nouvelle mention dans un commentaire";
+                $pathPublication = $this->generateUrl('app_publication_show_one', ['slug' => $notification->getAssignComment()->getPublication()->getSlug(), "id" => $notification->getAssignComment()->getPublication()->getId()]);
+                $textPublication = ", sur le récit <a href='https://scrilab.com" . $pathPublication . "' style='font-weight:600;'>" . $notification->getAssignComment()->getPublication()->getTitle() . "</a>";
+                $email->subject($textSubject)
+                    ->context([
+                        'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
+                    vient de vous mentionner dans un commentaire" . $textChapter . $textPublication . "<br/>
+                    ",
+                        'subject' => "Nouvelle mention dans un commentaire",
+                    ]);
+                //
+                $this->mailer->send($email);
+            }
         }
     }
     public function getNotifications()

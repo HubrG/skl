@@ -12,6 +12,7 @@ class SmileyMessage
         if ($text === null) {
             return "";
         }
+        $text = Markdown::defaultTransform($text);
         $smileyToEmojiMap = [
             'xD' => '😆',
             'XD' => '😆',
@@ -91,9 +92,19 @@ class SmileyMessage
             ':-[]' => '😮',
             ':-{}' => '😮',
         ];
-        $markdownParser = new Markdown();
 
 
-        return str_replace(array_keys($smileyToEmojiMap), array_values($smileyToEmojiMap), $markdownParser->defaultTransform(nl2br($text)));
+
+        uksort($smileyToEmojiMap, function ($a, $b) {
+            return strlen($b) - strlen($a);
+        });
+
+        $smileyRegex = '/(?<=\s|^)(' . implode('|', array_map(function ($smiley) {
+            return preg_quote($smiley, '/');
+        }, array_keys($smileyToEmojiMap))) . ')(?=\s|$)/';
+
+        return preg_replace_callback($smileyRegex, function ($matches) use ($smileyToEmojiMap) {
+            return $smileyToEmojiMap[$matches[0]];
+        }, $text);
     }
 }

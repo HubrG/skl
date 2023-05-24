@@ -95,7 +95,7 @@
 			<turbo-frame id="messages-frame" class="-mt-5">
 				<div class="flex flex-col gap-y-5">
 					{% for item in topic.forumMessages|sort((a, b) => b.createdAt <=> a.createdAt) %}
-						<div class=" bg-slate-50 dark:bg-slate-900 p-5 rounded" id="comment-{{item.id}}">
+						<div class=" bg-slate-50 dark:bg-slate-900 p-5 rounded one-topic" id="comment-{{item.id}}">
 							<div class="flex flex-row gap-x-3">
 								{% if item.user.profilPicture %}
 									<img class="rounded-full h-6" src="{{item.user.profilPicture }}"/>
@@ -160,14 +160,14 @@
 								<hr class="mb-5">
 								<div id="updateCom-{{ item.id }}" class="text-sm">
 									<p class="topicComment">
-										{{item.content ? item.content|nl2br|assign|smiley_to_emoji|markdown|raw}}
+										{{item.content ? item.content|assign|smiley_to_emoji|markdown|raw}}
 									</p>
 								</div>
 								<p id="comShow-{{ item.id }}" class="hidden topicComment">
-									{{item.content ? item.content|nl2br}}
+									{{item.content ? item.content|smiley_to_emoji}}
 								</p>
 								<p id="comShow2-{{ item.id }}" class="hidden topicComment">
-									{{item.content ? item.content|nl2br|assign|smiley_to_emoji|raw}}
+									{{item.content ? item.content|assign|smiley_to_emoji|raw}}
 								</p>
 							</div>
 						</div>

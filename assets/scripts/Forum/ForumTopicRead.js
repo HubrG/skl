@@ -66,7 +66,7 @@ export function ForumTopicRead() {
       const com2 = document.getElementById(`comShow2-${result}`); // Avec assignation
       const inner = document.getElementById(`updateCom-${result}`);
       inner.innerHTML = `
-         <textarea id='comShow-${result}' class='assign-user topicCommentEdit textarea'>${com.textContent.trim()}</textarea>
+         <textarea id='comShow-${result}' class='assign-user mt-5 topicCommentEdit textarea'>${com.textContent.trim()}</textarea>
          <div class="assign-user-dropdown" style="display: none;margin-top:-1.5rem "></div>
          <div class='flex flex-row gap-x-2 items-center justify-between'>
         

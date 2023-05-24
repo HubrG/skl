@@ -168,7 +168,7 @@ export function Comment() {
       const com2 = document.getElementById(`comShow2-${result}`); // Avec assignation
       const inner = document.getElementById(`updateCom-${result}`);
       inner.innerHTML = `
-         <textarea id='comShow-${result}' class='assign-user chapterCommentEdit textarea'>${com.textContent.trim()}</textarea>
+         <textarea id='comShow-${result}' class='assign-user chapterCommentEdit textarea' style='margin-top:2.25rem!important'>${com.textContent.trim()}</textarea>
          <div class="assign-user-dropdown" style="display: none;margin-top:-1.5rem "></div>
          <div class='flex flex-row gap-x-2 items-center justify-between'>
          <button id='validCom-${result}' class='chapterCommentEditValidButton'><i class="fa-light fa-circle-check"></i> &nbsp;Valider</button>

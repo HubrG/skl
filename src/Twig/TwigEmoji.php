@@ -20,6 +20,7 @@ class TwigEmoji extends AbstractExtension
         if ($text === null) {
             return "";
         }
+
         $smileyToEmojiMap = [
             'xD' => '😆',
             'XD' => '😆',
@@ -100,6 +101,16 @@ class TwigEmoji extends AbstractExtension
             ':-{}' => '😮',
 
         ];
-        return str_replace(array_keys($smileyToEmojiMap), array_values($smileyToEmojiMap), $text);
+        uksort($smileyToEmojiMap, function ($a, $b) {
+            return strlen($b) - strlen($a);
+        });
+
+        $smileyRegex = '/(?<=\s|^)(' . implode('|', array_map(function ($smiley) {
+            return preg_quote($smiley, '/');
+        }, array_keys($smileyToEmojiMap))) . ')(?=\s|$)/';
+
+        return preg_replace_callback($smileyRegex, function ($matches) use ($smileyToEmojiMap) {
+            return $smileyToEmojiMap[$matches[0]];
+        }, $text);
     }
 }

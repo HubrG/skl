@@ -102,13 +102,13 @@
 					<p class="font-serif quoteComment cursor-alias text-[0.85rem]">{{ item.quote }}</p>
 				</blockquote>
 			{% endif %}
-			<div id="updateCom-{{ item.id }}" class="text-base  dark:text-slate-300 -mt-6">
+			<div id="updateCom-{{ item.id }}" class="text-base  dark:text-slate-300 -mt-6 one-comment-content">
 				<p class="chapterComment">
-					{{item.content ? item.content|nl2br|assign|smiley_to_emoji|markdown|raw}}
+					{{item.content ? item.content|assign|smiley_to_emoji|markdown|raw}}
 				</p>
 			</div>
 			<p id="comShow-{{ item.id }}" class="hidden chapterComment">
-				{{item.content ? item.content|nl2br}}
+				{{item.content ? item.content|smiley_to_emoji}}
 				{# ajouter filtre twig ici #}
 			</p>
 			<p id="comShow2-{{ item.id }}" class="hidden chapterComment">
@@ -204,17 +204,17 @@
 								</div>
 							</div>
 
-							<div id="updateCom-{{ reply.id }}" class=" w-9/12 h-full dark:text-slate-300 rounded ">
+							<div id="updateCom-{{ reply.id }}" class=" w-9/12 h-full dark:text-slate-300 rounded one-comment-content">
 								<p class="chapterComment reply ">
-									{{reply.content ? reply.content|nl2br|assign|smiley_to_emoji|raw|markdown}}
+									{{reply.content ? reply.content|assign|smiley_to_emoji|markdown|raw}}
 								</p>
 							</div>
 							<p id="comShow-{{ reply.id }}" class="hidden reply chapterComment">
-								{{reply.content ? reply.content|nl2br}}
+								{{reply.content ? reply.content|smiley_to_emoji}}
 								{# ajouter filtre twig ici #}
 							</p>
 							<div id="comShow2-{{ reply.id }}" class="hidden chapterComment">
-								{{reply.content ? reply.content|assign|smiley_to_emoji|nl2br|raw}}
+								{{reply.content ? reply.content|assign|smiley_to_emoji|raw}}
 								{# ajouter filtre twig ici #}
 							</div>
 							{% if userLogId is not null %}

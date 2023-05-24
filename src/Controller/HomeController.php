@@ -14,7 +14,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
 use App\Repository\PublicationCommentRepository;
+use Symfony\Component\Notifier\NotifierInterface;
 use App\Repository\PublicationAnnotationRepository;
+use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
@@ -145,14 +147,16 @@ class HomeController extends AbstractController
         ]);
     }
     #[Route('/test', name: 'app_test')]
-    public function test(PublicationAnnotationRepository $paRepo): Response
+    public function test(PublicationAnnotationRepository $paRepo, NotifierInterface $notifier): Response
     {
 
 
 
+        $notification = new Notification("coucou", ['chat/custom_mercure_chatter_transport']);
+        $notifier->send($notification);
+
         return $this->render('home/test.html.twig', [
             'controller_name' => "d",
-
             "article" => "dd"
 
         ]);

@@ -7,6 +7,8 @@
 {% endblock %}
 {% block javascripts %}{% endblock %}
 {% block body %}
-
-	{{component("count_pub")}}
+	<textarea class="assign-user"></textarea>
+	<div
+		class="assign-user-dropdown" style="display: none;">{# <!-- Les div des utilisateurs seront ajoutés ici dynamiquement par JavaScript --> #}
+	</div>
 {% endblock %}

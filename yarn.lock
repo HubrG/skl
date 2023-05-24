@@ -1180,6 +1180,10 @@
   dependencies:
     morphdom "^2.6.1"
 
+"@symfony/ux-notify@file:vendor/symfony/ux-notify/assets":
+  version "1.0.0"
+  resolved "file:vendor/symfony/ux-notify/assets"
+
 "@symfony/ux-turbo@file:vendor/symfony/ux-turbo/assets":
   version "0.1.0"
   resolved "file:vendor/symfony/ux-turbo/assets"

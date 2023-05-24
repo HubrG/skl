@@ -28,6 +28,7 @@ import { TippyC } from "../scripts/Tippy";
 import { PublicationShow } from "../scripts/Publication/PublicationShow";
 import { User } from "../scripts/User/User";
 import { Dropdown } from "../scripts/Dropdown";
+import { Assign } from "../scripts/Assign";
 import { Dropdown as FlowbiteDropdown } from "flowbite";
 import { Notification } from "../scripts/Notification";
 import { axiosSaveChapter } from "../scripts/Publication/Chapter";

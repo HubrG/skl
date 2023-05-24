@@ -1414,3 +1414,21 @@ nav.breadcrumb ol li a:hover.not-underline {
 .inbox-leave-conversation {
 	@apply bg-red-300 text-red-900 dark:bg-red-900 dark:text-red-50 !important;
 }
+.assign-user-dropdown {
+	@apply bg-slate-800 rounded-lg -mt-1.5 -ml-[0.03rem] rounded-t-none;
+}
+.assign-user-dropdown div {
+	@apply flex flex-row gap-x-2 p-2 items-center last:rounded-b-lg cursor-pointer text-slate-50 hover:bg-slate-700;
+}
+.assign-user-dropdown div small {
+	@apply text-slate-300;
+}
+.avatar-assign-user {
+	@apply w-5 h-5 rounded-full bg-slate-300 flex justify-center items-center;
+}
+.avatar-assign-user div {
+	@apply -mt-0.5;
+}
+.assign-user-dropdown .highlight {
+	@apply bg-slate-700
+}

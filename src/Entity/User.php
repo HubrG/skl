@@ -5,21 +5,32 @@ namespace App\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
+
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'Cette adresse email est déjà enregistrée')]
 #[UniqueEntity(fields: ['username'], message: 'Ce nom d\'utilisateur existe déjà')]
+#[ApiResource(
+    normalizationContext: ['groups' => ['user:read']],
+    denormalizationContext: ['groups' => ['user:write']],
+)]
+#[ApiFilter(SearchFilter::class, properties: ['nickname' => 'partial'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["user:read"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
@@ -41,9 +52,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true, unique: true)]
     #[Assert\NotBlank(message: "Vous devez renseigner un nom d'utilisateur")]
+    #[Groups(["user:read"])]
     private ?string $username = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(["user:read"])]
     private ?string $nickname = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -65,6 +78,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $instagram = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(["user:read"])]
     private ?string $profil_picture = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]

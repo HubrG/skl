@@ -103,9 +103,9 @@
 				</blockquote>
 			{% endif %}
 
-			<div id="updateCom-{{ item.id }}" class="text-base">
+			<div id="updateCom-{{ item.id }}" class="text-sm">
 				<p class="chapterComment">
-					{{item.content ? item.content|nl2br|assign}}
+					{{item.content ? item.content|nl2br|assign|smiley_to_emoji|markdown|raw}}
 				</p>
 			</div>
 			<p id="comShow-{{ item.id }}" class="hidden chapterComment">
@@ -113,7 +113,7 @@
 				{# ajouter filtre twig ici #}
 			</p>
 			<p id="comShow2-{{ item.id }}" class="hidden chapterComment">
-				{{item.content ? item.content|nl2br|assign}}
+				{{item.content ? item.content|assign|smiley_to_emoji|raw}}
 				{# ajouter filtre twig ici #}
 			</p>
 

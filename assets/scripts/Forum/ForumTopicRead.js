@@ -69,10 +69,10 @@ export function ForumTopicRead() {
          <textarea id='comShow-${result}' class='assign-user topicCommentEdit textarea'>${com.textContent.trim()}</textarea>
          <div class="assign-user-dropdown" style="display: none;margin-top:-1.5rem "></div>
          <div class='flex flex-row gap-x-2 items-center justify-between'>
+        
          <button id='validCom-${result}' class='topicCommentEditValidButton'><i class="fa-light fa-circle-check"></i> &nbsp;Valider</button>
          <button id='cancelCom-${result}' class='topicCommentEditCancelButton' data-tippy-content="Annuler la modification"><i class="fa-duotone fa-xmark"></i> Annuler</button>
          </div>
-       
        `;
       Assign();
       const buttonValid = document.getElementById(`validCom-${result}`);

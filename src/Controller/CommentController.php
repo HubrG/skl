@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Services\SmileyMessage;
 use App\Entity\PublicationComment;
 use App\Repository\UserRepository;
 use App\Services\NotificationSystem;
@@ -22,12 +23,15 @@ class CommentController extends AbstractController
     private $notificationSystem;
     private $em;
     private $userRepository;
-    public function __construct(UserRepository $userRepository, NotificationSystem $notificationSystem, EntityManagerInterface $em, PublicationPopularity $publicationPopularity)
+
+    private $smiley;
+    public function __construct(SmileyMessage $smiley, UserRepository $userRepository, NotificationSystem $notificationSystem, EntityManagerInterface $em, PublicationPopularity $publicationPopularity)
     {
         $this->publicationPopularity = $publicationPopularity;
         $this->notificationSystem = $notificationSystem;
         $this->userRepository = $userRepository;
         $this->em = $em;
+        $this->smiley = $smiley;
     }
     #[Route('/comment/delete', name: 'app_comment_delete', methods: ['POST'])]
     public function CommentDelete(Request $request, EntityManagerInterface $em, PublicationCommentRepository $pcomRepo): Response
@@ -157,7 +161,7 @@ class CommentController extends AbstractController
             'code' => 200,
             'message' => 'Le commentaire a bien été modifié.',
             'comment' => $content_message, // Sans assignation
-            'comment2' => $content // Avec assignation
+            'comment2' => $this->smiley->convertSmileyToEmoji($content) // Avec assignation
         ], 200);
     }
     #[Route('/comment/reply', name: 'app_comment_reply', methods: ['POST'])]

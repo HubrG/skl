@@ -74,7 +74,7 @@
 					{% endif %}
 				</h2>
 			</div>
-			<p class=" text-justify text-slate-600 dark:text-slate-400 text-base">{{topic.content|smiley_to_emoji|nl2br|assign}}</p>
+			<p class=" text-justify text-slate-600 dark:text-slate-400 text-base">{{topic.content|nl2br|assign|smiley_to_emoji|raw}}</p>
 			<hr class="mb-0 mt-0 border-2">
 			{% if app.user  %}
 				{{ form_start(form, {attr: {'novalidate': 'novalidate', 'data-turbo-frame':'messages-frame'}}) }}
@@ -83,8 +83,14 @@
 					Envoyer la réponse
 					<i class="fa-duotone fa-reply fa-flip-horizontal"></i>
 				</button>
+				<div class="help-text pt-7">
+					Vous pouvez interpeler un utilisateur avec un
+					<strong>@</strong>
+					suivi de son nom d'utilisateur, et utiliser du
+					<em>Markdown</em>
+				</div>
 				{{ form_end(form) }}
-				<hr>
+				<hr class="-mt-10">
 			{% endif %}
 			<turbo-frame id="messages-frame" class="-mt-5">
 				<div class="flex flex-col gap-y-5">
@@ -152,9 +158,9 @@
 							</div>
 							<div class="text-sm text-justify text-slate-600 dark:text-slate-400">
 								<hr class="mb-5">
-								<div id="updateCom-{{ item.id }}" class="text-base">
+								<div id="updateCom-{{ item.id }}" class="text-sm">
 									<p class="topicComment">
-										{{item.content ? item.content|nl2br|assign|smiley_to_emoji|raw}}
+										{{item.content ? item.content|nl2br|assign|smiley_to_emoji|markdown|raw}}
 									</p>
 								</div>
 								<p id="comShow-{{ item.id }}" class="hidden topicComment">
@@ -163,15 +169,9 @@
 								<p id="comShow2-{{ item.id }}" class="hidden topicComment">
 									{{item.content ? item.content|nl2br|assign|smiley_to_emoji|raw}}
 								</p>
-
-
-								{# <div class="flex flex-row justify-end gap-x-2 mt-5 items-center"> #}
-							{# <div> #}
-								{# <i class="fa-duotone fa-heart"></i> #}
-								{# </div> #}
-								{# </div> #}
 							</div>
 						</div>
+
 					{% endfor %}
 				</div>
 			</turbo-frame>

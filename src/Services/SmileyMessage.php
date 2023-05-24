@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use Michelf\Markdown;
+
+
 class SmileyMessage
 {
     public function convertSmileyToEmoji(?string $text): string
@@ -88,6 +91,9 @@ class SmileyMessage
             ':-[]' => '😮',
             ':-{}' => '😮',
         ];
-        return str_replace(array_keys($smileyToEmojiMap), array_values($smileyToEmojiMap), $text);
+        $markdownParser = new Markdown();
+
+
+        return str_replace(array_keys($smileyToEmojiMap), array_values($smileyToEmojiMap), $markdownParser->defaultTransform(nl2br($text)));
     }
 }

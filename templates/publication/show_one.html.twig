@@ -31,7 +31,7 @@
 	Récit |
 	{{ pubShow.title }}
 	({{ pubShow.user.nickname }})
-																																																																																																																																																																																																																																																																																																																																																																					-
+																																																																																																																																																																																																																																																																																																																																																																											-
 	{{ parent() }}
 {% endblock %}
 
@@ -418,6 +418,10 @@
 								</svg>
 								<span class="sr-only">Envoyer</span>
 							</button>
+						</div>
+						<div class="help-text">Vous pouvez interpeler un utilisateur avec un
+							<strong>@</strong>
+							suivi de son nom d'utilisateur
 						</div>
 						<input type="hidden" name="quote" id="drawerNoteQuote">
 						{{ form_end(formQuote) }}

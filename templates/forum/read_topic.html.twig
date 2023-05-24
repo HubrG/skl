@@ -154,16 +154,14 @@
 								<hr class="mb-5">
 								<div id="updateCom-{{ item.id }}" class="text-base">
 									<p class="topicComment">
-										{{item.content ? item.content|nl2br|assign}}
+										{{item.content ? item.content|nl2br|assign|smiley_to_emoji|raw}}
 									</p>
 								</div>
 								<p id="comShow-{{ item.id }}" class="hidden topicComment">
 									{{item.content ? item.content|nl2br}}
-									{# ajouter filtre twig ici #}
 								</p>
 								<p id="comShow2-{{ item.id }}" class="hidden topicComment">
-									{{item.content ? item.content|nl2br|assign}}
-									{# ajouter filtre twig ici #}
+									{{item.content ? item.content|nl2br|assign|smiley_to_emoji|raw}}
 								</p>
 
 

@@ -9,6 +9,7 @@ use App\Form\ForumTopicType;
 use App\Entity\ForumTopicRead;
 use App\Entity\ForumTopicView;
 use App\Form\ForumMessageType;
+use App\Services\SmileyMessage;
 use App\Repository\UserRepository;
 use App\Services\NotificationSystem;
 use App\Repository\ForumTopicRepository;
@@ -30,7 +31,8 @@ class ForumController extends AbstractController
         private NotificationSystem $notificationSystem,
         private RequestStack $requestStack,
         private EntityManagerInterface $em,
-        private UserRepository $userRepository
+        private UserRepository $userRepository,
+        private SmileyMessage $smiley
     ) {
     }
     #[Route('/forum', name: 'app_forum')]
@@ -357,7 +359,7 @@ class ForumController extends AbstractController
             'success' => true,
             'message' => 'Message modifié',
             'comment' => $content_message, // Sans assignation
-            'comment2' => $content // Avec assignation
+            'comment2' => $this->smiley->convertSmileyToEmoji($content) // Avec assignation
         ], 200);
     }
 

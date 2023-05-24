@@ -2,6 +2,7 @@
 
 namespace App\Controller\Publication;
 
+use App\Entity\User;
 use DateTimeImmutable;
 use PHPePub\Core\EPub;
 use App\Entity\PublicationRead;
@@ -17,6 +18,7 @@ use App\Services\PublicationPopularity;
 use App\Controller\AnnotationController;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
+use App\Repository\NotificationRepository;
 use App\Repository\PublicationReadRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,7 +53,7 @@ class ChapterShowController extends AbstractController
     }
 
     #[Route('/recit-{slugPub}/{user}/{idChap}/{slug?}/{nbrShowCom?}', name: 'app_chapter_show')]
-    public function showChapter(PublicationReadRepository $pReadRepo, Request $request, PublicationCommentRepository $pcomRepo, PublicationChapterRepository $pchRepo, EntityManagerInterface $em, PublicationRepository $pRepo, $slugPub = null, $slug = null, $idChap = null, $user = null, $nbrShowCom = null): response
+    public function showChapter(NotificationRepository $notifRepo, PublicationReadRepository $pReadRepo, Request $request, PublicationCommentRepository $pcomRepo, PublicationChapterRepository $pchRepo, EntityManagerInterface $em, PublicationRepository $pRepo, $slugPub = null, $slug = null, $idChap = null, $user = null, $nbrShowCom = null): response
     {
         if (!$nbrShowCom) {
             $nbrShowCom = 10;
@@ -110,7 +112,25 @@ class ChapterShowController extends AbstractController
             // * Envoi d'une notification
             $this->notificationSystem->addNotification(2, $comment->getPublication()->getUser(), $this->getUser(), $comment);
             //
-
+            // ! notification
+            // On vérifie qu'il y a un ou plusieurs @ dans le message
+            $pattern = '/(@\w+)/';
+            $mentions = preg_match_all($pattern, $comment->getContent(), $matches);
+            if ($mentions > 0) {
+                // On récupère les utilisateurs mentionnés
+                $mentions = $matches[0];
+                foreach ($mentions as $mention) {
+                    $username = substr($mention, 1);
+                    $user = $em->getRepository(User::class)->findOneBy(['username' => $username]);
+                    if ($user) {
+                        // On vérifie que l'utilisateur n'est pas déjà mentionné dans le message dans les notifications
+                        $notification = $notifRepo->findOneBy(['user' => $user, 'type' => 14, 'assignComment' => $comment]);
+                        if (!$notification) {
+                            $this->notificationSystem->addNotification(14, $user, $this->getUser(), $comment);
+                        }
+                    }
+                }
+            }
             $this->addFlash('success', 'Votre commentaire a bien été ajouté.');
             return $this->redirectToRoute('app_chapter_show', ['slugPub' => $publication->getSlug(), 'user' => $publication->getUser()->getUsername(), 'idChap' => $chapter->getId(), 'slug' => $chapter->getSlug()]);
         } elseif ($form->isSubmitted() && !$this->getUser()) {

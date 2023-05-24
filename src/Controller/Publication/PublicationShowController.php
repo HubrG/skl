@@ -3,6 +3,7 @@
 
 namespace App\Controller\Publication;
 
+use App\Entity\User;
 use App\Entity\PublicationFollow;
 use App\Entity\PublicationBookmark;
 use App\Form\PublicationCommentType;
@@ -21,8 +22,8 @@ use App\Repository\PublicationChapterRepository;
 use App\Repository\PublicationCommentRepository;
 use App\Repository\PublicationKeywordRepository;
 use App\Repository\PublicationCategoryRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Gzip;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Gzip;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -176,7 +177,7 @@ class PublicationShowController extends AbstractController
 	}
 
 	#[Route('/recit/{id<\d+>}/{slug}/{nbrShowCom?}', name: 'app_publication_show_one')]
-	public function show_one(Request $request, PublicationCommentRepository $pcomRepo, EntityManagerInterface $em, PublicationRepository $pRepo, PublicationChapterRepository $pchRepo, $nbrShowCom = 10, $id = null, $slug = null): Response
+	public function show_one(NotificationRepository $notifRepo, Request $request, PublicationCommentRepository $pcomRepo, EntityManagerInterface $em, PublicationRepository $pRepo, PublicationChapterRepository $pchRepo, $nbrShowCom = 10, $id = null, $slug = null): Response
 	{
 
 		$nbrShowCom = $nbrShowCom ?? 10;
@@ -223,6 +224,25 @@ class PublicationShowController extends AbstractController
 				// Envoi d'une notification
 				$this->notificationSystem->addNotification(1, $comment->getPublication()->getUser(), $this->getUser(), $comment);
 				//
+				// ! notification
+				// On vérifie qu'il y a un ou plusieurs @ dans le message
+				$pattern = '/(@\w+)/';
+				$mentions = preg_match_all($pattern, $comment->getContent(), $matches);
+				if ($mentions > 0) {
+					// On récupère les utilisateurs mentionnés
+					$mentions = $matches[0];
+					foreach ($mentions as $mention) {
+						$username = substr($mention, 1);
+						$user = $em->getRepository(User::class)->findOneBy(['username' => $username]);
+						if ($user) {
+							// On vérifie que l'utilisateur n'est pas déjà mentionné dans le message dans les notifications
+							$notification = $notifRepo->findOneBy(['user' => $user, 'type' => 14, 'assignComment' => $comment]);
+							if (!$notification) {
+								$this->notificationSystem->addNotification(14, $user, $this->getUser(), $comment);
+							}
+						}
+					}
+				}
 				return $this->redirectToRoute('app_publication_show_one', [
 					'id' => $id,
 					'slug' => $publication->getSlug()

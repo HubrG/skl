@@ -165,7 +165,7 @@ class CommentController extends AbstractController
         ], 200);
     }
     #[Route('/comment/reply', name: 'app_comment_reply', methods: ['POST'])]
-    public function CommentReply(Request $request, PublicationCommentRepository $pcomRepo, EntityManagerInterface $em): response
+    public function CommentReply(NotificationRepository $notifRepo, Request $request, PublicationCommentRepository $pcomRepo, EntityManagerInterface $em): response
     {
         $id = $request->get("id"); // ID du commentaire principal
         $dtReplyContent = $request->get("replyContent"); // Contenu du commentaire
@@ -184,6 +184,25 @@ class CommentController extends AbstractController
             $em->flush();
             // Envoi d'une notification
             $this->notificationSystem->addNotification(9, $commentOrigin->getUser(), $this->getUser(), $comment);
+            // ! notification
+            // On vérifie qu'il y a un ou plusieurs @ dans le message
+            $pattern = '/(@\w+)/';
+            $mentions = preg_match_all($pattern, $comment->getContent(), $matches);
+            if ($mentions > 0) {
+                // On récupère les utilisateurs mentionnés
+                $mentions = $matches[0];
+                foreach ($mentions as $mention) {
+                    $username = substr($mention, 1);
+                    $user = $em->getRepository(User::class)->findOneBy(['username' => $username]);
+                    if ($user) {
+                        // On vérifie que l'utilisateur n'est pas déjà mentionné dans le message dans les notifications
+                        $notification = $notifRepo->findOneBy(['user' => $user, 'type' => 14, 'assignComment' => $comment]);
+                        if (!$notification) {
+                            $this->notificationSystem->addNotification(14, $user, $this->getUser(), $comment);
+                        }
+                    }
+                }
+            }
         } else {
             return $this->json([
                 'code' => 403,

@@ -78,32 +78,32 @@
 				<input type="hidden" id="submited" name="submited" data-submited="{{submited == "submit" ? "ok" : false}}" value="submit">
 
 				<div>
-					<h2 class="font-semibold mb-2 -mt-10 dark:text-slate-300">Afficher :</h2>
+					<h6 class="font-semibold mb-2 -mt-10 dark:text-slate-300">Afficher :</h6>
 					<div class="flex flex-row items-center gap-x-2 mb-2">
 						<input type="radio" name="pubOrAuthor" value="publication" id="publications" {{ pubOrAuthor == "publication" ? "checked" }}>
-						<label for="publications" class="-mt-2 font-normal">Les récits</label>
+						<label for="publications" class="-mt-2 font-normal  text-sm">Les récits</label>
 					</div>
 					<div class="flex flex-row items-center gap-x-2 mb-2">
 						<input type="radio" name="pubOrAuthor" value="user" id="authors" {{pubOrAuthor == "user" ? "checked" }}>
-						<label for="authors" class="-mt-2 font-normal">Les utilisateur(ice)</label>
+						<label for="authors" class="-mt-2 font-normal  text-sm">Les utilisateur(ice)</label>
 					</div>
 				</div>
 
 
 				<div class="{{pubOrAuthor != "publication" ? "hidden"}}">
 					<div class="-mt-5">
-						<h2 class="font-semibold mb-2 mt-2 dark:text-slate-300">Temps de lecture :</h2>
+						<h6 class="font-semibold mb-2 mt-2 dark:text-slate-300">Temps de lecture :</h6>
 						<div class="flex flex-row items-center gap-x-2 mb-2">
 							<input type="checkbox" name="timeShort" id="timeShort" {{timeShortChecked}}>
-							<label for="timeShort" class="-mt-2 font-normal">Court (0 - 20mn)</label>
+							<label for="timeShort" class="-mt-2 font-normal  text-sm">Court (0 - 20mn)</label>
 						</div>
 						<div class="flex flex-row items-center gap-x-2 mb-2">
 							<input type="checkbox" name="timeMedium" id="timeMedium" {{timeMediumChecked}}>
-							<label for="timeMedium" class="-mt-2 font-normal">Moyen (20 - 80mn)</label>
+							<label for="timeMedium" class="-mt-2 font-normal  text-sm">Moyen (20 - 80mn)</label>
 						</div>
 						<div class="flex flex-row items-center gap-x-2 mb-4">
 							<input type="checkbox" name="timeLong" id="timeLong" {{timeLongChecked}}>
-							<label for="timeLong" class="-mt-2 font-normal">Long (min. 80mn)</label>
+							<label for="timeLong" class="-mt-2 font-normal  text-sm">Long (min. 80mn)</label>
 						</div>
 					</div>
 					<div>
@@ -219,10 +219,10 @@
 				</div>
 				<div class="{{pubOrAuthor != "user" ? "hidden"}}">
 					<div class="-mt-5">
-						<h2 class="font-semibold mb-2 mt-2 dark:text-slate-300">Qui ont :</h2>
+						<h6 class="font-semibold mb-2 mt-2 dark:text-slate-300">Qui ont :</h6>
 						<div class="flex flex-row items-center gap-x-2 mb-2">
 							<input type="checkbox" name="alreadyPublished" id="alreadyPublished" {{alreadyPublished}}>
-							<label for="alreadyPublished" class="-mt-2 font-normal">Déjà publié sur Scrilab</label>
+							<label for="alreadyPublished" class="-mt-2 font-normal  text-sm">Déjà publié sur Scrilab</label>
 						</div>
 					</div>
 					<div>
@@ -263,7 +263,7 @@
 				<hr class="{{pubOrAuthor != "user" ? "-mt-24" : "-mt-14 "}}">
 				<div class="flex flex-row items-start gap-x-2 mb-2 -mt-0">
 					<input type="checkbox" name="notNull" id="notNull" {{ notNullChecked }}>
-					<label for="notNull" class="-mt-1 pt-0 font-semibold dark:text-slate-400">Ne pas afficher les résultats nuls</label>
+					<label for="notNull" class="-mt-1 pt-0 font-semibold dark:text-slate-400   text-sm">Ne pas afficher les résultats nuls</label>
 				</div>
 				<button class="btn hidden btn-primary" id="submit-form" type="submit">Ok</button>
 			</form>

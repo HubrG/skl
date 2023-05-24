@@ -116,6 +116,8 @@
 						<i data-tippy-content="Notificatios web" class="fa-duotone fa-bell dark:text-slate-100"></i>
 					</div>
 				</div>
+				<hr class="mb-5 -mt-5">
+
 				<div class="flex flex-row notif-row">
 					<div>
 						<i class="fa-regular fa-comment-quote"></i>
@@ -140,6 +142,23 @@
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="3" type="checkbox" {{app.user.userParameters.notif3Mail is null or app.user.userParameters.notif3Mail == 1 ? "checked"}}></div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="3" type="checkbox" {{app.user.userParameters.notif3Web is null or app.user.userParameters.notif3Web == 1 ? "checked"}}></div>
 				</div>
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-comments"></i>
+						<span>Nouvelle réponse à un commentaire</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="9" type="checkbox" {{app.user.userParameters.notif9Mail is null or app.user.userParameters.notif9Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="9" type="checkbox" {{app.user.userParameters.notif9Web is null or app.user.userParameters.notif9Web == 1 ? "checked"}}></div>
+				</div>
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-highlighter-line"></i>
+						<span>Nouveau commentaire de révision sur l'une de vos feuilles</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="10" type="checkbox" {{app.user.userParameters.notif10Mail is null or app.user.userParameters.notif10Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="10" type="checkbox" {{app.user.userParameters.notif10Web is null or app.user.userParameters.notif10Web == 1 ? "checked"}}></div>
+				</div>
+				<hr class="mb-5">
 				<div class="flex flex-row notif-row">
 					<div>
 						<i class="fa-regular fa-folder-bookmark"></i>
@@ -182,28 +201,13 @@
 				</div>
 				<div class="flex flex-row notif-row">
 					<div>
-						<i class="fa-regular fa-comments"></i>
-						<span>Nouvelle réponse à un commentaire</span>
-					</div>
-					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="9" type="checkbox" {{app.user.userParameters.notif9Mail is null or app.user.userParameters.notif9Mail == 1 ? "checked"}}></div>
-					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="9" type="checkbox" {{app.user.userParameters.notif9Web is null or app.user.userParameters.notif9Web == 1 ? "checked"}}></div>
-				</div>
-				<div class="flex flex-row notif-row">
-					<div>
-						<i class="fa-regular fa-highlighter-line"></i>
-						<span>Nouveau commentaire de révision sur l'une de vos feuilles</span>
-					</div>
-					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="10" type="checkbox" {{app.user.userParameters.notif10Mail is null or app.user.userParameters.notif10Mail == 1 ? "checked"}}></div>
-					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="10" type="checkbox" {{app.user.userParameters.notif10Web is null or app.user.userParameters.notif10Web == 1 ? "checked"}}></div>
-				</div>
-				<div class="flex flex-row notif-row">
-					<div>
 						<i class="fa-regular fa-comment-alt"></i>
 						<span>Nouvelle réponse à vos sujets de forum</span>
 					</div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="11" type="checkbox" {{app.user.userParameters.notif11Mail is null or app.user.userParameters.notif11Mail == 1 ? "checked"}}></div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="11" type="checkbox" {{app.user.userParameters.notif11Web is null or app.user.userParameters.notif11Web == 1 ? "checked"}}></div>
 				</div>
+				<hr class="mb-5">
 				<div class="flex flex-row notif-row">
 					<div>
 						<i class="fa-kit fa-regular-at-circle-bolt"></i>

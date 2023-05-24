@@ -31,7 +31,7 @@
 	Récit |
 	{{ pubShow.title }}
 	({{ pubShow.user.nickname }})
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																						-
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																										-
 	{{ parent() }}
 {% endblock %}
 
@@ -440,9 +440,9 @@
 					{% if pubShow.status > 1 %}
 
 						<ul>
-							<li class="text-center mb-5 dark:text-slate-600 -mt-3 block" onclick="let commentSection = document.getElementById('comment-section').classList; commentSection.toggle('hidden');if (commentSection.contains('hidden')) { document.getElementById('showComMd').innerHTML = 'Afficher' } else {  document.getElementById('showComMd').innerHTML = 'Masquer' }">
+							<li class="text-center mb-5 dark:text-slate-400 text-slate-600 -mt-3 block" onclick="let commentSection = document.getElementById('comment-section').classList; commentSection.toggle('hidden');if (commentSection.contains('hidden')) { document.getElementById('showComMd').innerHTML = 'Afficher' } else {  document.getElementById('showComMd').innerHTML = 'Masquer' }">
 								{% if nbrCom > 0 %}
-									<button class="text-base mx-auto text-slate-300 font-medium hover:underline">
+									<button class="text-base mx-auto  font-medium hover:underline md:hidden">
 										<span id="showComMd">Afficher</span>
 										les
 										{{nbrCom}}

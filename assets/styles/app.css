@@ -156,7 +156,7 @@ form hr {
 	@apply h-px my-8 bg-gray-200 border-0 dark:bg-gray-700
 }
 form label {
-		@apply block -mb-2 font-semibold text-slate-800 dark:text-white  text-sm;
+		@apply block -mb-2 font-semibold text-slate-800 dark:text-white  text-base;
 }
 form input[type=checkbox] {
 	@apply w-4 h-4 cursor-pointer rounded focus:ring-purple-500 dark:focus:ring-purple-600 text-purple-500 dark:ring-offset-slate-800 focus:ring-2 dark:bg-slate-700 dark:border-slate-600
@@ -797,7 +797,7 @@ opacity: 0.4;
 	@apply -translate-y-[10rem] ;
   }
 .one-comment {
-@apply  -z-0   border border-slate-200 dark:border-slate-700 rounded bg-white dark:bg-slate-900 dark:shadow-xl p-6 mb-3 shadow-sm relative;
+@apply  -z-0   rounded bg-white dark:bg-slate-900 dark:shadow-xl p-6 mb-3 shadow-md relative;
 }
 /* * Notifications Système */
 .one-notification a {

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use DateTimeImmutable;
+use App\Entity\Notification;
 use App\Form\ForumTopicType;
 use App\Entity\ForumTopicRead;
 use App\Entity\ForumTopicView;
@@ -113,7 +114,11 @@ class ForumController extends AbstractController
                     $username = substr($mention, 1);
                     $user = $this->em->getRepository(User::class)->findOneBy(['username' => $username]);
                     if ($user) {
-                        $this->notificationSystem->addNotification(13, $user, $this->getUser(), $topic);
+                        // On vérifie que $user n'est pas déjà mentionné dans le message dans les notifications
+                        $already = $this->em->getRepository(Notification::class)->findOneBy(['user' => $user, 'type' => 13, 'assignForumTopic' => $topic]);
+                        if (!$already) {
+                            $this->notificationSystem->addNotification(13, $user, $this->getUser(), $topic);
+                        }
                     }
                 }
             }
@@ -199,6 +204,7 @@ class ForumController extends AbstractController
             return $this->redirectToRoute('app_forum');
         }
         $topic = $ftRepo->find($id);
+
         if (!$topic) {
             // redirection vers la route app_forum
             return $this->redirectToRoute('app_forum_topic', ['slug' => $slug]);
@@ -232,7 +238,11 @@ class ForumController extends AbstractController
                     $username = substr($mention, 1);
                     $user = $this->em->getRepository(User::class)->findOneBy(['username' => $username]);
                     if ($user) {
-                        $this->notificationSystem->addNotification(12, $user, $this->getUser(), $topic);
+                        // On vérifie que $user n'est pas déjà mentionné dans le message dans les notifications
+                        $already = $this->em->getRepository(Notification::class)->findOneBy(['user' => $user, 'type' => 13, 'assignForumTopic' => $topic]);
+                        if (!$already) {
+                            $this->notificationSystem->addNotification(13, $user, $this->getUser(), $topic);
+                        }
                     }
                 }
             }

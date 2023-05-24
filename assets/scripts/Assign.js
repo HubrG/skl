@@ -99,7 +99,6 @@ function axiosAssign(searchTerm, event, dropdown, textarea) {
     .get("/api/users", {
       params: {
         username: searchTerm,
-        nickname: searchTerm,
       },
     })
     .then((response) => {

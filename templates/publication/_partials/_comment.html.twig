@@ -137,7 +137,8 @@
 				</span>
 			</div>
 			<div class="flex items-center w-full rounded-lg mt-6 hidden" id="display-reply-to-{{item.id}}">
-				<textarea rows="1" placeholder="Votre réponse..." id="reply-to-{{item.id}}" class="block -mt-5 p-2.5 w-full text-sm text-gray-900 resize-none bg-white pr-12 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+				<textarea rows="1" placeholder="Votre réponse..." id="reply-to-{{item.id}}" class="assign-user  block -mt-5 p-2.5 w-full text-sm text-gray-900 resize-none bg-white pr-12 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+				<div class="assign-user-dropdown" style="display: none;margin-top:-1.5rem "></div>
 				<button data-reply-path="{{path("app_comment_reply")}}" onclick="setTimeout(function() { document.getElementById('click-reply-{{item.id}}').click() },100)" id="send-reply-to-{{item.id}}" type="button" class="inline-flex justify-center p-2 text-slate-600 rounded-full cursor-pointer  hover:text-blue-500 dark:text-sky-500 dark:hover:text-sky-400  -ml-10 mt-4">
 					<svg aria-hidden="true" class="w-6 h-6 -mt-8 rotate-45" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 						<path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
@@ -180,32 +181,32 @@
 					{% if reply.replyTo == item %}
 						{% set profilPic = reply.user.profilPicture ? reply.user.profilPicture %}
 						{% if n == 0 %}
-							<hr class="mb-5 border-[1px] border-dashed border-slate-500 dark:border-slate-700 opacity-50" id="hr-comment-{{reply.id}}">
+							<hr class="mb-0 border-[1px] border-dashed border-slate-500 dark:border-slate-700 opacity-50" id="hr-comment-{{reply.id}}">
 						{% else %}
-							<hr class="mb-5" id="hr-comment-{{reply.id}}">
+							<hr class="mb-0" id="hr-comment-{{reply.id}}">
 						{% endif %}
-						<div class="flex relative flex-row w-full justify-between items-center" id="comment-{{reply.id}}">
-							<span class="flex flex-col items-center justify-center w-3/12">
+						<div class="flex relative flex-row w-full justify-between items-baseline " id="comment-{{reply.id}}">
+							<div class="w-[20%] flex flex-col items-baseline justify-center  border-r-2 dark:border-r-slate-700 pl-3 pr-2">
 								{% if reply.user.profilPicture %}
-									<img class="w-6 h-6  rounded-full" src="{{ profilPic }}" alt="avatar">
+									<img class="w-6 h-6  rounded-full mx-auto " src="{{ profilPic }}" alt="avatar">
 								{% else %}
-									<div class="w-6 h-6 rounded-full mr-4 bg-gray-200">
+									<div class="w-6 h-6  rounded-full  mx-auto mr-4 bg-gray-200">
 										<div class="w-full h-full flex items-center justify-center text-sm text-gray-400">
 											{{ item.user.nickname|slice(0,1)|upper }}
 										</div>
 									</div>
 								{% endif %}
-								<span class="text-sm text-slate-600 text-center dark:text-slate-400">
+								<div class="text-sm mx-auto text-slate-600 text-center dark:text-slate-400">
 									<a href="{{ path('app_user', {'username': reply.user.username}) }}" target="_top" class="hover:underline">{{ reply.user.nickname }}</a>
-								</span>
-								<span class="text-[0.70rem] text-slate-600 text-center dark:text-slate-400 flex flex-col">
+								</div>
+								<div class="text-[0.70rem] mx-auto text-slate-600 text-center dark:text-slate-400 flex flex-col">
 									{{ reply.publishedAt|since }}
 									<span class="text-gray-400 text-[0.70rem]">{{reply.updatedAt ? "modifié"}}</span>
-								</span>
-							</span>
+								</div>
+							</div>
 
-							<div id="updateCom-{{ reply.id }}" class=" w-8/12 h-full rounded items-center border-l dark:border-l-slate-700 pl-3">
-								<p class="chapterComment reply">
+							<div id="updateCom-{{ reply.id }}" class=" w-9/12 h-full  rounded ">
+								<p class="chapterComment reply ">
 									{{reply.content ? reply.content|nl2br|assign|smiley_to_emoji|raw|markdown}}
 								</p>
 							</div>

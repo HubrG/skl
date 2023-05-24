@@ -45,14 +45,14 @@
 			</div>
 		{% endif %}
 		<div class="header-info">
-			<h2 class="font-semibold text-base md:text-xl  flex flex-row items-center gap-x-2 ">
+			<h2 class="font-semibold text-base md:text-xl leading-6 flex flex-row items-center gap-x-2 ">
 				<a {{ user_in_url ? "data-turbo-frame='_top'" }} href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" {% if title|length > 58 %} data-tippy-content="{{item.title}}" {% endif %} class="hover:underline" aria-label="Lire {{item.title}}, par {{item.user.nickname}}">
 					{{title}}
 				</a>
 			</h2>
 			<h3>
 				<a
-					{{ user_in_url ? "data-turbo-frame='_top'" }} href="{{path("app_user", {username:item.user.username})}}" class=" hover:underline text-sm flex flex-row gap-x-2" aria-label="Voir le profil de {{item.user.nickname}}">
+					{{ user_in_url ? "data-turbo-frame='_top'" }} href="{{path("app_user", {username:item.user.username})}}" class=" hover:underline text-sm font-semibold italic -mt-3 opacity-80 flex flex-row gap-x-2" aria-label="Voir le profil de {{item.user.nickname}}">
 					{# {% if item.user.profilPicture %}<img class="h-5 items-center rounded-full" src="{{item.user.profilPicture}}"/>{% endif %} #}
 					{{item.user.nickname}}
 				</a>

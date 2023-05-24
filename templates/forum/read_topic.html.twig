@@ -39,7 +39,7 @@
 		<div class="flex flex-col gap-y-10 mx-auto justify-center w-full">
 			<div class="flex flex-col gap-y-3">
 				<h1 class="text-3xl mb-0">{{topic.title}}</h1>
-				<h2 class="flex flex-row items-center justify-between gap-x-3">
+				<h6 class="flex flex-row items-center justify-between gap-x-3">
 					<div class="flex flex-row gap-x-2 items-center">
 						{% if topic.user.profilPicture %}
 							<img class="rounded-full h-6" src="{{topic.user.profilPicture }}"/>
@@ -72,7 +72,7 @@
 							</div>
 						</div>
 					{% endif %}
-				</h2>
+				</h6>
 			</div>
 			<p class=" text-justify text-slate-600 dark:text-slate-400 text-base">{{topic.content|nl2br|assign|smiley_to_emoji|raw}}</p>
 			<hr class="mb-0 mt-0 border-2">
@@ -84,7 +84,7 @@
 					<i class="fa-duotone fa-reply fa-flip-horizontal"></i>
 				</button>
 				<div class="help-text pt-7">
-					Vous pouvez interpeler un utilisateur avec un
+					Vous pouvez interpeller un utilisateur avec un
 					<strong>@</strong>
 					suivi de son nom d'utilisateur, et utiliser du
 					<em>Markdown</em>

@@ -54,6 +54,11 @@
 			{% include "./partials/_form-row.html.twig" with {'form': form.title, value:topic.title is defined ? topic.title, 'icon':"fa-heading"} %}
 			{% include "./partials/_form-row.html.twig" with {'form': form.content, 'icon':null, classWidget:"assign-user h-96"} %}
 			<div class="assign-user-dropdown" style="display: none;margin-top:-1.5rem "></div>
+			<div class="help-text pt-0">
+				Vous pouvez interpeller un utilisateur avec un
+				<strong>@</strong>
+				suivi de son nom d'utilisateur.
+			</div>
 			<button type="submit" class="button-classic button-blue w-full">
 				{% if 'update' in current_url %}
 					Modifier le sujet

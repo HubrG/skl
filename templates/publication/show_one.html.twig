@@ -31,7 +31,7 @@
 	Récit |
 	{{ pubShow.title }}
 	({{ pubShow.user.nickname }})
-																																																																																																																																																																																																																																																																																																																																																																												-
+																																																																																																																																																																																																																																																																																																																																																																																																					-
 	{{ parent() }}
 {% endblock %}
 
@@ -126,22 +126,25 @@
 				</div>
 			{% endif %}
 		{% endif %}
-		<h1 class="text-center text-4xl font-semibold bg-center flex flex-col gap-y-5 items-center justify-center text-slate-700 font-serif pt-5" style="text-shadow: 0 0.5px 1px blanchedalmond;">
+		<h1 class="title text-center text-4xl font-semibold bg-center flex flex-col gap-y-5 items-center justify-center text-slate-700 font-serif " style="text-shadow: 0 0.5px 1px blanchedalmond;">
 			<span>{% include "partials/little/_fullyRead.html.twig" with { id:pubShow.id, class:"text-base"} %}</span>
 			{{ pubShow.title }}
 		</h1>
-		<h2 class="text-center -mt-8">
-			<span class="font-light">
-				<a href="{{ path("app_user", {username:pubShow.user.username}) }}" class="font-sans hover:underline dark:text-slate-200">{{ pubShow.user.nickname }}</a>
-			</span>
-		</h2>
+		<h5 class="text-center mt-5 mb-0">
+			<div class="my-special-hr">
+				<hr>
+				<h1 class="bg-none" style="background:none;font-size:1.5rem">
+					<a href="{{ path("app_user", {username:pubShow.user.username}) }}" class="font-sans hover:underline dark:text-slate-200">{{ pubShow.user.nickname }}</a>
+				</h1>
+				<hr>
+			</div>
+		</h5>
 		{% if pubShow.cover != "" %}
 			<div class="flex rounded justify-center">
-				<img class="rounded mt-6 w-40 h-50 justify-center  shadow mb-5  dark:grayscale-[50%]" src="{{pic}}" alt=""/>
+				<img class="rounded -mt-5 w-40 h-50 justify-center  shadow mb-5  dark:grayscale-[50%]" src="{{pic}}" alt=""/>
 			</div>
 		{% endif %}
 		<div class="flex gap-5 p-10 pt-0  items-center">
-
 			<div class="flex-1 text-center flex flex-col justify-center items-center justify-items-center origin-center">
 				<div class="lg:flex w-6/6 md:w-4/6">
 					<p class="text-sm indent-4 font-serif text-center text-slate-900 opacity-80 dark:text-slate-200 dark:[text-shadow: 0 0.5px 1px blanchedalmond;] leading-7 mt-3">
@@ -343,7 +346,7 @@
 				{% if not app.user or pubShow.finished == true %}
 					<hr>
 				{% endif %}
-				<h3 class="text-2xl mb-5 flex flex-row gap-x-3 items-center lg:text-left {% if pubShow.finished == false and app.user and app.user.id != pubShow.user.id %} border-t-[1px] dark:border-slate-700  pt-5{% endif %} text-center dark:text-slate-100">
+				<h3 class="text-2xl mb-5 flex flex-row gap-x-3 items-center lg:text-left  {% if pubShow.finished == false and app.user and app.user.id != pubShow.user.id %} border-t-[1px] dark:border-slate-700  pt-5{% endif %} text-center dark:text-slate-100">
 					<i class="fa-duotone fa-file"></i>
 					<span>
 						{% set count = 0 %}
@@ -410,16 +413,16 @@
 						{{ form_start(formQuote, {attr:{"data-turbo-frame":"comment-section"}}) }}
 						<label for="publication_chapter_comment_content" class="sr-only">Votre commentaire</label>
 						<div class="flex items-center w-full rounded-lg relative ">
-							{{ form_widget(formQuote.content, {attr:{"class":"assign-user block -mt-5 p-2.5 w-full text-sm text-gray-900 resize-none bg-white pr-12 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"}}) }}
+							{{ form_widget(formQuote.content, {attr:{"class":"assign-user block -mt-5 p-2.5 w-full text-sm text-slate-900 resize-none bg-white pr-12 rounded-lg border-2 border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-800 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"}}) }}
 							<div class="assign-user-dropdown top-7 " style="display: none; position:relative"></div>
-							<button id="sendComment" type="submit" class="inline-flex justify-center p-2 text-slate-600 rounded-full cursor-pointer  hover:text-blue-500 dark:text-sky-500 dark:hover:text-sky-400  -ml-10 mt-4">
+							<button id="sendComment" type="submit" class="inline-flex justify-center p-2 text-slate-600 rounded-full cursor-pointer  hover:text-blue-500 dark:text-sky-500 dark:hover:text-sky-400  -ml-10 mt-2">
 								<svg aria-hidden="true" class="w-6 h-6 -mt-8 rotate-45" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 									<path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
 								</svg>
 								<span class="sr-only">Envoyer</span>
 							</button>
 						</div>
-						<div class="help-text">Vous pouvez interpeler un utilisateur avec un
+						<div class="help-text">Vous pouvez interpeller un utilisateur avec un
 							<strong>@</strong>
 							suivi de son nom d'utilisateur, et utiliser du
 							<em>Markdown</em>

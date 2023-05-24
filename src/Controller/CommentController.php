@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\PublicationComment;
+use App\Repository\UserRepository;
 use App\Services\NotificationSystem;
 use App\Entity\PublicationCommentLike;
 use App\Services\PublicationPopularity;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\NotificationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,10 +20,14 @@ class CommentController extends AbstractController
 {
     private $publicationPopularity;
     private $notificationSystem;
-    public function __construct(NotificationSystem $notificationSystem, EntityManagerInterface $em, PublicationPopularity $publicationPopularity)
+    private $em;
+    private $userRepository;
+    public function __construct(UserRepository $userRepository, NotificationSystem $notificationSystem, EntityManagerInterface $em, PublicationPopularity $publicationPopularity)
     {
         $this->publicationPopularity = $publicationPopularity;
         $this->notificationSystem = $notificationSystem;
+        $this->userRepository = $userRepository;
+        $this->em = $em;
     }
     #[Route('/comment/delete', name: 'app_comment_delete', methods: ['POST'])]
     public function CommentDelete(Request $request, EntityManagerInterface $em, PublicationCommentRepository $pcomRepo): Response
@@ -96,7 +103,7 @@ class CommentController extends AbstractController
         ], 201);
     }
     #[Route('/comment/update', name: 'app_comment_update', methods: ['POST'])]
-    public function CommentUpdate(Request $request, PublicationCommentRepository $pcomRepo, EntityManagerInterface $em): response
+    public function CommentUpdate(NotificationRepository $notifRepo, Request $request, PublicationCommentRepository $pcomRepo, EntityManagerInterface $em): response
     {
         $id = $request->get("id");
         $dtNewCom = $request->get("newCom");
@@ -106,6 +113,39 @@ class CommentController extends AbstractController
             $comment->setUpdatedAt(new \DateTimeImmutable());
             $em->persist($comment);
             $em->flush();
+            $content_message = $comment->getContent();
+            // ! On formate les @
+            $content = ' ' . $comment->getContent();
+            $pattern = '/(@\w+)/';
+            $content = preg_replace_callback($pattern, function ($matches) {
+                $username = substr($matches[0], 1);
+                $user = $this->userRepository->findOneBy(['username' => $username]);
+                if ($user) {
+                    $return = '<a href="/user/' . $username . '" data-turbo-frame="_top" class="text-blue-500 hover:underline">@' . $user->getNickname() . '</a>';
+                    return $return;
+                }
+                return $matches[0];
+            }, $content);
+            $content = trim($content);
+            // ! notification
+            // On vérifie qu'il y a un ou plusieurs @ dans le message
+            $pattern = '/(@\w+)/';
+            $mentions = preg_match_all($pattern, $content_message, $matches);
+            if ($mentions > 0) {
+                // On récupère les utilisateurs mentionnés
+                $mentions = $matches[0];
+                foreach ($mentions as $mention) {
+                    $username = substr($mention, 1);
+                    $user = $this->em->getRepository(User::class)->findOneBy(['username' => $username]);
+                    if ($user) {
+                        // On vérifie que l'utilisateur n'est pas déjà mentionné dans le message dans les notifications
+                        $notification = $notifRepo->findOneBy(['user' => $user, 'type' => 12, 'assignForumMessage' => $comment]);
+                        if (!$notification) {
+                            $this->notificationSystem->addNotification(14, $user, $this->getUser(), $comment);
+                        }
+                    }
+                }
+            }
         } else {
             return $this->json([
                 'code' => 403,
@@ -116,7 +156,8 @@ class CommentController extends AbstractController
         return $this->json([
             'code' => 200,
             'message' => 'Le commentaire a bien été modifié.',
-            'comment' => $comment->getContent()
+            'comment' => $content_message, // Sans assignation
+            'comment2' => $content // Avec assignation
         ], 200);
     }
     #[Route('/comment/reply', name: 'app_comment_reply', methods: ['POST'])]

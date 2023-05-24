@@ -1,80 +1,100 @@
-let textarea = document.querySelector(".assign-user");
-let dropdown = document.querySelector(".assign-user-dropdown");
-
 export function Assign() {
-  if (textarea === null || dropdown === null) {
-    return;
-  }
-  let currentSelectionIndex = -1; // index of the currently selected user
+  let textareas = document.querySelectorAll(".assign-user");
+  if (textareas.length === 0) return;
+  textareas.forEach((textarea) => {
+    let sibling = textarea.nextElementSibling;
 
-  textarea.addEventListener("input", function (e) {
-    let value = e.target.value;
-    let searchTerm = value.split("@").pop().trim();
-
-    if (searchTerm !== "") {
-      axiosAssign(searchTerm, e);
-    } else {
-      dropdown.innerHTML = "";
-    }
-
-    // reset selection index when text changes
-    currentSelectionIndex = -1;
-  });
-
-  // Keydown listener for arrow keys
-  textarea.addEventListener("keydown", function (e) {
-    // number of users in dropdown
-    const numUsers = dropdown.children.length;
-
-    // arrow down
-    if (e.keyCode === 40 && dropdown.style.display !== "none") {
-      // remove the highlight from the currently selected user
-      if (currentSelectionIndex !== -1) {
-        dropdown.children[currentSelectionIndex].classList.remove("highlight");
+    while (sibling) {
+      if (sibling.classList.contains("assign-user-dropdown")) {
+        break;
       }
-      // update current selection index
-      currentSelectionIndex = (currentSelectionIndex + 1) % numUsers;
+      sibling = sibling.nextElementSibling;
     }
 
-    // arrow up
-    else if (e.keyCode === 38 && dropdown.style.display !== "none") {
-      // remove the highlight from the currently selected user
-      if (currentSelectionIndex !== -1) {
-        dropdown.children[currentSelectionIndex].classList.remove("highlight");
+    let dropdown = sibling;
+
+    if (!dropdown) {
+      console.error("No dropdown found for textarea", textarea);
+      return;
+    }
+
+    let currentSelectionIndex = -1; // index of the currently selected user
+
+    textarea.addEventListener("input", function (e) {
+      let value = e.target.value;
+      let searchTerm = value.includes("@") ? value.split("@").pop().trim() : "";
+
+      if (searchTerm !== "") {
+        axiosAssign(searchTerm, e, dropdown, textarea);
+      } else {
+        dropdown.innerHTML = "";
       }
-      // update current selection index
-      currentSelectionIndex--;
-      if (currentSelectionIndex < 0) currentSelectionIndex = numUsers - 1;
-    }
 
-    // highlight the newly selected user
-    if (
-      numUsers > 0 &&
-      dropdown.style.display !== "none" &&
-      dropdown.children[currentSelectionIndex] // check that the element exists
-    ) {
-      dropdown.children[currentSelectionIndex].classList.add("highlight");
-    }
+      // reset selection index when text changes
+      currentSelectionIndex = -1;
+    });
 
-    // if enter is pressed, select the user
-    if (
-      e.keyCode === 13 &&
-      currentSelectionIndex !== -1 &&
-      dropdown.style.display !== "none"
-    ) {
-      e.preventDefault(); // prevent form submission
-      dropdown.children[currentSelectionIndex].click();
-    }
-  });
-  document.addEventListener("click", function (e) {
-    const isClickInsideDropdown = dropdown.contains(e.target);
-    if (!isClickInsideDropdown) {
-      dropdown.style.display = "none";
-    }
+    // Keydown listener for arrow keys
+    textarea.addEventListener("keydown", function (e) {
+      // number of users in dropdown
+      const numUsers = dropdown.children.length;
+
+      // arrow down
+      if (e.keyCode === 40 && dropdown.style.display !== "none") {
+        // remove the highlight from the currently selected user
+        if (currentSelectionIndex !== -1) {
+          dropdown.children[currentSelectionIndex].classList.remove(
+            "highlight"
+          );
+        }
+        // update current selection index
+        currentSelectionIndex = (currentSelectionIndex + 1) % numUsers;
+      }
+
+      // arrow up
+      else if (e.keyCode === 38 && dropdown.style.display !== "none") {
+        // remove the highlight from the currently selected user
+        if (currentSelectionIndex !== -1) {
+          dropdown.children[currentSelectionIndex].classList.remove(
+            "highlight"
+          );
+        }
+        // update current selection index
+        currentSelectionIndex--;
+        if (currentSelectionIndex < 0) currentSelectionIndex = numUsers - 1;
+      }
+
+      // highlight the newly selected user
+      if (
+        numUsers > 0 &&
+        dropdown.style.display !== "none" &&
+        dropdown.children[currentSelectionIndex] // check that the element exists
+      ) {
+        dropdown.children[currentSelectionIndex].classList.add("highlight");
+      }
+
+      // if enter is pressed, select the user
+      if (
+        e.keyCode === 13 &&
+        currentSelectionIndex !== -1 &&
+        dropdown.style.display !== "none"
+      ) {
+        e.preventDefault(); // prevent form submission
+        dropdown.children[currentSelectionIndex].click();
+      }
+    });
+    document.addEventListener("click", function (e) {
+      if (dropdown) {
+        const isClickInsideDropdown = dropdown.contains(e.target);
+        if (!isClickInsideDropdown) {
+          dropdown.style.display = "none";
+        }
+      }
+    });
   });
 }
 
-function axiosAssign(searchTerm, event) {
+function axiosAssign(searchTerm, event, dropdown, textarea) {
   axios
     .get("/api/users", {
       params: {
@@ -86,7 +106,6 @@ function axiosAssign(searchTerm, event) {
       // clear out old results
       dropdown.innerHTML = "";
       // iterate over each user and create a new div for them
-      const textarea = document.querySelector(".assign-user");
       response.data["hydra:member"].forEach((user) => {
         const div = document.createElement("div");
         if (user.profil_picture != null) {
@@ -137,4 +156,5 @@ function axiosAssign(searchTerm, event) {
       }
     });
 }
+
 Assign();

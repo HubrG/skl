@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Assign } from "../Assign";
 
 import { NotyDisplay } from "../Noty";
 export function Comment() {
@@ -162,24 +163,32 @@ export function Comment() {
     button.addEventListener("click", () => {
       const parts = button.id.split("-");
       const result = parts[1];
-
-      const com = document.getElementById(`comShow-${result}`);
+      console.log(result);
+      const com = document.getElementById(`comShow-${result}`); // Sans assignation
+      const com2 = document.getElementById(`comShow2-${result}`); // Avec assignation
       const inner = document.getElementById(`updateCom-${result}`);
-
       inner.innerHTML = `
-         <textarea id='comShow-${result}' class='chapterCommentEdit'>${com.textContent.trim()}</textarea>
+         <textarea id='comShow-${result}' class='assign-user chapterCommentEdit textarea'>${com.textContent.trim()}</textarea>
+         <div class="assign-user-dropdown" style="display: none;margin-top:-1.5rem "></div>
+         <div class='flex flex-row gap-x-2 items-center justify-between'>
          <button id='validCom-${result}' class='chapterCommentEditValidButton'><i class="fa-light fa-circle-check"></i> &nbsp;Valider</button>
-         <button id='cancelCom-${result}' class="chapterCommentEditCancelButton" data-tippy-content="Annuler la modification"><i class="fa-duotone fa-xmark"></i></button>
+         <button id='cancelCom-${result}' class='chapterCommentEditCancelButton' data-tippy-content="Annuler la modification"><i class="fa-duotone fa-xmark"></i> Annuler</button>
+         </div>
+       
        `;
-
+      Assign();
       const buttonValid = document.getElementById(`validCom-${result}`);
       const updatePath = button.getAttribute("data-update-path");
-      const newCom = document.getElementById(`comShow-${result}`);
+      //
+      const newCom = document.getElementById(`comShow-${result}`); // Sans assignation
+      const newCom2 = document.getElementById(`comShow2-${result}`); // Avec assignation
       const cancelCom = document.getElementById(`cancelCom-${result}`);
       cancelCom.addEventListener("click", () => {
-        inner.innerHTML = `<p class='chapterComment'  id='comShow-${result}'>${nl2br(
-          com.textContent
-        )}</p>`;
+        inner.innerHTML = `<p class='chapterComment'>${
+          document.getElementById(`comShow2-${result}`).innerHTML
+        }</p>`;
+        com.innerHTML = `${com.textContent}`;
+        com2.innerHTML = `${com2.innerHTML}`;
       });
       buttonValid.addEventListener("click", () => {
         const data = new FormData();
@@ -193,10 +202,11 @@ export function Comment() {
             },
           })
           .then((response) => {
-            newCom.textContent = response.data.comment;
-            inner.innerHTML = `<p class='chapterComment' id='comShow-${result}'>${nl2br(
-              newCom.textContent
-            )}</p>`;
+            newCom.textContent = response.data.comment; // Sans assignation
+            newCom2.textContent = response.data.comment2; // Avec assignation
+            inner.innerHTML = `<p class="chapterComment" >${newCom2.textContent}</p>`;
+            com.innerHTML = `${newCom.textContent}`;
+            com2.innerHTML = `${newCom2.textContent}`;
           });
       });
     });

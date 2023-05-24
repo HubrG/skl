@@ -52,12 +52,16 @@ class PublicationComment
     #[ORM\OneToMany(mappedBy: 'reply_comment', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $notificationsReply;
 
+    #[ORM\OneToMany(mappedBy: 'assignComment', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $notificationAssigns;
+
     public function __construct()
     {
         $this->publicationCommentLikes = new ArrayCollection();
         $this->publicationComments = new ArrayCollection();
         $this->notifications = new ArrayCollection();
         $this->notificationsReply = new ArrayCollection();
+        $this->notificationAssigns = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -275,6 +279,36 @@ class PublicationComment
             // set the owning side to null (unless already changed)
             if ($notificationsReply->getReplyComment() === $this) {
                 $notificationsReply->setReplyComment(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotificationAssigns(): Collection
+    {
+        return $this->notificationAssigns;
+    }
+
+    public function addNotificationAssign(Notification $notificationAssign): self
+    {
+        if (!$this->notificationAssigns->contains($notificationAssign)) {
+            $this->notificationAssigns->add($notificationAssign);
+            $notificationAssign->setAssignComment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotificationAssign(Notification $notificationAssign): self
+    {
+        if ($this->notificationAssigns->removeElement($notificationAssign)) {
+            // set the owning side to null (unless already changed)
+            if ($notificationAssign->getAssignComment() === $this) {
+                $notificationAssign->setAssignComment(null);
             }
         }
 

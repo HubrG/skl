@@ -2,18 +2,20 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use DateTimeImmutable;
 use App\Form\ForumTopicType;
 use App\Entity\ForumTopicRead;
 use App\Entity\ForumTopicView;
 use App\Form\ForumMessageType;
+use App\Repository\UserRepository;
 use App\Services\NotificationSystem;
 use App\Repository\ForumTopicRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ForumMessageRepository;
+use App\Repository\NotificationRepository;
 use App\Repository\ForumCategoryRepository;
 use App\Repository\ForumTopicReadRepository;
-use App\Repository\ForumTopicViewRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,7 +28,8 @@ class ForumController extends AbstractController
     public function __construct(
         private NotificationSystem $notificationSystem,
         private RequestStack $requestStack,
-        private EntityManagerInterface $em
+        private EntityManagerInterface $em,
+        private UserRepository $userRepository
     ) {
     }
     #[Route('/forum', name: 'app_forum')]
@@ -98,6 +101,22 @@ class ForumController extends AbstractController
             // Persistez et enregistrez l'entité
             $em->persist($topic);
             $em->flush();
+            // ! notification
+            // On vérifie qu'il y a un ou plusieurs @ dans le message
+            $pattern = '/(@\w+)/';
+            $content = $topic->getContent();
+            $mentions = preg_match_all($pattern, $content, $matches);
+            if ($mentions > 0) {
+                // On récupère les utilisateurs mentionnés
+                $mentions = $matches[0];
+                foreach ($mentions as $mention) {
+                    $username = substr($mention, 1);
+                    $user = $this->em->getRepository(User::class)->findOneBy(['username' => $username]);
+                    if ($user) {
+                        $this->notificationSystem->addNotification(13, $user, $this->getUser(), $topic);
+                    }
+                }
+            }
             // On redirige vers le topic
             return $this->redirectToRoute('app_forum_topic_read', [
                 'slug' => $category->getSlug(),
@@ -138,8 +157,25 @@ class ForumController extends AbstractController
             // Persistez et enregistrez l'entité
             $em->persist($message);
             $em->flush();
-            // Envoi d'une notification
+            // ! notifications
+            // * Envoi d'une notification de réponse au topic
             $this->notificationSystem->addNotification(11, $topic->getUser(), $this->getUser(), $message);
+            // * Envoi d'une notification de mention dans le message
+            // On vérifie qu'il y a un ou plusieurs @ dans le message
+            $pattern = '/(@\w+)/';
+            $content = $message->getContent();
+            $mentions = preg_match_all($pattern, $content, $matches);
+            if ($mentions > 0) {
+                // On récupère les utilisateurs mentionnés
+                $mentions = $matches[0];
+                foreach ($mentions as $mention) {
+                    $username = substr($mention, 1);
+                    $user = $this->em->getRepository(User::class)->findOneBy(['username' => $username]);
+                    if ($user) {
+                        $this->notificationSystem->addNotification(12, $user, $this->getUser(), $message);
+                    }
+                }
+            }
         }
         // * On ajoute un view pour le chapitre (si l'utilisateur n'est pas l'auteur de la publication)
         $this->viewTopic($topic);
@@ -184,6 +220,22 @@ class ForumController extends AbstractController
             // Persistez et enregistrez l'entité
             $em->persist($topic);
             $em->flush();
+            // ! notification
+            // On vérifie qu'il y a un ou plusieurs @ dans le message
+            $pattern = '/(@\w+)/';
+            $content = $topic->getContent();
+            $mentions = preg_match_all($pattern, $content, $matches);
+            if ($mentions > 0) {
+                // On récupère les utilisateurs mentionnés
+                $mentions = $matches[0];
+                foreach ($mentions as $mention) {
+                    $username = substr($mention, 1);
+                    $user = $this->em->getRepository(User::class)->findOneBy(['username' => $username]);
+                    if ($user) {
+                        $this->notificationSystem->addNotification(12, $user, $this->getUser(), $topic);
+                    }
+                }
+            }
             // On redirige vers le topic
             return $this->redirectToRoute('app_forum_topic_read', [
                 'slug' => $category->getSlug(),
@@ -238,7 +290,7 @@ class ForumController extends AbstractController
         ], 200);
     }
     #[Route('/forum/message/update', name: 'app_forum_message_update', methods: ['POST'])]
-    public function updateMessage(Request $request, ForumMessageRepository $fmRepo, EntityManagerInterface $em, $id = null): Response
+    public function updateMessage(Request $request, NotificationRepository $notifRepo, ForumMessageRepository $fmRepo, EntityManagerInterface $em, $id = null): Response
     {
         $id = $request->get("id");
         $dtNewCom = $request->get("newCom");
@@ -248,19 +300,54 @@ class ForumController extends AbstractController
             $message->setUpdatedAt(new DateTimeImmutable);
             $em->persist($message);
             $em->flush();
+            $content_message = $message->getContent();
+            // ! On formate les @
+            $content = ' ' . $message->getContent();
+            $pattern = '/(@\w+)/';
+            $content = preg_replace_callback($pattern, function ($matches) {
+                $username = substr($matches[0], 1);
+                $user = $this->userRepository->findOneBy(['username' => $username]);
+                if ($user) {
+                    $return = '<a href="/user/' . $username . '" data-turbo-frame="_top" class="text-blue-500 hover:underline">@' . $user->getNickname() . '</a>';
+                    return $return;
+                }
+                return $matches[0];
+            }, $content);
+            $content = trim($content);
+            // ! notification
+            // On vérifie qu'il y a un ou plusieurs @ dans le message
+            $pattern = '/(@\w+)/';
+            $mentions = preg_match_all($pattern, $content_message, $matches);
+            if ($mentions > 0) {
+                // On récupère les utilisateurs mentionnés
+                $mentions = $matches[0];
+                foreach ($mentions as $mention) {
+                    $username = substr($mention, 1);
+                    $user = $this->em->getRepository(User::class)->findOneBy(['username' => $username]);
+                    if ($user) {
+                        // On vérifie que l'utilisateur n'est pas déjà mentionné dans le message dans les notifications
+                        $notification = $notifRepo->findOneBy(['user' => $user, 'type' => 12, 'assignForumMessage' => $message]);
+                        if (!$notification) {
+                            $this->notificationSystem->addNotification(12, $user, $this->getUser(), $message);
+                        }
+                    }
+                }
+            }
         } else {
             return $this->json([
                 'code' => 403,
                 'message' => 'Vous n\'avez pas les droits pour modifier ce commentaire.',
             ], 403);
         }
+
         //
         // retour en Json
         return $this->json([
             'code' => 200,
             'success' => true,
             'message' => 'Message modifié',
-            'comment' => $message->getContent()
+            'comment' => $content_message, // Sans assignation
+            'comment2' => $content // Avec assignation
         ], 200);
     }
 

@@ -21,8 +21,10 @@
 				</div>
 				{% if value is defined and value != "" %}
 					{{ form_widget(form, {attr:{"disabled":disabled,value:value, "data-id":dataId is defined ? dataId, "id":id, "class":classWidget}}) }}
+					<div class="assign-user-dropdown" style="display: none;margin-top:-1.5rem "></div>
 				{% else %}
 					{{ form_widget(form, {attr:{"disabled":disabled, "data-id":dataId is defined ? dataId, "id":id, "class":classWidget}}) }}
+					<div class="assign-user-dropdown" style="display: none;margin-top:-1.5rem "></div>
 				{% endif %}
 			</div>
 			<span class="form_error">{{ form_errors(form) }}</span>
@@ -42,6 +44,7 @@
 				<input type="{{type}}" name="{{name}}" {% if formOption is defined %} form="{{formOption}}" {% endif %} {% if value %} value="{{value}}" {% endif %} id="{{name}}" class="{{classField}}" placeholder="{{placeholder}}">
 			{% elseif  model == "textarea"  %}
 				<textarea name="{{name}}" id="{{id}}" cols="30" rows="10">{{value}}</textarea>
+				<div class="assign-user-dropdown" style="display: none;margin-top:-1.5rem "></div>
 			{% elseif  model == "select"  %}
 				<select name="{{name}}" id="{{id}}">
 					{% for option in options %}

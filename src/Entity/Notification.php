@@ -61,6 +61,15 @@ class Notification
 	#[ORM\ManyToOne(inversedBy: 'notifications')]
 	private ?ForumMessage $forumMessage = null;
 
+	#[ORM\ManyToOne(inversedBy: 'notificationAssigns')]
+	private ?ForumMessage $assignForumMessage = null;
+
+	#[ORM\ManyToOne(inversedBy: 'notificationAssigns')]
+	private ?PublicationComment $assignComment = null;
+
+	#[ORM\ManyToOne(inversedBy: 'notificationAssignForumTopic')]
+	private ?ForumTopic $assignForumTopic = null;
+
 
 
 
@@ -249,6 +258,42 @@ class Notification
 	public function setForumMessage(?ForumMessage $forumMessage): self
 	{
 		$this->forumMessage = $forumMessage;
+
+		return $this;
+	}
+
+	public function getAssignForumMessage(): ?ForumMessage
+	{
+		return $this->assignForumMessage;
+	}
+
+	public function setAssignForumMessage(?ForumMessage $assignForumMessage): self
+	{
+		$this->assignForumMessage = $assignForumMessage;
+
+		return $this;
+	}
+
+	public function getAssignComment(): ?PublicationComment
+	{
+		return $this->assignComment;
+	}
+
+	public function setAssignComment(?PublicationComment $assignComment): self
+	{
+		$this->assignComment = $assignComment;
+
+		return $this;
+	}
+
+	public function getAssignForumTopic(): ?ForumTopic
+	{
+		return $this->assignForumTopic;
+	}
+
+	public function setAssignForumTopic(?ForumTopic $assignForumTopic): self
+	{
+		$this->assignForumTopic = $assignForumTopic;
 
 		return $this;
 	}

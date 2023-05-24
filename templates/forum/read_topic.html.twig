@@ -74,11 +74,11 @@
 					{% endif %}
 				</h2>
 			</div>
-			<p class=" text-justify text-slate-600 dark:text-slate-400 text-base">{{topic.content|smiley_to_emoji|nl2br}}</p>
+			<p class=" text-justify text-slate-600 dark:text-slate-400 text-base">{{topic.content|smiley_to_emoji|nl2br|assign}}</p>
 			<hr class="mb-0 mt-0 border-2">
 			{% if app.user  %}
 				{{ form_start(form, {attr: {'novalidate': 'novalidate', 'data-turbo-frame':'messages-frame'}}) }}
-				{% include "./partials/_form-row.html.twig" with {'form': form.content, 'icon':null, classWidget:"h-32 roundedBnone"} %}
+				{% include "./partials/_form-row.html.twig" with {'form': form.content, 'icon':null, classWidget:"assign-user h-32 roundedBnone"} %}
 				<button type="submit" class="-mt-[1.5rem] button-classic button-blue w-full roundedTnone" onclick="setTimeout(function() { document.getElementById('forum_message_content').value = ''})">
 					Envoyer la réponse
 					<i class="fa-duotone fa-reply fa-flip-horizontal"></i>
@@ -99,7 +99,10 @@
 									</div>
 								{% endif %}
 								<div class="flex flex-row items-center justify-between w-full">
-									<a href="{{path("app_user", {username:item.user.username})}}" class="hover:underline font-semibold dark:text-slate-300" data-turbo-frame="_top">{{item.user.nickname}}</a>
+									<span class="flex flex-row gap-x-2 items-center">
+										<a href="{{path("app_user", {username:item.user.username})}}" class="hover:underline font-semibold dark:text-slate-300" data-turbo-frame="_top">{{item.user.nickname}}</a>
+										<span class="text-xs self-center opacity-50">(@{{item.user.username }})</span>
+									</span>
 									<div class="text-slate-500 dark:text-slate-400 text-xs flex flex-row items-center gap-x-2">
 										il y a
 										{{item.createdAt|since}}
@@ -150,10 +153,20 @@
 							<div class="text-sm text-justify text-slate-600 dark:text-slate-400">
 								<hr class="mb-5">
 								<div id="updateCom-{{ item.id }}" class="text-base">
-									<p id="comShow-{{ item.id }}" class="topicComment">
-										{{item.content ? item.content|nl2br}}
+									<p class="topicComment">
+										{{item.content ? item.content|nl2br|assign}}
 									</p>
 								</div>
+								<p id="comShow-{{ item.id }}" class="hidden topicComment">
+									{{item.content ? item.content|nl2br}}
+									{# ajouter filtre twig ici #}
+								</p>
+								<p id="comShow2-{{ item.id }}" class="hidden topicComment">
+									{{item.content ? item.content|nl2br|assign}}
+									{# ajouter filtre twig ici #}
+								</p>
+
+
 								{# <div class="flex flex-row justify-end gap-x-2 mt-5 items-center"> #}
 							{# <div> #}
 								{# <i class="fa-duotone fa-heart"></i> #}

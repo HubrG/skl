@@ -102,11 +102,22 @@
 					<p class="font-serif quoteComment cursor-alias text-[0.85rem]">{{ item.quote }}</p>
 				</blockquote>
 			{% endif %}
+
 			<div id="updateCom-{{ item.id }}" class="text-base">
-				<p id="comShow-{{ item.id }}" class="chapterComment dark:text-slate-200">
-					{{ item.content|nl2br }}
+				<p class="chapterComment">
+					{{item.content ? item.content|nl2br|assign}}
 				</p>
 			</div>
+			<p id="comShow-{{ item.id }}" class="hidden chapterComment">
+				{{item.content ? item.content|nl2br}}
+				{# ajouter filtre twig ici #}
+			</p>
+			<p id="comShow2-{{ item.id }}" class="hidden chapterComment">
+				{{item.content ? item.content|nl2br|assign}}
+				{# ajouter filtre twig ici #}
+			</p>
+
+
 			<div class="mt-4 flex items-center justify-between text-md dark:border-t-slate-700">
 				<div class="w-5/6">
 					<span class="w-4/6 flex-row flex items-center gap-x-2 text-sm">

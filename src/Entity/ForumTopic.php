@@ -49,12 +49,16 @@ class ForumTopic
     #[ORM\OneToMany(mappedBy: 'topic', targetEntity: ForumTopicView::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $forumTopicViews;
 
+    #[ORM\OneToMany(mappedBy: 'assignForumTopic', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $notificationAssignForumTopic;
+
 
     public function __construct()
     {
         $this->forumMessages = new ArrayCollection();
         $this->forumTopicReads = new ArrayCollection();
         $this->forumTopicViews = new ArrayCollection();
+        $this->notificationAssignForumTopic = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -242,6 +246,36 @@ class ForumTopic
             // set the owning side to null (unless already changed)
             if ($forumTopicView->getTopic() === $this) {
                 $forumTopicView->setTopic(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotificationAssignForumTopic(): Collection
+    {
+        return $this->notificationAssignForumTopic;
+    }
+
+    public function addNotificationAssignForumTopic(Notification $notificationAssignForumTopic): self
+    {
+        if (!$this->notificationAssignForumTopic->contains($notificationAssignForumTopic)) {
+            $this->notificationAssignForumTopic->add($notificationAssignForumTopic);
+            $notificationAssignForumTopic->setAssignForumTopic($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotificationAssignForumTopic(Notification $notificationAssignForumTopic): self
+    {
+        if ($this->notificationAssignForumTopic->removeElement($notificationAssignForumTopic)) {
+            // set the owning side to null (unless already changed)
+            if ($notificationAssignForumTopic->getAssignForumTopic() === $this) {
+                $notificationAssignForumTopic->setAssignForumTopic(null);
             }
         }
 

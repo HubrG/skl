@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\ForumMessageRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ForumMessageRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: ForumMessageRepository::class)]
 class ForumMessage
@@ -31,12 +31,16 @@ class ForumMessage
     #[ORM\ManyToOne(inversedBy: 'forumMessages')]
     private ?ForumTopic $topic = null;
 
-    #[ORM\OneToMany(mappedBy: 'forumMessage', targetEntity: Notification::class)]
+    #[ORM\OneToMany(mappedBy: 'forumMessage', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $notifications;
+
+    #[ORM\OneToMany(mappedBy: 'assignForumMessage', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $notificationAssigns;
 
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
+        $this->notificationAssigns = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -128,6 +132,36 @@ class ForumMessage
             // set the owning side to null (unless already changed)
             if ($notification->getForumMessage() === $this) {
                 $notification->setForumMessage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotificationAssigns(): Collection
+    {
+        return $this->notificationAssigns;
+    }
+
+    public function addNotificationAssign(Notification $notificationAssign): self
+    {
+        if (!$this->notificationAssigns->contains($notificationAssign)) {
+            $this->notificationAssigns->add($notificationAssign);
+            $notificationAssign->setAssignForumMessage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotificationAssign(Notification $notificationAssign): self
+    {
+        if ($this->notificationAssigns->removeElement($notificationAssign)) {
+            // set the owning side to null (unless already changed)
+            if ($notificationAssign->getAssignForumMessage() === $this) {
+                $notificationAssign->setAssignForumMessage(null);
             }
         }
 

@@ -75,6 +75,7 @@ const TurboHelper = class {
       addKeyword();
       searchPredictionKw();
       Dropdown();
+      Assign();
     });
     document.addEventListener("turbo:load", () => {
       AxiosSavePublication();
@@ -119,6 +120,7 @@ const TurboHelper = class {
     });
 
     document.addEventListener("turbo:frame-render", (event) => {
+      Assign();
       Comment();
       DropdownMenu();
       Inbox();

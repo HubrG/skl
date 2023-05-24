@@ -204,6 +204,30 @@
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="11" type="checkbox" {{app.user.userParameters.notif11Mail is null or app.user.userParameters.notif11Mail == 1 ? "checked"}}></div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="11" type="checkbox" {{app.user.userParameters.notif11Web is null or app.user.userParameters.notif11Web == 1 ? "checked"}}></div>
 				</div>
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-kit fa-regular-at-circle-bolt"></i>
+						<span>Nouvelle mention sur un sujet du forum</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="13" type="checkbox" {{app.user.userParameters.notif13Mail is null or app.user.userParameters.notif13Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="13" type="checkbox" {{app.user.userParameters.notif13Web is null or app.user.userParameters.notif13Web == 1 ? "checked"}}></div>
+				</div>
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-at"></i>
+						<span>Nouvelle mention sur une réponse à un sujet du forum</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="12" type="checkbox" {{app.user.userParameters.notif12Mail is null or app.user.userParameters.notif12Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="12" type="checkbox" {{app.user.userParameters.notif12Web is null or app.user.userParameters.notif12Web == 1 ? "checked"}}></div>
+				</div>
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-at fa-flip-horizontal"></i>
+						<span>Nouvelle mention sur un commentaire</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="14" type="checkbox" {{app.user.userParameters.notif14Mail is null or app.user.userParameters.notif14Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="14" type="checkbox" {{app.user.userParameters.notif14Web is null or app.user.userParameters.notif14Web == 1 ? "checked"}}></div>
+				</div>
 			</div>
 		</div>
 	</div>

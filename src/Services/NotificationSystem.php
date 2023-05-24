@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Twig\Environment;
+use App\Services\Assign;
 use App\Entity\Notification;
 use App\Repository\UserRepository;
 use Symfony\Component\Mime\Address;
@@ -17,11 +18,11 @@ class NotificationSystem extends AbstractController
 {
 
     private $notificationRepo;
-
     private $twig;
     private $mailer;
     private $em;
     private $userRepo;
+
 
     public function __construct(UserRepository $userRepo, NotificationRepository $notificationRepo, EntityManagerInterface $em, MailerInterface $mailer, Environment $twig)
     {
@@ -57,6 +58,10 @@ class NotificationSystem extends AbstractController
      * 10 : Nouvelle révision sur un chapitre de votre publication
      * 
      * 11 : Nouvelle réponse sur l'un de vos sujets de forum
+     * 
+     * 12 : Nouvelle mention sur une réponse d'un sujet du forum
+     * 
+     * 13 : Nouvelle mention sur un sujet du forum
      * @param $user type
      * @param $message string
      * @param $fromUser type
@@ -307,9 +312,9 @@ class NotificationSystem extends AbstractController
                 $email->subject($textSubject)
                     ->context([
                         'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
-                     vient de répondre à votre commentaire " . $textChapter . $textPublication . "<br/>
-                     <blockquote style='font-style: italic;text-align:center;'><strong>Votre commentaire :</strong><br>« " . $notification->getReplyComment()->getReplyTo()->getContent() . " »</blockquote>
-                     <blockquote style='font-style: italic;text-align:center;'><strong>Réponse à votre commentaire :</strong><br>« " . $notification->getReplyComment()->getContent() . " »</blockquote>",
+                    vient de répondre à votre commentaire " . $textChapter . $textPublication . "<br/>
+                    <blockquote style='font-style: italic;text-align:center;'><strong>Votre commentaire :</strong><br>« " . $notification->getReplyComment()->getReplyTo()->getContent() . " »</blockquote>
+                    <blockquote style='font-style: italic;text-align:center;'><strong>Réponse à votre commentaire :</strong><br>« " . $notification->getReplyComment()->getContent() . " »</blockquote>",
                         'subject' => "Nouvelle réponse sous l'un de vos commentaires",
                     ]);
                 //
@@ -360,13 +365,79 @@ class NotificationSystem extends AbstractController
                 $pathPublication = $this->generateUrl('app_forum_topic_read', ['slug' => $notification->getForumMessage()->getTopic()->getCategory()->getSlug(), "id" => $notification->getForumMessage()->getTopic()->getId(), "slugTopic" => $notification->getForumMessage()->getTopic()->getSlug()]);
                 $email->subject($textSubject)
                     ->context([
-                        'content' => "<a href='https://scrilab.com" . $pathPublication . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
+                        'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
                         vient d'envoyer une réponse sous votre sujet de forum <a href='" . $pathPublication . "'>" . $notification->getForumMessage()->getTopic()->getTitle() . "</a>",
                         'subject' => "Nouvelle réponse sous votre sujet de forum",
                     ]);
                 //
                 $this->mailer->send($email);
             }
+        }
+        if ($type === 12) {
+            if (is_null($userRepo->getUserParameters()->isNotif12Web()) or $userRepo->getUserParameters()->isNotif12Web() == 1) {
+                $notification->setAssignForumMessage($idLink);
+                $this->em->persist($notification);
+                $this->em->flush();
+            } else {
+                $notification->setAssignForumMessage($idLink);
+            }
+            // Envoi email
+            if (is_null($userRepo->getUserParameters()->isNotif12Mail()) or $userRepo->getUserParameters()->isNotif12Mail() == 1) {
+                $textSubject = "Nouvelle mention dans une réponse d'un sujet du forum";
+                $pathPublication = $this->generateUrl('app_forum_topic_read', ['slug' => $notification->getAssignForumMessage()->getTopic()->getCategory()->getSlug(), "id" => $notification->getAssignForumMessage()->getTopic()->getId(), "slugTopic" => $notification->getAssignForumMessage()->getTopic()->getSlug()]);
+                $email->subject($textSubject)
+                    ->context([
+                        'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
+                        vient de vous mentionner dans une réponse sous un sujet du forum <a href='" . $pathPublication . "'>" . $notification->getAssignForumMessage()->getTopic()->getTitle() . "</a>",
+                        'subject' => "Nouvelle mention dans une réponse d'un sujet du forum",
+                    ]);
+                //
+                $this->mailer->send($email);
+            }
+        }
+        if ($type === 13) {
+            if (is_null($userRepo->getUserParameters()->isNotif13Web()) or $userRepo->getUserParameters()->isNotif13Web() == 1) {
+                $notification->setAssignForumTopic($idLink);
+                $this->em->persist($notification);
+                $this->em->flush();
+            } else {
+                $notification->setAssignForumTopic($idLink);
+            }
+            // Envoi email
+            if (is_null($userRepo->getUserParameters()->isNotif13Mail()) or $userRepo->getUserParameters()->isNotif13Mail() == 1) {
+                $textSubject = "Nouvelle mention dans un sujet du forum";
+                $pathPublication = $this->generateUrl('app_forum_topic_read', ['slug' => $notification->getAssignForumTopic()->getCategory()->getSlug(), "id" => $notification->getAssignForumTopic()->getId(), "slugTopic" => $notification->getAssignForumTopic()->getSlug()]);
+                $email->subject($textSubject)
+                    ->context([
+                        'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
+                        vient de vous mentionner dans son sujet du forum <a href='" . $pathPublication . "'>" . $notification->getAssignForumTopic()->getTitle() . "</a>",
+                        'subject' => "Nouvelle mention dans un sujet du forum",
+                    ]);
+                //
+                $this->mailer->send($email);
+            }
+        }
+        if ($type === 14) {
+            if (is_null($userRepo->getUserParameters()->isNotif14Web()) or $userRepo->getUserParameters()->isNotif14Web() == 1) {
+                $notification->setAssignComment($idLink);
+                $this->em->persist($notification);
+                $this->em->flush();
+            } else {
+                $notification->setAssignComment($idLink);
+            }
+            // // Envoi email
+            // if (is_null($userRepo->getUserParameters()->isNotif14Mail()) or $userRepo->getUserParameters()->isNotif14Mail() == 1) {
+            //     $textSubject = "Nouvelle mention dans un sujet du forum";
+            //     $pathPublication = $this->generateUrl('app_forum_topic_read', ['slug' => $notification->getAssignComment()->getCategory()->getSlug(), "id" => $notification->getAssignComment()->getId(), "slugTopic" => $notification->getAssignComment()->getSlug()]);
+            //     $email->subject($textSubject)
+            //         ->context([
+            //             'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
+            //             vient de vous mentionner dans son sujet du forum <a href='" . $pathPublication . "'>" . $notification->getAssignComment()->getTitle() . "</a>",
+            //             'subject' => "Nouvelle mention dans un sujet du forum",
+            //         ]);
+            //     //
+            //     $this->mailer->send($email);
+            // }
         }
     }
     public function getNotifications()

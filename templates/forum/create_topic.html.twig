@@ -52,7 +52,8 @@
 			{% endif %}
 			{{ form_start(form, {attr: {'novalidate': 'novalidate'}}) }}
 			{% include "./partials/_form-row.html.twig" with {'form': form.title, value:topic.title is defined ? topic.title, 'icon':"fa-heading"} %}
-			{% include "./partials/_form-row.html.twig" with {'form': form.content, 'icon':null, classWidget:"h-96"} %}
+			{% include "./partials/_form-row.html.twig" with {'form': form.content, 'icon':null, classWidget:"assign-user h-96"} %}
+			<div class="assign-user-dropdown" style="display: none;margin-top:-1.5rem "></div>
 			<button type="submit" class="button-classic button-blue w-full">
 				{% if 'update' in current_url %}
 					Modifier le sujet

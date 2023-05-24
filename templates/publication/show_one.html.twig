@@ -31,7 +31,7 @@
 	Récit |
 	{{ pubShow.title }}
 	({{ pubShow.user.nickname }})
-																																																																																																																																																																																																																																																																																																																																																																																																																																																									-
+																																																																																																																																																																																																																																																																																																																																																																																																																																																													-
 	{{ parent() }}
 {% endblock %}
 
@@ -126,11 +126,11 @@
 				</div>
 			{% endif %}
 		{% endif %}
-		<h1 class="title text-center text-3xl mt-5 font-semibold bg-center flex flex-col gap-y-5 items-center justify-center text-slate-700 font-serif " style="text-shadow: 0 0.5px 1px blanchedalmond;">
+		<h1 class="title text-center text-3xl -mt-0 font-semibold bg-center flex flex-col gap-y-5 items-center justify-center text-slate-700 font-serif " style="text-shadow: 0 0.5px 1px blanchedalmond;">
 			<span>{% include "partials/little/_fullyRead.html.twig" with { id:pubShow.id, class:"text-base"} %}</span>
 			{{ pubShow.title }}
 		</h1>
-		<h5 class="text-center -mt-5 mb-0">
+		<h5 class="text-center -mt-10 mb-0">
 			<div class="my-special-hr">
 				<hr class="border-none">
 				<h1 class="bg-none  flex flex-row gap-x-2 items-baseline" style="background:none;font-size:1.2rem;display: flex;    flex-direction: row; column-gap: 0.5rem">

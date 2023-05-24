@@ -102,8 +102,7 @@
 					<p class="font-serif quoteComment cursor-alias text-[0.85rem]">{{ item.quote }}</p>
 				</blockquote>
 			{% endif %}
-
-			<div id="updateCom-{{ item.id }}" class="text-sm">
+			<div id="updateCom-{{ item.id }}" class="text-base  dark:text-slate-300 -mt-6">
 				<p class="chapterComment">
 					{{item.content ? item.content|nl2br|assign|smiley_to_emoji|markdown|raw}}
 				</p>
@@ -205,7 +204,7 @@
 								</div>
 							</div>
 
-							<div id="updateCom-{{ reply.id }}" class=" w-9/12 h-full  rounded ">
+							<div id="updateCom-{{ reply.id }}" class=" w-9/12 h-full dark:text-slate-300 rounded ">
 								<p class="chapterComment reply ">
 									{{reply.content ? reply.content|nl2br|assign|smiley_to_emoji|raw|markdown}}
 								</p>

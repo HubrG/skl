@@ -41,6 +41,7 @@ import { Navbar } from "../scripts/Navbar";
 import { Annotation } from "../scripts/Publication/Annotations";
 import { searchPredictionKw } from "../scripts/Publication/SearchPredictionKw";
 import { ForumTopicRead } from "../scripts/Forum/ForumTopicRead";
+import { GranimImg } from "../scripts/Granim";
 
 import { ShowChapter, DropdownMenu } from "../scripts/Publication/ChapterShow";
 
@@ -75,6 +76,7 @@ const TurboHelper = class {
       addKeyword();
       searchPredictionKw();
       Dropdown();
+      GranimImg();
       Assign();
     });
     document.addEventListener("turbo:load", () => {
@@ -124,6 +126,7 @@ const TurboHelper = class {
       Comment();
       DropdownMenu();
       Inbox();
+      GranimImg();
       ForumTopicRead();
     });
     document.addEventListener("turbo:frame-load", (event) => {});

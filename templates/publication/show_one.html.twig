@@ -31,7 +31,7 @@
 	Récit |
 	{{ pubShow.title }}
 	({{ pubShow.user.nickname }})
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																	-
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											-
 	{{ parent() }}
 {% endblock %}
 
@@ -87,7 +87,23 @@
 			background-position: center;
 			background-color: black;
 		}
+		#canvas-image
+		{
+			width: 100%;
+			min-height: 100vh;
+			position: absolute;
+			display: block;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+
+		}
 	</style>
+
+	<canvas class="absolute opacity-10 hue-rotate-60	 w-full h-full before:bg-cover left-0 top-0 -z-[9999]" id="canvas-image-blending"></canvas>
 	<section class=" before:bg-cover before:-z-[9999]   col-span-12 col-start-0 lg:col-span-10 lg:col-start-2 gap-10 " id="PublicationShowOneContent">
 		{% if pubShow.status < 2 %}
 			<div class="mb-0">
@@ -108,7 +124,7 @@
 			{% if app.user and (app.user.id == pubShow.user.id or is_granted('ROLE_ADMIN')) %}
 				<div class="flex relative justify-end -mt-5 text-xs">
 					{% if is_granted('ROLE_ADMIN') and app.user.id != pubShow.user.id %}
-						<a href="{{ path("app_publication_edit", {id:pubShow.id}) }}" class="right-0 -top-5 absolute  p-2 rounded-b  font-semibold bg-opacity-50 hover:bg-opacity-100 bg-amber-300 dark:bg-amber-900 dark:text-amber-300 text-amber-800 dark:bg-opacity-50 dark:hover:bg-opacity-90 justify-center flex flex-row px-4 gap-x-2 items-center">
+						<a href="{{ path("app_publication_edit", {id:pubShow.id}) }}" class="right-0 -top-5 absolute  p-2 rounded-b  font-semibold   bg-amber-300 dark:bg-amber-900 dark:text-amber-300 text-amber-800 hover:underline dark:hover:bg-opacity-90 justify-center flex flex-row px-4 gap-x-2 items-center">
 							<span>
 								Admin
 							</span>
@@ -118,7 +134,7 @@
 
 						</a>
 					{% else %}
-						<a href="{{ path("app_publication_edit", {id:pubShow.id}) }}" class="right-0 -top-5 absolute p-2 rounded-b font-semibold  bg-opacity-50 hover:bg-opacity-100 bg-slate-300 dark:bg-slate-900 dark:text-slate-300 dark:bg-opacity-50 dark:hover:bg-opacity-100 justify-center flex flex-row px-4 gap-x-2 items-center">
+						<a href="{{ path("app_publication_edit", {id:pubShow.id}) }}" class="right-0 -top-5  absolute p-2 rounded-b font-semibold   bg-white dark:bg-slate-800 dark:text-slate-300 text-slate-800 hover:underline  dark:hover:bg-opacity-100 justify-center flex flex-row px-4 gap-x-2 items-center">
 							<i class="fa-duotone fa-pen-to-square"></i>
 							<span>Éditer le récit</span>
 						</a>
@@ -126,7 +142,7 @@
 				</div>
 			{% endif %}
 		{% endif %}
-		<h1 class="title text-center text-2xl -mt-0 mb-2 w-full md:w-4/6 mx-auto bg-center flex flex-col gap-y-5 items-center justify-center text-slate-700 font-serif " style="text-shadow: 0 0.5px 1px blanchedalmond;">
+		<h1 class="title text-center text-3xl font-semibold italic -mt-0 mb-2 w-full md:w-4/6 mx-auto bg-center flex flex-col gap-y-5 items-center justify-center text-slate-700 font-serif " style="text-shadow: 0 0.5px 1px blanchedalmond;">
 			<span>{% include "partials/little/_fullyRead.html.twig" with { id:pubShow.id, class:"text-base"} %}</span>
 			{{ pubShow.title }}
 		</h1>

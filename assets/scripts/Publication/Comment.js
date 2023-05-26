@@ -41,6 +41,26 @@ export function CommentReply() {
         );
         // Affichage de la zone de texte
         replyToReply.classList.toggle("hidden");
+        el.addEventListener("click", () => {
+          replyToReply.classList.toggle("hidden");
+          if (!replyToButtonIcon.classList.contains("fa-comments")) {
+            el.innerHTML = "Répondre";
+            replyToButtonIcon.classList.add(
+              "fa-comments",
+              "fa-flip-horizontal"
+            );
+            replyToButtonIcon.classList.remove("fa-circle-xmark");
+            isProcessing = false;
+          } else {
+            el.innerHTML = "Fermer";
+            replyToButtonIcon.classList.remove(
+              "fa-comments",
+              "fa-flip-horizontal"
+            );
+            replyToButtonIcon.classList.add("fa-circle-xmark");
+            isProcessing = true;
+          }
+        });
         // On focus le textarea et on se place à la fin du texte
         textareaReplyTo.focus();
         textareaReplyTo.setSelectionRange(
@@ -129,6 +149,23 @@ export function Comment() {
         const replySend = document.getElementById("send-reply-to-" + commentId);
         // Affichage de la zone de texte
         replyTo.classList.toggle("hidden");
+        el.addEventListener("click", () => {
+          replyTo.classList.toggle("hidden");
+          if (!replyButtonIcon.classList.contains("fa-comments")) {
+            isProcessing = true;
+            el.innerHTML = "Répondre";
+            replyButtonIcon.classList.add("fa-comments", "fa-flip-horizontal");
+            replyButtonIcon.classList.remove("fa-circle-xmark");
+          } else {
+            el.innerHTML = "Fermer";
+            replyButtonIcon.classList.remove(
+              "fa-comments",
+              "fa-flip-horizontal"
+            );
+            replyButtonIcon.classList.add("fa-circle-xmark");
+            isProcessing = true;
+          }
+        });
         // Aggrandissement de la zone de texte
         if (textareaReply) {
           textareaReply.addEventListener("input", () => {

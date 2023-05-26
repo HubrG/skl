@@ -77,8 +77,6 @@ const TurboHelper = class {
       searchPredictionKw();
       Dropdown();
       Assign();
-      Comment();
-      CommentReply();
     });
     document.addEventListener("turbo:load", () => {
       AxiosSavePublication();
@@ -123,13 +121,15 @@ const TurboHelper = class {
 
     document.addEventListener("turbo:frame-render", (event) => {
       Assign();
-      Comment();
-      CommentReply();
       DropdownMenu();
       Inbox();
       ForumTopicRead();
+      Comment();
+      CommentReply();
     });
-    document.addEventListener("turbo:frame-load", (event) => {});
+    document.addEventListener("turbo:frame-load", (event) => {
+      // Comment();
+    });
     // * Turbo Visit sert à faire des actions avant le chargement de la page
     document.addEventListener("turbo:visit", () => {
       document.body.classList.add("turbo-loading");

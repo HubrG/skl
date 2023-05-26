@@ -16,16 +16,6 @@ export function CommentReply() {
       const replyToButtonIcon = document.getElementById(
         "reply-to-button-icon-" + commentId
       );
-      if (replyToButtonIcon.classList.contains("fa-comments")) {
-        el.innerHTML = "Fermer";
-        replyToButtonIcon.classList.remove("fa-comments", "fa-flip-horizontal");
-        replyToButtonIcon.classList.add("fa-circle-xmark");
-      } else {
-        el.innerHTML = "Répondre";
-        replyToButtonIcon.classList.add("fa-comments", "fa-flip-horizontal");
-        replyToButtonIcon.classList.remove("fa-circle-xmark");
-      }
-      //
       const textareaReplyTo = document.getElementById(
         "reply-to-reply-" + commentId
       );
@@ -89,6 +79,9 @@ export function CommentReply() {
                 );
                 replyToButtonIcon.classList.remove("fa-circle-xmark");
                 el.innerHTML = "Répondre";
+                // Réinitialiser l'indicateur après avoir reçu la réponse
+                isProcessingReply = false;
+                isProcessingComment = false;
                 setTimeout(() => {
                   const replyId = "hr-comment-" + response.data.commentId;
                   const element = document.getElementById(replyId);
@@ -99,9 +92,8 @@ export function CommentReply() {
                     });
                   }
                 }, 1000);
+                NotyDisplay(response.data.message, "success", 5000);
               }
-              // Réinitialiser l'indicateur après avoir reçu la réponse
-              isProcessingReply = false;
             });
           replyToSend.hasClickListener = true;
         });
@@ -117,22 +109,13 @@ export function Comment() {
   replyButton = document.querySelectorAll(".replyButton");
   replyButton.forEach((el) => {
     el.addEventListener("click", function () {
-      if (isProcessingComment) return;
-      isProcessingComment = true;
+      if (!el.innerHTML === "Fermer") {
+        return;
+      }
       const commentId = el.getAttribute("data-comment-id");
       const replyButtonIcon = document.getElementById(
         "reply-button-icon-" + commentId
       );
-      if (replyButtonIcon.classList.contains("fa-comments")) {
-        el.innerHTML = "Fermer";
-        replyButtonIcon.classList.remove("fa-comments", "fa-flip-horizontal");
-        replyButtonIcon.classList.add("fa-circle-xmark");
-      } else {
-        el.innerHTML = "Répondre";
-        replyButtonIcon.classList.add("fa-comments", "fa-flip-horizontal");
-        replyButtonIcon.classList.remove("fa-circle-xmark");
-      }
-      //
       const textareaReply = document.getElementById("reply-to-" + commentId);
       const replyTo = document.getElementById("display-reply-to-" + commentId);
       const replySend = document.getElementById("send-reply-to-" + commentId);
@@ -149,8 +132,8 @@ export function Comment() {
         replyButtonIcon.classList.add("fa-circle-xmark");
         isProcessingComment = true;
       }
+      console.log("ok");
       isProcessingComment = false;
-
       // Aggrandissement de la zone de texte
       if (textareaReply) {
         textareaReply.addEventListener("input", () => {
@@ -186,7 +169,19 @@ export function Comment() {
                 el.innerHTML = "Répondre";
               }
               // Réinitialiser l'indicateur après avoir reçu la réponse
+              isProcessingReply = false;
               isProcessingComment = false;
+              setTimeout(() => {
+                const replyId = "hr-comment-" + response.data.commentId;
+                const element = document.getElementById(replyId);
+                if (element) {
+                  element.scrollIntoView({
+                    block: "center",
+                    behavior: "smooth",
+                  });
+                }
+              }, 1000);
+              NotyDisplay(response.data.message, "success", 5000);
             });
           replySend.hasClickListener = true;
         });

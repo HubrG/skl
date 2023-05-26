@@ -31,7 +31,7 @@
 	Récit |
 	{{ pubShow.title }}
 	({{ pubShow.user.nickname }})
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							-
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													-
 	{{ parent() }}
 {% endblock %}
 
@@ -379,17 +379,19 @@
 						{{ count > 1 ? count ~ " feuilles" : count ~ " feuille"}}
 					</span>
 				</h3>
-				<ul class="flex flex-col">
+				<ol class="flex flex-col list-none">
 					{% set nbrPages = 0 %}
 					{% set chapterStats = {'likes': 0, 'bookmarks': 0, 'views': 0, 'comments': 0, 'pages': 0} %}
 					{% for chapter in chapShow %}
 						{% if chapter.status > 1 %}
 							{% set chapterSlug = chapter.slug ?: "feuille-n0" ~ (chapter.orderDisplay + 1) %}
-							<li class="inline-flex items-center gap-x-2 py-1 px-4 font-medium text-slate-900 -mt-px dark:bg-inherit dark:text-white">
-								<div class="flex justify-between w-full">
-									<div>
+							<li class="items-center border-b-[1px] border-slate-200 dark:border-slate-700 py-2 gap-x-2  px-2 font-medium text-slate-900 -mt-px dark:bg-inherit dark:text-white">
+								<div class="flex justify-between flex-row items-center w-full gap-x-1">
+									<span class="w-1/12 font-bold self-baseline dark:text-blue-400 text-base mt-0.5">
+										{{ loop.index }}.
+									</span>
+									<div class="w-9/12">
 										<a href="{{ path("app_chapter_show", {idChap:chapter.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:chapterSlug}) }}" class="h-full w-4/6 font-normal  text-lg hover:underline">
-											<span class="font-bold">{{ loop.index }}.</span>
 											{{ chapter.title|default("Feuille n°" ~ (chapter.orderDisplay + 1))|capitalize }}
 										</a>
 										{% set chapterIdToCheck = chapter.id %}
@@ -399,7 +401,7 @@
 										{% endif %}
 									</div>
 									<div class="w-2/6 justify-items-end opacity-80 dark:opacity-100">
-										<div class="py-1 px-2 rounded-full flex justify-between items-center mt-0 md:-mt-2 text-xs text-slate-500 font-medium opacity-80 dark:opacity-100 dark:text-slate-400">
+										<div class="py-1 px-2 rounded-full flex justify-between self-baseline mt-0  text-xs text-slate-500 font-medium opacity-80 dark:opacity-100 dark:text-slate-400">
 											<div class=" flex flex-col md:flex-col items-center gap-x-1">
 												<i class="fa-light fa-thumbs-up"></i>
 												{{ chapter.publicationChapterLikes|length }}
@@ -427,9 +429,8 @@
 							</li>
 						{% endif %}
 					{% endfor %}
-				</ul>
-				<div class="w-full" id="publicationShowOneComment">
-					<hr>
+				</ol>
+				<div class="w-full mt-10" id="publicationShowOneComment">
 					{% if app.user.id is defined and pubShow.status > 1 %}
 						{{ form_start(formQuote, {attr:{"data-turbo-frame":"comment-section"}}) }}
 						<label for="publication_chapter_comment_content" class="sr-only">Votre commentaire</label>

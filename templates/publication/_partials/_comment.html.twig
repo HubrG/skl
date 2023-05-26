@@ -254,8 +254,6 @@
 							<div class="flex flex-row items-end self-end gap-x-2 justify-end">
 								<div class="justify-end text-xs">
 									<span class="w-4/6 flex-row flex items-center gap-x-2 text-sm">
-
-
 										<i id="reply-to-button-icon-{{reply.id}}" class="fa-regular fa-comments fa-flip-horizontal text-slate-400 text-sm"></i>
 										{% if app.user %}
 											<button class="replyToButton text-slate-400 hover:underline text-xs" data-comment-id="{{item.id}}" data-ref-id="{{reply.id}}">Répondre</button>
@@ -286,7 +284,6 @@
 								{% set currentPath = path(currentRoute, currentRouteParams) %}
 								<a href="{{currentPath}}" id="click-reply-reply-{{reply.id}}" data-turbo-frame="_self" class="hidden"></a>
 							</div>
-
 						</div>
 						{% set n = n + 1 %}
 					{% endif %}

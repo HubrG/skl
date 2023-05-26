@@ -1,81 +1,72 @@
 import axios from "axios";
 import { Assign } from "../Assign";
 import { NotyDisplay } from "../Noty";
-let isProcessing = false;
+let isProcessingReply = false;
+let isProcessingComment = false;
 export function CommentReply() {
   const commentDiv = document.getElementById("comment-section");
   if (!commentDiv) return;
   // ! Fonction de réponse à une réponse de commentaire
   let replyToButton = document.querySelectorAll(".replyToButton");
   replyToButton.forEach((el) => {
-    el.addEventListener(
-      "click",
-      function () {
-        if (isProcessing) return;
-        isProcessing = true;
-        const commentId = el.getAttribute("data-ref-id");
-        const replyToButtonIcon = document.getElementById(
-          "reply-to-button-icon-" + commentId
-        );
-        if (replyToButtonIcon.classList.contains("fa-comments")) {
-          el.innerHTML = "Fermer";
-          replyToButtonIcon.classList.remove(
-            "fa-comments",
-            "fa-flip-horizontal"
-          );
-          replyToButtonIcon.classList.add("fa-circle-xmark");
-        } else {
-          el.innerHTML = "Répondre";
-          replyToButtonIcon.classList.add("fa-comments", "fa-flip-horizontal");
-          replyToButtonIcon.classList.remove("fa-circle-xmark");
-        }
-        //
-        const textareaReplyTo = document.getElementById(
-          "reply-to-reply-" + commentId
-        );
-        const replyToReply = document.getElementById(
-          "display-reply-to-reply-" + commentId
-        );
-        const replyToSend = document.getElementById(
-          "send-reply-to-reply-" + commentId
-        );
-        // Affichage de la zone de texte
-        replyToReply.classList.toggle("hidden");
-        el.addEventListener("click", () => {
-          replyToReply.classList.toggle("hidden");
-          if (!replyToButtonIcon.classList.contains("fa-comments")) {
-            el.innerHTML = "Répondre";
-            replyToButtonIcon.classList.add(
-              "fa-comments",
-              "fa-flip-horizontal"
-            );
-            replyToButtonIcon.classList.remove("fa-circle-xmark");
-            isProcessing = false;
-          } else {
-            el.innerHTML = "Fermer";
-            replyToButtonIcon.classList.remove(
-              "fa-comments",
-              "fa-flip-horizontal"
-            );
-            replyToButtonIcon.classList.add("fa-circle-xmark");
-            isProcessing = true;
-          }
+    el.addEventListener("click", function () {
+      if (isProcessingReply) return;
+      isProcessingReply = true;
+      const commentId = el.getAttribute("data-ref-id");
+      const replyToButtonIcon = document.getElementById(
+        "reply-to-button-icon-" + commentId
+      );
+      if (replyToButtonIcon.classList.contains("fa-comments")) {
+        el.innerHTML = "Fermer";
+        replyToButtonIcon.classList.remove("fa-comments", "fa-flip-horizontal");
+        replyToButtonIcon.classList.add("fa-circle-xmark");
+      } else {
+        el.innerHTML = "Répondre";
+        replyToButtonIcon.classList.add("fa-comments", "fa-flip-horizontal");
+        replyToButtonIcon.classList.remove("fa-circle-xmark");
+      }
+      //
+      const textareaReplyTo = document.getElementById(
+        "reply-to-reply-" + commentId
+      );
+      const replyToReply = document.getElementById(
+        "display-reply-to-reply-" + commentId
+      );
+      const replyToSend = document.getElementById(
+        "send-reply-to-reply-" + commentId
+      );
+      // Affichage de la zone de texte
+      replyToReply.classList.toggle("hidden");
+      if (!replyToButtonIcon.classList.contains("fa-comments")) {
+        el.innerHTML = "Répondre";
+        replyToButtonIcon.classList.add("fa-comments", "fa-flip-horizontal");
+        replyToButtonIcon.classList.remove("fa-circle-xmark");
+        isProcessingReply = false;
+      } else {
+        el.innerHTML = "Fermer";
+        replyToButtonIcon.classList.remove("fa-comments", "fa-flip-horizontal");
+        replyToButtonIcon.classList.add("fa-circle-xmark");
+        isProcessingReply = true;
+      }
+      isProcessingReply = false;
+      // On focus le textarea et on se place à la fin du texte
+      textareaReplyTo.focus();
+      textareaReplyTo.setSelectionRange(
+        textareaReplyTo.value.length,
+        textareaReplyTo.value.length
+      );
+      // Aggrandissement de la zone de texte
+      if (textareaReplyTo) {
+        textareaReplyTo.addEventListener("input", () => {
+          textareaReplyTo.style.height = "";
+          textareaReplyTo.style.height = `${textareaReplyTo.scrollHeight}px`;
         });
-        // On focus le textarea et on se place à la fin du texte
-        textareaReplyTo.focus();
-        textareaReplyTo.setSelectionRange(
-          textareaReplyTo.value.length,
-          textareaReplyTo.value.length
-        );
-        // Aggrandissement de la zone de texte
-        if (textareaReplyTo) {
-          textareaReplyTo.addEventListener("input", () => {
-            textareaReplyTo.style.height = "";
-            textareaReplyTo.style.height = `${textareaReplyTo.scrollHeight}px`;
-          });
-        }
-        // Envoi du commentaire
+      }
+      // Envoi du commentaire
+      if (!replyToSend.hasClickListener) {
         replyToSend.addEventListener("click", () => {
+          if (isProcessingReply) return;
+          isProcessingReply = true;
           var replyPath = replyToSend.getAttribute("data-reply-path");
           const data = new FormData();
           const url = replyPath;
@@ -108,13 +99,14 @@ export function CommentReply() {
                     });
                   }
                 }, 1000);
-                isProcessing = false;
               }
+              // Réinitialiser l'indicateur après avoir reçu la réponse
+              isProcessingReply = false;
             });
+          replyToSend.hasClickListener = true;
         });
-      },
-      { once: true }
-    );
+      }
+    });
   });
 }
 export function Comment() {
@@ -123,59 +115,55 @@ export function Comment() {
   // ! Fonction de réponse à un commentaire
   let replyButton;
   replyButton = document.querySelectorAll(".replyButton");
-  replyButton.forEach(
-    (el) => {
-      el.addEventListener("click", function () {
-        if (isProcessing) return;
-        isProcessing = true;
-        const commentId = el.getAttribute("data-comment-id");
-        const replyButtonIcon = document.getElementById(
-          "reply-button-icon-" + commentId
-        );
-        if (replyButtonIcon.classList.contains("fa-comments")) {
-          el.innerHTML = "Fermer";
-          replyButtonIcon.classList.remove("fa-comments", "fa-flip-horizontal");
-          replyButtonIcon.classList.add("fa-circle-xmark");
-        } else {
-          el.innerHTML = "Répondre";
-          replyButtonIcon.classList.add("fa-comments", "fa-flip-horizontal");
-          replyButtonIcon.classList.remove("fa-circle-xmark");
-        }
-        //
-        const textareaReply = document.getElementById("reply-to-" + commentId);
-        const replyTo = document.getElementById(
-          "display-reply-to-" + commentId
-        );
-        const replySend = document.getElementById("send-reply-to-" + commentId);
-        // Affichage de la zone de texte
-        replyTo.classList.toggle("hidden");
-        el.addEventListener("click", () => {
-          replyTo.classList.toggle("hidden");
-          if (!replyButtonIcon.classList.contains("fa-comments")) {
-            isProcessing = true;
-            el.innerHTML = "Répondre";
-            replyButtonIcon.classList.add("fa-comments", "fa-flip-horizontal");
-            replyButtonIcon.classList.remove("fa-circle-xmark");
-          } else {
-            el.innerHTML = "Fermer";
-            replyButtonIcon.classList.remove(
-              "fa-comments",
-              "fa-flip-horizontal"
-            );
-            replyButtonIcon.classList.add("fa-circle-xmark");
-            isProcessing = true;
-          }
+  replyButton.forEach((el) => {
+    el.addEventListener("click", function () {
+      if (isProcessingComment) return;
+      isProcessingComment = true;
+      const commentId = el.getAttribute("data-comment-id");
+      const replyButtonIcon = document.getElementById(
+        "reply-button-icon-" + commentId
+      );
+      if (replyButtonIcon.classList.contains("fa-comments")) {
+        el.innerHTML = "Fermer";
+        replyButtonIcon.classList.remove("fa-comments", "fa-flip-horizontal");
+        replyButtonIcon.classList.add("fa-circle-xmark");
+      } else {
+        el.innerHTML = "Répondre";
+        replyButtonIcon.classList.add("fa-comments", "fa-flip-horizontal");
+        replyButtonIcon.classList.remove("fa-circle-xmark");
+      }
+      //
+      const textareaReply = document.getElementById("reply-to-" + commentId);
+      const replyTo = document.getElementById("display-reply-to-" + commentId);
+      const replySend = document.getElementById("send-reply-to-" + commentId);
+      // Affichage de la zone de texte
+      replyTo.classList.toggle("hidden");
+      if (!replyButtonIcon.classList.contains("fa-comments")) {
+        el.innerHTML = "Répondre";
+        replyButtonIcon.classList.add("fa-comments", "fa-flip-horizontal");
+        replyButtonIcon.classList.remove("fa-circle-xmark");
+        isProcessingComment = false;
+      } else {
+        el.innerHTML = "Fermer";
+        replyButtonIcon.classList.remove("fa-comments", "fa-flip-horizontal");
+        replyButtonIcon.classList.add("fa-circle-xmark");
+        isProcessingComment = true;
+      }
+      isProcessingComment = false;
+
+      // Aggrandissement de la zone de texte
+      if (textareaReply) {
+        textareaReply.addEventListener("input", () => {
+          textareaReply.style.height = "";
+          textareaReply.style.height = `${textareaReply.scrollHeight}px`;
         });
-        // Aggrandissement de la zone de texte
-        if (textareaReply) {
-          textareaReply.addEventListener("input", () => {
-            textareaReply.style.height = "";
-            textareaReply.style.height = `${textareaReply.scrollHeight}px`;
-          });
-        }
-        // Envoi du commentaire
+      }
+      // Envoi du commentaire
+      // Envoi du commentaire
+      if (!replySend.hasClickListener) {
         replySend.addEventListener("click", () => {
-          console.log(commentId, textareaReply.value);
+          if (isProcessingComment) return;
+          isProcessingComment = true;
           var replyPath = replySend.getAttribute("data-reply-path");
           console.log(replyPath);
           const data = new FormData();
@@ -196,14 +184,15 @@ export function Comment() {
                 replyButtonIcon.classList.add("fa-reply", "fa-flip-horizontal");
                 replyButtonIcon.classList.remove("fa-circle-xmark");
                 el.innerHTML = "Répondre";
-                isProcessing = false;
               }
+              // Réinitialiser l'indicateur après avoir reçu la réponse
+              isProcessingComment = false;
             });
+          replySend.hasClickListener = true;
         });
-      });
-    },
-    { once: true }
-  );
+      }
+    });
+  });
 
   // ! Fonction de suppression d'un commentaire
   const deleteComment = document.querySelectorAll(".deleteCommentButton");

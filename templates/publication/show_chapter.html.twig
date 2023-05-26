@@ -347,6 +347,7 @@
 					{% include "publication/_partials/_comment.html.twig" with { item:item, n:n, pcom:nbrCom} %}
 					{% set n = n + 1  %}
 				{% endfor %}
+
 				{% if nbrShowCom < nbrCom %}
 					{% if infoPub.slug %}
 						{% set chapterSlug = infoPub.slug %}

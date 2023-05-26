@@ -64,6 +64,7 @@
 						<span class="text-gray-400 text-[0.70rem]">{{item.updatedAt ? "| modifié il y a " ~ item.updatedAt|since}}</span>
 					</p>
 				</div>
+
 				{% if userLogId is not null %}
 					<div class="dropdown">
 						<button aria-label="Afficher les options du commentaire de {{item.user.nickname}} — numéro {{item.id}}" class="text-gray-600 hover:text-gray-900  dark:hover:text-gray-300 focus:outline-none focus:text-gray-900">

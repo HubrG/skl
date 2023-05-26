@@ -14,7 +14,7 @@ if (document.getElementById("flashbag-success")) {
 
 //!
 import { addKeyword } from "../scripts/Publication/AddKeyword";
-import { Comment } from "../scripts/Publication/Comment";
+import { Comment, CommentReply } from "../scripts/Publication/Comment";
 import { AxiosSavePublication } from "../scripts/Publication/Publication";
 import { GlideModule } from "../scripts/Glide";
 import { darkMode } from "../scripts/Darkmode";
@@ -76,13 +76,13 @@ const TurboHelper = class {
       addKeyword();
       searchPredictionKw();
       Dropdown();
-      // GranimImg();
       Assign();
+      Comment();
+      CommentReply();
     });
     document.addEventListener("turbo:load", () => {
       AxiosSavePublication();
       Charts();
-      Comment();
       Dropdown();
       DropdownMenu();
       GlideModule();
@@ -124,9 +124,9 @@ const TurboHelper = class {
     document.addEventListener("turbo:frame-render", (event) => {
       Assign();
       Comment();
+      CommentReply();
       DropdownMenu();
       Inbox();
-      // GranimImg();
       ForumTopicRead();
     });
     document.addEventListener("turbo:frame-load", (event) => {});

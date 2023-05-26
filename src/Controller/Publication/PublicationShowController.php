@@ -180,7 +180,7 @@ class PublicationShowController extends AbstractController
 	public function show_one(NotificationRepository $notifRepo, Request $request, PublicationCommentRepository $pcomRepo, EntityManagerInterface $em, PublicationRepository $pRepo, PublicationChapterRepository $pchRepo, $nbrShowCom = 10, $id = null, $slug = null): Response
 	{
 
-		$nbrShowCom = $nbrShowCom ?? 10;
+		$nbrShowCom = $nbrShowCom ?? 50;
 		$publication = $pRepo->find($id);
 		// * on récupère le premier chapitre de la publication par order_display (le plus petit et le premier) avec un querybuilder
 		$orderChap = $pchRepo->createQueryBuilder('pch')

@@ -56,7 +56,7 @@ class ChapterShowController extends AbstractController
     public function showChapter(NotificationRepository $notifRepo, PublicationReadRepository $pReadRepo, Request $request, PublicationCommentRepository $pcomRepo, PublicationChapterRepository $pchRepo, EntityManagerInterface $em, PublicationRepository $pRepo, $slugPub = null, $slug = null, $idChap = null, $user = null, $nbrShowCom = null): response
     {
         if (!$nbrShowCom) {
-            $nbrShowCom = 10;
+            $nbrShowCom = 50;
         }
         if (!$slug) {
             $slug = "feuille-sans-titre";
@@ -93,6 +93,7 @@ class ChapterShowController extends AbstractController
         }
         $comments = $pcomRepo->findBy(['chapter' => $chapter], ['published_at' => 'DESC'], $nbrShowCom, 0);
         $nbrCom = count($pcomRepo->findBy(['chapter' => $chapter]));
+        $nbrComReal = count($pcomRepo->findBy(['chapter' => $chapter, 'replyTo' => null]));
         // * 
         $form = $this->createForm(PublicationCommentType::class);
         $form->handleRequest($request);
@@ -190,6 +191,7 @@ class ChapterShowController extends AbstractController
             "pCom" => $comments,
             "version" => $version,
             "nbrShowCom" => $nbrShowCom,
+            "nbrComReal" =>  $nbrComReal,
             "nbrCom" => $nbrCom,
             "chapterContent" => $chapterContent,
             "canonicalUrl" => $this->generateUrl('app_chapter_show', ["slugPub" => $slugPub, "user" => $user, "idChap" => $idChap, "slug" => $slug], true),

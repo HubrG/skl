@@ -97,6 +97,8 @@ const TurboHelper = class {
       axiosSaveChapter();
       ForumTopicRead();
       Inbox();
+      Comment();
+      CommentReply();
       Notification();
       // ! Flashes
       if (document.getElementById("flashbag-success")) {

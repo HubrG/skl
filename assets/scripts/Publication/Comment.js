@@ -1,10 +1,10 @@
 import axios from "axios";
 import { Assign } from "../Assign";
 import { NotyDisplay } from "../Noty";
-let isProcessingReply = false;
-let isProcessingComment = false;
 export function CommentReply() {
+  let isProcessingReply = false;
   const commentDiv = document.getElementById("comment-section");
+  console.log(isProcessingReply);
   if (!commentDiv) return;
   // ! Fonction de réponse à une réponse de commentaire
   let replyToButton = document.querySelectorAll(".replyToButton");
@@ -102,6 +102,7 @@ export function CommentReply() {
   });
 }
 export function Comment() {
+  let isProcessingComment = false;
   const commentDiv = document.getElementById("comment-section");
   if (!commentDiv) return;
   // ! Fonction de réponse à un commentaire
@@ -399,5 +400,3 @@ export function Comment() {
     });
   }
 }
-Comment();
-CommentReply();

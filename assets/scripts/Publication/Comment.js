@@ -6,6 +6,84 @@ export function Comment() {
   const commentDiv = document.getElementById("comment-section");
   if (!commentDiv) return;
   // ! Fonction de réponse à un commentaire
+  const replyToButton = document.querySelectorAll(".replyToButton");
+  replyToButton.forEach((el) => {
+    el.addEventListener("click", function () {
+      const commentId = el.getAttribute("data-ref-id");
+      let replyToButtonIcon = document.getElementById(
+        "reply-to-button-icon-" + commentId
+      );
+      if (replyToButtonIcon.classList.contains("fa-comments")) {
+        el.innerHTML = "Fermer";
+        replyToButtonIcon.classList.remove("fa-comments", "fa-flip-horizontal");
+        replyToButtonIcon.classList.add("fa-circle-xmark");
+      } else {
+        el.innerHTML = "Répondre";
+        replyToButtonIcon.classList.add("fa-comments", "fa-flip-horizontal");
+        replyToButtonIcon.classList.remove("fa-circle-xmark");
+      }
+      //
+      let textareaReplyTo = document.getElementById(
+        "reply-to-reply-" + commentId
+      );
+      let replyToReply = document.getElementById(
+        "display-reply-to-reply-" + commentId
+      );
+      let replyToSend = document.getElementById(
+        "send-reply-to-reply-" + commentId
+      );
+      // Affichage de la zone de texte
+      replyToReply.classList.toggle("hidden");
+      // On focus le textarea et on se place à la fin du texte
+      textareaReplyTo.focus();
+      textareaReplyTo.setSelectionRange(
+        textareaReplyTo.value.length,
+        textareaReplyTo.value.length
+      );
+      // Aggrandissement de la zone de texte
+      if (textareaReplyTo) {
+        textareaReplyTo.addEventListener("input", () => {
+          textareaReplyTo.style.height = "";
+          textareaReplyTo.style.height = `${textareaReplyTo.scrollHeight}px`;
+        });
+      }
+      // Envoi du commentaire
+      replyToSend.addEventListener("click", () => {
+        var replyPath = replyToSend.getAttribute("data-reply-path");
+        let data = new FormData();
+        let url = replyPath;
+        data.append("id", el.getAttribute("data-comment-id"));
+        data.append("replyContent", textareaReplyTo.value);
+        axios
+          .post(url, data, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((response) => {
+            console.log(response.data);
+            if (response.status === 200) {
+              textareaReplyTo.value = "";
+              replyToReply.classList.add("hidden");
+              replyToButtonIcon.classList.add("fa-reply", "fa-flip-horizontal");
+              replyToButtonIcon.classList.remove("fa-circle-xmark");
+              el.innerHTML = "Répondre";
+              setTimeout(() => {
+                let replyId = "hr-comment-" + response.data.commentId;
+                let element = document.getElementById(replyId);
+                if (element) {
+                  element.scrollIntoView({
+                    block: "center",
+                    behavior: "smooth",
+                  });
+                }
+              }, 1000);
+            }
+          });
+      });
+    });
+  });
+  // ! Fonction de réponse à un commentaire
   const replyButton = document.querySelectorAll(".replyButton");
   replyButton.forEach((el) => {
     el.addEventListener("click", function () {

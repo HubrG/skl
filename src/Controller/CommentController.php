@@ -213,7 +213,8 @@ class CommentController extends AbstractController
         return $this->json([
             'code' => 200,
             'message' => 'La réponse au commentaire a bien été ajouté.',
-            'comment' => $comment->getContent()
+            'comment' => $comment->getContent(),
+            'commentId' => $comment->getId()
         ], 200);
     }
 }

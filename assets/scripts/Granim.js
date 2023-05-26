@@ -10,18 +10,17 @@ export function GranimImg() {
   canvas.height = window.innerHeight;
   var granimInstance = new Granim({
     element: "#canvas-image-blending",
-    direction: "top-bottom",
+    direction: "radial",
     isPausedWhenNotInView: true,
 
     states: {
       "default-state": {
         gradients: [
-          ["#a8a8a8", "#dbdbdb"],
-          ["#FF6B6B", "#556270"],
-          ["#80d3fe", "#7ea0c4"],
-          ["#f0ab51", "#eceba3"],
+          ["#ff9966", "#ff5e62"],
+          ["#00F260", "#0575E6"],
+          ["#e1eec3", "#f05053"],
         ],
-        transitionSpeed: 7000,
+        transitionSpeed: 3000,
       },
     },
   });

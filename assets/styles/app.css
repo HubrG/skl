@@ -903,7 +903,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 	@apply hidden;
 }
 .publications-container.small .publication-card .publication-stats .card-stat.summary  {
-	@apply block;
+	@apply block dark:text-slate-400;
 }
  .publication-card .publication-stats .card-stat.summary {
 	@apply hidden;
@@ -1243,7 +1243,7 @@ main button {
 }
 /* * BIG */
 .display_publications.big .card  p.summary {
-	@apply  block text-xs  text-justify px-3 my-2 dark:text-slate-400;
+	@apply  block   text-justify px-3 my-2 dark:text-slate-400 !important;
 }
 .display_publications.big .card .summary-small {
 @apply hidden;

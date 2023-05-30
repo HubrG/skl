@@ -16,3 +16,8 @@ import "@symfony/ux-live-component/styles/live.css";
 
 const application = Application.start();
 app.register("live", LiveController);
+
+import lozad from "lozad";
+
+const observer = lozad(".lozad");
+observer.observe();

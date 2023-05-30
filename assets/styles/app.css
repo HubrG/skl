@@ -94,26 +94,26 @@ dialog {
 }
 
 h1 {
-		font-weight: normal;
-		@apply  text-4xl text-slate-700  dark:text-slate-100 md:text-5xl;
+	font-weight: normal;
+	@apply  text-4xl text-slate-700  dark:text-slate-100 md:text-5xl md:leading-snug leading-normal;
 }
 h2 {
-	@apply text-3xl text-slate-700 dark:text-slate-100 md:text-4xl;
+	@apply text-3xl text-slate-700 dark:text-slate-100 md:text-4xl md:leading-snug leading-normal;
 }
 h3 {
-	@apply text-2xl text-slate-700 dark:text-slate-100 md:text-3xl;
+	@apply text-2xl text-slate-700 dark:text-slate-100 md:text-3xl md:leading-snug leading-normal;
 }
 h4 {
-	@apply text-xl text-slate-700 dark:text-slate-100 md:text-2xl;
+	@apply text-xl text-slate-700 dark:text-slate-100 md:text-2xl md:leading-snug leading-normal;
 }
 h5 {
-	@apply text-lg text-slate-700 dark:text-slate-100 md:text-xl;
+	@apply text-lg text-slate-700 dark:text-slate-100 md:text-xl md:leading-snug leading-normal;
 }
 h6 {
-	@apply text-base text-slate-700 dark:text-slate-100 md:text-lg;
+	@apply text-base text-slate-700 dark:text-slate-100 md:text-lg md:leading-snug leading-normal;
 }
 p:not(#editor p, article p) {
-	@apply text-xs text-slate-700 dark:text-slate-100 md:text-sm;
+	@apply text-xs text-slate-700 dark:text-slate-100 md:text-sm md:leading-snug leading-normal;
 }
 hr {
 	@apply my-10 mt-5 bg-slate-200 border-slate-200 dark:border-slate-700;
@@ -202,46 +202,104 @@ form button:disabled {
 }
 /* ! QuillJS */
 
-  #editor .ql-editor {
-	@apply z-0 border-0 block break-words max-w-full  border-b-[2px] border-b-slate-300 min-h-[66.67vh] text-slate-700 focus:ring-0 text-base focus:border-slate-300  md:w-9/12 mx-auto pt-8 mt-10 md:mt-0 md:pt-0 dark:bg-transparent dark:border-gray-600 dark:placeholder-gray-400 dark:text-slate-50;
-	overflow: visible; /* Permet à l'éditeur de s'agrandir en fonction de son contenu */
-  }
-  #editor .ql-size-small {
-	font-size: 0.75em;
-  }
-  #editor .ql-size-large {
-	font-size: 1.5em;
-  }
-  #editor .ql-size-huge {
-	font-size: 2em;
-  }
-  #editor p {
-	@apply indent-5;
-   }
-   #editor h1 {
-	@apply text-5xl font-serif;
-   }
-   #editor h2 {
-	@apply text-4xl font-bold  font-serif ;
-   }
-   #editor h3 {
-	@apply text-3xl font-semibold  font-serif;
-   }
-   #editor h4 {
-	@apply text-2xl font-medium  font-serif;
-   }
-   #editor h5 {
-	@apply text-xl font-normal  font-serif text-left;
-   }
-   #editor h6 {
-	@apply text-xs  font-serif text-left;
-   }
+#editor .ql-editor {
+@apply z-0 border-0 block break-words max-w-full  border-b-[2px] border-b-slate-300 min-h-[66.67vh] text-slate-700 focus:ring-0 text-base focus:border-slate-300  md:w-9/12 mx-auto pt-8 mt-10 md:mt-0 md:pt-0 dark:bg-transparent dark:border-gray-600 dark:placeholder-gray-400 dark:text-slate-50;
+overflow: visible; /* Permet à l'éditeur de s'agrandir en fonction de son contenu */
+}
+#editor .ql-size-small {
+font-size: 0.75em;
+}
+#editor .ql-size-large {
+font-size: 1.5em;
+}
+#editor .ql-size-huge {
+font-size: 2em;
+}
+#editor p {
+@apply indent-5;
+}
+#editor h1, #chapContent h1 {
+@apply text-5xl font-serif;
+}
+#editor h2, #chapContent h2 {
+@apply text-4xl font-bold  font-serif ;
+}
+#editor h3, #chapContent h3 {
+@apply text-3xl font-semibold  font-serif;
+}
+#editor h4, #chapContent h4 {
+@apply text-2xl font-medium  font-serif;
+}
+#editor h5, #chapContent h5 {
+@apply text-xl font-normal  font-serif text-left;
+}
+#editor h6, #chapContent h6 {
+@apply text-xs  font-serif text-left;
+}
 #editor img {
 	@apply w-full block rounded-lg mx-auto my-3;
 }
 #editor img::before {
 	@apply w-full bg-slate-900;
 }
+#chapContent img {
+	@apply min-w-[50%] block rounded-lg mx-auto my-3;
+}
+#chapContent {
+	@apply text-base text-slate-800 dark:text-slate-300 font-serif;
+}
+/* #chapContent h1 {
+ @apply text-4xl  font-serif text-left;
+}
+#chapContent h2 {
+ @apply text-3xl font-bold font-serif text-left;
+}
+#chapContent h3 {
+ @apply text-2xl font-semibold font-serif text-left;
+}
+#chapContent h4 {
+ @apply text-xl font-medium  font-serif;
+}
+#chapContent h5 {
+ @apply text-sm font-normal font-serif text-left;
+}
+#chapContent h6 {
+ @apply text-xs font-serif text-left;
+} */
+#chapContent p {
+	@apply text-lg mb-2 indent-2 leading-[1.835rem] text-slate-800 dark:text-slate-300 font-serif;
+}
+#chapContent em {
+	@apply font-serif;
+}
+#chapContent ul {
+	@apply list-disc list-inside text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
+}
+#chapContent ol {
+	@apply list-decimal list-inside text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
+}
+#chapContent blockquote {
+	@apply text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
+}
+#chapContent pre {
+	@apply text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
+}
+#chapContent code {
+	@apply text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
+}
+.ql-align-center {
+	@apply text-center items-center font-serif;
+}
+.ql-align-right {
+	@apply text-right items-end font-serif indent-5;
+}
+.ql-align-left {
+	@apply text-left items-start font-serif indent-5;
+}
+.ql-align-justify {
+	@apply text-justify items-start font-serif indent-5;
+}
+
 .ql-editor.ql-blank::before {
 	content: attr(data-placeholder);
 	font-style: italic;
@@ -360,63 +418,6 @@ opacity: 0.4;
 /* #chapContent mark.me {
 	@apply bg-cyan-100 hover:bg-cyan-200 dark:bg-cyan-800 dark:text-cyan-200 dark:hover:bg-cyan-700 font-serif z-50  bg-opacity-100 !important;
 } */
-#chapContent img {
-	@apply min-w-[50%] block rounded-lg mx-auto my-3;
-}
-#chapContent {
-	@apply text-base text-slate-800 dark:text-slate-300 font-serif;
-}
-#chapContent h1 {
- @apply text-4xl  font-serif text-left;
-}
-#chapContent h2 {
- @apply text-3xl font-bold font-serif text-left;
-}
-#chapContent h3 {
- @apply text-2xl font-semibold font-serif text-left;
-}
-#chapContent h4 {
- @apply text-xl font-medium  font-serif;
-}
-#chapContent h5 {
- @apply text-sm font-normal font-serif text-left;
-}
-#chapContent h6 {
- @apply text-xs font-serif text-left;
-}
-#chapContent p {
-	@apply text-lg mb-2 indent-2 leading-[1.835rem] text-slate-800 dark:text-slate-300 font-serif;
-}
-#chapContent em {
-	@apply font-serif;
-}
-#chapContent ul {
-	@apply list-disc list-inside text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
-}
-#chapContent ol {
-	@apply list-decimal list-inside text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
-}
-#chapContent blockquote {
-	@apply text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
-}
-#chapContent pre {
-	@apply text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
-}
-#chapContent code {
-	@apply text-base mb-2 indent-2 text-slate-800 dark:text-slate-300 font-serif;
-}
-.ql-align-center {
-	@apply text-center items-center font-serif;
-}
-.ql-align-right {
-	@apply text-right items-end font-serif indent-5;
-}
-.ql-align-left {
-	@apply text-left items-start font-serif indent-5;
-}
-.ql-align-justify {
-	@apply text-justify items-start font-serif indent-5;
-}
 .highlighted {
 	@apply  font-serif cursor-pointer;
 }
@@ -1306,7 +1307,7 @@ nav.breadcrumb ol li a:hover.not-underline {
 	@apply bg-slate-300 dark:bg-slate-500 !important;
 }
 .button-create-topic {
-	@apply rounded-t-none !important;
+	@apply rounded-t-none opacity-100 z-50 !important;
 }
 .roundedTnone {
 	@apply rounded-t-none !important;

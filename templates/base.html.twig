@@ -6,6 +6,7 @@
 		<meta name="robots" content="index,follow">
 		<link
 		rel="apple-touch-icon" href="/images/favicon.png">
+
 		{# <meta name="turbo-visit-control" content="reload"> #}
 		<script src="https://apis.google.com/js/platform.js" async defer></script>
 		{% block metatags %}
@@ -18,9 +19,17 @@
 			{% endblock %}
 		</title>
 		<link rel="icon" href="/images/favicon.png">
-		<script src="https://kit.fontawesome.com/5e2ac7f1ef.js" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.turbo.min.js" data-turbo="false"></script>
-		<link rel="stylesheet" href="https://kit.fontawesome.com/5e2ac7f1ef.css" crossorigin="anonymous">
+
+
+		{% if app.environment == 'dev' %}
+			<link href="/images/fa/css/all.min.css" rel="stylesheet">
+		{% elseif app.environment == 'prod' %}
+			<link rel="stylesheet" href="https://kit.fontawesome.com/5e2ac7f1ef.css" crossorigin="anonymous">
+			<script src="https://kit.fontawesome.com/5e2ac7f1ef.js" crossorigin="anonymous"></script>
+		{% endif %}
+
+
 		{{ encore_entry_link_tags('app') }}
 		{% block stylesheets %}{% endblock %}
 		{{ encore_entry_script_tags('app') }}

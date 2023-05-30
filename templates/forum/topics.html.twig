@@ -30,17 +30,17 @@
 			</ol>
 		</nav>
 		<div class="flex flex-col mx-auto justify-center w-full -mt-10 relative">
-			<div class=" sticky top-12 bg-white dark:bg-slate-800 z-50">
+			<div class=" bg-white dark:bg-slate-800 z-50">
 				<div class="p-10 py-7 bg-slate-50 dark:bg-slate-900 rounded-lg rounded-b-none flex flex-col w-full">
 					<div class="flex flex-row gap-x-10 items-center">
-						<div class="min-w-[3rem] md:min-w-[4.8rem]">
+						<div class="min-w-[3rem] md:min-w-[4.8rem] dark:grayscale-[40%] ">
 							<div class="rounded-full p-2 md:p-5 catColor-{{category.color ? category.color}}  icon-topic text-lg md:text-xl font-semibold w-full flex justify-center">
 								<i class="fa-duotone {{category.icon}} text-2xl md:text-4xl catColorText-{{category.color ? category.color}} dark:text-slate-300"></i>
 							</div>
 						</div>
-						<div class="flex flex-col w-full gap-y-2 dark:text-slate-300">
-							<h2 class="text-base flex flex-row justify-between gap-x-2 items-baseline relative">
-								<span class="  text-lg md:text-xl font-semibold ">{{category.name}}</span>
+						<div class="flex flex-col w-full gap-y-1 dark:text-slate-300">
+							<h2 class="text-base flex md:flex-row flex-col justify-between gap-x-2 items-baseline relative">
+								<span class=" text-lg md:text-xl font-semibold ">{{category.name}}</span>
 								<span class="text-xs  opacity-60">
 									<i class="fa-regular fa-layer-group {{category.forumTopics|length == 0 ? " hidden" }}"></i>
 									{{category.forumTopics|length == 0 ? "Aucun sujet" : category.forumTopics|length == 1 ? "1 sujet" : category.forumTopics|length ~ " sujets"}}
@@ -50,21 +50,30 @@
 						</div>
 					</div>
 				</div>
-				{% if app.user %}
-					<a href="{{path("app_forum_topic_create", {slug:category.slug})}}" class="button-classic button-sky button-create-topic">
-						Créer un nouveau sujet
-						<i class="fa-duotone  fa-plus-square"></i>
-					</a>
-				{% else %}
-					<button class="button-classic button-sky button-create-topic w-full" data-micromodal-trigger="popup-login">
-						Créer un nouveau sujet
-						<i class="fa-duotone  fa-plus-square"></i>
-					</button>
-				{% endif %}
-				<div class="border-b-4 w-full border-slate-300 dark:bg-slate-800 bg-white dark:border-slate-700 h-5 bg-opacity-90 dark:bg-opacity-90">&nbsp;</div>
 			</div>
+			{% if app.user %}
+				<a href="{{path("app_forum_topic_create", {slug:category.slug})}}" class=" catColor-{{category.color}} grayscale-[35%] dark:grayscale-[60%] button-classic opacity-100  button-create-topic sticky md:top-16 top-14">
+					Créer un nouveau sujet sur
+					<span>—</span>
+					<span class="font-semibold flex flex-row items-center gap-x-1">
+						<i class="fa-duotone  {{category.icon}}"></i>
+						{{category.name}}
+					</span>
+				</a>
+			{% else %}
+				<button class="button-classic catColor-{{category.color}} grayscale-[35%] dark:grayscale-[60%] button-create-topic w-full  sticky md:top-16  top-14" data-micromodal-trigger="popup-login">
+					Créer un nouveau sujet sur
+					<span>—</span>
+					<span class="font-semibold flex flex-row items-center gap-x-1">
+						<i class="fa-duotone  {{category.icon}}"></i>
+						{{category.name}}
+					</span>
+
+				</button>
+			{% endif %}
+			<div class="border-b-4 w-full border-slate-300 dark:bg-slate-800 bg-white dark:border-slate-700 h-5 bg-opacity-90 dark:bg-opacity-90">&nbsp;</div>
 			{% if topics|length == 0 %}
-				<h2 class="p-10 text-center text-lg w-4/6 mx-auto dark:text-slate-400 text-slate-500 flex flex-col gap-y-2">
+				<h2 class="p-10 text-center text-lg md:w-4/6 w-full mx-auto dark:text-slate-400 text-slate-500 flex flex-col gap-y-2">
 					<i class="fa-duotone fa-comment-slash text-3xl"></i>
 					Aucun sujet de discussion n'a encore été créé ! Vous avez l'occasion unique d'être la première personne à initier un sujet dans cette catégorie.
 				</h2>
@@ -75,7 +84,7 @@
 							{% if item.user.profilPicture %}
 								<img src="{{item.user.profilPicture}}" class="h-12 rounded-full" alt="Photo de profil de {{item.user.nickname}}">
 							{% else %}
-								<div class="h-12 w-12 rounded-full bg-slate-300 dark:bg-slate-700 flex justify-center items-center text-slate-500 dark:text-slate-300 text-2xl font-semibold">
+								<div class="h-12 w-12 rounded-full  bg-slate-300 dark:bg-slate-700 flex justify-center items-center text-slate-500 dark:text-slate-300 text-2xl font-semibold">
 									{{item.user.nickname|first}}
 								</div>
 							{% endif %}

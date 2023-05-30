@@ -31,7 +31,7 @@
 	Récit |
 	{{ pubShow.title }}
 	({{ pubShow.user.nickname }})
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																			-
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																			-
 	{{ parent() }}
 {% endblock %}
 
@@ -388,7 +388,7 @@
 							<li class="items-center  dark:border-slate-700 py-1 gap-x-2  px-2 font-medium text-slate-900 -mt-px dark:bg-inherit dark:text-white">
 								<div class="flex justify-start flex-col md:flex-row items-center w-full gap-x-1">
 									<div class="flex flex-row md:w-10/12 w-full justify-start">
-										<span class="min-w-[6.33%] font-bold self-baseline dark:text-blue-400 text-blue-500 text-base mt-0.5">
+										<span class="min-w-[6.33%] mr-1 font-bold self-baseline dark:text-blue-400 text-blue-500 text-base mt-0">
 											{{ loop.index }}.
 										</span>
 										<div class="w-11/12">
@@ -402,8 +402,8 @@
 											{% endif %}
 										</div>
 									</div>
-									<div class="md:w-2/6 w-full justify-items-start opacity-80 dark:opacity-100">
-										<div class="py-1 px-2 rounded-full flex md:justify-between justify-start ml-10 self-baseline mt-0 gap-x-3  text-[0.75rem] md:text-xs text-slate-500 font-medium opacity-80 dark:opacity-100 dark:text-slate-400">
+									<div class="md:w-2/6 w-full -ml-6 md:ml-0 justify-items-start opacity-80 dark:opacity-100">
+										<div class="py-1  rounded-full flex md:justify-between justify-start ml-10 self-baseline mt-0 gap-x-3  text-[0.75rem] md:text-xs text-slate-500 font-medium opacity-80 dark:opacity-100 dark:text-slate-400">
 											<div class=" flex flex-row md:flex-col items-center gap-x-1">
 												<i class="fa-light fa-thumbs-up"></i>
 												{{ chapter.publicationChapterLikes|length }}
@@ -564,7 +564,6 @@
 							<i class="fa-regular fa-masks-theater"></i>
 							Genre
 						</span>
-
 						<a href="{{path("app_publication_show_all_category", {slug:slug})}}" class="catColor-{{color}} rounded px-2 py-1 text-xs">
 							<span>{{ slugName }}</span>
 						</a>

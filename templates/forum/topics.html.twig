@@ -53,22 +53,21 @@
 			</div>
 			{% if app.user %}
 				<a href="{{path("app_forum_topic_create", {slug:category.slug})}}" class=" catColor-{{category.color}} grayscale-[35%] dark:grayscale-[60%] button-classic opacity-100  button-create-topic sticky md:top-16 top-14">
-					Créer un nouveau sujet sur
-					<span>—</span>
-					<span class="font-semibold flex flex-row items-center gap-x-1">
-						<i class="fa-duotone  {{category.icon}}"></i>
-						{{category.name}}
+					<span>
+						<i class="fa-regular  fa-plus-square"></i>&nbsp;&nbsp;Créer un nouveau sujet sur
+						<span class="font-semibold ">
+							{{category.name}}
+						</span>
 					</span>
 				</a>
 			{% else %}
 				<button class="button-classic catColor-{{category.color}} grayscale-[35%] dark:grayscale-[60%] button-create-topic w-full  sticky md:top-16  top-14" data-micromodal-trigger="popup-login">
-					Créer un nouveau sujet sur
-					<span>—</span>
-					<span class="font-semibold flex flex-row items-center gap-x-1">
-						<i class="fa-duotone  {{category.icon}}"></i>
-						{{category.name}}
+					<span>
+						<i class="fa-regular  fa-plus-square"></i>&nbsp;&nbsp;Créer un nouveau sujet sur
+						<span class="font-semibold ">
+							{{category.name}}
+						</span>
 					</span>
-
 				</button>
 			{% endif %}
 			<div class="border-b-4 w-full border-slate-300 dark:bg-slate-800 bg-white dark:border-slate-700 h-5 bg-opacity-90 dark:bg-opacity-90">&nbsp;</div>

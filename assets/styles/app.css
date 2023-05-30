@@ -1241,6 +1241,9 @@ main button {
 .display_publications .card .img-header-big img {
 	@apply hidden;
 }
+.display_publications .card .img-header-big  {
+	@apply hidden;
+}
 /* * BIG */
 .display_publications.big .card  p.summary {
 	@apply  block   text-justify px-3 my-2 dark:text-slate-400 !important;
@@ -1252,7 +1255,7 @@ main button {
 	@apply  hidden;
 }
 .display_publications.big .card .img-header-big {
-	@apply relative rounded h-36 w-full overflow-hidden;
+	@apply relative rounded h-36 w-full overflow-hidden block;
 }
 .display_publications.big .card .img-header-big img {
 	@apply block object-cover w-full h-full mx-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  opacity-80;

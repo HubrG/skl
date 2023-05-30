@@ -11,6 +11,7 @@ if (document.getElementById("flashbag-success")) {
     document.getElementById("flashbag-success").setAttribute("data-count", 2);
   }
 }
+import lozad from "lozad";
 
 //!
 import { addKeyword } from "../scripts/Publication/AddKeyword";
@@ -81,6 +82,16 @@ const TurboHelper = class {
       searchPredictionKw();
       Dropdown();
       Assign();
+      const observer = lozad(".lozad", {
+        loaded: function (el) {
+          // el est l'élément qui vient d'être chargé
+          if (el.classList.contains("myImage")) {
+            el.classList.remove("-z-10");
+            el.previousElementSibling.style.display = "none";
+          }
+        },
+      });
+      observer.observe();
     });
     document.addEventListener("turbo:load", () => {
       AxiosSavePublication();
@@ -107,6 +118,16 @@ const TurboHelper = class {
       CommentDelete();
       //
       Notification();
+      const observer = lozad(".lozad", {
+        loaded: function (el) {
+          // el est l'élément qui vient d'être chargé
+          if (el.classList.contains("myImage")) {
+            el.classList.remove("-z-10");
+            el.previousElementSibling.style.display = "none";
+          }
+        },
+      });
+      observer.observe();
       // ! Flashes
       if (document.getElementById("flashbag-success")) {
         if (
@@ -137,6 +158,16 @@ const TurboHelper = class {
       Comment();
       CommentReply();
       CommentDelete();
+      const observer = lozad(".lozad", {
+        loaded: function (el) {
+          // el est l'élément qui vient d'être chargé
+          if (el.classList.contains("myImage")) {
+            el.classList.remove("-z-10");
+            el.previousElementSibling.style.display = "none";
+          }
+        },
+      });
+      observer.observe();
       //
     });
     document.addEventListener("turbo:frame-load", (event) => {

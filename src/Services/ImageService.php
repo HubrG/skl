@@ -132,13 +132,13 @@ class ImageService extends AbstractController
         // * On supprime la pp de l'utilisateur
         //!
         if ($repoSave == "profil_picture") {
-            $urlCloudinary = str_replace("upload/v1", "upload/c_fill,g_auto,h_800,w_800", $urlCloudinary);
+            $urlCloudinary = str_replace("upload/v1", "upload/c_fill,f_auto,g_auto,h_800,w_800", $urlCloudinary);
             $repo->setProfilPicture($urlCloudinary);
         } elseif ($repoSave == "profil_background") {
-            $urlCloudinary = str_replace("upload/v1", "upload/c_fill,g_auto", $urlCloudinary);
+            $urlCloudinary = str_replace("upload/v1", "upload/c_fill,f_auto,g_auto", $urlCloudinary);
             $repo->setProfilBackground($urlCloudinary);
         } elseif ($repoSave == "story") {
-            $urlCloudinary = str_replace("upload/v1", "upload/c_fill,h_793,w_529", $urlCloudinary);
+            $urlCloudinary = str_replace("upload/v1", "upload/c_fill,f_auto,h_793,w_529", $urlCloudinary);
             $repo->setCover($urlCloudinary);
         }
         //

@@ -27,17 +27,19 @@
 <div class="card catColorBorder-{{cat_color}}">
 	<i class="summary-small fa-duotone fa-memo-circle-info catColorText-{{cat_color}}" data-tippy-content="{{chap_content}}"></i>
 	{% if item.cover  %}
+		{% set itemCover = item.cover|replace({'upload/c_fill,': 'upload/c_fill,'}) %}
 		<div class="img-header-big">
 			<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" aria-label="Lire {{item.title}}, par {{item.user.nickname}}">
-				<img src="{{item.cover}}" alt="Couverture du récit {{item.title}}, écrit par {{item.user.nickname}}">
+				<img src="{{itemCover}}" alt="Couverture du récit {{item.title}}, écrit par {{item.user.nickname}}">
 			</a>
 		</div>
 	{% endif %}
 	<div class="{{item.cover ? "header-cover" }} header">
 		{% if item.cover %}
+			{% set itemCover = item.cover|replace({'upload/c_fill,': 'upload/c_fill,'}) %}
 			<div class="img-div">
 				<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" aria-label="Lire {{item.title}}, par {{item.user.nickname}}">
-					<img src="{{item.cover}}" alt="Couverture du récit {{item.title}}, écrit par {{item.user.nickname}}"/>
+					<img src="{{itemCover}}" alt="Couverture du récit {{item.title}}, écrit par {{item.user.nickname}}"/>
 				</a>
 			</div>
 		{% endif %}
@@ -48,9 +50,7 @@
 				</a>
 			</h2>
 			<h3>
-				<a
-					{{ user_in_url ? "data-turbo-frame='_top'" }} href="{{path("app_user", {username:item.user.username})}}" class=" hover:underline text-sm font-semibold italic -mt-3 opacity-80 flex flex-row gap-x-2" aria-label="Voir le profil de {{item.user.nickname}}">
-					{# {% if item.user.profilPicture %}<img class="h-5 items-center rounded-full" src="{{item.user.profilPicture}}"/>{% endif %} #}
+				<a {{ user_in_url ? "data-turbo-frame='_top'" }} href="{{path("app_user", {username:item.user.username})}}" class=" hover:underline text-sm font-semibold italic -mt-3 opacity-80 flex flex-row gap-x-2" aria-label="Voir le profil de {{item.user.nickname}}">
 					{{item.user.nickname}}
 				</a>
 			</h3>

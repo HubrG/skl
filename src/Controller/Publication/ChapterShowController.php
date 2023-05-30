@@ -511,7 +511,7 @@ class ChapterShowController extends AbstractController
         }, $content);
 
         // Modifie les URL des images
-        $newText = str_replace('/image/upload/', '/image/upload/w_auto,c_scale/', $newText);
+        $newText = str_replace('/image/upload/', '/image/upload/w_auto,f_auto,c_scale/', $newText);
 
         return $newText;
     }

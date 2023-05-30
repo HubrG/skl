@@ -81,7 +81,7 @@ dialog {
 	@apply text-center font-semibold  italic p-2 rounded my-6  hover:underline ;
 }
 .modal-header {
-	@apply text-xl font-semibold text-slate-900 dark:text-white flex flex-col gap-y-3 justify-center items-center;
+	@apply text-lg md:text-2xl font-semibold text-slate-900 dark:text-white flex flex-col gap-y-3 justify-center items-center;
 }
 .modal-header i  {
 	@apply text-4xl;
@@ -156,7 +156,7 @@ form hr {
 	@apply h-px my-8 bg-gray-200 border-0 dark:bg-gray-700
 }
 form label {
-		@apply block -mb-2 font-semibold text-slate-800 dark:text-white  text-base;
+		@apply block -mb-2 font-semibold text-slate-800 dark:text-white  md:text-base text-xs;
 }
 form input[type=checkbox] {
 	@apply w-4 h-4 cursor-pointer rounded focus:ring-purple-500 dark:focus:ring-purple-600 text-purple-500 dark:ring-offset-slate-800 focus:ring-2 dark:bg-slate-700 dark:border-slate-600
@@ -273,7 +273,7 @@ form button:disabled {
 }
 .help-text {
 		margin: -20px 0 10px 0;
-		@apply text-xs text-gray-500 italic;
+		@apply md:text-xs text-[0.75rem] text-gray-500 italic;
 }
 @layer utilities {
 		.text-shadow {

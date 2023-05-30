@@ -9,7 +9,7 @@
 			{% endif %}
 		{% endif %}
 		<div>
-			<label tabindex="1" for="email" class="block text-sm text-left font-semibold text-slate-900 dark:text-white">Mon adresse email</label>
+			<label tabindex="1" for="email" class="block text-xs md:text-base text-left font-semibold text-slate-900 dark:text-white">Mon adresse email</label>
 			<div class="relative mb-6">
 				<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
 					<i class="fa-regular fa-envelope dark:text-slate-200"></i>
@@ -18,7 +18,7 @@
 			</div>
 		</div>
 		<div>
-			<label tabindex="3" for="password" class="block text-left text-sm font-semibold text-slate-900 dark:text-white">Mon mot de passe
+			<label tabindex="3" for="password" class="block text-left text-xs md:text-base font-semibold text-slate-900 dark:text-white">Mon mot de passe
 				<button tabindex="4" type="button" onclick='MicroModal.show("popup-forgotpw");document.getElementById("popup-login").classList.add("animate__animated","animate__fadeOut");MicroModal.close("popup-login");document.getElementById("popup-login").classList.remove("animate__animated","animate__fadeOut")' class="text-sm font-medium text-blue-600  dark:text-sky-400 float-right">
 					<i class="fa-sharp fa-regular fa-key-skeleton"></i>
 					&nbsp;&nbsp;<span class="hover:underline text-blue-600  dark:text-sky-400">oublié ?</span>

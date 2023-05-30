@@ -3,7 +3,7 @@
 	{% include "./partials/_form-row.html.twig" with {'form': registrationForm.username, 'icon':"fa-user-vneck"} %}
 	{% include "./partials/_form-row.html.twig" with {'form': registrationForm.email, 'icon':"fa-envelope"} %}
 	{% include "./partials/_form-row.html.twig" with {'form': registrationForm.plainPassword, 'icon':"fa-lock-keyhole"} %}
-	{% include "./partials/_form-row.html.twig" with {'form': registrationForm.agreeTerms, 'icon':"", check:true, checkText:"J'accepte les <button onclick='MicroModal.show(\"popup-cgu\")' type='button' class='hover:underline font-bold'>CGU</button> de Scrilab", class:"text-xs"} %}
+	{% include "./partials/_form-row.html.twig" with {'form': registrationForm.agreeTerms, 'icon':"", check:true, checkText:"J'accepte les <button onclick='setTimeout(function() { document.getElementById( \"top-of-the-pop\" ).scrollIntoView( { behavior:\"smooth\", block: \"center\" } ) },500);MicroModal.show(\"popup-cgu\")' type='button' class='hover:underline font-bold'>CGU</button> de Scrilab", class:"text-xs"} %}
 	<button type="submit" class="button-classic w-full flex justify-center button-slate">
 
 		<i class="fa-duotone fa-user-plus"></i>

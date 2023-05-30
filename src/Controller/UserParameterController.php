@@ -123,6 +123,12 @@ class UserParameterController extends AbstractController
                 $user->getUserParameters()->setNotif13Mail($value);
             } elseif ($nb == 14) {
                 $user->getUserParameters()->setNotif14Mail($value);
+            } elseif ($nb == 15) {
+                $user->getUserParameters()->setNotif15Mail($value);
+            } elseif ($nb == 16) {
+                $user->getUserParameters()->setNotif16Mail($value);
+            } elseif ($nb == 17) {
+                $user->getUserParameters()->setNotif17Mail($value);
             }
         } else {
             if ($nb == 1) {
@@ -153,6 +159,12 @@ class UserParameterController extends AbstractController
                 $user->getUserParameters()->setNotif13Web($value);
             } elseif ($nb == 14) {
                 $user->getUserParameters()->setNotif14Web($value);
+            } elseif ($nb == 15) {
+                $user->getUserParameters()->setNotif15Web($value);
+            } elseif ($nb == 16) {
+                $user->getUserParameters()->setNotif16Web($value);
+            } elseif ($nb == 17) {
+                $user->getUserParameters()->setNotif17Web($value);
             }
         }
         // On récupère la valeur de l'attribut

@@ -56,7 +56,7 @@ class ForumMessageRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('fm')
             ->select('COUNT(fm.id)')
             ->where('fm.topic = :topic')
-            ->andWhere('fm.createdAt > (' . $subQuery . ')')
+            ->andWhere('fm.published_at > (' . $subQuery . ')')
             ->setParameters([
                 'user' => $user,
                 'topic' => $topic,

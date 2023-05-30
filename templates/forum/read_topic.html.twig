@@ -76,10 +76,11 @@
 			</div>
 			<p class=" text-justify text-slate-600 dark:text-slate-400 text-base">{{topic.content|nl2br|assign|smiley_to_emoji|raw}}</p>
 			<hr class="mb-0 mt-0 border-2">
+			<div id="forum-section"></div>
 			{% if app.user  %}
-				{{ form_start(form, {attr: {'novalidate': 'novalidate', 'data-turbo-frame':'messages-frame'}}) }}
+				{{ form_start(form, {attr: {'novalidate': 'novalidate',"data-turbo-frame":"messages-frame","class":"-mt-16"}}) }}
 				{% include "./partials/_form-row.html.twig" with {'form': form.content, 'icon':null, classWidget:"assign-user h-32 roundedBnone"} %}
-				<button type="submit" class="-mt-[1.5rem] button-classic button-blue w-full roundedTnone" onclick="setTimeout(function() { document.getElementById('forum_message_content').value = ''})">
+				<button type="submit" id="sendComment" class="-mt-[1.5rem] button-classic button-blue w-full roundedTnone" onclick="setTimeout(function() { document.getElementById('forum_message_content').value = ''})">
 					Envoyer la réponse
 					<i class="fa-duotone fa-reply fa-flip-horizontal"></i>
 				</button>
@@ -93,90 +94,45 @@
 				{{ form_end(form) }}
 				<hr class="-mt-10">
 			{% endif %}
-			<turbo-frame id="messages-frame" class="-mt-5">
-				<div class="flex flex-col gap-y-5">
-					{% for item in topic.forumMessages|sort((a, b) => b.createdAt <=> a.createdAt) %}
-						<div class=" bg-slate-50 dark:bg-slate-900 p-5 rounded" id="comment-{{item.id}}">
-							<div class="flex flex-row gap-x-3">
-								{% if item.user.profilPicture %}
-									<img class="rounded-full h-6" src="{{item.user.profilPicture }}"/>
-								{% else %}
-									<div class="rounded-full h-6 w-6 bg-gray-200 flex items-center justify-center dark:bg-gray-700">
-										{{item.user.nickname|slice(0,1) }}
-									</div>
-								{% endif %}
-								<div class="flex flex-row items-center justify-between w-full">
-									<span class="flex flex-row gap-x-2 items-center">
-										<a href="{{path("app_user", {username:item.user.username})}}" class="hover:underline font-semibold dark:text-slate-300" data-turbo-frame="_top">{{item.user.nickname}}</a>
-										<span class="text-xs self-center dark:text-slate-400 opacity-50">(@{{item.user.username }})</span>
-									</span>
-									<div class="text-slate-500 dark:text-slate-400 text-xs flex flex-row items-center gap-x-2">
-										il y a
-										{{item.createdAt|since}}
-										{% if item.updatedAt %}
-											<div class=" text-slate-400 dark:text-slate-500">
-												|
-												<span class="text-[0.75rem] ml-2">
-													modifié il y a
-													{{item.updatedAt|since}}
-												</span>
-											</div>
-										{% endif %}
-										<div class="dropdown">
-											<button aria-label="Afficher les options du commentaire de {{item.user.nickname}} — numéro {{item.id}}" class="text-gray-600 hover:text-gray-900   focus:outline-none focus:text-gray-900">
-												<svg class="w-6 h-6 dropdown-button dark:hover:fill-white hover:fill-slate-900" fill="currentColor" viewbox="0 0 20 20" id="ddb-{{ item.id }}">
-													<path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-												</svg>
-											</button>
-											<div id="ddm-{{ item.id }}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-56 dark:bg-gray-700 dropdown-content">
-												<ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
-													{% if app.user and item.user.id == app.user.id %}
-														<li>
-															<button type="button" data-update-path="{{path("app_forum_message_update")}}" id="updateButton-{{ item.id }}" class="updateButton w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-																<i class="fa-regular fa-pen-to-square"></i>
-																&nbsp;Modifier le message
-															</button>
-														</li>
-														<li>
-															<button data-delete-path="{{path("app_forum_message_delete")}}" data-comment-id="{{item.id}}" class=" w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white deleteCommentButton">
-																<i class="fa-regular fa-trash-can"></i>
-																&nbsp;Supprimer le message
-															</button>
-														</li>
-													{% else %}
-														<li>
-															<button data-turbo-frame="_self" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-																<i class="fa-regular fa-regular fa-flag"></i>
-																&nbsp;Signaler
-															</button>
-														</li>
-													{% endif %}
-												</ul>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="text-sm text-justify text-slate-600 dark:text-slate-400  one-topic-response">
-								<hr class="mb-0">
-								<div id="updateCom-{{ item.id }}" class="text-sm mt-2 mb-0">
-									<p class="topicComment">
-										{{item.content ? item.content|assign|smiley_to_emoji|markdown|raw}}
-									</p>
-								</div>
-								<div id="comShow-{{ item.id }}" class="hidden mb-0 h-0" style="display:none !important">
-									{{item.content ? item.content|smiley_to_emoji}}
-								</div>
-								<div id="comShow2-{{ item.id }}" class="hidden  mb-0 h-0" style="display:none !important">
-									{{item.content ? item.content|assign|smiley_to_emoji|raw}}
-								</div>
-							</div>
-						</div>
-
+			<div class="flex flex-col gap-y-5">
+				{% if pCom|length == 0 %}
+					<div class="text-slate-500 -mt-10">
+						<p class="mb-3 text-center text-6xl font-semibold">
+							<i class="fa-duotone fa-comment-slash"></i>
+						</p>
+						<p class="mb-5 text-center italic">
+							Aucune réponse pour le moment
+						</p>
+						{% if not app.user %}
+							<hr class="mb-5">
+							<p class="font-medium text-center flex flex-row  items-center gap-x-3 justify-center dark:text-slate-300 text-slate-800">
+								<i class="fa-duotone fa-user-circle"></i>
+								<button data-micromodal-trigger="popup-login" class="hover:underline text-center font-semibold">Connectez-vous pour répondre !</button>
+							</p>
+						{% endif %}
+					</div>
+				{% endif %}
+				<turbo-frame id="messages-frame" class="-mt-10">
+					{% if app.request.query.has('idCom') %}
+						{# La variable GET "idCom" est présente dans l'URL #}
+						{% set idCom = app.request.query.get('idCom') %}
+						<div id="mark-comment" data-com="{{idCom}}"></div>
+					{% endif %}
+					{% if pCom|length > 0 %}
+						<p class="dark:text-white mb-10">
+							<i class="fa-duotone fa-comments"></i>
+							&nbsp;
+							{{pCom|length}}
+							réponse{{pCom|length > 1 ? "s" : ""}}
+						</p>
+					{% endif %}
+					{% set n = 0 %}
+					{% for item in pCom %}
+						{% include "publication/_partials/_comment.html.twig" with { item:item, n:n, pcom:nbrCom, first:pCom|first, forum:true} %}
+						{% set n = n + 1  %}
 					{% endfor %}
-				</div>
-			</turbo-frame>
-
+				</turbo-frame>
+			</div>
 		</div>
 	</div>
 	<div class="modal micromodal-slide z-50" id="popup-confirm-delete-topic" aria-hidden="true">

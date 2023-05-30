@@ -180,6 +180,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: InboxGroupMember::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $inboxGroupMembers;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ForumMessageLike::class)]
+    private Collection $forumMessageLikes;
+
     public function __construct()
     {
         $this->publications = new ArrayCollection();
@@ -203,6 +206,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->publicationAnnotations = new ArrayCollection();
         $this->inboxes = new ArrayCollection();
         $this->inboxGroupMembers = new ArrayCollection();
+        $this->forumMessageLikes = new ArrayCollection();
     }
 
 
@@ -1181,6 +1185,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($inboxGroupMember->getUser() === $this) {
                 $inboxGroupMember->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ForumMessageLike>
+     */
+    public function getForumMessageLikes(): Collection
+    {
+        return $this->forumMessageLikes;
+    }
+
+    public function addForumMessageLike(ForumMessageLike $forumMessageLike): self
+    {
+        if (!$this->forumMessageLikes->contains($forumMessageLike)) {
+            $this->forumMessageLikes->add($forumMessageLike);
+            $forumMessageLike->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeForumMessageLike(ForumMessageLike $forumMessageLike): self
+    {
+        if ($this->forumMessageLikes->removeElement($forumMessageLike)) {
+            // set the owning side to null (unless already changed)
+            if ($forumMessageLike->getUser() === $this) {
+                $forumMessageLike->setUser(null);
             }
         }
 

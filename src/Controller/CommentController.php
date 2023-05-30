@@ -3,13 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\ForumMessage;
 use App\Services\SmileyMessage;
+use App\Entity\ForumMessageLike;
 use App\Entity\PublicationComment;
 use App\Repository\UserRepository;
 use App\Services\NotificationSystem;
 use App\Entity\PublicationCommentLike;
 use App\Services\PublicationPopularity;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\ForumMessageRepository;
 use App\Repository\NotificationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,14 +40,20 @@ class CommentController extends AbstractController
     public function CommentDelete(Request $request, EntityManagerInterface $em, PublicationCommentRepository $pcomRepo): Response
     {
         $id = $request->request->get('id');
-        $pcom = $pcomRepo->find($id);
-
+        $forum = $request->request->get('forum');
+        if ($forum) {
+            $pcom = $this->em->getRepository(ForumMessage::class)->find($id);
+        } else {
+            $pcom = $pcomRepo->find($id);
+        }
         // Si l'utilisateur est bien le propriétaire du commentaire
         if ($pcom && $pcom->getUser() == $this->getUser()) {
             $em->remove($pcom);
             $em->flush();
             //
-            $this->publicationPopularity->PublicationPopularity($pcom->getPublication());
+            if (!$forum) {
+                $this->publicationPopularity->PublicationPopularity($pcom->getPublication());
+            }
             //
         } else {
             return $this->json([
@@ -63,36 +72,62 @@ class CommentController extends AbstractController
     public function CommentLike(Request $request, PublicationCommentRepository $pccRepo, EntityManagerInterface $em): response
     {
         $id = $request->get("id");
+        $forum = $request->get("forum");
         // * On récupère le commentaire
-        $comment = $pccRepo->find($id);
+        if ($forum) {
+            $comment = $this->em->getRepository(ForumMessage::class)->find($id);
+        } else {
+            $comment = $pccRepo->find($id);
+        }
         // * Si le commentaire existe et que l'auteur du commentaire n'est pas l'auteur du like
         if ($comment and $comment->getUser() != $this->getUser()) {
-            // * On vérifie que le commentaire n'a pas déjà été liké par l'utilisateur
-            $like = $comment->getPublicationCommentLikes()->filter(function ($like) {
-                return $like->getUser() == $this->getUser();
-            })->first();
+            if ($forum) {
+                $like = $comment->getForumMessageLikes()->filter(function ($like) {
+                    return $like->getUser() == $this->getUser();
+                })->first();
+            } else {
+                $like = $comment->getPublicationCommentLikes()->filter(function ($like) {
+                    return $like->getUser() == $this->getUser();
+                })->first();
+            }
+
             // * Si le commentaire a déjà été liké, on supprime le like
             if ($like) {
                 $em->remove($like);
                 $em->flush();
                 // * On met à jour la popularité de la publication
-                $this->publicationPopularity->PublicationPopularity($comment->getPublication());
+                if (!$forum) {
+                    $this->publicationPopularity->PublicationPopularity($comment->getPublication());
+                }
                 return $this->json([
                     'code' => 200,
                     'message' => 'Le like a bien été supprimé.'
                 ], 200);
             }
             // * Sinon, on ajoute le like
-            $like = new PublicationCommentLike();
-            $like->setUser($this->getUser())
-                ->setComment($comment)
-                ->setCreatedAt(new \DateTimeImmutable());
+            if ($forum) {
+                $like = new ForumMessageLike();
+                $like->setUser($this->getUser())
+                    ->setMessage($comment)
+                    ->setCreatedAt(new \DateTimeImmutable());
+            } else {
+                $like = new PublicationCommentLike();
+                $like->setUser($this->getUser())
+                    ->setComment($comment)
+                    ->setCreatedAt(new \DateTimeImmutable());
+            }
             $em->persist($like);
             $em->flush();
             // * On met à jour la popularité de la publication
-            $this->publicationPopularity->PublicationPopularity($comment->getPublication());
-            // Envoi d'une notification
-            $this->notificationSystem->addNotification(3, $like->getComment()->getUser(), $this->getUser(), $like);
+            if (!$forum) {
+                $this->publicationPopularity->PublicationPopularity($comment->getPublication());
+                // Envoi d'une notification
+                $this->notificationSystem->addNotification(3, $like->getComment()->getUser(), $this->getUser(), $like);
+            } else {
+                // Envoi d'une notification
+
+                $this->notificationSystem->addNotification(16, $like->getMessage()->getUser(), $this->getUser(), $comment);
+            }
             //
         } else {
             return $this->json([
@@ -110,8 +145,13 @@ class CommentController extends AbstractController
     public function CommentUpdate(NotificationRepository $notifRepo, Request $request, PublicationCommentRepository $pcomRepo, EntityManagerInterface $em): response
     {
         $id = $request->get("id");
+        $forum = $request->get("forum");
         $dtNewCom = $request->get("newCom");
-        $comment = $pcomRepo->find($id);
+        if ($forum) {
+            $comment = $this->em->getRepository(ForumMessage::class)->find($id);
+        } else {
+            $comment = $pcomRepo->find($id);
+        }
         if ($comment and $comment->getUser() == $this->getUser()) {
             $comment->setContent($dtNewCom);
             $comment->setUpdatedAt(new \DateTimeImmutable());
@@ -143,9 +183,16 @@ class CommentController extends AbstractController
                     $user = $this->em->getRepository(User::class)->findOneBy(['username' => $username]);
                     if ($user) {
                         // On vérifie que l'utilisateur n'est pas déjà mentionné dans le message dans les notifications
-                        $notification = $notifRepo->findOneBy(['user' => $user, 'type' => 12, 'assignForumMessage' => $comment]);
-                        if (!$notification) {
-                            $this->notificationSystem->addNotification(14, $user, $this->getUser(), $comment);
+                        $notification = $notifRepo->findOneBy(['user' => $user, 'type' => 14, 'assignForumMessage' => $comment]);
+                        $notification_forum = $notifRepo->findOneBy(['user' => $user, 'type' => 17, 'assignForumReply' => $comment]);
+                        if (!$forum) {
+                            if (!$notification) {
+                                $this->notificationSystem->addNotification(14, $user, $this->getUser(), $comment);
+                            }
+                        } else {
+                            if (!$notification_forum) {
+                                $this->notificationSystem->addNotification(17, $user, $this->getUser(), $comment);
+                            }
                         }
                     }
                 }
@@ -165,25 +212,43 @@ class CommentController extends AbstractController
         ], 200);
     }
     #[Route('/comment/reply', name: 'app_comment_reply', methods: ['POST'])]
-    public function CommentReply(NotificationRepository $notifRepo, Request $request, PublicationCommentRepository $pcomRepo, EntityManagerInterface $em): response
+    public function CommentReply(NotificationRepository $notifRepo, ForumMessageRepository $fmRepo, Request $request, PublicationCommentRepository $pcomRepo, EntityManagerInterface $em): response
     {
         $id = $request->get("id"); // ID du commentaire principal
         $dtReplyContent = $request->get("replyContent"); // Contenu du commentaire
+        $dtForum = $request->get("forum"); // Contenu du commentaire
         // * On cherche le commentaire principal
-        $commentOrigin = $pcomRepo->find($id);
+        if ($dtForum) {
+            $commentOrigin = $fmRepo->find($id);
+        } else {
+            $commentOrigin = $pcomRepo->find($id);
+        }
         // * Si le commentaire existe et que l'utilisateur est connecté
         if ($commentOrigin and $this->getUser()) {
-            $comment = new PublicationComment();
-            $comment->setUser($this->getUser())
-                ->setPublication($commentOrigin->getPublication())
-                ->setPublishedAt(new \DateTimeImmutable())
-                ->setContent($dtReplyContent)
-                ->setChapter($commentOrigin->getChapter())
-                ->setReplyTo($commentOrigin);
+            if ($dtForum) {
+                $comment = new ForumMessage();
+                $comment->setUser($this->getUser())
+                    ->setTopic($commentOrigin->getTopic())
+                    ->setPublishedAt(new \DateTimeImmutable())
+                    ->setContent($dtReplyContent)
+                    ->setReplyTo($commentOrigin);
+            } else {
+                $comment = new PublicationComment();
+                $comment->setUser($this->getUser())
+                    ->setPublication($commentOrigin->getPublication())
+                    ->setPublishedAt(new \DateTimeImmutable())
+                    ->setContent($dtReplyContent)
+                    ->setChapter($commentOrigin->getChapter())
+                    ->setReplyTo($commentOrigin);
+            }
             $em->persist($comment);
             $em->flush();
             // Envoi d'une notification
-            $this->notificationSystem->addNotification(9, $commentOrigin->getUser(), $this->getUser(), $comment);
+            if (!$dtForum) {
+                $this->notificationSystem->addNotification(9, $commentOrigin->getUser(), $this->getUser(), $comment);
+            } else {
+                $this->notificationSystem->addNotification(15, $commentOrigin->getUser(), $this->getUser(), $comment);
+            }
             // ! notification
             // On vérifie qu'il y a un ou plusieurs @ dans le message
             $pattern = '/(@\w+)/';
@@ -197,8 +262,15 @@ class CommentController extends AbstractController
                     if ($user) {
                         // On vérifie que l'utilisateur n'est pas déjà mentionné dans le message dans les notifications
                         $notification = $notifRepo->findOneBy(['user' => $user, 'type' => 14, 'assignComment' => $comment]);
-                        if (!$notification) {
-                            $this->notificationSystem->addNotification(14, $user, $this->getUser(), $comment);
+                        $notification_forum = $notifRepo->findOneBy(['user' => $user, 'type' => 17, 'assignForumReply' => $comment]);
+                        if (!$dtForum) {
+                            if (!$notification) {
+                                $this->notificationSystem->addNotification(14, $user, $this->getUser(), $comment);
+                            }
+                        } else {
+                            if (!$notification_forum) {
+                                $this->notificationSystem->addNotification(17, $user, $this->getUser(), $comment);
+                            }
                         }
                     }
                 }

@@ -91,7 +91,7 @@
 										<span class="self-end">
 											Dernière réponse il y a
 											{% set lastMessage = item.forumMessages|last %}
-											{{lastMessage ? lastMessage.createdAt|since : item.createdAt|since }}
+											{{lastMessage ? lastMessage.publishedAt|since : item.createdAt|since }}
 										</span>
 									</span>
 								</p>

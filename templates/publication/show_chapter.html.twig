@@ -317,7 +317,6 @@
 					</div>
 					<hr class="mb-5 border-4">
 				{% endif %}
-
 				{% if pCom|length == 0 %}
 					<div class="text-slate-500">
 						<p class="mb-3 text-center text-6xl font-semibold">
@@ -326,13 +325,7 @@
 						<p class="mb-5 text-center italic">
 							Aucun commentaire pour le moment
 						</p>
-						{% if not app.user %}
-							<hr class="mb-5">
-							<p class="font-medium text-center flex flex-row  items-center gap-x-3 justify-center dark:text-slate-300 text-slate-800">
-								<i class="fa-duotone fa-user-circle"></i>
-								<button data-micromodal-trigger="popup-login" class="hover:underline text-center font-semibold">Connectez-vous pour commenter !</button>
-							</p>
-						{% endif %}
+
 					</div>
 				{% endif %}
 				{% if not app.user and pCom|length > 0  %}
@@ -340,14 +333,26 @@
 						<i class="fa-duotone fa-user-circle"></i>
 						<button data-micromodal-trigger="popup-login" class="hover:underline text-center font-semibold">Connectez-vous pour commenter !</button>
 					</p>
-					<hr class="mb-5">
+					<hr class="mb-5 dark:border-slate-600">
+				{% endif %}
+				{% if app.request.query.has('idCom') %}
+					{# La variable GET "idCom" est présente dans l'URL #}
+					{% set idCom = app.request.query.get('idCom') %}
+					<div id="mark-comment" data-com="{{idCom}}"></div>
+				{% endif %}
+				{% if pCom|length > 0 %}
+					<p class="dark:text-white mb-5">
+						<i class="fa-duotone fa-comments"></i>
+						&nbsp;
+						{{pCom|length}}
+						commentaire{{pCom|length > 1 ? "s" : ""}}
+					</p>
 				{% endif %}
 				{% set n = 0 %}
 				{% for item in pCom %}
-					{% include "publication/_partials/_comment.html.twig" with { item:item, n:n, pcom:nbrCom} %}
+					{% include "publication/_partials/_comment.html.twig" with { item:item, n:n, first:pCom|first, pcom:nbrCom} %}
 					{% set n = n + 1  %}
 				{% endfor %}
-
 				{% if nbrShowCom < nbrCom %}
 					{% if infoPub.slug %}
 						{% set chapterSlug = infoPub.slug %}

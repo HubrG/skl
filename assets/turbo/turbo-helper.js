@@ -14,7 +14,11 @@ if (document.getElementById("flashbag-success")) {
 
 //!
 import { addKeyword } from "../scripts/Publication/AddKeyword";
-import { Comment, CommentReply } from "../scripts/Publication/Comment";
+import {
+  Comment,
+  CommentReply,
+  CommentDelete,
+} from "../scripts/Publication/Comment";
 import { AxiosSavePublication } from "../scripts/Publication/Publication";
 import { GlideModule } from "../scripts/Glide";
 import { darkMode } from "../scripts/Darkmode";
@@ -97,8 +101,11 @@ const TurboHelper = class {
       axiosSaveChapter();
       ForumTopicRead();
       Inbox();
+      // commentaires
       Comment();
       CommentReply();
+      CommentDelete();
+      //
       Notification();
       // ! Flashes
       if (document.getElementById("flashbag-success")) {
@@ -126,8 +133,11 @@ const TurboHelper = class {
       DropdownMenu();
       Inbox();
       ForumTopicRead();
+      // commentaires
       Comment();
       CommentReply();
+      CommentDelete();
+      //
     });
     document.addEventListener("turbo:frame-load", (event) => {
       // Comment();

@@ -138,10 +138,10 @@ class ForumController extends AbstractController
         ]);
     }
     #[Route('/forum/read/{slug}/{id}/{slugTopic}', name: 'app_forum_topic_read')]
-    public function readTopic(Request $request, ForumTopicRepository $ftRepo, SluggerInterface $slugger, EntityManagerInterface $em, ForumCategoryRepository $fcRepo, $id = null, $slugTopic = null, $slug = null): Response
+    public function readTopic(Request $request, ForumMessageRepository $fmRepo, ForumTopicRepository $ftRepo, SluggerInterface $slugger, EntityManagerInterface $em, ForumCategoryRepository $fcRepo, $id = null, $slugTopic = null, $slug = null): Response
     {
         $category = $fcRepo->findOneBy(['slug' => $slug]);
-
+        $nbrShowCom = 50000;
         if (!$category) {
             // redirection vers la route app_forum
             return $this->redirectToRoute('app_forum');
@@ -151,6 +151,7 @@ class ForumController extends AbstractController
             // redirection vers la route app_forum
             return $this->redirectToRoute('app_forum_topic', ['slug' => $slug]);
         }
+
         // ! form
         $form = $this->createForm(ForumMessageType::class);
         $form->handleRequest($request);
@@ -160,7 +161,7 @@ class ForumController extends AbstractController
             // Définissez les propriétés supplémentaires
             $message->setTopic($topic)
                 ->setUser($this->getUser())
-                ->setCreatedAt(new DateTimeImmutable);
+                ->setPublishedAt(new DateTimeImmutable);
             // Persistez et enregistrez l'entité
             $em->persist($message);
             $em->flush();
@@ -184,6 +185,10 @@ class ForumController extends AbstractController
                 }
             }
         }
+        // * On récupère les messages du topic
+        $comments = $fmRepo->findBy(['topic' => $id], ['published_at' => 'DESC'], $nbrShowCom, 0);
+        $nbrCom = count($fmRepo->findBy(['topic' => $id]));
+        $nbrComReal = count($fmRepo->findBy(['topic' => $id, 'replyTo' => null]));
         // * On ajoute un view pour le chapitre (si l'utilisateur n'est pas l'auteur de la publication)
         $this->viewTopic($topic);
 
@@ -191,6 +196,10 @@ class ForumController extends AbstractController
             'category' => $category,
             'topic' => $topic,
             'form' => $form,
+            "pCom" => $comments,
+            "nbrShowCom" => $nbrShowCom,
+            "nbrComReal" =>  $nbrComReal,
+            "nbrCom" => $nbrCom
         ]);
     }
     #[Route('/forum/update/{id}/{slug}', name: 'app_forum_topic_update')]

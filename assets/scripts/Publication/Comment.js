@@ -4,8 +4,8 @@ import { NotyDisplay } from "../Noty";
 export function CommentReply() {
   let isProcessingReply = false;
   const commentDiv = document.getElementById("comment-section");
-  console.log(isProcessingReply);
-  if (!commentDiv) return;
+  const forumDiv = document.getElementById("forum-section");
+  if (!commentDiv && !forumDiv) return;
   // ! Fonction de réponse à une réponse de commentaire
   let replyToButton = document.querySelectorAll(".replyToButton");
   replyToButton.forEach((el) => {
@@ -62,6 +62,10 @@ export function CommentReply() {
           const url = replyPath;
           data.append("id", el.getAttribute("data-comment-id"));
           data.append("replyContent", textareaReplyTo.value);
+          if (forumDiv) {
+            data.append("forum", true);
+          }
+
           axios
             .post(url, data, {
               headers: {
@@ -81,7 +85,6 @@ export function CommentReply() {
                 el.innerHTML = "Répondre";
                 // Réinitialiser l'indicateur après avoir reçu la réponse
                 isProcessingReply = false;
-                isProcessingComment = false;
                 setTimeout(() => {
                   const replyId = "hr-comment-" + response.data.commentId;
                   const element = document.getElementById(replyId);
@@ -104,7 +107,8 @@ export function CommentReply() {
 export function Comment() {
   let isProcessingComment = false;
   const commentDiv = document.getElementById("comment-section");
-  if (!commentDiv) return;
+  const forumDiv = document.getElementById("forum-section");
+  if (!commentDiv && !forumDiv) return;
   // ! Fonction de réponse à un commentaire
   let replyButton;
   replyButton = document.querySelectorAll(".replyButton");
@@ -154,6 +158,10 @@ export function Comment() {
           const url = replyPath;
           data.append("id", commentId);
           data.append("replyContent", textareaReply.value);
+          if (forumDiv) {
+            data.append("forum", true);
+          }
+
           axios
             .post(url, data, {
               headers: {
@@ -170,7 +178,7 @@ export function Comment() {
                 el.innerHTML = "Répondre";
               }
               // Réinitialiser l'indicateur après avoir reçu la réponse
-              isProcessingReply = false;
+
               isProcessingComment = false;
               setTimeout(() => {
                 const replyId = "hr-comment-" + response.data.commentId;
@@ -189,8 +197,12 @@ export function Comment() {
       }
     });
   });
-
+}
+export function CommentDelete() {
   // ! Fonction de suppression d'un commentaire
+  const commentDiv = document.getElementById("comment-section");
+  const forumDiv = document.getElementById("forum-section");
+  if (!commentDiv && !forumDiv) return;
   const deleteComment = document.querySelectorAll(".deleteCommentButton");
   deleteComment.forEach((el) => {
     el.addEventListener("click", function () {
@@ -199,6 +211,9 @@ export function Comment() {
       const url = commentDeletePath;
       const data = new FormData();
       data.append("id", commentId);
+      if (forumDiv) {
+        data.append("forum", true);
+      }
       axios
         .post(url, data, {
           headers: {
@@ -253,6 +268,9 @@ export function Comment() {
     const url = likePath;
     const data = new FormData();
     data.append("id", result);
+    if (forumDiv) {
+      data.append("forum", true);
+    }
     axios
       .post(url, data, {
         headers: {
@@ -321,6 +339,9 @@ export function Comment() {
         const url = updatePath;
         data.append("id", result);
         data.append("newCom", newCom.value);
+        if (forumDiv) {
+          data.append("forum", true);
+        }
         axios
           .post(url, data, {
             headers: {
@@ -388,15 +409,48 @@ export function Comment() {
 
   if (sendComment) {
     const nbrComLet = document.querySelector(".nbr-com-let");
-    const nbrCom = nbrComLet.getAttribute("data-nbr-com");
     sendComment.addEventListener("click", () => {
-      nbrComLet.innerHTML = Number(nbrCom) + 1;
-      nbrComLet.setAttribute("data-nbr-com", Number(nbrCom) + 1);
+      if (nbrComLet) {
+        var nbrCom = nbrComLet.getAttribute("data-nbr-com");
+        nbrComLet.innerHTML = Number(nbrCom) + 1;
+        nbrComLet.setAttribute("data-nbr-com", Number(nbrCom) + 1);
+      }
       setTimeout(() => {
         commentContent.value = "";
         commentContent.rows = 1;
         commentContent.style.height = "";
       }, 100);
     });
+  }
+  // ! Fonction qui permet d'aller vers un com depuis une URL avec intoView
+  const markComment = document.getElementById("mark-comment");
+  if (markComment) {
+    const replyId = "comment-" + markComment.getAttribute("data-com");
+    const element = document.getElementById(replyId);
+    if (element) {
+      element.scrollIntoView({
+        block: "center",
+        behavior: "smooth",
+      });
+    }
+    element.classList.add(
+      "animate__animated",
+      "animate__flash",
+      "animate__slow",
+      "animate__delay-1s",
+      "border-t-2",
+      "rounded-t-lg",
+      "mt-0",
+      "border-indigo-500",
+      "pb-2"
+    );
+    setTimeout(() => {
+      element.classList.remove(
+        "animate__animated",
+        "animate__flash",
+        "animate__slow",
+        "animate__delay-1s"
+      );
+    }, 5000);
   }
 }

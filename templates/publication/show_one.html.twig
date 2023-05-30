@@ -31,7 +31,7 @@
 	Récit |
 	{{ pubShow.title }}
 	({{ pubShow.user.nickname }})
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							-
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																			-
 	{{ parent() }}
 {% endblock %}
 
@@ -457,7 +457,6 @@
 						<hr>
 					{% endif %}
 					{% if pubShow.status > 1 %}
-
 						<ul>
 							<li class="text-center mb-5 dark:text-slate-400 text-slate-600 -mt-3 block" onclick="let commentSection = document.getElementById('comment-section').classList; commentSection.toggle('hidden');if (commentSection.contains('hidden')) { document.getElementById('showComMd').innerHTML = 'Afficher' } else {  document.getElementById('showComMd').innerHTML = 'Masquer' }">
 								{% if nbrCom > 0 %}
@@ -472,10 +471,31 @@
 								{% endif %}
 							</li>
 						</ul>
+						{% if not app.user and pCom|length > 0  %}
+							<hr class="mb-5">
+							<p class="font-medium text-center flex flex-row  items-center gap-x-3 justify-center dark:text-slate-300 text-slate-800">
+								<i class="fa-duotone fa-user-circle"></i>
+								<button data-micromodal-trigger="popup-login" class="hover:underline text-center font-semibold">Connectez-vous pour commenter !</button>
+							</p>
+							<hr class="mb-5">
+						{% endif %}
 						<turbo-frame id="comment-section" class=" hidden lg:block">
+							{% if app.request.query.has('idCom') %}
+								{# La variable GET "idCom" est présente dans l'URL #}
+								{% set idCom = app.request.query.get('idCom') %}
+								<div id="mark-comment" data-com="{{idCom}}"></div>
+							{% endif %}
+							{% if pCom|length > 0 %}
+								<p class="dark:text-white mb-5">
+									<i class="fa-duotone fa-comments"></i>
+									&nbsp;
+									{{pCom|length}}
+									commentaire{{pCom|length > 1 ? "s" : ""}}
+								</p>
+							{% endif %}
 							{% set n = 0 %}
 							{% for item in pCom %}
-								{% include "publication/_partials/_comment.html.twig" with { item:item, n:n, pcom:nbrCom} %}
+								{% include "publication/_partials/_comment.html.twig" with { item:item, n:n, first:pCom|first, pcom:nbrCom} %}
 								{% set n = n + 1  %}
 							{% endfor %}
 							{% if nbrShowCom < nbrCom %}

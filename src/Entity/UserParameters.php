@@ -104,6 +104,22 @@ class UserParameters
     #[ORM\Column(nullable: true, options: ['default' => true])]
     private ?bool $notif_14_web = true;
 
+    #[ORM\Column(nullable: true, options: ['default' => true])]
+    private ?bool $notif_15_mail = true;
+
+    #[ORM\Column(nullable: true, options: ['default' => true])]
+    private ?bool $notif_15_web = true;
+    #[ORM\Column(nullable: true, options: ['default' => true])]
+    private ?bool $notif_16_mail = true;
+
+    #[ORM\Column(nullable: true, options: ['default' => true])]
+    private ?bool $notif_16_web = true;
+    #[ORM\Column(nullable: true, options: ['default' => true])]
+    private ?bool $notif_17_mail = true;
+
+    #[ORM\Column(nullable: true, options: ['default' => true])]
+    private ?bool $notif_17_web = true;
+
 
     public function getId(): ?int
     {
@@ -473,6 +489,80 @@ class UserParameters
     public function setNotif14Web(?bool $notif_14_web): self
     {
         $this->notif_14_web = $notif_14_web;
+
+        return $this;
+    }
+    public function isNotif15Mail(): ?bool
+    {
+        return $this->notif_15_mail;
+    }
+
+    public function setNotif15Mail(?bool $notif_15_mail): self
+    {
+        $this->notif_15_mail = $notif_15_mail;
+
+        return $this;
+    }
+
+    public function isNotif15Web(): ?bool
+    {
+        return $this->notif_15_web;
+    }
+
+    public function setNotif15Web(?bool $notif_15_web): self
+    {
+        $this->notif_15_web = $notif_15_web;
+
+        return $this;
+    }
+
+    public function isNotif16Mail(): ?bool
+    {
+        return $this->notif_16_mail;
+    }
+
+    public function setNotif16Mail(?bool $notif_16_mail): self
+    {
+        $this->notif_16_mail = $notif_16_mail;
+
+        return $this;
+    }
+
+    public function isNotif16Web(): ?bool
+    {
+        return $this->notif_16_web;
+    }
+
+    public function setNotif16Web(?bool $notif_16_web): self
+    {
+        $this->notif_16_web = $notif_16_web;
+
+        return $this;
+    }
+
+
+
+
+    public function isNotif17Mail(): ?bool
+    {
+        return $this->notif_17_mail;
+    }
+
+    public function setNotif17Mail(?bool $notif_17_mail): self
+    {
+        $this->notif_17_mail = $notif_17_mail;
+
+        return $this;
+    }
+
+    public function isNotif17Web(): ?bool
+    {
+        return $this->notif_17_web;
+    }
+
+    public function setNotif17Web(?bool $notif_17_web): self
+    {
+        $this->notif_17_web = $notif_17_web;
 
         return $this;
     }

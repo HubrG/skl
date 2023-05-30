@@ -5,7 +5,7 @@
 		<span>
 			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
 			vient de rédiger un commentaire sur votre publication
-			<a href="{{path("app_publication_show_one", {id:item.comment.publication.id, slug:item.comment.publication.slug})}}">
+			<a href="{{path("app_publication_show_one", {id:item.comment.publication.id, slug:item.comment.publication.slug,idCom:item.comment.id})}}">
 				{{item.comment.publication.title}}
 			</a>
 			<p>il y a
@@ -15,11 +15,11 @@
 	{% endif %}
 	{# Nouveau commentaire sur l'un de vos chapitres #}
 	{% if item.type == 2 %}
-		<i class="fa-regular fa-comment"></i>
+		<i class="fa-kit fa-regular-comment-quote-circle-bolt"></i>
 		<span>
 			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
 			vient de rédiger un commentaire sur la feuille
-			<a href="{{path("app_chapter_show", {slugPub:item.comment.publication.slug,user:item.user.username,idChap:item.comment.chapter.id,slug:item.comment.chapter.slug})}}">
+			<a href="{{path("app_chapter_show", {slugPub:item.comment.publication.slug,user:item.user.username,idChap:item.comment.chapter.id,slug:item.comment.chapter.slug,idCom:item.comment.id})}}">
 				{{item.comment.chapter.title}}
 			</a>
 			de votre récit
@@ -38,12 +38,12 @@
 			{# la publication #}
 			{% if item.likeComment.comment.chapter %}
 				sur la feuille
-				<a href="{{path("app_chapter_show", {slugPub:item.likeComment.comment.chapter.slug,user:item.user.username,idChap:item.likeComment.comment.chapter.id,slug:item.likeComment.comment.chapter.slug})}}">{{item.likeComment.comment.chapter.title}}</a>
+				<a href="{{path("app_chapter_show", {slugPub:item.likeComment.comment.chapter.slug,user:item.user.username,idChap:item.likeComment.comment.chapter.id,slug:item.likeComment.comment.chapter.slug,idCom:item.likeComment.comment.id})}}">{{item.likeComment.comment.chapter.title}}</a>
 				du récit
 				<a href="{{path("app_publication_show_one", {id:item.likeComment.comment.publication.id, slug:item.likeComment.comment.publication.slug})}}">{{item.likeComment.comment.publication.title}}</a>
 			{% else %}
 				sur le récit
-				<a href="{{path("app_publication_show_one", {id:item.likeComment.comment.publication.id, slug:item.likeComment.comment.publication.slug})}}">{{item.likeComment.comment.publication.title}}</a>
+				<a href="{{path("app_publication_show_one", {id:item.likeComment.comment.publication.id, slug:item.likeComment.comment.publication.slug,idCom:item.likeComment.comment.id})}}">{{item.likeComment.comment.publication.title}}</a>
 			{% endif %}
 			<p>il y a
 				{{item.createdAt|since}}
@@ -136,12 +136,18 @@
 		<span>
 			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
 			vient de répondre à votre commentaire sur la publication
-			<a href="{{path("app_publication_show_one", {id:item.replyComment.publication.id, slug:item.replyComment.publication.slug})}}">
-				{{item.replyComment.publication.title}}
-			</a>
+			{% if item.replyComment.chapter %}
+				<a href="{{path("app_publication_show_one", {id:item.replyComment.publication.id, slug:item.replyComment.publication.slug})}}">
+					{{item.replyComment.publication.title}}
+				</a>
+			{% else %}
+				<a href="{{path("app_publication_show_one", {id:item.replyComment.publication.id, slug:item.replyComment.publication.slug,idCom:item.replyComment.id})}}">
+					{{item.replyComment.publication.title}}
+				</a>
+			{% endif %}
 			{% if item.replyComment.chapter %}
 				sur la feuille «
-				<a href="{{path("app_chapter_show", {slugPub:item.replyComment.publication.slug,user:item.user.username,idChap:item.replyComment.chapter.id,slug:item.replyComment.chapter.slug})}}">{{item.replyComment.chapter.title}}</a>
+				<a href="{{path("app_chapter_show", {slugPub:item.replyComment.publication.slug,user:item.user.username,idChap:item.replyComment.chapter.id,slug:item.replyComment.chapter.slug,idCom:item.replyComment.id})}}">{{item.replyComment.chapter.title}}</a>
 				»
 			{% endif %}
 			<p>il y a
@@ -154,8 +160,7 @@
 		<i class="fa-regular fa-highlighter-line"></i>
 		<span>
 			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			vient de vous suggérer une modification pour améliorer le texte de votre feuille
-																																																			«
+			vient de vous suggérer une modification pour améliorer le texte de votre feuille «
 			<a href="{{path("app_chapter_revision", {slugPub:item.revisionComment.chapter.publication.slug,user:item.user.username,idChap:item.revisionComment.chapter.id,slug:item.revisionComment.chapter.slug})}}">{{item.revisionComment.chapter.title}}</a>
 			» pour le récit
 			<a href="{{path("app_publication_show_one", {id:item.revisionComment.chapter.publication.id, slug:item.revisionComment.chapter.publication.slug})}}">
@@ -172,14 +177,14 @@
 		<span>
 			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
 			vient de répondre à votre sujet de forum «
-			<a href="{{path("app_forum_topic_read", {slug:item.forumMessage.topic.category.slug,id:item.forumMessage.topic.id,slugTopic:item.forumMessage.topic.slug})}}">{{item.forumMessage.topic.title}}</a>
+			<a href="{{path("app_forum_topic_read", {slug:item.forumMessage.topic.category.slug,id:item.forumMessage.topic.id,slugTopic:item.forumMessage.topic.slug,idCom:item.forumMessage.id})}}">{{item.forumMessage.topic.title}}</a>
 			»
 			<p>il y a
 				{{item.createdAt|since}}
 			</p>
 		</span>
 	{% endif %}
-	{# Nouvelle réponse sur l'un de vos sujets de forum #}
+	{# Nouvelle mention sur une réponse au sujet du forum #}
 	{% if item.type == 12 %}
 		<i class="fa-regular fa-at"></i>
 		<span>
@@ -216,9 +221,48 @@
 			</a>
 			{% if item.assignComment.chapter %}
 				sur la feuille «
-				<a href="{{path("app_chapter_show", {slugPub:item.assignComment.publication.slug,user:item.user.username,idChap:item.assignComment.chapter.id,slug:item.assignComment.chapter.slug})}}">{{item.assignComment.chapter.title}}</a>
+				<a href="{{path("app_chapter_show", {slugPub:item.assignComment.publication.slug,user:item.user.username,idChap:item.assignComment.chapter.id,slug:item.assignComment.chapter.slug,idCom:item.assignComment.id})}}">{{item.assignComment.chapter.title}}</a>
 				»
 			{% endif %}
+			<p>il y a
+				{{item.createdAt|since}}
+			</p>
+		</span>
+	{% endif %}
+	{# Nouvelle réponse l'une de vos réponses au forum #}
+	{% if item.type == 15 %}
+		<i class="fa-regular fa-messages"></i>
+		<span>
+			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+			vient de répondre à votre réponse sur le sujet de forum «
+			<a href="{{path("app_forum_topic_read", {id:item.replyForum.topic.id, slug:item.replyForum.topic.category.slug,slugTopic:item.replyForum.topic.slug,idCom:item.replyForum.id})}}">{{item.replyForum.topic.title}}</a>
+			»
+			<p>il y a
+				{{item.createdAt|since}}
+			</p>
+		</span>
+	{% endif %}
+	{# Nouveau like sur l'une de vos réponses au forum #}
+	{% if item.type == 16 %}
+		<i class="fa-regular fa-message-heart"></i>
+		<span>
+			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+			vient d'aimer votre réponse sur le sujet de forum «
+			<a href="{{path("app_forum_topic_read", {id:item.likeForum.topic.id, slug:item.likeForum.topic.category.slug,slugTopic:item.likeForum.topic.slug,idCom:item.likeForum.id})}}">{{item.likeForum.topic.title}}</a>
+			»
+			<p>il y a
+				{{item.createdAt|since}}
+			</p>
+		</span>
+	{% endif %}
+	{# Nouvelle mention sur une réponse au sujet du forum #}
+	{% if item.type == 17 %}
+		<i class="fa-regular fa-at"></i>
+		<span>
+			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+			vient de vous mentionner dans sa réponse au sujet du forum «
+			<a href="{{path("app_forum_topic_read", {slug:item.assignForumReply.topic.category.slug,id:item.assignForumReply.topic.id,slugTopic:item.assignForumReply.topic.slug,idCom:item.assignForumReply.id})}}">{{item.assignForumReply.topic.title}}</a>
+			»
 			<p>il y a
 				{{item.createdAt|since}}
 			</p>

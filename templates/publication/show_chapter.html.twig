@@ -211,7 +211,7 @@
 					</div>
 					<span class="dark:text-slate-500">|</span>
 					<div data-tippy-content="<strong>Passer en mode « Révision »</strong><br/>pour aider l'auteur-ice à améliorer son texte" data-id="{{ infoChap.id }}">
-						<a href="{{path("app_chapter_revision", {slugPub:infoPub.slug, user:infoPub.user.username, idChap:infoChap.id, slug:infoChap.slug})}}" data-turbo-frame="_top">
+						<a href="{{path("app_chapter_revision", {slugPub:infoPub.slug, user:infoPub.user.username, idChap:infoChap.id, slug:infoChap.slug, version:version})}}" data-turbo-frame="_top">
 							<i class="fa-duotone fa-highlighter-line text-blue-700 dark:text-blue-400"></i>
 							{{nbrRevision}}
 						</a>
@@ -367,7 +367,33 @@
 					</p>
 				{% endif %}
 			</turbo-frame>
-		</aside>
+		</section>
+		<div class="w-full md:w-8/12 mx-auto">
+			<hr class="mb-5">
+			<h6 class="text-center font-semibold">Versions :</h6>
+			<select id="version-select" class=" text-xs w-full  mx-auto text-center italic  dark:bg-slate-700 dark:rounded-b border-t-0 border-l-0 border-r-0 border-b-2 -mt-5 md:mt-2 dark:text-slate-300" onchange="">
+				{% set latest_version = versions|sort((a, b) => b.created <=> a.created)|first %}
+				{% for vers in versions %}
+					{% set versMode1 = vers.publicationAnnotations|filter(annotation => annotation.mode == 1) %}
+					{% if vers == latest_version %}
+						<option value="{{vers.id}}" {{version == vers.id ? "selected"}}>
+							Version actuelle (v.{{vers.id}}) —
+							{{versMode1|length}}
+							annot. —  Mise à jour il y a
+							{{ vers.created|since }}
+						</option>
+					{% else %}
+						<option value="{{vers.id}}" {{version == vers.id ? "selected"}}>
+							v.{{vers.id}}
+							—
+							{{versMode1|length}}
+							annot. — Mise à jour il y a
+							{{vers.created|since}}
+						</option>
+					{% endif %}
+				{% endfor %}
+			</select>
+		</div>
 		<div class="hidden">
 			<input type="hidden" value="" id="drawerSelectedText"/>
 			<input type="hidden" value="" id="drawerSelectedTextP"/>

@@ -180,6 +180,36 @@ class ChapterShowController extends AbstractController
         // On compte le nombre de révisions pour cette version du chapitre
         $nbrRevision = count($this->paRepo->findBy(['chapter' => $chapter, "version" => $version, 'mode' => 1]));
 
+        // On recherche les versions qui ont été annotées
+        $chapterId = $chapter->getId();
+
+        // Requête pour récupérer les versions avec des annotations
+        $versionsWithAnnotations = $this->pchvRepo->createQueryBuilder('v1')
+            ->select('v1')
+            ->innerJoin('v1.chapter', 'c1')
+            ->innerJoin('v1.publicationAnnotations', 'a1')
+            ->where('c1.id = :chapterId1')
+            ->setParameter('chapterId1', $chapterId)
+            ->groupBy('v1.id')
+            ->orderBy('v1.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        // Requête pour récupérer la dernière version, indépendamment des annotations
+        $lastVersion = $this->pchvRepo->createQueryBuilder('v2')
+            ->select('v2')
+            ->innerJoin('v2.chapter', 'c2')
+            ->where('c2.id = :chapterId2')
+            ->setParameter('chapterId2', $chapterId)
+            ->orderBy('v2.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        // Combiner les résultats et supprimer les doublons
+        $versions = array_unique(array_merge($versionsWithAnnotations, [$lastVersion]), SORT_REGULAR);
+
+
         // * La vue
         return $this->render('publication/show_chapter.html.twig', [
             'infoPub' => $publication,
@@ -193,6 +223,7 @@ class ChapterShowController extends AbstractController
             "nbrComReal" =>  $nbrComReal,
             "nbrCom" => $nbrCom,
             "version" => $version,
+            "versions" => $versions,
             "chapterContent" => $chapterContent,
             "canonicalUrl" => $this->generateUrl('app_chapter_show', ["slugPub" => $slugPub, "user" => $user, "idChap" => $idChap, "slug" => $slug], true),
             "alreadyRead" => $alreadyRead,
@@ -306,8 +337,6 @@ class ChapterShowController extends AbstractController
                 $chapterContent = $this->formatChapter($chapterContent->getContent());
             }
         }
-
-        // $versions = $this->pchvRepo->findBy(['chapter' => $chapter], ['id' => 'DESC']);
         // On recherche les versions qui ont été annotées
         $chapterId = $chapter->getId();
 

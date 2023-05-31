@@ -1,0 +1,176 @@
+<div id="feed-content">
+	<div class="card">
+		<div class="header">
+			<h4>Derniers commentaires</h4>
+			<hr>
+		</div>
+		<div class="body">
+			{% for item in this.comments %}
+				<div>
+					{{item.content}}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="card">
+		<div class="header">
+			<h4>Derniers « j'aime »</h4>
+			<hr>
+		</div>
+		<div class="body">
+			{% for item in this.likes %}
+				<div>
+					{{item.user.nickname}}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="card">
+		<div class="header">
+			<h4>Dernières réponses du forum</h4>
+			<hr>
+		</div>
+		<div class="body">
+			{% for item in this.forumMessages %}
+				<div>
+					{{item.topic.title}}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="card">
+		<div class="header">
+			<h4>Dernières sujets du forum</h4>
+			<hr>
+		</div>
+		<div class="body">
+			{% for item in this.forumTopics %}
+				<div>
+					{{item.title}}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="card">
+		<div class="header">
+			<h4>Derniers récits</h4>
+			<hr>
+		</div>
+		<div class="body">
+			{% for item in this.publications %}
+				<div>
+					{{item.title}}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="card">
+		<div class="header">
+			<h4>Dernières feuilles</h4>
+			<hr>
+		</div>
+		<div class="body">
+			{% for item in this.publicationChapters %}
+				<div>
+					{{item.title}}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="card">
+		<div class="header">
+			<h4>Derniers marques-pages</h4>
+			<hr>
+		</div>
+		<div class="body">
+			{% for item in this.publicationBookmarks %}
+				<div>
+					{% if item.chapter %}
+						{{item.chapter.title}}
+					{% else %}
+						{{item.publication.title}}
+					{% endif %}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="card">
+		<div class="header">
+			<h4>Dernières révisions</h4>
+			<hr>
+		</div>
+		<div class="body">
+			{% for item in this.publicationAnnotations %}
+				<div>
+					{{item.chapter.title}}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="card">
+		<div class="header">
+			<h4>Dernières lectures</h4>
+			<hr>
+		</div>
+		<div class="body">
+			{% for item in this.publicationChapterViews %}
+				<div>
+					{{item.chapter.title}}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="card">
+		<div class="header">
+			<h4>Derniers abonnements</h4>
+			<hr>
+		</div>
+		<div class="body">
+			{% for item in this.publicationFollows %}
+				<div>
+					{{item.publication.title}}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="card">
+		<div class="header">
+			<h4>Publications populaires</h4>
+			<hr>
+		</div>
+		<div class="body">
+			{% for item in this.publicationPopularities %}
+				<div>
+					{{item.publication.title}}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="card">
+		<div class="header">
+			<h4>Derniers inscrits</h4>
+			<hr>
+		</div>
+		<div class="body">
+			{% for item in this.users %}
+				<div>
+					{{item.nickname}}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="card">
+		<div class="header">
+			<h4>Derniers téléchargements</h4>
+			<hr>
+		</div>
+		<div class="body">
+			{% for item in this.publicationDownloads %}
+				<div>
+					{{item.publication.title}}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+
+</div>

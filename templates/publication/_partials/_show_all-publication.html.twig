@@ -54,7 +54,7 @@
 			</div>
 		{% endif %}
 		<div class="header-info">
-			<h2 class="font-semibold text-base md:text-xl leading-6 flex flex-row items-center gap-x-2 ">
+			<h2 class="font-semibold text-base md:text-xl leading-6 flex flex-row items-center gap-x-2  cursor-text">
 				<a {{ user_in_url ? "data-turbo-frame='_top'" }} href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" {% if title|length > 58 %} data-tippy-content="{{item.title}}" {% endif %} class="hover:underline" aria-label="Lire {{item.title}}, par {{item.user.nickname}}">
 					{{title}}
 				</a>
@@ -66,7 +66,7 @@
 			</h3>
 		</div>
 	</div>
-	<p class="summary">
+	<p class="summary text-sm cursor-text">
 		{{chap_content|striptags|raw|length > 300 ? chap_content|striptags|raw|slice(0,300) ~ "..." : chap_content|striptags|raw}}
 	</p>
 	{% if sortBy == "sheet" %}
@@ -117,7 +117,7 @@
 					<span class="text-slate-600 dark:text-slate-400 hover:underline">{{cat_name}}</span>
 				</a>
 			</li>
-			<ul class="flex flex-row flex-wrap w-full items-center  justify-end text-opacity-70 gap-x-2 text-slate-700 dark:text-slate-500">
+			<ul class="flex flex-row flex-wrap w-full items-center text-[0.75rem] justify-end text-opacity-70 gap-x-2 text-slate-700 dark:text-slate-500">
 				<li class="flex flex-row gap-x-1 items-center">
 					{% set filteredChapters = item.publicationChapters|filter(chapter => chapter.status == 2) %}
 					<i class="fa-regular fa-files"></i>
@@ -131,6 +131,14 @@
 					<i class="fa-regular fa-eye"></i>
 					<span>
 						{{totalViews}}
+					</span>
+				</li>
+				|
+				<li class="flex flex-row gap-x-1 items-center">
+					{% set totalComments = item.publicationComments|length %}
+					<i class="fa-regular fa-comments"></i>
+					<span>
+						{{totalComments}}
 					</span>
 				</li>
 				{% if sortBy == "like" %}
@@ -166,13 +174,13 @@
 					{% set lastPopularity = item.PublicationPopularities|last.popularity|default(0) %}
 					{% if item.pop < lastPopularity %}
 						{% set pop_text = "Popularité en baisse" %}
-						{% set pop_icon_class = "fa-regular fa-circle-arrow-down text-rose-700 dark:text-rose-500 text-lg" %}
+						{% set pop_icon_class = "fa-regular fa-circle-arrow-down text-rose-700 dark:text-rose-500 text-sm" %}
 					{% elseif item.pop == lastPopularity %}
 						{% set pop_text = "Popularité stagnante" %}
-						{% set pop_icon_class = "fa-regular fa-equals text-slate-700 dark:text-slate-400 text-lg" %}
+						{% set pop_icon_class = "fa-regular fa-equals text-slate-700 dark:text-slate-400 text-sm" %}
 					{% else %}
 						{% set pop_text = "Popularité en hausse" %}
-						{% set pop_icon_class = "fa-regular fa-circle-arrow-up text-green-500 dark:text-green-500 text-lg" %}
+						{% set pop_icon_class = "fa-regular fa-circle-arrow-up text-green-500 dark:text-green-500 text-sm" %}
 					{% endif %}
 					|
 					<li class="flex flex-row gap-x-1 items-center">

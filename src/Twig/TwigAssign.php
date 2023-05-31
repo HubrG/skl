@@ -33,7 +33,7 @@ class TwigAssign extends AbstractExtension
             $username = substr($matches[0], 1);
             $user = $this->userRepository->findOneBy(['username' => $username]);
             if ($user) {
-                $return = '<a href="/user/' . $username . '" data-turbo-frame="_top" class="text-blue-500 hover:underline">@' . $user->getNickname() . '</a>';
+                $return = '<a href="/user/' . $username . '" data-turbo-frame="_top" class="assign">@' . $user->getNickname() . '</a>';
                 // if ($user->getProfilPicture() != null) {
                 //     $return = '<span class="inline-flex flex-row gap-x-1 items-center text-inherit">
                 //     <img class="h-4 w-4 rounded-full" srcset="' . $user->getProfilPicture() . '" alt="' . $user->getNickname() . '">

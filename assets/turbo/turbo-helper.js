@@ -87,7 +87,7 @@ const TurboHelper = class {
           // el est l'élément qui vient d'être chargé
           if (el.classList.contains("myImage")) {
             el.classList.remove("-z-10");
-            el.previousElementSibling.style.display = "none";
+            el.previousElementSibling.classList.add("hidden");
           }
         },
       });
@@ -123,7 +123,7 @@ const TurboHelper = class {
           // el est l'élément qui vient d'être chargé
           if (el.classList.contains("myImage")) {
             el.classList.remove("-z-10");
-            el.previousElementSibling.style.display = "none";
+            el.previousElementSibling.classList.add("hidden");
           }
         },
       });
@@ -163,7 +163,7 @@ const TurboHelper = class {
           // el est l'élément qui vient d'être chargé
           if (el.classList.contains("myImage")) {
             el.classList.remove("-z-10");
-            el.previousElementSibling.style.display = "none";
+            el.previousElementSibling.classList.add("hidden");
           }
         },
       });

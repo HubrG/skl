@@ -1492,7 +1492,7 @@ nav.breadcrumb ol li a:hover.not-underline {
 	@apply lg:columns-3 md:columns-2 columns-1  -mt-14 md:-mt-0  md:gap-10 sm:gap-7 gap-7 !important;
 }
 #feed-content div.card {
-	@apply  p-3 break-inside-avoid-column rounded mb-10 dark:shadow-xl shadow;
+	@apply  p-3 break-inside-avoid-column rounded mb-10 dark:shadow-2xl dark:drop-shadow-2xl  shadow;
 }
 #feed-content div.card hr {
 	@apply mb-3 mt-3;

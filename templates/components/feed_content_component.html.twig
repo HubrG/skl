@@ -1,5 +1,5 @@
 <div
-	id="feed-content">
+	id="feed-content" class="pt-12">
 	{# ! Derniers commentaires #}
 	{% set title = "Derniers commentaires" %}
 	{% include "/partials/little/_feedCard-top.html.twig" with 
@@ -7,8 +7,8 @@
 		icon:"comment",
 		title:title,
 		titleColor:"text-yellow-500 dark:text-yellow-200",
-		bgCard:"bg-yellow-50 dark:bg-yellow-500 shadow-yellow-500 dark:shadow-yellow-400",
-		borderHr:"border-yellow-300 dark:border-yellow-700"
+		bgCard:"bg-yellow-50  dark:shadow-yellow-400",
+		borderHr:"border-yellow-300 dark:border-yellow-200"
 		} 
 	%}
 	{% for item in this.comments %}
@@ -62,9 +62,9 @@
 		{
 		icon:"heart", 
 		title:title, 
-		titleColor:"text-rose-500 dark:text-rose-900", 
-		bgCard:"bg-rose-50 dark:bg-rose-500 shadow-rose-500 dark:shadow-rose-400",
-		borderHr:"border-rose-300 dark:border-rose-700"
+		titleColor:"text-rose-500 dark:text-rose-200", 
+		bgCard:"bg-rose-50  dark:shadow-rose-400",
+		borderHr:"border-rose-300 dark:border-rose-200"
 		} 
 	%}
 	{% if this.publicationChapterLikes|length == 0 %}
@@ -98,9 +98,9 @@
 		{
 		icon:"comments", 
 		title:title, 
-		titleColor:"text-emerald-500 dark:text-emerald-900", 
-		bgCard:"bg-emerald-50 dark:bg-emerald-500",
-		borderHr:"border-emerald-300 dark:border-emerald-700"
+		titleColor:"text-emerald-500 dark:text-emerald-200", 
+		bgCard:"bg-emerald-50 ",
+		borderHr:"border-emerald-300 dark:border-emerald-200"
 		} 
 	%}
 	{% for item in this.forumTopics %}
@@ -131,9 +131,9 @@
 		{
 		icon:"comments-alt", 
 		title:title, 
-		titleColor:"text-sky-500 dark:text-sky-900", 
-		bgCard:"bg-sky-50 dark:bg-sky-500",
-		borderHr:"border-sky-300 dark:border-sky-700"
+		titleColor:"text-sky-500 dark:text-sky-200", 
+		bgCard:"bg-sky-50 ",
+		borderHr:"border-sky-300 dark:border-sky-200"
 		}
 	%}
 	{% for item in this.forumMessages %}
@@ -164,9 +164,9 @@
 		{
 		icon:"books", 
 		title:title, 
-		titleColor:"text-teal-500 dark:text-teal-900", 
-		bgCard:"bg-teal-50 dark:bg-teal-500",
-		borderHr:"border-teal-300 dark:border-teal-700"
+		titleColor:"text-teal-500 dark:text-teal-200", 
+		bgCard:"bg-teal-50 ",
+		borderHr:"border-teal-300 dark:border-teal-200"
 		} 
 	%}
 	{% for item in this.publications %}
@@ -197,9 +197,9 @@
 		{
 		icon:"files", 
 		title:title, 
-		titleColor:"text-indigo-500 dark:text-indigo-900", 
-		bgCard:"bg-indigo-50 dark:bg-indigo-500",
-		borderHr:"border-indigo-300 dark:border-indigo-700"
+		titleColor:"text-indigo-500 dark:text-indigo-200", 
+		bgCard:"bg-indigo-50 ",
+		borderHr:"border-indigo-300 dark:border-indigo-200"
 		} 
 	%}
 	{% for item in this.publicationChapters %}
@@ -238,9 +238,9 @@
 		{
 		icon:"bookmark", 
 		title:title, 
-		titleColor:"text-lime-700 dark:text-lime-900", 
-		bgCard:"bg-lime-50 dark:bg-lime-500",
-		borderHr:"border-lime-300 dark:border-lime-700"
+		titleColor:"text-lime-700 dark:text-lime-200", 
+		bgCard:"bg-lime-50 ",
+		borderHr:"border-lime-300 dark:border-lime-200"
 		} 
 	%}
 	{% for item in this.publicationBookmarks %}
@@ -261,9 +261,9 @@
 		{
 		icon:"highlighter-line", 
 		title:title, 
-		titleColor:"text-amber-500 dark:text-amber-900", 
-		bgCard:"bg-amber-50 dark:bg-amber-500",
-		borderHr:"border-amber-300 dark:border-amber-700"
+		titleColor:"text-amber-500 dark:text-amber-200", 
+		bgCard:"bg-amber-50 ",
+		borderHr:"border-amber-300 dark:border-amber-200"
 		} 
 	%}
 	{% for item in this.publicationAnnotations %}
@@ -280,9 +280,9 @@
 		{
 		icon:"glasses", 
 		title:title, 
-		titleColor:"text-purple-500 dark:text-purple-900", 
-		bgCard:"bg-purple-50 dark:bg-purple-500",
-		borderHr:"border-purple-300 dark:border-purple-700"
+		titleColor:"text-purple-500 dark:text-purple-200", 
+		bgCard:"bg-purple-50 ",
+		borderHr:"border-purple-300 dark:border-purple-200"
 		} 
 	%}
 	{% for item in this.publicationReads %}
@@ -317,9 +317,9 @@
 		{
 		icon:"feed", 
 		title:title, 
-		titleColor:"text-green-500 dark:text-green-900", 
-		bgCard:"bg-green-50 dark:bg-green-500",
-		borderHr:"border-green-300 dark:border-green-700"
+		titleColor:"text-green-500 dark:text-green-200", 
+		bgCard:"bg-green-50 ",
+		borderHr:"border-green-300 dark:border-green-200"
 		} 
 	%}
 	{% for item in this.publicationFollows %}
@@ -336,9 +336,9 @@
 		{
 		icon:"fire", 
 		title:title, 
-		titleColor:"text-red-500 dark:text-red-900", 
-		bgCard:"bg-red-50 dark:bg-red-500",
-		borderHr:"border-red-300 dark:border-red-700"
+		titleColor:"text-red-500 dark:text-red-200", 
+		bgCard:"bg-red-50 ",
+		borderHr:"border-red-300 dark:border-red-200"
 		} 
 	%}
 	{% for item in this.publicationPopularities %}
@@ -355,9 +355,9 @@
 		{
 		icon:"users", 
 		title:title, 
-		titleColor:"text-orange-500 dark:text-orange-900", 
-		bgCard:"bg-orange-50 dark:bg-orange-500",
-		borderHr:"border-orange-300 dark:border-orange-700"
+		titleColor:"text-orange-500 dark:text-orange-200", 
+		bgCard:"bg-orange-50 ",
+		borderHr:"border-orange-300 dark:border-orange-200"
 		} 
 	%}
 	{% for item in this.users %}
@@ -373,9 +373,9 @@
 		{
 		icon:"download", 
 		title:title, 
-		titleColor:"text-slate-500 dark:text-slate-900", 
-		bgCard:"bg-slate-50 dark:bg-slate-500 dark:bg-opacity-50",
-		borderHr:"border-slate-300 dark:border-slate-700"
+		titleColor:"text-slate-500 dark:text-slate-200", 
+		bgCard:"bg-slate-50  dark:bg-opacity-50",
+		borderHr:"border-slate-300 dark:border-slate-200"
 		} 
 	%}
 	{% for item in this.publicationDownloads %}

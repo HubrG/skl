@@ -1507,7 +1507,7 @@ nav.breadcrumb ol li a:hover.not-underline {
 	@apply  -mt-2 !important;
 }
 #feed-content div.body ul {
-	@apply  text-sm flex flex-col gap-y-2 !important;
+	@apply  text-sm flex flex-col gap-y-3 !important;
 }
 #feed-content div.body ul li {
 	@apply  text-sm flex flex-row gap-x-2 !important;

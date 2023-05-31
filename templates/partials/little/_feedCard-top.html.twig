@@ -1,10 +1,10 @@
-<div class="card dark:text-slate-300 {{borderHr}} border-[4px] dark:bg-slate-700  {{bgCard is defined ? bgCard }}">
+<div class="card dark:text-slate-300 {{borderHr}} border-[4px] dark:bg-slate-700  {{bgCard is defined ? bgCard }} bg-opacity-60 dark:border-opacity-40">
 	<div class="header w-full">
 		<h4 class="feed-title mx-auto justify-center {{titleColor is defined ? titleColor }}">
 			<i class="fa-regular dark:brightness-100 fa-{{icon}}  "></i>
 			<span class=" brightness-50 dark:brightness-[1]  {{titleColor is defined ? titleColor }}">{{title}}</span>
 		</h4>
-		<hr class="{{borderHr is defined ? borderHr }} border-2">
+		<hr class="{{borderHr is defined ? borderHr }} border-2 opacity-50">
 	</div>
 	<div class="body">
-		<ul>
+		<ul class="p-5">

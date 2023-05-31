@@ -261,8 +261,8 @@
 											<div class="flex flex-row items-center gap-x-1">
 												{% if item.user.profilPicture %}
 													<div class="max-w-[1rem]">
-														<a href="{{path('app_user', {username:item.user.username})}}">
-															<img class="object-cover rounded w-full h-full" src="{{item.user.profilPicture}}"/>
+														<a href="{{path('app_user', {username:item.user.username})}}" aria-label="Profil de {{item.user.nickname}}">
+															<img class="object-cover rounded w-full h-full" alt="Photo de profil de {{item.user.nickname}}" src="{{item.user.profilPicture}}"/>
 														</a>
 													</div>
 												{% endif %}

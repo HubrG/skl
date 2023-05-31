@@ -309,11 +309,14 @@
 						<div class="help-text">Vous pouvez interpeller un utilisateur avec un
 							<strong>@</strong>
 							suivi de son nom d'utilisateur, et utiliser du
-							<em>Markdown</em>
+							<em data-popover-target="popover-markdown" data-popover-placement="bottom" class="font-semibold border-dashed border-b-[1px] cursor-help">Markdown
+								<i class="fa-duotone fa-circle-info"></i>
+							</em>
 							pour mettre en forme votre commentaire.
 						</div>
 						<input type="hidden" name="quote" id="drawerNoteQuote">
 						{{ form_end(formQuote) }}
+						{% include "/partials/little/_markdownPopover.html.twig" %}
 					</div>
 					<hr class="mb-5 border-4">
 				{% endif %}

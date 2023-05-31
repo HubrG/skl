@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use Michelf\Markdown;
+use Michelf\MarkdownExtra;
+
 
 
 class SmileyMessage
@@ -12,7 +14,9 @@ class SmileyMessage
         if ($text === null) {
             return "";
         }
-        $text = Markdown::defaultTransform($text);
+        $parser = new MarkdownExtra;
+        $parser->hard_wrap = true;
+        $text = $parser->transform($text);
         $smileyToEmojiMap = [
             'xD' => '😆',
             'XD' => '😆',

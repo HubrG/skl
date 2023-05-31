@@ -5,6 +5,7 @@ namespace App\Twig;
 
 use Twig\TwigFilter;
 use Michelf\Markdown;
+use Michelf\MarkdownExtra;
 use Twig\Extension\AbstractExtension;
 
 class TwigMarkdown extends AbstractExtension
@@ -18,8 +19,10 @@ class TwigMarkdown extends AbstractExtension
 
     public function formatMarkdown(string $text): string
     {
-        $markdownParser = new Markdown();
+        $parser = new MarkdownExtra;
+        $parser->hard_wrap = true;
+        $text = $parser->transform($text);
 
-        return $markdownParser->defaultTransform($text);
+        return $parser->transform($text);
     }
 }

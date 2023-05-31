@@ -88,10 +88,11 @@
 					Vous pouvez interpeller un utilisateur avec un
 					<strong>@</strong>
 					suivi de son nom d'utilisateur, et utiliser du
-					<em>Markdown</em>
+					<em data-popover-target="popover-markdown" data-popover-placement="bottom" class="font-semibold border-dashed border-b-[1px] cursor-help">Markdown</em>
 					pour mettre en forme votre réponse
 				</div>
 				{{ form_end(form) }}
+				{% include "/partials/little/_markdownPopover.html.twig" %}
 				<hr class="-mt-10">
 			{% endif %}
 			<div class="flex flex-col gap-y-5">
@@ -112,6 +113,7 @@
 						{% endif %}
 					</div>
 				{% endif %}
+
 				<turbo-frame id="messages-frame" class="-mt-10">
 					{% if app.request.query.has('idCom') %}
 						{# La variable GET "idCom" est présente dans l'URL #}

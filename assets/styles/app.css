@@ -1468,10 +1468,10 @@ nav.breadcrumb ol li a:hover.not-underline {
 .one-comment-content img, .one-topic-response img {
 	@apply max-w-full  my-2 h-auto rounded  block !important;
   }
-  .one-comment-content ul, .one-topic-response ul {
+.one-comment-content ul, .one-topic-response ul {
 	@apply list-disc  my-2 ml-2 md:text-sm text-xs  !important;
-  }
-  .one-comment-content ul li, .one-topic-response ul li {
+}
+.one-comment-content ul li, .one-topic-response ul li {
 	@apply ml-2 list-disc  !important;
 }
 .one-comment-content code, .one-topic-response code {
@@ -1487,6 +1487,9 @@ nav.breadcrumb ol li a:hover.not-underline {
 	.one-comment-content  blockquote, .one-topic-response blockquote {
 	  @apply border-l-2 pl-4 italic text-gray-600 block opacity-70 my-2  !important;
 	  font-size: 1rem;
+	}
+	.one-comment-content p a {
+		@apply text-sky-500 hover:underline
 	}
 #feed-content {
 	@apply lg:columns-3 md:columns-2 columns-1  -mt-14 md:-mt-0  md:gap-10 sm:gap-7 gap-7 !important;

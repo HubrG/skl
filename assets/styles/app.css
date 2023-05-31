@@ -1510,7 +1510,7 @@ nav.breadcrumb ol li a:hover.not-underline {
 	@apply  text-sm flex flex-col gap-y-2 !important;
 }
 #feed-content div.body ul li {
-	@apply  text-sm  !important;
+	@apply  text-sm flex flex-row gap-x-2 !important;
 }
 #feed-content div.body ul li a {
 	@apply  hover:underline !important;

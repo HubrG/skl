@@ -42,6 +42,7 @@ class FeedContentComponent
         private PublicationReadRepository $prRepo,
         private UserRepository $userRepo,
         private PublicationDownloadRepository $pdRepo,
+        private PublicationChapterLikeRepository $pchlRepo
     ) {
     }
     public function getComments(): array
@@ -65,7 +66,7 @@ class FeedContentComponent
     }
     public function getForumMessages(): array
     {
-        return $this->fmsgRepo->findBy([], ["published_at" => "DESC"], 5);
+        return $this->fmsgRepo->findBy(["replyTo" => null], ["published_at" => "DESC"], 5);
     }
     public function getForumTopics(): array
     {
@@ -77,7 +78,15 @@ class FeedContentComponent
     }
     public function getPublicationChapters(): array
     {
-        return $this->pchRepo->findBy(["status" => 2], ["created" => "DESC"], 5);
+        $qb = $this->pubRepo->createQueryBuilder('p')
+            ->leftJoin('p.publicationChapters', 'pc')
+            ->where('p.status = 2')
+            ->andWhere('pc.status = 2')
+            ->groupBy('p.id')
+            ->orderBy('MAX(pc.published)', 'DESC')
+            ->setMaxResults(5);
+        $publications_updated = $qb->getQuery()->getResult();
+        return $publications_updated;
     }
     public function getPublicationBookmarks(): array
     {
@@ -87,9 +96,15 @@ class FeedContentComponent
     {
         return $this->paRepo->findBy(["mode" => 1], ["createdAt" => "DESC"], 5);
     }
-    public function getPublicationChapterViews(): array
+    public function getPublicationReads(): array
     {
-        return $this->pchvRepo->findBy([], ["view_date" => "DESC"], 5);
+        $qb = $this->pchvRepo->createQueryBuilder('p');
+
+        $qb->where($qb->expr()->isNotNull('p.user'))
+            ->orderBy('p.view_date', 'DESC')
+            ->setMaxResults(5);
+
+        return $qb->getQuery()->getResult();
     }
     public function getPublicationFollows(): array
     {
@@ -110,5 +125,9 @@ class FeedContentComponent
     public function getPublicationDownloads(): array
     {
         return $this->pdRepo->findBy([], ["dlAt" => "DESC"], 5);
+    }
+    public function getPublicationChapterLikes(): array
+    {
+        return $this->pchlRepo->findBy([], ["CreatedAt" => "DESC"], 5);
     }
 }

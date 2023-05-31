@@ -1,0 +1,11 @@
+<span class="mt-0.5">
+	{% if pic %}
+		<img class="min-w-[1.35rem] h-5 rounded-full" src="{{ pic }}" alt="avatar">
+	{% else %}
+		<div class="w-5 h-5 rounded-full bg-yellow-200">
+			<div class="w-full h-full flex items-center justify-center text-sm text-yellow-400">
+				{{ user|slice(0,1)|upper }}
+			</div>
+		</div>
+	{% endif %}
+</span>

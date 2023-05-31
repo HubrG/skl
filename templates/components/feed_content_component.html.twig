@@ -1,176 +1,299 @@
-<div id="feed-content">
-	<div class="card">
-		<div class="header">
-			<h4>Derniers commentaires</h4>
-			<hr>
-		</div>
-		<div class="body">
-			{% for item in this.comments %}
-				<div>
-					{{item.content}}
-				</div>
-			{% endfor %}
-		</div>
-	</div>
-	<div class="card">
-		<div class="header">
-			<h4>Derniers « j'aime »</h4>
-			<hr>
-		</div>
-		<div class="body">
-			{% for item in this.likes %}
-				<div>
-					{{item.user.nickname}}
-				</div>
-			{% endfor %}
-		</div>
-	</div>
-	<div class="card">
-		<div class="header">
-			<h4>Dernières réponses du forum</h4>
-			<hr>
-		</div>
-		<div class="body">
-			{% for item in this.forumMessages %}
-				<div>
-					{{item.topic.title}}
-				</div>
-			{% endfor %}
-		</div>
-	</div>
-	<div class="card">
-		<div class="header">
-			<h4>Dernières sujets du forum</h4>
-			<hr>
-		</div>
-		<div class="body">
-			{% for item in this.forumTopics %}
-				<div>
-					{{item.title}}
-				</div>
-			{% endfor %}
-		</div>
-	</div>
-	<div class="card">
-		<div class="header">
-			<h4>Derniers récits</h4>
-			<hr>
-		</div>
-		<div class="body">
-			{% for item in this.publications %}
-				<div>
-					{{item.title}}
-				</div>
-			{% endfor %}
-		</div>
-	</div>
-	<div class="card">
-		<div class="header">
-			<h4>Dernières feuilles</h4>
-			<hr>
-		</div>
-		<div class="body">
-			{% for item in this.publicationChapters %}
-				<div>
-					{{item.title}}
-				</div>
-			{% endfor %}
-		</div>
-	</div>
-	<div class="card">
-		<div class="header">
-			<h4>Derniers marques-pages</h4>
-			<hr>
-		</div>
-		<div class="body">
-			{% for item in this.publicationBookmarks %}
-				<div>
-					{% if item.chapter %}
-						{{item.chapter.title}}
+<div
+	id="feed-content">
+	{# ! Derniers commentaires #}
+	{% set title = "Derniers commentaires" %}
+	{% include "/partials/little/_feedCard-top.html.twig" with 
+		{
+		icon:"comment",
+		title:title,
+		titleColor:"text-yellow-500 dark:text-yellow-200",
+		bgCard:"bg-yellow-50 dark:bg-yellow-500 shadow-yellow-500 dark:shadow-yellow-400",
+		borderHr:"border-yellow-300 dark:border-yellow-700"
+		} 
+	%}
+	{% for item in this.comments %}
+		<li class="flex flex-row gap-x-2">
+			{% if item.chapter %}
+				<span class="mt-0.5">
+					{% if item.user.profilPicture %}
+						<img class="min-w-[1.35rem] h-5 rounded-full" src="{{ item.user.profilPicture }}" alt="avatar">
 					{% else %}
-						{{item.publication.title}}
+						<div class="w-5 h-5 rounded-full bg-yellow-200">
+							<div class="w-full h-full flex items-center justify-center text-sm text-yellow-400">
+								{{ item.user.nickname|slice(0,1)|upper }}
+							</div>
+						</div>
 					{% endif %}
-				</div>
-			{% endfor %}
+				</span>
+				<span>
+					<a href="{{path("app_user", {username:item.user.username})}}" class="text-yellow-500 dark:text-yellow-200">
+						{{item.user.nickname}}
+					</a>
+					a commenté la feuille
+					<a href="{{path("app_chapter_show", {slugPub:item.publication.slug,user:item.user.username,idChap:item.chapter.id,slug:item.chapter.slug,idCom:item.id})}}" class="font-semibold">
+						{{item.chapter.title|length > 30 ? item.chapter.title|slice(0, 30) ~ "..." : item.chapter.title}}
+					</a>
+					du récit
+					<a href="{{path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug})}}" class="italic">
+						{{item.publication.title|length > 30 ? item.publication.title|slice(0, 30) ~ "..." : item.publication.title}}
+					</a>
+				</span>
+			{% else %}
+				<span class="mt-0.5">
+					{% if item.user.profilPicture %}
+						<img class="min-w-[1.35rem] h-5 rounded-full" src="{{ item.user.profilPicture }}" alt="avatar">
+					{% else %}
+						<div class="w-5 h-5 rounded-full bg-yellow-200">
+							<div class="w-full h-full flex items-center justify-center text-sm text-yellow-400">
+								{{ item.user.nickname|slice(0,1)|upper }}
+							</div>
+						</div>
+					{% endif %}
+				</span>
+				<span>
+					<a href="{{path("app_user", {username:item.user.username})}}" class="self-baseline text-yellow-500 dark:text-yellow-200">
+						{{item.user.nickname}}
+					</a>
+					a commenté le récit
+					<a href="{{path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug, idCom:item.id})}}" class="font-semibold">
+						{{item.publication.title|length > 30 ? item.publication.title|slice(0, 30) ~ "..." : item.publication.title}}
+					</a>
+				</span>
+			{% endif %}
+		</li>
+	{% endfor %}
+	{% include "/partials/little/_feedCard-bottom.html.twig" %}
+
+
+	{# ! Derniers « J'aime »  #}
+	{% set title = "Derniers « j'aime »" %}
+	{% set color = "rose" %}
+	{% include "/partials/little/_feedCard-top.html.twig" with 
+		{
+		icon:"heart", 
+		title:title, 
+		titleColor:"text-rose-500 dark:text-rose-900", 
+		bgCard:"bg-rose-50 dark:bg-rose-500 shadow-rose-500 dark:shadow-rose-400",
+		borderHr:"border-rose-300 dark:border-rose-700"
+		} 
+	%}
+	{% for item in this.likes %}
+		<div>
+			{{item.user.nickname}}
 		</div>
-	</div>
-	<div class="card">
-		<div class="header">
-			<h4>Dernières révisions</h4>
-			<hr>
+	{% endfor %}
+	{% include "/partials/little/_feedCard-bottom.html.twig" %}
+
+
+	{# ! Dernières réponses du forum #}
+	{% set title = "Dernières réponses du forum" %}
+	{% include "/partials/little/_feedCard-top.html.twig" with 
+		{
+		icon:"comments-alt", 
+		title:title, 
+		titleColor:"text-sky-500 dark:text-sky-900", 
+		bgCard:"bg-sky-50 dark:bg-sky-500",
+		borderHr:"border-sky-300 dark:border-sky-700"
+		}
+	%}
+	{% for item in this.forumMessages %}
+		<div>
+			{{item.topic.title}}
 		</div>
-		<div class="body">
-			{% for item in this.publicationAnnotations %}
-				<div>
-					{{item.chapter.title}}
-				</div>
-			{% endfor %}
+	{% endfor %}
+	{% include "/partials/little/_feedCard-bottom.html.twig" %}
+
+
+	{# ! Derniers sujets du forum #}
+	{% set title = "Derniers sujets du forum" %}
+	{% include "/partials/little/_feedCard-top.html.twig" with 
+		{
+		icon:"comments", 
+		title:title, 
+		titleColor:"text-emerald-500 dark:text-emerald-900", 
+		bgCard:"bg-emerald-50 dark:bg-emerald-500",
+		borderHr:"border-emerald-300 dark:border-emerald-700"
+		} 
+	%}
+	{% for item in this.forumTopics %}
+		<div>
+			{{item.title}}
 		</div>
-	</div>
-	<div class="card">
-		<div class="header">
-			<h4>Dernières lectures</h4>
-			<hr>
+	{% endfor %}
+	{% include "/partials/little/_feedCard-bottom.html.twig" %}
+
+
+	{# ! Derniers récits #}
+	{% set title = "Derniers récits" %}
+	{% include "/partials/little/_feedCard-top.html.twig" with 
+		{
+		icon:"books", 
+		title:title, 
+		titleColor:"text-teal-500 dark:text-teal-900", 
+		bgCard:"bg-teal-50 dark:bg-teal-500",
+		borderHr:"border-teal-300 dark:border-teal-700"
+		} 
+	%}
+	{% for item in this.publications %}
+		<div>
+			{{item.title}}
 		</div>
-		<div class="body">
-			{% for item in this.publicationChapterViews %}
-				<div>
-					{{item.chapter.title}}
-				</div>
-			{% endfor %}
+	{% endfor %}
+	{% include "/partials/little/_feedCard-bottom.html.twig" %}
+
+
+	{# ! Dernières feuilles #}
+	{% set title = "Dernières feuilles" %}
+	{% include "/partials/little/_feedCard-top.html.twig" with 
+		{
+		icon:"files", 
+		title:title, 
+		titleColor:"text-indigo-500 dark:text-indigo-900", 
+		bgCard:"bg-indigo-50 dark:bg-indigo-500",
+		borderHr:"border-indigo-300 dark:border-indigo-700"
+		} 
+	%}
+	{% for item in this.publicationChapters %}
+		<div>
+			{{item.title}}
 		</div>
-	</div>
-	<div class="card">
-		<div class="header">
-			<h4>Derniers abonnements</h4>
-			<hr>
+	{% endfor %}
+	{% include "/partials/little/_feedCard-bottom.html.twig" %}
+
+
+	{# ! Derniers marques-pages #}
+	{% set title = "Derniers marques-pages" %}
+	{% include "/partials/little/_feedCard-top.html.twig" with 
+		{
+		icon:"bookmark", 
+		title:title, 
+		titleColor:"text-lime-700 dark:text-lime-900", 
+		bgCard:"bg-lime-50 dark:bg-lime-500",
+		borderHr:"border-lime-300 dark:border-lime-700"
+		} 
+	%}
+	{% for item in this.publicationBookmarks %}
+		<div>
+			{% if item.chapter %}
+				{{item.chapter.title}}
+			{% else %}
+				{{item.publication.title}}
+			{% endif %}
 		</div>
-		<div class="body">
-			{% for item in this.publicationFollows %}
-				<div>
-					{{item.publication.title}}
-				</div>
-			{% endfor %}
+	{% endfor %}
+	{% include "/partials/little/_feedCard-bottom.html.twig" %}
+
+
+	{# ! Dernières révisions #}
+	{% set title = "Dernières révisions" %}
+	{% include "/partials/little/_feedCard-top.html.twig" with 
+		{
+		icon:"highlighter-line", 
+		title:title, 
+		titleColor:"text-amber-500 dark:text-amber-900", 
+		bgCard:"bg-amber-50 dark:bg-amber-500",
+		borderHr:"border-amber-300 dark:border-amber-700"
+		} 
+	%}
+	{% for item in this.publicationAnnotations %}
+		<div>
+			{{item.chapter.title}}
 		</div>
-	</div>
-	<div class="card">
-		<div class="header">
-			<h4>Publications populaires</h4>
-			<hr>
+	{% endfor %}
+	{% include "/partials/little/_feedCard-bottom.html.twig" %}
+
+
+	{# ! Dernières lectures #}
+	{% set title = "Dernières lectures" %}
+	{% include "/partials/little/_feedCard-top.html.twig" with 
+		{
+		icon:"glasses", 
+		title:title, 
+		titleColor:"text-purple-500 dark:text-purple-900", 
+		bgCard:"bg-purple-50 dark:bg-purple-500",
+		borderHr:"border-purple-300 dark:border-purple-700"
+		} 
+	%}
+	{% for item in this.publicationChapterViews %}
+		<div>
+			{{item.chapter.title}}
 		</div>
-		<div class="body">
-			{% for item in this.publicationPopularities %}
-				<div>
-					{{item.publication.title}}
-				</div>
-			{% endfor %}
+	{% endfor %}
+	{% include "/partials/little/_feedCard-bottom.html.twig" %}
+
+
+	{# ! Derniers abonnements #}
+	{% set title = "Derniers abonnements" %}
+	{% include "/partials/little/_feedCard-top.html.twig" with 
+		{
+		icon:"feed", 
+		title:title, 
+		titleColor:"text-green-500 dark:text-green-900", 
+		bgCard:"bg-green-50 dark:bg-green-500",
+		borderHr:"border-green-300 dark:border-green-700"
+		} 
+	%}
+	{% for item in this.publicationFollows %}
+		<div>
+			{{item.publication.title}}
 		</div>
-	</div>
-	<div class="card">
-		<div class="header">
-			<h4>Derniers inscrits</h4>
-			<hr>
+	{% endfor %}
+	{% include "/partials/little/_feedCard-bottom.html.twig" %}
+
+
+	{# ! Publications populaires #}
+	{% set title = "Publications populaires" %}
+	{% include "/partials/little/_feedCard-top.html.twig" with 
+		{
+		icon:"fire", 
+		title:title, 
+		titleColor:"text-red-500 dark:text-red-900", 
+		bgCard:"bg-red-50 dark:bg-red-500",
+		borderHr:"border-red-300 dark:border-red-700"
+		} 
+	%}
+	{% for item in this.publicationPopularities %}
+		<div>
+			{{item.publication.title}}
 		</div>
-		<div class="body">
-			{% for item in this.users %}
-				<div>
-					{{item.nickname}}
-				</div>
-			{% endfor %}
+	{% endfor %}
+	{% include "/partials/little/_feedCard-bottom.html.twig" %}
+
+
+	{# ! Derniers inscrits #}
+	{% set title = "Derniers inscrits" %}
+	{% include "/partials/little/_feedCard-top.html.twig" with 
+		{
+		icon:"users", 
+		title:title, 
+		titleColor:"text-orange-500 dark:text-orange-900", 
+		bgCard:"bg-orange-50 dark:bg-orange-500",
+		borderHr:"border-orange-300 dark:border-orange-700"
+		} 
+	%}
+	{% for item in this.users %}
+		<div>
+			{{item.nickname}}
 		</div>
-	</div>
-	<div class="card">
-		<div class="header">
-			<h4>Derniers téléchargements</h4>
-			<hr>
+	{% endfor %}
+	{% include "/partials/little/_feedCard-bottom.html.twig" %}
+
+	{# ! Derniers téléchargements #}
+	{% set title = "Derniers téléchargements" %}
+	{% include "/partials/little/_feedCard-top.html.twig" with 
+		{
+		icon:"download", 
+		title:title, 
+		titleColor:"text-slate-500 dark:text-slate-900", 
+		bgCard:"bg-slate-50 dark:bg-slate-500 dark:bg-opacity-50",
+		borderHr:"border-slate-300 dark:border-slate-700"
+		} 
+	%}
+	{% for item in this.publicationDownloads %}
+		<div>
+			{{item.publication.title}}
 		</div>
-		<div class="body">
-			{% for item in this.publicationDownloads %}
-				<div>
-					{{item.publication.title}}
-				</div>
-			{% endfor %}
-		</div>
-	</div>
+	{% endfor %}
+	{% include "/partials/little/_feedCard-bottom.html.twig" %}
 
 </div>

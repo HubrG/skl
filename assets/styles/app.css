@@ -104,7 +104,7 @@ h3 {
 	@apply text-2xl text-slate-700 dark:text-slate-100 md:text-3xl md:leading-snug leading-normal;
 }
 h4 {
-	@apply text-xl text-slate-700 dark:text-slate-100 md:text-2xl md:leading-snug leading-normal;
+	@apply text-xl  text-slate-700 dark:text-slate-100 md:text-2xl md:leading-snug leading-normal;
 }
 h5 {
 	@apply text-lg text-slate-700 dark:text-slate-100 md:text-xl md:leading-snug leading-normal;
@@ -1492,7 +1492,7 @@ nav.breadcrumb ol li a:hover.not-underline {
 	@apply lg:columns-3 md:columns-2 columns-1  -mt-14 md:-mt-0  md:gap-10 sm:gap-7 gap-7 !important;
 }
 #feed-content div.card {
-	@apply bg-slate-50 dark:bg-slate-900 p-3 break-inside-avoid-column rounded mb-10;
+	@apply  p-3 break-inside-avoid-column rounded mb-10 dark:shadow-xl shadow;
 }
 #feed-content div.card hr {
 	@apply mb-3 mt-3;
@@ -1503,6 +1503,18 @@ nav.breadcrumb ol li a:hover.not-underline {
 #feed-content div.card {
 	@apply flex flex-col gap-y-2 !important;
 }
-#feed-content div.body div:first-child {
+#feed-content div.body ul:first-child {
 	@apply  -mt-2 !important;
+}
+#feed-content div.body ul {
+	@apply  text-sm flex flex-col gap-y-2 !important;
+}
+#feed-content div.body ul li {
+	@apply  text-sm  !important;
+}
+#feed-content div.body ul li a {
+	@apply  hover:underline !important;
+}
+#feed-content div.header h4 {
+	@apply flex flex-row gap-x-2 items-center
 }

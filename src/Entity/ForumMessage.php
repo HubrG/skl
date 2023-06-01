@@ -350,4 +350,9 @@ class ForumMessage
 
         return $this;
     }
+    // Dans chaque entité
+    public function getTimestamp(): int
+    {
+        return $this->published_at->getTimestamp();
+    }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\PublicationChapterViewRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\PublicationChapterViewRepository;
 
 #[ORM\Entity(repositoryClass: PublicationChapterViewRepository::class)]
 class PublicationChapterView
@@ -62,5 +62,9 @@ class PublicationChapterView
         $this->view_date = $view_date;
 
         return $this;
+    }
+    public function getTimestamp(): int
+    {
+        return $this->view_date->getTimestamp();
     }
 }

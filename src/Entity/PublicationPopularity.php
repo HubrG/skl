@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\PublicationPopularityRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\PublicationPopularityRepository;
 
 #[ORM\Entity(repositoryClass: PublicationPopularityRepository::class)]
 class PublicationPopularity
@@ -62,5 +62,9 @@ class PublicationPopularity
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+    public function getTimestamp(): int
+    {
+        return $this->createdAt->getTimestamp();
     }
 }

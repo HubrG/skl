@@ -102,4 +102,8 @@ class PublicationDownload
 
         return $this;
     }
+    public function getTimestamp(): int
+    {
+        return $this->dlAt->getTimestamp();
+    }
 }

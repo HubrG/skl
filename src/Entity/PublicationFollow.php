@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
-use App\Repository\PublicationFollowRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\PublicationFollowRepository;
 
 #[ORM\Entity(repositoryClass: PublicationFollowRepository::class)]
 class PublicationFollow
@@ -61,5 +61,9 @@ class PublicationFollow
         $this->CreatedAt = $CreatedAt;
 
         return $this;
+    }
+    public function getTimestamp(): int
+    {
+        return $this->CreatedAt->getTimestamp();
     }
 }

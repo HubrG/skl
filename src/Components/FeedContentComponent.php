@@ -49,21 +49,11 @@ class FeedContentComponent
     {
         return $this->pcomRepo->findBy([], ["published_at" => "DESC"], 5);
     }
-    public function getLikes(): array
-    {
-        // On recherche les likes des commentaire des publications
-        $likeComment = $this->pclRepo->findBy([], ["createdAt" => "DESC"], 5);
-        // On recherche les likes des messages du forum
-        $likeMessage = $this->fmsglRepo->findBy([], ["createdAt" => "DESC"], 5);
-        // On fusionne les deux tableaux
-        $likes = array_merge($likeComment, $likeMessage);
-        // On trie le tableau par date de création
-        usort($likes, function ($a, $b) {
-            return $a->getCreatedAt() <=> $b->getCreatedAt();
-        });
-        // On retourne les 5 derniers likes
-        return array_slice($likes, -5);
-    }
+    // public function getLikes(): array
+    // {
+    //     // On recherche les likes des commentaire des publications
+    //     return $this->pclRepo->findBy([], ["createdAt" => "DESC"], 5);
+    // }
     public function getForumMessages(): array
     {
         return $this->fmsgRepo->findBy(["replyTo" => null], ["published_at" => "DESC"], 5);
@@ -78,15 +68,16 @@ class FeedContentComponent
     }
     public function getPublicationChapters(): array
     {
-        $qb = $this->pubRepo->createQueryBuilder('p')
-            ->leftJoin('p.publicationChapters', 'pc')
+        $qb = $this->pchRepo->createQueryBuilder('pc')
+            ->join('pc.publication', 'p')
             ->where('p.status = 2')
             ->andWhere('pc.status = 2')
-            ->groupBy('p.id')
-            ->orderBy('MAX(pc.published)', 'DESC')
+            ->orderBy('pc.published', 'DESC')
             ->setMaxResults(5);
-        $publications_updated = $qb->getQuery()->getResult();
-        return $publications_updated;
+
+        $chapters = $qb->getQuery()->getResult();
+
+        return $chapters;
     }
     public function getPublicationBookmarks(): array
     {
@@ -114,10 +105,6 @@ class FeedContentComponent
     {
         return $this->ppRepo->findBy([], ["createdAt" => "DESC"], 5);
     }
-    // public function getPublicationReads(): array
-    // {
-    //     return $this->prRepo->findBy([], ["createdAt" => "DESC"], 5);
-    // }
     public function getUsers(): array
     {
         return $this->userRepo->findBy([], ["join_date" => "DESC"], 5);
@@ -129,5 +116,39 @@ class FeedContentComponent
     public function getPublicationChapterLikes(): array
     {
         return $this->pchlRepo->findBy([], ["CreatedAt" => "DESC"], 5);
+    }
+    public function getAllEntities(): array
+    {
+        // Merge all entities into a single array with a unique key
+        $entities = array_merge(
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationComment:' . $e->getId()], $this->getComments()),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'ForumMessage:' . $e->getId()], $this->getForumMessages()),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'ForumTopic:' . $e->getId()], $this->getForumTopics()),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'Publication:' . $e->getId()], $this->getPublications()),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationChapterLike:' . $e->getId()], $this->getPublicationChapterLikes()),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationChapter:' . $e->getId()], $this->getPublicationChapters()),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationBookmark:' . $e->getId()], $this->getPublicationBookmarks()),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationAnnotation:' . $e->getId()], $this->getPublicationAnnotations()),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationFollow:' . $e->getId()], $this->getPublicationFollows()),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationDownload:' . $e->getId()], $this->getPublicationDownloads()),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationRead:' . $e->getId()], $this->getPublicationReads()),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'User:' . $e->getId()], $this->getUsers())
+        );
+
+        // Remove duplicates based on the unique key
+        $entities = array_unique($entities, SORT_REGULAR);
+
+        // Extract the entities from the array
+        $entities = array_map(fn ($e) => $e['entity'], $entities);
+
+        // Sort all entities by timestamp (descending order)
+        usort($entities, function ($a, $b) {
+            return $b->getTimestamp() <=> $a->getTimestamp();
+        });
+
+        // Limit the total number of results to 5
+
+
+        return $entities;
     }
 }

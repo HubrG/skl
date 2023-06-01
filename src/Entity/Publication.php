@@ -658,4 +658,8 @@ class Publication
 
         return $this;
     }
+    public function getTimestamp(): int
+    {
+        return $this->created->getTimestamp();
+    }
 }

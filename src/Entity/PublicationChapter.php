@@ -572,4 +572,8 @@ class PublicationChapter
 
         return $this;
     }
+    public function getTimestamp(): int
+    {
+        return $this->created->getTimestamp();
+    }
 }

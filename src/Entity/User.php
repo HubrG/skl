@@ -1220,4 +1220,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+    public function getTimestamp(): int
+    {
+        return $this->join_date->getTimestamp();
+    }
 }

@@ -225,4 +225,8 @@ class PublicationAnnotation
 
         return $this;
     }
+    public function getTimestamp(): int
+    {
+        return $this->createdAt->getTimestamp();
+    }
 }

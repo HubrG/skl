@@ -104,4 +104,8 @@ class PublicationChapterLike
 
         return $this;
     }
+    public function getTimestamp(): int
+    {
+        return $this->CreatedAt->getTimestamp();
+    }
 }

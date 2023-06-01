@@ -281,4 +281,8 @@ class ForumTopic
 
         return $this;
     }
+    public function getTimestamp(): int
+    {
+        return $this->createdAt->getTimestamp();
+    }
 }

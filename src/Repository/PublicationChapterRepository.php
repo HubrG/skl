@@ -51,6 +51,7 @@ class PublicationChapterRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+
     //    /**
     //     * @return PublicationChapter[] Returns an array of PublicationChapter objects
     //     */

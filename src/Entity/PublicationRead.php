@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
-use App\Repository\PublicationReadRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\PublicationReadRepository;
 
 #[ORM\Entity(repositoryClass: PublicationReadRepository::class)]
 class PublicationRead
@@ -76,5 +76,9 @@ class PublicationRead
         $this->publication = $publication;
 
         return $this;
+    }
+    public function getTimestamp(): int
+    {
+        return $this->ReadAt->getTimestamp();
     }
 }

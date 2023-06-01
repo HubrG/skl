@@ -314,4 +314,8 @@ class PublicationComment
 
         return $this;
     }
+    public function getTimestamp(): int
+    {
+        return $this->published_at->getTimestamp();
+    }
 }

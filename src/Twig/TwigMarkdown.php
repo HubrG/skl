@@ -23,6 +23,6 @@ class TwigMarkdown extends AbstractExtension
         $text = $parser->transform($text);
 
         $text = $parser->transform($text);
-        return str_replace('<a ', '<a target="_blank" rel="nofollow" ', $text);
+        return str_replace('<a ', '<a data-turbo-frame="_top" rel="nofollow" ', $text);
     }
 }

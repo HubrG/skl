@@ -39,6 +39,28 @@
 		</li>
 
 	</ul>
+	<div class="my-special-hr pt-8 md:mt-0">
+		<hr>
+		<h1>
+			Les bruits du labo
+			<i class="fa-duotone fa-fire-flame-curved  text-rose-500"></i>
+		</h1>
+		<hr>
+	</div>
+	<div class="h-96 -mt-10  overflow-hidden">
+		<div>
+			{{  component('feed_component')}}
+		</div>
+		<div class="fadeout"></div>
+	</div>
+	<div class="mt-5 text-right">
+		<a href="{{ path("app_publication_show_all_category", {slug:"all", sortby:"pop", order:"desc", page:1})}}" class="button-classic button-slate w-full md:w-2/6 mx-auto" style="font-weight:600">
+			<span class="text-base">
+				<i class="fa-duotone fa-stars"></i>
+				Voir toute l'actualité
+			</span>
+		</a>
+	</div>
 	<div class="glide-top glide mt-10  left-0 z-0 h-auto cursor-default" id="glide">
 		<div class="flex flex-col">
 			<section class="order-3 md:order-3 mt-10 md:mt-20">
@@ -187,13 +209,12 @@
 					</div>
 				</div>
 			</section>
-			<section class=" -mt-0 md:-mt-10 z-50 order-1 md:order-1">
+			<section class=" z-50 order-1 md:order-1">
 				<div class="my-special-hr">
 					<hr>
 					<h1>
-
 						Récits sortis du chaudron
-						<i class="fa-duotone fa-cauldron text-slate-500"></i>
+						<i class="fa-duotone fa-cauldron fa-bounce text-slate-500"></i>
 					</h1>
 					<hr>
 				</div>

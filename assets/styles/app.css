@@ -1058,7 +1058,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 	/* @apply gap-y-0 md:-mt-[0.29rem] -mt-[0.05rem] text-2xl md:text-3xl   px-4  text-center bg-white dark:bg-slate-800 dark:text-slate-200 font-serif flex flex-col; */
 }
 .my-special-hr h1 i {
-	@apply md:text-3xl text-2xl order-first -mt-9 opacity-100;
+	@apply md:text-4xl text-2xl order-first -mt-9 opacity-100 !important;
 	/* @apply md:text-3xl text-2xl order-last mt-1 opacity-50; */
 }
 .lastComment {
@@ -1564,4 +1564,14 @@ nav.breadcrumb ol li a:hover.not-underline {
 }
 #chrono-content div.body ul li div.info-text span {
 	@apply flex flex-row items-center gap-x-2 !important
+}
+.fadeout {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    height: 200px;  /* Modifier cette hauteur pour ajuster la zone de 'fade' */
+    background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
+}
+.dark .fadeout {
+	background: linear-gradient(to bottom, hsla(210, 32%, 17%, 0) 0%, hsla(210, 32%, 17%, 1) 100%);
 }

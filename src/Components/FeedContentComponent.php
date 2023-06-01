@@ -91,12 +91,38 @@ class FeedContentComponent
     {
         $qb = $this->pchvRepo->createQueryBuilder('p');
 
-        $qb->where($qb->expr()->isNotNull('p.user'))
-            ->orderBy('p.view_date', 'DESC')
-            ->setMaxResults(5);
+        $qb->select('p')
+            ->where($qb->expr()->isNotNull('p.user'))
+            ->orderBy('p.view_date', 'ASC'); // Fetch readings from oldest to newest
 
-        return $qb->getQuery()->getResult();
+        $reads = $qb->getQuery()->getResult();
+
+        $uniqueReads = [];
+        $uniqueKeys = [];
+
+        foreach ($reads as $read) {
+            $key = $read->getUser()->getId() . ':' . $read->getChapter()->getId();
+
+            // If this user-publication combination has not been encountered yet, keep the reading
+            if (!array_key_exists($key, $uniqueKeys)) {
+                $uniqueKeys[$key] = $read;
+                $uniqueReads[] = $read;
+            }
+        }
+
+        // Sort the unique readings by view date in descending order for display
+        uasort($uniqueReads, function ($a, $b) {
+            return $b->getViewDate() <=> $a->getViewDate();
+        });
+
+        // Take the 5 most recent readings based on view date
+        $uniqueReads = array_slice($uniqueReads, 0, 5);
+
+        return $uniqueReads;
     }
+
+
+
     public function getPublicationFollows(): array
     {
         return $this->pfRepo->findBy([], ["CreatedAt" => "DESC"], 5);

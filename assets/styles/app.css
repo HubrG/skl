@@ -360,10 +360,12 @@ font-size: 2em;
 .noty_theme__semanticui.noty_type__error {
 	@apply bg-red-200 text-red-600 shadow-lg text-sm rounded-lg flex font-normal text-center h-auto justify-center items-center;
 }
+.noty_theme__semanticui.noty_type__warning {
+	@apply bg-sky-200 dark:bg-sky-700 dark:text-sky-400 text-sky-700 shadow-lg text-sm rounded-lg flex font-normal text-center h-auto justify-center items-center;
+}
 .noty_theme__semanticui.noty_type__info,
 .noty_theme__semanticui.noty_type__information {
 	@apply bg-slate-200 dark:bg-slate-700 dark:text-slate-400 text-slate-700 shadow-lg text-sm rounded-lg flex font-normal text-center h-auto justify-center items-center;
-
 }  
 .noty_theme__semanticui.noty_bar {
 		font-family: "Noto Sans JP";

@@ -21,9 +21,15 @@
 					{% endif %}
 					{% set n = 1 %}
 					{% for item in notificationRepository.findBy({"user":app.user.id})|sort((a, b) => a.id > b.id ? -1 : 1) %}
-						<li class="notification-one {{item.readAt is null ? " opacity-100" : " opacity-60 grayscale"}}">
-							{% include "partials/_notification-system.html.twig" with {item:item} %}
-						</li>
+						{% if loop.first %}
+							<li id="last-notif" class="notification-one {{item.readAt is null ? " opacity-100" : " opacity-60 grayscale"}}">
+								{% include "partials/_notification-system.html.twig" with {item:item} %}
+							</li>
+						{% else %}
+							<li class="notification-one {{item.readAt is null ? " opacity-100" : " opacity-60 grayscale"}}">
+								{% include "partials/_notification-system.html.twig" with {item:item} %}
+							</li>
+						{% endif %}
 						{% if notificationRepository.findBy({"user":app.user.id})|length > n %}
 							<hr class="dark:border-slate-500">
 						{% endif %}

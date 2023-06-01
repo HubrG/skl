@@ -1560,5 +1560,8 @@ nav.breadcrumb ol li a:hover.not-underline {
 	@apply  hover:underline !important;
 }
 #chrono-content div.body ul li div.info-text {
-	@apply text-right text-xs opacity-80 !important
+	@apply text-right text-[0.75rem] opacity-60 flex flex-row gap-x-2 items-center justify-between ml-9  !important
+}
+#chrono-content div.body ul li div.info-text span {
+	@apply flex flex-row items-center gap-x-2 !important
 }

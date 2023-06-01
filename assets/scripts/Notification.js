@@ -3,8 +3,6 @@ import { NotyDisplay } from "./Noty";
 let firstLoad = true;
 let nbrNotif = 0;
 let nbrMessage = 0;
-let audio = new Audio("/sons/notif.mp3");
-let soundEnabled = false;
 
 export function Notification() {
   if (!document.getElementById("username_login")) {
@@ -14,26 +12,6 @@ export function Notification() {
   refreshInbox(titled);
   refreshNotif(titled);
   interval(titled);
-  // ! Activation du son
-  document
-    .getElementById("enable-sound")
-    .addEventListener("click", function () {
-      console.log("ok");
-      // Tenter de jouer le son pour obtenir l'autorisation de l'utilisateur
-      let playPromise = audio.play();
-
-      if (playPromise !== undefined) {
-        playPromise
-          .then(function () {
-            // L'autorisation a été accordée
-            soundEnabled = true;
-          })
-          .catch(function (error) {
-            // L'autorisation a été refusée
-            console.log("Lecture automatique du son refusée");
-          });
-      }
-    });
 }
 function interval(titled) {
   if (intervalId) {
@@ -84,7 +62,6 @@ function refreshNotif(titled) {
         "warning",
         3000
       );
-      audio.play(); // play the sound
     }
     firstLoad = false;
 

@@ -31,7 +31,7 @@
 	Récit |
 	{{ pubShow.title }}
 	({{ pubShow.user.nickname }})
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											-
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													-
 	{{ parent() }}
 {% endblock %}
 
@@ -194,7 +194,7 @@
 				{% endif %}
 				{% if lastReadChapter %}
 					<a href="{{ path("app_chapter_show", {idChap:lastReadChapter.id, user:pubShow.user.username, slugPub:pubShow.slug, slug:lastReadChapter.slug}) }}" class=" gap-y-2 flex flex-col  mt-5 not-italic py-5 text-center w-full lg:w-3/6 px-10 bg-white  text-base hover:bg-white text-slate-800 shadow hover:text-slate-800 bg-opacity-50 dark:bg-opacity-80 hover:bg-opacity-100 dark:bg-slate-700 dark:text-slate-100  dark:hover:bg-slate-900 rounded-lg">
-						<i class="{{pubShow.mature ? "fa-kit fa-regular-book-open-reader-circle-exclamation text-rose-400 dark:text-rose-300" :"fa-regular fa-book-open-reader" }} text-2xl"></i>
+						<i class="{{pubShow.mature ? "fa-duotone fa-lips text-rose-400 dark:text-rose-300" :"fa-regular fa-book-open-reader" }} text-2xl"></i>
 						{% if pubShow.mature %}
 							<span class="text-xs text-rose-300">Contenu sensible</span>
 						{% endif %}
@@ -203,7 +203,7 @@
 				{% else %}
 					{% if orderChap.id is defined %}
 						<a href="{{ path("app_chapter_show", {idChap:orderChap.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:orderChap.slug}) }}" class=" gap-y-2 flex flex-col  mt-5 not-italic py-5 text-center w-full lg:w-3/6 px-10 bg-white  text-base hover:bg-white text-slate-800 shadow hover:text-slate-800 bg-opacity-50 dark:bg-opacity-80 hover:bg-opacity-100 dark:bg-slate-700 dark:text-slate-100  dark:hover:bg-slate-900 rounded-lg">
-							<i class="{{pubShow.mature ? "fa-kit fa-regular-book-open-reader-circle-exclamation text-rose-400 dark:text-rose-300" :"fa-regular fa-book-open-reader" }} text-4xl"></i>
+							<i class="{{pubShow.mature ? "fa-duotone fa-lips text-rose-400 dark:text-rose-300" :"fa-regular fa-book-open-reader" }} text-4xl"></i>
 							<span class="font-semibold">Commencer la lecture</span>
 							{% if pubShow.mature %}
 								<span class="text-xs text-rose-300">Contenu sensible</span>
@@ -211,7 +211,7 @@
 						</a>
 					{% else %}
 						<button data-tippy-content="Vous ne pouvez pas commencer à lire ce récit, car aucun chapitre n'est publié" class=" gap-y-2 cursor-not-allowed flex flex-col  mt-5 not-italic py-5 text-center w-full lg:w-3/6 px-10 bg-white  text-base hover:bg-white text-slate-800 shadow hover:text-slate-800 bg-opacity-50 dark:bg-opacity-80 hover:bg-opacity-100 dark:bg-slate-700 dark:text-slate-100  dark:hover:bg-slate-900 rounded-lg">
-							<i class="{{pubShow.mature ? "fa-kit fa-regular-book-open-reader-circle-exclamation text-rose-400 dark:text-rose-300" :"fa-regular fa-book-open-reader" }} text-4xl"></i>
+							<i class="{{pubShow.mature ? "fa-duotone fa-lips text-rose-400 dark:text-rose-300" :"fa-regular fa-book-open-reader" }} text-4xl"></i>
 							<span class="font-semibold">Commencer la lecture</span>
 							{% if pubShow.mature %}
 								<span class="text-xs text-rose-300">Contenu sensible</span>

@@ -102,7 +102,7 @@
 		<span class="flex flex-row items-baseline justify-end gap-x-2 text-sm w-1/2 text-slate-500 dark:text-slate-500  ">
 
 			{% include "partials/little/_fullyRead.html.twig" with { id:item.id, class:"text-sm"} %}
-			<i class="{{item.mature ? "fa-kit fa-regular-book-open-reader-circle-exclamation text-rose-400 dark:text-rose-300" :"fa-regular fa-book-open-reader" }} " {% if item.mature %} data-tippy-content="Contenu sensible" {% endif %}></i>
+			<i class="{{item.mature ? "fa-duotone fa-lips text-rose-400 dark:text-rose-300" :"fa-regular fa-book-open-reader" }} " {% if item.mature %} data-tippy-content="Contenu sensible" {% endif %}></i>
 
 			<a {{ user_in_url ? "data-turbo-frame='_top'" }} {% if lastReadChapter %} href="{{ path("app_chapter_show", {idChap:lastReadChapter.id, user:item.user.username, slugPub:item.slug, slug:lastReadChapter.slug}) }}" {% else %} href="{{ path("app_chapter_show", {idChap:firstChap.id, user:item.user.username, slugPub:item.slug, slug:firstChap.slug}) }}" {% endif %} class="hover:underline font-semibold ">
 				{{lastReadChapter ? "Reprendre" : "Lire" }}

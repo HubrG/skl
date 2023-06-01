@@ -1,296 +1,314 @@
-<div id="feed-content" class="md:pt-5 pt-16">
-	<div class="card chrono border-r-4 dark:border-slate-500 dark:text-slate-300" style="shadow:none">
+<div class="flex md:flex-row items-baseline flex-col gap-x-5 md:pt-4 pt-12">
+	<div id="chrono-content" class="md:h-[300vh] md:overflow-y-auto h-auto overflow-auto pr-2 md:mb-0 mb-20 ">
+		<div class="header w-full  bg-white z-50">
+			<h4 class="feed-title mx-auto justify-center mb-14 mt-8">
+				<i class="fa-duotone dark:brightness-100 fa-fire animate-pulse text-red-500  "></i>
+				<span class=" brightness-50 dark:brightness-[1] ">Tout chaud !</span>
+			</h4>
+		</div>
+		<div class="card chrono -mt-10" style="shadow:none">
+			<div class="body dark:text-slate-300">
+				<ul>
+					{% for item in this.allEntities %}
+						{% set type = get_entity_type(item) %}
+						{% if type == 'ForumMessage' %}
+							{# ! Message du forum #}
+							<li class="bg-sky-50 border-sky-300 dark:bg-slate-700">
+								<div>
+									{% include "/partials/little/_feedCard-avatar.html.twig" with  {type:"chrono",user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
+									<div>
+										<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-sky-500 dark:text-sky-200">
+											{{item.getUser().getNickname()}}
+										</a>
+										vient de répondre au sujet
+										<a href="{{path("app_forum_topic_read", {slug:item.getTopic().getCategory().getSlug(),slugTopic:item.getTopic().getSlug(),id:item.getTopic().getId()})}}" class="font-semibold">
+											{{item.getTopic().getTitle()|length > 30 ? item.getTopic().getTitle()|slice(0, 30) ~ "..." : item.getTopic().getTitle()}}
+										</a>
+									</div>
+								</div>
+								<div class="info-text">
 
-		<div class="body">
-			<ul>
-				{% for item in this.allEntities %}
-					{% set type = get_entity_type(item) %}
-					{% if type == 'ForumMessage' %}
-						{# ! Message du forum #}
-						<li class="rounded bg-sky-50 p-2">
-							{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
-							<span>
-								<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-sky-500 dark:text-sky-200">
-									{{item.getUser().getNickname()}}
-								</a>
-								vient de répondre au sujet
-								<a href="{{path("app_forum_topic_read", {slug:item.getTopic().getCategory().getSlug(),slugTopic:item.getTopic().getSlug(),id:item.getTopic().getId()})}}" class="font-semibold">
-									{{item.getTopic().getTitle()|length > 30 ? item.getTopic().getTitle()|slice(0, 30) ~ "..." : item.getTopic().getTitle()}}
-								</a>
-								<span class="help-text inline-flex">
-									<span class="text-[0.70rem]">
-										{{item.getPublishedAt()|since}}
-									</span>
-								</span>
-							</span>
-						</li>
-					{% elseif type == 'PublicationComment' %}
-						{# ! Commentaire de publication #}
-						<li class="rounded bg-yellow-50 p-2">
-							{% if item.chapter %}
-								{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
-								<span>
-									<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-yellow-500 dark:text-yellow-200">
-										{{item.getUser().getNickname()}}
-									</a>
-									a commenté la feuille
-									<a href="{{path("app_chapter_show", {slugPub:item.getPublication().getSlug(),user:item.getUser().getUsername(),idChap:item.getChapter().getId(),slug:item.getChapter().getSlug(),idCom:item.getId})}}" class="font-semibold">
-										{{item.getChapter().getTitle()|length > 30 ? item.getChapter().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getTitle()}}
-									</a>
-									du récit
-									<a href="{{path("app_publication_show_one", {id:item.getPublication().getId(), slug:item.getPublication().getSlug()})}}" class="italic">
-										{{item.getPublication().getTitle()|length > 30 ? item.getPublication().getTitle()|slice(0, 30) ~ "..." : item.getPublication().getTitle()}}
-									</a>
-									<span class="help-text">
-										<span class="text-[0.70rem]">
-											{{item.getPublishedAt()|since}}
-										</span>
-									</span>
-								</span>
-							{% else %}
-								{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture()} %}
-								<span>
-									<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-yellow-500 dark:text-yellow-200">
-										{{item.getUser().getNickname()}}
-									</a>
-									a commenté le récit
-									<a href="{{path("app_publication_show_one", {id:item.getPublication().getId(), slug:item.getPublication().getSlug(),idCom:item.getId()})}}" class="italic">
-										{{item.getPublication().getTitle()|length > 30 ? item.getPublication().getTitle()|slice(0, 30) ~ "..." : item.getPublication().getTitle()}}
-									</a>
-									<span class="help-text inline-flex">
-										<span class="text-[0.70rem]">
-											{{item.getPublishedAt()|since}}
-										</span>
-									</span>
-								</span>
-							{% endif %}
-						</li>
-					{% elseif type == 'User' %}
-						{# ! Utilisateur #}
-						<li class="rounded bg-orange-50 p-2">
-							{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getNickname(),pic:item.getProfilPicture() } %}
-							<span>
-								<a href="{{path("app_user", {username:item.getUsername()})}}" class="self-baseline text-orange-500 dark:text-orange-200">
-									{{item.getNickname()}}
-								</a>
-								vient de nous rejoindre.
-								<span class="help-text inline-flex">
-									<span class="text-[0.70rem]">
-										{{item.getJoinDate()|since}}
-									</span>
-								</span>
-							</span>
-						</li>
-					{% elseif type == 'ForumTopic' %}
-						{# ! Sujet du forum #}
-						<li class="rounded bg-emerald-50 p-2">
-							{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
-							<span>
-								<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-emerald-500 dark:text-emerald-200">
-									{{item.getUser().getNickname()}}
-								</a>
-								vient de créer le sujet
-								<a href="{{path("app_forum_topic_read", {slug:item.getCategory().getSlug(),slugTopic:item.getSlug(),id:item.getId()})}}" class="font-semibold">
-									{{item.getTitle()|length > 30 ? item.getTitle()|slice(0, 30) ~ "..." : item.getTitle()}}
-								</a>
-								<span class="help-text inline-flex">
-									<span class="text-[0.70rem]">
-										{{item.getCreatedAt()|since}}
-									</span>
-								</span>
-							</span>
-						</li>
-					{% elseif type == 'Publication' %}
-						{# ! Publication #}
-						<li class="rounded bg-sky-50 p-2">
-							{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
-							<span>
-								<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-sky-500 dark:text-sky-200">
-									{{item.getUser().getNickname()}}
-								</a>
-								vient de publier le récit
-								<a href="{{path("app_publication_show_one", {slug:item.getSlug(),id:item.getId()})}}" class="font-semibold">
-									{{item.getTitle()|length > 30 ? item.getTitle()|slice(0, 30) ~ "..." : item.getTitle()}}
-								</a>
-								<span class="help-text inline-flex">
-									<span class="text-[0.70rem]">
-										{{item.getCreated()|since}}
-									</span>
-								</span>
-							</span>
-						</li>
-					{% elseif type == 'PublicationChapter' %}
-						{# ! Dernières feuilles #}
-						<li class="rounded bg-indigo-50 p-2">
-							{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getPublication().getUser().getNickname(),pic:item.getPublication().getUser().getProfilPicture() } %}
-							<span>
-								<a href="{{path("app_user", {username:item.getPublication().getUser().getUsername()})}}" class="self-baseline text-indigo-500 dark:text-indigo-200">
-									{{item.getPublication().getUser().getNickname()}}
-								</a>
-								vient de publier la feuille
+									Il y a
+									{{item.getPublishedAt()|since}}
 
-								<a href="{{ path("app_chapter_show", {idChap:item.getId(), user:item.getPublication().getUser().getUsername(), slugPub:item.getPublication().getSlug(), slug:item.getSlug()}) }}" class="hover:underline font-semibold">{{item.getTitle()|length > 30 ? item.getTitle()|slice(0, 30) ~ "..." : item.getTitle() }}</a>
+								</div>
+							</li>
+						{% elseif type == 'PublicationComment' %}
+							{# ! Commentaire de publication #}
+							<li class="bg-yellow-50 border-yellow-300 dark:bg-slate-700">
+								<div>
+									{% if item.chapter %}
+										{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
+										<div>
+											<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-yellow-500 dark:text-yellow-200">
+												{{item.getUser().getNickname()}}
+											</a>
+											a commenté la feuille
+											<a href="{{path("app_chapter_show", {slugPub:item.getPublication().getSlug(),user:item.getUser().getUsername(),idChap:item.getChapter().getId(),slug:item.getChapter().getSlug(),idCom:item.getId})}}" class="font-semibold">
+												{{item.getChapter().getTitle()|length > 30 ? item.getChapter().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getTitle()}}
+											</a>
+											du récit
+											<a href="{{path("app_publication_show_one", {id:item.getPublication().getId(), slug:item.getPublication().getSlug()})}}" class="italic">
+												{{item.getPublication().getTitle()|length > 30 ? item.getPublication().getTitle()|slice(0, 30) ~ "..." : item.getPublication().getTitle()}}
+											</a>
+										</div>
+									{% else %}
+										{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture()} %}
+										<div>
+											<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-yellow-500 dark:text-yellow-200">
+												{{item.getUser().getNickname()}}
+											</a>
+											a commenté le récit
+											<a href="{{path("app_publication_show_one", {id:item.getPublication().getId(), slug:item.getPublication().getSlug(),idCom:item.getId()})}}" class="italic">
+												{{item.getPublication().getTitle()|length > 30 ? item.getPublication().getTitle()|slice(0, 30) ~ "..." : item.getPublication().getTitle()}}
+											</a>
+										</div>
+									{% endif %}
+								</div>
+								<div class="info-text">
+									Il y a
+									{{item.getPublishedAt()|since}}
+								</div>
+							</li>
+						{% elseif type == 'User' %}
+							{# ! Utilisateur #}
+							<li class="bg-orange-50 border-orange-300 dark:bg-slate-700">
+								<div>
+									{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getNickname(),pic:item.getProfilPicture() } %}
+									<div>
+										<a href="{{path("app_user", {username:item.getUsername()})}}" class="self-baseline text-orange-500 dark:text-orange-200">
+											{{item.getNickname()}}
+										</a>
+										vient de nous rejoindre.
+									</div>
+								</div>
+								<div class="info-text">
+									Il y a
+									{{item.getJoinDate()|since}}
+								</div>
+							</li>
+						{% elseif type == 'ForumTopic' %}
+							{# ! Sujet du forum #}
+							<li class="bg-emerald-50 border-emerald-300 dark:bg-slate-700">
+								<div>
+									{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
+									<div>
+										<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-emerald-500 dark:text-emerald-200">
+											{{item.getUser().getNickname()}}
+										</a>
+										vient de créer le sujet
+										<a href="{{path("app_forum_topic_read", {slug:item.getCategory().getSlug(),slugTopic:item.getSlug(),id:item.getId()})}}" class="font-semibold">
+											{{item.getTitle()|length > 30 ? item.getTitle()|slice(0, 30) ~ "..." : item.getTitle()}}
+										</a>
+									</div>
+								</div>
+								<div class="info-text">
+									Il y a
+									{{item.getCreatedAt()|since}}
+								</div>
+							</li>
+						{% elseif type == 'Publication' %}
+							{# ! Publication #}
+							<li class="bg-teal-50 border-teal-300 dark:bg-slate-700">
+								<div>
+									{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
+									<div>
+										<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-teal-500 dark:text-teal-200">
+											{{item.getUser().getNickname()}}
+										</a>
+										vient de publier le récit
+										<a href="{{path("app_publication_show_one", {slug:item.getSlug(),id:item.getId()})}}" class="font-semibold">
+											{{item.getTitle()|length > 30 ? item.getTitle()|slice(0, 30) ~ "..." : item.getTitle()}}
+										</a>
+									</div>
+								</div>
+								<div class="info-text">
+									Il y a
+									{{item.getCreated()|since}}
+								</div>
+							</li>
+						{% elseif type == 'PublicationChapter' %}
+							{# ! Dernières feuilles #}
+							<li class="bg-indigo-50 border-indigo-300 dark:bg-slate-700">
+								<div>
+									{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getPublication().getUser().getNickname(),pic:item.getPublication().getUser().getProfilPicture() } %}
+									<div>
+										<a href="{{path("app_user", {username:item.getPublication().getUser().getUsername()})}}" class="self-baseline text-indigo-500 dark:text-indigo-200">
+											{{item.getPublication().getUser().getNickname()}}
+										</a>
+										vient de publier la feuille
 
-								pour son récit
-								<a href="{{path("app_publication_show_one", {id:item.getPublication().getId(), slug:item.getPublication().getSlug()})}}" class="italic">
-									{{item.getPublication().getTitle()|length > 30 ? item.getPublication().getTitle()|slice(0, 30) ~ "..." : item.getPublication().getTitle()}}
-								</a>
-								<span class="help-text inline-flex">
-									<span class="text-[0.70rem]">
-										{{item.getCreated()|since}}
-									</span>
-								</span>
-							</span>
-						</li>
+										<a href="{{ path("app_chapter_show", {idChap:item.getId(), user:item.getPublication().getUser().getUsername(), slugPub:item.getPublication().getSlug(), slug:item.getSlug()}) }}" class="hover:underline font-semibold">{{item.getTitle()|length > 30 ? item.getTitle()|slice(0, 30) ~ "..." : item.getTitle() }}</a>
 
-					{% elseif type == 'PublicationBookmark' %}
-						{# ! Marque-page de publication #}
-						<li class="rounded bg-lime-50 p-2">
-							{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
-							<span>
-								<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-lime-500 dark:text-lime-200">
-									{{item.getUser().getNickname()}}
-								</a>
-								vient de collectionner
-								{% if item.getChapter() %}
-									la feuille
-									<a href="{{path("app_chapter_show", {slugPub:item.getChapter().getPublication().getSlug(),user:item.getUser().getUsername(),idChap:item.getChapter().getId(),slug:item.getChapter().getSlug()})}}" class="font-semibold">
-										{{item.getChapter().getTitle()|length > 30 ? item.getChapter().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getTitle()}}
-									</a>
-									du récit
-									<a href="{{path("app_publication_show_one", {id:item.getChapter().getPublication().getId(), slug:item.getChapter().getPublication().getSlug()})}}" class="italic">
-										{{item.getChapter().getPublication().getTitle()|length > 30 ? item.getChapter().getPublication().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getPublication().getTitle()}}
-									</a>
-								{% else %}
-									le récit
-									<a href="{{path("app_publication_show_one", {id:item.getPublication().getId(), slug:item.getPublication().getSlug()})}}" class="font-semibold">
-										{{item.getPublication().getTitle()|length > 30 ? item.getPublication().getTitle()|slice(0, 30) ~ "..." : item.getPublication().getTitle()}}
-									</a>
-								{% endif %}
-								<span class="help-text inline-flex items-stretch">
-									<span class="text-[0.70rem]">
-										{{item.getCreatedAt()|since}}
-									</span>
-								</span>
-							</span>
-						</li>
-					{% elseif type == 'PublicationAnnotation' %}
-						{# ! Annotation de publication #}
-						<li class="rounded bg-amber-50 p-2">
-							{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
-							<span>
-								<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-amber-500 dark:text-amber-200">
-									{{item.getUser().getNickname()}}
-								</a>
-								vient d'annoter la feuille
+										pour son récit
+										<a href="{{path("app_publication_show_one", {id:item.getPublication().getId(), slug:item.getPublication().getSlug()})}}" class="italic">
+											{{item.getPublication().getTitle()|length > 30 ? item.getPublication().getTitle()|slice(0, 30) ~ "..." : item.getPublication().getTitle()}}
+										</a>
+									</div>
+								</div>
+								<div class="info-text">
+									Il y a
+									{{item.getCreated()|since}}
+								</div>
+							</li>
 
-								<a href="{{ path("app_chapter_revision", {idChap:item.getChapter().getId(), user:item.getUser().getUsername(), slugPub:item.getChapter().getPublication().getSlug(), slug:item.getChapter().getSlug(), version:item.getVersion().getId()}) }}" class="hover:underline font-semibold">
-									{{item.getChapter().getTitle()|length > 30 ? item.getChapter().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getTitle() }}
-								</a>
-								du récit
-								<a href="{{path("app_publication_show_one", {id:item.getChapter().getPublication().getId(), slug:item.getChapter().getPublication().getSlug()})}}" class="italic">
-									{{item.getChapter().getPublication().getTitle()|length > 30 ? item.getChapter().getPublication().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getPublication().getTitle()}}
-								</a>
-								<span class="help-text inline-flex">
-									<span class="text-[0.70rem]">
-										{{item.getCreatedAt()|since}}
-									</span>
-								</span>
-							</span>
-						</li>
-					{% elseif type == 'PublicationFollow' %}
-						{# ! Abonnement de publication #}
-						<li class="rounded bg-green-50 p-2">
-							{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
-							<span>
-								<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-green-500 dark:text-green-200">
-									{{item.getUser().getNickname()}}
-								</a>
-								vient de s'abonner au récit
-								<a href="{{path("app_publication_show_one", {id:item.getPublication().getId(), slug:item.getPublication().getSlug()})}}" class="italic">
-									{{item.getPublication().getTitle()|length > 30 ? item.getPublication().getTitle()|slice(0, 30) ~ "..." : item.getPublication().getTitle()}}
-								</a>
-								<span class="help-text inline-flex">
-									<span class="text-[0.70rem]">
-										{{item.getCreatedAt()|since}}
-									</span>
-								</span>
-							</span>
-						</li>
-					{% elseif type == 'PublicationDownload' %}
-						{# ! Téléchargement de publication #}
-						<li class="rounded bg-slate-50 p-2">
-							{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
-							<span>
-								<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-slate-500 dark:text-slate-200">
-									{{item.getUser().getNickname()}}
-								</a>
-								vient de télécharger le récit
-								<a href="{{path("app_publication_show_one", {id:item.getPublication().getId(), slug:item.getPublication().getSlug()})}}" class="italic">
-									{{item.getPublication().getTitle()|length > 30 ? item.getPublication().getTitle()|slice(0, 30) ~ "..." : item.getPublication().getTitle()}}
-								</a>
-								<span class="help-text inline-flex">
-									<span class="text-[0.70rem]">
-										{{item.getDlAt()|since}}
-									</span>
-								</span>
-							</span>
-						</li>
-					{% elseif type == 'PublicationChapterView' %}
-						{# ! Lecture de publication #}
-						<li class="rounded bg-indigo-50 p-2">
-							{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
-							<span>
-								<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-indigo-500 dark:text-indigo-200">
-									{{item.getUser().getNickname()}}
-								</a>
-								vient de lire la feuille
+						{% elseif type == 'PublicationBookmark' %}
+							{# ! Marque-page de publication #}
+							<li class="bg-lime-50 border-lime-300 dark:bg-slate-700">
+								<div>
+									{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
+									<div>
+										<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-lime-500 dark:text-lime-200">
+											{{item.getUser().getNickname()}}
+										</a>
+										vient de collectionner
+										{% if item.getChapter() %}
+											la feuille
+											<a href="{{path("app_chapter_show", {slugPub:item.getChapter().getPublication().getSlug(),user:item.getUser().getUsername(),idChap:item.getChapter().getId(),slug:item.getChapter().getSlug()})}}" class="font-semibold">
+												{{item.getChapter().getTitle()|length > 30 ? item.getChapter().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getTitle()}}
+											</a>
+											du récit
+											<a href="{{path("app_publication_show_one", {id:item.getChapter().getPublication().getId(), slug:item.getChapter().getPublication().getSlug()})}}" class="italic">
+												{{item.getChapter().getPublication().getTitle()|length > 30 ? item.getChapter().getPublication().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getPublication().getTitle()}}
+											</a>
+										{% else %}
+											le récit
+											<a href="{{path("app_publication_show_one", {id:item.getPublication().getId(), slug:item.getPublication().getSlug()})}}" class="font-semibold">
+												{{item.getPublication().getTitle()|length > 30 ? item.getPublication().getTitle()|slice(0, 30) ~ "..." : item.getPublication().getTitle()}}
+											</a>
+										{% endif %}
+									</div>
+								</div>
+								<div class="info-text">
+									Il y a
+									{{item.getCreatedAt()|since}}
+								</div>
+							</li>
+						{% elseif type == 'PublicationAnnotation' %}
+							{# ! Annotation de publication #}
+							<li class="bg-amber-50 border-amber-300 dark:bg-slate-700">
+								<div>
+									{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
+									<div>
+										<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-amber-500 dark:text-amber-200">
+											{{item.getUser().getNickname()}}
+										</a>
+										vient d'annoter la feuille
 
-								<a href="{{ path("app_chapter_show", {idChap:item.getChapter().getId(), user:item.getChapter().getPublication().getUser().getUsername(), slugPub:item.getChapter().getPublication().getSlug(), slug:item.getChapter().getSlug()}) }}" class="hover:underline font-semibold">
-									{{item.getChapter().getTitle()|length > 30 ? item.getChapter().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getTitle() }}
-								</a>
-								du récit
-								<a href="{{path("app_publication_show_one", {id:item.getChapter().getPublication().getId(), slug:item.getChapter().getPublication().getSlug()})}}" class="italic">
-									{{item.getChapter().getPublication().getTitle()|length > 30 ? item.getChapter().getPublication().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getPublication().getTitle()}}
-								</a>
-								<span class="help-text inline-flex">
-									<span class="text-[0.70rem]">
-										{{item.getViewDate()|since}}
-									</span>
-								</span>
-							</span>
-						</li>
-					{% elseif type == 'PublicationChapterLike' %}
-						{# ! Aime le chapitre de publication #}
-						<li class="rounded bg-rose-50 p-2">
-							{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
-							<span>
-								<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-rose-500 dark:text-rose-200">
-									{{item.getUser().getNickname()}}
-								</a>
-								vient d'aimer la feuille
-								<a href="{{path("app_chapter_show", {slugPub:item.getChapter().getPublication().getSlug(),user:item.getUser().getUsername(),idChap:item.getChapter().getId(),slug:item.getChapter().getSlug()})}}" class="font-semibold">
-									{{item.getChapter().getTitle()|length > 30 ? item.getChapter().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getTitle()}}
-								</a>
-								du récit
-								<a href="{{path("app_publication_show_one", {id:item.getChapter().getPublication().getId(), slug:item.getChapter().getPublication().getSlug(), idCom:item.getId()})}}" class="italic">
-									{{item.getChapter().getPublication().getTitle()|length > 30 ? item.getChapter().getPublication().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getPublication().getTitle()}}</a>
-								<span class="help-text inline-flex">
-									<span class="text-[0.70rem]">
-										{{item.getCreatedAt()|since}}
-									</span>
-								</span>
-							</span>
-						</li>
+										<a href="{{ path("app_chapter_revision", {idChap:item.getChapter().getId(), user:item.getUser().getUsername(), slugPub:item.getChapter().getPublication().getSlug(), slug:item.getChapter().getSlug(), version:item.getVersion().getId()}) }}" class="hover:underline font-semibold">
+											{{item.getChapter().getTitle()|length > 30 ? item.getChapter().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getTitle() }}
+										</a>
+										du récit
+										<a href="{{path("app_publication_show_one", {id:item.getChapter().getPublication().getId(), slug:item.getChapter().getPublication().getSlug()})}}" class="italic">
+											{{item.getChapter().getPublication().getTitle()|length > 30 ? item.getChapter().getPublication().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getPublication().getTitle()}}
+										</a>
+									</div>
+								</div>
+								<div class="info-text">
+									Il y a
+									{{item.getCreatedAt()|since}}
+								</div>
+							</li>
+						{% elseif type == 'PublicationFollow' %}
+							{# ! Abonnement de publication #}
+							<li class="bg-green-50 border-green-300 dark:bg-slate-700">
+								<div>
+									{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
+									<div>
+										<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-green-500 dark:text-green-200">
+											{{item.getUser().getNickname()}}
+										</a>
+										vient de s'abonner au récit
+										<a href="{{path("app_publication_show_one", {id:item.getPublication().getId(), slug:item.getPublication().getSlug()})}}" class="italic">
+											{{item.getPublication().getTitle()|length > 30 ? item.getPublication().getTitle()|slice(0, 30) ~ "..." : item.getPublication().getTitle()}}
+										</a>
+									</div>
+								</div>
+								<div class="info-text">
+									Il y a
+									{{item.getCreatedAt()|since}}
+								</div>
+							</li>
+						{% elseif type == 'PublicationDownload' %}
+							{# ! Téléchargement de publication #}
+							<li class="bg-slate-50 border-slate-300 dark:bg-slate-700">
+								<div>
+									{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
+									<div>
+										<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-slate-500 dark:text-slate-200">
+											{{item.getUser().getNickname()}}
+										</a>
+										vient de télécharger le récit
+										<a href="{{path("app_publication_show_one", {id:item.getPublication().getId(), slug:item.getPublication().getSlug()})}}" class="italic">
+											{{item.getPublication().getTitle()|length > 30 ? item.getPublication().getTitle()|slice(0, 30) ~ "..." : item.getPublication().getTitle()}}
+										</a>
+									</div>
+								</div>
+								<div class="info-text">
+									Il y a
+									{{item.getDlAt()|since}}
+								</div>
+							</li>
+						{% elseif type == 'PublicationChapterView' %}
+							{# ! Lecture de publication #}
+							<li class="bg-indigo-50 border-indigo-300 dark:bg-slate-700">
+								<div>
+									{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
+									<div>
+										<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-indigo-500 dark:text-indigo-200">
+											{{item.getUser().getNickname()}}
+										</a>
+										vient de lire la feuille
 
-					{% endif %}
-				{% endfor %}
-			</ul>
+										<a href="{{ path("app_chapter_show", {idChap:item.getChapter().getId(), user:item.getChapter().getPublication().getUser().getUsername(), slugPub:item.getChapter().getPublication().getSlug(), slug:item.getChapter().getSlug()}) }}" class="hover:underline font-semibold">
+											{{item.getChapter().getTitle()|length > 30 ? item.getChapter().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getTitle() }}
+										</a>
+										du récit
+										<a href="{{path("app_publication_show_one", {id:item.getChapter().getPublication().getId(), slug:item.getChapter().getPublication().getSlug()})}}" class="italic">
+											{{item.getChapter().getPublication().getTitle()|length > 30 ? item.getChapter().getPublication().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getPublication().getTitle()}}
+										</a>
+									</div>
+								</div>
+								<div class="info-text">
+									Il y a
+									{{item.getViewDate()|since}}
+								</div>
+							</li>
+						{% elseif type == 'PublicationChapterLike' %}
+							{# ! Aime le chapitre de publication #}
+							<li class="bg-rose-50 border-rose-300 dark:bg-slate-700">
+								<div>
+									{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
+									<div>
+										<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-rose-500 dark:text-rose-200">
+											{{item.getUser().getNickname()}}
+										</a>
+										vient d'aimer la feuille
+										<a href="{{path("app_chapter_show", {slugPub:item.getChapter().getPublication().getSlug(),user:item.getUser().getUsername(),idChap:item.getChapter().getId(),slug:item.getChapter().getSlug()})}}" class="font-semibold">
+											{{item.getChapter().getTitle()|length > 30 ? item.getChapter().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getTitle()}}
+										</a>
+										du récit
+										<a href="{{path("app_publication_show_one", {id:item.getChapter().getPublication().getId(), slug:item.getChapter().getPublication().getSlug(), idCom:item.getId()})}}" class="italic">
+											{{item.getChapter().getPublication().getTitle()|length > 30 ? item.getChapter().getPublication().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getPublication().getTitle()}}</a>
+									</div>
+								</div>
+								<div class="info-text">
+									Il y a
+									{{item.getCreatedAt()|since}}
+								</div>
+							</li>
+						{% endif %}
+					{% endfor %}
+				</ul>
+			</div>
 		</div>
 	</div>
-	{# ! Derniers commentaires #}
-	{% set title = "Derniers commentaires" %}
-	{% include "/partials/little/_feedCard-top.html.twig" with 
+	<div
+		id="feed-content">
+
+		{# ! Derniers commentaires #}
+		{% set title = "Derniers commentaires" %}
+		{% include "/partials/little/_feedCard-top.html.twig" with 
 		{
 		icon:"comment",
 		title:title,
@@ -299,54 +317,54 @@
 		borderHr:"border-yellow-300 dark:border-yellow-200"
 		} 
 	%}
-	{% for item in this.comments %}
-		<li>
-			{% if item.chapter %}
-				{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.user.nickname,pic:item.user.profilPicture } %}
-				<span>
-					<a href="{{path("app_user", {username:item.user.username})}}" class="text-yellow-500 dark:text-yellow-200">
-						{{item.user.nickname}}
-					</a>
-					a commenté la feuille
-					<a href="{{path("app_chapter_show", {slugPub:item.publication.slug,user:item.user.username,idChap:item.chapter.id,slug:item.chapter.slug,idCom:item.id})}}" class="font-semibold">
-						{{item.chapter.title|length > 30 ? item.chapter.title|slice(0, 30) ~ "..." : item.chapter.title}}
-					</a>
-					du récit
-					<a href="{{path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug})}}" class="italic">
-						{{item.publication.title|length > 30 ? item.publication.title|slice(0, 30) ~ "..." : item.publication.title}}
-					</a>
-					<span class="help-text">
-						<span class="text-[0.70rem]">
-							{{item.publishedAt|since}}
+		{% for item in this.comments %}
+			<li>
+				{% if item.chapter %}
+					{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.user.nickname,pic:item.user.profilPicture } %}
+					<span>
+						<a href="{{path("app_user", {username:item.user.username})}}" class="text-yellow-500 dark:text-yellow-200">
+							{{item.user.nickname}}
+						</a>
+						a commenté la feuille
+						<a href="{{path("app_chapter_show", {slugPub:item.publication.slug,user:item.user.username,idChap:item.chapter.id,slug:item.chapter.slug,idCom:item.id})}}" class="font-semibold">
+							{{item.chapter.title|length > 30 ? item.chapter.title|slice(0, 30) ~ "..." : item.chapter.title}}
+						</a>
+						du récit
+						<a href="{{path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug})}}" class="italic">
+							{{item.publication.title|length > 30 ? item.publication.title|slice(0, 30) ~ "..." : item.publication.title}}
+						</a>
+						<span class="help-text">
+							<span class="text-[0.70rem]">
+								{{item.publishedAt|since}}
+							</span>
 						</span>
 					</span>
-				</span>
-			{% else %}
-				{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.user.nickname,pic:item.user.profilPicture } %}
-				<span>
-					<a href="{{path("app_user", {username:item.user.username})}}" class="self-baseline text-yellow-500 dark:text-yellow-200">
-						{{item.user.nickname}}
-					</a>
-					a commenté le récit
-					<a href="{{path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug, idCom:item.id})}}" class="font-semibold">
-						{{item.publication.title|length > 30 ? item.publication.title|slice(0, 30) ~ "..." : item.publication.title}}
-					</a>
-					<span class="help-text inline-flex">
-						<span class="text-[0.70rem]">
-							{{item.publishedAt|since}}
+				{% else %}
+					{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.user.nickname,pic:item.user.profilPicture } %}
+					<span>
+						<a href="{{path("app_user", {username:item.user.username})}}" class="self-baseline text-yellow-500 dark:text-yellow-200">
+							{{item.user.nickname}}
+						</a>
+						a commenté le récit
+						<a href="{{path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug, idCom:item.id})}}" class="font-semibold">
+							{{item.publication.title|length > 30 ? item.publication.title|slice(0, 30) ~ "..." : item.publication.title}}
+						</a>
+						<span class="help-text inline-flex">
+							<span class="text-[0.70rem]">
+								{{item.publishedAt|since}}
+							</span>
 						</span>
 					</span>
-				</span>
-			{% endif %}
-		</li>
-	{% endfor %}
-	{% include "/partials/little/_feedCard-bottom.html.twig" %}
+				{% endif %}
+			</li>
+		{% endfor %}
+		{% include "/partials/little/_feedCard-bottom.html.twig" %}
 
 
-	{# ! Derniers « J'aime »  #}
-	{% set title = "Derniers « j'aime »" %}
-	{% set color = "rose" %}
-	{% include "/partials/little/_feedCard-top.html.twig" with 
+		{# ! Derniers « J'aime »  #}
+		{% set title = "Derniers « j'aime »" %}
+		{% set color = "rose" %}
+		{% include "/partials/little/_feedCard-top.html.twig" with 
 		{
 		icon:"heart", 
 		title:title, 
@@ -355,37 +373,37 @@
 		borderHr:"border-rose-300 dark:border-rose-200"
 		} 
 	%}
-	{% if this.publicationChapterLikes|length == 0 %}
-		<li class="mx-auto text-rose-500 dark:text-rose-200">Aucun « j'aime »</li>
-	{% endif %}
-	{% for item in this.publicationChapterLikes %}
-		<li>
-			{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.user.nickname,pic:item.user.profilPicture } %}
-			<span>
-				<a href="{{path("app_user", {username:item.user.username})}}" class="self-baseline text-rose-500 dark:text-rose-200">
-					{{item.user.nickname}}
-				</a>
-				vient d'aimer la feuille
-				<a href="{{path("app_chapter_show", {slugPub:item.chapter.publication.slug,user:item.user.username,idChap:item.chapter.id,slug:item.chapter.slug})}}" class="font-semibold">
-					{{item.chapter.title|length > 30 ? item.chapter.title|slice(0, 30) ~ "..." : item.chapter.title}}
-				</a>
-				du récit
-				<a href="{{path("app_publication_show_one", {id:item.chapter.publication.id, slug:item.chapter.publication.slug, idCom:item.id})}}" class="italic">
-					{{item.chapter.publication.title|length > 30 ? item.chapter.publication.title|slice(0, 30) ~ "..." : item.chapter.publication.title}}</a>
-				<span class="help-text inline-flex">
-					<span class="text-[0.70rem]">
-						{{item.createdAt|since}}
+		{% if this.publicationChapterLikes|length == 0 %}
+			<li class="mx-auto text-rose-500 dark:text-rose-200">Aucun « j'aime »</li>
+		{% endif %}
+		{% for item in this.publicationChapterLikes %}
+			<li>
+				{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.user.nickname,pic:item.user.profilPicture } %}
+				<span>
+					<a href="{{path("app_user", {username:item.user.username})}}" class="self-baseline text-rose-500 dark:text-rose-200">
+						{{item.user.nickname}}
+					</a>
+					vient d'aimer la feuille
+					<a href="{{path("app_chapter_show", {slugPub:item.chapter.publication.slug,user:item.user.username,idChap:item.chapter.id,slug:item.chapter.slug})}}" class="font-semibold">
+						{{item.chapter.title|length > 30 ? item.chapter.title|slice(0, 30) ~ "..." : item.chapter.title}}
+					</a>
+					du récit
+					<a href="{{path("app_publication_show_one", {id:item.chapter.publication.id, slug:item.chapter.publication.slug, idCom:item.id})}}" class="italic">
+						{{item.chapter.publication.title|length > 30 ? item.chapter.publication.title|slice(0, 30) ~ "..." : item.chapter.publication.title}}</a>
+					<span class="help-text inline-flex">
+						<span class="text-[0.70rem]">
+							{{item.createdAt|since}}
+						</span>
 					</span>
 				</span>
-			</span>
-		</li>
-	{% endfor %}
-	{% include "/partials/little/_feedCard-bottom.html.twig" %}
+			</li>
+		{% endfor %}
+		{% include "/partials/little/_feedCard-bottom.html.twig" %}
 
 
-	{# ! Derniers sujets du forum #}
-	{% set title = "Derniers sujets du forum" %}
-	{% include "/partials/little/_feedCard-top.html.twig" with 
+		{# ! Derniers sujets du forum #}
+		{% set title = "Derniers sujets du forum" %}
+		{% include "/partials/little/_feedCard-top.html.twig" with 
 		{
 		icon:"comments", 
 		title:title, 
@@ -394,31 +412,31 @@
 		borderHr:"border-emerald-300 dark:border-emerald-200"
 		} 
 	%}
-	{% for item in this.forumTopics %}
-		<li>
-			{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.user.nickname,pic:item.user.profilPicture } %}
-			<span>
-				<a href="{{path("app_user", {username:item.user.username})}}" class="self-baseline text-emerald-600 dark:text-emerald-200">
-					{{item.user.nickname}}
-				</a>
-				vient de créer le sujet
-				<a href="{{path("app_forum_topic_read", {slug:item.category.slug,slugTopic:item.slug,id:item.id})}}" class="font-semibold">
-					{{item.title|length > 30 ? item.title|slice(0, 30) ~ "..." : item.title}}
-				</a>
-				<span class="help-text inline-flex">
-					<span class="text-[0.70rem]">
-						{{item.createdAt|since}}
+		{% for item in this.forumTopics %}
+			<li>
+				{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.user.nickname,pic:item.user.profilPicture } %}
+				<span>
+					<a href="{{path("app_user", {username:item.user.username})}}" class="self-baseline text-emerald-600 dark:text-emerald-200">
+						{{item.user.nickname}}
+					</a>
+					vient de créer le sujet
+					<a href="{{path("app_forum_topic_read", {slug:item.category.slug,slugTopic:item.slug,id:item.id})}}" class="font-semibold">
+						{{item.title|length > 30 ? item.title|slice(0, 30) ~ "..." : item.title}}
+					</a>
+					<span class="help-text inline-flex">
+						<span class="text-[0.70rem]">
+							{{item.createdAt|since}}
+						</span>
 					</span>
 				</span>
-			</span>
-		</li>
-	{% endfor %}
-	{% include "/partials/little/_feedCard-bottom.html.twig" %}
+			</li>
+		{% endfor %}
+		{% include "/partials/little/_feedCard-bottom.html.twig" %}
 
 
-	{# ! Dernières réponses du forum #}
-	{% set title = "Dernières réponses du forum" %}
-	{% include "/partials/little/_feedCard-top.html.twig" with 
+		{# ! Dernières réponses du forum #}
+		{% set title = "Dernières réponses du forum" %}
+		{% include "/partials/little/_feedCard-top.html.twig" with 
 		{
 		icon:"comments-alt", 
 		title:title, 
@@ -427,31 +445,31 @@
 		borderHr:"border-sky-300 dark:border-sky-200"
 		}
 	%}
-	{% for item in this.forumMessages %}
-		<li>
-			{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.user.nickname,pic:item.user.profilPicture } %}
-			<span>
-				<a href="{{path("app_user", {username:item.user.username})}}" class="self-baseline text-sky-500 dark:text-sky-200">
-					{{item.user.nickname}}
-				</a>
-				vient de répondre au sujet
-				<a href="{{path("app_forum_topic_read", {slug:item.topic.category.slug,slugTopic:item.topic.slug,id:item.topic.id})}}" class="font-semibold">
-					{{item.topic.title|length > 30 ? item.topic.title|slice(0, 30) ~ "..." : item.topic.title}}
-				</a>
-				<span class="help-text inline-flex">
-					<span class="text-[0.70rem]">
-						{{item.publishedAt|since}}
+		{% for item in this.forumMessages %}
+			<li>
+				{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.user.nickname,pic:item.user.profilPicture } %}
+				<span>
+					<a href="{{path("app_user", {username:item.user.username})}}" class="self-baseline text-sky-500 dark:text-sky-200">
+						{{item.user.nickname}}
+					</a>
+					vient de répondre au sujet
+					<a href="{{path("app_forum_topic_read", {slug:item.topic.category.slug,slugTopic:item.topic.slug,id:item.topic.id})}}" class="font-semibold">
+						{{item.topic.title|length > 30 ? item.topic.title|slice(0, 30) ~ "..." : item.topic.title}}
+					</a>
+					<span class="help-text inline-flex">
+						<span class="text-[0.70rem]">
+							{{item.publishedAt|since}}
+						</span>
 					</span>
 				</span>
-			</span>
-		</li>
-	{% endfor %}
-	{% include "/partials/little/_feedCard-bottom.html.twig" %}
+			</li>
+		{% endfor %}
+		{% include "/partials/little/_feedCard-bottom.html.twig" %}
 
 
-	{# ! Derniers récits #}
-	{% set title = "Derniers récits" %}
-	{% include "/partials/little/_feedCard-top.html.twig" with 
+		{# ! Derniers récits #}
+		{% set title = "Derniers récits" %}
+		{% include "/partials/little/_feedCard-top.html.twig" with 
 		{
 		icon:"books", 
 		title:title, 
@@ -460,31 +478,31 @@
 		borderHr:"border-teal-300 dark:border-teal-200"
 		} 
 	%}
-	{% for item in this.publications %}
-		<li>
-			{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.user.nickname,pic:item.user.profilPicture } %}
-			<span>
-				<a href="{{path("app_user", {username:item.user.username})}}" class="self-baseline text-sky-500 dark:text-sky-200">
-					{{item.user.nickname}}
-				</a>
-				vient de publier le récit
-				<a href="{{path("app_publication_show_one", {slug:item.slug,id:item.id})}}" class="font-semibold">
-					{{item.title|length > 30 ? item.title|slice(0, 30) ~ "..." : item.title}}
-				</a>
-				<span class="help-text inline-flex">
-					<span class="text-[0.70rem]">
-						{{item.created|since}}
+		{% for item in this.publications %}
+			<li>
+				{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.user.nickname,pic:item.user.profilPicture } %}
+				<span>
+					<a href="{{path("app_user", {username:item.user.username})}}" class="self-baseline text-teal-500 dark:text-teal-200">
+						{{item.user.nickname}}
+					</a>
+					vient de publier le récit
+					<a href="{{path("app_publication_show_one", {slug:item.slug,id:item.id})}}" class="font-semibold">
+						{{item.title|length > 30 ? item.title|slice(0, 30) ~ "..." : item.title}}
+					</a>
+					<span class="help-text inline-flex">
+						<span class="text-[0.70rem]">
+							{{item.created|since}}
+						</span>
 					</span>
 				</span>
-			</span>
-		</li>
-	{% endfor %}
-	{% include "/partials/little/_feedCard-bottom.html.twig" %}
+			</li>
+		{% endfor %}
+		{% include "/partials/little/_feedCard-bottom.html.twig" %}
 
 
-	{# ! Dernières feuilles #}
-	{% set title = "Dernières feuilles" %}
-	{% include "/partials/little/_feedCard-top.html.twig" with 
+		{# ! Dernières feuilles #}
+		{% set title = "Dernières feuilles" %}
+		{% include "/partials/little/_feedCard-top.html.twig" with 
 		{
 		icon:"files", 
 		title:title, 
@@ -493,35 +511,35 @@
 		borderHr:"border-indigo-300 dark:border-indigo-200"
 		} 
 	%}
-	{% for item in this.publicationChapters %}
-		<li>
-			{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.publication.user.nickname,pic:item.publication.user.profilPicture } %}
-			<span>
-				<a href="{{path("app_user", {username:item.publication.user.username})}}" class="self-baseline text-indigo-500 dark:text-indigo-200">
-					{{item.publication.user.nickname}}
-				</a>
-				vient de publier la feuille
+		{% for item in this.publicationChapters %}
+			<li>
+				{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.publication.user.nickname,pic:item.publication.user.profilPicture } %}
+				<span>
+					<a href="{{path("app_user", {username:item.publication.user.username})}}" class="self-baseline text-indigo-500 dark:text-indigo-200">
+						{{item.publication.user.nickname}}
+					</a>
+					vient de publier la feuille
 
-				<a href="{{ path("app_chapter_show", {idChap:item.id, user:item.publication.user.username, slugPub:item.publication.slug, slug:item.slug}) }}" class="hover:underline font-semibold">{{item.title|length > 30 ? item.title|slice(0, 30) ~ "..." : item.title }}</a>
+					<a href="{{ path("app_chapter_show", {idChap:item.id, user:item.publication.user.username, slugPub:item.publication.slug, slug:item.slug}) }}" class="hover:underline font-semibold">{{item.title|length > 30 ? item.title|slice(0, 30) ~ "..." : item.title }}</a>
 
-				pour son récit
-				<a href="{{path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug})}}" class="italic">
-					{{item.publication.title|length > 30 ? item.publication.title|slice(0, 30) ~ "..." : item.publication.title}}
-				</a>
-				<span class="help-text inline-flex">
-					<span class="text-[0.70rem]">
-						{{item.created|since}}
+					pour son récit
+					<a href="{{path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug})}}" class="italic">
+						{{item.publication.title|length > 30 ? item.publication.title|slice(0, 30) ~ "..." : item.publication.title}}
+					</a>
+					<span class="help-text inline-flex">
+						<span class="text-[0.70rem]">
+							{{item.created|since}}
+						</span>
 					</span>
 				</span>
-			</span>
-		</li>
-	{% endfor %}
-	{% include "/partials/little/_feedCard-bottom.html.twig" %}
+			</li>
+		{% endfor %}
+		{% include "/partials/little/_feedCard-bottom.html.twig" %}
 
 
-	{# ! Derniers marques-pages #}
-	{% set title = "Ajout à une collection" %}
-	{% include "/partials/little/_feedCard-top.html.twig" with 
+		{# ! Derniers marques-pages #}
+		{% set title = "Ajout à une collection" %}
+		{% include "/partials/little/_feedCard-top.html.twig" with 
 		{
 		icon:"bookmark", 
 		title:title, 
@@ -530,43 +548,43 @@
 		borderHr:"border-lime-300 dark:border-lime-200"
 		} 
 	%}
-	{% for item in this.publicationBookmarks %}
-		<li>
-			{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.user.nickname,pic:item.user.profilPicture } %}
-			<span>
-				<a href="{{path("app_user", {username:item.user.username})}}" class="self-baseline text-lime-700 dark:text-lime-200">
-					{{item.user.nickname}}
-				</a>
-				vient de collectionner
-				{% if item.chapter %}
-					la feuille
-					<a href="{{path("app_chapter_show", {slugPub:item.chapter.publication.slug,user:item.user.username,idChap:item.chapter.id,slug:item.chapter.slug})}}" class="font-semibold">
-						{{item.chapter.title|length > 30 ? item.chapter.title|slice(0, 30) ~ "..." : item.chapter.title}}
+		{% for item in this.publicationBookmarks %}
+			<li>
+				{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.user.nickname,pic:item.user.profilPicture } %}
+				<span>
+					<a href="{{path("app_user", {username:item.user.username})}}" class="self-baseline text-lime-700 dark:text-lime-200">
+						{{item.user.nickname}}
 					</a>
-					du récit
-					<a href="{{path("app_publication_show_one", {id:item.chapter.publication.id, slug:item.chapter.publication.slug})}}" class="italic">
-						{{item.chapter.publication.title|length > 30 ? item.chapter.publication.title|slice(0, 30) ~ "..." : item.chapter.publication.title}}
-					</a>
-				{% else %}
-					le récit
-					<a href="{{path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug})}}" class="font-semibold">
-						{{item.publication.title|length > 30 ? item.publication.title|slice(0, 30) ~ "..." : item.publication.title}}
-					</a>
-				{% endif %}
-				<span class="help-text inline-flex items-stretch">
-					<span class="text-[0.70rem]">
-						{{item.createdAt|since}}
+					vient de collectionner
+					{% if item.chapter %}
+						la feuille
+						<a href="{{path("app_chapter_show", {slugPub:item.chapter.publication.slug,user:item.user.username,idChap:item.chapter.id,slug:item.chapter.slug})}}" class="font-semibold">
+							{{item.chapter.title|length > 30 ? item.chapter.title|slice(0, 30) ~ "..." : item.chapter.title}}
+						</a>
+						du récit
+						<a href="{{path("app_publication_show_one", {id:item.chapter.publication.id, slug:item.chapter.publication.slug})}}" class="italic">
+							{{item.chapter.publication.title|length > 30 ? item.chapter.publication.title|slice(0, 30) ~ "..." : item.chapter.publication.title}}
+						</a>
+					{% else %}
+						le récit
+						<a href="{{path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug})}}" class="font-semibold">
+							{{item.publication.title|length > 30 ? item.publication.title|slice(0, 30) ~ "..." : item.publication.title}}
+						</a>
+					{% endif %}
+					<span class="help-text inline-flex items-stretch">
+						<span class="text-[0.70rem]">
+							{{item.createdAt|since}}
+						</span>
 					</span>
 				</span>
-			</span>
-		</li>
-	{% endfor %}
-	{% include "/partials/little/_feedCard-bottom.html.twig" %}
+			</li>
+		{% endfor %}
+		{% include "/partials/little/_feedCard-bottom.html.twig" %}
 
 
-	{# ! Dernières révisions #}
-	{% set title = "Dernières révisions" %}
-	{% include "/partials/little/_feedCard-top.html.twig" with 
+		{# ! Dernières révisions #}
+		{% set title = "Dernières révisions" %}
+		{% include "/partials/little/_feedCard-top.html.twig" with 
 		{
 		icon:"highlighter-line", 
 		title:title, 
@@ -575,36 +593,36 @@
 		borderHr:"border-amber-300 dark:border-amber-200"
 		} 
 	%}
-	{% for item in this.publicationAnnotations %}
-		<li>
-			{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.user.nickname,pic:item.user.profilPicture } %}
-			<span>
-				<a href="{{path("app_user", {username:item.user.username})}}" class="self-baseline text-amber-500 dark:text-amber-200">
-					{{item.user.nickname}}
-				</a>
-				vient d'annoter la feuille
+		{% for item in this.publicationAnnotations %}
+			<li>
+				{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.user.nickname,pic:item.user.profilPicture } %}
+				<span>
+					<a href="{{path("app_user", {username:item.user.username})}}" class="self-baseline text-amber-500 dark:text-amber-200">
+						{{item.user.nickname}}
+					</a>
+					vient d'annoter la feuille
 
-				<a href="{{ path("app_chapter_revision", {idChap:item.chapter.id, user:item.user.username, slugPub:item.chapter.publication.slug, slug:item.chapter.slug, version:item.version.id}) }}" class="hover:underline font-semibold">
-					{{item.chapter.title|length > 30 ? item.chapter.title|slice(0, 30) ~ "..." : item.chapter.title }}
-				</a>
-				du récit
-				<a href="{{path("app_publication_show_one", {id:item.chapter.publication.id, slug:item.chapter.publication.slug})}}" class="italic">
-					{{item.chapter.publication.title|length > 30 ? item.chapter.publication.title|slice(0, 30) ~ "..." : item.chapter.publication.title}}
-				</a>
-				<span class="help-text inline-flex">
-					<span class="text-[0.70rem]">
-						{{item.createdAt|since}}
+					<a href="{{ path("app_chapter_revision", {idChap:item.chapter.id, user:item.user.username, slugPub:item.chapter.publication.slug, slug:item.chapter.slug, version:item.version.id}) }}" class="hover:underline font-semibold">
+						{{item.chapter.title|length > 30 ? item.chapter.title|slice(0, 30) ~ "..." : item.chapter.title }}
+					</a>
+					du récit
+					<a href="{{path("app_publication_show_one", {id:item.chapter.publication.id, slug:item.chapter.publication.slug})}}" class="italic">
+						{{item.chapter.publication.title|length > 30 ? item.chapter.publication.title|slice(0, 30) ~ "..." : item.chapter.publication.title}}
+					</a>
+					<span class="help-text inline-flex">
+						<span class="text-[0.70rem]">
+							{{item.createdAt|since}}
+						</span>
 					</span>
 				</span>
-			</span>
-		</li>
-	{% endfor %}
-	{% include "/partials/little/_feedCard-bottom.html.twig" %}
+			</li>
+		{% endfor %}
+		{% include "/partials/little/_feedCard-bottom.html.twig" %}
 
 
-	{# ! Dernières lectures #}
-	{% set title = "Dernières lectures" %}
-	{% include "/partials/little/_feedCard-top.html.twig" with 
+		{# ! Dernières lectures #}
+		{% set title = "Dernières lectures" %}
+		{% include "/partials/little/_feedCard-top.html.twig" with 
 		{
 		icon:"glasses", 
 		title:title, 
@@ -613,35 +631,35 @@
 		borderHr:"border-purple-300 dark:border-purple-200"
 		} 
 	%}
-	{% for item in this.publicationReads %}
-		<li>
-			{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.user.nickname,pic:item.user.profilPicture } %}
-			<span>
-				<a href="{{path("app_user", {username:item.user.username})}}" class="self-baseline text-indigo-500 dark:text-indigo-200">
-					{{item.user.nickname}}
-				</a>
-				vient de lire la feuille
+		{% for item in this.publicationReads %}
+			<li>
+				{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.user.nickname,pic:item.user.profilPicture } %}
+				<span>
+					<a href="{{path("app_user", {username:item.user.username})}}" class="self-baseline text-indigo-500 dark:text-indigo-200">
+						{{item.user.nickname}}
+					</a>
+					vient de lire la feuille
 
-				<a href="{{ path("app_chapter_show", {idChap:item.chapter.id, user:item.chapter.publication.user.username, slugPub:item.chapter.publication.slug, slug:item.chapter.slug}) }}" class="hover:underline font-semibold">{{item.chapter.title|length > 30 ? item.chapter.title|slice(0, 30) ~ "..." : item.chapter.title }}</a>
+					<a href="{{ path("app_chapter_show", {idChap:item.chapter.id, user:item.chapter.publication.user.username, slugPub:item.chapter.publication.slug, slug:item.chapter.slug}) }}" class="hover:underline font-semibold">{{item.chapter.title|length > 30 ? item.chapter.title|slice(0, 30) ~ "..." : item.chapter.title }}</a>
 
-				du récit
-				<a href="{{path("app_publication_show_one", {id:item.chapter.publication.id, slug:item.chapter.publication.slug})}}" class="italic">
-					{{item.chapter.publication.title|length > 30 ? item.chapter.publication.title|slice(0, 30) ~ "..." : item.chapter.publication.title}}
-				</a>
-				<span class="help-text inline-flex">
-					<span class="text-[0.70rem]">
-						{{item.viewDate|since}}
+					du récit
+					<a href="{{path("app_publication_show_one", {id:item.chapter.publication.id, slug:item.chapter.publication.slug})}}" class="italic">
+						{{item.chapter.publication.title|length > 30 ? item.chapter.publication.title|slice(0, 30) ~ "..." : item.chapter.publication.title}}
+					</a>
+					<span class="help-text inline-flex">
+						<span class="text-[0.70rem]">
+							{{item.viewDate|since}}
+						</span>
 					</span>
 				</span>
-			</span>
-		</li>
-	{% endfor %}
-	{% include "/partials/little/_feedCard-bottom.html.twig" %}
+			</li>
+		{% endfor %}
+		{% include "/partials/little/_feedCard-bottom.html.twig" %}
 
 
-	{# ! Derniers abonnements #}
-	{% set title = "Derniers abonnements" %}
-	{% include "/partials/little/_feedCard-top.html.twig" with 
+		{# ! Derniers abonnements #}
+		{% set title = "Derniers abonnements" %}
+		{% include "/partials/little/_feedCard-top.html.twig" with 
 		{
 		icon:"feed", 
 		title:title, 
@@ -650,31 +668,31 @@
 		borderHr:"border-green-300 dark:border-green-200"
 		} 
 	%}
-	{% for item in this.publicationFollows %}
-		<li>
-			{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.user.nickname,pic:item.user.profilPicture } %}
-			<span>
-				<a href="{{path("app_user", {username:item.user.username})}}" class="self-baseline text-green-500 dark:text-green-200">
-					{{item.user.nickname}}
-				</a>
-				vient de s'abonner au récit
-				<a href="{{path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug})}}" class="italic">
-					{{item.publication.title|length > 30 ? item.publication.title|slice(0, 30) ~ "..." : item.publication.title}}
-				</a>
-				<span class="help-text inline-flex">
-					<span class="text-[0.70rem]">
-						{{item.createdAt|since}}
+		{% for item in this.publicationFollows %}
+			<li>
+				{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.user.nickname,pic:item.user.profilPicture } %}
+				<span>
+					<a href="{{path("app_user", {username:item.user.username})}}" class="self-baseline text-green-500 dark:text-green-200">
+						{{item.user.nickname}}
+					</a>
+					vient de s'abonner au récit
+					<a href="{{path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug})}}" class="italic">
+						{{item.publication.title|length > 30 ? item.publication.title|slice(0, 30) ~ "..." : item.publication.title}}
+					</a>
+					<span class="help-text inline-flex">
+						<span class="text-[0.70rem]">
+							{{item.createdAt|since}}
+						</span>
 					</span>
 				</span>
-			</span>
-		</li>
-	{% endfor %}
-	{% include "/partials/little/_feedCard-bottom.html.twig" %}
+			</li>
+		{% endfor %}
+		{% include "/partials/little/_feedCard-bottom.html.twig" %}
 
 
-	{# ! Derniers inscrits #}
-	{% set title = "Derniers inscrits" %}
-	{% include "/partials/little/_feedCard-top.html.twig" with 
+		{# ! Derniers inscrits #}
+		{% set title = "Derniers inscrits" %}
+		{% include "/partials/little/_feedCard-top.html.twig" with 
 		{
 		icon:"users", 
 		title:title, 
@@ -683,27 +701,27 @@
 		borderHr:"border-orange-300 dark:border-orange-200"
 		} 
 	%}
-	{% for item in this.users %}
-		<li>
-			{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.nickname,pic:item.profilPicture } %}
-			<span>
-				<a href="{{path("app_user", {username:item.username})}}" class="self-baseline text-orange-500 dark:text-orange-200">
-					{{item.nickname}}
-				</a>
-				vient de nous rejoindre.
-				<span class="help-text inline-flex">
-					<span class="text-[0.70rem]">
-						{{item.joinDate|since}}
+		{% for item in this.users %}
+			<li>
+				{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.nickname,pic:item.profilPicture } %}
+				<span>
+					<a href="{{path("app_user", {username:item.username})}}" class="self-baseline text-orange-500 dark:text-orange-200">
+						{{item.nickname}}
+					</a>
+					vient de nous rejoindre.
+					<span class="help-text inline-flex">
+						<span class="text-[0.70rem]">
+							{{item.joinDate|since}}
+						</span>
 					</span>
 				</span>
-			</span>
-		</li>
-	{% endfor %}
-	{% include "/partials/little/_feedCard-bottom.html.twig" %}
+			</li>
+		{% endfor %}
+		{% include "/partials/little/_feedCard-bottom.html.twig" %}
 
-	{# ! Derniers téléchargements #}
-	{% set title = "Derniers téléchargements" %}
-	{% include "/partials/little/_feedCard-top.html.twig" with 
+		{# ! Derniers téléchargements #}
+		{% set title = "Derniers téléchargements" %}
+		{% include "/partials/little/_feedCard-top.html.twig" with 
 		{
 		icon:"download", 
 		title:title, 
@@ -712,23 +730,24 @@
 		borderHr:"border-slate-300 dark:border-slate-200"
 		} 
 	%}
-	{% for item in this.publicationDownloads %}
-		<li>
-			{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.user.nickname,pic:item.user.profilPicture } %}
-			<span>
-				<a href="{{path("app_user", {username:item.user.username})}}" class="self-baseline text-slate-500 dark:text-slate-200">
-					{{item.user.nickname}}
-				</a>
-				vient de télécharger le récit
-				<a href="{{path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug})}}" class="italic">
-					{{item.publication.title|length > 30 ? item.publication.title|slice(0, 30) ~ "..." : item.publication.title}}
-				</a>
-				<span class="help-text inline-flex">
-					<span class="text-[0.70rem]">
-						{{item.dlAt|since}}
+		{% for item in this.publicationDownloads %}
+			<li>
+				{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.user.nickname,pic:item.user.profilPicture } %}
+				<span>
+					<a href="{{path("app_user", {username:item.user.username})}}" class="self-baseline text-slate-500 dark:text-slate-200">
+						{{item.user.nickname}}
+					</a>
+					vient de télécharger le récit
+					<a href="{{path("app_publication_show_one", {id:item.publication.id, slug:item.publication.slug})}}" class="italic">
+						{{item.publication.title|length > 30 ? item.publication.title|slice(0, 30) ~ "..." : item.publication.title}}
+					</a>
+					<span class="help-text inline-flex">
+						<span class="text-[0.70rem]">
+							{{item.dlAt|since}}
+						</span>
 					</span>
 				</span>
-			</span>
-		</li>
-	{% endfor %}
-	{% include "/partials/little/_feedCard-bottom.html.twig" %}</div>
+			</li>
+		{% endfor %}
+		{% include "/partials/little/_feedCard-bottom.html.twig" %}</div>
+</div>

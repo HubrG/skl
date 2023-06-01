@@ -245,7 +245,9 @@ class ChapterController extends AbstractController
                 $chapter->setOrderDisplay(0);
             }
             $chapter->setStatus(2);
-            $chapter->setPublished(new \DateTime('now'));
+            if ($chapter->getPublished() == null) {
+                $chapter->setPublished(new \DateTime('now'));
+            }
             // * Envoi d'une notification aux abonnés de la publication
             // Si le chapitre est publié et que la publication est publiée 
             if ($chapter->getPublication()->getStatus() == 2) {
@@ -352,7 +354,9 @@ class ChapterController extends AbstractController
         //
         $chapter->setStatus($newStatus);
         if ($newStatus == 2) {
-            $chapter->setPublished(new \DateTime('now'));
+            if ($chapter->getPublished() == null) {
+                $chapter->setPublished(new \DateTime('now'));
+            }
         } else {
             $chapter->setPublished(null);
         }

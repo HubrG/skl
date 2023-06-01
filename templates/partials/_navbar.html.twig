@@ -84,16 +84,7 @@
 							</a>
 						</li>
 						<li>
-							<button id="notification-menu-button" aria-label="Afficher les notifications" data-tippy-content="Notifications" data-dropdown-toggle="notification-menu" type="button" class="text-gray-800 relative dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-semibold rounded-lg  px-4 py-2  md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
-								{% if notificationRepository.findBy({"user":app.user.id,"ReadAt":null})|length > 0 %}
-									<i class="fa-duotone fa-bell-on  text-lg"></i>
-									<div id="nbr-notification" class="absolute inline-flex items-center justify-center w-4 h-4 text-[0.5rem] text-white bg-red-500 border-2 border-white rounded-full top-2 right-2 dark:border-gray-900">
-										{{ notificationRepository.findBy({"user":app.user.id,"ReadAt":null})|length }}
-									</div>
-								{% else %}
-									<i class="fa-duotone fa-bell text-lg"></i>
-								{% endif %}
-							</button>
+							{{component("notification_component")}}
 						</li>
 						<button aria-label="Basculer en mode clair ou sombre" data-tippy-content="Mode sombre / mode clair" id="darkButton" class="text-gray-800 relative dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-semibold rounded-lg  px-4 py-2  md:py-2.5 mr-1 md:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
 							<i class="fa-duotone text-lg {{app.user.userParameters ? app.user.userParameters.darkmode == true ? " fa-sun" : " fa-moon-stars" }}" id="darkMode"></i>
@@ -162,30 +153,7 @@
 		{% endif %}
 
 	</div>
-	{% if app.user %}
-		<div id="notification-menu" class="navbar-dropdown md:w-96 absolute z-10 top-2 hidden  bg-white border  border-t-2 border-t-blue-400 shadow-md max-h-[25rem] overflow-y-auto dark:border-t-sky-700 dark:border-slate-700 md:grid-cols-3 dark:bg-slate-700 w-96">
-			<div class="pt-0 pb-0 text-gray-900 md:pb-4 dark:text-white divide-y divide-gray-100">
-				<ul class="space-y-3 px-3 gap-x-2 flex flex-col pt-3" aria-labelledby="notification-menu-button">
-					{% if notificationRepository.findBy({"user":app.user.id})|length == 0 %}
-						<p class="p-3 py-4 flex flex-col gap-y-2 text-md">
-							<i class="fa-duotone fa-bell-slash text-2xl"></i>
-							<span>Aucune notification pour l'instant.</span>
-						</p>
-					{% endif %}
-					{% set n = 1 %}
-					{% for item in notificationRepository.findBy({"user":app.user.id})|sort((a, b) => a.id > b.id ? -1 : 1) %}
-						<li class="notification-one {{item.readAt is null ? " opacity-100" : " opacity-60 grayscale"}}">
-							{% include "partials/_notification-system.html.twig" with {item:item} %}
-						</li>
-						{% if notificationRepository.findBy({"user":app.user.id})|length > n %}
-							<hr class="dark:border-slate-500">
-						{% endif %}
-						{% set n = n + 1 %}
-					{% endfor %}
-				</ul>
-			</div>
-		</div>
-	{% endif %}
+
 	<div id="mega-menu-icons-dropdown" data-controller="flowbite-dropdown" class="navbar-dropdown md:w-auto absolute z-10 hidden w-auto bg-white  border-slate-100 border-t-2  border-t-green-400 shadow-md dark:border-b-none dark:border-l-none dark:border-r-none  md:grid-cols-3 dark:bg-slate-700 dark:shadow-2xl">
 		<div class=" pt-0 pb-0  dark:bg-slate-800 text-slate-900 md:pb-4 dark:text-white divide-y divide-slate-100 dark:divide-slate-600">
 			<div aria-labelledby="mega-menu-icons-dropdown-button" class="w-full hover:bg-slate-50 border-b-[1px] border-b-slate-200 dark:border-b-slate-900 ">

@@ -17,6 +17,8 @@ class SmileyMessage
         $parser = new MarkdownExtra;
         $parser->hard_wrap = true;
         $text = $parser->transform($text);
+        $text = str_replace('<a ', '<a target="_blank" rel="nofollow" ', $text);
+
         $smileyToEmojiMap = [
             'xD' => '😆',
             'XD' => '😆',

@@ -4,7 +4,6 @@
 namespace App\Twig;
 
 use Twig\TwigFilter;
-use Michelf\Markdown;
 use Michelf\MarkdownExtra;
 use Twig\Extension\AbstractExtension;
 
@@ -23,6 +22,7 @@ class TwigMarkdown extends AbstractExtension
         $parser->hard_wrap = true;
         $text = $parser->transform($text);
 
-        return $parser->transform($text);
+        $text = $parser->transform($text);
+        return str_replace('<a ', '<a target="_blank" rel="nofollow" ', $text);
     }
 }

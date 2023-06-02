@@ -2,7 +2,7 @@
 
 {% block title %}
 	Création d'un nouveau récit
-																																																																																																																																																																										-
+																																																																																																																																																																																							-
 	{{ parent() }}
 {% endblock %}
 {# TODO: sur l'affichage des textes, faire un module de surlignage, mise en favoris, commentaire etc sur la selection #}
@@ -30,8 +30,8 @@
 			<hr>
 		</div>
 	</div>
-	<div class="flex flex-col w-full lg:flex-row md:w-5/6 mx-auto">
-		<aside class="lg:pr-10 w-full lg:w-4/12 relative">
+	<div class="flex flex-col w-full  lg:flex-row md:w-5/6 mx-auto ">
+		<aside class="lg:pr-10 w-8/12 mx-auto lg:w-4/12 relative mb-10 lg:mb-0">
 			<div id="no-cover" class="{{pub.cover == '' ? " block" : " hidden"}}">
 				<div id="hideNoCover" data-tippy-content="Cliquez ici pour ajouter une photo de couverture" class="no-cover justify-center flex lg:w-full w-[80%] mx-auto" for="publication_cover">
 					<label for="publication_cover" class="cursor-pointer justify-center h-80">

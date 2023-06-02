@@ -89,8 +89,9 @@ class PublicationPopularity
         $prioritySum = $priorityPcv + $priorityPcom + $priorityPcl + $priorityBmC + $priorityBm + $priorityDl;
 
         // Calcul de la popularité en utilisant les priorités et le facteur de décroissance
-        $popularity = ($pcv * $priorityPcv / $totalChapters) + ($pcom * $priorityPcom) + ($pcl * $priorityPcl / $totalChapters)  + ($pcb * $priorityBmC / $totalChapters)  + ($pb * $priorityBm) + ($pdl * $priorityDl / $totalChapters);
+        $popularity = ($pcv * $priorityPcv / ($totalChapters * $totalChapters)) + ($pcom * $priorityPcom / $totalChapters) + ($pcl * $priorityPcl / ($totalChapters * $totalChapters))  + ($pcb * $priorityBmC / ($totalChapters * $totalChapters))  + ($pb * $priorityBm / $totalChapters) + ($pdl * $priorityDl / ($totalChapters * $totalChapters));
         $popularity = $popularity * $decayFactor / $prioritySum;
+
 
         // Calcul de la popularité moyenne par chapitre
         if ($totalChapters > 0) {

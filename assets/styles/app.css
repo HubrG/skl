@@ -1229,10 +1229,10 @@ main button {
 	@apply  flex flex-row gap-x-4 items-start -mt-2;
 }
 .display_publications .card .header-cover .img-div {
-	@apply  min-w-[2.25rem] max-w-[2.25rem] min-h-[3.25rem];
+	@apply  w-9 h-7;
 }
 .display_publications .card .header-cover .img-div img {
-	@apply object-cover rounded-sm mt-1 ;
+	@apply object-cover h-full w-full rounded-sm mt-1 ;
 }
 .display_publications .card .header .header-info {
 	@apply  flex flex-col gap-y-2 text-slate-700 items-start dark:text-slate-400;

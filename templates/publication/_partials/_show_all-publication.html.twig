@@ -41,7 +41,7 @@
 	{% endif %}
 	<div class="{{item.cover ? "header-cover" }} header">
 		{% if item.cover %}
-			{% set itemCover = item.cover|replace({'upload/c_fill,': 'upload/c_fill,'}) %}
+			{% set itemCover = item.cover|replace({'h_793,w_529': 'h_75,w_53,c_fill'}) %}
 			<div class="img-div flex-shrink-0">
 				<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" aria-label="Lire {{item.title}}, par {{item.user.nickname}}">
 					<div class="imageContainer">

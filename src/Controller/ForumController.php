@@ -236,7 +236,6 @@ class ForumController extends AbstractController
             // Définissez les propriétés supplémentaires
             $topic->setCategory($category)
                 ->setUser($this->getUser())
-                ->setPermanent(0)
                 ->setUpdatedAt(new DateTimeImmutable)
                 ->setSlug(strtolower($slugger->slug($topic->getTitle())));
             // Persistez et enregistrez l'entité

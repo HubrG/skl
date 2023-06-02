@@ -52,7 +52,12 @@ class ForumController extends AbstractController
             // redirection vers la route app_forum
             return $this->redirectToRoute('app_forum');
         }
-        $topics = $ftRepo->findBy(['category' => $category]);
+
+
+        $topics = $ftRepo->findBy(
+            ['category' => $category],
+            ['permanent' => 'DESC', 'createdAt' => 'DESC']
+        );
 
         // * On récupère le nombre de derniers messages depuis la dernière visite de l'utilisateur
         // Récupérer l'utilisateur connecté

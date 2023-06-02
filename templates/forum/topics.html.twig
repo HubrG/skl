@@ -78,7 +78,7 @@
 				</h2>
 			{% else %}
 				<div class="flex flex-col gap-y-5 mt-7">
-					{% for item in topics|sort((a, b) => b.createdAt <=> a.createdAt) %}
+					{% for item in topics %}
 						<div class="flex flex-row gap-x-3 pl-2 items-center justify-between">
 							{% if item.user.profilPicture %}
 								<img src="{{item.user.profilPicture}}" class="h-12 rounded-full" alt="Photo de profil de {{item.user.nickname}}">
@@ -88,7 +88,16 @@
 								</div>
 							{% endif %}
 							<div class="flex flex-col gap-y-0 w-9/12">
-								<a href="{{path("app_forum_topic_read", {slug:item.category.slug, slugTopic:item.slug, id:item.id})}}" class="hover:underline text-base font-semibold dark:text-slate-300">{{item.title}}</a>
+								<di class="flex flex-row gap-x-2 items-center">
+									{% if item.permanent > 0 %}
+										<div class="catColor-{{category.color}} text-[0.75rem] font-medium px-2 py-0.5 rounded ">
+											<i class="fa-regular fa-thumbtack"></i>&nbsp;&nbsp;Éplingé
+										</div>
+									{% endif %}
+									<a href="{{path("app_forum_topic_read", {slug:item.category.slug, slugTopic:item.slug, id:item.id})}}" class="hover:underline text-base font-semibold dark:text-slate-300">
+										{{item.title}}
+									</a>
+								</di>
 								<p class="flex flex-col  justify-start gap-x-2">
 									<a href="{{path("app_user", {username:item.user.username})}}" class="hover:underline dark:text-slate-500 text-slate-500">{{item.user.nickname}}</a>
 									<span class="text-[0.75rem] text-slate-500 flex flex-row justify-between items-center w-full">

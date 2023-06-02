@@ -91,7 +91,7 @@
 								<di class="flex flex-row gap-x-2 items-center">
 									{% if item.permanent > 0 %}
 										<div class="catColor-{{category.color}} text-[0.75rem] font-medium px-2 py-0.5 rounded ">
-											<i class="fa-regular fa-thumbtack"></i>&nbsp;&nbsp;Éplingé
+											<i class="fa-regular fa-thumbtack"></i>
 										</div>
 									{% endif %}
 									<a href="{{path("app_forum_topic_read", {slug:item.category.slug, slugTopic:item.slug, id:item.id})}}" class="hover:underline text-base font-semibold dark:text-slate-300">

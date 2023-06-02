@@ -27,7 +27,7 @@
 <div class="card catColorBorder-{{cat_color}}">
 	<i class="summary-small fa-duotone fa-memo-circle-info catColorText-{{cat_color}}" data-tippy-content="{{chap_content}}"></i>
 	{% if item.cover  %}
-		{% set itemCover = item.cover|replace({'h_793,w_529': 'h_593,w_329,c_fill'}) %}
+		{% set itemCover = item.cover|replace({'h_793,w_529': 'h_190,w_329,c_fill'}) %}
 		<div class="img-header-big flex-shrink-0">
 			<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" aria-label="Lire {{item.title}}, par {{item.user.nickname}}">
 				<div class="imageContainer">

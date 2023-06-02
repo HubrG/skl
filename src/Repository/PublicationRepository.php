@@ -40,18 +40,20 @@ class PublicationRepository extends ServiceEntityRepository
     }
     public function findByQuery(string $query): array
     {
-
         if (empty($query)) {
             return [];
         }
         return $this->createQueryBuilder('p')
+            ->join('p.publicationChapters', 'pch') // Ici, 'publicationChapters' devrait être le nom de la propriété dans votre entité "Publication" qui fait référence à vos chapitres.
             ->andWhere('p.title LIKE :query')
             ->andWhere('p.status = 2')
+            ->andWhere('pch.status = 2') // Et ici nous ajoutons le critère pour le statut du chapitre
             ->setParameter('query', '%' . $query . '%')
             ->orderBy('p.title', 'ASC')
             ->getQuery()
             ->getResult();
     }
+
     //    /**
     //     * @return Publication[] Returns an array of Publication objects
     //     */

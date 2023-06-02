@@ -1467,7 +1467,6 @@ nav.breadcrumb ol li a:hover.not-underline {
 .one-comment-content ol,  .one-topic-response ol, #content-forum ol {
 	@apply list-decimal ml-2  my-2 md:text-sm text-xs  !important;
 }
-
 .one-comment-content ol li,  .one-topic-response ol li, #content-forum ol li {
 	@apply ml-2 list-decimal  !important;
 }
@@ -1483,23 +1482,22 @@ nav.breadcrumb ol li a:hover.not-underline {
 .one-comment-content code, .one-topic-response code, #content-forum code {
 	@apply bg-gray-200 dark:bg-gray-700 p-1 rounded  my-4  block !important;
 }
-
-  .one-comment-content pre code, .one-topic-response pre code, #content-forum pre code {
-	@apply bg-gray-700 text-white  p-2 rounded  my-4  block !important;
-  }
-  .one-comment-content p, .one-topic-response p, #content-forum p {
-	  @apply   md:text-sm text-xs rounded my-2 block !important;
-	}
-	.one-comment-content  blockquote, .one-topic-response blockquote, #content-forum blockquote {
-	  @apply border-l-2 pl-4 italic text-gray-600 block opacity-70 my-2  !important;
-	  font-size: 1rem;
-	}
-	.one-comment-content p a, .one-topic-response p a, #content-forum p a {
-		@apply text-sky-500 hover:underline
-	}
-	#content-forum ol, #content-forum ul, #content-forum p, #content-forum blockquote, #content-forum pre, #content-forum code {
-		@apply text-base py-2  !important;
-	}
+.one-comment-content pre code, .one-topic-response pre code, #content-forum pre code {
+@apply bg-gray-700 text-white  p-2 rounded  my-4  block !important;
+}
+.one-comment-content p, .one-topic-response p, #content-forum p {
+	@apply   md:text-sm text-xs rounded my-2 block !important;
+}
+.one-comment-content  blockquote, .one-topic-response blockquote, #content-forum blockquote {
+	@apply border-l-2 pl-4 italic text-gray-600 block opacity-70 my-2  !important;
+	font-size: 1rem;
+}
+.one-comment-content p a, .one-topic-response p a, #content-forum p a {
+	@apply text-sky-500 hover:underline
+}
+#content-forum ol, #content-forum ul, #content-forum p, #content-forum blockquote, #content-forum pre, #content-forum code {
+	@apply text-base py-2  !important;
+}
 #feed-content {
 	@apply lg:columns-1 md:columns-1 columns-1  -mt-14 md:-mt-0  md:gap-10 sm:gap-7 gap-7 !important;
 }

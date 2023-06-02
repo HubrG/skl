@@ -1226,7 +1226,7 @@ main button {
 	@apply  text-base absolute  -right-[0.43rem] top-[0.01rem];
 }
 .display_publications .card .header-cover {
-	@apply  flex flex-row gap-x-4 items-start -mt-2;
+	@apply  flex flex-row gap-x-4 items-start -mt-2  mb-1;
 }
 .display_publications .card .header-cover .img-div {
 	@apply  w-9 h-7;
@@ -1260,7 +1260,7 @@ main button {
 	@apply relative rounded h-36 w-full overflow-hidden block;
 }
 .display_publications.big .card .img-header-big img {
-	@apply block object-cover w-full h-full mx-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  opacity-80;
+	@apply block object-cover w-full h-full  mx-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  opacity-80;
 }
 .display_publications.big .card .header-cover {
 	@apply  mt-0 pt-1;

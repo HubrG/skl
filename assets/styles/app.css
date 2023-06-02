@@ -1496,8 +1496,15 @@ nav.breadcrumb ol li a:hover.not-underline {
 	@apply text-sky-500 hover:underline
 }
 #content-forum ol, #content-forum ul, #content-forum p, #content-forum blockquote, #content-forum pre, #content-forum code {
-	@apply text-base py-2  !important;
+	@apply text-base py-2 dark:text-slate-300 !important;
 }
+#content-forum  a {
+	@apply font-semibold text-sky-500 hover:underline !important;
+}
+#content-forum {
+	@apply -mt-0 border-t-2 dark:border-slate-600 px-5 !important;
+}
+/* ! FEED AND CHRONOCONTENT */
 #feed-content {
 	@apply lg:columns-1 md:columns-1 columns-1  -mt-14 md:-mt-0  md:gap-10 sm:gap-7 gap-7 !important;
 }
@@ -1531,6 +1538,7 @@ nav.breadcrumb ol li a:hover.not-underline {
 #feed-content div.header h4 {
 	@apply flex flex-row gap-x-2 items-center
 }
+
 /* ! CHRONO CONTENT  */
 #chrono-content {
 	@apply   -mt-14 md:-mt-5  md:gap-10 sm:gap-7 gap-7 !important;

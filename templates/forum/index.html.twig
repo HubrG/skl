@@ -20,14 +20,25 @@
 							</a>
 						</div>
 						<div class="flex flex-col w-full  gap-y-2 dark:text-slate-300">
-							<h2 class="text-base flex md:flex-row flex-col justify-between gap-x-2 items-start md:leading-normal leading-tight gap-y-2 md:items-baseline relative">
-								<a href="{{path("app_forum_topic", {slug:item.slug})}}" class=" hover:underline text-lg md:text-xl font-semibold ">{{item.name}}</a>
-								<span class="text-xs  opacity-60">
-									<i class="fa-regular fa-layer-group {{item.forumTopics|length == 0 ? " hidden" }}"></i>
-									{{item.forumTopics|length == 0 ? "Aucun sujet" : item.forumTopics|length == 1 ? "1 sujet" : item.forumTopics|length ~ " sujets"}}
+							<h2 class="text-base flex  flex-col justify-between gap-x-2 items-start md:leading-normal leading-tight gap-y-2 md:items-baseline relative">
+								<span>
+									<a href="{{path("app_forum_topic", {slug:item.slug})}}" class=" hover:underline text-lg md:text-xl font-semibold ">{{item.name}}</a>
+									<p class="dark:text-slate-400 text-slate-500 md:text-base text-sm">{{item.description|striptags}}</p>
 								</span>
+								<div class="text-xs w-full opacity-60 flex flex-col gap-y-2 md:justify-end justify-start">
+									<div>
+										<i class="fa-regular fa-layer-group {{item.forumTopics|length == 0 ? " hidden" }}"></i>
+										{{item.forumTopics|length == 0 ? "<i class='fa-kit fa-regular-layer-group-slash'></i>Aucun sujet" : item.forumTopics|length == 1 ? "1 sujet" : item.forumTopics|length ~ " sujets"}}
+									</div>
+									{% if item.forumTopics|length > 0 %}
+										<div>
+											<i class="fa-regular fa-newspaper"></i>
+											Dernier sujet —
+											<a href="{{path("app_forum_topic_read", {slugTopic:item.forumTopics|last.slug, slug:item.slug, id:item.forumTopics|last.id})}}" class="font-semibold">{{item.forumTopics|last.title}}</a>
+										</div>
+									{% endif %}
+								</div>
 							</h2>
-							<p class="dark:text-slate-400 text-slate-500">{{item.description|striptags}}</p>
 						</div>
 					</div>
 

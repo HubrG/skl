@@ -118,6 +118,9 @@ p:not(#editor p, article p) {
 hr {
 	@apply my-10 mt-5 bg-slate-200 border-slate-200 dark:border-slate-700;
 }
+main a {
+@apply hover:underline
+}
 .logo {
 	@apply font-medium text-slate-700 dark:text-white flex font-serif
 }

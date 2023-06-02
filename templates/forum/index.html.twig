@@ -34,7 +34,7 @@
 										<div>
 											<i class="fa-regular fa-newspaper"></i>
 											Dernier sujet —
-											<a href="{{path("app_forum_topic_read", {slugTopic:item.forumTopics|last.slug, slug:item.slug, id:item.forumTopics|last.id})}}" class="font-semibold">{{item.forumTopics|last.title}}</a>
+											<a href="{{path("app_forum_topic_read", {slugTopic:item.forumTopics|last.slug, slug:item.slug, id:item.forumTopics|last.id})}}" class="font-semibold hover:underline">{{item.forumTopics|last.title}}</a>
 										</div>
 									{% endif %}
 								</div>

@@ -3,8 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\ForumTopic;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<ForumTopic>
@@ -38,29 +38,41 @@ class ForumTopicRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function findByQuery(string $query): array
+    {
 
-//    /**
-//     * @return ForumTopic[] Returns an array of ForumTopic objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('f.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+        if (empty($query)) {
+            return [];
+        }
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.title LIKE :query')
+            ->setParameter('query', '%' . $query . '%')
+            ->orderBy('t.title', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+    //    /**
+    //     * @return ForumTopic[] Returns an array of ForumTopic objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('f')
+    //            ->andWhere('f.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('f.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?ForumTopic
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?ForumTopic
+    //    {
+    //        return $this->createQueryBuilder('f')
+    //            ->andWhere('f.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

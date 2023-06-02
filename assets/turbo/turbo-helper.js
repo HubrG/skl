@@ -26,6 +26,7 @@ import { darkMode } from "../scripts/Darkmode";
 import { Tabs } from "../scripts/Tabs";
 import { ReadTime } from "../scripts/Publication/ChapterStats";
 import { quillEditor } from "../scripts/Quill.js";
+import { quillEditorForum } from "../scripts/QuillForum.js";
 import { Sortables } from "../scripts/Publication/Sortable";
 import { Search } from "../scripts/Publication/Search";
 import { LazyLoad } from "../scripts/LazyLoad";
@@ -105,6 +106,7 @@ const TurboHelper = class {
       PublicationShow();
       PublicationShowOne();
       quillEditor();
+      quillEditorForum();
       ReadTime();
       Search();
       Sortables();

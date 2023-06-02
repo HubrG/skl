@@ -5,7 +5,8 @@
 	</div>
 	<div class="px-3 py-2">
 		<ul class="h-52 overflow-y-auto">
-			<li class="font-semibold text-xs pb-2 text-slate-800 ">Ces balises permettent la mise en forme de votre commentaire</li>
+			<li class="font-semibold text-xs pb-2 text-slate-800 ">Ces balises permettent la mise en forme de votre
+				{{type is defined ? type == "sujet" ? "sujet" : type == "reponse" ? : "réponse" : "commentaire" }}</li>
 			<li class="font-semibold my-2 underline">Titres</li>
 			<li># Titre 1</li>
 			<li>## Titre 2</li>
@@ -32,7 +33,7 @@
 			<li class="font-semibold my-2 underline">Lien</li>
 			<li>[Texte du lien](URL)</li>
 			<li class="font-semibold my-2 underline">Image</li>
-			<li>![Texte alternatif](URL)</li>
+			<li>![Nom de l'image](URL de l'image)</li>
 			<li class="font-semibold my-2">Ligne horizontale</li>
 			<li>---</li>
 		</ul>

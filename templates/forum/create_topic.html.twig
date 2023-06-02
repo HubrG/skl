@@ -54,9 +54,12 @@
 			{% include "./partials/_form-row.html.twig" with {'form': form.title, value:topic.title is defined ? topic.title, 'icon':"fa-heading"} %}
 			{% include "./partials/_form-row.html.twig" with {'form': form.content, 'icon':null, classWidget:"assign-user h-96"} %}
 			<div class="assign-user-dropdown" style="display: none;margin-top:-1.5rem "></div>
-			<div class="help-text pt-0">
+			<div class="help-text">
 				Vous pouvez interpeller un utilisateur avec un
 				<strong>@</strong>
+				suivi de son nom d'utilisateur, et utiliser du
+				<em data-popover-target="popover-markdown" data-popover-placement="bottom" class="font-semibold border-dashed border-b-[1px] cursor-help">Markdown</em>
+				pour mettre en forme votre sujet
 			</div>
 			<button type="submit" class="button-classic button-blue w-full">
 				{% if 'update' in current_url %}
@@ -66,6 +69,7 @@
 				{% endif %}
 			</button>
 			{{ form_end(form) }}
+			{% include "/partials/little/_markdownPopover.html.twig" with {type:"sujet"} %}
 		</div>
 	</div>
 {% endblock %}

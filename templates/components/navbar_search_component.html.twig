@@ -1,0 +1,94 @@
+<div {{attributes}} class="flex flex-col gap-y-2 w-full relative">
+	{% if this.users|length == 0 and this.publications|length == 0 and this.topics|length == 0 %}
+		<div class="sticky -top-3 py-2 border-b-slate-300 dark:bg-slate-700 bg-white z-50 dark:border-b-slate-500">
+			<div class="relative -mt-5">
+				<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
+					<i class="fa-regular fa-microscope"></i>
+				</div>
+				<input type="search" name="query" value="{{ query }}" class="input w-full dark:bg-slate-900" placeholder="Un auteur, un récit, un sujet de discussion..." data-model="query">
+			</div>
+		</div>
+	{% else %}
+		<div class="border-b-[1px] sticky -top-3 py-2 border-b-slate-300 dark:bg-slate-700 bg-white z-50 dark:border-b-slate-500">
+			<div class="relative mb-3 -mt-5">
+				<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
+					<i class="fa-regular fa-microscope"></i>
+				</div>
+				<input type="search" name="query" value="{{ query }}" class="input w-full dark:bg-slate-900" placeholder="Un auteur, un récit, un sujet de discussion..." data-model="query">
+			</div>
+		</div>
+	{% endif %}
+	{% if this.users|length > 0 %}
+		<div class="flex flex-col gap-y-3">
+			<h5 class="text-left font-semibold">Utilisateur-ices</h5>
+			<ul>
+				{% for item in this.users %}
+					<li class="rounded">
+						<a href="{{path("app_user", {username:item.username})}}" class="flex flex-row gap-x-2 items-center justify-start px-2 rounded w-full py-2 hover:bg-slate-50 dark:hover:bg-slate-600">
+							<div class=" self-baseline w-7 h-7 relative flex-shrink-0">
+								{% if item.profilPicture %}
+									<img class="w-full h-full object-cover rounded-full lozad myImage" src="{{item.profilPicture}}" alt="Avatar de {{item.nickname}}">
+								{% else %}
+									<div class="w-full h-full object-cover rounded-full bg-slate-500  cursor-default">
+										<div class=" h-full flex mx-auto items-center justify-center text-xs text-slate-200">
+											{{ item.nickname|slice(0,1)|upper }}
+										</div>
+									</div>
+								{% endif %}
+							</div>
+							{{item.nickname}}
+						</a>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+	{% endif %}
+	{% if this.publications|length > 0 %}
+		<div class="flex flex-col gap-y-3">
+			<h5 class="text-left font-semibold">Récits</h5>
+			<ul>
+				{% for item in this.publications %}
+					<li class=" rounded ">
+						<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" class="inline-flex gap-x-2 items-start text-left justify-start px-2 rounded w-full py-2 hover:bg-slate-50 dark:hover:bg-slate-600">
+							{% if item.cover %}
+								<span class="inline-flex w-4 h-4 relative flex-shrink-0">
+									<img class="w-full h-full object-cover rounded  myImage mt-1" src="{{item.cover}}" alt="Couverture du récit {{item.title}}">
+								</span>
+							{% else %}
+								<span class="inline-flex w-4 h-4 relative flex-shrink-0">
+									<i class="fa-solid fa-book w-full h-full object-cover mt-1 text-slate-300 dark:text-slate-500"></i>
+								</span>
+							{% endif %}
+							{{item.title}}
+
+						</a>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+	{% endif %}
+	{% if this.topics|length > 0 %}
+		<div class="flex flex-col gap-y-3">
+			<h5 class="text-left font-semibold">Sujets de discussion</h5>
+			<ul>
+				{% for item in this.topics %}
+					<li class="rounded">
+						<a href="{{path("app_forum_topic_read", {slug:item.category.slug, slugTopic:item.slug, id:item.id})}}" class="flex flex-row gap-x-2 items-center justify-start px-2 rounded w-full py-2 hover:bg-slate-50 dark:hover:bg-slate-600">
+							<div class=" self-baseline w-7 h-7 relative flex-shrink-0">
+								<div class="w-full h-full object-cover rounded-full catColor-{{item.category.color}}  cursor-default">
+									<div class=" h-full flex mx-auto items-center justify-center text-xs text-slate-200">
+										<i class="fa-duotone rounded-full {{ item.category.icon }} catColorText-{{item.category.color}}"></i>
+									</div>
+								</div>
+							</div>
+							<span class="self-start text-left flex flex-col gap-y-0.5">
+								{{item.title}}
+								<small class="opacity-50">{{item.category.name}}</small>
+							</span>
+						</a>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+	{% endif %}
+</div>

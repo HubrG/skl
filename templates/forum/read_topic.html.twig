@@ -74,7 +74,9 @@
 					{% endif %}
 				</h6>
 			</div>
-			<p class=" text-justify text-slate-600 dark:text-slate-400 text-base">{{topic.content|nl2br|assign|smiley_to_emoji|raw}}</p>
+			<p class=" text-justify text-slate-600 dark:text-slate-400 text-base">
+				{{topic.content|nl2br|assign|smiley_to_emoji|markdown}}
+			</p>
 			<hr class="mb-0 mt-0 border-2">
 			<div id="forum-section"></div>
 			{% if app.user  %}
@@ -92,7 +94,7 @@
 					pour mettre en forme votre réponse
 				</div>
 				{{ form_end(form) }}
-				{% include "/partials/little/_markdownPopover.html.twig" %}
+				{% include "/partials/little/_markdownPopover.html.twig" with {type:"réponse"} %}
 				<hr class="-mt-10">
 			{% endif %}
 			<div class="flex flex-col gap-y-5">

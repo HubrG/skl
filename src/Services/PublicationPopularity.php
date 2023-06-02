@@ -77,13 +77,14 @@ class PublicationPopularity
         // Calcul du facteur de décroissance en fonction du temps écoulé depuis la date de publication
         $publishedAt = $p->getPublishedDate();
         $timeSincePublication = ($publishedAt !== null) ? (time() - strtotime($publishedAt->format('Y-m-d H:i:s'))) : 0;
-        $maxDecayDays = 30 * 24 * 60 * 60; // 30 jours en secondes
+        $maxDecayDays = 15 * 24 * 60 * 60; // 15 jours en secondes
 
         if ($timeSincePublication <= $maxDecayDays) {
-            $decayFactor = exp(($timeSincePublication / (60 * 60 * 24 * 15))); // facteur de décroissance (exprimé en jours)
+            $decayFactor = exp(($timeSincePublication / (60 * 60 * 24 * 7.5))); // facteur de décroissance (exprimé en jours)
         } else {
-            $decayFactor = exp(($maxDecayDays / (60 * 60 * 24 * 15)));
+            $decayFactor = exp(($maxDecayDays / (60 * 60 * 24 * 7.5)));
         }
+
 
         // Calculate the sum of all the priority factors
         $prioritySum = $priorityPcv + $priorityPcom + $priorityPcl + $priorityBmC + $priorityBm + $priorityDl;
@@ -152,13 +153,14 @@ class PublicationPopularity
         // Calcul du facteur de décroissance en fonction du temps écoulé depuis la date de création du chapitre
         $createdAt = $ch->getPublished();
         $timeSinceCreation = ($createdAt !== null) ? (time() - strtotime($createdAt->format('Y-m-d H:i:s'))) : 0;
-        $maxDecayDays = 30 * 24 * 60 * 60; // 30 jours en secondes
+        $maxDecayDays = 15 * 24 * 60 * 60; // 15 jours en secondes
 
         if ($timeSinceCreation <= $maxDecayDays) {
-            $decayFactor = exp(($timeSinceCreation / (60 * 60 * 24 * 7))); // facteur de décroissance (exprimé en jours)
+            $decayFactor = exp(($timeSinceCreation / (60 * 60 * 24 * 7.5))); // facteur de décroissance (exprimé en jours)
         } else {
-            $decayFactor = exp(($maxDecayDays / (60 * 60 * 24 * 7)));
+            $decayFactor = exp(($maxDecayDays / (60 * 60 * 24 * 7.5)));
         }
+
 
         // Calculate the sum of all the priority factors
         $prioritySum = $priorityPcv + $priorityPcl + $priorityBmC + $priorityPcom;

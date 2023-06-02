@@ -74,9 +74,9 @@
 					{% endif %}
 				</h6>
 			</div>
-			<p class=" text-justify text-slate-600 dark:text-slate-400 text-base">
-				{{topic.content|nl2br|assign|smiley_to_emoji|markdown}}
-			</p>
+			<div id="content-forum">
+				{{topic.content|assign|smiley_to_emoji|markdown|raw}}
+			</div>
 			<hr class="mb-0 mt-0 border-2">
 			<div id="forum-section"></div>
 			{% if app.user  %}

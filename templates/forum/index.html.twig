@@ -28,7 +28,7 @@
 								<div class="text-xs w-full opacity-60 flex flex-col gap-y-2 md:justify-end justify-start">
 									<div>
 										<i class="fa-regular fa-layer-group {{item.forumTopics|length == 0 ? " hidden" }}"></i>
-										{{item.forumTopics|length == 0 ? "<i class='fa-kit fa-regular-layer-group-slash'></i>Aucun sujet" : item.forumTopics|length == 1 ? "1 sujet" : item.forumTopics|length ~ " sujets"}}
+										{{item.forumTopics|length == 0 ? "<i class='fa-kit fa-regular-layer-group-slash'></i>&nbsp;&nbsp;Aucun sujet" : item.forumTopics|length == 1 ? "1 sujet" : item.forumTopics|length ~ " sujets"}}
 									</div>
 									{% if item.forumTopics|length > 0 %}
 										<div>

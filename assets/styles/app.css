@@ -977,7 +977,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 	@apply text-slate-500 shadow-inner dark:text-slate-200 bg-slate-100 dark:bg-slate-700;
  }
  .no-avatar {
-	@apply  bg-slate-800 text-slate-100 pt-2 mx-auto rounded-lg shadow-lg dark:ring-gray-500 grayscale;
+	@apply   pt-2 mx-auto rounded-lg shadow-lg  ;
  }
  .flex-row-custom-gapx-1 {
 	@apply flex flex-row gap-x-1 items-center;
@@ -1579,6 +1579,45 @@ nav.breadcrumb ol li a:hover.not-underline {
 #chrono-content div.body ul li div.info-text span {
 	@apply flex flex-row items-center gap-x-2 !important
 }
+/* ! FOLLOW USER CONTENT  */
+#fu-content {
+	@apply   lg:columns-1 md:columns-1 columns-1  md:gap-10 sm:gap-7 gap-7 !important;
+}
+#fu-content h4 {
+	@apply text-base font-semibold
+}
+#fu-content div.header h4 {
+	@apply flex flex-row gap-x-2 items-center
+}
+#fu-content div.card {
+	@apply  p-3 break-inside-avoid-column rounded mb-10 dark:shadow-2xl dark:drop-shadow-2xl;
+}
+#fu-content div.card.chrono {
+	@apply  shadow-none rounded-none !important;
+}
+
+#fu-content div.card {
+	@apply flex flex-col gap-y-2 !important;
+}
+
+#fu-content div.body ul {
+	@apply  text-base flex flex-col gap-y-5 !important;
+}
+#fu-content div.body ul li {
+	@apply  text-sm flex flex-col justify-start gap-x-2 border-2 p-3 pb-2 rounded !important;
+}
+#fu-content div.body ul li div:first-child {
+	@apply  flex flex-row justify-start gap-x-2 !important;
+}
+#fu-content div.body ul li a {
+	@apply  hover:underline !important;
+}
+#fu-content div.body ul li div.info-text {
+	@apply text-right text-[0.75rem] opacity-60 flex flex-row gap-x-2 items-center justify-between ml-9  !important
+}
+#fu-content div.body ul li div.info-text span {
+	@apply flex flex-row items-center gap-x-2 !important
+}
 .fadeout {
     position: sticky;
     bottom: 0;
@@ -1591,4 +1630,7 @@ nav.breadcrumb ol li a:hover.not-underline {
 }
 .follow-user {
 	@apply -mt-[1.95rem] rounded-t-none h-8 w-40 absolute !important;
+}
+.follow-user-no-avatar {
+	@apply bottom-0 rounded-t-none h-8 w-40 absolute !important;
 }

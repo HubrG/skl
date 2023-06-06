@@ -104,6 +104,9 @@ class Publication
     #[ORM\Column(nullable: true)]
     private ?int $wordCount = null;
 
+    #[ORM\OneToMany(mappedBy: 'friendNewPub', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $notificationsFriendNewPub;
+
 
 
 
@@ -120,6 +123,7 @@ class Publication
         $this->publicationFollows = new ArrayCollection();
         $this->notifications = new ArrayCollection();
         $this->publicationReads = new ArrayCollection();
+        $this->notificationsFriendNewPub = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -661,5 +665,35 @@ class Publication
     public function getTimestamp(): int
     {
         return $this->created->getTimestamp();
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotificationsFriendNewPub(): Collection
+    {
+        return $this->notificationsFriendNewPub;
+    }
+
+    public function addNotificationsFriendNewPub(Notification $notificationsFriendNewPub): self
+    {
+        if (!$this->notificationsFriendNewPub->contains($notificationsFriendNewPub)) {
+            $this->notificationsFriendNewPub->add($notificationsFriendNewPub);
+            $notificationsFriendNewPub->setFriendNewPub($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotificationsFriendNewPub(Notification $notificationsFriendNewPub): self
+    {
+        if ($this->notificationsFriendNewPub->removeElement($notificationsFriendNewPub)) {
+            // set the owning side to null (unless already changed)
+            if ($notificationsFriendNewPub->getFriendNewPub() === $this) {
+                $notificationsFriendNewPub->setFriendNewPub(null);
+            }
+        }
+
+        return $this;
     }
 }

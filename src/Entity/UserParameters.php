@@ -114,12 +114,25 @@ class UserParameters
 
     #[ORM\Column(nullable: true, options: ['default' => true])]
     private ?bool $notif_16_web = true;
+
     #[ORM\Column(nullable: true, options: ['default' => true])]
     private ?bool $notif_17_mail = true;
 
     #[ORM\Column(nullable: true, options: ['default' => true])]
     private ?bool $notif_17_web = true;
 
+
+    #[ORM\Column(nullable: true, options: ['default' => true])]
+    private ?bool $notif_18_mail = true;
+
+    #[ORM\Column(nullable: true, options: ['default' => true])]
+    private ?bool $notif_18_web = true;
+
+    #[ORM\Column(nullable: true, options: ['default' => true])]
+    private ?bool $notif_19_mail = true;
+
+    #[ORM\Column(nullable: true, options: ['default' => true])]
+    private ?bool $notif_19_web = true;
 
     public function getId(): ?int
     {
@@ -563,6 +576,56 @@ class UserParameters
     public function setNotif17Web(?bool $notif_17_web): self
     {
         $this->notif_17_web = $notif_17_web;
+
+        return $this;
+    }
+
+
+    public function isNotif18Mail(): ?bool
+    {
+        return $this->notif_18_mail;
+    }
+
+    public function setNotif18Mail(?bool $notif_18_mail): self
+    {
+        $this->notif_18_mail = $notif_18_mail;
+
+        return $this;
+    }
+
+    public function isNotif18Web(): ?bool
+    {
+        return $this->notif_18_web;
+    }
+
+    public function setNotif18Web(?bool $notif_18_web): self
+    {
+        $this->notif_18_web = $notif_18_web;
+
+        return $this;
+    }
+
+
+    public function isNotif19Mail(): ?bool
+    {
+        return $this->notif_19_mail;
+    }
+
+    public function setNotif19Mail(?bool $notif_19_mail): self
+    {
+        $this->notif_19_mail = $notif_19_mail;
+
+        return $this;
+    }
+
+    public function isNotif19Web(): ?bool
+    {
+        return $this->notif_19_web;
+    }
+
+    public function setNotif19Web(?bool $notif_19_web): self
+    {
+        $this->notif_19_web = $notif_19_web;
 
         return $this;
     }

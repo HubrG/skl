@@ -11,6 +11,7 @@ use App\Security\EmailVerifier;
 use App\Repository\UserRepository;
 use Symfony\Component\Mime\Address;
 use App\Form\UserChangePasswordType;
+use App\Services\NotificationSystem;
 use App\Repository\UserFollowRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
@@ -27,17 +28,14 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class UserController extends AbstractController
 {
-	private $tokenStorage;
 
-	private $uploadImage;
 
-	private EmailVerifier $emailVerifier;
-
-	public function __construct(ImageService $uploadImage, TokenStorageInterface $tokenStorage, EmailVerifier $emailVerifier)
-	{
-		$this->uploadImage = $uploadImage;
-		$this->tokenStorage = $tokenStorage;
-		$this->emailVerifier = $emailVerifier;
+	public function __construct(
+		private ImageService $uploadImage,
+		private TokenStorageInterface $tokenStorage,
+		private EmailVerifier $emailVerifier,
+		private NotificationSystem $notificationSystem
+	) {
 	}
 	#[Route('user/{username?}', requirements: ["username" => "[^/]+"], name: 'app_user')]
 	public function index(UserRepository $userRepo, UserFollowRepository $ufRepo,  PublicationRepository $pRepo, $username): Response
@@ -405,6 +403,7 @@ class UserController extends AbstractController
 			$follow->setAddedAt(new DateTimeImmutable());
 			$em->persist($follow);
 			$em->flush();
+			$this->notificationSystem->addNotification(18, $follow->getToUser(), $this->getUser(), $follow);
 			return $this->json([
 				'code' => 201,
 				'message' => 'Vous suivez ' . $userAdded->getNickname(),

@@ -30,7 +30,7 @@
 			</ul>
 		</div>
 		<div id="myTabContent">
-			<div class="hidden p-4 rounded-lg  dark:bg-gray-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+			<div class="hidden p-4 rounded-lg  dark:bg-slate-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
 				<turbo-frame id="infoChange">
 					{{ form_start(form, {attr:{"data-turbo-frame":"_self"}}) }}
 					{% if app.user.googleId is not null and app.user.password == "" %}
@@ -74,7 +74,7 @@
 				</button>
 			</div>
 		</div>
-		<div class="hidden p-4 rounded-lg dark:bg-gray-800" id="password" role="tabpanel" aria-labelledby="password-tab">
+		<div class="hidden p-4 rounded-lg dark:bg-slate-800" id="password" role="tabpanel" aria-labelledby="password-tab">
 			<turbo-frame id="passChange">
 				{{ form_start(passwordForm) }}
 				{% if app.user.googleId is not null and app.user.password == "" %}
@@ -105,7 +105,7 @@
 				</div>
 			</turbo-frame>
 		</div>
-		<div class="hidden p-4 rounded-lg dark:bg-gray-800 -mt-4" id="notif-account" role="tabpanel" aria-labelledby="notification-tab">
+		<div class="hidden p-4 rounded-lg dark:bg-slate-800 -mt-4" id="notif-account" role="tabpanel" aria-labelledby="notification-tab">
 			<div class="flex flex-col gap-y-4 text-xs lg:text-sm">
 				<div class="flex flex-row text-base pb-5">
 					<div class="w-10/12 font-semibold dark:text-slate-100">Type de notification</div>
@@ -250,6 +250,23 @@
 					</div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="14" type="checkbox" {{app.user.userParameters.notif14Mail is null or app.user.userParameters.notif14Mail == 1 ? "checked"}}></div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="14" type="checkbox" {{app.user.userParameters.notif14Web is null or app.user.userParameters.notif14Web == 1 ? "checked"}}></div>
+				</div>
+				<hr class="mb-5">
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-user-group"></i>
+						<span>Nouvel abonné</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="18" type="checkbox" {{app.user.userParameters.notif18Mail is null or app.user.userParameters.notif18Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="18" type="checkbox" {{app.user.userParameters.notif18Web is null or app.user.userParameters.notif18Web == 1 ? "checked"}}></div>
+				</div>
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-book-user"></i>
+						<span>Nouveau récit publié par l'un de vos abonnements</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="19" type="checkbox" {{app.user.userParameters.notif19Mail is null or app.user.userParameters.notif19Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="19" type="checkbox" {{app.user.userParameters.notif19Web is null or app.user.userParameters.notif19Web == 1 ? "checked"}}></div>
 				</div>
 			</div>
 		</div>

@@ -148,6 +148,7 @@ class PublicationAnnotation
         return $this;
     }
 
+
     public function getMode(): ?int
     {
         return $this->mode;

@@ -70,6 +70,10 @@ class NotificationSystem extends AbstractController
      * 16 : Nouveau j'aime sur votre réponse de forum
      *  
      * 17 : Nouvelle mention sur une réponse à un sujet de forum
+     *  
+     * 18 : Nouvel abonné
+     *  
+     * 19 : Nouveau récit publié par l'un de vos abonnements
      * @param $user type
      * @param $message string
      * @param $fromUser type
@@ -543,6 +547,52 @@ class NotificationSystem extends AbstractController
                         'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
                         vient de vous mentionner dans une réponse " . $textChapter,
                         'subject' => "Nouvelle mention dans une réponse sur un sujet du forum",
+                    ]);
+                //
+                $this->mailer->send($email);
+            }
+        }
+        if ($type === 18) {
+            if (is_null($userRepo->getUserParameters()->isNotif18Web()) or $userRepo->getUserParameters()->isNotif18Web() == 1) {
+                $notification->setNewFriend($idLink);
+                $this->em->persist($notification);
+                $this->em->flush();
+            } else {
+                $notification->setNewFriend($idLink);
+            }
+            if (is_null($userRepo->getUserParameters()->isNotif18Mail()) or $userRepo->getUserParameters()->isNotif18Mail() == 1) {
+                // Envoi d'email
+                $pathChapter = $this->generateUrl('app_user', ['username' => $notification->getNewFriend()->getFromUser()->getUsername()]);
+                $textChapter = "<a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a> vient de s'abonner à votre profil";
+                //
+                $textSubject = $notification->getFromUser()->getNickname() . " vient de s'abonner à votre profil";
+                $email->subject($textSubject)
+                    ->context([
+                        'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a> vient de s'abonner à votre profil.",
+                        'subject' =>  $notification->getFromUser()->getNickname() . " vient de s'abonner à votre profil",
+                    ]);
+                //
+                $this->mailer->send($email);
+            }
+        }
+        if ($type === 19) {
+            if (is_null($userRepo->getUserParameters()->isNotif19Web()) or $userRepo->getUserParameters()->isNotif19Web() == 1) {
+                $notification->setFriendNewPub($idLink);
+                $this->em->persist($notification);
+                $this->em->flush();
+            } else {
+                $notification->setFriendNewPub($idLink);
+            }
+            // Envoi email
+            if (is_null($userRepo->getUserParameters()->isNotif19Mail()) or $userRepo->getUserParameters()->isNotif19Mail() == 1) {
+                $textSubject = $notification->getFromUser()->getNickname() . " a publié un nouveau récit !";
+                $pathPublication = $this->generateUrl('app_publication_show_one', ['slug' => $notification->getFriendNewPub()->getSlug(), "id" => $notification->getFriendNewPub()->getId()]);
+                $textPublication = " <a href='https://scrilab.com" . $pathPublication . "' style='font-weight:600;'>" . $notification->getFriendNewPub()->getTitle() . "</a>";
+                $email->subject($textSubject)
+                    ->context([
+                        'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
+                     vient de publier un nouveau récit « " . $textPublication . " » ",
+                        'subject' => $notification->getFromUser()->getNickname() . " a publié un nouveau récit !",
                     ]);
                 //
                 $this->mailer->send($email);

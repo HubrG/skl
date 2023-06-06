@@ -4,6 +4,8 @@ namespace App\Components;
 
 use App\Repository\UserRepository;
 use App\Repository\ForumTopicRepository;
+use App\Repository\UserFollowRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
 use App\Repository\ForumMessageRepository;
 use App\Repository\PublicationReadRepository;
@@ -20,9 +22,10 @@ use App\Repository\PublicationChapterLikeRepository;
 use App\Repository\PublicationChapterViewRepository;
 use App\Repository\PublicationCommentLikeRepository;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[AsLiveComponent('feed_content_component')]
-class FeedContentComponent
+class FeedContentComponent extends AbstractController
 {
     use DefaultActionTrait;
 
@@ -42,7 +45,9 @@ class FeedContentComponent
         private PublicationReadRepository $prRepo,
         private UserRepository $userRepo,
         private PublicationDownloadRepository $pdRepo,
-        private PublicationChapterLikeRepository $pchlRepo
+        private PublicationChapterLikeRepository $pchlRepo,
+        private EntityManagerInterface $em,
+        private UserFollowRepository $ufRepo
     ) {
     }
     public function getComments(): array
@@ -176,5 +181,243 @@ class FeedContentComponent
 
 
         return $entities;
+    }
+    // ! 
+    // ! 
+    // ! 
+    // !  FOLLOWED USERS
+    // ! 
+    // ! 
+    // ! 
+    // ! 
+    public function hadFollowedUsers(): bool
+    {
+        $currentUser = $this->getUser();
+        if (!$currentUser) {
+            return false;
+        }
+        $followedUsers = $this->ufRepo->findBy(['fromUser' => $currentUser]);
+        if (count($followedUsers) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function getAllEntitiesForFollowedUsers(): array
+    {
+
+        // Récupérer l'utilisateur courant
+        $currentUser = $this->getUser();
+
+        // Récupérer tous les utilisateurs suivis par l'utilisateur courant
+        $followedUsers = $this->ufRepo->findBy(['fromUser' => $currentUser]);
+
+        // Extraire les ids des utilisateurs suivis
+        $followedUserIds = array_map(fn ($e) => $e->getToUser()->getId(), $followedUsers);
+
+        // Ensuite, dans chaque méthode get pour chaque type d'entité, ajoutez une condition pour filtrer seulement les entités qui sont associées à des utilisateurs suivis
+        // Par exemple, pour les commentaires :
+        // $comments = $this->getDoctrine()->getRepository(Comment::class)->findBy(['user' => $followedUserIds]);
+
+        // Faites la même chose pour les autres types d'entités
+        // Ensuite, continuez le reste de votre méthode comme avant
+        // Merge all entities into a single array with a unique key
+        $entities = array_merge(
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationComment:' . $e->getId()], $this->getCommentsFu($followedUserIds)),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'ForumMessage:' . $e->getId()], $this->getForumMessagesFu($followedUserIds)),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'ForumTopic:' . $e->getId()], $this->getForumTopicsFu($followedUserIds)),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'Publication:' . $e->getId()], $this->getPublicationsFu($followedUserIds)),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationChapterLike:' . $e->getId()], $this->getPublicationChapterLikesFu($followedUserIds)),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationChapter:' . $e->getId()], $this->getPublicationChaptersFu($followedUserIds)),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationBookmark:' . $e->getId()], $this->getPublicationBookmarksFu($followedUserIds)),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationAnnotation:' . $e->getId()], $this->getPublicationAnnotationsFu($followedUserIds)),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationFollow:' . $e->getId()], $this->getPublicationFollowsFu($followedUserIds)),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationDownload:' . $e->getId()], $this->getPublicationDownloadsFu($followedUserIds)),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationRead:' . $e->getId()], $this->getPublicationReadsFu($followedUserIds)),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'User:' . $e->getId()], $this->getUsersFu($followedUserIds))
+        );
+
+        // Remove duplicates based on the unique key
+        $entities = array_unique($entities, SORT_REGULAR);
+
+        // Extract the entities from the array
+        $entities = array_map(fn ($e) => $e['entity'], $entities);
+
+        // Sort all entities by timestamp (descending order)
+        usort($entities, function ($a, $b) {
+            return $b->getTimestamp() <=> $a->getTimestamp();
+        });
+
+        // Limit the total number of results to 5
+        return $entities;
+    }
+    public function getCommentsFu($followedUserIds): array
+    {
+        $qb = $this->pcomRepo->createQueryBuilder('c');
+        $qb->where($qb->expr()->in('c.User', $followedUserIds))
+            ->orderBy('c.published_at', 'DESC')
+            ->setMaxResults(5);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getForumMessagesFu($followedUserIds): array
+    {
+        $qb = $this->fmsgRepo->createQueryBuilder('f');
+        $qb
+            ->where('f.replyTo is null')
+            ->andWhere($qb->expr()->in('f.user', $followedUserIds))
+            ->orderBy('f.published_at', 'DESC')
+            ->setMaxResults(5);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getPublicationReadsFu($followedUserIds): array
+    {
+        $qb = $this->pchvRepo->createQueryBuilder('p');
+
+        $qb->select('p')
+            ->where($qb->expr()->isNotNull('p.user'))
+            ->andWhere($qb->expr()->in('p.user', $followedUserIds))
+            ->orderBy('p.view_date', 'ASC'); // Fetch readings from oldest to newest
+
+        $reads = $qb->getQuery()->getResult();
+
+        $uniqueReads = [];
+        $uniqueKeys = [];
+
+        foreach ($reads as $read) {
+            $key = $read->getUser()->getId() . ':' . $read->getChapter()->getId();
+
+            // If this user-publication combination has not been encountered yet, keep the reading
+            if (!array_key_exists($key, $uniqueKeys)) {
+                $uniqueKeys[$key] = $read;
+                $uniqueReads[] = $read;
+            }
+        }
+
+        // Sort the unique readings by view date in descending order for display
+        uasort($uniqueReads, function ($a, $b) {
+            return $b->getViewDate() <=> $a->getViewDate();
+        });
+
+        // Take the 5 most recent readings based on view date
+        $uniqueReads = array_slice($uniqueReads, 0, 5);
+
+        return $uniqueReads;
+    }
+    public function getPublicationChaptersFu($followedUserIds): array
+    {
+        $qb = $this->pchRepo->createQueryBuilder('pc');
+        $qb
+            ->join('pc.publication', 'p')
+            ->where('p.status = 2')
+            ->andWhere('pc.status = 2')
+            ->andWhere($qb->expr()->in('p.user', $followedUserIds))
+            ->orderBy('pc.published', 'DESC')
+            ->setMaxResults(5);
+
+        $chapters = $qb->getQuery()->getResult();
+
+        return $chapters;
+    }
+
+    public function getForumTopicsFu($followedUserIds): array
+    {
+        $qb = $this->ftRepo->createQueryBuilder('t');
+
+        $qb->where($qb->expr()->in('t.user', $followedUserIds))
+            ->orderBy('t.createdAt', 'DESC')
+            ->setMaxResults(5);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getPublicationsFu($followedUserIds): array
+    {
+        $qb = $this->pubRepo->createQueryBuilder('p');
+
+
+        $qb
+            ->where('p.status = 2')
+            ->andWhere($qb->expr()->in('p.user', $followedUserIds))
+            ->orderBy('p.created', 'DESC')
+            ->setMaxResults(5);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    // On laisse cette fonction tel quel puisque vous utilisez déjà un QueryBuilder
+
+    public function getPublicationBookmarksFu($followedUserIds): array
+    {
+        $qb = $this->pbmRepo->createQueryBuilder('b');
+
+        $qb->where($qb->expr()->in('b.user', $followedUserIds))
+            ->orderBy('b.createdAt', 'DESC')
+            ->setMaxResults(5);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getPublicationAnnotationsFu($followedUserIds): array
+    {
+        $qb = $this->paRepo->createQueryBuilder('a');
+
+        $qb->where('a.mode = 1')
+            ->andWhere($qb->expr()->in('a.user', $followedUserIds))
+            ->orderBy('a.createdAt', 'DESC')
+            ->setMaxResults(5);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    // On laisse cette fonction tel quel puisque vous utilisez déjà un QueryBuilder
+
+    public function getPublicationFollowsFu($followedUserIds): array
+    {
+        $qb = $this->pfRepo->createQueryBuilder('f');
+        $qb->where($qb->expr()->in('f.user', $followedUserIds))
+            ->orderBy('f.CreatedAt', 'DESC')
+            ->setMaxResults(5);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getUsersFu($followedUserIds): array
+    {
+        $qb = $this->userRepo->createQueryBuilder('u');
+
+
+        $qb->where($qb->expr()->in('u.id', $followedUserIds))
+            ->orderBy('u.join_date', 'DESC')
+            ->setMaxResults(5);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getPublicationDownloadsFu($followedUserIds): array
+    {
+        $qb = $this->pdRepo->createQueryBuilder('d');
+
+
+        $qb->where($qb->expr()->in('d.user', $followedUserIds))
+            ->orderBy('d.dlAt', 'DESC')
+            ->setMaxResults(5);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getPublicationChapterLikesFu($followedUserIds): array
+    {
+        $qb = $this->pchlRepo->createQueryBuilder('l');
+
+
+        $qb->where($qb->expr()->in('l.user', $followedUserIds))
+            ->orderBy('l.CreatedAt', 'DESC')
+            ->setMaxResults(5);
+
+        return $qb->getQuery()->getResult();
     }
 }

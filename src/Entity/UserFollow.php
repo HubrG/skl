@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\UserFollowRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserFollowRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: UserFollowRepository::class)]
 class UserFollow
@@ -21,6 +23,14 @@ class UserFollow
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $addedAt = null;
+
+    #[ORM\OneToMany(mappedBy: 'newFriend', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $notifications;
+
+    public function __construct()
+    {
+        $this->notifications = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -59,6 +69,36 @@ class UserFollow
     public function setAddedAt(?\DateTimeImmutable $addedAt): self
     {
         $this->addedAt = $addedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications->add($notification);
+            $notification->setNewFriend($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getNewFriend() === $this) {
+                $notification->setNewFriend(null);
+            }
+        }
 
         return $this;
     }

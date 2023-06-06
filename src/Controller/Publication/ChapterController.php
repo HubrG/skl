@@ -26,8 +26,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ChapterController extends AbstractController
 {
-    public function __construct(private WordCount $wordCount, private EntityManagerInterface $em, private PublicationChapterRepository $pchRepo, private PicturesRepository $picRepo, private PublicationRepository $pRepo, private Cloudinary $cloudinary, private ImageService $uploadImage, private NotificationSystem $notificationSystem)
-    {
+    public function __construct(
+        private WordCount $wordCount,
+        private EntityManagerInterface $em,
+        private PublicationChapterRepository $pchRepo,
+        private PicturesRepository $picRepo,
+        private PublicationRepository $pRepo,
+        private Cloudinary $cloudinary,
+        private ImageService $uploadImage,
+        private NotificationSystem $notificationSystem
+    ) {
     }
 
     #[Route('/story/edit/{idPub}/chapter/{idChap?}', name: 'app_publication_edit_chapter')]

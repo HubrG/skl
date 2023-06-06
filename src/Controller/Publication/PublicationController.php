@@ -9,6 +9,8 @@ use App\Entity\Publication;
 use App\Form\PublicationType;
 use App\Services\ImageService;
 use App\Entity\PublicationKeyword;
+use App\Services\NotificationSystem;
+use App\Repository\UserFollowRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,8 +26,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class PublicationController extends AbstractController
 {
 
-    public function __construct(private Cloudinary $cloudinary, private ImageService $uploadImage, private ChapterController $chapterController)
-    {
+    public function __construct(
+        private Cloudinary $cloudinary,
+        private ImageService $uploadImage,
+        private ChapterController $chapterController,
+        private NotificationSystem $notificationSystem
+    ) {
     }
 
     #[Route('/story/add', name: 'app_publication_add')]
@@ -241,7 +247,7 @@ class PublicationController extends AbstractController
      * 3) If the post is depubliated, then we decrease the count of the keywords linked to the post
      */
     #[Route('/story/publish', name: 'app_publication_publish', methods: 'POST')]
-    public function Axios_Publish(Request $request, PublicationKeywordRepository $keyRepo, PublicationRepository $pubRepo, EntityManagerInterface $em): Response
+    public function Axios_Publish(Request $request, UserFollowRepository $ufRepo, PublicationRepository $pubRepo, EntityManagerInterface $em): Response
     {
         $dataPub = $request->get("pub");
         $dataPublish = json_decode($request->get("publish"));
@@ -255,13 +261,21 @@ class PublicationController extends AbstractController
                 if ($publication->getPublishedDate() === null) {
                     $publication->setPublishedDate(new \DateTime('now'));
                 }
-                $publication->setLastPublishedAt(new \DateTimeImmutable('now'));
+                $publication->setLastPublishedAt(new DateTimeImmutable('now'));
                 $keywords = $publication->getPublicationKeywords();
                 foreach ($keywords as $key) {
                     $countKey = $key->getCount() + 1;
                     $key->setCount($countKey);
                     $em->persist($key);
                     $em->flush();
+                }
+                // * Envoi d'une notification aux abonnés de la publication
+                // Si la publication est publiée, on envoie une notification à tous les abonnés de la publication
+                if ($publication->getStatus() == 2) {
+                    $followers = $ufRepo->findBy(["toUser" => $this->getUser()]);
+                    foreach ($followers as $follower) {
+                        $this->notificationSystem->addNotification(19, $follower->getFromUser(), $this->getUser(), $publication);
+                    }
                 }
             } else {
                 $return = 201;

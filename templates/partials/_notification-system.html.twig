@@ -268,4 +268,31 @@
 			</p>
 		</span>
 	{% endif %}
+	{# Nouvel abonné #}
+	{% if item.type == 18 %}
+		<i class="fa-regular fa-user-group"></i>
+		<span>
+			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+			vient de s'abonner à votre profil.
+			<p>il y a
+				{{item.createdAt|since}}
+			</p>
+		</span>
+	{% endif %}
+	{# Nouveau récit publié par l'un de vos abonnements #}
+	{% if item.type == 19 %}
+		<i class="fa-regular fa-book-user"></i>
+		<span>
+			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+			vient de publier un nouveau récit «
+			<a href="{{path("app_publication_show_one", {id:item.friendNewPub.id, slug:item.friendNewPub.slug})}}">
+				{{item.friendNewPub.title}}
+			</a>
+			»
+			<p>il y a
+				{{item.createdAt|since}}
+			</p>
+		</span>
+	{% endif %}
+
 </div>

@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use App\Repository\UserFollowRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
@@ -185,7 +186,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'fromUser', targetEntity: UserFollow::class)]
     private Collection $userFollows;
-
     public function __construct()
     {
         $this->publications = new ArrayCollection();
@@ -1257,5 +1257,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    public function isFollowing(User $toUser): bool
+    {
+        foreach ($this->userFollows as $userFollow) {
+            if ($userFollow->getToUser() === $toUser) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

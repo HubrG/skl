@@ -1,6 +1,45 @@
 import { NotyDisplay } from "../Noty";
 
 export function User() {
+  // ! AJout d'un utilisateur en ami
+  const followUser = document.getElementById("follow-user");
+  if (followUser) {
+    followUser.addEventListener("click", (event) => {
+      const url = "/follow/user";
+      const data = new FormData();
+      data.append("user", followUser.getAttribute("data-user-id"));
+      axios
+        .post(url, data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          if (response.data.code === 200) {
+            followUser.classList.remove("button-emerald");
+            followUser.classList.add("button-sky");
+            followUser.innerHTML = `	<i class="fa-regular fa-user-plus"></i>
+						Suivre`;
+            var notyText = response.data.message;
+            var notyTimeout = 3500;
+            var notyType = "info";
+            NotyDisplay(notyText, notyType, notyTimeout);
+          } else {
+            followUser.classList.add("button-emerald");
+            followUser.classList.remove("button-sky");
+            followUser.innerHTML = `<i class="fa-regular fa-user-group"></i>
+						Suivi(e) !`;
+            var notyText = response.data.message;
+            var notyTimeout = 3500;
+            var notyType = "success";
+            NotyDisplay(notyText, notyType, notyTimeout);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+  }
   // ! Modification des paramètres de notifications
   document.addEventListener("DOMContentLoaded", function () {
     const cityInput = document.querySelector(

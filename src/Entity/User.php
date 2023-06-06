@@ -183,6 +183,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ForumMessageLike::class)]
     private Collection $forumMessageLikes;
 
+    #[ORM\OneToMany(mappedBy: 'fromUser', targetEntity: UserFollow::class)]
+    private Collection $userFollows;
+
     public function __construct()
     {
         $this->publications = new ArrayCollection();
@@ -207,6 +210,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->inboxes = new ArrayCollection();
         $this->inboxGroupMembers = new ArrayCollection();
         $this->forumMessageLikes = new ArrayCollection();
+        $this->userFollows = new ArrayCollection();
     }
 
 
@@ -1223,5 +1227,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getTimestamp(): int
     {
         return $this->join_date->getTimestamp();
+    }
+
+    /**
+     * @return Collection<int, UserFollow>
+     */
+    public function getUserFollows(): Collection
+    {
+        return $this->userFollows;
+    }
+
+    public function addUserFollow(UserFollow $userFollow): self
+    {
+        if (!$this->userFollows->contains($userFollow)) {
+            $this->userFollows->add($userFollow);
+            $userFollow->setFromUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserFollow(UserFollow $userFollow): self
+    {
+        if ($this->userFollows->removeElement($userFollow)) {
+            // set the owning side to null (unless already changed)
+            if ($userFollow->getFromUser() === $this) {
+                $userFollow->setFromUser(null);
+            }
+        }
+
+        return $this;
     }
 }

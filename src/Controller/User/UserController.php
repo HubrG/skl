@@ -2,6 +2,8 @@
 
 namespace App\Controller\User;
 
+use DateTimeImmutable;
+use App\Entity\UserFollow;
 use App\Form\UserInfoType;
 use App\Form\UserAccountType;
 use App\Services\ImageService;
@@ -9,6 +11,7 @@ use App\Security\EmailVerifier;
 use App\Repository\UserRepository;
 use Symfony\Component\Mime\Address;
 use App\Form\UserChangePasswordType;
+use App\Repository\UserFollowRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
 use App\Form\UserChangePasswordGoogleType;
@@ -37,7 +40,7 @@ class UserController extends AbstractController
 		$this->emailVerifier = $emailVerifier;
 	}
 	#[Route('user/{username?}', requirements: ["username" => "[^/]+"], name: 'app_user')]
-	public function index(UserRepository $userRepo, PublicationRepository $pRepo, $username): Response
+	public function index(UserRepository $userRepo, UserFollowRepository $ufRepo,  PublicationRepository $pRepo, $username): Response
 	{
 		/// Conditions d'affichage
 		// Si le username n'est pas renseigné et que l'utilisateur est connecté, alors on affiche la page du membre connecté
@@ -56,6 +59,18 @@ class UserController extends AbstractController
 			return $this->redirectToRoute("app_home");
 		}
 
+		// On vérifie que l'utilisateur courant est ami ou non avec le membre dont on affiche la page
+		if ($this->getUser()) {
+			$user = $userRepo->find($this->getUser());
+			$follow = $ufRepo->findOneBy(['fromUser' => $user, 'toUser' => $userInfo]);
+			if ($follow) {
+				$follow = true;
+			} else {
+				$follow = false;
+			}
+		} else {
+			$follow = false;
+		}
 		$qb = $pRepo->createQueryBuilder("p")
 			->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
 			->where("p.status = 2")
@@ -64,7 +79,8 @@ class UserController extends AbstractController
 		$pubInfo = $qb->getQuery()->getResult();
 		return $this->render('user/user.html.twig', [
 			'userInfo' => $userInfo,
-			'pubInfo' => $pubInfo
+			'pubInfo' => $pubInfo,
+			'follow' => $follow
 		]);
 	}
 	#[Route('user/edit/{username}', name: 'app_user_edit')]
@@ -365,5 +381,35 @@ class UserController extends AbstractController
 
 		$this->addFlash('success', "&nbsp;&nbsp;Votre compte a bien été supprimé. N'hésitez pas à nous rejoindre à nouveau !");
 		return $this->redirectToRoute("app_logout");
+	}
+	#[Route('/follow/user', name: 'app_user_follow', methods: ['POST'])]
+	public function followUser(Request $request, UserFollowRepository $ufRepo, UserRepository $uRepo, EntityManagerInterface $em): Response
+	{
+		$userAdded = $request->get("user");
+		$userAdded = $uRepo->find($userAdded);
+		//
+		$user = $this->getUser();
+		$follow = $ufRepo->findOneBy(['fromUser' => $user, 'toUser' => $userAdded]);
+		if ($follow) {
+			$em->remove($follow);
+			$em->flush();
+			return $this->json([
+				'code' => 200,
+				'message' => 'Vous ne suivez plus ' . $userAdded->getNickname(),
+				'follow' => false
+			], 201);
+		} else {
+			$follow = new UserFollow();
+			$follow->setFromUser($user);
+			$follow->setToUser($userAdded);
+			$follow->setAddedAt(new DateTimeImmutable());
+			$em->persist($follow);
+			$em->flush();
+			return $this->json([
+				'code' => 201,
+				'message' => 'Vous suivez ' . $userAdded->getNickname(),
+				'follow' => true
+			], 200);
+		}
 	}
 }

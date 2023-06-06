@@ -38,16 +38,23 @@
 		</nav>
 		<div class="flex flex-col gap-y-10 mx-auto justify-center w-full">
 			<div class="flex flex-col gap-y-3">
-				<h1 class="text-3xl mb-0">{{topic.title}}</h1>
+				<h1 class="text-4xl mb-0">{{topic.title}}</h1>
 				<h6 class="flex flex-row items-center justify-between gap-x-3">
-					<div class="flex flex-row gap-x-2 items-center">
+					<div class="flex  w-full flex-col gap-x-2 items-start">
 						{% if topic.user.profilPicture %}
 							<img class="rounded-full h-6" src="{{topic.user.profilPicture }}"/>
 						{% endif %}
 						<a href="{{path("app_user", {username:topic.user.username})}}" class="hover:underline font-semibold dark:text-slate-300">{{topic.user.nickname}}</a>
-						<span class="text-slate-500 dark:text-slate-400 text-xs">
-							— il y a
-							{{topic.createdAt|since}}</span>
+						<div>
+							<span class="text-slate-500 dark:text-slate-400 text-xs">
+								il y a
+								{{topic.createdAt|since}}</span>
+							{% if topic.updatedAt %}
+								<span class="text-slate-500 dark:text-slate-400 text-xs">
+									— Mis à jour il y a
+									{{topic.updatedAt|since}}</span>
+							{% endif %}
+						</div>
 					</div>
 					{% if app.user and app.user.id == topic.user.id %}
 						<div class="text-slate-800 dark:text-slate-400">

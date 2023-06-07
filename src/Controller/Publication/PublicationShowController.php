@@ -198,7 +198,8 @@ class PublicationShowController extends AbstractController
 			} elseif ($publication->getUser() != $this->getUser()) {
 				// * si l'utilisateur est connecté mais n'est pas l'auteur
 				$access = $pacRepo->findOneBy(["user" => $this->getUser(), "publication" => $publication]);
-				if (!$access) {
+				// SI l'utilisateur n'a pas accès à la publication ET que l'utilisateur n'a pas le ROLE_ADMIN
+				if (!$access && !$this->isGranted('ROLE_ADMIN')) {
 					$this->addFlash('error', 'Vous n\'êtes pas autorisé(e) à lire ce récit ! Son auteur en a restreint l\'accès');
 					// On revient sur la page précédente s'il y en a une, sinon on redirige vers la page d'accueil
 					return $this->redirect($request->headers->get('referer') ?? $this->generateUrl('app_home'));

@@ -75,7 +75,7 @@ class ChapterShowController extends AbstractController
             } elseif ($publication->getUser() != $this->getUser()) {
                 // * si l'utilisateur est connecté mais n'est pas l'auteur
                 $access = $pacRepo->findOneBy(["user" => $this->getUser(), "publication" => $publication]);
-                if (!$access) {
+                if (!$access && !$this->isGranted('ROLE_ADMIN')) {
                     $this->addFlash('error', 'Vous n\'êtes pas autorisé(e) à lire ce récit ! Son auteur en a restreint l\'accès');
                     // On revient sur la page précédente s'il y en a une, sinon on redirige vers la page d'accueil
                     return $this->redirect($request->headers->get('referer') ?? $this->generateUrl('app_home'));
@@ -277,7 +277,7 @@ class ChapterShowController extends AbstractController
             } elseif ($publication->getUser() != $this->getUser()) {
                 // * si l'utilisateur est connecté mais n'est pas l'auteur
                 $access = $pacRepo->findOneBy(["user" => $this->getUser(), "publication" => $publication]);
-                if (!$access) {
+                if (!$access && !$this->isGranted('ROLE_ADMIN')) {
                     $this->addFlash('error', 'Vous n\'êtes pas autorisé(e) à lire ce récit ! Son auteur en a restreint l\'accès');
                     // On revient sur la page précédente s'il y en a une, sinon on redirige vers la page d'accueil
                     return $this->redirect($request->headers->get('referer') ?? $this->generateUrl('app_home'));

@@ -22,6 +22,7 @@ use App\Repository\NotificationRepository;
 use App\Repository\PublicationReadRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Repository\PublicationAccessRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
 use App\Repository\PublicationCommentRepository;
@@ -53,7 +54,7 @@ class ChapterShowController extends AbstractController
     }
 
     #[Route('/recit-{slugPub}/{user}/{idChap}/{slug?}/{nbrShowCom?}', name: 'app_chapter_show')]
-    public function showChapter(NotificationRepository $notifRepo, PublicationReadRepository $pReadRepo, Request $request, PublicationCommentRepository $pcomRepo, PublicationChapterRepository $pchRepo, EntityManagerInterface $em, PublicationRepository $pRepo, $slugPub = null, $slug = null, $idChap = null, $user = null, $nbrShowCom = null): response
+    public function showChapter(PublicationAccessRepository $pacRepo, NotificationRepository $notifRepo, PublicationReadRepository $pReadRepo, Request $request, PublicationCommentRepository $pcomRepo, PublicationChapterRepository $pchRepo, EntityManagerInterface $em, PublicationRepository $pRepo, $slugPub = null, $slug = null, $idChap = null, $user = null, $nbrShowCom = null): response
     {
         if (!$nbrShowCom) {
             $nbrShowCom = 50;
@@ -63,6 +64,24 @@ class ChapterShowController extends AbstractController
         }
         // * On recherche le chapitre
         $chapter = $pchRepo->find($idChap);
+        $publication = $chapter->getPublication();
+        // * On vérifie que l'utilisateur a le droit d'accéder à la page si la publication est privée et que l'utilisateur n'est pas l'auteur
+        if ($publication->isAccess()) {
+            if (!$this->getUser()) {
+                // * si l'utilisateur n'est pas connecté
+                $this->addFlash('error', 'Vous n\'êtes pas autorisé(e) à lire ce récit ! Son auteur en a restreint l\'accès');
+                // On revient sur la page précédente s'il y en a une, sinon on redirige vers la page d'accueil
+                return $this->redirect($request->headers->get('referer') ?? $this->generateUrl('app_home'));
+            } elseif ($publication->getUser() != $this->getUser()) {
+                // * si l'utilisateur est connecté mais n'est pas l'auteur
+                $access = $pacRepo->findOneBy(["user" => $this->getUser(), "publication" => $publication]);
+                if (!$access) {
+                    $this->addFlash('error', 'Vous n\'êtes pas autorisé(e) à lire ce récit ! Son auteur en a restreint l\'accès');
+                    // On revient sur la page précédente s'il y en a une, sinon on redirige vers la page d'accueil
+                    return $this->redirect($request->headers->get('referer') ?? $this->generateUrl('app_home'));
+                }
+            }
+        }
         // ! Test des conditions pour afficher le chapitre
         // * Si le chapitre existe, qu'il est publié, on récupère la publication
         if ($chapter && $chapter->getStatus() == 2) {
@@ -232,7 +251,7 @@ class ChapterShowController extends AbstractController
     }
 
     #[Route('/revision/recit-{slugPub}/{user}/{idChap}/{slug}', name: 'app_chapter_revision')]
-    public function showChapterRevision(PublicationAnnotationRepository $paRepo, PublicationReadRepository $pReadRepo, Request $request, PublicationCommentRepository $pcomRepo, PublicationChapterRepository $pchRepo, EntityManagerInterface $em, PublicationRepository $pRepo, $slugPub = null, $slug = null, $idChap = null, $user = null, $nbrShowCom = null): response
+    public function showChapterRevision(PublicationAccessRepository $pacRepo, PublicationAnnotationRepository $paRepo, PublicationReadRepository $pReadRepo, Request $request, PublicationCommentRepository $pcomRepo, PublicationChapterRepository $pchRepo, EntityManagerInterface $em, PublicationRepository $pRepo, $slugPub = null, $slug = null, $idChap = null, $user = null, $nbrShowCom = null): response
     {
         if (!$nbrShowCom) {
             $nbrShowCom = 10;
@@ -242,6 +261,29 @@ class ChapterShowController extends AbstractController
         }
         // * On recherche le chapitre
         $chapter = $pchRepo->find($idChap);
+        $publication = $chapter->getPublication();
+
+        if (!$publication->isAllowRevision()) {
+            $this->addFlash('error', 'Les révisions ne sont pas autorisées pour ce récit.');
+            return $this->redirectToRoute("app_chapter_show", ['slugPub' => $slugPub, 'user' => $user, 'idChap' => $idChap, 'slug' => $slug]);
+        }
+        // * On vérifie que l'utilisateur a le droit d'accéder à la page si la publication est privée et que l'utilisateur n'est pas l'auteur
+        if ($publication->isAccess()) {
+            if (!$this->getUser()) {
+                // * si l'utilisateur n'est pas connecté
+                $this->addFlash('error', 'Vous n\'êtes pas autorisé(e) à lire ce récit ! Son auteur en a restreint l\'accès');
+                // On revient sur la page précédente s'il y en a une, sinon on redirige vers la page d'accueil
+                return $this->redirect($request->headers->get('referer') ?? $this->generateUrl('app_home'));
+            } elseif ($publication->getUser() != $this->getUser()) {
+                // * si l'utilisateur est connecté mais n'est pas l'auteur
+                $access = $pacRepo->findOneBy(["user" => $this->getUser(), "publication" => $publication]);
+                if (!$access) {
+                    $this->addFlash('error', 'Vous n\'êtes pas autorisé(e) à lire ce récit ! Son auteur en a restreint l\'accès');
+                    // On revient sur la page précédente s'il y en a une, sinon on redirige vers la page d'accueil
+                    return $this->redirect($request->headers->get('referer') ?? $this->generateUrl('app_home'));
+                }
+            }
+        }
         // ! Test des conditions pour afficher le chapitre
         // * Si le chapitre existe, qu'il est publié, on récupère la publication
         if ($chapter && $chapter->getStatus() == 2) {

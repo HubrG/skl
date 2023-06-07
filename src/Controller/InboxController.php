@@ -39,7 +39,7 @@ class InboxController extends AbstractController
         return $this->redirectToRoute('app_inbox_create');
     }
     #[Route('/inbox/create', name: 'app_inbox_create')]
-    public function create(InboxRepository $inboxRepo, InboxGroupMemberRepository $igmRepo, InboxGroupRepository $inboxGRepo, Request $request, UserRepository $urepo, EntityManagerInterface $em): Response
+    public function create(InboxGroupMemberRepository $igmRepo, InboxGroupRepository $inboxGRepo, Request $request, UserRepository $urepo, EntityManagerInterface $em): Response
     {
 
         if (!$this->getUser()) {

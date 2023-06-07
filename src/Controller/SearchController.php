@@ -58,6 +58,7 @@ class SearchController extends AbstractController
                 ->leftJoin('p.publicationChapters', 'pc')
                 ->leftJoin('p.user', 'a')
                 ->where('p.status = 2')
+                ->andWhere("p.hideSearch = FALSE")
                 ->andWhere('pc.status = 2');
             if ($category) {
                 // Récupérer l'objet de catégorie par le slug

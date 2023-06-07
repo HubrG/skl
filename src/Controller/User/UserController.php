@@ -72,6 +72,7 @@ class UserController extends AbstractController
 		$qb = $pRepo->createQueryBuilder("p")
 			->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
 			->where("p.status = 2")
+			->andWhere("p.hideSearch = FALSE")
 			->andWhere("p.user = :user")
 			->setParameter("user", $userInfo);
 		$pubInfo = $qb->getQuery()->getResult();

@@ -69,13 +69,14 @@ class FeedContentComponent extends AbstractController
     }
     public function getPublications(): array
     {
-        return $this->pubRepo->findBy(["status" => 2], ["created" => "DESC"], 5);
+        return $this->pubRepo->findBy(["status" => 2, "hideSearch" => 0], ["created" => "DESC"], 5);
     }
     public function getPublicationChapters(): array
     {
         $qb = $this->pchRepo->createQueryBuilder('pc')
             ->join('pc.publication', 'p')
             ->where('p.status = 2')
+            ->andWhere("p.hideSearch = FALSE")
             ->andWhere('pc.status = 2')
             ->orderBy('pc.published', 'DESC')
             ->setMaxResults(5);
@@ -97,7 +98,10 @@ class FeedContentComponent extends AbstractController
         $qb = $this->pchvRepo->createQueryBuilder('p');
 
         $qb->select('p')
+            ->innerJoin('p.chapter', 'pc')
+            ->innerJoin('pc.publication', 'pub')
             ->where($qb->expr()->isNotNull('p.user'))
+            ->andWhere("pub.hideSearch = FALSE")
             ->orderBy('p.view_date', 'ASC'); // Fetch readings from oldest to newest
 
         $reads = $qb->getQuery()->getResult();
@@ -254,7 +258,9 @@ class FeedContentComponent extends AbstractController
     public function getCommentsFu($followedUserIds): array
     {
         $qb = $this->pcomRepo->createQueryBuilder('c');
-        $qb->where($qb->expr()->in('c.User', $followedUserIds))
+        $qb->innerJoin('c.publication', 'p')
+            ->where($qb->expr()->in('c.User', $followedUserIds))
+            ->andWhere("p.hideSearch = FALSE")
             ->orderBy('c.published_at', 'DESC')
             ->setMaxResults(5);
 
@@ -278,9 +284,14 @@ class FeedContentComponent extends AbstractController
         $qb = $this->pchvRepo->createQueryBuilder('p');
 
         $qb->select('p')
+            ->innerJoin('p.chapter', 'pc')
+            ->innerJoin('pc.publication', 'pub')
             ->where($qb->expr()->isNotNull('p.user'))
             ->andWhere($qb->expr()->in('p.user', $followedUserIds))
+            ->andWhere("pub.hideSearch = FALSE")
             ->orderBy('p.view_date', 'ASC'); // Fetch readings from oldest to newest
+
+
 
         $reads = $qb->getQuery()->getResult();
 
@@ -313,6 +324,7 @@ class FeedContentComponent extends AbstractController
         $qb
             ->join('pc.publication', 'p')
             ->where('p.status = 2')
+            ->andWhere("p.hideSearch = FALSE")
             ->andWhere('pc.status = 2')
             ->andWhere($qb->expr()->in('p.user', $followedUserIds))
             ->orderBy('pc.published', 'DESC')
@@ -341,6 +353,7 @@ class FeedContentComponent extends AbstractController
 
         $qb
             ->where('p.status = 2')
+            ->andWhere("p.hideSearch = FALSE")
             ->andWhere($qb->expr()->in('p.user', $followedUserIds))
             ->orderBy('p.created', 'DESC')
             ->setMaxResults(5);
@@ -365,15 +378,17 @@ class FeedContentComponent extends AbstractController
     {
         $qb = $this->paRepo->createQueryBuilder('a');
 
-        $qb->where('a.mode = 1')
+        $qb->innerJoin('a.chapter', 'pc')
+            ->innerJoin('pc.publication', 'p')
+            ->where('a.mode = 1')
             ->andWhere($qb->expr()->in('a.user', $followedUserIds))
+            ->andWhere("p.hideSearch = FALSE")
             ->orderBy('a.createdAt', 'DESC')
             ->setMaxResults(5);
 
         return $qb->getQuery()->getResult();
     }
 
-    // On laisse cette fonction tel quel puisque vous utilisez déjà un QueryBuilder
 
     public function getPublicationFollowsFu($followedUserIds): array
     {
@@ -414,9 +429,13 @@ class FeedContentComponent extends AbstractController
         $qb = $this->pchlRepo->createQueryBuilder('l');
 
 
-        $qb->where($qb->expr()->in('l.user', $followedUserIds))
+        $qb->innerJoin('l.chapter', 'pc')
+            ->innerJoin('pc.publication', 'p')
+            ->where($qb->expr()->in('l.user', $followedUserIds))
+            ->andWhere("p.hideSearch = FALSE")
             ->orderBy('l.CreatedAt', 'DESC')
             ->setMaxResults(5);
+
 
         return $qb->getQuery()->getResult();
     }

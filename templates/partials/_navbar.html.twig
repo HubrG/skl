@@ -113,15 +113,21 @@
 						</li>
 					</ul>
 					<div class="text-left">
-						{% if is_granted('ROLE_ADMIN') %}
-							<a href="{{ path("admin") }}" class="navbar-dropdown-item">
-								<i class="fa-duotone fa-screwdriver-wrench"></i>
-								&nbsp;Admin</a>
-						{% endif %}
-						<a href="{{ path("app_user_account") }}" class="navbar-dropdown-item">
-							<i class="fa-duotone fa-user-gear"></i>
-							Mon compte
-						</a>
+						<ul>
+							{% if is_granted('ROLE_ADMIN') %}
+								<li>
+									<a href="{{ path("admin") }}" class="navbar-dropdown-item">
+										<i class="fa-duotone fa-screwdriver-wrench"></i>
+										&nbsp;Admin</a>
+								</li>
+							{% endif %}
+							<li>
+								<a href="{{ path("app_user_account") }}" class="navbar-dropdown-item">
+									<i class="fa-duotone fa-user-gear"></i>
+									Mon compte
+								</a>
+							</li>
+						</ul>
 					</div>
 					<div class="text-left">
 						<a href="{{ path("app_logout")}}" class="navbar-dropdown-item rounded-b-lg">

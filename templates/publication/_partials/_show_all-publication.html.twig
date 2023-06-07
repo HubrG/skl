@@ -1,193 +1,195 @@
 {# Init code #}
-{% set current_path = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
-{% set user_in_url = 'user/' in current_path ? true : false %}
-{% set chap_content = "Aucun contenu" %}
-{% set title = item.title|length > 55 ? item.title|slice(0,56) ~ "..." : item.title %}
-{% if item.summary %}
-	{% set chap_content = item.summary %}
-{% else %}
-	{% set nbr = 0 %}
-	{% set lastChap = item.publicationChapters|sort((a, b) => a.orderDisplay <=> b.orderDisplay)|first %}
-	{% set chap_content = lastChap.content|regex_replace('/<p.*?>/i', ' ') %}
-	{% if chap_content|length < 10 %}
-		{% set chap_content = "Aucun contenu" %}
+{% if is_granted('VIEW', item) %}
+	{% set current_path = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+	{% set user_in_url = 'user/' in current_path ? true : false %}
+	{% set chap_content = "Aucun contenu" %}
+	{% set title = item.title|length > 55 ? item.title|slice(0,56) ~ "..." : item.title %}
+	{% if item.summary %}
+		{% set chap_content = item.summary %}
 	{% else %}
-		{% set chap_content = chap_content|striptags|slice(0,300) ~ "..." %}
-	{% endif %}
+		{% set nbr = 0 %}
+		{% set lastChap = item.publicationChapters|sort((a, b) => a.orderDisplay <=> b.orderDisplay)|first %}
+		{% set chap_content = lastChap.content|regex_replace('/<p.*?>/i', ' ') %}
+		{% if chap_content|length < 10 %}
+			{% set chap_content = "Aucun contenu" %}
+		{% else %}
+			{% set chap_content = chap_content|striptags|slice(0,300) ~ "..." %}
+		{% endif %}
 
 
-{% endif %}
-{% set cat_name = item.category ? item.category.name|length > 16 ? item.category.name|slice(0,16) ~ "..." : item.category.name %}
-{% set cat_color = item.category ? item.category.color : 10 %}
-{% set cat_slug = item.category ? item.category.slug : "all" %}
-{% if queryStortby is defined %}
-	{% set sortBy = queryStortby %}
-{% endif %}
-{# END #}
-<div class="card catColorBorder-{{cat_color}}">
-	<i class="summary-small fa-duotone fa-memo-circle-info catColorText-{{cat_color}}" data-tippy-content="{{chap_content}}"></i>
-	{% if item.cover  %}
-		{% set itemCover = item.cover|replace({'h_793,w_529': 'h_190,w_329,c_fill'}) %}
-		<div class="img-header-big flex-shrink-0">
-			<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" aria-label="Lire {{item.title}}, par {{item.user.nickname}}">
-				<div class="imageContainer h-36">
-					<div class="flex animate-pulse items-center z-50 justify-center w-full h-full bg-gray-300 rounded  dark:bg-gray-700">
-						<svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewbox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z"/></svg>
-					</div>
-					<img data-src="{{itemCover}}" src="/images/dot.png" class="-z-10 lozad myImage" alt="Couverture du récit {{item.title}}, écrit par {{item.user.nickname}}">
-				</div>
-			</a>
-		</div>
 	{% endif %}
-	<div class="{{item.cover ? "header-cover" }} header">
-		{% if item.cover %}
-			{% set itemCover = item.cover|replace({'h_793,w_529': 'h_75,w_53,c_fill'}) %}
-			<div class="img-div flex-shrink-0">
+	{% set cat_name = item.category ? item.category.name|length > 16 ? item.category.name|slice(0,16) ~ "..." : item.category.name %}
+	{% set cat_color = item.category ? item.category.color : 10 %}
+	{% set cat_slug = item.category ? item.category.slug : "all" %}
+	{% if queryStortby is defined %}
+		{% set sortBy = queryStortby %}
+	{% endif %}
+	{# END #}
+	<div class="card catColorBorder-{{cat_color}}">
+		<i class="summary-small fa-duotone fa-memo-circle-info catColorText-{{cat_color}}" data-tippy-content="{{chap_content}}"></i>
+		{% if item.cover  %}
+			{% set itemCover = item.cover|replace({'h_793,w_529': 'h_190,w_329,c_fill'}) %}
+			<div class="img-header-big flex-shrink-0">
 				<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" aria-label="Lire {{item.title}}, par {{item.user.nickname}}">
-					<div class="imageContainer">
-						<div class="flex opacity-50 animate-pulse items-center z-50 justify-center w-full  h-full bg-gray-300 rounded  dark:bg-gray-700">
+					<div class="imageContainer h-36">
+						<div class="flex animate-pulse items-center z-50 justify-center w-full h-full bg-gray-300 rounded  dark:bg-gray-700">
 							<svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewbox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z"/></svg>
 						</div>
-						<img data-src="{{itemCover}}" src="/images/dot.png" class="-z-10  lozad myImage text-[0px]" width="auto" height="auto" alt="Couverture du récit {{item.title}}, écrit par {{item.user.nickname}}"/>
+						<img data-src="{{itemCover}}" src="/images/dot.png" class="-z-10 lozad myImage" alt="Couverture du récit {{item.title}}, écrit par {{item.user.nickname}}">
 					</div>
 				</a>
 			</div>
 		{% endif %}
-		<div class="header-info">
-			<h2 class="font-semibold text-base md:text-xl leading-6 flex flex-row items-center gap-x-2  cursor-text">
-				<a {{ user_in_url ? "data-turbo-frame='_top'" }} href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" {% if title|length > 58 %} data-tippy-content="{{item.title}}" {% endif %} class="hover:underline" aria-label="Lire {{item.title}}, par {{item.user.nickname}}">
-					{{title}}
-				</a>
-			</h2>
-			<h3 class="mt-2">
-				<a {{ user_in_url ? "data-turbo-frame='_top'" }} href="{{path("app_user", {username:item.user.username})}}" class=" hover:underline text-sm font-semibold italic -mt-3 opacity-80 flex flex-row gap-x-2" aria-label="Voir le profil de {{item.user.nickname}}">
-					{{item.user.nickname}}
-				</a>
-			</h3>
+		<div class="{{item.cover ? "header-cover" }} header">
+			{% if item.cover %}
+				{% set itemCover = item.cover|replace({'h_793,w_529': 'h_75,w_53,c_fill'}) %}
+				<div class="img-div flex-shrink-0">
+					<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" aria-label="Lire {{item.title}}, par {{item.user.nickname}}">
+						<div class="imageContainer">
+							<div class="flex opacity-50 animate-pulse items-center z-50 justify-center w-full  h-full bg-gray-300 rounded  dark:bg-gray-700">
+								<svg class="w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewbox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z"/></svg>
+							</div>
+							<img data-src="{{itemCover}}" src="/images/dot.png" class="-z-10  lozad myImage text-[0px]" width="auto" height="auto" alt="Couverture du récit {{item.title}}, écrit par {{item.user.nickname}}"/>
+						</div>
+					</a>
+				</div>
+			{% endif %}
+			<div class="header-info">
+				<h2 class="font-semibold text-base md:text-xl leading-6 flex flex-row items-center gap-x-2  cursor-text">
+					<a {{ user_in_url ? "data-turbo-frame='_top'" }} href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" {% if title|length > 58 %} data-tippy-content="{{item.title}}" {% endif %} class="hover:underline" aria-label="Lire {{item.title}}, par {{item.user.nickname}}">
+						{{title}}
+					</a>
+				</h2>
+				<h3 class="mt-2">
+					<a {{ user_in_url ? "data-turbo-frame='_top'" }} href="{{path("app_user", {username:item.user.username})}}" class=" hover:underline text-sm font-semibold italic -mt-3 opacity-80 flex flex-row gap-x-2" aria-label="Voir le profil de {{item.user.nickname}}">
+						{{item.user.nickname}}
+					</a>
+				</h3>
+			</div>
 		</div>
-	</div>
-	<p class="summary text-sm cursor-text">
-		{{chap_content|striptags|raw|length > 300 ? chap_content|striptags|raw|slice(0,300) ~ "..." : chap_content|striptags|raw}}
-	</p>
-	{% if sortBy == "sheet" %}
-		<span class="px-2 my-1 dark:bg-slate-800 bg-slate-100 border-[1px] border-slate-300 dark:border-slate-700 rounded py-2 text-slate-500 text-xs  dark:text-slate-400 w-full flex flex-row justify-between items-center gap-x-1">
-			{% set filteredChapters = item.publicationChapters|filter(chapter => chapter.status == 2) %}
-			{% set sortedChapters = filteredChapters|sort((a, b) => b.orderDisplay <=> a.orderDisplay) %}
-			{% set lastChapter = sortedChapters|first %}
-			<span class="flex flex-row gap-x-2 items-center ">
-				<i class="fa-duotone fa-star-christmas catColorText-{{cat_color}}"></i>
-				<a {{ user_in_url ? " data-turbo-frame='_top'" }} href="{{ path("app_chapter_show", {idChap:lastChapter.id, user:item.user.username, slugPub:item.slug, slug:lastChapter.slug}) }}" class="hover:underline font-semibold">{{lastChapter.title}}</a>
+		<p class="summary text-sm cursor-text">
+			{{chap_content|striptags|raw|length > 300 ? chap_content|striptags|raw|slice(0,300) ~ "..." : chap_content|striptags|raw}}
+		</p>
+		{% if sortBy == "sheet" %}
+			<span class="px-2 my-1 dark:bg-slate-800 bg-slate-100 border-[1px] border-slate-300 dark:border-slate-700 rounded py-2 text-slate-500 text-xs  dark:text-slate-400 w-full flex flex-row justify-between items-center gap-x-1">
+				{% set filteredChapters = item.publicationChapters|filter(chapter => chapter.status == 2) %}
+				{% set sortedChapters = filteredChapters|sort((a, b) => b.orderDisplay <=> a.orderDisplay) %}
+				{% set lastChapter = sortedChapters|first %}
+				<span class="flex flex-row gap-x-2 items-center ">
+					<i class="fa-duotone fa-star-christmas catColorText-{{cat_color}}"></i>
+					<a {{ user_in_url ? " data-turbo-frame='_top'" }} href="{{ path("app_chapter_show", {idChap:lastChapter.id, user:item.user.username, slugPub:item.slug, slug:lastChapter.slug}) }}" class="hover:underline font-semibold">{{lastChapter.title}}</a>
+				</span>
+				<small class="text-slate-400 dark:text-slate-500">il y a
+					{{lastChapter.published|since}}
+				</small>
 			</span>
-			<small class="text-slate-400 dark:text-slate-500">il y a
-				{{lastChapter.published|since}}
-			</small>
-		</span>
-	{% endif %}
-
-	<div class="flex flex-row justify-between text-xs">
-		<span class=" text-slate-400  justify-start dark:text-slate-500 w-1/2">
-			Publié il y a
-			{{item.publishedDate|since}}
-		</span>
-
-		{% set chapterWithOrderDisplayZero = item.publicationChapters|filter(chapter => chapter.orderDisplay == 0)|first %}
-		{% set firstChap = chapterWithOrderDisplayZero ? chapterWithOrderDisplayZero : item.publicationChapters|first %}
-
-		{% set currentPublicationId = item.id %}
-		{% if app.user %}
-			{% set lastReadChapter = app.user.getLastReadChapterByPublication(currentPublicationId) %}
-		{% else %}
-			{% set lastReadChapter = null %}
 		{% endif %}
-		<span class="flex flex-row items-baseline justify-end gap-x-2 text-sm w-1/2 text-slate-500 dark:text-slate-500  ">
 
-			{% include "partials/little/_fullyRead.html.twig" with { id:item.id, class:"text-sm"} %}
-			<i class="{{item.mature ? "fa-duotone fa-lips text-rose-400 dark:text-rose-300" :"fa-regular fa-book-open-reader" }} " {% if item.mature %} data-tippy-content="Contenu sensible" {% endif %}></i>
+		<div class="flex flex-row justify-between text-xs">
+			<span class=" text-slate-400  justify-start dark:text-slate-500 w-1/2">
+				Publié il y a
+				{{item.publishedDate|since}}
+			</span>
 
-			<a {{ user_in_url ? "data-turbo-frame='_top'" }} {% if lastReadChapter %} href="{{ path("app_chapter_show", {idChap:lastReadChapter.id, user:item.user.username, slugPub:item.slug, slug:lastReadChapter.slug}) }}" {% else %} href="{{ path("app_chapter_show", {idChap:firstChap.id, user:item.user.username, slugPub:item.slug, slug:firstChap.slug}) }}" {% endif %} class="hover:underline font-semibold ">
-				{{lastReadChapter ? "Reprendre" : "Lire" }}
-			</a>
-		</span>
-	</div>
-	<div class="border-t dark:border-slate-700">
-		<ul class="flex flex-row mt-2 gap-x-2 md:text-xs text-xs w-full">
-			<li>
-				<a {{ user_in_url ? "data-turbo-frame='_top'" }} aria-label="Catégorie du récit" href="{{ path("app_publication_show_all_category", {slug:cat_slug, page:queryPage,sortby:sortBy, order:queryOrder, keystring:queryKeystring}) }}" {% if cat_name|length > 16 %} data-tippy-content="{{item.categegory.name}}" {% endif %} class="flex flex-row gap-x-1 items-center rounded">
-					<span class="flex w-3 h-3  rounded-full {% if item.category %}catColor-{{cat_color}}{% endif %}"></span>
-					<span class="text-slate-600 dark:text-slate-400 hover:underline">{{cat_name}}</span>
+			{% set chapterWithOrderDisplayZero = item.publicationChapters|filter(chapter => chapter.orderDisplay == 0)|first %}
+			{% set firstChap = chapterWithOrderDisplayZero ? chapterWithOrderDisplayZero : item.publicationChapters|first %}
+
+			{% set currentPublicationId = item.id %}
+			{% if app.user %}
+				{% set lastReadChapter = app.user.getLastReadChapterByPublication(currentPublicationId) %}
+			{% else %}
+				{% set lastReadChapter = null %}
+			{% endif %}
+			<span class="flex flex-row items-baseline justify-end gap-x-2 text-sm w-1/2 text-slate-500 dark:text-slate-500  ">
+
+				{% include "partials/little/_fullyRead.html.twig" with { id:item.id, class:"text-sm"} %}
+				<i class="{{item.mature ? "fa-duotone fa-lips text-rose-400 dark:text-rose-300" :"fa-regular fa-book-open-reader" }} " {% if item.mature %} data-tippy-content="Contenu sensible" {% endif %}></i>
+
+				<a {{ user_in_url ? "data-turbo-frame='_top'" }} {% if lastReadChapter %} href="{{ path("app_chapter_show", {idChap:lastReadChapter.id, user:item.user.username, slugPub:item.slug, slug:lastReadChapter.slug}) }}" {% else %} href="{{ path("app_chapter_show", {idChap:firstChap.id, user:item.user.username, slugPub:item.slug, slug:firstChap.slug}) }}" {% endif %} class="hover:underline font-semibold ">
+					{{lastReadChapter ? "Reprendre" : "Lire" }}
 				</a>
-			</li>
-			<ul class="flex flex-row flex-wrap w-full items-center text-[0.75rem] justify-end text-opacity-70 gap-x-2 text-slate-700 dark:text-slate-500">
-				<li class="flex flex-row gap-x-1 items-center">
-					{% set filteredChapters = item.publicationChapters|filter(chapter => chapter.status == 2) %}
-					<i class="fa-regular fa-files"></i>
-					<span>
-						{{filteredChapters|length}}
-					</span>
+			</span>
+		</div>
+		<div class="border-t dark:border-slate-700">
+			<ul class="flex flex-row mt-2 gap-x-2 md:text-xs text-xs w-full">
+				<li>
+					<a {{ user_in_url ? "data-turbo-frame='_top'" }} aria-label="Catégorie du récit" href="{{ path("app_publication_show_all_category", {slug:cat_slug, page:queryPage,sortby:sortBy, order:queryOrder, keystring:queryKeystring}) }}" {% if cat_name|length > 16 %} data-tippy-content="{{item.categegory.name}}" {% endif %} class="flex flex-row gap-x-1 items-center rounded">
+						<span class="flex w-3 h-3  rounded-full {% if item.category %}catColor-{{cat_color}}{% endif %}"></span>
+						<span class="text-slate-600 dark:text-slate-400 hover:underline">{{cat_name}}</span>
+					</a>
 				</li>
-				|
-				<li class="flex flex-row gap-x-1 items-center">
-					{% set totalViews = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterViews|length, 0) %}
-					<i class="fa-regular fa-eye"></i>
-					<span>
-						{{totalViews}}
-					</span>
-				</li>
-				|
-				<li class="flex flex-row gap-x-1 items-center">
-					{% set totalComments = item.publicationComments|length %}
-					<i class="fa-regular fa-comments"></i>
-					<span>
-						{{totalComments}}
-					</span>
-				</li>
-				{% if sortBy == "like" %}
-					|
+				<ul class="flex flex-row flex-wrap w-full items-center text-[0.75rem] justify-end text-opacity-70 gap-x-2 text-slate-700 dark:text-slate-500">
 					<li class="flex flex-row gap-x-1 items-center">
-						{% set totalLikes = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterLikes|length, 0) %}
-						<i class="fa-regular fa-thumbs-up"></i>
+						{% set filteredChapters = item.publicationChapters|filter(chapter => chapter.status == 2) %}
+						<i class="fa-regular fa-files"></i>
 						<span>
-							{{totalLikes}}
+							{{filteredChapters|length}}
 						</span>
 					</li>
-				{% endif %}
-				{% if sortBy == "comment" %}
 					|
 					<li class="flex flex-row gap-x-1 items-center">
-						{% set totalComments = item.publicationComments|reduce((accumulator, chapter) => accumulator + chapter.publicationComments|length, 0) %}
+						{% set totalViews = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterViews|length, 0) %}
+						<i class="fa-regular fa-eye"></i>
+						<span>
+							{{totalViews}}
+						</span>
+					</li>
+					|
+					<li class="flex flex-row gap-x-1 items-center">
+						{% set totalComments = item.publicationComments|length %}
 						<i class="fa-regular fa-comments"></i>
 						<span>
 							{{totalComments}}
 						</span>
 					</li>
-				{% endif %}
-				{% if sortBy == "time" %}
-					|
-					<li class="flex flex-row gap-x-1 items-center">
-						<i class="fa-regular fa-timer"></i>
-						<span>
-							{{ item.publicationChapters|chapter("rt", "ft") }}
-						</span>
-					</li>
-				{% endif %}
-				{% if sortBy == "pop" %}
-					{% set lastPopularity = item.PublicationPopularities|last.popularity|default(0) %}
-					{% if item.pop < lastPopularity %}
-						{% set pop_text = "Popularité en baisse" %}
-						{% set pop_icon_class = "fa-regular fa-circle-arrow-down text-rose-700 dark:text-rose-500 text-sm" %}
-					{% elseif item.pop == lastPopularity %}
-						{% set pop_text = "Popularité stagnante" %}
-						{% set pop_icon_class = "fa-regular fa-equals text-slate-700 dark:text-slate-400 text-sm" %}
-					{% else %}
-						{% set pop_text = "Popularité en hausse" %}
-						{% set pop_icon_class = "fa-regular fa-circle-arrow-up text-green-500 dark:text-green-500 text-sm" %}
+					{% if sortBy == "like" %}
+						|
+						<li class="flex flex-row gap-x-1 items-center">
+							{% set totalLikes = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterLikes|length, 0) %}
+							<i class="fa-regular fa-thumbs-up"></i>
+							<span>
+								{{totalLikes}}
+							</span>
+						</li>
 					{% endif %}
-					|
-					<li class="flex flex-row gap-x-1 items-center">
-						<i class="{{pop_icon_class}}" data-tippy-content="{{pop_text}}"></i>
-					</li>
-				{% endif %}
+					{% if sortBy == "comment" %}
+						|
+						<li class="flex flex-row gap-x-1 items-center">
+							{% set totalComments = item.publicationComments|reduce((accumulator, chapter) => accumulator + chapter.publicationComments|length, 0) %}
+							<i class="fa-regular fa-comments"></i>
+							<span>
+								{{totalComments}}
+							</span>
+						</li>
+					{% endif %}
+					{% if sortBy == "time" %}
+						|
+						<li class="flex flex-row gap-x-1 items-center">
+							<i class="fa-regular fa-timer"></i>
+							<span>
+								{{ item.publicationChapters|chapter("rt", "ft") }}
+							</span>
+						</li>
+					{% endif %}
+					{% if sortBy == "pop" %}
+						{% set lastPopularity = item.PublicationPopularities|last.popularity|default(0) %}
+						{% if item.pop < lastPopularity %}
+							{% set pop_text = "Popularité en baisse" %}
+							{% set pop_icon_class = "fa-regular fa-circle-arrow-down text-rose-700 dark:text-rose-500 text-sm" %}
+						{% elseif item.pop == lastPopularity %}
+							{% set pop_text = "Popularité stagnante" %}
+							{% set pop_icon_class = "fa-regular fa-equals text-slate-700 dark:text-slate-400 text-sm" %}
+						{% else %}
+							{% set pop_text = "Popularité en hausse" %}
+							{% set pop_icon_class = "fa-regular fa-circle-arrow-up text-green-500 dark:text-green-500 text-sm" %}
+						{% endif %}
+						|
+						<li class="flex flex-row gap-x-1 items-center">
+							<i class="{{pop_icon_class}}" data-tippy-content="{{pop_text}}"></i>
+						</li>
+					{% endif %}
+				</ul>
 			</ul>
-		</ul>
+		</div>
 	</div>
-</div>
+{% endif %}

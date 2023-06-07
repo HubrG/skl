@@ -16,6 +16,7 @@ use App\Repository\PublicationRepository;
 use App\Repository\NotificationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Repository\PublicationAccessRepository;
 use App\Repository\PublicationFollowRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
@@ -44,8 +45,10 @@ class PublicationShowController extends AbstractController
 	}
 
 	#[Route('/recits/{slug?}/{page<\d+>?}/{sortby?}/{order?}/{keystring?}', name: 'app_publication_show_all_category')]
-	public function show_all(SessionInterface $session, PublicationCategoryRepository $pcRepo, PublicationKeywordRepository $kwRepo, PublicationRepository $pRepo, $sortby = "p.pop", $page = 1, $slug = "all", $keystring = null, $order = "desc"): Response
+	public function show_all(PublicationCategoryRepository $pcRepo, PublicationKeywordRepository $kwRepo, PublicationRepository $pRepo, $sortby = "p.pop", $page = 1, $slug = "all", $keystring = null, $order = "desc"): Response
 	{
+
+
 		// * On set les variables si elles ne sont pas dans l'url
 		$nbr_by_page = 12;
 		$page = $page ?? 1;
@@ -66,12 +69,14 @@ class PublicationShowController extends AbstractController
 				->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
 				->innerJoin("p.category", "pc", "WITH", "pc.id = :category_id")
 				->where("p.status = 2")
+				->andWhere("p.hideSearch = FALSE")
 				->andWhere("pc.id = :category_id")
 				->setParameter("category_id", $pcRepo);
 		} else {
 			$qb = $pRepo->createQueryBuilder("p")
 				->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
-				->where("p.status = 2");
+				->where("p.status = 2")
+				->andWhere("p.hideSearch = FALSE");
 		}
 		try {
 			$count = count($qb->getQuery()->getResult());
@@ -113,6 +118,7 @@ class PublicationShowController extends AbstractController
 						->leftJoin('p.publicationChapters', 'pc')
 						->where('p IN (:publicationsAll)')
 						->andWhere('pc.status = 2')
+						->andWhere("p.hideSearch = FALSE")
 						->orderBy('pc.published', $order)
 						->setParameter('publicationsAll', $publicationsAll)
 						->groupBy('p.id')
@@ -177,11 +183,29 @@ class PublicationShowController extends AbstractController
 	}
 
 	#[Route('/recit/{id<\d+>}/{slug}/{nbrShowCom?}', name: 'app_publication_show_one')]
-	public function show_one(NotificationRepository $notifRepo, Request $request, PublicationCommentRepository $pcomRepo, EntityManagerInterface $em, PublicationRepository $pRepo, PublicationChapterRepository $pchRepo, $nbrShowCom = 10, $id = null, $slug = null): Response
+	public function show_one(PublicationAccessRepository $pacRepo, NotificationRepository $notifRepo, Request $request, PublicationCommentRepository $pcomRepo, EntityManagerInterface $em, PublicationRepository $pRepo, PublicationChapterRepository $pchRepo, $nbrShowCom = 10, $id = null, $slug = null): Response
 	{
 
 		$nbrShowCom = $nbrShowCom ?? 50;
 		$publication = $pRepo->find($id);
+		// * On vérifie que l'utilisateur a le droit d'accéder à la page si la publication est privée et que l'utilisateur n'est pas l'auteur
+		if ($publication->isAccess()) {
+			if (!$this->getUser()) {
+				// * si l'utilisateur n'est pas connecté
+				$this->addFlash('error', 'Vous n\'êtes pas autorisé(e) à lire ce récit ! Son auteur en a restreint l\'accès');
+				// On revient sur la page précédente s'il y en a une, sinon on redirige vers la page d'accueil
+				return $this->redirect($request->headers->get('referer') ?? $this->generateUrl('app_home'));
+			} elseif ($publication->getUser() != $this->getUser()) {
+				// * si l'utilisateur est connecté mais n'est pas l'auteur
+				$access = $pacRepo->findOneBy(["user" => $this->getUser(), "publication" => $publication]);
+				if (!$access) {
+					$this->addFlash('error', 'Vous n\'êtes pas autorisé(e) à lire ce récit ! Son auteur en a restreint l\'accès');
+					// On revient sur la page précédente s'il y en a une, sinon on redirige vers la page d'accueil
+					return $this->redirect($request->headers->get('referer') ?? $this->generateUrl('app_home'));
+				}
+			}
+		}
+		// On vérifie que l'utilisateur connecté
 		// * on récupère le premier chapitre de la publication par order_display (le plus petit et le premier) avec un querybuilder
 		$orderChap = $pchRepo->createQueryBuilder('pch')
 			->where('pch.publication = :publication')

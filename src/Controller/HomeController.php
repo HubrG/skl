@@ -36,6 +36,7 @@ class HomeController extends AbstractController
         $qb = $pRepo->createQueryBuilder("p")
             ->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
             ->where("p.status = 2")
+            ->andWhere("p.hideSearch = FALSE")
             ->orderBy("p.published_date", "DESC")
             ->groupBy('p.id')
             ->orderBy('MAX(p.published_date)', 'DESC')
@@ -47,6 +48,7 @@ class HomeController extends AbstractController
         $qb = $pRepo->createQueryBuilder("p")
             ->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
             ->where("p.status = 2")
+            ->andWhere("p.hideSearch = FALSE")
             ->groupBy('p.id')
             ->orderBy('MAX(p.pop)', 'DESC')
             ->setMaxResults(9);
@@ -57,6 +59,7 @@ class HomeController extends AbstractController
         $qb = $pRepo->createQueryBuilder('p')
             ->leftJoin('p.publicationChapters', 'pc')
             ->where('p.status = 2')
+            ->andWhere("p.hideSearch = FALSE")
             ->andWhere('pc.status = 2')
             ->groupBy('p.id')
             ->orderBy('MAX(pc.published)', 'DESC')
@@ -80,13 +83,6 @@ class HomeController extends AbstractController
 
             $unreadMessageCounts = 0;
         }
-        // * 
-        // * DERNIERS commentaires
-        $qb = $pcomRepo->createQueryBuilder("pcom")
-            ->orderBy("pcom.published_at", "DESC")
-            ->where("pcom.replyTo is NULL")
-            ->setMaxResults(5);
-        $comments_last = $qb->getQuery()->getResult();
         // !
         // * RENDER
         return $this->render('home/home.html.twig', [
@@ -97,7 +93,6 @@ class HomeController extends AbstractController
             'is_homepage' => true,
             'pub_updated' => $publications_updated,
             'topics_last' => $topics_last,
-            'comments_last' => $comments_last,
             'unreadMessageCounts' => $unreadMessageCounts
         ]);
     }

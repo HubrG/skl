@@ -37,6 +37,18 @@ export function AxiosSavePublication() {
         }
       });
     }
+    // ! Publication Access - Afficher la div d'accès si case cochée
+    if (document.getElementById("publication_access")) {
+      var accessDiv = document.getElementById("user-access-div");
+      var access = document.getElementById("publication_access");
+      access.addEventListener("change", () => {
+        if (access.checked) {
+          accessDiv.classList.remove("hidden");
+        } else {
+          accessDiv.classList.add("hidden");
+        }
+      });
+    }
     // ! Édition rapide du titre (à la volée)
     // On récupère tous les éléments avec la classe "fastChangeTitle"
     var fastChangeTitles = document.querySelectorAll(".fastChangeTitle");
@@ -204,6 +216,14 @@ function AxiosPublication() {
   }
   //!
   var mature = document.getElementById("publication_mature").checked;
+  var access = document.getElementById("publication_access").checked;
+  var showOldVersions = document.getElementById(
+    "publication_show_old_versions"
+  ).checked;
+  var hideSearch = document.getElementById("publication_hide_search").checked;
+  var allowRevision = document.getElementById(
+    "publication_allow_revision"
+  ).checked;
   var hideIdPub = document.getElementById("hideIdPub").value;
   // * Gestion de la photo (si changement de photo)
   var spinCover = document.getElementById("spinCover").classList;
@@ -238,6 +258,10 @@ function AxiosPublication() {
   data.append("title", title);
   data.append("summary", summary);
   data.append("finished", finished);
+  data.append("access", access);
+  data.append("allowRevision", allowRevision);
+  data.append("showOldVersions", showOldVersions);
+  data.append("hideSearch", hideSearch);
   data.append("category", category);
   data.append("mature", mature);
   data.append("sale", sale);

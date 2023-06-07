@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\Publication;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -48,6 +49,7 @@ class PublicationRepository extends ServiceEntityRepository
             ->andWhere('p.title LIKE :query')
             ->andWhere('p.status = 2')
             ->andWhere('pch.status = 2') // Et ici nous ajoutons le critère pour le statut du chapitre
+            ->andWhere("p.hideSearch = FALSE")
             ->setParameter('query', '%' . $query . '%')
             ->orderBy('p.title', 'ASC')
             ->getQuery()

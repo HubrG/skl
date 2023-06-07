@@ -107,6 +107,21 @@ class Publication
     #[ORM\OneToMany(mappedBy: 'friendNewPub', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $notificationsFriendNewPub;
 
+    #[ORM\Column]
+    private ?bool $access = null;
+
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationAccess::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $publicationAccesses;
+
+    #[ORM\Column]
+    private ?bool $hideSearch = null;
+
+    #[ORM\Column(options: ['default' => true])]
+    private ?bool $allowRevision = null;
+
+    #[ORM\Column(options: ['default' => true])]
+    private ?bool $showOldVersions = null;
+
 
 
 
@@ -124,6 +139,7 @@ class Publication
         $this->notifications = new ArrayCollection();
         $this->publicationReads = new ArrayCollection();
         $this->notificationsFriendNewPub = new ArrayCollection();
+        $this->publicationAccesses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -693,6 +709,84 @@ class Publication
                 $notificationsFriendNewPub->setFriendNewPub(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isAccess(): ?bool
+    {
+        return $this->access;
+    }
+
+    public function setAccess(bool $access): self
+    {
+        $this->access = $access;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationAccess>
+     */
+    public function getPublicationAccesses(): Collection
+    {
+        return $this->publicationAccesses;
+    }
+
+    public function addPublicationAccess(PublicationAccess $publicationAccess): self
+    {
+        if (!$this->publicationAccesses->contains($publicationAccess)) {
+            $this->publicationAccesses->add($publicationAccess);
+            $publicationAccess->setPublication($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationAccess(PublicationAccess $publicationAccess): self
+    {
+        if ($this->publicationAccesses->removeElement($publicationAccess)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationAccess->getPublication() === $this) {
+                $publicationAccess->setPublication(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isHideSearch(): ?bool
+    {
+        return $this->hideSearch;
+    }
+
+    public function setHideSearch(bool $hideSearch): self
+    {
+        $this->hideSearch = $hideSearch;
+
+        return $this;
+    }
+
+    public function isAllowRevision(): ?bool
+    {
+        return $this->allowRevision;
+    }
+
+    public function setAllowRevision(bool $allowRevision): self
+    {
+        $this->allowRevision = $allowRevision;
+
+        return $this;
+    }
+
+    public function isShowOldVersions(): ?bool
+    {
+        return $this->showOldVersions;
+    }
+
+    public function setShowOldVersions(bool $showOldVersions): self
+    {
+        $this->showOldVersions = $showOldVersions;
 
         return $this;
     }

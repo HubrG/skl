@@ -186,6 +186,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'fromUser', targetEntity: UserFollow::class)]
     private Collection $userFollows;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationAccess::class)]
+    private Collection $publicationAccesses;
     public function __construct()
     {
         $this->publications = new ArrayCollection();
@@ -211,6 +214,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->inboxGroupMembers = new ArrayCollection();
         $this->forumMessageLikes = new ArrayCollection();
         $this->userFollows = new ArrayCollection();
+        $this->publicationAccesses = new ArrayCollection();
     }
 
 
@@ -1268,5 +1272,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return false;
+    }
+
+    /**
+     * @return Collection<int, PublicationAccess>
+     */
+    public function getPublicationAccesses(): Collection
+    {
+        return $this->publicationAccesses;
+    }
+
+    public function addPublicationAccess(PublicationAccess $publicationAccess): self
+    {
+        if (!$this->publicationAccesses->contains($publicationAccess)) {
+            $this->publicationAccesses->add($publicationAccess);
+            $publicationAccess->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationAccess(PublicationAccess $publicationAccess): self
+    {
+        if ($this->publicationAccesses->removeElement($publicationAccess)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationAccess->getUser() === $this) {
+                $publicationAccess->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

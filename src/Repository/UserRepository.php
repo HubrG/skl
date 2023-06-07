@@ -69,6 +69,39 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getQuery()
             ->getResult();
     }
+    public function userAccessFindByQuery(string $query, int $idPub, int $ownerId): array
+    {
+        if (empty($query)) {
+            return [];
+        }
+
+        // Créer une sous-requête pour trouver les utilisateurs qui ont déjà accès à la publication spécifique
+        $subQuery = $this->getEntityManager()->createQueryBuilder();
+        $subQuery->select('IDENTITY(pa.user)')
+            ->from('App\Entity\PublicationAccess', 'pa')
+            ->where('pa.publication = :idPub');
+
+        // Créer la requête principale qui trouve les utilisateurs basés sur le nom d'utilisateur ou le surnom, 
+        // tout en excluant ceux qui ont déjà accès à la publication spécifique et le propriétaire de la publication
+        $mainQuery = $this->createQueryBuilder('u');
+        $mainQuery->where(
+            $mainQuery->expr()->orX(
+                $mainQuery->expr()->like('u.username', ':query'),
+                $mainQuery->expr()->like('u.nickname', ':query')
+            )
+        )
+            ->andWhere($mainQuery->expr()->not($mainQuery->expr()->in('u.id', $subQuery->getDQL())))
+            ->andWhere('u.id != :ownerId')
+            ->orderBy('u.username', 'ASC')
+            ->setMaxResults(5)
+            ->setParameter('query', '%' . $query . '%')
+            ->setParameter('idPub', $idPub)
+            ->setParameter('ownerId', $ownerId);
+
+        return $mainQuery->getQuery()->getResult();
+    }
+
+
 
     //    /**
     //     * @return User[] Returns an array of User objects

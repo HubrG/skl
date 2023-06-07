@@ -370,9 +370,11 @@ class UserController extends AbstractController
 		}
 		if ($varDeleteType == "mark") {
 			$pa = $paRepo->find($varId);
-			$em->remove($pa);
-			$em->flush();
-			$this->addFlash('success', 'Ce surlignage a bien supprimé de votre collection');
+			if ($pa->getMode() == 0) {
+				$em->remove($pa);
+				$em->flush();
+				$this->addFlash('success', 'Ce surlignage a bien supprimé de votre collection');
+			}
 		}
 		if ($varDeleteType == "bmChap") {
 			$pbm = $pbmRepo->find($varId);

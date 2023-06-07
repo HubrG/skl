@@ -136,9 +136,10 @@
 				<ul class="flex flex-row w-full justify-between md:w-5/6 gap-x-2">
 					{% set n = 0 %}
 					{% for item in app.user.publicationAnnotations %}
-						{% if item.color == 1 %}
+						{% if item.color == 1 and item.mode == 0 and item.contentPlain %}
 							<li class="flex-col flex" id="mark-{{item.id}}">
-								<p class="text-slate-700 dark:text-slate-400 italic">{{item.contentPlain}}
+								<p class="text-slate-700 dark:text-slate-400 italic">
+									{{item.contentPlain}}
 									...</p>
 								<span class="text-slate-600 dark:text-slate-300">
 									<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug, "version":item.version.id|url_encode}) }}">
@@ -148,7 +149,7 @@
 								</span>
 								<span class="pl-5 flex flex-row gap-x-2 items-center text-slate-500 dark:text-slate-400">
 									<i class="fa-regular fa-book text-xs"></i>
-									<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug}) }}">
+									<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug, "version":item.version.id|url_encode}) }}">
 										<span class=" text-xs">{{ item.chapter.publication.title }}</span>
 									</a>
 								</span>
@@ -183,19 +184,19 @@
 				<ul class="flex-col flex gap-y-5">
 					{% set n = 0 %}
 					{% for item in app.user.publicationAnnotations %}
-						{% if item.color == 2 %}
+						{% if item.color == 2 and item.mode == 0 and item.contentPlain %}
 							<li class="flex-col flex" id="mark-{{item.id}}">
 								<p class="text-slate-700 dark:text-slate-400 italic">{{item.contentPlain}}
 									...</p>
 								<span class="text-slate-600 dark:text-slate-300">
-									<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug}) }}">
+									<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug, "version":item.version.id|url_encode}) }}">
 										<i class="fa-light fa-arrow-turn-down-right"></i>
 										&nbsp;<span class=" text-sm">{{ item.chapter.title }}</span>
 									</a>
 								</span>
 								<span class="pl-5 flex flex-row gap-x-2 items-center text-slate-500 dark:text-slate-400">
 									<i class="fa-regular fa-book text-xs"></i>
-									<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug}) }}">
+									<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug, "version":item.version.id|url_encode}) }}">
 										<span class=" text-xs">{{ item.chapter.publication.title }}</span>
 									</a>
 								</span>
@@ -231,12 +232,12 @@
 				<ul class="flex-col flex gap-y-5">
 
 					{% for item in app.user.publicationAnnotations %}
-						{% if item.color == 3 %}
+						{% if item.color == 3 and item.mode == 0 and item.contentPlain %}
 							<li class="flex-col flex" id="mark-{{item.id}}">
 								<p class="text-slate-700 dark:text-slate-400 italic">{{item.contentPlain}}
 									...</p>
 								<span class="text-slate-600 dark:text-slate-300">
-									<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug}) }}">
+									<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug, "version":item.version.id|url_encode}) }}">
 										<i class="fa-light fa-arrow-turn-down-right"></i>
 										&nbsp;<span class=" text-sm">{{ item.chapter.title }}</span>
 									</a>

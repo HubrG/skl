@@ -7,231 +7,267 @@
 
 {% block body %}
 	{% include 'user/_partials/_top.html.twig' %}
-	<div class=" gap-x-5 gap-y-5 w-full grid grid-cols-1 md:grid-cols-3 pt-10">
-		<ul class="w-full">
-			<li>
-				<h1 class="text-2xl font-medium flex-row-custom-gapx-3 justify-center md:justify-start mb-5">
-					<i class="fa-duotone fa-bookmark"></i>
-					<span>Mes récits favoris</span>
-				</h1>
-			</li>
-			<ul class="flex-col flex gap-y-5">
-				{% set n = 0 %}
-				{% for item in app.user.publicationBookmarks %}
-					{% if item.publication %}
-						{% if item.publication.publicationChapters|length > 0 %}
-							<ul>
-								<a target="_top" class="text-md hover:underline text-slate-800 dark:text-slate-300" href="{{ path('app_publication_show_one', {'id': item.publication.id, 'slug': item.publication.slug}) }}">{{ item.publication.title }}</a>
-								{% for chapter in item.publication.publicationChapters %}
-									{% for bookchapter in chapter.publicationBookmarks %}
-										{% if bookchapter.chapter %}
-											<li class="text-slate-500 dark:text-slate-400">
-												<i class="fa-light fa-arrow-turn-down-right"></i>
-												<a class="text-xs hover:underline" target="_top" href="{{ path('app_chapter_show', {'idChap': bookchapter.chapter.id, 'slugPub': bookchapter.chapter.publication.slug, 'user': bookchapter.chapter.publication.user.username}) }}" class="hover:underline">{{ bookchapter.chapter.title }}</a>
-											</li>
-										{% endif %}
+	<turbo-frame id="collection-frame">
+		<div class=" gap-x-5 gap-y-5 w-full grid grid-cols-1 md:grid-cols-3 pt-10">
+			<ul class="w-full">
+				<li>
+					<h1 class="text-2xl font-medium flex-row-custom-gapx-3 justify-center md:justify-start mb-5">
+						<i class="fa-duotone fa-bookmark"></i>
+						<span>Mes récits favoris</span>
+					</h1>
+				</li>
+				<ul class="flex-col flex gap-y-5">
+					{% set n = 0 %}
+					{% for item in app.user.publicationBookmarks %}
+						{% if item.publication %}
+							{% if item.publication.publicationChapters|length > 0 %}
+								<ul class="flex flex-row w-full justify-between md:w-5/6 gap-x-2" id="favPub-{{item.id}}">
+									<a target="_top" class="text-md hover:underline text-slate-800 dark:text-slate-300" href="{{ path('app_publication_show_one', {'id': item.publication.id, 'slug': item.publication.slug}) }}">{{ item.publication.title }}</a>
+									<a href="{{path("app_user_collection", {delete:"favPub",id:item.id})}}" class="self-center hover:underline text-[0.75rem] opacity-50 " onclick="document.getElementById('favPub-{{item.id}}').classList.add('animate__animated', 'animate__zoomOut')">
+										<i class="fa-regular fa-trash hover:text-red-600 dark:text-slate-300 dark:hover:text-red-500" data-tippy-content="Supprimer"></i>
+									</a>
+									{% for chapter in item.publication.publicationChapters %}
+										{% for bookchapter in chapter.publicationBookmarks %}
+											{% if bookchapter.chapter %}
+												<li class="text-slate-500 dark:text-slate-400">
+													<i class="fa-light fa-arrow-turn-down-right"></i>
+													<a class="text-xs hover:underline" target="_top" href="{{ path('app_chapter_show', {'idChap': bookchapter.chapter.id, 'slugPub': bookchapter.chapter.publication.slug, 'user': bookchapter.chapter.publication.user.username}) }}" class="hover:underline">{{ bookchapter.chapter.title }}</a>
+												</li>
+											{% endif %}
+										{% endfor %}
+										{% set n = n + 1 %}
 									{% endfor %}
-									{% set n = n + 1 %}
-								{% endfor %}
-							</ul>
+								</ul>
+							{% endif %}
 						{% endif %}
-					{% endif %}
-				{% endfor %}
-				{% if n == 0 %}
-					<li class="text-center md:text-left dark:text-slate-500">
-						Aucun récit
-					</li>
-				{% endif %}
-			</ul>
-		</ul>
-		<hr class="mb-5 block md:hidden">
-		<ul class="w-full">
-			<li>
-				<h1 class="text-2xl font-medium flex-row-custom-gapx-3  justify-center md:justify-start  mb-5">
-					<i class="fa-duotone fa-folder-bookmark"></i>
-					<span>Mes marque-pages</span>
-				</h1>
-			</li>
-			<ul class="flex-col flex gap-y-5">
-				{% set n = 0 %}
-				{% for item in app.user.publicationBookmarks %}
-					{% if item.chapter %}
-						<li class="flex-col flex">
-							<a target="_top" class="text-md hover:underline text-slate-800 dark:text-slate-300" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'slugPub': item.chapter.publication.slug, 'user': item.chapter.publication.user.username}) }}">{{ item.chapter.title }}</a>
-							<span class="text-slate-500 dark:text-slate-400">
-								<i class="fa-light fa-arrow-turn-down-right"></i>
-								<a target="_top" class="-mt-2  hover:underline" href="{{ path('app_publication_show_one', {'id': item.chapter.publication.id, 'slug': item.chapter.publication.slug}) }}">
-									<span class=" text-xs">{{ item.chapter.publication.title }}</span>
-								</a>
-							</span>
+					{% endfor %}
+					{% if n == 0 %}
+						<li class="text-center md:text-left dark:text-slate-500">
+							Aucun récit
 						</li>
-						{% set n = n + 1 %}
 					{% endif %}
-				{% endfor %}
-
-				{% if n == 0 %}
-					<li class="text-center md:text-left dark:text-slate-500">
-						Aucune page
-					</li>
-				{% endif %}
+				</ul>
 			</ul>
-		</ul>
-		<hr class="mb-5 block md:hidden">
-
-		<ul class="w-full">
-			<li>
-				<h1 class="text-2xl font-medium flex-row-custom-gapx-3  justify-center md:justify-start  mb-5">
-					<i class="fa-duotone fa-thumbs-up"></i>
-					<span>Les feuilles que j'aime</span>
-				</h1>
-			</li>
-			<ul class="flex-col flex gap-y-5">
-				{% set n = 0 %}
-				{% for item in app.user.publicationChapterLikes %}
-					{% if item.chapter %}
-						<li class="flex-col flex">
-							<a target="_top" class="text-md hover:underline text-slate-800 dark:text-slate-300" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'slugPub': item.chapter.publication.slug, 'user': item.chapter.publication.user.username}) }}">{{ item.chapter.title }}</a>
-							<span class="text-slate-500 dark:text-slate-400">
-								<i class="fa-light fa-arrow-turn-down-right"></i>
-								<a target="_top" class="hover:underline" href="{{ path('app_publication_show_one', {'id': item.chapter.publication.id, 'slug': item.chapter.publication.slug}) }}">
-									<span class=" text-xs">{{ item.chapter.publication.title }}</span>
-								</a>
-							</span>
-						</li>
-						{% set n = n + 1 %}
-					{% endif %}
-				{% endfor %}
-				{% if n == 0 %}
-					<li class="text-center md:text-left dark:text-slate-500">
-						Aucune feuille
-					</li>
-				{% endif %}
-			</ul>
-		</ul>
-	</div>
-	<hr class="mb-0 mt-10 border-4 md:border-2">
-	<div class="gap-x-5 gap-y-5 w-full grid grid-cols-1 md:grid-cols-3 pt-10">
-		<ul class="w-full">
-			<li>
-				<h1 class="text-2xl font-medium flex-row-custom-gapx-3 justify-center md:justify-start  mb-5">
-					<i class="fa-solid fa-bookmark text-emerald-200"></i>
-				</h1>
-			</li>
-			<ul class="flex-col flex gap-y-5">
-				{% set n = 0 %}
-				{% for item in app.user.publicationAnnotations %}
-					{% if item.color == 1 %}
-						<li class="flex-col flex">
-							<p class="text-slate-700 dark:text-slate-400 italic">{{item.contentPlain}}
-								...</p>
-							<span class="text-slate-600 dark:text-slate-300">
-								<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug, "version":item.version.id|url_encode}) }}">
+			<hr class="mb-5 block md:hidden">
+			<ul class="w-full md:w-5/6">
+				<li>
+					<h1 class="text-2xl font-medium flex-row-custom-gapx-3  justify-center md:justify-start  mb-5">
+						<i class="fa-duotone fa-folder-bookmark"></i>
+						<span>Mes marque-pages</span>
+					</h1>
+				</li>
+				<ul class="flex-col flex gap-y-5">
+					{% set n = 0 %}
+					{% for item in app.user.publicationBookmarks %}
+						{% if item.chapter %}
+							<li class="flex-col flex" id="bmChap-{{item.id}}">
+								<div class="flex flex-row justify-between">
+									<a target="_top" class="text-md hover:underline text-slate-800 dark:text-slate-300" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'slugPub': item.chapter.publication.slug, 'user': item.chapter.publication.user.username}) }}">{{ item.chapter.title }}</a>
+									<a href="{{path("app_user_collection", {delete:"bmChap",id:item.id})}}" class="self-center hover:underline text-[0.75rem] opacity-50 " onclick="document.getElementById('bmChap-{{item.id}}').classList.add('animate__animated', 'animate__zoomOut')">
+										<i class="fa-regular fa-trash hover:text-red-600 dark:text-slate-300 dark:hover:text-red-500" data-tippy-content="Supprimer"></i>
+									</a>
+								</div>
+								<span class="text-slate-500 dark:text-slate-400">
 									<i class="fa-light fa-arrow-turn-down-right"></i>
-									&nbsp;<span class=" text-sm">{{ item.chapter.title }}</span>
-								</a>
-							</span>
-							<span class="pl-5 flex flex-row gap-x-2 items-center text-slate-500 dark:text-slate-400">
-								<i class="fa-regular fa-book text-xs"></i>
-								<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug}) }}">
-									<span class=" text-xs">{{ item.chapter.publication.title }}</span>
-								</a>
-							</span>
-							<hr class="mb-0 mt-5">
-						</li>
-						{% set n = n + 1 %}
-					{% endif %}
-				{% endfor %}
-				{% if n == 0 %}
-					<li class="flex-col flex">
-						<p class="text-slate-700 dark:text-slate-400 text-center">
-							Aucun surlignage pour le moment.
-						</p>
-					</li>
-				{% endif %}
-			</ul>
-		</ul>
-		<hr class="mb-5 block md:hidden">
+									<a target="_top" class="-mt-2  hover:underline" href="{{ path('app_publication_show_one', {'id': item.chapter.publication.id, 'slug': item.chapter.publication.slug}) }}">
+										<span class=" text-xs">{{ item.chapter.publication.title }}</span>
+									</a>
+								</span>
 
-		<ul class="w-full">
-			<li>
-				<h1 class="text-2xl font-medium flex-row-custom-gapx-3 justify-center md:justify-start  mb-5">
-					<i class="fa-solid fa-bookmark text-yellow-200"></i>
-				</h1>
-			</li>
-			<ul class="flex-col flex gap-y-5">
-				{% set n = 0 %}
-				{% for item in app.user.publicationAnnotations %}
-					{% if item.color == 2 %}
-						<li class="flex-col flex">
-							<p class="text-slate-700 dark:text-slate-400 italic">{{item.contentPlain}}
-								...</p>
-							<span class="text-slate-600 dark:text-slate-300">
-								<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug}) }}">
+							</li>
+							{% set n = n + 1 %}
+						{% endif %}
+					{% endfor %}
+
+					{% if n == 0 %}
+						<li class="text-center md:text-left dark:text-slate-500">
+							Aucune page
+						</li>
+					{% endif %}
+				</ul>
+			</ul>
+			<hr class="mb-5 block md:hidden">
+
+			<ul class="w-full md:w-5/6">
+				<li>
+					<h1 class="text-2xl font-medium flex-row-custom-gapx-3  justify-center md:justify-start  mb-5">
+						<i class="fa-duotone fa-thumbs-up"></i>
+						<span>Les feuilles que j'aime</span>
+					</h1>
+				</li>
+				<ul class="flex-col flex gap-y-5">
+					{% set n = 0 %}
+					{% for item in app.user.publicationChapterLikes %}
+						{% if item.chapter %}
+							<li class="flex-col flex" id="likeChap-{{item.id}}">
+								<div class="flex flex-row justify-between">
+									<a target="_top" class="text-md hover:underline text-slate-800 dark:text-slate-300" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'slugPub': item.chapter.publication.slug, 'user': item.chapter.publication.user.username}) }}">{{ item.chapter.title }}</a>
+									<a href="{{path("app_user_collection", {delete:"likeChap",id:item.id})}}" class="self-center hover:underline text-[0.75rem] opacity-50 " onclick="document.getElementById('likeChap-{{item.id}}').classList.add('animate__animated', 'animate__zoomOut')">
+										<i class="fa-regular fa-trash hover:text-red-600 dark:text-slate-300 dark:hover:text-red-500" data-tippy-content="Supprimer"></i>
+									</a>
+								</div>
+								<span class="text-slate-500 dark:text-slate-400">
 									<i class="fa-light fa-arrow-turn-down-right"></i>
-									&nbsp;<span class=" text-sm">{{ item.chapter.title }}</span>
-								</a>
-							</span>
-							<span class="pl-5 flex flex-row gap-x-2 items-center text-slate-500 dark:text-slate-400">
-								<i class="fa-regular fa-book text-xs"></i>
-								<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug}) }}">
-									<span class=" text-xs">{{ item.chapter.publication.title }}</span>
-								</a>
-							</span>
-							<hr class="mb-0 mt-5">
+									<a target="_top" class="hover:underline" href="{{ path('app_publication_show_one', {'id': item.chapter.publication.id, 'slug': item.chapter.publication.slug}) }}">
+										<span class=" text-xs">{{ item.chapter.publication.title }}</span>
+									</a>
+								</span>
+
+							</li>
+							{% set n = n + 1 %}
+						{% endif %}
+					{% endfor %}
+					{% if n == 0 %}
+						<li class="text-center md:text-left dark:text-slate-500">
+							Aucune feuille
 						</li>
-						{% set n = n + 1 %}
 					{% endif %}
-				{% endfor %}
-				{% if n == 0 %}
-					<li class="flex-col flex">
-						<p class="text-slate-700 dark:text-slate-400 text-center">
-							Aucun surlignage pour le moment.
-						</p>
-					</li>
-				{% endif %}
+				</ul>
 			</ul>
-		</ul>
-		<hr class="mb-5 block md:hidden">
-
-		<ul class="w-full">
-			<li>
-				<h1 class="text-2xl font-medium flex-row-custom-gapx-3  justify-center md:justify-start  mb-5">
-					<i class="fa-solid fa-bookmark text-red-200"></i>
-				</h1>
-			</li>
-			<ul class="flex-col flex gap-y-5">
-
-				{% for item in app.user.publicationAnnotations %}
-					{% if item.color == 3 %}
+		</div>
+		<hr class="mb-0 mt-10 border-4 md:border-2">
+		<div class="gap-x-5 gap-y-5 w-full grid grid-cols-1 md:grid-cols-3 pt-10">
+			<ul class="w-full">
+				<li>
+					<h1 class="text-2xl font-medium flex-row-custom-gapx-3 justify-center md:justify-start  mb-5">
+						<i class="fa-solid fa-bookmark text-emerald-200"></i>
+					</h1>
+				</li>
+				<ul class="flex flex-row w-full justify-between md:w-5/6 gap-x-2">
+					{% set n = 0 %}
+					{% for item in app.user.publicationAnnotations %}
+						{% if item.color == 1 %}
+							<li class="flex-col flex" id="mark-{{item.id}}">
+								<p class="text-slate-700 dark:text-slate-400 italic">{{item.contentPlain}}
+									...</p>
+								<span class="text-slate-600 dark:text-slate-300">
+									<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug, "version":item.version.id|url_encode}) }}">
+										<i class="fa-light fa-arrow-turn-down-right"></i>
+										&nbsp;<span class=" text-sm">{{ item.chapter.title }}</span>
+									</a>
+								</span>
+								<span class="pl-5 flex flex-row gap-x-2 items-center text-slate-500 dark:text-slate-400">
+									<i class="fa-regular fa-book text-xs"></i>
+									<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug}) }}">
+										<span class=" text-xs">{{ item.chapter.publication.title }}</span>
+									</a>
+								</span>
+								<div class="w-full flex justify-end" onclick="document.getElementById('mark-{{item.id}}').classList.add('animate__animated', 'animate__zoomOut')">
+									<a href="{{path("app_user_collection", {delete:"mark",id:item.id})}}" class="self-center hover:underline text-[0.75rem] opacity-50 ">
+										<i class="fa-regular fa-trash hover:text-red-600 dark:text-slate-300 dark:hover:text-red-500" data-tippy-content="Supprimer"></i>
+										supprimer
+									</a>
+								</div>
+								<hr class="mb-0 mt-5">
+							</li>
+							{% set n = n + 1 %}
+						{% endif %}
+					{% endfor %}
+					{% if n == 0 %}
 						<li class="flex-col flex">
-							<p class="text-slate-700 dark:text-slate-400 italic">{{item.contentPlain}}
-								...</p>
-							<span class="text-slate-600 dark:text-slate-300">
-								<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug}) }}">
-									<i class="fa-light fa-arrow-turn-down-right"></i>
-									&nbsp;<span class=" text-sm">{{ item.chapter.title }}</span>
-								</a>
-							</span>
-							<span class="pl-5 flex flex-row gap-x-2 items-center text-slate-500 dark:text-slate-400">
-								<i class="fa-regular fa-book text-xs"></i>
-								<a target="_top" class="hover:underline" href="{{ path('app_publication_show_one', {'id':item.chapter.publication.id, 'slug': item.chapter.publication.slug}) }}">
-									<span class=" text-xs">{{ item.chapter.publication.title }}</span>
-								</a>
-							</span>
-							<hr class="mb-0 mt-5">
+							<p class="text-slate-700 dark:text-slate-400 text-center">
+								Aucun surlignage pour le moment.
+							</p>
 						</li>
-						{% set n = n + 1 %}
 					{% endif %}
-				{% endfor %}
-				{% if n == 0 %}
-					<li class="flex-col flex">
-						<p class="text-slate-700 dark:text-slate-400 text-center">
-							Aucun surlignage pour le moment.
-						</p>
-					</li>
-				{% endif %}
+				</ul>
 			</ul>
-		</ul>
-	</div>
+			<hr class="mb-5 block md:hidden">
+
+			<ul class="w-full">
+				<li>
+					<h1 class="text-2xl font-medium flex-row-custom-gapx-3 justify-center md:justify-start  mb-5">
+						<i class="fa-solid fa-bookmark text-yellow-200"></i>
+					</h1>
+				</li>
+				<ul class="flex-col flex gap-y-5">
+					{% set n = 0 %}
+					{% for item in app.user.publicationAnnotations %}
+						{% if item.color == 2 %}
+							<li class="flex-col flex" id="mark-{{item.id}}">
+								<p class="text-slate-700 dark:text-slate-400 italic">{{item.contentPlain}}
+									...</p>
+								<span class="text-slate-600 dark:text-slate-300">
+									<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug}) }}">
+										<i class="fa-light fa-arrow-turn-down-right"></i>
+										&nbsp;<span class=" text-sm">{{ item.chapter.title }}</span>
+									</a>
+								</span>
+								<span class="pl-5 flex flex-row gap-x-2 items-center text-slate-500 dark:text-slate-400">
+									<i class="fa-regular fa-book text-xs"></i>
+									<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug}) }}">
+										<span class=" text-xs">{{ item.chapter.publication.title }}</span>
+									</a>
+								</span>
+								<div class="w-full flex justify-end" onclick="document.getElementById('mark-{{item.id}}').classList.add('animate__animated', 'animate__zoomOut')">
+									<a href="{{path("app_user_collection", {delete:"mark",id:item.id})}}" class="self-center hover:underline text-[0.75rem] opacity-50 ">
+										<i class="fa-regular fa-trash hover:text-red-600 dark:text-slate-300 dark:hover:text-red-500" data-tippy-content="Supprimer"></i>
+										supprimer
+									</a>
+								</div>
+
+								<hr class="mb-0 mt-5">
+							</li>
+							{% set n = n + 1 %}
+						{% endif %}
+					{% endfor %}
+					{% if n == 0 %}
+						<li class="flex-col flex">
+							<p class="text-slate-700 dark:text-slate-400 text-center">
+								Aucun surlignage pour le moment.
+							</p>
+						</li>
+					{% endif %}
+				</ul>
+			</ul>
+			<hr class="mb-5 block md:hidden">
+
+			<ul class="w-full">
+				<li>
+					<h1 class="text-2xl font-medium flex-row-custom-gapx-3  justify-center md:justify-start  mb-5">
+						<i class="fa-solid fa-bookmark text-red-200"></i>
+					</h1>
+				</li>
+				<ul class="flex-col flex gap-y-5">
+
+					{% for item in app.user.publicationAnnotations %}
+						{% if item.color == 3 %}
+							<li class="flex-col flex" id="mark-{{item.id}}">
+								<p class="text-slate-700 dark:text-slate-400 italic">{{item.contentPlain}}
+									...</p>
+								<span class="text-slate-600 dark:text-slate-300">
+									<a target="_top" class="hover:underline" href="{{ path('app_chapter_show', {'idChap': item.chapter.id, 'user':item.chapter.publication.user.username, 'slugPub':item.chapter.publication.slug, 'slug': item.chapter.publication.slug}) }}">
+										<i class="fa-light fa-arrow-turn-down-right"></i>
+										&nbsp;<span class=" text-sm">{{ item.chapter.title }}</span>
+									</a>
+								</span>
+								<span class="pl-5 flex flex-row gap-x-2 items-center text-slate-500 dark:text-slate-400">
+									<i class="fa-regular fa-book text-xs"></i>
+									<a target="_top" class="hover:underline" href="{{ path('app_publication_show_one', {'id':item.chapter.publication.id, 'slug': item.chapter.publication.slug}) }}">
+										<span class=" text-xs">{{ item.chapter.publication.title }}</span>
+									</a>
+								</span>
+								<div class="w-full flex justify-end" onclick="document.getElementById('mark-{{item.id}}').classList.add('animate__animated', 'animate__zoomOut')">
+									<a href="{{path("app_user_collection", {delete:"mark",id:item.id})}}" class="self-center hover:underline text-[0.75rem] opacity-50 ">
+										<i class="fa-regular fa-trash hover:text-red-600 dark:text-slate-300 dark:hover:text-red-500" data-tippy-content="Supprimer"></i>
+										supprimer
+									</a>
+								</div>
+								<hr class="mb-0 mt-5">
+							</li>
+							{% set n = n + 1 %}
+						{% endif %}
+					{% endfor %}
+					{% if n == 0 %}
+						<li class="flex-col flex">
+							<p class="text-slate-700 dark:text-slate-400 text-center">
+								Aucun surlignage pour le moment.
+							</p>
+						</li>
+					{% endif %}
+				</ul>
+			</ul>
+		</div>
+	</turbo-frame>
 	{% include 'user/_partials/_bottom.html.twig' %}
 {% endblock %}

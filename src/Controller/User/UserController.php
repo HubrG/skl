@@ -21,7 +21,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationCommentRepository;
+use App\Repository\PublicationBookmarkRepository;
 use App\Repository\ResetPasswordRequestRepository;
+use App\Repository\PublicationAnnotationRepository;
+use App\Repository\PublicationChapterLikeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -349,10 +352,39 @@ class UserController extends AbstractController
 		]);
 	}
 	#[Route('/collection', name: 'app_user_collection')]
-	public function collection(): Response
+	public function collection(Request $request, PublicationChapterLikeRepository $pclRepo, PublicationAnnotationRepository $paRepo, PublicationBookmarkRepository $pbmRepo, EntityManagerInterface $em): Response
 	{
+
+
 		if (!$this->getUser()) {
 			return $this->redirectToRoute("app_home");
+		}
+
+		$varDeleteType = $request->query->get('delete');
+		$varId = $request->query->get('id');
+		if ($varDeleteType == "favPub") {
+			$pbm = $pbmRepo->find($varId);
+			$em->remove($pbm);
+			$em->flush();
+			$this->addFlash('success', 'Le récit a bien été supprimée de votre collection');
+		}
+		if ($varDeleteType == "mark") {
+			$pa = $paRepo->find($varId);
+			$em->remove($pa);
+			$em->flush();
+			$this->addFlash('success', 'Ce surlignage a bien supprimé de votre collection');
+		}
+		if ($varDeleteType == "bmChap") {
+			$pbm = $pbmRepo->find($varId);
+			$em->remove($pbm);
+			$em->flush();
+			$this->addFlash('success', 'Le chapitre n\'est plus marqué');
+		}
+		if ($varDeleteType == "likeChap") {
+			$pbm = $pclRepo->find($varId);
+			$em->remove($pbm);
+			$em->flush();
+			$this->addFlash('success', 'Le chapitre a été retiré de vos « J\'aime » ');
 		}
 
 		return $this->render('user/my_collection.html.twig', [

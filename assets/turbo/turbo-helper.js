@@ -156,6 +156,7 @@ const TurboHelper = class {
       DropdownMenu();
       Inbox();
       ForumTopicRead();
+
       // commentaires
       Comment();
       CommentReply();

@@ -114,120 +114,121 @@ class UserController extends AbstractController
 		]);
 	}
 	#[Route('user/publications/show/{sort?}/{order?}/{username?}', name: 'app_user_show_publications')]
-	public function showpublication(Request $request, PublicationRepository $pubRepo, UserRepository $user, EntityManagerInterface $em, $sort = null, $order = null, $username = null): Response
+	public function showpublication(Request $request, PublicationRepository $pubRepo, UserRepository $userRepo, EntityManagerInterface $em, $sort = null, $order = null, $username = null): Response
 	{
 		if (!$this->getUser()) {
 			return $this->redirectToRoute("app_home");
 		}
 		if ($username == null) {
-			$user = $user->findOneBy(["id" => $this->getUser()]);
-			$user = $user->getId();
+			$user = $userRepo->findOneBy(["id" => $this->getUser()]);
 		} elseif ($username != null && $this->isGranted("ROLE_ADMIN")) {
-			$user = $user->findOneBy(["username" => $username]);
-			$user = $user->getId();
+			$user = $userRepo->findOneBy(["username" => $username]);
 		} else {
-			$user = $user->findOneBy(["id" => $this->getUser()]);
-			$user = $user->getId();
+			$user = $userRepo->findOneBy(["id" => $this->getUser()]);
 		}
 
-		//
 		$order = $order ?? "desc";
 		$sort = $sort ?? "created";
-		//
+
+		$statusMin = null;
+		if ($sort == 'pop' || $sort == 'views' || $sort == 'comments' || $sort == 'likes' || $sort == 'downloads' || $sort == 'category') {
+			$statusMin = 1;
+		}
+
+		$qb = $this->creerConstructeurDeRequetePourUtilisateur($pubRepo, $user, $statusMin);
+
 		if ($sort == "published_date" or $sort == "status" or $sort == "created" or $sort == "title") {
-			$publications = $pubRepo
-				->createQueryBuilder("p")
-				->where("p.status > 0 and p.user = " . $user)
-				->groupBy("p.id")
+			$publications = $qb
 				->orderBy("p." . $sort, $order)
 				->addOrderBy("p.published_date", "desc")
 				->getQuery()->getResult();
-		} elseif ($sort == "pop") {
-			$publications = $pubRepo
-				->createQueryBuilder("p")
-				->where("p.status > 1 and p.user = " . $user)
-				->groupBy("p.id")
-				->orderBy("p." . $sort, $order)
-				->addOrderBy("p.published_date", "desc")
-				->getQuery()->getResult();
-		} elseif ($sort == "views") {
-			$publications = $pubRepo
-				->createQueryBuilder("p")
+		} elseif ($sort == "views" ||  $sort == "likes") {
+			$relation = "publicationChapterViews";
+			if ($sort == "comments") {
+				$relation = "publicationComments";
+			} elseif ($sort == "likes") {
+				$relation = "publicationChapterLikes";
+			}
+			$publications = $qb
 				->leftJoin("p.publicationChapters", "pc")
-				->leftJoin("pc.publicationChapterViews", "pcadd")
+				->leftJoin("pc." . $relation, "pcadd")
 				->addSelect("COUNT(pcadd.id) AS HIDDEN add")
-				->where("p.status > 1 and p.user = " . $user)
-				->groupBy("p.id")
-				->orderBy("add", $order)
-				->getQuery()
-				->getResult();
-		} elseif ($sort == "comments") {
-			$publications = $pubRepo
-				->createQueryBuilder("p")
-				->leftJoin("p.publicationChapters", "pc")
-				->leftJoin("pc.publicationComments", "pcadd")
-				->addSelect("COUNT(pcadd.id) AS HIDDEN add")
-				->where("p.status > 1 and p.user = " . $user)
-				->groupBy("p.id")
-				->orderBy("add", $order)
-				->getQuery()
-				->getResult();
-		} elseif ($sort == "likes") {
-			$publications = $pubRepo
-				->createQueryBuilder("p")
-				->leftJoin("p.publicationChapters", "pc")
-				->leftJoin("pc.publicationChapterLikes", "pcadd")
-				->addSelect("COUNT(pcadd.id) AS HIDDEN add")
-				->where("p.status > 1 and p.user = " . $user)
-				->groupBy("p.id")
 				->orderBy("add", $order)
 				->getQuery()
 				->getResult();
 		} elseif ($sort == "downloads") {
-			$publications = $pubRepo
-				->createQueryBuilder("p")
+			$publications = $qb
 				->leftJoin("p.publicationDownloads", "pc")
 				->addSelect("COUNT(pc.id) AS HIDDEN add")
-				->where("p.status > 1 and p.user = " . $user)
-				->groupBy("p.id")
 				->orderBy("add", $order)
 				->getQuery()
 				->getResult();
-		} elseif ($sort == "category") {
-			$publications = $pubRepo
-				->createQueryBuilder("p")
-				->where("p.status > 1 and p.user = " . $user)
+		} elseif ($sort == "comments") {
+			$publications = $qb
+				->leftJoin("p.publicationComments", "pc")
+				->addSelect("SUM(CASE WHEN pc.publication = p.id THEN 1 ELSE 0 END) AS HIDDEN add")
+				->orderBy("add", $order)
+				->getQuery()
+				->getResult();
+		} elseif ($sort == "pop") {
+			$publications = $qb
+				->leftJoin("p.publicationPopularities", "pp")
+				->addSelect("SUM(pp.popularity) AS HIDDEN popp")
+				->orderBy("p.pop", $order)
 				->groupBy("p.id")
+				->getQuery()
+				->getResult();
+		} elseif ($sort == "category") {
+			$publications = $qb
 				->orderBy("p.category", $order)
 				->getQuery()
 				->getResult();
 		} elseif ($sort == "chapters") {
-			$publications = $pubRepo
-				->createQueryBuilder("p")
+			$publications = $qb
 				->leftJoin("p.publicationChapters", "pc")
-				->addSelect("COUNT(pc.id) AS HIDDEN add")
-				->where("p.status > 1 and p.user = " . $user)
-				->groupBy("p.id")
+				->addSelect("SUM(CASE WHEN pc.status = 2 THEN 1 ELSE 0 END) AS HIDDEN add")
 				->orderBy("add", $order)
 				->getQuery()
 				->getResult();
 		}
-		if ($sort != "published_date" && $sort != "status" && $sort != "created" && $sort != "title") {
-			$publicationsOffline = $pubRepo
+
+		if ($sort != "published_date" && $sort != "status" && $sort != "created" && $sort != "title" and $sort != "chapters") {
+			$qb2 = $pubRepo
 				->createQueryBuilder("p")
-				->where("p.status = 1 and p.user = " . $user)
-				->groupBy("p.id")
+				->where("p.status = 1 and p.user = :user")
+				->setParameter('user', $user->getId())
 				->orderBy("p.created", "asc")
-				->addOrderBy("p.published_date", "desc")
-				->getQuery()->getResult();
+				->addOrderBy("p.published_date", "desc");
+
+			$publicationsOffline = $qb2->getQuery()->getResult();
 			$publications = array_merge($publications, $publicationsOffline);
 		}
+
 
 		return $this->render('user/show_publication.html.twig', [
 			'publication' => $publications,
 			'userInfo' => $this->getUser()
 		]);
 	}
+
+	private function creerConstructeurDeRequetePourUtilisateur(PublicationRepository $pubRepo, $user, $statusMin)
+	{
+		$qb = $pubRepo
+			->createQueryBuilder("p")
+			->where("p.user = :user")
+			->setParameter('user', $user->getId())
+			->groupBy("p.id");
+
+		if ($statusMin !== null) {
+			$qb->andWhere("p.status > :statusMin")
+				->setParameter('statusMin', $statusMin);
+		}
+
+		return $qb;
+	}
+
+
+
 	#[Route('update/user/update_picture', name: 'app_user_update_picture')]
 	public function update_picture(Request $request, UserRepository $userRepo): Response
 	{

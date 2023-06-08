@@ -209,12 +209,11 @@
 										{% set lastPopularity = item.PublicationPopularities[nbr].popularity %}
 									{% endif %}
 									{% if item.pop < lastPopularity %}
-
-										<i class="fa-regular fa-circle-down text-red-700"></i>
+										<i class="fa-regular fa-circle-down text-red-700" data-tippy-content="{{item.pop}}"></i>
 									{% elseif item.pop == lastPopularity %}
-										<i class="fa-solid fa-equals"></i>
+										<i class="fa-solid fa-equals" data-tippy-content="{{item.pop}}"></i>
 									{% else %}
-										<i class="fa-regular fa-circle-up text-green-700"></i>
+										<i class="fa-regular fa-circle-up text-green-700" data-tippy-content="{{item.pop}}"></i>
 									{% endif %}
 								</td>
 							</tr>

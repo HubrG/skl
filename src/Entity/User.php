@@ -189,6 +189,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationAccess::class)]
     private Collection $publicationAccesses;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Challenge::class)]
+    private Collection $challenges;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationSupport::class)]
+    private Collection $publicationSupports;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ChallengeMessage::class)]
+    private Collection $challengeMessages;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ChallengeMessageLike::class)]
+    private Collection $challengeMessageLikes;
     public function __construct()
     {
         $this->publications = new ArrayCollection();
@@ -215,6 +227,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->forumMessageLikes = new ArrayCollection();
         $this->userFollows = new ArrayCollection();
         $this->publicationAccesses = new ArrayCollection();
+        $this->challenges = new ArrayCollection();
+        $this->publicationSupports = new ArrayCollection();
+        $this->challengeMessages = new ArrayCollection();
+        $this->challengeMessageLikes = new ArrayCollection();
     }
 
 
@@ -1298,6 +1314,126 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($publicationAccess->getUser() === $this) {
                 $publicationAccess->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Challenge>
+     */
+    public function getChallenges(): Collection
+    {
+        return $this->challenges;
+    }
+
+    public function addChallenge(Challenge $challenge): self
+    {
+        if (!$this->challenges->contains($challenge)) {
+            $this->challenges->add($challenge);
+            $challenge->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChallenge(Challenge $challenge): self
+    {
+        if ($this->challenges->removeElement($challenge)) {
+            // set the owning side to null (unless already changed)
+            if ($challenge->getUser() === $this) {
+                $challenge->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationSupport>
+     */
+    public function getPublicationSupports(): Collection
+    {
+        return $this->publicationSupports;
+    }
+
+    public function addPublicationSupport(PublicationSupport $publicationSupport): self
+    {
+        if (!$this->publicationSupports->contains($publicationSupport)) {
+            $this->publicationSupports->add($publicationSupport);
+            $publicationSupport->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationSupport(PublicationSupport $publicationSupport): self
+    {
+        if ($this->publicationSupports->removeElement($publicationSupport)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationSupport->getUser() === $this) {
+                $publicationSupport->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ChallengeMessage>
+     */
+    public function getChallengeMessages(): Collection
+    {
+        return $this->challengeMessages;
+    }
+
+    public function addChallengeMessage(ChallengeMessage $challengeMessage): self
+    {
+        if (!$this->challengeMessages->contains($challengeMessage)) {
+            $this->challengeMessages->add($challengeMessage);
+            $challengeMessage->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChallengeMessage(ChallengeMessage $challengeMessage): self
+    {
+        if ($this->challengeMessages->removeElement($challengeMessage)) {
+            // set the owning side to null (unless already changed)
+            if ($challengeMessage->getUser() === $this) {
+                $challengeMessage->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ChallengeMessageLike>
+     */
+    public function getChallengeMessageLikes(): Collection
+    {
+        return $this->challengeMessageLikes;
+    }
+
+    public function addChallengeMessageLike(ChallengeMessageLike $challengeMessageLike): self
+    {
+        if (!$this->challengeMessageLikes->contains($challengeMessageLike)) {
+            $this->challengeMessageLikes->add($challengeMessageLike);
+            $challengeMessageLike->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChallengeMessageLike(ChallengeMessageLike $challengeMessageLike): self
+    {
+        if ($this->challengeMessageLikes->removeElement($challengeMessageLike)) {
+            // set the owning side to null (unless already changed)
+            if ($challengeMessageLike->getUser() === $this) {
+                $challengeMessageLike->setUser(null);
             }
         }
 

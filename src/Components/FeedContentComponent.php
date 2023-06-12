@@ -52,24 +52,24 @@ class FeedContentComponent extends AbstractController
     }
     public function getComments(): array
     {
-        return $this->pcomRepo->findBy([], ["published_at" => "DESC"], 5);
+        return $this->pcomRepo->findBy([], ["published_at" => "DESC"], 10);
     }
     // public function getLikes(): array
     // {
     //     // On recherche les likes des commentaire des publications
-    //     return $this->pclRepo->findBy([], ["createdAt" => "DESC"], 5);
+    //     return $this->pclRepo->findBy([], ["createdAt" => "DESC"], 10);
     // }
     public function getForumMessages(): array
     {
-        return $this->fmsgRepo->findBy(["replyTo" => null], ["published_at" => "DESC"], 5);
+        return $this->fmsgRepo->findBy(["replyTo" => null], ["published_at" => "DESC"], 10);
     }
     public function getForumTopics(): array
     {
-        return $this->ftRepo->findBy([], ["createdAt" => "DESC"], 5);
+        return $this->ftRepo->findBy([], ["createdAt" => "DESC"], 10);
     }
     public function getPublications(): array
     {
-        return $this->pubRepo->findBy(["status" => 2, "hideSearch" => 0], ["created" => "DESC"], 5);
+        return $this->pubRepo->findBy(["status" => 2, "hideSearch" => 0], ["created" => "DESC"], 10);
     }
     public function getPublicationChapters(): array
     {
@@ -79,7 +79,7 @@ class FeedContentComponent extends AbstractController
             ->andWhere("p.hideSearch = FALSE")
             ->andWhere('pc.status = 2')
             ->orderBy('pc.published', 'DESC')
-            ->setMaxResults(5);
+            ->setMaxResults(10);
 
         $chapters = $qb->getQuery()->getResult();
 
@@ -87,11 +87,11 @@ class FeedContentComponent extends AbstractController
     }
     public function getPublicationBookmarks(): array
     {
-        return $this->pbmRepo->findBy([], ["createdAt" => "DESC"], 5);
+        return $this->pbmRepo->findBy([], ["createdAt" => "DESC"], 10);
     }
     public function getPublicationAnnotations(): array
     {
-        return $this->paRepo->findBy(["mode" => 1], ["createdAt" => "DESC"], 5);
+        return $this->paRepo->findBy(["mode" => 1], ["createdAt" => "DESC"], 10);
     }
     public function getPublicationReads(): array
     {
@@ -124,8 +124,8 @@ class FeedContentComponent extends AbstractController
             return $b->getViewDate() <=> $a->getViewDate();
         });
 
-        // Take the 5 most recent readings based on view date
-        $uniqueReads = array_slice($uniqueReads, 0, 5);
+        // Take the 10 most recent readings based on view date
+        $uniqueReads = array_slice($uniqueReads, 0, 10);
 
         return $uniqueReads;
     }
@@ -134,23 +134,23 @@ class FeedContentComponent extends AbstractController
 
     public function getPublicationFollows(): array
     {
-        return $this->pfRepo->findBy([], ["CreatedAt" => "DESC"], 5);
+        return $this->pfRepo->findBy([], ["CreatedAt" => "DESC"], 10);
     }
     public function getPublicationPopularities(): array
     {
-        return $this->ppRepo->findBy([], ["createdAt" => "DESC"], 5);
+        return $this->ppRepo->findBy([], ["createdAt" => "DESC"], 10);
     }
     public function getUsers(): array
     {
-        return $this->userRepo->findBy([], ["join_date" => "DESC"], 5);
+        return $this->userRepo->findBy([], ["join_date" => "DESC"], 10);
     }
     public function getPublicationDownloads(): array
     {
-        return $this->pdRepo->findBy([], ["dlAt" => "DESC"], 5);
+        return $this->pdRepo->findBy([], ["dlAt" => "DESC"], 10);
     }
     public function getPublicationChapterLikes(): array
     {
-        return $this->pchlRepo->findBy([], ["CreatedAt" => "DESC"], 5);
+        return $this->pchlRepo->findBy([], ["CreatedAt" => "DESC"], 10);
     }
     public function getAllEntities(): array
     {
@@ -181,7 +181,7 @@ class FeedContentComponent extends AbstractController
             return $b->getTimestamp() <=> $a->getTimestamp();
         });
 
-        // Limit the total number of results to 5
+        // Limit the total number of results to 10
 
 
         return $entities;
@@ -252,7 +252,7 @@ class FeedContentComponent extends AbstractController
             return $b->getTimestamp() <=> $a->getTimestamp();
         });
 
-        // Limit the total number of results to 5
+        // Limit the total number of results to 10
         return $entities;
     }
     public function getCommentsFu($followedUserIds): array
@@ -262,7 +262,7 @@ class FeedContentComponent extends AbstractController
             ->where($qb->expr()->in('c.User', $followedUserIds))
             ->andWhere("p.hideSearch = FALSE")
             ->orderBy('c.published_at', 'DESC')
-            ->setMaxResults(5);
+            ->setMaxResults(10);
 
         return $qb->getQuery()->getResult();
     }
@@ -274,7 +274,7 @@ class FeedContentComponent extends AbstractController
             ->where('f.replyTo is null')
             ->andWhere($qb->expr()->in('f.user', $followedUserIds))
             ->orderBy('f.published_at', 'DESC')
-            ->setMaxResults(5);
+            ->setMaxResults(10);
 
         return $qb->getQuery()->getResult();
     }
@@ -313,8 +313,8 @@ class FeedContentComponent extends AbstractController
             return $b->getViewDate() <=> $a->getViewDate();
         });
 
-        // Take the 5 most recent readings based on view date
-        $uniqueReads = array_slice($uniqueReads, 0, 5);
+        // Take the 10 most recent readings based on view date
+        $uniqueReads = array_slice($uniqueReads, 0, 10);
 
         return $uniqueReads;
     }
@@ -328,7 +328,7 @@ class FeedContentComponent extends AbstractController
             ->andWhere('pc.status = 2')
             ->andWhere($qb->expr()->in('p.user', $followedUserIds))
             ->orderBy('pc.published', 'DESC')
-            ->setMaxResults(5);
+            ->setMaxResults(10);
 
         $chapters = $qb->getQuery()->getResult();
 
@@ -341,7 +341,7 @@ class FeedContentComponent extends AbstractController
 
         $qb->where($qb->expr()->in('t.user', $followedUserIds))
             ->orderBy('t.createdAt', 'DESC')
-            ->setMaxResults(5);
+            ->setMaxResults(10);
 
         return $qb->getQuery()->getResult();
     }
@@ -356,7 +356,7 @@ class FeedContentComponent extends AbstractController
             ->andWhere("p.hideSearch = FALSE")
             ->andWhere($qb->expr()->in('p.user', $followedUserIds))
             ->orderBy('p.created', 'DESC')
-            ->setMaxResults(5);
+            ->setMaxResults(10);
 
         return $qb->getQuery()->getResult();
     }
@@ -369,7 +369,7 @@ class FeedContentComponent extends AbstractController
 
         $qb->where($qb->expr()->in('b.user', $followedUserIds))
             ->orderBy('b.createdAt', 'DESC')
-            ->setMaxResults(5);
+            ->setMaxResults(10);
 
         return $qb->getQuery()->getResult();
     }
@@ -384,7 +384,7 @@ class FeedContentComponent extends AbstractController
             ->andWhere($qb->expr()->in('a.user', $followedUserIds))
             ->andWhere("p.hideSearch = FALSE")
             ->orderBy('a.createdAt', 'DESC')
-            ->setMaxResults(5);
+            ->setMaxResults(10);
 
         return $qb->getQuery()->getResult();
     }
@@ -395,7 +395,7 @@ class FeedContentComponent extends AbstractController
         $qb = $this->pfRepo->createQueryBuilder('f');
         $qb->where($qb->expr()->in('f.user', $followedUserIds))
             ->orderBy('f.CreatedAt', 'DESC')
-            ->setMaxResults(5);
+            ->setMaxResults(10);
 
         return $qb->getQuery()->getResult();
     }
@@ -407,7 +407,7 @@ class FeedContentComponent extends AbstractController
 
         $qb->where($qb->expr()->in('u.id', $followedUserIds))
             ->orderBy('u.join_date', 'DESC')
-            ->setMaxResults(5);
+            ->setMaxResults(10);
 
         return $qb->getQuery()->getResult();
     }
@@ -419,7 +419,7 @@ class FeedContentComponent extends AbstractController
 
         $qb->where($qb->expr()->in('d.user', $followedUserIds))
             ->orderBy('d.dlAt', 'DESC')
-            ->setMaxResults(5);
+            ->setMaxResults(10);
 
         return $qb->getQuery()->getResult();
     }
@@ -434,7 +434,7 @@ class FeedContentComponent extends AbstractController
             ->where($qb->expr()->in('l.user', $followedUserIds))
             ->andWhere("p.hideSearch = FALSE")
             ->orderBy('l.CreatedAt', 'DESC')
-            ->setMaxResults(5);
+            ->setMaxResults(10);
 
 
         return $qb->getQuery()->getResult();

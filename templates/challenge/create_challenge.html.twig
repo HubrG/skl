@@ -1,0 +1,104 @@
+{% set current_url = app.request.uri %}
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ChallengeController!
+{% endblock %}
+
+{% block body %}
+	<div class="lg:w-9/12 mx-auto">
+		<nav class="breadcrumb" aria-label="Breadcrumb">
+			<ol>
+				<li>
+					<i class="fa-regular fa-hand-holding-seedling"></i>
+					<a href="{{path("app_challenge")}}">
+						S'exercer
+					</a>
+				</li>
+				<li aria-current="page">
+					<div>
+						<i class="fa-duotone fa-angle-right"></i>
+						{% if 'update' in current_url %}
+							<span>Modification :
+								<a href="{{path("app_challenge_read")}}" class="font-semibold hover:underline">
+									{{challenge.title|length < 16 ? challenge.title : challenge.title|slice(0,15) ~ "..." }}
+								</a>
+							</span>
+						{% else %}
+							<span>Création d'un exercice</span>
+						{% endif %}
+					</div>
+				</li>
+			</ol>
+		</nav>
+		<div>
+			{% if 'update' in current_url %}
+				<div class="flex flex-row gap-x-2 items-center w-full justify-end font-semibold dark:text-slate-400">
+					<i class="fa-duotone fa-times"></i>
+					<a href="{{path("app_challenge_read", {slug:challenge.slug, id:challenge.id})}}" class="hover:underline">Annuler</a>
+				</div>
+			{% endif %}
+			{{ form_start(form, {attr: {'class':'w-full', 'novalidate':'novalidate'}}) }}
+			{% include "./partials/_form-row.html.twig" with {'form': form.title, 'icon':"fa-heading"} %}
+			{% include "./partials/_form-row.html.twig" with {'form': form.content, 'icon':null, classWidget:"assign-user h-96"} %}
+			<div class="help-text">
+				Vous pouvez interpeller un utilisateur avec un
+				<strong>@</strong>
+				suivi de son nom d'utilisateur, et utiliser du
+				<em data-popover-target="popover-markdown" data-popover-placement="bottom" class="font-semibold border-dashed border-b-[1px] cursor-help">Markdown</em>
+				pour mettre en forme l'énoncé de votre exercice
+			</div>
+			<hr>
+			<div class="bg-slate-50 rounded dark:bg-slate-900">
+				<div id="accordion-flush" data-accordion="collapse" class="p-5  mx-auto" data-active-classes="bg-transparent" data-inactive-classes="bg-transparent">
+					<h5 class="" id="accordion-flush-heading-1">
+						<button type="button" class="w-full text-center mx-auto justify-center mb-0 pb-0 font-semibold" data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
+							<span>Contraintes (facultatives)</span>
+							<span>
+								<svg data-accordion-icon class="w-6 h-6 rotate-180 shrink-0" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+								</svg>
+							</span>
+						</button>
+					</h5>
+					<div id="accordion-flush-body-1" aria-labelledby="accordion-flush-heading-1">
+						<hr class="mt-5">
+						{% include "./partials/_form-row.html.twig" with {'form': form.constrainCategory, 'icon':"fa-masks-theater"} %}
+						<hr>
+						<div class="grid grid-cols-2 gap-x-3  items-start">
+							{% include "./partials/_form-row.html.twig" with {'form': form.dateStart, 'icon':"fa-calendar"} %}
+							{% include "./partials/_form-row.html.twig" with {'form': form.dateEnd, 'icon':"fa-calendar-xmark"} %}
+						</div>
+						<hr class="-mt-4">
+						<div class="grid grid-cols-2 gap-x-3 items-start">
+							<div>
+								{% include "./partials/_form-row.html.twig" with {'form': form.constrainMinTime, 'icon':"fa-gauge-simple-min"} %}
+							</div>
+							<div>
+								{% include "./partials/_form-row.html.twig" with {'form': form.constrainMaxTime, 'icon':"fa-gauge-simple-max"} %}
+							</div>
+						</div>
+						<hr class="-mt-4">
+						<div class="grid grid-cols-2 gap-x-3  items-start">
+							{% include "./partials/_form-row.html.twig" with {'form': form.constrainMinWords, 'icon':"fa-i-cursor fa-rotate-90"} %}
+							{% include "./partials/_form-row.html.twig" with {'form': form.constrainMaxWords, 'icon':"fa-i-cursor fa-rotate-90"} %}
+						</div>
+						<hr class="-mt-4">
+						<div class="grid grid-cols-2 gap-x-3  items-start">
+							{% include "./partials/_form-row.html.twig" with {'form': form.constrainMinLetters, 'icon':"fa-i-cursor"} %}
+							{% include "./partials/_form-row.html.twig" with {'form': form.constrainMaxLetters, 'icon':"fa-i-cursor"} %}
+						</div>
+					</div>
+				</div>
+			</div>
+			<button type="submit" class="button-classic button-blue w-full">
+				{% if 'update' in current_url %}
+					Modifier le sujet
+				{% else %}
+					Créer le sujet
+				{% endif %}
+			</button>
+			{{ form_end(form) }}
+			{% include "/partials/little/_markdownPopover.html.twig" with {type:"sujet"} %}
+		</div>
+	</div>
+{% endblock %}

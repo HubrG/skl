@@ -49,6 +49,18 @@ export function AxiosSavePublication() {
         }
       });
     }
+    // ! Publication Access - Afficher la div d'accès si case cochée
+    if (document.getElementById("publication_support")) {
+      var supportDiv = document.getElementById("support-div");
+      var support = document.getElementById("publication_support");
+      support.addEventListener("change", () => {
+        if (support.checked) {
+          supportDiv.classList.remove("hidden");
+        } else {
+          supportDiv.classList.add("hidden");
+        }
+      });
+    }
     // ! Édition rapide du titre (à la volée)
     // On récupère tous les éléments avec la classe "fastChangeTitle"
     var fastChangeTitles = document.querySelectorAll(".fastChangeTitle");
@@ -217,6 +229,7 @@ function AxiosPublication() {
   //!
   var mature = document.getElementById("publication_mature").checked;
   var access = document.getElementById("publication_access").checked;
+  var support = document.getElementById("publication_support").checked;
   var showOldVersions = document.getElementById(
     "publication_show_old_versions"
   ).checked;
@@ -259,6 +272,7 @@ function AxiosPublication() {
   data.append("summary", summary);
   data.append("finished", finished);
   data.append("access", access);
+  data.append("support", support);
   data.append("allowRevision", allowRevision);
   data.append("showOldVersions", showOldVersions);
   data.append("hideSearch", hideSearch);
@@ -382,7 +396,11 @@ function publishPublication(ev) {
     if (publishButton.checked == false) {
       publishButton.checked = true;
       publishDateTextSpan.innerHTML = "quelques instants";
-      publishText.innerHTML = "Dépublier de Scrilab";
+      if (document.getElementById("challenge")) {
+        publishText.innerHTML = "Dépublier l'exercice";
+      } else {
+        publishText.innerHTML = "Dépublier de Scrilab";
+      }
       PublicationPublishModalText.innerHTML =
         "Êtes-vous certain(e) de vouloir <span class='text-red-500 dark:text-red-500'>dépublier</span> de votre récit ?";
       publishToggle.classList.remove("peer-checked:bg-slate-600");
@@ -403,7 +421,11 @@ function publishPublication(ev) {
       publishDateText.classList.remove("hidden");
     } else {
       publishButton.checked = false;
-      publishText.innerHTML = "Publier sur Scrilab";
+      if (document.getElementById("challenge")) {
+        publishText.innerHTML = "Publier l'exercice";
+      } else {
+        publishText.innerHTML = "Publier sur Scrilab";
+      }
       PublicationPublishModalText.innerHTML =
         "Êtes-vous certain(e) de vouloir <span class='text-emerald-500 dark:text-emerald-500'>publier</span> votre récit ?";
       publishToggle.classList.remove("peer-checked:bg-red-600");

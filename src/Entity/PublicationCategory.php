@@ -18,7 +18,7 @@ class PublicationCategory
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Publication::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Publication::class)]
     private Collection $publications;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -27,9 +27,13 @@ class PublicationCategory
     #[ORM\Column(nullable: true)]
     private ?int $color = null;
 
+    #[ORM\OneToMany(mappedBy: 'contrainCategory', targetEntity: Challenge::class)]
+    private Collection $challenges;
+
     public function __construct()
     {
         $this->publications = new ArrayCollection();
+        $this->challenges = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -105,5 +109,35 @@ class PublicationCategory
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * @return Collection<int, Challenge>
+     */
+    public function getChallenges(): Collection
+    {
+        return $this->challenges;
+    }
+
+    public function addChallenge(Challenge $challenge): self
+    {
+        if (!$this->challenges->contains($challenge)) {
+            $this->challenges->add($challenge);
+            $challenge->setConstrainCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChallenge(Challenge $challenge): self
+    {
+        if ($this->challenges->removeElement($challenge)) {
+            // set the owning side to null (unless already changed)
+            if ($challenge->getConstrainCategory() === $this) {
+                $challenge->setConstrainCategory(null);
+            }
+        }
+
+        return $this;
     }
 }

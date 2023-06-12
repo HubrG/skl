@@ -10,6 +10,7 @@ use App\Form\PublicationType;
 use App\Services\ImageService;
 use App\Entity\PublicationAccess;
 use App\Entity\PublicationKeyword;
+use App\Entity\PublicationSupport;
 use App\Repository\UserRepository;
 use App\Form\PublicationAccessType;
 use App\Services\NotificationSystem;
@@ -22,6 +23,7 @@ use App\Repository\PublicationAccessRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
 use App\Repository\PublicationKeywordRepository;
+use App\Repository\PublicationSupportRepository;
 use App\Repository\PublicationCategoryRepository;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -51,6 +53,7 @@ class PublicationController extends AbstractController
                 $publication->setStatus(0);
                 $publication->setAccess(0);
                 $publication->setHideSearch(0);
+                $publication->setSupport(0);
                 $publication->setAllowRevision(1);
                 $publication->setShowOldVersions(1);
                 $publication->setType(0);
@@ -94,7 +97,7 @@ class PublicationController extends AbstractController
         ]);
     }
     #[Route('/story/edit/{id}', name: 'app_publication_edit')]
-    public function EditPublication(EntityManagerInterface $em, Request $request, PublicationAccessRepository $pacRepo, UserRepository $uRepo, PublicationRepository $pubRepo, PublicationChapterRepository $pchRepo, $id = null): Response
+    public function EditPublication(EntityManagerInterface $em, Request $request, PublicationAccessRepository $pacRepo, PublicationSupportRepository $psRepo, UserRepository $uRepo, PublicationRepository $pubRepo, PublicationChapterRepository $pchRepo, $id = null): Response
     {
 
         $infoPublication = $pubRepo->findOneBy(["id" => $id]);
@@ -122,6 +125,7 @@ class PublicationController extends AbstractController
             // On recherche tous les chapitres de la publication avec le "statut" => 2
             if ($infoPublication) {
                 $formPub = $this->createForm(PublicationType::class, $infoPublication);
+                // ! USER ACCESS
                 // * USER ACCESS - AJOUT D'UN UTILISATEUR
                 // ! S'il y a la variable userAccessId dans l'url, on recherche les utilisateurs ayant accès à la publication
                 $userAccessVar = $request->query->get('userAccessId');
@@ -169,8 +173,60 @@ class PublicationController extends AbstractController
                 } else {
                     $userAccess = null;
                 }
+                // ! USER SUPPORT
+                // * USER SUPPORT - AJOUT D'UN UTILISATEUR
+                // S'il y a la variable userAccessId dans l'url, on recherche les utilisateurs ayant accès à la publication
+                $supportVar = $request->query->get('supportId');
+                if ($supportVar) {
+                    $support = $uRepo->find($supportVar);
+                    // On vérifie que cet utilisateur n'a pas déjà accès à la publication
+                    $supportExist = $psRepo->findOneBy(["user" => $support, "publication" => $infoPublication]);
+                    if (!$supportExist) {
+                        // On vérifie que l'utilisateur n'est pas l'auteur de la publication
+                        if ($support !== $infoPublication->getUser()) {
+                            // On l'ajoute à l'entité PublicationSupport
+                            $publicationSupport = new PublicationSupport();
+                            $publicationSupport->setUser($support)
+                                ->setCreatedAt(new DateTimeImmutable('now'))
+                                ->setPublication($infoPublication);
+                            $em->persist($publicationSupport);
+                            $em->flush();
+                        } else {
+                            $support = null;
+                        }
+                    } else {
+                        $support = null;
+                    }
+                } else {
+                    $support = null;
+                }
+                // * USER SUPPORT - SUPPRESSION D'UN UTILISATEUR
+                // ! S'il y a la variable deleteUserAccessId dans l'url, on on recherche l'utilisateur pour le supprimer
+                $deleteSupportVar = $request->query->get('deleteSupportId');
+                if ($deleteSupportVar) {
+                    $support = $uRepo->find($deleteSupportVar);
+                    // On vérifie que cet utilisateur a bien accès à la publication
+                    $supportExist = $psRepo->findOneBy(["user" => $support, "publication" => $infoPublication]);
+                    if ($supportExist) {
+                        // On vérifie que l'utilisateur n'est pas l'auteur de la publication
+                        if ($support !== $infoPublication->getUser()) {
+                            // On le supprime de l'entité PublicationAccess
+                            $em->remove($supportExist);
+                            $em->flush();
+                        } else {
+                            $support = null;
+                        }
+                    } else {
+                        $support = null;
+                    }
+                } else {
+                    $support = null;
+                }
+                // * USER SUPPORT - AFFICHAGE
+                $support = $psRepo->findBy(["publication" => $infoPublication]);
                 // * USER ACCESS - AFFICHAGE
                 $userAccess = $pacRepo->findBy(["publication" => $infoPublication]);
+
                 // * RETURN
                 return $this->render('publication/edit_publication.html.twig', [
                     'infoPub' => $infoPublication,
@@ -178,7 +234,8 @@ class PublicationController extends AbstractController
                     'chaptersWithStatus2' => $chaptersWithStatus2,
                     'chaptersWithStatus1' => $chaptersWithStatus1,
                     'chaptersWithStatus0' => $chaptersWithStatus0,
-                    'userAccess' => $userAccess
+                    'userAccess' => $userAccess,
+                    'support' => $support
                 ]);
             } else {
                 return $this->redirectToRoute("app_home");
@@ -416,6 +473,7 @@ class PublicationController extends AbstractController
         $dtSummary = $request->get("summary");
         $dtFinished = $request->get("finished") == "true" ? true : false;
         $dtAccess = $request->get("access") == "true" ? true : false;
+        $dtSupport = $request->get("support") == "true" ? true : false;
         $dtHideSearch = $request->get("hideSearch") == "true" ? true : false;
         $dtShowOldVersions = $request->get("showOldVersions") == "true" ? true : false;
         $dtAllowRevision = $request->get("allowRevision") == "true" ? true : false;
@@ -446,6 +504,7 @@ class PublicationController extends AbstractController
                 ->setCategory($category)
                 ->setMature($dtMature)
                 ->setFinished($dtFinished)
+                ->setSupport($dtSupport)
                 ->setAccess($dtAccess)
                 ->setHideSearch($dtHideSearch)
                 ->setShowOldVersions($dtShowOldVersions)

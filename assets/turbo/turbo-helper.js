@@ -83,6 +83,7 @@ const TurboHelper = class {
       searchPredictionKw();
       Dropdown();
       Assign();
+
       const observer = lozad(".lozad", {
         loaded: function (el) {
           // el est l'élément qui vient d'être chargé
@@ -156,6 +157,7 @@ const TurboHelper = class {
       DropdownMenu();
       Inbox();
       ForumTopicRead();
+      AxiosSavePublication();
 
       // commentaires
       Comment();

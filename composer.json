@@ -30,6 +30,7 @@
         "lasserafn/php-initials": "^3.1",
         "league/oauth2-client": "^2.6",
         "league/oauth2-google": "^4.0",
+        "lexik/jwt-authentication-bundle": "^2.19",
         "michelf/php-markdown": "^2.0",
         "mpdf/mpdf": "^6.1",
         "nelmio/cors-bundle": "^2.2",

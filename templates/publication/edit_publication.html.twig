@@ -8,6 +8,9 @@
 {% endblock %}
 
 {% block body %}
+	{% if infoPub.challenge %}
+		<div class="hidden" id="challenge"></div>
+	{% endif %}
 	<nav class="breadcrumb -z-0" aria-label="Breadcrumb">
 		<ol>
 			<li>
@@ -20,7 +23,8 @@
 					<svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 						<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
 					</svg>
-					<span>Édition d'un récit</span>
+					<span>Édition d'un
+						{{infoPub.challenge ? " exercice" : "récit"}}</span>
 					<span class=" cursor-pointer" data-micromodal-trigger="popup-modal">
 						{% if (infoPub.status > 1) %}
 							<span id="badgePubStatus" class="badge">Publié</span>
@@ -122,7 +126,13 @@
 					<div class="relative mb-6">
 						{{ form_widget(formPub.summary, {attr:{"class":"axiosPublication axiosPubAS axiosPubSpy h-44"}}) }}
 					</div>
-					{% include "./partials/_form-row.html.twig" with {'form': formPub.category, 'class':'axiosPublication axiosPubAS axiosPubSpy', 'id':'publication_category_div', 'icon':"fa-masks-theater"} %}
+					{% if infoPub.challenge and infoPub.challenge.constrainCategory %}
+						<div class="cursor-not-allowed opacity-50" style="pointer-events: none;" data-tippy-content="Vous ne pouvez pas changer la catégorie, car il s'agit du thème imposé de l'exercice auquel vous répondez">
+							{% include "./partials/_form-row.html.twig" with {'form': formPub.category, 'class':'axiosPublication axiosPubAS axiosPubSpy cursor-not-allowed', 'id':'publication_category_div', 'icon':"fa-masks-theater"} %}
+						</div>
+					{% else %}
+						{% include "./partials/_form-row.html.twig" with {'form': formPub.category, 'class':'axiosPublication axiosPubAS axiosPubSpy', 'id':'publication_category_div', 'icon':"fa-masks-theater"} %}
+					{% endif %}
 					<label>En quelques mots, quelles sont les grandes thématiques de votre récit ?</label>
 					<div class="relative mb-6">
 						<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
@@ -470,6 +480,61 @@
 					<div class="px-3 rounded-lg flex flex-col items-baseline w-full mb-3 hover:opacity-100 cursor-pointer">
 						<label class="toggle">
 							<div class="relative flex flex-row">
+								<input type="checkbox" value="" class="sr-only peer axiosPublication axiosPubAS axiosPubSpy" id="publication_support" {{ infoPub.support == 1 ? "checked" }}/>
+								<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
+								<div class="toggle-dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition-all duration-300 ease-linear"></div>
+								<div class="ml-3 self-center flex -mt-1 dark:text-gray-300 font-semibold">
+									Remercier des utilisateurs
+								</div>
+							</div>
+						</label>
+						<div class="help-text mt-5 pt-10 flex flex-col gap-y-2 cursor-text">
+							<div>
+								<strong>Si vous
+									<u>activez</u>
+									cette option,</strong>
+								un encart de remerciements sera affiché au fronton de votre récit avec le nom des utilisateurs que vous aurez sélectionnés.<br>
+							</div>
+						</div>
+						<turbo-frame id="support-frame" class="w-full">
+							<div id="support-div" class="w-full {{infoPub.support ? " block" : " hidden" }} flex-row flex-wrap justify-between gap-y-2 items-center gap-x-1 mb-1">
+								{% for item in support %}
+									<div id="support-{{item.user.id}}" class="font-semibold  mb-2 inline-flex items-center px-2 py-1 mr-2 text-sm text-slate-800 bg-slate-100 rounded dark:bg-slate-700 dark:text-slate-300">
+										<div class="flex flex-row gap-x-2 items-center">
+											<div class="w-4 h-4 relative flex-shrink-0">
+												{% if item.user.profilPicture %}
+													<div class="imageContainer">
+														<div class="flex animate-pulse items-center z-50 justify-center w-full rounded-full bg-gray-300  dark:bg-gray-700">
+															<svg class="w-full h-full object-cover text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewbox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z"/></svg>
+														</div>
+														<img class="w-full h-full object-cover rounded-full lozad myImage" src="/images/dot.png" data-src="{{item.user.profilPicture}}" alt="Avatar de {{item.user.nickname}}">
+													</div>
+												{% else %}
+													<div class="w-full h-full object-cover rounded-full bg-slate-500  cursor-default">
+														<div class=" h-full flex mx-auto items-center justify-center text-[0.65rem] text-slate-200">
+															{{ item.user.nickname|slice(0,1)|upper }}
+														</div>
+													</div>
+												{% endif %}
+											</div>
+											{{item.user.nickname}}
+										</div>
+										<a href="{{path("app_publication_edit", {id:infoPub.id, deleteSupportId:item.user.id})}}" class="inline-flex items-center p-0.5 ml-2 text-sm text-slate-400 bg-transparent rounded-sm hover:bg-slate-200 hover:text-slate-900 dark:hover:bg-slate-600 dark:hover:text-slate-300" data-dismiss-target="#support-{{item.user.id}}" aria-label="Remove">
+											<svg aria-hidden="true" class="w-3.5 h-3.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+												<path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+											</svg>
+											<span class="sr-only">Supprimer le remerciement pour cet utilisateur</span>
+										</a>
+									</div>
+								{% endfor %}
+								{{component("publication_support_component", {id:infoPub.id})}}
+							</div>
+						</turbo-frame>
+					</div>
+					<hr class="mb-5">
+					<div class="px-3 rounded-lg  {{infoPub.challenge ? " hidden"}} flex flex-col items-baseline w-full mb-3 hover:opacity-100 cursor-pointer">
+						<label class="toggle">
+							<div class="relative flex flex-row" {{infoPub.challenge ? ' style="pointer-events: none;"'}}>
 								<input type="checkbox" value="" class="sr-only peer axiosPublication axiosPubAS axiosPubSpy" id="publication_access" {{ infoPub.access == 1 ? "checked" }}/>
 								<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
 								<div class="toggle-dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition-all duration-300 ease-linear"></div>
@@ -493,7 +558,25 @@
 								</div>
 								{% for item in userAccess %}
 									<div id="user-access-{{item.user.id}}" class="font-semibold inline-flex items-center px-2 py-1 mr-2 text-sm text-slate-800 bg-slate-100 rounded dark:bg-slate-700 dark:text-slate-300">
-										{{item.user.nickname}}
+										<div class="flex flex-row gap-x-2 items-baseline">
+											<div class="items-center w-4 h-4 relative flex-shrink-0">
+												{% if item.user.profilPicture %}
+													<div class="imageContainer">
+														<div class="flex animate-pulse items-center z-50 justify-center w-full rounded-full bg-gray-300  dark:bg-gray-700">
+															<svg class="w-full h-full object-cover text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewbox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z"/></svg>
+														</div>
+														<img class="w-full h-full object-cover rounded-full lozad myImage" src="/images/dot.png" data-src="{{item.user.profilPicture}}" alt="Avatar de {{item.user.nickname}}">
+													</div>
+												{% else %}
+													<div class="w-full h-full object-cover rounded-full bg-slate-500  cursor-default">
+														<div class=" h-full flex mx-auto items-center justify-center text-[0.65rem] text-slate-200">
+															{{ item.user.nickname|slice(0,1)|upper }}
+														</div>
+													</div>
+												{% endif %}
+											</div>
+											{{item.user.nickname}}
+										</div>
 										<a href="{{path("app_publication_edit", {id:infoPub.id, deleteUserAccessId:item.user.id})}}" class="inline-flex items-center p-0.5 ml-2 text-sm text-slate-400 bg-transparent rounded-sm hover:bg-slate-200 hover:text-slate-900 dark:hover:bg-slate-600 dark:hover:text-slate-300" data-dismiss-target="#user-access-{{item.user.id}}" aria-label="Remove">
 											<svg aria-hidden="true" class="w-3.5 h-3.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 												<path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
@@ -506,7 +589,7 @@
 							</div>
 						</turbo-frame>
 					</div>
-					<hr class="mb-5 ">
+					<hr class="mb-5  {{infoPub.challenge ? " hidden"}}">
 					<div class="px-3 rounded-lg  w-full mb-3 flex flex-col hover:opacity-100 cursor-pointer">
 						<label class="toggle">
 							<div class="relative flex flex-row">
@@ -552,21 +635,39 @@
 						<!-- Le label du toggle button -->
 						<div class="ml-3 dark:text-slate-300 font-semibold" id="publishText">
 							<span>
-								{% if infoPub.status > 1 %}
-									Dépublier de Scrilab
+								{% if infoPub.challenge %}
+									{% if infoPub.status > 1 %}
+										Dépublier l'exercice
+									{% else %}
+										Publier l'exercice
+									{% endif %}
 								{% else %}
-									Publier sur Scrilab
+									{% if infoPub.status > 1 %}
+										Dépublier de Scrilab
+									{% else %}
+										Publier sur Scrilab
+									{% endif %}
 								{% endif %}
 							</span>
 						</div>
 					</label>
-					<span class="ml-2" data-tippy-content="<strong>Si vous activez cette option</strong>, votre récit sera accessible aux utilisateurs via son URL publique et apparaîtra sur nos pages (à condition que vous ayez publié au moins un chapitre et sélectionné une catégorie).<br><br><strong>Si vous désactivez cette option</strong>, votre récit devient absolument inacessible à tous, sauf pour vous.">
-						<i class="fa-duotone fa-comment-question dark:text-slate-400"></i>
-					</span>
+					{% if infoPub.challenge %}
+						<span class="ml-2" data-tippy-content="<strong>Si vous activez cette option</strong>, votre exercice sera accessible aux utilisateurs via son URL publique et apparaîtra sur toutes nos pages, en sus de la page de l'exercice (à condition que vous ayez publié au moins un chapitre).<br><br><strong>Si vous désactivez cette option</strong>, votre récit devient absolument inacessible à tous, sauf pour vous.">
+							<i class="fa-duotone fa-comment-question dark:text-slate-400"></i>
+						</span>
+					{% else %}
+						<span class="ml-2" data-tippy-content="<strong>Si vous activez cette option</strong>, votre récit sera accessible aux utilisateurs via son URL publique et apparaîtra sur nos pages (à condition que vous ayez publié au moins un chapitre et sélectionné une catégorie).<br><br><strong>Si vous désactivez cette option</strong>, votre récit devient absolument inacessible à tous, sauf pour vous.">
+							<i class="fa-duotone fa-comment-question dark:text-slate-400"></i>
+						</span>
+					{% endif %}
 				</div>
-				<div id="task" class="{{chaptersWithStatus2|length > 0 and infoPub.category ? " hidden" : " " }} p-4 bg-slate-200 rounded text-slate-800 dark:bg-slate-900 w-full mb-0 dark:text-slate-400">
+				<div id="task" class="{{chaptersWithStatus2|length > 0 and infoPub.category ? " hidden" : " " }} p-4 bg-slate-200 rounded text-slate-800 dark:bg-slate-900 w-full mb-0 dark:text-slate-400 {{infoPub.challenge ? " hidden"}}">
 					<p class="text-xs mb-1 font-semibold">
-						Avant de publier le récit sur Scrilab, vous devriez :
+						{% if infoPub.challenge %}
+							Avant de publier l'exercice sur Scrilab, vous devriez :
+						{% else %}
+							Avant de publier le récit sur Scrilab, vous devriez :
+						{% endif %}
 						<ul class="text-xs mt-4">
 							<li class="flex gap-x-2 animate__animated {{infoPub.category ? " hidden" : " " }}" id="taskCategory">
 								<i class="fa-regular fa-masks-theater"></i>
@@ -644,10 +745,13 @@
 					{% endif %}
 					{% if infoPub.status < 2 %}
 						<i class="fa-regular fa-browser"></i>
-						<a href="{{ path("app_publication_show_one", {id:infoPub.id, slug:slug}) }}" class=" hover:underline" target="_blank">Voir un aperçu du récit</a>
+						<a href="{{ path("app_publication_show_one", {id:infoPub.id, slug:slug}) }}" class=" hover:underline" target="_blank">Voir un aperçu
+							{{infoPub.challenge ? "de l'exercice" : "du récit" }}</a>
 					{% else %}
 						<i class="fa-regular fa-browser"></i>
-						<a href="{{ path("app_publication_show_one", {id:infoPub.id, slug:slug}) }}" class=" hover:underline" target="_blank">Voir le récit sur le site</a>
+						<a href="{{ path("app_publication_show_one", {id:infoPub.id, slug:slug}) }}" class=" hover:underline" target="_blank">Voir
+							{{infoPub.challenge ? "l'exercice" : "du récit" }}
+							sur le site</a>
 					{% endif %}
 				</p>
 			</div>

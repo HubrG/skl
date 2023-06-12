@@ -1,0 +1,367 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}S'exercer
+{% endblock %}
+{% block body %}
+	<div class="lg:w-9/12 mx-auto">
+		<nav class="breadcrumb" aria-label="Breadcrumb">
+			<ol>
+				<li>
+					<i class="fa-regular fa-hand-holding-seedling"></i>
+					<a href="{{path("app_challenge")}}">
+						S'exercer
+					</a>
+				</li>
+				<li aria-current="page">
+					<i class="fa-duotone fa-angle-right"></i>
+					<div>
+						<span>
+							<strong>Exercice :</strong>
+							{{challenge.title|length < 16 ? challenge.title : challenge.title|slice(0,15) ~ "..." }}</span>
+					</div>
+				</li>
+			</ol>
+		</nav>
+
+		<div class="flex flex-col gap-y-10 mx-auto justify-center w-full ">
+			<div class="flex flex-col gap-y-3  -mt-8 bg-slate-50 dark:bg-slate-700">
+				{% set allowReply = false %}
+				{% if challenge.dateEnd %}
+					{% if  challenge.dateEnd|date('U') > "now"|date('U') %}
+						{% set allowReply = true %}
+						<div class="flex md:flex-row  flex-col border-t-2  border-slate-600 dark:border-slate-900 justify-evenly md:divide-x-2  divide-white dark:divide-slate-900 dark:text-slate-300">
+							<div class="md:w-1/2 w-full  sm:rounded-b-lg md:rounded-bl-lg bg-slate-50 dark:bg-slate-700 py-3 flex flex-row gap-x-2 md:pl-0 pl-2 items-center  md:justify-center">
+								<i class="fa-regular fa-calendar  text-green-500"></i>
+								<span class="font-semibold">Début de l'exercice :</span>
+								<span>{{challenge.dateStart ? challenge.dateStart|date("d/m/Y") : "<em class='opacity-50'>Date non définie</em>"|raw}}</span>
+							</div>
+							<div class="md:w-1/2 w-full rounded-b-none md:rounded-bl-lg bg-slate-200  dark:bg-slate-900 py-3 flex flex-row gap-x-2  md:pl-0 pl-2 items-center  text-right md:justify-center">
+								<i class="fa-regular fa-calendar-xmark text-red-500"></i>
+								<span class="font-semibold">Fin de l'exercice :</span>
+								<span>
+									{{challenge.dateEnd ? challenge.dateEnd|date("d/m/Y") ~ " — dans " ~ challenge.dateEnd|since : "<em class='opacity-50'>Date non définie</em>"|raw}}</span>
+							</div>
+						</div>
+					{% else %}
+						<div class="flex md:flex-row border-b-2 border-t-2 border-red-300 dark:border-red-900 flex-col justify-evenly md:divide-x-2 text-red-800  dark:text-red-300">
+							<div class="w-full bg-rose-50 dark:bg-rose-800 py-3 flex flex-row gap-x-2 md:pl-0 pl-2 items-center  md:justify-center">
+								<span class="font-semibold">L'exercice s'est terminé il y a
+									{{challenge.dateEnd|since}}
+								</span>
+							</div>
+						</div>
+					{% endif %}
+				{% else %}
+					{% set allowReply = true %}
+					<div class="flex md:flex-row border-t-2 border-slate-600 dark:border-slate-900 flex-col justify-evenly md:divide-x-2 divide-white dark:divide-slate-900  dark:text-slate-300">
+						<div class="md:w-1/2 w-full  rounded-bl-lg bg-emerald-50 dark:bg-slate-700 py-3 flex flex-row gap-x-2 md:pl-0 pl-2 items-center  md:justify-center">
+							<i class="fa-regular fa-calendar  text-green-500"></i>
+							<span class="font-semibold">Début de l'exercice :</span>
+							<span>{{challenge.dateStart ? challenge.dateStart|date("d/m/Y") : "<em class='opacity-50'>Date non définie</em>"|raw}}</span>
+						</div>
+						<div class="md:w-1/2 w-full rounded-bl-lg md:rounded-bl-lg bg-slate-200  dark:bg-slate-900 py-3 flex flex-row gap-x-2  md:pl-0 pl-2 items-center  text-right md:justify-center">
+							<i class="fa-regular fa-calendar-xmark text-red-500"></i>
+							<span class="font-semibold">Fin de l'exercice :</span>
+							<span>
+								{{challenge.dateEnd ? challenge.dateEnd|date("d/m/Y") ~ " — dans " ~ challenge.dateEnd|since : "<em class='opacity-50'>Date non définie</em>"|raw}}</span>
+						</div>
+					</div>
+				{% endif %}
+				<div class=" px-5 flex flex-col gap-y-3">
+					<h1 class="text-4xl mb-0 mt-3">{{challenge.title}}</h1>
+					<h6 class="flex flex-row items-center justify-between gap-x-3">
+						<div class="flex  w-full flex-col gap-x-2 items-start">
+							<div class="flex flex-row gap-x-2">
+								<div class="flex-shrink-0 w-6 h-6">
+									{% if challenge.user.profilPicture %}
+										<img src="{{challenge.user.profilPicture}}" class="h-full w-full rounded-full self-start" alt="Photo de profil de {{challenge.user.nickname}}">
+									{% else %}
+										<div class="rounded-full bg-slate-300 h-full w-full dark:bg-slate-700 flex justify-center items-center text-slate-500 dark:text-slate-300 text-lg font-semibold">
+											{{challenge.user.nickname|first}}
+										</div>
+									{% endif %}
+								</div>
+								<a href="{{path("app_user", {username:challenge.user.username})}}" class="hover:underline font-semibold dark:text-slate-300">{{challenge.user.nickname}}</a>
+							</div>
+							<div>
+								<span class="text-slate-500 dark:text-slate-400 text-xs">
+									il y a
+									{{challenge.createdAt|since}}</span>
+								{% if challenge.updatedAt %}
+									<span class="text-slate-500 dark:text-slate-400 text-xs">
+										— Mis à jour il y a
+										{{challenge.updatedAt|since}}</span>
+								{% endif %}
+							</div>
+						</div>
+						{% if app.user and app.user.id == challenge.user.id %}
+							<div class="text-slate-800 dark:text-slate-400">
+								<button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" type="button">
+									<i class="fa-duotone fa-chevron-down ml-2"></i>
+								</button>
+								<div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-56 dark:bg-gray-700">
+									<ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+										<li>
+											<a href="{{path("app_challenge_update", {id:challenge.id})}}" class=" flex w-full flex-row gap-x-2 items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+												<i class="fa-regular fa-edit"></i>
+												Modifier l'exercice
+											</a>
+										</li>
+										<li>
+											<button data-micromodal-trigger="popup-confirm-delete-challenge" class="flex  w-full text-left justify-start flex-row gap-x-2 items-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+												<i class="fa-regular fa-trash"></i>
+												Supprimer l'exercice
+											</button>
+										</li>
+									</ul>
+								</div>
+							</div>
+						{% endif %}
+					</h6>
+					<div id="content-forum" class="-mt-5 pb-10">
+						<hr class="mb-0 dark:border-slate-600">
+						{{challenge.content|assign|smiley_to_emoji|markdown|raw}}
+						<hr class="mb-0 mt-0 dark:border-slate-600">
+						{% if challenge.constrainCategory or challenge.constrainMinTime or challenge.constrainMaxWords  or challenge.constrainMinWords or challenge.constrainMaxLetters or challenge.constrainMinLetters or challenge.constrainMinTime or challenge.constrainMaxTime %}
+							<h6 class="font-semibold flex flex-row gap-x-2 text-center w-full items-center mt-8">
+								<i class="fa-regular fa-bullseye-arrow fa-beat-fade"></i>
+								<span>Contraintes</span>
+							</h6>
+							<table class="table-auto mt-8  constrain-table text-sm">
+								<tbody>
+									{% if challenge.constrainCategory %}
+										<tr class="border-t border-b">
+											<td class="px-4 py-2">
+												<i class="fa-regular fa-masks-theater"></i>
+											</td>
+											<td class="px-4 py-2">
+												<u>Thème imposé</u>
+												:
+											</td>
+											<td class="px-4 py-2 font-semibold">
+												{{challenge.constrainCategory.name}}
+											</td>
+										</tr>
+									{% endif %}
+									{% if challenge.constrainMinTime %}
+										<tr class="border-t border-b">
+											<td class="px-4 py-2">
+												<i class="fa-regular fa-gauge-simple-min"></i>
+											</td>
+											<td class="px-4 py-2">
+												<u>Temps de lecture</u>
+												<strong>min.</strong>
+												:
+											</td>
+											<td class="px-4 py-2">
+												{{challenge.constrainMinTime}}
+												minute{{challenge.constrainMinTime > 1 ? "s"}}
+											</td>
+										</tr>
+									{% endif %}
+									{% if challenge.constrainMaxTime %}
+										<tr class="border-t border-b">
+											<td class="px-4 py-2">
+												<i class="fa-regular fa-gauge-simple-max"></i>
+											</td>
+											<td class="px-4 py-2">
+												<u>Temps de lecture</u>
+												<strong>max.</strong>
+												:
+											</td>
+											<td class="px-4 py-2">
+												{{challenge.constrainMaxTime}}
+												minute{{challenge.constrainMaxTime > 1 ? "s"}}
+											</td>
+										</tr>
+									{% endif %}
+									{% if challenge.constrainMinWords %}
+										<tr class="border-t border-b">
+											<td class="px-4 py-2">
+												<i class="fa-kit fa-regular-i-cursor-circle-minus fa-rotate-90"></i>
+											</td>
+											<td class="px-4 py-2">
+												Nombre
+												<strong>min.</strong>
+												de
+												<u>mots</u>
+												:
+											</td>
+											<td class="px-4 py-2">
+												{{challenge.constrainMinWords}}
+												mot{{challenge.constrainMinWords > 1 ? "s" : ""}}
+											</td>
+										</tr>
+									{% endif %}
+									{% if challenge.constrainMaxWords %}
+										<tr class="border-t border-b">
+											<td class="px-4 py-2">
+												<i class="fa-kit fa-regular-i-cursor-circle-plus fa-rotate-90"></i>
+											</td>
+											<td class="px-4 py-2">
+												Nombre
+												<strong>max.</strong>
+												de
+												<u>mots</u>
+												:
+											</td>
+											<td class="px-4 py-2">
+												{{challenge.constrainMaxWords}}
+												mot{{challenge.constrainMaxWords > 1 ? "s"}}
+											</td>
+										</tr>
+									{% endif %}
+									{% if challenge.constrainMinLetters %}
+										<tr class="border-t border-b">
+											<td class="px-4 py-2">
+												<i class="fa-kit fa-regular-i-cursor-circle-minus"></i>
+											</td>
+											<td class="px-4 py-2">
+												Nombre
+												<strong>min.</strong>
+												de
+												<u>lettres</u>
+												:
+											</td>
+											<td class="px-4 py-2">
+												{{challenge.constrainMinLetters}}
+												lettre{{challenge.constrainMinLetters > 1 ? "s"}}
+											</td>
+										</tr>
+									{% endif %}
+									{% if challenge.constrainMaxLetters %}
+										<tr class="border-t border-b">
+											<td class="px-4 py-2">
+												<i class="fa-kit fa-regular-i-cursor-circle-plus"></i>
+											</td>
+											<td class="px-4 py-2">
+												Nombre
+												<strong>max.</strong>
+												de
+												<u>lettres</u>
+												:
+											</td>
+											<td class="px-4 py-2">
+												{{challenge.constrainMaxLetters}}
+												lettre{{challenge.constrainMaxLetters > 1 ? "s"}}
+											</td>
+										</tr>
+									{% endif %}
+								</tbody>
+							</table>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			<div class="-mt-10 border-t-2 {{allowReply ? " border-t-emerald-700" : " border-t-slate-900"   }}  ">
+				{% if  allowReply %}
+					{% if app.user %}
+						<a href="{{path("app_challenge_reply", {id:challenge.id})}}" class="bg-green-200 hover:bg-green-300 dark:bg-green-500 dark:text-green-100 dark:hover:bg-green-600  button-classic opacity-100  button-create-challenge sticky md:top-16 top-14">
+							<span>
+								<i class="fa-regular fa-reply-all"></i>&nbsp;&nbsp;Proposer une réponse à cet exercice
+							</span>
+						</a>
+					{% else %}
+						<button class="w-full bg-green-200 hover:bg-green-300 dark:bg-green-500 dark:text-green-100 dark:hover:bg-green-600  button-classic opacity-100  button-create-challenge sticky md:top-16 top-14" data-micromodal-trigger="popup-login">
+							<span>
+								<i class="fa-regular fa-reply-all"></i>&nbsp;&nbsp;Proposer une réponse à cet exercice
+							</span>
+						</button>
+					{% endif %}
+				{% else %}
+					<button data-tippy-content="Vous ne pouvez pas faire cet exercice, car il est terminé" class="w-full bg-green-200 grayscale cursor-not-allowed  dark:bg-green-500 dark:text-green-100  button-classic opacity-100  button-create-challenge sticky md:top-16 top-14">
+						<span>
+							<i class="fa-regular fa-reply-all"></i>&nbsp;&nbsp;Proposer une réponse à cet exercice
+						</span>
+					</button>
+				{% endif %}
+			</div>
+			<div class="display_publications big  twoMax">
+				{% for item in challenges %}
+					{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':'published', 'querySortby':'published', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
+				{% endfor %}
+			</div>
+			<hr class="mb-0">
+			<div id="challenge-section"></div>
+			{% if app.user  %}
+				{{ form_start(form, {attr: {'novalidate': 'novalidate',"data-turbo-frame":"messages-frame","class":"-mt-16"}}) }}
+				{% include "./partials/_form-row.html.twig" with {'form': form.content, 'icon':null, classWidget:"assign-user h-32 roundedBnone"} %}
+				<button type="submit" id="sendComment" class="-mt-[1.5rem] button-classic button-blue w-full roundedTnone" onclick="setTimeout(function() { document.getElementById('forum_message_content').value = ''})">
+					Envoyer la réponse
+					<i class="fa-duotone fa-reply fa-flip-horizontal"></i>
+				</button>
+				<div class="help-text pt-7">
+					Vous pouvez interpeller un utilisateur avec un
+					<strong>@</strong>
+					suivi de son nom d'utilisateur, et utiliser du
+					<em data-popover-target="popover-markdown" data-popover-placement="bottom" class="font-semibold border-dashed border-b-[1px] cursor-help">Markdown</em>
+					pour mettre en forme votre réponse
+				</div>
+				{{ form_end(form) }}
+				{% include "/partials/little/_markdownPopover.html.twig" with {} %}
+				<hr class="-mt-10">
+			{% endif %}
+			<div class="flex flex-col gap-y-5">
+				{% if pCom|length == 0 %}
+					<div class="text-slate-500 -mt-10">
+						<p class="mb-3 text-center text-6xl font-semibold">
+							<i class="fa-duotone fa-comment-slash"></i>
+						</p>
+						<p class="mb-5 text-center italic">
+							Aucun commentaire pour le moment
+						</p>
+						{% if not app.user %}
+							<hr class="mb-5">
+							<p class="font-medium text-center flex flex-row  items-center gap-x-3 justify-center dark:text-slate-300 text-slate-800">
+								<i class="fa-duotone fa-user-circle"></i>
+								<button data-micromodal-trigger="popup-login" class="hover:underline text-center font-semibold">Connectez-vous pour répondre !</button>
+							</p>
+						{% endif %}
+					</div>
+				{% endif %}
+				<turbo-frame id="messages-frame" class="-mt-10">
+					{% if app.request.query.has('idCom') %}
+						{# La variable GET "idCom" est présente dans l'URL #}
+						{% set idCom = app.request.query.get('idCom') %}
+						<div id="mark-comment" data-com="{{idCom}}"></div>
+					{% endif %}
+					{% if pCom|length > 0 %}
+						<p class="dark:text-white mb-10">
+							<i class="fa-duotone fa-comments"></i>
+							&nbsp;
+							{{pCom|length}}
+							réponse{{pCom|length > 1 ? "s" : ""}}
+						</p>
+					{% endif %}
+					{% set n = 0 %}
+					{% for item in pCom %}
+						{% include "publication/_partials/_comment.html.twig" with { item:item, n:n, pcom:nbrCom, first:pCom|first, challenge:true} %}
+						{% set n = n + 1  %}
+					{% endfor %}
+				</turbo-frame>
+			</div>
+		</div>
+	</div>
+	<div class="modal micromodal-slide z-50" id="popup-confirm-delete-challenge" aria-hidden="true">
+		<div class="modal__overlay" tabindex="-1" data-micromodal-close>
+			<div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="popup-confirm-delete-challenge-title">
+				<div class="py-3 text-center w-42  rounded-2xl">
+					<div class="text-4xl mb-5 text-red-600 dark:text-red-400">
+						<i class="fa-duotone fa-trash"></i>
+					</div>
+					<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-slate-300">Êtes-vous certain(e) de vouloir supprimer<br/>
+						ce sujet ?</h3>
+					<p class="text-center text-red-500 font-normal">
+						Cette action est irréversible.</p>
+					<div class="mt-10 flex justify-center gap-x-3">
+						<a id="confirm-delete-button" onclick='MicroModal.close("popup-confirm-delete-challenge")' href="{{path("app_challenge_delete", {id:challenge.id})}}" type="button" class="button-classic button-red">
+							Oui, je suis certain(e)
+						</a>
+						<button type="button" data-micromodal-close class="button-classic button-slate">Non, j'annule</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+{% endblock %}

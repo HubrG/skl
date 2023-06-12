@@ -46,14 +46,7 @@ class Publication
     #[ORM\ManyToMany(targetEntity: PublicationKeyword::class, mappedBy: 'publication', orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationKeywords;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $updated = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $created = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $published_date = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $slug = null;
@@ -122,6 +115,25 @@ class Publication
     #[ORM\Column(options: ['default' => true])]
     private ?bool $showOldVersions = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $created = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $updated = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $published_date = null;
+
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: PublicationSupport::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $publicationSupports;
+
+    #[ORM\Column]
+    private ?bool $support = null;
+
+    #[ORM\ManyToOne(inversedBy: 'publications')]
+    private ?Challenge $challenge = null;
+
+
+
 
 
 
@@ -140,6 +152,7 @@ class Publication
         $this->publicationReads = new ArrayCollection();
         $this->notificationsFriendNewPub = new ArrayCollection();
         $this->publicationAccesses = new ArrayCollection();
+        $this->publicationSupports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -787,6 +800,60 @@ class Publication
     public function setShowOldVersions(bool $showOldVersions): self
     {
         $this->showOldVersions = $showOldVersions;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationSupport>
+     */
+    public function getPublicationSupports(): Collection
+    {
+        return $this->publicationSupports;
+    }
+
+    public function addPublicationSupport(PublicationSupport $publicationSupport): self
+    {
+        if (!$this->publicationSupports->contains($publicationSupport)) {
+            $this->publicationSupports->add($publicationSupport);
+            $publicationSupport->setPublication($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationSupport(PublicationSupport $publicationSupport): self
+    {
+        if ($this->publicationSupports->removeElement($publicationSupport)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationSupport->getPublication() === $this) {
+                $publicationSupport->setPublication(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isSupport(): ?bool
+    {
+        return $this->support;
+    }
+
+    public function setSupport(bool $support): self
+    {
+        $this->support = $support;
+
+        return $this;
+    }
+
+    public function getChallenge(): ?Challenge
+    {
+        return $this->challenge;
+    }
+
+    public function setChallenge(?Challenge $challenge): self
+    {
+        $this->challenge = $challenge;
 
         return $this;
     }

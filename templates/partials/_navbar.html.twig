@@ -12,14 +12,52 @@
 <nav class="z-index:9999999">
 	<div class="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto text-center z-100">
 		<div class="flex flex-row justify-between w-full lg:w-auto">
-			<a href="{{ path("app_home")}}" class="flex items-center">
-				<span class="logo self-center text-3xl  whitespace-nowrap dark:text-white">
+			<a href="{{ path("app_home")}}" class="flex self-start items-center">
+				<span class="logo md:self-center md:text-3xl text-2xl md:mt-1 mt-[0.175rem]  whitespace-nowrap dark:text-white">
 					Scr<span class="relative">
 						<i class="fa-duotone fa-semicolon"></i>
 					</span>lab
 				</span>
 			</a>
-			<button data-collapse-toggle="navbar-default" type="button" class=" dark:opacity-90 inline-flex items-center p-2 ml-3  text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-label="Ouvrir le menu" aria-controls="navbar-default" aria-expanded="false">
+			{% if app.user %}
+				<ul class="lg:hidden flex flex-row items-baseline">
+					<li>
+						<button id="mega-menu-icons-dropdown-button" aria-label="Lire" data-dropdown-toggle="mega-menu-icons-dropdown" type="button" class="navbar-button" data-tippy-content="Lire">
+							<i class="fa-duotone fa-microscope"></i>
+						</button>
+					</li>
+					{% if app.user %}
+						<li>
+							<a href="{{ path("app_publication_add")}}" aria-label="Écrire" class="navbar-button" data-tippy-content="Écrire">
+								<i class="fa-duotone fa-pen-to-square"></i>
+							</a>
+						</li>
+					{% else %}
+						<li>
+							<button data-micromodal-trigger="popup-register" aria-label="Écrire" class="navbar-button" data-tippy-content="Écrire">
+								<i class="fa-duotone fa-pen-to-square"></i>
+							</button>
+						</li>
+					{% endif %}
+					<li class="w-full">
+						<a href="{{path("app_challenge")}}" aria-label="Forums" class="navbar-button" data-tippy-content="S'exercer">
+							<i class="fa-duotone fa-hand-holding-seedling"></i>
+						</a>
+					</li>
+					<li class="w-full">
+						<a href="{{path("app_forum")}}" aria-label="Forums" class="navbar-button" data-tippy-content="Discuter">
+							<i class="fa-duotone fa-comments"></i>
+
+						</a>
+					</li>
+					<li class="w-full">
+						<button data-tippy-content="Recherche rapide" id="nav-search-menu-dropdown-button" aria-label="Rechercher" data-dropdown-toggle="nav-search-menu-dropdown" type="button" class="navbar-button">
+							<i class="py-1 fa-duotone fa-telescope"></i>
+						</button>
+					</li>
+				</ul>
+			{% endif %}
+			<button data-collapse-toggle="navbar-default" type="button" class=" -mt-1 dark:opacity-90 inline-flex items-center p-2 ml-3  text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-label="Ouvrir le menu" aria-controls="navbar-default" aria-expanded="false">
 				<span class="sr-only">Open main menu</span>
 				<i class="fa-duotone fa-bars"></i>
 				<div class="absolute inline-flex items-center justify-center w-4 h-4 text-[0.55rem] hidden font-bold text-white bg-red-500 border-2 border-white rounded-full top-3 right-2 dark:border-gray-900" id="notif-sm"></div>
@@ -35,20 +73,26 @@
 				</li>
 				{% if app.user %}
 					<li>
-						<a href="{{ path("app_publication_add")}}" aria-label="Publier" class="navbar-button">
+						<a href="{{ path("app_publication_add")}}" aria-label="Écrire" class="navbar-button">
 							<i class="fa-duotone fa-pen-to-square"></i>
-							Publier
+							Écrire
 						</a>
 					</li>
 				{% else %}
 					<li>
-						<button data-micromodal-trigger="popup-register" aria-label="Publier" class="navbar-button">
+						<button data-micromodal-trigger="popup-register" aria-label="Écrire" class="navbar-button">
 							<i class="fa-duotone fa-pen-to-square"></i>
-							Publier
+							Écrire
 						</button>
 					</li>
 				{% endif %}
 				<div class="lg:flex lg:flex-row flex-col justify-center items-center flex gap-y-2">
+					<li class="w-full">
+						<a href="{{path("app_challenge")}}" aria-label="Forums" class="navbar-button" data-tippy-content="S'exercer">
+							<i class="fa-duotone fa-hand-holding-seedling"></i>
+							<span>S'exercer</span>
+						</a>
+					</li>
 					<li class="w-full">
 						<a href="{{path("app_forum")}}" aria-label="Forums" class="navbar-button" data-tippy-content="Forums">
 							<i class="fa-duotone fa-comments"></i>

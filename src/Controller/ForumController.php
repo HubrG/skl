@@ -156,7 +156,6 @@ class ForumController extends AbstractController
             // redirection vers la route app_forum
             return $this->redirectToRoute('app_forum_topic', ['slug' => $slug]);
         }
-
         // ! form
         $form = $this->createForm(ForumMessageType::class);
         $form->handleRequest($request);

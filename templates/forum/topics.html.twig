@@ -13,7 +13,7 @@
 				<li>
 					<i class="fa-regular fa-comments"></i>
 					<a href="{{path("app_forum")}}">
-						Forums
+						Discuter
 					</a>
 				</li>
 				<li aria-current="page">
@@ -110,7 +110,7 @@
 											Crée il y a
 											{{item.createdAt|since}}
 										</span>
-										<span class="md:self-end self-start order-3">
+										<span class="md:self-end self-start order-3  {{item.forumMessages|length == 0 ? " hidden" }}">
 											Dernière réponse il y a
 											{% set lastMessage = item.forumMessages|last %}
 											{{lastMessage ? lastMessage.publishedAt|since : item.createdAt|since }}

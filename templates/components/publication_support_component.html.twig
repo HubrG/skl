@@ -1,0 +1,39 @@
+<div {{attributes}} class="flex flex-col gap-y-2 w-full relative">
+	<div class="  py-2   z-50">
+		<div class="relative mb-3 -mt-5">
+			<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
+				<i class="fa-regular fa-hand-holding-heart dark:text-white"></i>
+			</div>
+			<input type="search" name="query" value="{{ query }}" class="input w-full dark:bg-slate-900" placeholder="Utilisateur-ice à remercier" data-model="query">
+		</div>
+	</div>
+	{% if this.users|length > 0 %}
+		<div class="flex flex-col gap-y-3 -mt-5">
+			<ul>
+				{% for item in this.users %}
+					<li class="rounded">
+						<a href="{{path("app_publication_edit", {id:this.id, supportId:item.id})}}" data-turbo-frame="_self" class="flex flex-row  gap-x-2 items-center justify-between px-2 rounded dark:text-slate-200 w-full py-2 hover:bg-slate-50 dark:hover:bg-slate-600">
+							<div class="flex flex-row gap-x-2 ">
+								<div class=" self-baseline w-7 h-7 relative flex-shrink-0">
+									{% if item.profilPicture %}
+										<img class="w-full h-full object-cover rounded-full lozad myImage" src="{{item.profilPicture}}" alt="Avatar de {{item.nickname}}">
+									{% else %}
+										<div class="w-full h-full object-cover rounded-full bg-slate-500  cursor-default">
+											<div class=" h-full flex mx-auto items-center justify-center text-xs text-slate-200">
+												{{ item.nickname|slice(0,1)|upper }}
+											</div>
+										</div>
+									{% endif %}
+								</div>
+								{{item.nickname}}
+							</div>
+							<div>
+								<small class="opacity-60">@{{item.username}}</small>
+							</div>
+						</a>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+	{% endif %}
+</div>

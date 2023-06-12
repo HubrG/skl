@@ -16,6 +16,17 @@
 						{% set class = "fa-regular fa-heart  cursor-pointer likeButton  dark:text-red-400" %}
 					{% endif %}
 				{% endfor %}
+			{% elseif challenge is defined %}
+				{% for itemLike in item.challengeMessageLikes %}
+					{% if itemLike.user.id == app.user.id %}
+						{% set class = "fa-solid fa-heart text-red-400 cursor-pointer likeButton  dark:text-red-400" %}
+						{% set liked = false %}
+						{% set break = "" %}
+					{% else %}
+						{% set liked = true %}
+						{% set class = "fa-regular fa-heart  cursor-pointer likeButton  dark:text-red-400" %}
+					{% endif %}
+				{% endfor %}
 			{% else %}
 				{% for itemLike in item.publicationCommentLikes %}
 					{% if itemLike.user.id == app.user.id %}
@@ -145,6 +156,8 @@
 					<span class="ml-1 font-medium text-slate-600 dark:text-slate-500">
 						{% if forum is defined %}
 							<span id="nbLikes-{{ item.id }}">{{ item.forumMessageLikes|length }}</span>
+						{% elseif challenge is defined %}
+							<span id="nbLikes-{{ item.id }}">{{ item.challengeMessageLikes|length }}</span>
 						{% else %}
 							<span id="nbLikes-{{ item.id }}">{{ item.publicationCommentLikes|length }}</span>
 						{% endif %}
@@ -176,6 +189,17 @@
 					{% else %}
 						{% if forum is defined %}
 							{% for itemLike in reply.forumMessageLikes %}
+								{% if itemLike.user.id == app.user.id %}
+									{% set class = "fa-solid fa-heart text-red-400 cursor-pointer likeButton  dark:text-red-400" %}
+									{% set liked = false %}
+									{% set break = "" %}
+								{% else %}
+									{% set liked = true %}
+									{% set class = "fa-regular fa-heart  cursor-pointer likeButton  dark:text-red-400" %}
+								{% endif %}
+							{% endfor %}
+						{% elseif challenge is defined %}
+							{% for itemLike in reply.challengeMessageLikes %}
 								{% if itemLike.user.id == app.user.id %}
 									{% set class = "fa-solid fa-heart text-red-400 cursor-pointer likeButton  dark:text-red-400" %}
 									{% set liked = false %}
@@ -295,6 +319,8 @@
 								<span class="ml-1 font-medium text-slate-600 dark:text-slate-500">
 									{% if forum is defined %}
 										<span id="nbLikes-{{ reply.id }}">{{ reply.forumMessageLikes|length }}</span>
+									{% elseif challenge is defined %}
+										<span id="nbLikes-{{ reply.id }}">{{ reply.challengeMessageLikes|length }}</span>
 									{% else %}
 										<span id="nbLikes-{{ reply.id }}">{{ reply.publicationCommentLikes|length }}</span>
 									{% endif %}

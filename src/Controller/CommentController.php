@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\ForumMessage;
 use App\Services\SmileyMessage;
+use App\Entity\ChallengeMessage;
 use App\Entity\ForumMessageLike;
 use App\Entity\PublicationComment;
 use App\Repository\UserRepository;
+use App\Entity\ChallengeMessageLike;
 use App\Services\NotificationSystem;
 use App\Entity\PublicationCommentLike;
 use App\Services\PublicationPopularity;
@@ -15,6 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ForumMessageRepository;
 use App\Repository\NotificationRepository;
 use Symfony\Component\HttpFoundation\Request;
+use App\Repository\ChallengeMessageRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationCommentRepository;
@@ -41,8 +44,11 @@ class CommentController extends AbstractController
     {
         $id = $request->request->get('id');
         $forum = $request->request->get('forum');
+        $challenge = $request->request->get('challenge');
         if ($forum) {
             $pcom = $this->em->getRepository(ForumMessage::class)->find($id);
+        } elseif ($challenge) {
+            $pcom = $this->em->getRepository(ChallengeMessage::class)->find($id);
         } else {
             $pcom = $pcomRepo->find($id);
         }
@@ -51,7 +57,7 @@ class CommentController extends AbstractController
             $em->remove($pcom);
             $em->flush();
             //
-            if (!$forum) {
+            if (!$forum && !$challenge) {
                 $this->publicationPopularity->PublicationPopularity($pcom->getPublication());
             }
             //
@@ -73,9 +79,12 @@ class CommentController extends AbstractController
     {
         $id = $request->get("id");
         $forum = $request->get("forum");
+        $challenge = $request->get("challenge");
         // * On récupère le commentaire
         if ($forum) {
             $comment = $this->em->getRepository(ForumMessage::class)->find($id);
+        } elseif ($challenge) {
+            $comment = $this->em->getRepository(ChallengeMessage::class)->find($id);
         } else {
             $comment = $pccRepo->find($id);
         }
@@ -83,6 +92,10 @@ class CommentController extends AbstractController
         if ($comment and $comment->getUser() != $this->getUser()) {
             if ($forum) {
                 $like = $comment->getForumMessageLikes()->filter(function ($like) {
+                    return $like->getUser() == $this->getUser();
+                })->first();
+            } elseif ($challenge) {
+                $like = $comment->getChallengeMessageLikes()->filter(function ($like) {
                     return $like->getUser() == $this->getUser();
                 })->first();
             } else {
@@ -96,7 +109,7 @@ class CommentController extends AbstractController
                 $em->remove($like);
                 $em->flush();
                 // * On met à jour la popularité de la publication
-                if (!$forum) {
+                if (!$forum && !$challenge) {
                     $this->publicationPopularity->PublicationPopularity($comment->getPublication());
                 }
                 return $this->json([
@@ -110,6 +123,11 @@ class CommentController extends AbstractController
                 $like->setUser($this->getUser())
                     ->setMessage($comment)
                     ->setCreatedAt(new \DateTimeImmutable());
+            } elseif ($challenge) {
+                $like = new ChallengeMessageLike();
+                $like->setUser($this->getUser())
+                    ->setMessage($comment)
+                    ->setCreatedAt(new \DateTimeImmutable());
             } else {
                 $like = new PublicationCommentLike();
                 $like->setUser($this->getUser())
@@ -119,14 +137,18 @@ class CommentController extends AbstractController
             $em->persist($like);
             $em->flush();
             // * On met à jour la popularité de la publication
-            if (!$forum) {
+            if (!$forum && !$challenge) {
                 $this->publicationPopularity->PublicationPopularity($comment->getPublication());
                 // Envoi d'une notification
                 $this->notificationSystem->addNotification(3, $like->getComment()->getUser(), $this->getUser(), $like);
             } else {
                 // Envoi d'une notification
-
-                $this->notificationSystem->addNotification(16, $like->getMessage()->getUser(), $this->getUser(), $comment);
+                if (!$forum) {
+                    $this->notificationSystem->addNotification(16, $like->getMessage()->getUser(), $this->getUser(), $like);
+                } else {
+                    // challenge
+                    // $this->notificationSystem->addNotification(17, $like->getMessage()->getUser(), $this->getUser(), $like);
+                }
             }
             //
         } else {
@@ -146,9 +168,12 @@ class CommentController extends AbstractController
     {
         $id = $request->get("id");
         $forum = $request->get("forum");
+        $challenge = $request->get("challenge");
         $dtNewCom = $request->get("newCom");
         if ($forum) {
             $comment = $this->em->getRepository(ForumMessage::class)->find($id);
+        } elseif ($challenge) {
+            $comment = $this->em->getRepository(ChallengeMessage::class)->find($id);
         } else {
             $comment = $pcomRepo->find($id);
         }
@@ -185,10 +210,15 @@ class CommentController extends AbstractController
                         // On vérifie que l'utilisateur n'est pas déjà mentionné dans le message dans les notifications
                         $notification = $notifRepo->findOneBy(['user' => $user, 'type' => 14, 'assignForumMessage' => $comment]);
                         $notification_forum = $notifRepo->findOneBy(['user' => $user, 'type' => 17, 'assignForumReply' => $comment]);
+                        // $notification_challenge = $notifRepo->findOneBy(['user' => $user, 'type' => 17, 'assignForumReply' => $comment]);
                         if (!$forum) {
                             if (!$notification) {
                                 $this->notificationSystem->addNotification(14, $user, $this->getUser(), $comment);
                             }
+                        } elseif (!$challenge) {
+                            // if (!$notification_challenge) {
+                            //     $this->notificationSystem->addNotification(17, $user, $this->getUser(), $comment);
+                            // }
                         } else {
                             if (!$notification_forum) {
                                 $this->notificationSystem->addNotification(17, $user, $this->getUser(), $comment);
@@ -212,14 +242,17 @@ class CommentController extends AbstractController
         ], 200);
     }
     #[Route('/comment/reply', name: 'app_comment_reply', methods: ['POST'])]
-    public function CommentReply(NotificationRepository $notifRepo, ForumMessageRepository $fmRepo, Request $request, PublicationCommentRepository $pcomRepo, EntityManagerInterface $em): response
+    public function CommentReply(NotificationRepository $notifRepo, ForumMessageRepository $fmRepo, ChallengeMessageRepository $cmRepo, Request $request, PublicationCommentRepository $pcomRepo, EntityManagerInterface $em): response
     {
         $id = $request->get("id"); // ID du commentaire principal
         $dtReplyContent = $request->get("replyContent"); // Contenu du commentaire
         $dtForum = $request->get("forum"); // Contenu du commentaire
+        $dtChallenge = $request->get("challenge"); // Contenu du commentaire
         // * On cherche le commentaire principal
         if ($dtForum) {
             $commentOrigin = $fmRepo->find($id);
+        } elseif ($dtChallenge) {
+            $commentOrigin = $cmRepo->find($id);
         } else {
             $commentOrigin = $pcomRepo->find($id);
         }
@@ -229,6 +262,13 @@ class CommentController extends AbstractController
                 $comment = new ForumMessage();
                 $comment->setUser($this->getUser())
                     ->setTopic($commentOrigin->getTopic())
+                    ->setPublishedAt(new \DateTimeImmutable())
+                    ->setContent($dtReplyContent)
+                    ->setReplyTo($commentOrigin);
+            } elseif ($dtChallenge) {
+                $comment = new ChallengeMessage();
+                $comment->setUser($this->getUser())
+                    ->setChallenge($commentOrigin->getChallenge())
                     ->setPublishedAt(new \DateTimeImmutable())
                     ->setContent($dtReplyContent)
                     ->setReplyTo($commentOrigin);
@@ -246,6 +286,8 @@ class CommentController extends AbstractController
             // Envoi d'une notification
             if (!$dtForum) {
                 $this->notificationSystem->addNotification(9, $commentOrigin->getUser(), $this->getUser(), $comment);
+            } elseif (!$dtChallenge) {
+                // $this->notificationSystem->addNotification(16, $commentOrigin->getUser(), $this->getUser(), $comment);
             } else {
                 $this->notificationSystem->addNotification(15, $commentOrigin->getUser(), $this->getUser(), $comment);
             }
@@ -263,10 +305,15 @@ class CommentController extends AbstractController
                         // On vérifie que l'utilisateur n'est pas déjà mentionné dans le message dans les notifications
                         $notification = $notifRepo->findOneBy(['user' => $user, 'type' => 14, 'assignComment' => $comment]);
                         $notification_forum = $notifRepo->findOneBy(['user' => $user, 'type' => 17, 'assignForumReply' => $comment]);
+                        // $notification_challenge = $notifRepo->findOneBy(['user' => $user, 'type' => 17, 'assignForumReply' => $comment]);
                         if (!$dtForum) {
                             if (!$notification) {
                                 $this->notificationSystem->addNotification(14, $user, $this->getUser(), $comment);
                             }
+                        } elseif (!$dtChallenge) {
+                            // if (!$notification_challenge) {
+                            //     $this->notificationSystem->addNotification(17, $user, $this->getUser(), $comment);
+                            // }
                         } else {
                             if (!$notification_forum) {
                                 $this->notificationSystem->addNotification(17, $user, $this->getUser(), $comment);

@@ -5,7 +5,8 @@ export function CommentReply() {
   let isProcessingReply = false;
   const commentDiv = document.getElementById("comment-section");
   const forumDiv = document.getElementById("forum-section");
-  if (!commentDiv && !forumDiv) return;
+  const challengeDiv = document.getElementById("challenge-section");
+  if (!commentDiv && !forumDiv && !challengeDiv) return;
   // ! Fonction de réponse à une réponse de commentaire
   let replyToButton = document.querySelectorAll(".replyToButton");
   replyToButton.forEach((el) => {
@@ -65,7 +66,9 @@ export function CommentReply() {
           if (forumDiv) {
             data.append("forum", true);
           }
-
+          if (challengeDiv) {
+            data.append("challenge", true);
+          }
           axios
             .post(url, data, {
               headers: {
@@ -108,7 +111,8 @@ export function Comment() {
   let isProcessingComment = false;
   const commentDiv = document.getElementById("comment-section");
   const forumDiv = document.getElementById("forum-section");
-  if (!commentDiv && !forumDiv) return;
+  const challengeDiv = document.getElementById("challenge-section");
+  if (!commentDiv && !forumDiv && !challengeDiv) return;
   // ! Fonction de réponse à un commentaire
   let replyButton;
   replyButton = document.querySelectorAll(".replyButton");
@@ -161,7 +165,9 @@ export function Comment() {
           if (forumDiv) {
             data.append("forum", true);
           }
-
+          if (challengeDiv) {
+            data.append("challenge", true);
+          }
           axios
             .post(url, data, {
               headers: {
@@ -202,7 +208,8 @@ export function CommentDelete() {
   // ! Fonction de suppression d'un commentaire
   const commentDiv = document.getElementById("comment-section");
   const forumDiv = document.getElementById("forum-section");
-  if (!commentDiv && !forumDiv) return;
+  const challengeDiv = document.getElementById("challenge-section");
+  if (!commentDiv && !forumDiv && !challengeDiv) return;
   const deleteComment = document.querySelectorAll(".deleteCommentButton");
   deleteComment.forEach((el) => {
     el.addEventListener("click", function () {
@@ -213,6 +220,9 @@ export function CommentDelete() {
       data.append("id", commentId);
       if (forumDiv) {
         data.append("forum", true);
+      }
+      if (challengeDiv) {
+        data.append("challenge", true);
       }
       axios
         .post(url, data, {
@@ -270,6 +280,9 @@ export function CommentDelete() {
     data.append("id", result);
     if (forumDiv) {
       data.append("forum", true);
+    }
+    if (challengeDiv) {
+      data.append("challenge", true);
     }
     axios
       .post(url, data, {
@@ -341,6 +354,9 @@ export function CommentDelete() {
         data.append("newCom", newCom.value);
         if (forumDiv) {
           data.append("forum", true);
+        }
+        if (challengeDiv) {
+          data.append("challenge", true);
         }
         axios
           .post(url, data, {

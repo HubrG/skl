@@ -40,7 +40,7 @@ nav {
 	@apply  bg-white sticky top-0 z-[9999] border-b border-b-slate-300 px-2 md:px-4 py-2.5 dark:bg-slate-800 dark:border-b-slate-700
 }
 .navbar-button {
-	@apply  w-full flex gap-x-2 justify-center  cursor-pointer items-center text-slate-800 dark:text-slate-50 hover:bg-slate-50 focus:ring-4 focus:ring-slate-300 rounded-lg  px-4 py-2 md:px-5 md:py-2.5 mr-1 md:mr-2 dark:hover:bg-slate-700 focus:outline-none dark:focus:ring-slate-800;
+	@apply  w-full flex gap-x-1 justify-center  cursor-pointer items-center text-slate-800 dark:text-slate-50 hover:bg-slate-50 focus:ring-4 focus:ring-slate-300 rounded-lg  px-2 py-2 xl:px-6 lg:px-4 md:px-2  mr-2 md:py-2.5  dark:hover:bg-slate-700 focus:outline-none dark:focus:ring-slate-800;
 }
 .navbar-button-home {
 	@apply flex flex-col md:flex-row justify-center md:justify-center text-center font-semibold md:font-normal gap-y-2 text-sm md:text-base;
@@ -174,7 +174,7 @@ input[type=radio] {
 .peer:checked  {
 	@apply bg-slate-600
 }
-form input[type=text],input[type=email],input[type=date],input[type=password], .input    {
+form input[type=text],[type=number],input[type=email],input[type=date],input[type=password], .input    {
 		@apply mt-5  z-0    text-sm h-12  selection:bg-slate-800  block w-full border-slate-600 pl-10 p-2.5 bg-white dark:bg-slate-700 dark:border-slate-700 rounded border   focus:outline-none focus:border-blue-500 dark:text-slate-300 ;
 }
 form textarea {
@@ -1315,6 +1315,9 @@ nav.breadcrumb ol li a:hover.not-underline {
 .button-create-topic {
 	@apply rounded-t-none opacity-100 z-50 !important;
 }
+.button-create-challenge {
+	@apply opacity-100 rounded-t-none z-50 !important;
+}
 .roundedTnone {
 	@apply rounded-t-none !important;
 }
@@ -1633,4 +1636,13 @@ nav.breadcrumb ol li a:hover.not-underline {
 }
 .follow-user-no-avatar {
 	@apply bottom-0 rounded-t-none h-8 w-40 absolute !important;
+}
+.dark .sexercer  {
+	--fa-secondary-color: rgb(176, 176, 176) !important;
+}
+.constrain-table tbody tr {
+	@apply border-none !important;
+}
+.constrain-table tbody tr td {
+	@apply px-2 dark:text-slate-300 !important;
 }

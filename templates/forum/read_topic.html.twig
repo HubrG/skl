@@ -15,7 +15,7 @@
 				<li>
 					<i class="fa-regular fa-comments"></i>
 					<a href="{{path("app_forum")}}">
-						Forums
+						Discuter
 					</a>
 				</li>
 				<li>
@@ -129,7 +129,6 @@
 						{% endif %}
 					</div>
 				{% endif %}
-
 				<turbo-frame id="messages-frame" class="-mt-10">
 					{% if app.request.query.has('idCom') %}
 						{# La variable GET "idCom" est présente dans l'URL #}

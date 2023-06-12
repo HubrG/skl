@@ -5,6 +5,7 @@ namespace App\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -16,14 +17,16 @@ use Symfony\Component\Security\Http\Authenticator\AbstractLoginFormAuthenticator
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 
 
+
 class AppAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
     public const LOGIN_ROUTE = ['app_login', 'app_login_full'];
+    private $urlGenerator;
 
 
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
+    public function __construct(UrlGeneratorInterface $urlGenerator)
     {
         $this->urlGenerator = $urlGenerator;
     }
@@ -52,6 +55,8 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
             // Rediriger vers la page actuelle si l'URL de la page précédente n'est pas disponible
             $targetPath = $request->getUri();
         }
+        // $jwt = $this->jwtManager->create($token->getUser());
+        // return new JsonResponse(['token' => $jwt]);
 
         return new RedirectResponse($targetPath);
     }

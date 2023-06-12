@@ -27,6 +27,8 @@
 				<i class="fa-kit fa-regular-hand-holding-seedling-slash"></i>
 				Aucun exercice n'a encore été créé ! Vous avez l'occasion unique d'être la première personne à proposer un exercice à la communauté.
 			</h2>
+			<hr class="my-5">
+
 		{% else %}
 			<div class="flex flex-col  gap-y-5  mt-7">
 				{% for item in challenges %}
@@ -80,7 +82,14 @@
 					</div>
 					<hr class="my-2">
 				{% endfor %}
+
+
 			</div>
+
 		{% endif %}
+
+		<p class="text-sm opacity-70 text-center indent-6 italic">Nous vous invitons à explorer le pouvoir libérateur des limites dans l'art. Vous découvrirez comment l'imposition volontaire de règles ou de restrictions peut ouvrir de nouvelles voies à votre créativité.</p>
+		<p class="text-sm opacity-70 text-center indent-6 italic mt-5">
+			Vous pourriez vous demander comment les restrictions peuvent améliorer votre travail artistique, mais c'est là que réside le paradoxe de la « contrainte libératoire ». En fixant des limites, nous pouvons en fait stimuler notre imagination et créer quelque chose d'unique et de passionnant.</p>
 	</div>
 </div>{% endblock %}

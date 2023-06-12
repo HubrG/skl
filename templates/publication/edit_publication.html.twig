@@ -57,6 +57,12 @@
 				</div>
 			{% endif %}
 			{# end #}
+			{% if infoPub.challenge %}
+				<small class="opacity-50 text-xs">
+					Réponse à l'exercice :
+					<a href="{{path("app_challenge_read", {id:infoPub.challenge.id, slug:infoPub.challenge.slug})}}" class="hover:underline">{{infoPub.challenge.title}}</a>
+				</small>
+			{% endif %}
 			{{ infoPub.title|capitalize }}
 		</span>
 	</h1>
@@ -622,6 +628,7 @@
 					&nbsp;Sauvegarder
 				{% endif %}
 			</button>
+
 			<div class="bg-slate-50 dark:bg-slate-900 py-3 px-3 mb-5 mt-3 rounded-lg  text-sm">
 				<div id="publishDiv" class="px-3 rounded-lg  w-full mb-3 mt-2 flex hover:opacity-100 hover:grayscale-0" for="publishToggle">
 					<label
@@ -710,6 +717,32 @@
 					</span>
 				</div>
 			</div>
+			{% if infoPub.challenge %}
+				<div class="rounded bg-slate-500 dark:bg-slate-900 dark:opacity-70 dark:hue-rotate-15 p-4">
+					<div class="text-center text-sm">
+						<span class="text-rose-50 font-semibold">
+							<i class="fa-regular fa-hand-holding-seedling"></i>
+							&nbsp;Il s'agit d'un exercice !</span>
+						<hr class="border-slate-400 dark:border-slate-700 mb-3">
+						<a href="{{path("app_challenge_read", {id:infoPub.challenge.id, slug:infoPub.challenge.slug})}}" class="hover:underline text-slate-100 text-base">«
+							{{infoPub.challenge.title}}
+							» &nbsp;&nbsp;<i class="fa-solid fa-up-right-from-square text-xs"></i>
+						</a>
+						<p class="italic">
+							<span class="text-slate-100 opacity-70">{{infoPub.challenge.content|length > 200 ? infoPub.challenge.content|slice(0,200) ~ "..." : infoPub.challenge.content }}</span>
+						</p>
+						{% if infoPub.challenge.dateEnd and infoPub.challenge.dateEnd|date("U") <= date("U")  %}
+							<hr class="border-slate-400 dark:border-slate-700 mb-3">
+							<div class="text-slate-200">
+								<i class="fa-regular fa-timer fa-spin"></i>
+								&nbsp;&nbsp;Il vous reste
+								<span class="font-semibold">{{infoPub.challenge.dateEnd|since}}</span>
+								pour publier votre réponse à cet exercice !
+							</div>
+						{% endif %}
+					</div>
+				</div>
+			{% endif %}
 			<div class="p-4 rounded-lg bg-slate-50 text-sm dark:bg-slate-900 w-full  mb-4 text-slate-800 dark:text-slate-400">
 				<p class=" mb-1 flex gap-x-3  items-center">
 					<i class="fa-regular fa-calendar-plus"></i>

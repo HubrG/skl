@@ -722,7 +722,7 @@
 			{% if infoPub.challenge %}
 				<div class="rounded bg-slate-500 dark:bg-slate-900 dark:oespacity-70 dark:hue-rotate-15 p-4 mb-5">
 					<div class="text-center text-sm">
-						<span class="text-rose-50 font-semibold">
+						<span class="text-rose-50 font-semibold text-base">
 							<i class="fa-regular fa-hand-holding-seedling"></i>
 							&nbsp;Il s'agit d'un exercice !</span>
 						<hr class="border-slate-400 dark:border-slate-700 mb-3">
@@ -733,20 +733,133 @@
 						<p class="italic">
 							<span class="text-slate-100 opacity-70">{{infoPub.challenge.content|length > 200 ? infoPub.challenge.content|slice(0,200) ~ "..." : infoPub.challenge.content }}</span>
 						</p>
-						<hr class="border-slate-400 dark:border-slate-700 mb-3">
-						<div>
-							<span class="font-semibold text-slate-100 italic">
-								<i class="fa-regular fa-mountain-sun"></i>&nbsp;&nbsp;Voir les contraintes</span>
+						{% if infoPub.challenge.constrainCategory or infoPub.challenge.constrainMinTime or infoPub.challenge.constrainMaxWords  or infoPub.challenge.constrainMinWords or infoPub.challenge.constrainMaxLetters or infoPub.challenge.constrainMinLetters or infoPub.challenge.constrainMinTime or infoPub.challenge.constrainMaxTime %}
+							<hr class="border-slate-400 dark:border-slate-700 mb-3">
+							<div class="text-slate-100">
+								<span class="font-semibold text-slate-100 italic">
+									<i class="fa-regular fa-mountain-sun"></i>&nbsp;&nbsp;Contraintes</span>
+								<table class="table-auto mt-0  constrain-table text-sm">
+									<tbody class="text-xs">
+										{% if infoPub.challenge.constrainCategory %}
+											<tr class="border-t border-b">
+												<td class="px-4 py-2">
+													<i class="fa-regular fa-masks-theater"></i>
+												</td>
+												<td class="px-4 py-2">
+													<u>Thème imposé</u>
+													:
+												</td>
+												<td class="px-4 py-2 font-semibold">
+													{{infoPub.challenge.constrainCategory.name}}
+												</td>
+											</tr>
+										{% endif %}
+										{% if infoPub.challenge.constrainMinTime %}
+											<tr class="border-t border-b">
+												<td class="px-4 py-2">
+													<i class="fa-regular fa-gauge-simple-min"></i>
+												</td>
+												<td class="px-4 py-2">
+													<u>Lecture</u>
+													<strong>min.</strong>
+													:
+												</td>
+												<td class="px-4 py-2">
+													{{infoPub.challenge.constrainMinTime}}
+													minute{{infoPub.challenge.constrainMinTime > 1 ? "s"}}
+												</td>
+											</tr>
+										{% endif %}
+										{% if infoPub.challenge.constrainMaxTime %}
+											<tr class="border-t border-b">
+												<td class="px-4 py-2">
+													<i class="fa-regular fa-gauge-simple-max"></i>
+												</td>
+												<td class="px-4 py-2">
+													<u>Lecture</u>
+													<strong>max.</strong>
+													:
+												</td>
+												<td class="px-4 py-2">
+													{{infoPub.challenge.constrainMaxTime}}
+													minute{{infoPub.challenge.constrainMaxTime > 1 ? "s"}}
+												</td>
+											</tr>
+										{% endif %}
+										{% if infoPub.challenge.constrainMinWords %}
+											<tr class="border-t border-b">
+												<td class="px-4 py-2">
+													<i class="fa-kit fa-regular-i-cursor-circle-minus fa-rotate-90"></i>
+												</td>
+												<td class="px-4 py-2">
+													<strong>Min.</strong>
+													de
+													<u>mots</u>
+													:
+												</td>
+												<td class="px-4 py-2">
+													{{infoPub.challenge.constrainMinWords}}
+													mot{{infoPub.challenge.constrainMinWords > 1 ? "s" : ""}}
+												</td>
+											</tr>
+										{% endif %}
+										{% if infoPub.challenge.constrainMaxWords %}
+											<tr class="border-t border-b">
+												<td class="px-4 py-2">
+													<i class="fa-kit fa-regular-i-cursor-circle-plus fa-rotate-90"></i>
+												</td>
+												<td class="px-4 py-2">
+													<strong>Max.</strong>
+													de
+													<u>mots</u>
+													:
+												</td>
+												<td class="px-4 py-2">
+													{{infoPub.challenge.constrainMaxWords}}
+													mot{{infoPub.challenge.constrainMaxWords > 1 ? "s"}}
+												</td>
+											</tr>
+										{% endif %}
+										{% if infoPub.challenge.constrainMinLetters %}
+											<tr class="border-t border-b">
+												<td class="px-4 py-2">
+													<i class="fa-kit fa-regular-i-cursor-circle-minus"></i>
+												</td>
+												<td class="px-4 py-2">
+
+													<strong>Min.</strong>
+													de
+													<u>lettres</u>
+													:
+												</td>
+												<td class="px-4 py-2">
+													{{infoPub.challenge.constrainMinLetters}}
+													lettre{{infoPub.challenge.constrainMinLetters > 1 ? "s"}}
+												</td>
+											</tr>
+										{% endif %}
+										{% if infoPub.challenge.constrainMaxLetters %}
+											<tr class="border-t border-b">
+												<td class="px-4 py-2">
+													<i class="fa-kit fa-regular-i-cursor-circle-plus"></i>
+												</td>
+												<td class="px-4 py-2">
+													<strong>Max.</strong>
+													de
+													<u>lettres</u>
+													:
+												</td>
+												<td class="px-4 py-2">
+													{{infoPub.challenge.constrainMaxLetters}}
+													lettre{{infoPub.challenge.constrainMaxLetters > 1 ? "s"}}
+												</td>
+											</tr>
+										{% endif %}
+									</tbody>
+								</table>
+							{% endif %}
+
 						</div>
-						{% if infoPub.challenge.dateEnd and infoPub.challenge.dateEnd|date("U") <= date("U")  %}
-							<hr class="border-slate-400 dark:border-slate-700 mb-3 mt-3">
-							<div class="text-slate-200">
-								<i class="fa-regular fa-timer fa-spin"></i>
-								&nbsp;&nbsp;Il vous reste
-								<span class="font-semibold">{{infoPub.challenge.dateEnd|since}}</span>
-								pour publier votre réponse à cet exercice !
-							</div>
-						{% endif %}
 					</div>
 				</div>
 			{% endif %}

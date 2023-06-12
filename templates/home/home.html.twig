@@ -18,13 +18,13 @@
 		<li class="navbar-home-item" {% if not app.user %} data-micromodal-trigger="popup-register" {% endif %}>
 			{% if app.user %}
 				<a href="{{path("app_publication_add")}}">
-					<i class="fa-duotone fa-book text-blue-400"></i>
-					<span>Publier</span>
+					<i class="fa-duotone  fa-pen-to-square text-blue-400"></i>
+					<span>Écrire</span>
 				</a>
 			{% else %}
 				<button>
-					<i class="fa-duotone fa-book text-blue-400"></i>
-					<span>Publier</span>
+					<i class="fa-duotone  fa-pen-to-square text-blue-400"></i>
+					<span>Écrire</span>
 				</button>
 			{% endif %}
 		</li>

@@ -67,6 +67,9 @@ class Challenge
     #[ORM\OneToMany(mappedBy: 'challenge', targetEntity: Publication::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publications;
 
+    #[ORM\Column]
+    private ?bool $contest = null;
+
     public function __construct()
     {
         $this->challengeMessages = new ArrayCollection();
@@ -321,6 +324,18 @@ class Challenge
                 $publication->setChallenge(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isContest(): ?bool
+    {
+        return $this->contest;
+    }
+
+    public function setContest(bool $contest): self
+    {
+        $this->contest = $contest;
 
         return $this;
     }

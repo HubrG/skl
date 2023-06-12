@@ -38,7 +38,9 @@
 	</nav>
 	{% if (infoPub.user.username == app.user.username and infoPub.status < 2) %}
 		<div class="bg-slate-200 dark:bg-slate-900 p-3 font-semibold mb-5 -mt-3 block md:hidden mx-auto text-sm text-slate-800 dark:text-slate-400 rounded text-center py-2">
-			<i class="fa-duotone fa-lightbulb text-slate-800"></i>&nbsp;&nbsp;Lorsque votre récit sera prêt, n'oubliez pas de le publier !<br>
+			<i class="fa-duotone fa-lightbulb text-slate-800"></i>&nbsp;&nbsp;Lorsque votre
+			{{infoPub.challenge ? "exercice" : "récit"}}
+			sera mûr, n'oubliez pas de le publier !<br>
 			<small class="font-normal">Vous pouvez demander la publication
 				<a href="#publishText" class="underline">en bas de cette page</a>. Sans quoi, il ne sera pas visible par les lecteurs.</small>
 		</div>
@@ -718,7 +720,7 @@
 				</div>
 			</div>
 			{% if infoPub.challenge %}
-				<div class="rounded bg-slate-500 dark:bg-slate-900 dark:opacity-70 dark:hue-rotate-15 p-4">
+				<div class="rounded bg-slate-500 dark:bg-slate-900 dark:oespacity-70 dark:hue-rotate-15 p-4 mb-5">
 					<div class="text-center text-sm">
 						<span class="text-rose-50 font-semibold">
 							<i class="fa-regular fa-hand-holding-seedling"></i>
@@ -731,8 +733,13 @@
 						<p class="italic">
 							<span class="text-slate-100 opacity-70">{{infoPub.challenge.content|length > 200 ? infoPub.challenge.content|slice(0,200) ~ "..." : infoPub.challenge.content }}</span>
 						</p>
+						<hr class="border-slate-400 dark:border-slate-700 mb-3">
+						<div>
+							<span class="font-semibold text-slate-100 italic">
+								<i class="fa-regular fa-mountain-sun"></i>&nbsp;&nbsp;Voir les contraintes</span>
+						</div>
 						{% if infoPub.challenge.dateEnd and infoPub.challenge.dateEnd|date("U") <= date("U")  %}
-							<hr class="border-slate-400 dark:border-slate-700 mb-3">
+							<hr class="border-slate-400 dark:border-slate-700 mb-3 mt-3">
 							<div class="text-slate-200">
 								<i class="fa-regular fa-timer fa-spin"></i>
 								&nbsp;&nbsp;Il vous reste

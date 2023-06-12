@@ -280,11 +280,28 @@
 			{% if challenges|length == 0 %}
 				<h5 class="text-center">Aucune réponse à l'exercice</h5>
 			{% endif %}
-			<div class="display_publications big  twoMax">
+			<div class="display_publications big  twoMax  ">
 				{% for item in challenges %}
 					{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':'published', 'querySortby':'published', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
 				{% endfor %}
 			</div>
+			{% if challenges_draft|length > 0 %}
+				<hr class="mt-0 mb-0">
+				<h6 class="font-semibold">{{challenges_draft|length > 1 ? "Vos brouillons" : "Votre brouillon"}}
+					pour cet exercice</h6>
+				<div class="-mt-5">
+					{% for item in challenges_draft %}
+						<div>
+							<a href="{{path("app_publication_edit", {id:item.id})}}" class="hover:underline">{{item.title}}</a>
+							—
+							<small class="opacity-50">
+								Créé il y a
+								{{item.created|since}}
+							</small>
+						</div>
+					{% endfor %}
+				</div>
+			{% endif %}
 			<hr class="mb-0">
 			<div id="challenge-section"></div>
 			{% if app.user  %}

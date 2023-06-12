@@ -65,6 +65,7 @@ class ChallengeController extends AbstractController
             // Définissez les propriétés supplémentaires
             $challenge
                 ->setUser($this->getUser())
+                ->setContest(0)
                 ->setCreatedAt(new DateTimeImmutable())
                 ->setSlug(strtolower($slugger->slug($challenge->getTitle())));
             // Persistez et enregistrez l'entité
@@ -157,7 +158,30 @@ class ChallengeController extends AbstractController
             ->setParameter('challenge', $challenge)
             ->orderBy('MAX(p.published_date)', 'DESC');
         $challenges = $qb->getQuery()->getResult();
-        //  *
+        // * DERNIÈRES PUBLICATIONS DRAFTED
+        // Sous-requête pour obtenir les id des publications qui ont au moins un chapitre publié
+        // Sous-requête pour obtenir les id des publications qui ont au moins un chapitre publié
+        $subQuery = $em->createQueryBuilder()
+            ->select('p2.id')
+            ->from('App:Publication', 'p2')
+            ->innerJoin('p2.publicationChapters', 'pch2')
+            ->where('pch2.status >= 2');
+
+        // Requête principale
+        $qb = $pRepo->createQueryBuilder("p")
+            ->where('p.challenge = :challenge')
+            ->andWhere('p.id NOT IN (' . $subQuery->getDQL() . ')')
+            ->andWhere('p.user = :user')
+            ->orderBy('p.created', 'DESC')
+            ->setParameter('challenge', $challenge)
+            ->setParameter('user', $this->getUser());
+
+
+        $challenges_draft = $qb->getQuery()->getResult();
+
+
+
+
         return $this->render('challenge/read_challenge.html.twig', [
             "challenge" => $challenge,
             'form' => $form,
@@ -166,6 +190,7 @@ class ChallengeController extends AbstractController
             "nbrComReal" => $nbrComReal,
             "nbrCom" => $nbrCom,
             "challenges" => $challenges,
+            "challenges_draft" => $challenges_draft,
         ]);
     }
     #[Route('/challenge/update/{id}/{slug}', name: 'app_challenge_update')]

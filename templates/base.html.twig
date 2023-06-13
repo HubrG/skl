@@ -22,9 +22,8 @@
 		{# {% if app.environment == 'dev' %} #}
 		{# <link href="/images/fa/css/all.min.css" rel="stylesheet"> #}
 		{# {% elseif app.environment == 'prod' %} #}
-		<link rel="preload" as="style" href="https://kit.fontawesome.com/5e2ac7f1ef.css" crossorigin="anonymous"> <script src="https://kit.fontawesome.com/5e2ac7f1ef.js" crossorigin="anonymous"></script>
-		{# {% endif %} #}
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.turbo.min.js" data-turbo="false"></script>
+		{# <link rel="preload" as="style" href="https://kit.fontawesome.com/5e2ac7f1ef.css" crossorigin="anonymous"> <script src="https://kit.fontawesome.com/5e2ac7f1ef.js" crossorigin="anonymous"></script> #}
+		{# {% endif %} #}<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.turbo.min.js" data-turbo="false"> </script>
 		{{ encore_entry_link_tags('app') }}
 		{% block stylesheets %}{% endblock %}
 		{{ encore_entry_script_tags('app') }}

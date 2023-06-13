@@ -8,11 +8,12 @@
 @import url('modal.css');
 @import url('glide.theme.css');
 @import "~tom-select/dist/css/tom-select.default.min.css";
+@import "/assets/styles/all.min.css";
+
 
 ::selection{
 	@apply bg-slate-700 text-slate-50 dark:bg-slate-700 px-2 font-light;
 }
-
 * {
 	@apply font-sans;
 	font-display: swap;

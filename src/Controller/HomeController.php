@@ -37,6 +37,7 @@ class HomeController extends AbstractController
             ->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
             ->where("p.status = 2")
             ->andWhere("p.hideSearch = FALSE")
+            ->andWhere("p.challenge IS NULL")
             ->orderBy("p.published_date", "DESC")
             ->groupBy('p.id')
             ->orderBy('MAX(p.published_date)', 'DESC')
@@ -48,6 +49,7 @@ class HomeController extends AbstractController
         $qb = $pRepo->createQueryBuilder("p")
             ->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
             ->where("p.status = 2")
+            ->andWhere("p.challenge IS NULL")
             ->andWhere("p.hideSearch = FALSE")
             ->groupBy('p.id')
             ->orderBy('MAX(p.pop)', 'DESC')
@@ -55,11 +57,24 @@ class HomeController extends AbstractController
         $publications_pop = $qb->getQuery()->getResult();
 
         // *
+        // * CHALLENGES
+        $qb = $pRepo->createQueryBuilder("p")
+            ->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
+            ->where("p.status = 2")
+            ->andWhere("p.challenge IS NOT NULL")
+            ->andWhere("p.hideSearch = FALSE")
+            ->groupBy('p.id')
+            ->orderBy('MAX(p.published_date)', 'DESC')
+            ->setMaxResults(9);
+        $publications_challenge = $qb->getQuery()->getResult();
+
+        // *
         // * PUBLICATIONS MISES À JOUR
         $qb = $pRepo->createQueryBuilder('p')
             ->leftJoin('p.publicationChapters', 'pc')
             ->where('p.status = 2')
             ->andWhere("p.hideSearch = FALSE")
+            ->andWhere("p.challenge IS NULL")
             ->andWhere('pc.status = 2')
             ->groupBy('p.id')
             ->orderBy('MAX(pc.published)', 'DESC')
@@ -89,6 +104,7 @@ class HomeController extends AbstractController
             'controller_name' => "d",
             "canonicalUrl" => $this->generateUrl('app_home', array(), true),
             'pub_last' => $publications_last,
+            'pub_challenge' => $publications_challenge,
             'pub_pop' => $publications_pop,
             'is_homepage' => true,
             'pub_updated' => $publications_updated,

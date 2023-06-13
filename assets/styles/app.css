@@ -1642,8 +1642,8 @@ nav.breadcrumb ol li a:hover.not-underline {
 	--fa-secondary-color: rgb(176, 176, 176) !important;
 }
 .constrain-table tbody tr {
-	@apply border-none !important;
+	@apply border-none justify-start items-start !important;
 }
 .constrain-table tbody tr td {
-	@apply px-2 dark:text-slate-300 !important;
+	@apply px-2 dark:text-slate-300 align-top  !important;
 }

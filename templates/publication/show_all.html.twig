@@ -95,10 +95,11 @@
 				</h4>
 				{# ! START - SORT BUTTON #}
 				<div class="-mt-3 w-full md:w-auto flex flex-col md:flex-row gap-y-8 items-baseline gap-x-2">
-					<button id="sortButton" data-dropdown-toggle="sortHover" class="flex justify-center items-center ring-1 bg-none  focus:ring-4 focus:outline-none font-medium w-full text-center rounded-lg text-xs lg:text-sm lg:mt-0 mt-2 px-4 py-2.5  {{ querySortby == 'pop' ? 'ring-sky-600 hover:bg-sky-50  text-sky-800 focus:ring-sky-300 dark:text-sky-500 dark:hover:text-sky-400 dark:ring-sky-400 dark:hover:bg-sky-900 dark:hover:ring-sky-500' : querySortby == 'published' ? 'ring-yellow-600 hover:bg-yellow-50  text-yellow-800 focus:ring-amber-300 dark:text-yellow-400 dark:ring-yellow-400 dark:hover:bg-yellow-900 dark:hover:text-yellow-400 dark:hover:ring-yellow-500' : 'ring-green-600 hover:bg-green-50  text-green-800 focus:ring-green-300 dark:text-green-400 dark:ring-green-400 dark:hover:bg-green-900 dark:hover:text-green-400 dark:hover:ring-green-500'}}    " type="button">
+					<button id="sortButton" data-dropdown-toggle="sortHover" class="flex justify-center items-center ring-1 bg-none  focus:ring-4 focus:outline-none font-medium w-full text-center rounded-lg text-xs lg:text-sm lg:mt-0 mt-2 px-4 py-2.5  {{ querySortby == 'pop' ? 'ring-sky-600 hover:bg-sky-50  text-sky-800 focus:ring-sky-300 dark:text-sky-500 dark:hover:text-sky-400 dark:ring-sky-400 dark:hover:bg-sky-900 dark:hover:ring-sky-500' : querySortby == 'published' ? 'ring-yellow-600 hover:bg-yellow-50  text-yellow-800 focus:ring-amber-300 dark:text-yellow-400 dark:ring-yellow-400 dark:hover:bg-yellow-900 dark:hover:text-yellow-400 dark:hover:ring-yellow-500' : querySortby == 'sheet' ? 'ring-red-600 hover:bg-red-50  text-red-800 focus:ring-amber-300 dark:text-red-400 dark:ring-red-400 dark:hover:bg-red-900 dark:hover:text-red-400 dark:hover:ring-red-500' : 'ring-green-600 hover:bg-green-50  text-green-800 focus:ring-green-300 dark:text-green-400 dark:ring-green-400 dark:hover:bg-green-900 dark:hover:text-green-400 dark:hover:ring-green-500'}}    " type="button">
 						{% set popIcon = '<i class="fa-duotone fa-fire text-sky-800 dark:text-sky-500"></i> ' %}
 						{% set newIcon = '<i class="fa-duotone fa-sparkles text-yellow-800 dark:text-yellow-400"></i>' %}
-						{% set lastChapterIcon = '<i class="fa-duotone fa-file-plus text-green-800 dark:text-green-400"></i>' %}
+						{% set lastChapterIcon = '<i class="fa-duotone fa-file-plus text-red-800 dark:text-red-400"></i>' %}
+						{% set challengeIcon = '<i class="fa-duotone fa-hand-holding-seedling text-green-800 dark:text-green-400"></i>' %}
 						{% if querySortby == 'pop' %}
 							{% set sortText = popIcon|raw ~ " &nbsp;&nbsp;Les plus populaires" %}
 						{% endif %}
@@ -107,6 +108,9 @@
 						{% endif %}
 						{% if querySortby == 'sheet' %}
 							{% set sortText = lastChapterIcon|raw ~ " &nbsp;&nbsp;Les dernières feuilles" %}
+						{% endif %}
+						{% if querySortby == 'challenge' %}
+							{% set sortText = challengeIcon|raw ~ " &nbsp;&nbsp;Les réponses aux exercices" %}
 						{% endif %}
 						{{ sortText|raw }}
 						<svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -134,8 +138,15 @@
 								'text': 'Les dernières feuilles publiées',
 								'order': 'desc',
 								'sortby': 'sheet',
-								'class': 'rounded-b-lg',
+								'class': '',
 								'icon': lastChapterIcon
+							},
+							{
+								'text': 'Les réponses aux exercices',
+								'order': 'desc',
+								'sortby': 'challenge',
+								'class': 'rounded-b-lg',
+								'icon': challengeIcon
 							},
 							
 						] %}
@@ -147,10 +158,12 @@
 									{% elseif querySortby == "published" %}
 										{% set activeClass = "bg-yellow-100 text-yellow-800 hover:bg-yellow-100 dark:bg-yellow-800 dark:hover:bg-yellow-800  dark:text-yellow-400" %}
 									{% elseif querySortby == "sheet" %}
+										{% set activeClass = "bg-red-100 text-red-800 hover:bg-red-100 dark:bg-red-800 dark:hover:bg-red-800  dark:text-red-400" %}
+									{% elseif querySortby == "challenge" %}
 										{% set activeClass = "bg-green-100 text-green-800 hover:bg-green-100 dark:bg-green-800 dark:hover:bg-green-800 rounded-b-lg dark:text-green-400" %}
 									{% endif %}
 								{% else %}
-									{% set activeClass = "hover:bg-slate-200 dark:bg-slate-500 dark:hover:bg-slate-700 dark:text-slate-300 grayscale" %}
+									{% set activeClass = "hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-900 dark:text-slate-300 " %}
 								{% endif %}
 								<li class="py-2 {{ option.class }} {{ activeClass }} ">
 									<a href="{{ path("app_publication_show_all_category", {slug: slugCat, keystring: queryKeystring, page: page, order: option.order, sortby: option.sortby}) }}" class="block px-4 py-2 ">

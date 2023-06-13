@@ -60,6 +60,8 @@ class PublicationShowController extends AbstractController
 			$sortby = "p.pop";
 		} elseif ($sortby == "sheet") {
 			$sortby = "p.sheet";
+		} elseif ($sortby == "challenge") {
+			$sortby = "p.challenge";
 		} else {
 			$sortby = "p.published_date";
 		}
@@ -70,13 +72,23 @@ class PublicationShowController extends AbstractController
 				->innerJoin("p.category", "pc", "WITH", "pc.id = :category_id")
 				->where("p.status = 2")
 				->andWhere("p.hideSearch = FALSE")
-				->andWhere("pc.id = :category_id")
-				->setParameter("category_id", $pcRepo);
+				->andWhere("pc.id = :category_id");
+			if ($sortby != "p.challenge") {
+				$qb->andWhere('p.challenge IS NULL');
+			} else {
+				$qb->andWhere('p.challenge IS NOT NULL');
+			}
+			$qb->setParameter("category_id", $pcRepo);
 		} else {
 			$qb = $pRepo->createQueryBuilder("p")
 				->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
 				->where("p.status = 2")
 				->andWhere("p.hideSearch = FALSE");
+			if ($sortby != "p.challenge") {
+				$qb->andWhere('p.challenge IS NULL');
+			} else {
+				$qb->andWhere('p.challenge IS NOT NULL');
+			}
 		}
 		try {
 			$count = count($qb->getQuery()->getResult());
@@ -110,14 +122,31 @@ class PublicationShowController extends AbstractController
 					$end = $count;
 				}
 				if ($sortby == "p.pop") {
-					$publications = $pRepo->findBy(["id" => $publicationsAll], ["pop" => $order], $nbr_by_page, $start);
+					$qb = $pRepo->createQueryBuilder('p')
+						->where('p IN (:publicationsAll)')
+						->andWhere('p.challenge IS NULL')
+						->andWhere("p.hideSearch = FALSE")
+						->orderBy('p.pop', $order)
+						->setParameter('publicationsAll', $publicationsAll)
+						->setMaxResults($nbr_by_page)
+						->setFirstResult($start);
+					$publications = $qb->getQuery()->getResult();
 				} elseif ($sortby == "p.published_date") {
-					$publications = $pRepo->findBy(["id" => $publicationsAll], ["published_date" => $order], $nbr_by_page, $start);
+					$qb = $pRepo->createQueryBuilder('p')
+						->where('p IN (:publicationsAll)')
+						->andWhere('p.challenge IS NULL')
+						->andWhere("p.hideSearch = FALSE")
+						->orderBy('p.published_date', $order)
+						->setParameter('publicationsAll', $publicationsAll)
+						->setMaxResults($nbr_by_page)
+						->setFirstResult($start);
+					$publications = $qb->getQuery()->getResult();
 				} elseif ($sortby == "p.sheet") {
 					$qb = $pRepo->createQueryBuilder('p')
 						->leftJoin('p.publicationChapters', 'pc')
 						->where('p IN (:publicationsAll)')
 						->andWhere('pc.status = 2')
+						->andWhere('p.challenge IS NULL')
 						->andWhere("p.hideSearch = FALSE")
 						->orderBy('pc.published', $order)
 						->setParameter('publicationsAll', $publicationsAll)
@@ -127,7 +156,19 @@ class PublicationShowController extends AbstractController
 						->setFirstResult($start);
 					$publications = $qb->getQuery()->getResult();
 					// $publications = $pRepo->findBy(["id" => $publications], [], $nbr_by_page, $start);
+				} elseif ($sortby == "p.challenge") {
+
+					$qb = $pRepo->createQueryBuilder('p')
+						->where('p IN (:publicationsAll)')
+						->andWhere('p.challenge IS NOT NULL')
+						->andWhere("p.hideSearch = FALSE")
+						->orderBy('p.published_date', $order)
+						->setParameter('publicationsAll', $publicationsAll)
+						->setMaxResults($nbr_by_page)
+						->setFirstResult($start);
+					$publications = $qb->getQuery()->getResult();
 				}
+
 				$keywString = null;
 			}
 			//  Si il y a des keywords dans l'url, on renvoie toutes les publications qui ont au moins un des keywords

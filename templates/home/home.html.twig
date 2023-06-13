@@ -246,7 +246,7 @@
 				<hr>
 				<h1>
 					Dernières feuilles publiées !
-					<i class="fa-duotone fa-file-waveform text-green-500"></i>
+					<i class="fa-duotone fa-file-waveform text-orange-500"></i>
 				</h1>
 				<hr class="mb-20">
 			</div>
@@ -265,7 +265,7 @@
 				</a>
 			</div>
 		</section>
-		<section class="z-50 order-5">
+		<section class="z-50 order-6">
 			<div class="my-special-hr">
 				<hr>
 				<h1>
@@ -288,5 +288,30 @@
 				</a>
 			</div>
 		</section>
+		{% if pub_challenge|length > 0 %}
+			<section class="z-50 order-5">
+				<div class="my-special-hr">
+					<hr>
+					<h1>
+						Dernières réponses aux exercices
+						<i class="fa-duotone fa-hand-holding-seedling text-emerald-500"></i>
+					</h1>
+					<hr class="mb-20">
+				</div>
+				<div class="display_publications">
+					{% for item in pub_challenge %}
+						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':'pop', 'querySortby':'pop', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
+					{% endfor %}
+				</div>
+				<div class="mt-10 text-right">
+					<a href="{{ path("app_publication_show_all_category", {slug:"all", sortby:"challenge", order:"desc", page:1})}}" class="button-classic button-gray w-full md:w-2/6 mx-auto" style="font-weight:600">
+						<span class="text-base">
+							<i class="fa-duotone fa-stars"></i>
+							Voir toutes les réponses aux exercices !
+						</span>
+					</a>
+				</div>
+			</section>
+		{% endif %}
 	</div>
 {% endblock %}

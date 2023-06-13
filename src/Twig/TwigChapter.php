@@ -33,6 +33,24 @@ class TwigChapter extends AbstractExtension
             } else {
                 return "Aucune feuille";
             }
+        }
+        if ($type == "word_count") {
+            $word = 0;
+            foreach ($array as $a) {
+                if ($a->getStatus() == 2) {
+                    $word += str_word_count(strip_tags($a->getContent()));
+                }
+            }
+            return $word;
+        }
+        if ($type == "letter_count") {
+            $letters = 0;
+            foreach ($array as $a) {
+                if ($a->getStatus() == 2) {
+                    $letters += strlen(strip_tags(str_replace(" ", "", $a->getContent())));
+                }
+            }
+            return $letters;
         } elseif ($type == "rt") { // read time - cumul de tous les chapitres publiés
             $word = 0;
             foreach ($array as $a) {
@@ -47,6 +65,9 @@ class TwigChapter extends AbstractExtension
                 return $hours . "h" . ($minutes < 10 ? "0" . $minutes : $minutes);
             } elseif ($format == "ft_short") {
                 return $hours . "h" . ($minutes < 10 ? "0" . $minutes : $minutes);
+            } elseif ($format == "pure") {
+                // On fait le calcul en minutes
+                return $minutes = $hours * 60 + $minutes;
             } else {
                 return $hours . "h" . ($minutes < 10 ? "0" . $minutes : $minutes);
             }

@@ -69,7 +69,17 @@ class FeedContentComponent extends AbstractController
     }
     public function getPublications(): array
     {
-        return $this->pubRepo->findBy(["status" => 2, "hideSearch" => 0], ["created" => "DESC"], 10);
+        $qb = $this->pubRepo->createQueryBuilder('p');
+
+        $qb->innerJoin('p.publicationChapters', 'pc')
+            ->where('p.status = 2')
+            ->andWhere('pc.status = 2')
+            ->andWhere("p.hideSearch = FALSE")
+            ->orderBy('p.created', 'DESC')
+            ->setMaxResults(10);
+
+        return $qb->getQuery()->getResult();
+        // return $this->pubRepo->findBy(["status" => 2, "hideSearch" => 0], ["created" => "DESC"], 10);
     }
     public function getPublicationChapters(): array
     {
@@ -350,10 +360,10 @@ class FeedContentComponent extends AbstractController
     {
         $qb = $this->pubRepo->createQueryBuilder('p');
 
-
-        $qb
+        $qb->innerJoin('p.publicationChapters', 'pc')
             ->where('p.status = 2')
             ->andWhere("p.hideSearch = FALSE")
+            ->andWhere('pc.status = 2')
             ->andWhere($qb->expr()->in('p.user', $followedUserIds))
             ->orderBy('p.created', 'DESC')
             ->setMaxResults(10);

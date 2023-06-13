@@ -92,6 +92,7 @@ class ChallengeController extends AbstractController
                 }
             }
             // On redirige vers le challenge
+            $this->addFlash("success", "L'exercice a bien été créé.");
             return $this->redirectToRoute('app_challenge_read', [
                 'id' => $challenge->getId(),
                 'slug' => $challenge->getSlug(),
@@ -244,6 +245,7 @@ class ChallengeController extends AbstractController
                 }
             }
             // On redirige vers le challenge
+            $this->addFlash("success", "L'exercice a bien été modifié.");
             return $this->redirectToRoute('app_challenge_read', [
                 'slug' => $challenge->getSlug(),
                 'id' => $challenge->getId(),
@@ -283,9 +285,9 @@ class ChallengeController extends AbstractController
             $publication = new Publication();
             $publication->setUser($this->getUser());
             $publication->setStatus(1);
-            $publication->setTitle("Réponse à l'exercice « " . $challenge->getTitle() . " »");
+            $publication->setTitle("Réponse à l'exercice / " . $challenge->getTitle());
             $publication->setAccess(0);
-            $publication->setSlug($slugger->slug(strtolower("Réponse à l'exercice « " . $challenge->getTitle() . " »")));
+            $publication->setSlug($slugger->slug(strtolower("Réponse à l'exercice / " . $challenge->getTitle())));
             $publication->setHideSearch(0);
             $publication->setSupport(0);
             $publication->setAllowRevision(1);

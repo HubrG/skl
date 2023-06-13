@@ -48,6 +48,24 @@ class PublicationRepository extends ServiceEntityRepository
             ->join('p.publicationChapters', 'pch') // Ici, 'publicationChapters' devrait être le nom de la propriété dans votre entité "Publication" qui fait référence à vos chapitres.
             ->andWhere('p.title LIKE :query')
             ->andWhere('p.status = 2')
+            ->andWhere('p.challenge IS NULL')
+            ->andWhere('pch.status = 2') // Et ici nous ajoutons le critère pour le statut du chapitre
+            ->andWhere("p.hideSearch = FALSE")
+            ->setParameter('query', '%' . $query . '%')
+            ->orderBy('p.title', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+    public function findByQueryChallenge(string $query): array
+    {
+        if (empty($query)) {
+            return [];
+        }
+        return $this->createQueryBuilder('p')
+            ->join('p.publicationChapters', 'pch') // Ici, 'publicationChapters' devrait être le nom de la propriété dans votre entité "Publication" qui fait référence à vos chapitres.
+            ->andWhere('p.title LIKE :query')
+            ->andWhere('p.status = 2')
+            ->andWhere('p.challenge IS NOT NULL')
             ->andWhere('pch.status = 2') // Et ici nous ajoutons le critère pour le statut du chapitre
             ->andWhere("p.hideSearch = FALSE")
             ->setParameter('query', '%' . $query . '%')

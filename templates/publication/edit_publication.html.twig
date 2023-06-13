@@ -60,7 +60,7 @@
 			{% endif %}
 			{# end #}
 			{% if infoPub.challenge %}
-				<small class="opacity-50 text-xs">
+				<small class="opacity-50 text-[0.75rem]">
 					Réponse à l'exercice :
 					<a href="{{path("app_challenge_read", {id:infoPub.challenge.id, slug:infoPub.challenge.slug})}}" class="hover:underline">{{infoPub.challenge.title}}</a>
 				</small>
@@ -69,28 +69,248 @@
 		</span>
 	</h1>
 	<div class="flex flex-col lg:flex-row mx-auto justify-center w-full">
-		<aside class="relative lg:w-3/12 w-8/12  mx-auto md:mt-5 mb-14 pr-2 lg:mb-0">
-			<div id="no-cover" class="{{infoPub.cover == '' ? " block" : " hidden"}}">
-				<div id="hideNoCover" data-tippy-content="Cliquez ici pour ajouter une photo de couverture" class="no-cover justify-center flex lg:w-full w-[80%] mx-auto" for="publication_cover">
-					<label for="publication_cover" class="cursor-pointer justify-center h-80">
-						<h5 class="m-auto text-center font-light shadow-slate-300  dark:shadow-slate-900 mt-10 rounded-lg">
-							<i class="fa-duotone fa-images text-6xl"></i><br/><br/>Ajouter une couverture
-						</h5>
+		<aside class="relative lg:w-3/12  w-12/12 flex flex-col mx-auto md:mt-5 mb-14 pr-2 lg:mb-0">
+			{% if infoPub.challenge %}
+				<div class="rounded md:order-2 order-1  md:mt-5 -mt-10 bg-slate-500 dark:bg-slate-900 dark:oespacity-70 dark:hue-rotate-15 p-4 mb-5">
+					<div class="text-center text-sm">
+						<span class="text-slate-50 font-semibold text-base">
+							<i class="fa-regular fa-hand-holding-seedling"></i>
+							&nbsp;Il s'agit d'un exercice !</span>
+						<hr class="border-slate-400 dark:border-slate-700 mb-3">
+						<a href="{{path("app_challenge_read", {id:infoPub.challenge.id, slug:infoPub.challenge.slug})}}" class="hover:underline text-slate-100 text-sm">«
+							{{infoPub.challenge.title}}
+							»
+						</a>
+						<p class="italic" {% if infoPub.challenge.content|length > 200 %} data-tippy-content="{{infoPub.challenge.content|length > 1000 ? infoPub.challenge.content|slice(0,1000) ~ "..." : infoPub.challenge.content}}" {% endif %}>
+							<span class="text-slate-100 opacity-70 text-xs">{{infoPub.challenge.content|length > 200 ? infoPub.challenge.content|slice(0,200) ~ "..." : infoPub.challenge.content }}</span>
+						</p>
+						{% if infoPub.challenge.constrainCategory or infoPub.challenge.constrainMinTime or infoPub.challenge.constrainMaxWords  or infoPub.challenge.constrainMinWords or infoPub.challenge.constrainMaxLetters or infoPub.challenge.constrainMinLetters or infoPub.challenge.constrainMinTime or infoPub.challenge.constrainMaxTime %}
+							<hr class="border-slate-400 dark:border-slate-700 mb-3">
+							<div class="text-slate-100">
+								<span class="font-semibold text-slate-100 italic">
+									<i class="fa-regular fa-mountain-sun"></i>&nbsp;&nbsp;Contraintes</span>
+								<table class="table-auto mt-0  constrain-table text-left flex justify-center pt-2 text-sm">
+									<tbody class="text-xs">
+										{% if infoPub.challenge.constrainCategory %}
+											<tr class="border-t border-b">
+												<td class="py-3">
+													<i class="fa-regular fa-masks-theater"></i>
+												</td>
+												<td class="py-3">
+													<u>Thème</u>
+													:
+												</td>
+												<td class="py-3 font-semibold  flex flex-col cursor-default" {% if infoPub.challenge.constrainCategory.name|length > 7 %} data-tippy-content="{{infoPub.challenge.constrainCategory.name}}" {% endif %}>
+													{{infoPub.challenge.constrainCategory.name|length > 7 ? infoPub.challenge.constrainCategory.name|slice(0,7) ~ "...": infoPub.challenge.constrainCategory.name}}
+												</td>
+												<td class="font-semibold py-3">
+													<i class="fa-regular fa-circle-check text-green-300" data-tippy-content="Contrainte validée"></i>
+												</td>
+											</tr>
+										{% endif %}
+										{% if infoPub.challenge.constrainMinTime %}
+											<tr class="border-t border-b">
+												<td>
+													<i class="fa-regular fa-gauge-simple-min"></i>
+												</td>
+												<td>
+													<u>Lecture</u>
+													<strong>min.</strong>
+													:
+												</td>
+												<td class="flex flex-col">
+													<span>
+														{{infoPub.challenge.constrainMinTime}}
+														mn.
+													</span>
+													<span class="opacity-50 text-[0.75rem]">
+														<i class="fa-regular fa-arrow-right"></i>
+														{{infoPub.publicationChapters|chapter("rt", "pure")}}
+														mn.</span>
+												</td>
+												{% if infoPub.publicationChapters|chapter("rt", "pure") >= infoPub.challenge.constrainMinTime %}
+													<td class="font-semibold ">
+														<i class="fa-regular fa-circle-check text-green-300" data-tippy-content="Contrainte validée"></i>
+													</td>
+												{% else %}
+													<td class="font-semibold ">
+														<i class="fa-regular fa-circle-xmark text-red-300" data-tippy-content="Contrainte non validée"></i>
+													</td>
+												{% endif %}
+											</tr>
+										{% endif %}
+										{% if infoPub.challenge.constrainMaxTime %}
+											<tr class="border-t border-b">
+												<td class="">
+													<i class="fa-regular fa-gauge-simple-max"></i>
+												</td>
+												<td class="">
+													<u>Lecture</u>
+													<strong>max.</strong>
+													:
+												</td>
+												<td class="flex flex-col">
+													<span>{{infoPub.challenge.constrainMaxTime}}
+														mn.</span>
+													<span class="opacity-50 text-[0.75rem]">
+														<i class="fa-regular fa-arrow-right"></i>
+														{{infoPub.publicationChapters|chapter("rt", "pure")}}
+														mn.</span>
+												</td>
+												{% if infoPub.publicationChapters|chapter("rt", "pure") <= infoPub.challenge.constrainMaxTime %}
+													<td class="font-semibold ">
+														<i class="fa-regular fa-circle-check text-green-300" data-tippy-content="Contrainte validée"></i>
+													</td>
+												{% else %}
+													<td class="font-semibold ">
+														<i class="fa-regular fa-circle-xmark text-red-300" data-tippy-content="Contrainte non validée"></i>
+													</td>
+												{% endif %}
+											</tr>
+										{% endif %}
+										{% if infoPub.challenge.constrainMinWords %}
+											<tr class="border-t border-b">
+												<td class="">
+													<i class="fa-regular fa-i-cursor fa-rotate-90"></i>
+												</td>
+												<td class="">
+													<strong>Min.</strong>
+													de
+													<u>mots</u>
+													:
+												</td>
+												<td class=" flex flex-col">
+													{{infoPub.challenge.constrainMinWords}}
+													<span class="opacity-50 text-[0.75rem]">
+														<i class="fa-regular fa-arrow-right"></i>
+														{{infoPub.publicationChapters|chapter("word_count", "")}}</span>
+												</td>
+												{% if infoPub.publicationChapters|chapter("word_count", "") >= infoPub.challenge.constrainMinWords %}
+													<td class="font-semibold ">
+														<i class="fa-regular fa-circle-check text-green-300" data-tippy-content="Contrainte validée"></i>
+													</td>
+												{% else %}
+													<td class="font-semibold ">
+														<i class="fa-regular fa-circle-xmark text-red-300" data-tippy-content="Contrainte non validée"></i>
+													</td>
+												{% endif %}
+											</tr>
+										{% endif %}
+										{% if infoPub.challenge.constrainMaxWords %}
+											<tr class="border-t border-b">
+												<td class="">
+													<i class="fa-regular fa-i-cursor fa-rotate-90"></i>
+												</td>
+												<td class="">
+													<strong>Max.</strong>
+													de
+													<u>mots</u>
+													:
+												</td>
+												<td class=" flex flex-col">
+													{{infoPub.challenge.constrainMaxWords}}
+													<span class="opacity-50 text-[0.75rem]">
+														<i class="fa-regular fa-arrow-right"></i>
+														{{infoPub.publicationChapters|chapter("word_count", "")}}</span>
+												</td>
+												{% if infoPub.publicationChapters|chapter("word_count", "") <= infoPub.challenge.constrainMaxWords %}
+													<td class="font-semibold ">
+														<i class="fa-regular fa-circle-check text-green-300" data-tippy-content="Contrainte validée"></i>
+													</td>
+												{% else %}
+													<td class="font-semibold ">
+														<i class="fa-regular fa-circle-xmark text-red-300" data-tippy-content="Contrainte non validée"></i>
+													</td>
+												{% endif %}
+											</tr>
+										{% endif %}
+										{% if infoPub.challenge.constrainMinLetters %}
+											<tr class="border-t border-b">
+												<td class="">
+													<i class="fa-regular fa-i-cursor"></i>
+												</td>
+												<td class="">
+
+													<strong>Min.</strong>
+													de
+													<u>lettres</u>
+													:
+												</td>
+												<td class=" flex flex-col">
+													{{infoPub.challenge.constrainMinLetters}}
+													<span class="opacity-50 text-[0.75rem]">
+														<i class="fa-regular fa-arrow-right"></i>
+														{{infoPub.publicationChapters|chapter("letter_count", "")}}</span>
+												</td>
+												{% if infoPub.publicationChapters|chapter("letter_count", "") >= infoPub.challenge.constrainMinLetters %}
+													<td class="font-semibold ">
+														<i class="fa-regular fa-circle-check text-green-300" data-tippy-content="Contrainte validée"></i>
+													</td>
+												{% else %}
+													<td class="font-semibold ">
+														<i class="fa-regular fa-circle-xmark text-red-300" data-tippy-content="Contrainte non validée"></i>
+													</td>
+												{% endif %}
+											</tr>
+										{% endif %}
+										{% if infoPub.challenge.constrainMaxLetters %}
+											<tr class="border-t border-b">
+												<td class="">
+													<i class="fa-regular fa-i-cursor"></i>
+												</td>
+												<td class="">
+													<strong>Max.</strong>
+													de
+													<u>lettres</u>
+													:
+												</td>
+												<td class=" flex flex-col">
+													{{infoPub.challenge.constrainMaxLetters}}
+													<span class="opacity-50 text-[0.75rem]">
+														<i class="fa-regular fa-arrow-right"></i>
+														{{infoPub.publicationChapters|chapter("letter_count", "")}}</span>
+												</td>
+												{% if infoPub.publicationChapters|chapter("letter_count", "") <= infoPub.challenge.constrainMaxLetters %}
+													<td class="font-semibold ">
+														<i class="fa-regular fa-circle-check text-green-300" data-tippy-content="Contrainte validée"></i>
+													</td>
+												{% else %}
+													<td class="font-semibold ">
+														<i class="fa-regular fa-circle-xmark text-red-300" data-tippy-content="Contrainte non validée"></i>
+													</td>
+												{% endif %}
+											</tr>
+										{% endif %}
+									</tbody>
+								</table>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			{% endif %}
+			<div class="md:order-1 order-2 lg:w-full w-8/12 mx-auto md:mt-0 mt-5">
+				<div id="no-cover" class="{{infoPub.cover == '' ? " block" : " hidden"}} ">
+					<div id="hideNoCover" data-tippy-content="Cliquez ici pour ajouter une photo de couverture" class="no-cover justify-center flex lg:w-full w-[80%] mx-auto" for="publication_cover">
+						<label for="publication_cover" class="cursor-pointer justify-center h-80">
+							<h5 class="m-auto text-center font-light shadow-slate-300  dark:shadow-slate-900 mt-10 rounded-lg">
+								<i class="fa-duotone fa-images text-6xl"></i><br/><br/>Ajouter une couverture
+							</h5>
+						</label>
+					</div>
+				</div>
+				<div id="cover-ok" class="{{infoPub.cover != '' ? " block" : " hidden"}}">
+					<label for="publication_cover" class="cursor-pointer flex justify-center">
+						<img data-tippy-content="Cliquez ici pour modifier votre photo de couverture" id="cover" class="shadow-md lg:w-full w-[50%] lg:mt-0 -mt-10 shadow-slate-300 dark:shadow-slate-900 rounded-lg" src="{{infoPub.cover}}"/>
 					</label>
+					<div class="text-center mt-3 flex flex-row justify-center items-center gap-x-2  text-slate-600 dark:text-slate-400">
+						<i class="fa-duotone fa-image-slash"></i>
+						<span class="hover:underline cursor-pointer" id="deleteCover">Supprimer la couverture</span>
+					</div>
 				</div>
-			</div>
-			<div id="cover-ok" class="{{infoPub.cover != '' ? " block" : " hidden"}}">
-				<label for="publication_cover" class="cursor-pointer flex justify-center">
-					<img data-tippy-content="Cliquez ici pour modifier votre photo de couverture" id="cover" class="shadow-md lg:w-full w-[50%] lg:mt-0 -mt-10 shadow-slate-300 dark:shadow-slate-900 rounded-lg" src="{{infoPub.cover}}"/>
-				</label>
-				<div class="text-center mt-3 flex flex-row justify-center items-center gap-x-2  text-slate-600 dark:text-slate-400">
-					<i class="fa-duotone fa-image-slash"></i>
-					<span class="hover:underline cursor-pointer" id="deleteCover">Supprimer la couverture</span>
+				<div role="status" id="spinCover" class="hidden absolute -translate-x-1/2 -translate-y-1/2 top-[50%] md:top-[20%] left-[50%]">
+					<svg aria-hidden="true" class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewbox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/><path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/></svg>
+					<span class="sr-only">Loading...</span>
 				</div>
-			</div>
-			<div role="status" id="spinCover" class="hidden absolute -translate-x-1/2 -translate-y-1/2 top-[50%] md:top-[20%] left-[50%]">
-				<svg aria-hidden="true" class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewbox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/><path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/></svg>
-				<span class="sr-only">Loading...</span>
 			</div>
 		</aside>
 
@@ -719,150 +939,6 @@
 					</span>
 				</div>
 			</div>
-			{% if infoPub.challenge %}
-				<div class="rounded bg-slate-500 dark:bg-slate-900 dark:oespacity-70 dark:hue-rotate-15 p-4 mb-5">
-					<div class="text-center text-sm">
-						<span class="text-rose-50 font-semibold text-base">
-							<i class="fa-regular fa-hand-holding-seedling"></i>
-							&nbsp;Il s'agit d'un exercice !</span>
-						<hr class="border-slate-400 dark:border-slate-700 mb-3">
-						<a href="{{path("app_challenge_read", {id:infoPub.challenge.id, slug:infoPub.challenge.slug})}}" class="hover:underline text-slate-100 text-base">«
-							{{infoPub.challenge.title}}
-							» &nbsp;&nbsp;<i class="fa-solid fa-up-right-from-square text-xs"></i>
-						</a>
-						<p class="italic">
-							<span class="text-slate-100 opacity-70">{{infoPub.challenge.content|length > 200 ? infoPub.challenge.content|slice(0,200) ~ "..." : infoPub.challenge.content }}</span>
-						</p>
-						{% if infoPub.challenge.constrainCategory or infoPub.challenge.constrainMinTime or infoPub.challenge.constrainMaxWords  or infoPub.challenge.constrainMinWords or infoPub.challenge.constrainMaxLetters or infoPub.challenge.constrainMinLetters or infoPub.challenge.constrainMinTime or infoPub.challenge.constrainMaxTime %}
-							<hr class="border-slate-400 dark:border-slate-700 mb-3">
-							<div class="text-slate-100">
-								<span class="font-semibold text-slate-100 italic">
-									<i class="fa-regular fa-mountain-sun"></i>&nbsp;&nbsp;Contraintes</span>
-								<table class="table-auto mt-0  constrain-table text-sm">
-									<tbody class="text-xs">
-										{% if infoPub.challenge.constrainCategory %}
-											<tr class="border-t border-b">
-												<td class="px-4 py-2">
-													<i class="fa-regular fa-masks-theater"></i>
-												</td>
-												<td class="px-4 py-2">
-													<u>Thème imposé</u>
-													:
-												</td>
-												<td class="px-4 py-2 font-semibold">
-													{{infoPub.challenge.constrainCategory.name}}
-												</td>
-											</tr>
-										{% endif %}
-										{% if infoPub.challenge.constrainMinTime %}
-											<tr class="border-t border-b">
-												<td class="px-4 py-2">
-													<i class="fa-regular fa-gauge-simple-min"></i>
-												</td>
-												<td class="px-4 py-2">
-													<u>Lecture</u>
-													<strong>min.</strong>
-													:
-												</td>
-												<td class="px-4 py-2">
-													{{infoPub.challenge.constrainMinTime}}
-													minute{{infoPub.challenge.constrainMinTime > 1 ? "s"}}
-												</td>
-											</tr>
-										{% endif %}
-										{% if infoPub.challenge.constrainMaxTime %}
-											<tr class="border-t border-b">
-												<td class="px-4 py-2">
-													<i class="fa-regular fa-gauge-simple-max"></i>
-												</td>
-												<td class="px-4 py-2">
-													<u>Lecture</u>
-													<strong>max.</strong>
-													:
-												</td>
-												<td class="px-4 py-2">
-													{{infoPub.challenge.constrainMaxTime}}
-													minute{{infoPub.challenge.constrainMaxTime > 1 ? "s"}}
-												</td>
-											</tr>
-										{% endif %}
-										{% if infoPub.challenge.constrainMinWords %}
-											<tr class="border-t border-b">
-												<td class="px-4 py-2">
-													<i class="fa-kit fa-regular-i-cursor-circle-minus fa-rotate-90"></i>
-												</td>
-												<td class="px-4 py-2">
-													<strong>Min.</strong>
-													de
-													<u>mots</u>
-													:
-												</td>
-												<td class="px-4 py-2">
-													{{infoPub.challenge.constrainMinWords}}
-													mot{{infoPub.challenge.constrainMinWords > 1 ? "s" : ""}}
-												</td>
-											</tr>
-										{% endif %}
-										{% if infoPub.challenge.constrainMaxWords %}
-											<tr class="border-t border-b">
-												<td class="px-4 py-2">
-													<i class="fa-kit fa-regular-i-cursor-circle-plus fa-rotate-90"></i>
-												</td>
-												<td class="px-4 py-2">
-													<strong>Max.</strong>
-													de
-													<u>mots</u>
-													:
-												</td>
-												<td class="px-4 py-2">
-													{{infoPub.challenge.constrainMaxWords}}
-													mot{{infoPub.challenge.constrainMaxWords > 1 ? "s"}}
-												</td>
-											</tr>
-										{% endif %}
-										{% if infoPub.challenge.constrainMinLetters %}
-											<tr class="border-t border-b">
-												<td class="px-4 py-2">
-													<i class="fa-kit fa-regular-i-cursor-circle-minus"></i>
-												</td>
-												<td class="px-4 py-2">
-
-													<strong>Min.</strong>
-													de
-													<u>lettres</u>
-													:
-												</td>
-												<td class="px-4 py-2">
-													{{infoPub.challenge.constrainMinLetters}}
-													lettre{{infoPub.challenge.constrainMinLetters > 1 ? "s"}}
-												</td>
-											</tr>
-										{% endif %}
-										{% if infoPub.challenge.constrainMaxLetters %}
-											<tr class="border-t border-b">
-												<td class="px-4 py-2">
-													<i class="fa-kit fa-regular-i-cursor-circle-plus"></i>
-												</td>
-												<td class="px-4 py-2">
-													<strong>Max.</strong>
-													de
-													<u>lettres</u>
-													:
-												</td>
-												<td class="px-4 py-2">
-													{{infoPub.challenge.constrainMaxLetters}}
-													lettre{{infoPub.challenge.constrainMaxLetters > 1 ? "s"}}
-												</td>
-											</tr>
-										{% endif %}
-									</tbody>
-								</table>
-							{% endif %}
-
-						</div>
-					</div>
-				</div>
-			{% endif %}
 			<div class="p-4 rounded-lg bg-slate-50 text-sm dark:bg-slate-900 w-full  mb-4 text-slate-800 dark:text-slate-400">
 				<p class=" mb-1 flex gap-x-3  items-center">
 					<i class="fa-regular fa-calendar-plus"></i>
@@ -908,7 +984,15 @@
 					{% endif %}
 				</p>
 			</div>
-
+			<div class="p-4 rounded-lg bg-red-50 dark:bg-red-900 w-full  mb-4 text-red-800 dark:text-red-400 ">
+				<p class=" text-sm mb-1 font-semibold flex-row gap-x-2 items-center justify-center">
+					<span class=" text-red-500 dark:text-red-50  flex flex-row gap-x-2 items-center">
+						<i class="fa-regular fa-trash"></i>
+						<button type="button" data-micromodal-trigger="delete-modal" class="hover:underline">Supprimer
+							{{infoPub.challenge ? "l'exercice" : "le récit" }}</button>
+					</span>
+				</p>
+			</div>
 		</aside>
 	</div>
 	<div>
@@ -957,9 +1041,30 @@
 
 					</div>
 				</div>
-			</dialog>
+			</div>
 		</div>
+		<div id="delete-modal" class="modal micromodal-slide" data-hidden="true">
+			<div class="modal__overlay" tabindex="-1" data-micromodal-close>
+				<div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="popup-confirm-deletetitle">
+					<div class="py-3 text-center w-42  rounded-2xl">
+						<div class="text-4xl mb-5 text-slate-600 dark:text-slate-300">
+							<i class="fa-regular fa-cloud-exclamation"></i>
+						</div>
+						<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+							Êtes-vous certain(e) de vouloir supprimer votre récit ?
+						</h3>
 
+						<div class="mt-10 flex justify-center gap-x-3">
+							<a href="{{path("app_publication_delete", {id:infoPub.id})}}" type="button" class="button-classic button-red z-50">
+								Oui, je veux le supprimer
+							</a>
+							<button type="button" onclick="MicroModal.close('delete-modal')" class="button-classic button-slate">Non, j'annule</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
 		<input type="hidden" value="{{ infoPub.id }}" id="hideIdPub"/>
 		<input type="hidden" id="hidePubStatus" value="{{ infoPub.status }}" id="hideId"/>
 	{% endblock %}

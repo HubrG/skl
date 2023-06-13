@@ -289,7 +289,7 @@
 				<hr class="mt-0 mb-0">
 				<h6 class="font-semibold">{{challenges_draft|length > 1 ? "Vos brouillons" : "Votre brouillon"}}
 					pour cet exercice</h6>
-				<div class="-mt-5">
+				<div class="-mt-5 dark:text-slate-400">
 					{% for item in challenges_draft %}
 						<div>
 							<a href="{{path("app_publication_edit", {id:item.id})}}" class="hover:underline">{{item.title}}</a>

@@ -1,11 +1,11 @@
 <div {{attributes}} class="flex flex-col gap-y-2 w-full relative">
-	{% if this.users|length == 0 and this.publications|length == 0 and this.topics|length == 0 %}
+	{% if this.users|length == 0 and this.publications|length == 0 and this.topics|length == 0 and this.challengePublications|length == 0 and this.challenges|length == 0 %}
 		<div class="sticky -top-3 py-2 border-b-slate-300 dark:bg-slate-700 bg-white z-50 dark:border-b-slate-500">
 			<div class="relative -mt-5">
 				<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none mb-1">
 					<i class="fa-regular fa-telescope"></i>
 				</div>
-				<input type="search" name="query" value="{{ query }}" class="input w-full dark:bg-slate-600 placeholder:dark:text-slate-300 placeholder:text-xs" placeholder="Chercher un utilisateur, un récit, un sujet de discussion..." data-model="query">
+				<input type="search" name="query" value="{{ query }}" class="input w-full dark:bg-slate-600 placeholder:dark:text-slate-300 placeholder:text-xs" placeholder="Chercher un utilisateur, un récit, une discussion, un exercice..." data-model="query">
 			</div>
 		</div>
 	{% else %}
@@ -91,4 +91,49 @@
 			</ul>
 		</div>
 	{% endif %}
+	{% if this.challenges|length > 0 %}
+		<div class="flex flex-col gap-y-3">
+			<h5 class="text-left font-semibold">Exercices</h5>
+			<ul>
+				{% for item in this.challenges %}
+					<li class="rounded">
+						<a href="{{path("app_challenge_read", {slug:item.slug, id:item.id})}}" class="inline-flex gap-x-2 items-start text-left justify-start px-2 rounded w-full py-2 hover:bg-slate-50 dark:hover:bg-slate-600">
+							<span class="inline-flex w-4 h-4 relative flex-shrink-0">
+								<i class="fa-solid fa-book w-full h-full object-cover mt-1 text-slate-300 dark:text-slate-500"></i>
+							</span>
+							<span class="self-start text-left flex flex-col gap-y-0.5">
+								{{item.title}}
+								<small class="opacity-50">{{item.dateEnd ? "Fin dans " ~ item.dateEnd|since}}</small>
+							</span>
+						</a>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+	{% endif %}
+	{% if this.challengePublications|length > 0 %}
+		<div class="flex flex-col gap-y-3">
+			<h5 class="text-left font-semibold">Réponses aux exercices</h5>
+			<ul>
+				{% for item in this.challengePublications %}
+					<li class=" rounded ">
+						<a href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" class="inline-flex gap-x-2 items-start text-left justify-start px-2 rounded w-full py-2 hover:bg-slate-50 dark:hover:bg-slate-600">
+							{% if item.cover %}
+								<span class="inline-flex w-4 h-4 relative flex-shrink-0">
+									<img class="w-full h-full object-cover rounded  myImage mt-1" src="{{item.cover}}" alt="Couverture du récit {{item.title}}">
+								</span>
+							{% else %}
+								<span class="inline-flex w-4 h-4 relative flex-shrink-0">
+									<i class="fa-solid fa-book w-full h-full object-cover mt-1 text-slate-300 dark:text-slate-500"></i>
+								</span>
+							{% endif %}
+							{{item.title}}
+
+						</a>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+	{% endif %}
+
 </div>

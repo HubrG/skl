@@ -128,7 +128,7 @@
 				</div>
 				<div class="flex flex-row notif-row">
 					<div>
-						<i class="fa-kit fa-regular-comment-quote-circle-bolt"></i>
+						<i class="fa-regular fa-comment-quote"></i>
 						<span>Nouveau commentaire sur l'une de vos feuilles</span>
 					</div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="2" type="checkbox" {{app.user.userParameters.notif2Mail is null or app.user.userParameters.notif2Mail == 1 ? "checked"}}></div>
@@ -229,7 +229,7 @@
 				<hr class="mb-5">
 				<div class="flex flex-row notif-row">
 					<div>
-						<i class="fa-kit fa-regular-at-circle-bolt"></i>
+						<i class="fa-regular fa-at"></i>
 						<span>Nouvelle mention sur un sujet du forum</span>
 					</div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="13" type="checkbox" {{app.user.userParameters.notif13Mail is null or app.user.userParameters.notif13Mail == 1 ? "checked"}}></div>
@@ -245,12 +245,29 @@
 				</div>
 				<div class="flex flex-row notif-row">
 					<div>
-						<i class="fa-regular fa-at fa-flip-horizontal"></i>
+						<i class="fa-regular fa-at"></i>
 						<span>Nouvelle mention sur un commentaire</span>
 					</div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="14" type="checkbox" {{app.user.userParameters.notif14Mail is null or app.user.userParameters.notif14Mail == 1 ? "checked"}}></div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="14" type="checkbox" {{app.user.userParameters.notif14Web is null or app.user.userParameters.notif14Web == 1 ? "checked"}}></div>
 				</div>
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-at"></i>
+						<span>Nouvelle mention dans un énoncé d'exercice</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="22" type="checkbox" {{app.user.userParameters.notif22Mail is null or app.user.userParameters.notif22Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="22" type="checkbox" {{app.user.userParameters.notif22Web is null or app.user.userParameters.notif22Web == 1 ? "checked"}}></div>
+				</div>
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-at"></i>
+						<span>Nouvelle mention dans un commentaire d'exercice</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="23" type="checkbox" {{app.user.userParameters.notif23Mail is null or app.user.userParameters.notif23Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="23" type="checkbox" {{app.user.userParameters.notif23Web is null or app.user.userParameters.notif23Web == 1 ? "checked"}}></div>
+				</div>
+
 				<hr class="mb-5">
 				<div class="flex flex-row notif-row">
 					<div>
@@ -268,6 +285,40 @@
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="19" type="checkbox" {{app.user.userParameters.notif19Mail is null or app.user.userParameters.notif19Mail == 1 ? "checked"}}></div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="19" type="checkbox" {{app.user.userParameters.notif19Web is null or app.user.userParameters.notif19Web == 1 ? "checked"}}></div>
 				</div>
+				<hr class="mb-5">
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-book-user"></i>
+						<span>Nouveau commentaire sous l'un de vos exercices</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="20" type="checkbox" {{app.user.userParameters.notif20Mail is null or app.user.userParameters.notif20Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="20" type="checkbox" {{app.user.userParameters.notif20Web is null or app.user.userParameters.notif20Web == 1 ? "checked"}}></div>
+				</div>
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-book-user"></i>
+						<span>Proposition de réponse à l'un de vos exercices</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="21" type="checkbox" {{app.user.userParameters.notif21Mail is null or app.user.userParameters.notif21Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="21" type="checkbox" {{app.user.userParameters.notif21Web is null or app.user.userParameters.notif21Web == 1 ? "checked"}}></div>
+				</div>
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-book-user"></i>
+						<span>Nouveau « J'aime » sur l'un de vos commentaires d'exercice</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="24" type="checkbox" {{app.user.userParameters.notif24Mail is null or app.user.userParameters.notif24Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="24" type="checkbox" {{app.user.userParameters.notif24Web is null or app.user.userParameters.notif24Web == 1 ? "checked"}}></div>
+				</div>
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-book-user"></i>
+						<span>Nouvelle réponse sous l'un de vos commentaires d'exercice</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="25" type="checkbox" {{app.user.userParameters.notif25Mail is null or app.user.userParameters.notif25Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="25" type="checkbox" {{app.user.userParameters.notif25Web is null or app.user.userParameters.notif25Web == 1 ? "checked"}}></div>
+				</div>
+
 			</div>
 		</div>
 	</div>

@@ -471,6 +471,12 @@ function publishPublication(ev) {
           togglePubAS.disabled = true;
           savePublication.innerHTML = `<i class="fa-regular fa-cloud-arrow-up"></i> &nbsp;Valider les modifications`;
           togglePubASfunc();
+        } else if (response.data["code"] == 600) {
+          var notyText =
+            "<span class='text-base font-medium'>Erreur</span><br />Impossible de publier votre réponse à l'exercice, car l'exercice est terminé";
+          var notyType = "error";
+          publishButton.checked = false;
+          publishButton.disabled = true;
         } else {
           var notyText =
             "<span class='text-base font-medium'>Récit dépublié</span><br />Votre récit n'est plus visible par vos lecteurs";

@@ -84,10 +84,10 @@ class ChallengeController extends AbstractController
                     $user = $this->em->getRepository(User::class)->findOneBy(['username' => $username]);
                     if ($user) {
                         // * On vérifie que $user n'est pas déjà mentionné dans le message dans les notifications
-                        // $already = $this->em->getRepository(Notification::class)->findOneBy(['user' => $user, 'type' => 13, 'assignForumTopic' => $challenge]);
-                        // if (!$already) {
-                        //     $this->notificationSystem->addNotification(13, $user, $this->getUser(), $challenge);
-                        // }
+                        $already = $this->em->getRepository(Notification::class)->findOneBy(['user' => $user, 'type' => 22, 'assignChallenge' => $challenge]);
+                        if (!$already) {
+                            $this->notificationSystem->addNotification(22, $user, $this->getUser(), $challenge);
+                        }
                     }
                 }
             }
@@ -126,23 +126,23 @@ class ChallengeController extends AbstractController
             $em->flush();
             // ! notifications
             // * Envoi d'une notification de réponse au topic
-            // $this->notificationSystem->addNotification(11, $challenge->getUser(), $this->getUser(), $message);
+            $this->notificationSystem->addNotification(20, $challenge->getUser(), $this->getUser(), $message);
             // * Envoi d'une notification de mention dans le message
             // On vérifie qu'il y a un ou plusieurs @ dans le message
             $pattern = '/(@\w+)/';
             $content = $message->getContent();
             $mentions = preg_match_all($pattern, $content, $matches);
-            // if ($mentions > 0) {
-            //     // On récupère les utilisateurs mentionnés
-            //     $mentions = $matches[0];
-            //     foreach ($mentions as $mention) {
-            //         $username = substr($mention, 1);
-            //         $user = $this->em->getRepository(User::class)->findOneBy(['username' => $username]);
-            //         if ($user) {
-            //             $this->notificationSystem->addNotification(12, $user, $this->getUser(), $message);
-            //         }
-            //     }
-            // }
+            if ($mentions > 0) {
+                // On récupère les utilisateurs mentionnés
+                $mentions = $matches[0];
+                foreach ($mentions as $mention) {
+                    $username = substr($mention, 1);
+                    $user = $this->em->getRepository(User::class)->findOneBy(['username' => $username]);
+                    if ($user) {
+                        $this->notificationSystem->addNotification(23, $user, $this->getUser(), $message);
+                    }
+                }
+            }
         }
         // * On récupère les messages du challenge
         $comments = $cmRepo->findBy(['challenge' => $id], ['publishedAt' => 'DESC'], $nbrShowCom, 0);
@@ -235,13 +235,13 @@ class ChallengeController extends AbstractController
                 foreach ($mentions as $mention) {
                     $username = substr($mention, 1);
                     $user = $this->em->getRepository(User::class)->findOneBy(['username' => $username]);
-                    // if ($user) {
-                    //     // On vérifie que $user n'est pas déjà mentionné dans le message dans les notifications
-                    //     $already = $this->em->getRepository(Notification::class)->findOneBy(['user' => $user, 'type' => 13, 'assignForumTopic' => $topic]);
-                    //     if (!$already) {
-                    //         $this->notificationSystem->addNotification(13, $user, $this->getUser(), $topic);
-                    //     }
-                    // }
+                    if ($user) {
+                        // On vérifie que $user n'est pas déjà mentionné dans le message dans les notifications
+                        $already = $this->em->getRepository(Notification::class)->findOneBy(['user' => $user, 'type' => 22, 'assignChallenge' => $challenge]);
+                        if (!$already) {
+                            $this->notificationSystem->addNotification(22, $user, $this->getUser(), $challenge);
+                        }
+                    }
                 }
             }
             // On redirige vers le challenge

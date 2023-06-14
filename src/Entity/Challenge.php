@@ -70,10 +70,14 @@ class Challenge
     #[ORM\Column]
     private ?bool $contest = null;
 
+    #[ORM\OneToMany(mappedBy: 'assignChallenge', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $notificationAssignChallenges;
+
     public function __construct()
     {
         $this->challengeMessages = new ArrayCollection();
         $this->publications = new ArrayCollection();
+        $this->notificationAssignChallenges = new ArrayCollection();
     }
 
 
@@ -342,5 +346,35 @@ class Challenge
     public function getTimestamp(): int
     {
         return $this->createdAt->getTimestamp();
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotificationAssignChallenges(): Collection
+    {
+        return $this->notificationAssignChallenges;
+    }
+
+    public function addNotificationAssignChallenge(Notification $notificationAssignChallenge): self
+    {
+        if (!$this->notificationAssignChallenges->contains($notificationAssignChallenge)) {
+            $this->notificationAssignChallenges->add($notificationAssignChallenge);
+            $notificationAssignChallenge->setAssignChallenge($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotificationAssignChallenge(Notification $notificationAssignChallenge): self
+    {
+        if ($this->notificationAssignChallenges->removeElement($notificationAssignChallenge)) {
+            // set the owning side to null (unless already changed)
+            if ($notificationAssignChallenge->getAssignChallenge() === $this) {
+                $notificationAssignChallenge->setAssignChallenge(null);
+            }
+        }
+
+        return $this;
     }
 }

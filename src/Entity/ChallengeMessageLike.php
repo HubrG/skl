@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
-use App\Repository\ChallengeMessageLikeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ChallengeMessageLikeRepository;
 
 #[ORM\Entity(repositoryClass: ChallengeMessageLikeRepository::class)]
 class ChallengeMessageLike

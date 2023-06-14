@@ -2,6 +2,7 @@
 
 namespace App\Components;
 
+use App\Entity\ChallengeMessage;
 use App\Repository\UserRepository;
 use App\Repository\ChallengeRepository;
 use App\Repository\ForumTopicRepository;
@@ -10,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
 use App\Repository\ForumMessageRepository;
 use App\Repository\PublicationReadRepository;
+use App\Repository\ChallengeMessageRepository;
 use App\Repository\ForumMessageLikeRepository;
 use App\Repository\PublicationFollowRepository;
 use App\Repository\PublicationChapterRepository;
@@ -33,9 +35,6 @@ class FeedContentComponent extends AbstractController
     public function __construct(
         private PublicationCommentRepository $pcomRepo,
         private PublicationCommentLikeRepository $pclRepo,
-        private ForumMessageRepository $fmsgRepo,
-        private ForumMessageLikeRepository $fmsglRepo,
-        private ForumTopicRepository $ftRepo,
         private PublicationRepository $pubRepo,
         private PublicationChapterRepository $pchRepo,
         private PublicationBookmarkRepository $pbmRepo,
@@ -49,12 +48,16 @@ class FeedContentComponent extends AbstractController
         private PublicationChapterLikeRepository $pchlRepo,
         private EntityManagerInterface $em,
         private UserFollowRepository $ufRepo,
-        private ChallengeRepository $cRepo
+        private ForumMessageRepository $fmsgRepo,
+        private ForumMessageLikeRepository $fmsglRepo,
+        private ForumTopicRepository $ftRepo,
+        private ChallengeRepository $cRepo,
+        private ChallengeMessageRepository $cmRepo
     ) {
     }
     public function getComments(): array
     {
-        return $this->pcomRepo->findBy([], ["published_at" => "DESC"], 10);
+        return $this->pcomRepo->findBy(["replyTo" => null], ["published_at" => "DESC"], 10);
     }
     // public function getLikes(): array
     // {
@@ -64,6 +67,10 @@ class FeedContentComponent extends AbstractController
     public function getForumMessages(): array
     {
         return $this->fmsgRepo->findBy(["replyTo" => null], ["published_at" => "DESC"], 10);
+    }
+    public function getChallengeMessages(): array
+    {
+        return $this->cmRepo->findBy(["replyTo" => null], ["publishedAt" => "DESC"], 10);
     }
     public function getChallenges(): array
     {
@@ -172,6 +179,7 @@ class FeedContentComponent extends AbstractController
         $entities = array_merge(
             array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationComment:' . $e->getId()], $this->getComments()),
             array_map(fn ($e) => ['entity' => $e, 'key' => 'ForumMessage:' . $e->getId()], $this->getForumMessages()),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'ChallengeMessage:' . $e->getId()], $this->getChallengeMessages()),
             array_map(fn ($e) => ['entity' => $e, 'key' => 'ForumTopic:' . $e->getId()], $this->getForumTopics()),
             array_map(fn ($e) => ['entity' => $e, 'key' => 'Publication:' . $e->getId()], $this->getPublications()),
             array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationChapterLike:' . $e->getId()], $this->getPublicationChapterLikes()),
@@ -244,6 +252,7 @@ class FeedContentComponent extends AbstractController
         $entities = array_merge(
             array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationComment:' . $e->getId()], $this->getCommentsFu($followedUserIds)),
             array_map(fn ($e) => ['entity' => $e, 'key' => 'ForumMessage:' . $e->getId()], $this->getForumMessagesFu($followedUserIds)),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'ChallengeMessage:' . $e->getId()], $this->getChallengeMessagesFu($followedUserIds)),
             array_map(fn ($e) => ['entity' => $e, 'key' => 'ForumTopic:' . $e->getId()], $this->getForumTopicsFu($followedUserIds)),
             array_map(fn ($e) => ['entity' => $e, 'key' => 'Publication:' . $e->getId()], $this->getPublicationsFu($followedUserIds)),
             array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationChapterLike:' . $e->getId()], $this->getPublicationChapterLikesFu($followedUserIds)),
@@ -300,6 +309,18 @@ class FeedContentComponent extends AbstractController
             ->where('f.replyTo is null')
             ->andWhere($qb->expr()->in('f.user', $followedUserIds))
             ->orderBy('f.published_at', 'DESC')
+            ->setMaxResults(10);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getChallengeMessagesFu($followedUserIds): array
+    {
+        $qb = $this->cmRepo->createQueryBuilder('f');
+        $qb
+            ->where('f.replyTo is null')
+            ->andWhere($qb->expr()->in('f.user', $followedUserIds))
+            ->orderBy('f.publishedAt', 'DESC')
             ->setMaxResults(10);
 
         return $qb->getQuery()->getResult();

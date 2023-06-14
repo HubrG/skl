@@ -43,10 +43,26 @@ class ChallengeMessage
     #[ORM\OneToMany(mappedBy: 'message', targetEntity: ChallengeMessageLike::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $challengeMessageLikes;
 
+    #[ORM\OneToMany(mappedBy: 'challengeMessage', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $notificationChallengeMessages;
+
+    #[ORM\OneToMany(mappedBy: 'assignChallengeMessage', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $notificationAssignChallengeMessages;
+
+    #[ORM\OneToMany(mappedBy: 'likeChallenge', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $notificationChallengeLikes;
+
+    #[ORM\OneToMany(mappedBy: 'challengeMessageReply', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $notificationChallengeMessageReply;
+
     public function __construct()
     {
         $this->challengeMessages = new ArrayCollection();
         $this->challengeMessageLikes = new ArrayCollection();
+        $this->notificationChallengeMessages = new ArrayCollection();
+        $this->notificationAssignChallengeMessages = new ArrayCollection();
+        $this->notificationChallengeLikes = new ArrayCollection();
+        $this->notificationChallengeMessageReply = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -196,5 +212,130 @@ class ChallengeMessage
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotificationChallengeMessages(): Collection
+    {
+        return $this->notificationChallengeMessages;
+    }
+
+    public function addNotificationChallengeMessage(Notification $notificationChallengeMessage): self
+    {
+        if (!$this->notificationChallengeMessages->contains($notificationChallengeMessage)) {
+            $this->notificationChallengeMessages->add($notificationChallengeMessage);
+            $notificationChallengeMessage->setChallengeMessage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotificationChallengeMessage(Notification $notificationChallengeMessage): self
+    {
+        if ($this->notificationChallengeMessages->removeElement($notificationChallengeMessage)) {
+            // set the owning side to null (unless already changed)
+            if ($notificationChallengeMessage->getChallengeMessage() === $this) {
+                $notificationChallengeMessage->setChallengeMessage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotificationAssignChallengeMessages(): Collection
+    {
+        return $this->notificationAssignChallengeMessages;
+    }
+
+    public function addNotificationAssignChallengeMessage(Notification $notificationAssignChallengeMessage): self
+    {
+        if (!$this->notificationAssignChallengeMessages->contains($notificationAssignChallengeMessage)) {
+            $this->notificationAssignChallengeMessages->add($notificationAssignChallengeMessage);
+            $notificationAssignChallengeMessage->setAssignChallengeMessage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotificationAssignChallengeMessage(Notification $notificationAssignChallengeMessage): self
+    {
+        if ($this->notificationAssignChallengeMessages->removeElement($notificationAssignChallengeMessage)) {
+            // set the owning side to null (unless already changed)
+            if ($notificationAssignChallengeMessage->getAssignChallengeMessage() === $this) {
+                $notificationAssignChallengeMessage->setAssignChallengeMessage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotificationChallengeLikes(): Collection
+    {
+        return $this->notificationChallengeLikes;
+    }
+
+    public function addNotificationChallengeLike(Notification $notificationChallengeLike): self
+    {
+        if (!$this->notificationChallengeLikes->contains($notificationChallengeLike)) {
+            $this->notificationChallengeLikes->add($notificationChallengeLike);
+            $notificationChallengeLike->setLikeChallenge($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotificationChallengeLike(Notification $notificationChallengeLike): self
+    {
+        if ($this->notificationChallengeLikes->removeElement($notificationChallengeLike)) {
+            // set the owning side to null (unless already changed)
+            if ($notificationChallengeLike->getLikeChallenge() === $this) {
+                $notificationChallengeLike->setLikeChallenge(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotificationChallengeMessageReply(): Collection
+    {
+        return $this->notificationChallengeMessageReply;
+    }
+
+    public function addNotificationChallengeMessageReply(Notification $notificationChallengeMessageReply): self
+    {
+        if (!$this->notificationChallengeMessageReply->contains($notificationChallengeMessageReply)) {
+            $this->notificationChallengeMessageReply->add($notificationChallengeMessageReply);
+            $notificationChallengeMessageReply->setChallengeMessageReply($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotificationChallengeMessageReply(Notification $notificationChallengeMessageReply): self
+    {
+        if ($this->notificationChallengeMessageReply->removeElement($notificationChallengeMessageReply)) {
+            // set the owning side to null (unless already changed)
+            if ($notificationChallengeMessageReply->getChallengeMessageReply() === $this) {
+                $notificationChallengeMessageReply->setChallengeMessageReply(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTimestamp(): int
+    {
+        return $this->publishedAt->getTimestamp();
     }
 }

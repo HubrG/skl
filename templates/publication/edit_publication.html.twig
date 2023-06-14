@@ -71,11 +71,19 @@
 	<div class="flex flex-col lg:flex-row mx-auto justify-center w-full">
 		<aside class="relative lg:w-3/12  w-12/12 flex flex-col mx-auto md:mt-5 mb-14 pr-2 lg:mb-0">
 			{% if infoPub.challenge %}
-				<div class="rounded md:order-2 order-1  md:mt-5 -mt-10 bg-slate-500 dark:bg-slate-900 dark:oespacity-70 dark:hue-rotate-15 p-4 mb-5">
+				<div class="rounded md:order-2 order-1  md:mt-5 -mt-10 {% if infoPub.challenge.dateEnd and infoPub.challenge.dateEnd|date('U') <= " now"|date('u') %} bg-red-500 dark:bg-red-900 {% else %} bg-slate-500 dark:bg-slate-900 {% endif %} dark:opacity-70 dark:hue-rotate-15 p-4 mb-5">
 					<div class="text-center text-sm">
-						<span class="text-slate-50 font-semibold text-base">
-							<i class="fa-regular fa-hand-holding-seedling"></i>
-							&nbsp;Il s'agit d'un exercice !</span>
+						{% if infoPub.challenge.dateEnd and infoPub.challenge.dateEnd|date('U') <= "now"|date('U') %}
+							<span class="text-slate-50 font-semibold text-base">
+								<i class="fa-regular fa-hand-holding-seedling"></i>
+								&nbsp;Exercice terminé
+							</span>
+						{% else %}
+							<span class="text-slate-50 font-semibold text-base">
+								<i class="fa-regular fa-hand-holding-seedling"></i>
+								&nbsp;Il s'agit d'un exercice !
+							</span>
+						{% endif %}
 						<hr class="border-slate-400 dark:border-slate-700 mb-3">
 						<a href="{{path("app_challenge_read", {id:infoPub.challenge.id, slug:infoPub.challenge.slug})}}" class="hover:underline text-slate-100 text-sm">«
 							{{infoPub.challenge.title}}
@@ -283,12 +291,13 @@
 										{% endif %}
 									</tbody>
 								</table>
-							{% endif %}
-						</div>
+							</div>
+						{% endif %}
 					</div>
 				</div>
+
 			{% endif %}
-			<div class="md:order-1 order-2 lg:w-full w-8/12 mx-auto md:mt-0 mt-5">
+			<div class="md:order-1 order-2 lg:w-full w-12/12 mx-auto md:mt-0 mt-5">
 				<div id="no-cover" class="{{infoPub.cover == '' ? " block" : " hidden"}} ">
 					<div id="hideNoCover" data-tippy-content="Cliquez ici pour ajouter une photo de couverture" class="no-cover justify-center flex lg:w-full w-[80%] mx-auto" for="publication_cover">
 						<label for="publication_cover" class="cursor-pointer justify-center h-80">

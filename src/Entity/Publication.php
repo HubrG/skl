@@ -132,6 +132,9 @@ class Publication
     #[ORM\ManyToOne(inversedBy: 'publications')]
     private ?Challenge $challenge = null;
 
+    #[ORM\OneToMany(mappedBy: 'challengeResponse', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $notificationChallengeResponse;
+
 
 
 
@@ -153,6 +156,7 @@ class Publication
         $this->notificationsFriendNewPub = new ArrayCollection();
         $this->publicationAccesses = new ArrayCollection();
         $this->publicationSupports = new ArrayCollection();
+        $this->notificationChallengeResponse = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -854,6 +858,36 @@ class Publication
     public function setChallenge(?Challenge $challenge): self
     {
         $this->challenge = $challenge;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotificationChallengeResponse(): Collection
+    {
+        return $this->notificationChallengeResponse;
+    }
+
+    public function addNotificationChallengeResponse(Notification $notificationChallengeResponse): self
+    {
+        if (!$this->notificationChallengeResponse->contains($notificationChallengeResponse)) {
+            $this->notificationChallengeResponse->add($notificationChallengeResponse);
+            $notificationChallengeResponse->setChallengeResponse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotificationChallengeResponse(Notification $notificationChallengeResponse): self
+    {
+        if ($this->notificationChallengeResponse->removeElement($notificationChallengeResponse)) {
+            // set the owning side to null (unless already changed)
+            if ($notificationChallengeResponse->getChallengeResponse() === $this) {
+                $notificationChallengeResponse->setChallengeResponse(null);
+            }
+        }
 
         return $this;
     }

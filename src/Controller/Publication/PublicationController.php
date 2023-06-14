@@ -2,6 +2,7 @@
 
 namespace App\Controller\Publication;
 
+use DateTime;
 use DateTimeImmutable;
 use DirectoryIterator;
 use Cloudinary\Cloudinary;
@@ -372,10 +373,20 @@ class PublicationController extends AbstractController
         //
         if ($this->getUser() == $publication->getUser() or $this->isGranted("ROLE_ADMIN")) {
             if ($dataPublish) {
+                // On vérifie que la publication est un exercice, que la dateEnd n'est pas NULL, et qu'elle est bien supérieure à la date du jour
+                if ($publication->getChallenge() && $publication->getChallenge()->getDateEnd() !== null) {
+                    $dateEnd = $publication->getChallenge()->getDateEnd();
+                    $now = new DateTime('now');
+                    if ($dateEnd < $now) {
+                        return $this->json([
+                            "code" => "600"
+                        ]);
+                    }
+                }
                 $return = 200;
                 $publication->setStatus(2);
                 if ($publication->getPublishedDate() === null) {
-                    $publication->setPublishedDate(new \DateTime('now'));
+                    $publication->setPublishedDate(new DateTime('now'));
                 }
                 $publication->setLastPublishedAt(new DateTimeImmutable('now'));
                 $keywords = $publication->getPublicationKeywords();
@@ -385,12 +396,25 @@ class PublicationController extends AbstractController
                     $em->persist($key);
                     $em->flush();
                 }
-                // * Envoi d'une notification aux abonnés de la publication
-                // Si la publication est publiée, on envoie une notification à tous les abonnés de la publication
                 if ($publication->getStatus() == 2) {
+                    // * Envoi d'une notification aux abonnés de la publication
+                    // Si la publication est publiée, on envoie une notification à tous les abonnés de la publication
                     $followers = $ufRepo->findBy(["toUser" => $this->getUser()]);
                     foreach ($followers as $follower) {
                         $this->notificationSystem->addNotification(19, $follower->getFromUser(), $this->getUser(), $publication);
+                    }
+                    // * Si la publication est publiée, qu'il ya au moins un chapitre publié et qu'il s'agit d'un exercice, on envoie une notification
+                    if ($publication->getChallenge()) {
+                        $chapters = $publication->getPublicationChapters();
+                        $countChapters = 0;
+                        foreach ($chapters as $chapter) {
+                            if ($chapter->getStatus() == 2) {
+                                $countChapters++;
+                            }
+                        }
+                        if ($countChapters > 0) {
+                            $this->notificationSystem->addNotification(21, $publication->getChallenge()->getUser(), $this->getUser(), $publication);
+                        }
                     }
                 }
             } else {

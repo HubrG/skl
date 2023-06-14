@@ -307,7 +307,7 @@
 			{% if app.user  %}
 				{{ form_start(form, {attr: {'novalidate': 'novalidate',"data-turbo-frame":"messages-frame","class":"-mt-16"}}) }}
 				{% include "./partials/_form-row.html.twig" with {'form': form.content, 'icon':null, classWidget:"assign-user h-32 roundedBnone"} %}
-				<button type="submit" id="sendComment" class="-mt-[1.5rem] button-classic button-blue w-full roundedTnone" onclick="setTimeout(function() { document.getElementById('forum_message_content').value = ''})">
+				<button type="submit" id="sendComment" class="-mt-[1.5rem] button-classic button-blue w-full roundedTnone" onclick="setTimeout(function() { document.getElementById('challenge_message_content').value = ''})">
 					Envoyer la réponse
 					<i class="fa-duotone fa-reply fa-flip-horizontal"></i>
 				</button>
@@ -323,24 +323,24 @@
 				<hr class="-mt-10">
 			{% endif %}
 			<div class="flex flex-col gap-y-5">
-				{% if pCom|length == 0 %}
-					<div class="text-slate-500 -mt-10">
-						<p class="mb-3 text-center text-6xl font-semibold">
-							<i class="fa-duotone fa-comment-slash"></i>
-						</p>
-						<p class="mb-5 text-center italic">
-							Aucun commentaire pour le moment
-						</p>
-						{% if not app.user %}
-							<hr class="mb-5">
-							<p class="font-medium text-center flex flex-row  items-center gap-x-3 justify-center dark:text-slate-300 text-slate-800">
-								<i class="fa-duotone fa-user-circle"></i>
-								<button data-micromodal-trigger="popup-login" class="hover:underline text-center font-semibold">Connectez-vous pour répondre !</button>
-							</p>
-						{% endif %}
-					</div>
-				{% endif %}
 				<turbo-frame id="messages-frame" class="-mt-10">
+					{% if pCom|length == 0 %}
+						<div class="text-slate-500 -mt-10">
+							<p class="mb-3 text-center text-6xl font-semibold">
+								<i class="fa-duotone fa-comment-slash"></i>
+							</p>
+							<p class="mb-5 text-center italic">
+								Aucun commentaire pour le moment
+							</p>
+							{% if not app.user %}
+								<hr class="mb-5">
+								<p class="font-medium text-center flex flex-row  items-center gap-x-3 justify-center dark:text-slate-300 text-slate-800">
+									<i class="fa-duotone fa-user-circle"></i>
+									<button data-micromodal-trigger="popup-login" class="hover:underline text-center font-semibold">Connectez-vous pour répondre !</button>
+								</p>
+							{% endif %}
+						</div>
+					{% endif %}
 					{% if app.request.query.has('idCom') %}
 						{# La variable GET "idCom" est présente dans l'URL #}
 						{% set idCom = app.request.query.get('idCom') %}

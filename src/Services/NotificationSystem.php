@@ -74,6 +74,18 @@ class NotificationSystem extends AbstractController
      * 18 : Nouvel abonné
      *  
      * 19 : Nouveau récit publié par l'un de vos abonnements
+     *  
+     * 20 : Nouveau commentaire sous un challenge
+     *  
+     * 21 : Proposition de réponse à un challenge
+     *  
+     * 22 : Mention dans un énoncé de challenge
+     *  
+     * 23 : Mention dans une réponse à un challenge
+     *  
+     * 24 : Nouveau « J'aime » dans une réponse à un challenge
+     *   
+     * 25 : Nouvelle réponse sur l'une de vos réponses challenge
      * @param $user type
      * @param $message string
      * @param $fromUser type
@@ -591,8 +603,148 @@ class NotificationSystem extends AbstractController
                 $email->subject($textSubject)
                     ->context([
                         'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
-                     vient de publier un nouveau récit « " . $textPublication . " » ",
+                        vient de publier un nouveau récit « " . $textPublication . " » ",
                         'subject' => $notification->getFromUser()->getNickname() . " a publié un nouveau récit !",
+                    ]);
+                //
+                $this->mailer->send($email);
+            }
+        }
+        if ($type === 20) {
+            if (is_null($userRepo->getUserParameters()->isNotif20Web()) or $userRepo->getUserParameters()->isNotif20Web() == 1) {
+                $notification->setChallengeMessage($idLink);
+                $this->em->persist($notification);
+                $this->em->flush();
+            } else {
+                $notification->setChallengeMessage($idLink);
+            }
+            // Envoi email
+            if (is_null($userRepo->getUserParameters()->isNotif20Mail()) or $userRepo->getUserParameters()->isNotif20Mail() == 1) {
+                $textSubject = $notification->getFromUser()->getNickname() . " a commenté votre exercice";
+                $pathPublication = $this->generateUrl('app_challenge_read', ['slug' => $notification->getChallengeMessage()->getChallenge()->getSlug(), "id" => $notification->getChallengeMessage()->getChallenge()->getId(), "idCom" => $notification->getChallengeMessage()->getId()]);
+                $textPublication = " <a href='https://scrilab.com" . $pathPublication . "' style='font-weight:600;'>" . $notification->getChallengeMessage()->getChallenge()->getTitle() . "</a>";
+                $email->subject($textSubject)
+                    ->context([
+                        'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
+                    a commenté votre exercice « " . $textPublication . " » ",
+                        'subject' => $notification->getFromUser()->getNickname() . "  a commenté votre exercice",
+                    ]);
+                //
+                $this->mailer->send($email);
+            }
+        }
+        if ($type === 21) {
+            if (is_null($userRepo->getUserParameters()->isNotif21Web()) or $userRepo->getUserParameters()->isNotif21Web() == 1) {
+                $notification->setChallengeResponse($idLink);
+                $this->em->persist($notification);
+                $this->em->flush();
+            } else {
+                $notification->setChallengeResponse($idLink);
+            }
+            // Envoi email
+            if (is_null($userRepo->getUserParameters()->isNotif21Mail()) or $userRepo->getUserParameters()->isNotif21Mail() == 1) {
+                $textSubject = $notification->getFromUser()->getNickname() . " vient de proposer une réponse à votre exercice";
+                $pathPublication = $this->generateUrl('app_challenge_read', ['slug' => $notification->getChallengeResponse()->getChallenge()->getSlug(), "id" => $notification->getChallengeResponse()->getChallenge()->getId()]);
+                $textPublication = " <a href='https://scrilab.com" . $pathPublication . "' style='font-weight:600;'>" . $notification->getChallengeResponse()->getChallenge()->getTitle() . "</a>";
+                $email->subject($textSubject)
+                    ->context([
+                        'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
+                        vient de proposer une réponse à votre exercice « " . $textPublication . " » avec son récit «
+                        <a href=\"" . $this->generateUrl('app_publication_show_one', ['id' => $notification->getChallengeResponse()->getId(), "slug" => $notification->getChallengeResponse()->getSlug()]) . "\">" . $notification->getChallengeResponse()->getTitle() . "</a>
+                        »",
+                        'subject' => $notification->getFromUser()->getNickname() . " vient de proposer une réponse à votre exercice",
+                    ]);
+                //
+                $this->mailer->send($email);
+            }
+        }
+        if ($type === 22) {
+            if (is_null($userRepo->getUserParameters()->isNotif22Web()) or $userRepo->getUserParameters()->isNotif22Web() == 1) {
+                $notification->setAssignChallenge($idLink);
+                $this->em->persist($notification);
+                $this->em->flush();
+            } else {
+                $notification->setAssignChallenge($idLink);
+            }
+            // Envoi email
+            if (is_null($userRepo->getUserParameters()->isNotif22Mail()) or $userRepo->getUserParameters()->isNotif22Mail() == 1) {
+                $textSubject = $notification->getFromUser()->getNickname() . " vous a mentionné(e) dans l'énoncé de son exercice !";
+                $pathPublication = $this->generateUrl('app_challenge_read', ['slug' => $notification->getAssignChallenge()->getSlug(), "id" => $notification->getAssignChallenge()->getId()]);
+                $textPublication = " <a href='https://scrilab.com" . $pathPublication . "' style='font-weight:600;'>" . $notification->getAssignChallenge()->getTitle() . "</a>";
+                $email->subject($textSubject)
+                    ->context([
+                        'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
+                        vous a mentionné(e) dans l'énoncé de son exercice « " . $textPublication . " » ",
+                        'subject' => $notification->getFromUser()->getNickname() . " vous a mentionné(e) dans l'énoncé de son exercice !",
+                    ]);
+                //
+                $this->mailer->send($email);
+            }
+        }
+        if ($type === 23) {
+            if (is_null($userRepo->getUserParameters()->isNotif23Web()) or $userRepo->getUserParameters()->isNotif23Web() == 1) {
+                $notification->setAssignChallengeMessage($idLink);
+                $this->em->persist($notification);
+                $this->em->flush();
+            } else {
+                $notification->setAssignChallengeMessage($idLink);
+            }
+            // Envoi email
+            if (is_null($userRepo->getUserParameters()->isNotif23Mail()) or $userRepo->getUserParameters()->isNotif23Mail() == 1) {
+                $textSubject = $notification->getFromUser()->getNickname() . " vous a mentionné(e) dans un commentaire d'exercice";
+                $pathPublication = $this->generateUrl('app_challenge_read', ['slug' => $notification->getAssignChallengeMessage()->getChallenge()->getSlug(), "id" => $notification->getAssignChallengeMessage()->getChallenge()->getId(), "idCom" => $notification->getAssignChallengeMessage()->getId()]);
+                $textPublication = " <a href='https://scrilab.com" . $pathPublication . "' style='font-weight:600;'>" . $notification->getAssignChallengeMessage()->getChallenge()->getTitle() . "</a>";
+                $email->subject($textSubject)
+                    ->context([
+                        'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
+                        vous a mentionné(e) dans un commentaire de l'exercice « " . $textPublication . " » ",
+                        'subject' => $notification->getFromUser()->getNickname() . " vous a mentionné(e) dans un commentaire d'exercice",
+                    ]);
+                //
+                $this->mailer->send($email);
+            }
+        }
+        if ($type === 24) {
+            if (is_null($userRepo->getUserParameters()->isNotif24Web()) or $userRepo->getUserParameters()->isNotif24Web() == 1) {
+                $notification->setLikeChallenge($idLink);
+                $this->em->persist($notification);
+                $this->em->flush();
+            } else {
+                $notification->setLikeChallenge($idLink);
+            }
+            // Envoi email
+            if (is_null($userRepo->getUserParameters()->isNotif24Mail()) or $userRepo->getUserParameters()->isNotif24Mail() == 1) {
+                $textSubject = $notification->getFromUser()->getNickname() . " a aimé votre commentaire sur un exercice";
+                $pathPublication = $this->generateUrl('app_challenge_read', ['slug' => $notification->getLikeChallenge()->getChallenge()->getSlug(), "id" => $notification->getLikeChallenge()->getChallenge()->getId(), "idCom" => $notification->getLikeChallenge()->getId()]);
+                $textPublication = " <a href='https://scrilab.com" . $pathPublication . "' style='font-weight:600;'>" . $notification->getLikeChallenge()->getChallenge()->getTitle() . "</a>";
+                $email->subject($textSubject)
+                    ->context([
+                        'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
+                        a aimé votre commentaire sur l'exercice « " . $textPublication . " » ",
+                        'subject' => $notification->getFromUser()->getNickname() . " a aimé votre commentaire sur un exercice",
+                    ]);
+                //
+                $this->mailer->send($email);
+            }
+        }
+        if ($type === 25) {
+            if (is_null($userRepo->getUserParameters()->isNotif25Web()) or $userRepo->getUserParameters()->isNotif25Web() == 1) {
+                $notification->setChallengeMessageReply($idLink);
+                $this->em->persist($notification);
+                $this->em->flush();
+            } else {
+                $notification->setChallengeMessageReply($idLink);
+            }
+            // Envoi email
+            if (is_null($userRepo->getUserParameters()->isNotif25Mail()) or $userRepo->getUserParameters()->isNotif25Mail() == 1) {
+                $textSubject = $notification->getFromUser()->getNickname() . " a répondu à votre commentaire sur un exercice";
+                $pathPublication = $this->generateUrl('app_challenge_read', ['slug' => $notification->getChallengeMessageReply()->getChallenge()->getSlug(), "id" => $notification->getChallengeMessageReply()->getChallenge()->getId(), "idCom" => $notification->getChallengeMessageReply()->getId()]);
+                $textPublication = " <a href='https://scrilab.com" . $pathPublication . "' style='font-weight:600;'>" . $notification->getChallengeMessageReply()->getChallenge()->getTitle() . "</a>";
+                $email->subject($textSubject)
+                    ->context([
+                        'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
+                        a répondu à votre commentaire sur l'exercice « " . $textPublication . " » ",
+                        'subject' => $notification->getFromUser()->getNickname() . " a répondu à votre commentaire sur un exercice",
                     ]);
                 //
                 $this->mailer->send($email);

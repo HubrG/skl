@@ -143,11 +143,11 @@ class CommentController extends AbstractController
                 $this->notificationSystem->addNotification(3, $like->getComment()->getUser(), $this->getUser(), $like);
             } else {
                 // Envoi d'une notification
-                if (!$forum) {
+                if ($forum) {
                     $this->notificationSystem->addNotification(16, $like->getMessage()->getUser(), $this->getUser(), $like);
                 } else {
                     // challenge
-                    // $this->notificationSystem->addNotification(17, $like->getMessage()->getUser(), $this->getUser(), $like);
+                    $this->notificationSystem->addNotification(24, $like->getMessage()->getUser(), $this->getUser(), $comment);
                 }
             }
             //
@@ -208,17 +208,18 @@ class CommentController extends AbstractController
                     $user = $this->em->getRepository(User::class)->findOneBy(['username' => $username]);
                     if ($user) {
                         // On vérifie que l'utilisateur n'est pas déjà mentionné dans le message dans les notifications
-                        $notification = $notifRepo->findOneBy(['user' => $user, 'type' => 14, 'assignForumMessage' => $comment]);
-                        $notification_forum = $notifRepo->findOneBy(['user' => $user, 'type' => 17, 'assignForumReply' => $comment]);
-                        // $notification_challenge = $notifRepo->findOneBy(['user' => $user, 'type' => 17, 'assignForumReply' => $comment]);
+                        $notification = $notifRepo->findOneBy(['user' => $user, 'type' => 14, 'assignComment' => $comment]);
+                        $notification_forum = $notifRepo->findOneBy(['user' => $user, 'type' => 12, 'assignForumMessage' => $comment]);
+                        $notification_forum_old = $notifRepo->findOneBy(['user' => $user, 'type' => 17, 'assignForumReply' => $comment]);
+                        $notification_challenge = $notifRepo->findOneBy(['user' => $user, 'type' => 23, 'assignChallengeMessage' => $comment]);
                         if ($forum) {
-                            if (!$notification_forum) {
+                            if (!$notification_forum and !$notification_forum_old) {
                                 $this->notificationSystem->addNotification(17, $user, $this->getUser(), $comment);
                             }
                         } elseif ($challenge) {
-                            // if (!$notification_challenge) {
-                            //     $this->notificationSystem->addNotification(17, $user, $this->getUser(), $comment);
-                            // }
+                            if (!$notification_challenge) {
+                                $this->notificationSystem->addNotification(23, $user, $this->getUser(), $comment);
+                            }
                         } else {
                             if (!$notification) {
                                 $this->notificationSystem->addNotification(14, $user, $this->getUser(), $comment);
@@ -284,12 +285,12 @@ class CommentController extends AbstractController
             $em->persist($comment);
             $em->flush();
             // Envoi d'une notification
-            if (!$dtForum) {
-                $this->notificationSystem->addNotification(9, $commentOrigin->getUser(), $this->getUser(), $comment);
-            } elseif (!$dtChallenge) {
-                // $this->notificationSystem->addNotification(16, $commentOrigin->getUser(), $this->getUser(), $comment);
-            } else {
+            if ($dtForum) {
                 $this->notificationSystem->addNotification(15, $commentOrigin->getUser(), $this->getUser(), $comment);
+            } elseif ($dtChallenge) {
+                $this->notificationSystem->addNotification(25, $commentOrigin->getUser(), $this->getUser(), $comment);
+            } else {
+                $this->notificationSystem->addNotification(9, $commentOrigin->getUser(), $this->getUser(), $comment);
             }
             // ! notification
             // On vérifie qu'il y a un ou plusieurs @ dans le message
@@ -305,15 +306,15 @@ class CommentController extends AbstractController
                         // On vérifie que l'utilisateur n'est pas déjà mentionné dans le message dans les notifications
                         $notification = $notifRepo->findOneBy(['user' => $user, 'type' => 14, 'assignComment' => $comment]);
                         $notification_forum = $notifRepo->findOneBy(['user' => $user, 'type' => 17, 'assignForumReply' => $comment]);
-                        // $notification_challenge = $notifRepo->findOneBy(['user' => $user, 'type' => 17, 'assignForumReply' => $comment]);
+                        $notification_challenge = $notifRepo->findOneBy(['user' => $user, 'type' => 23, 'assignChallengeMessage' => $comment]);
                         if ($dtForum) {
                             if (!$notification_forum) {
                                 $this->notificationSystem->addNotification(17, $user, $this->getUser(), $comment);
                             }
-                        } elseif (!$dtChallenge) {
-                            // if (!$notification_challenge) {
-                            //     $this->notificationSystem->addNotification(17, $user, $this->getUser(), $comment);
-                            // }
+                        } elseif ($dtChallenge) {
+                            if (!$notification_challenge) {
+                                $this->notificationSystem->addNotification(23, $user, $this->getUser(), $comment);
+                            }
                         } else {
                             if (!$notification) {
                                 $this->notificationSystem->addNotification(14, $user, $this->getUser(), $comment);

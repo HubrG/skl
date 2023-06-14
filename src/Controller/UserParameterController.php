@@ -133,6 +133,22 @@ class UserParameterController extends AbstractController
                 $user->getUserParameters()->setNotif18Mail($value);
             } elseif ($nb == 19) {
                 $user->getUserParameters()->setNotif19Mail($value);
+            } elseif ($nb == 19) {
+                $user->getUserParameters()->setNotif19Mail($value);
+            } elseif ($nb == 19) {
+                $user->getUserParameters()->setNotif19Mail($value);
+            } elseif ($nb == 20) {
+                $user->getUserParameters()->setNotif20Mail($value);
+            } elseif ($nb == 21) {
+                $user->getUserParameters()->setNotif21Mail($value);
+            } elseif ($nb == 22) {
+                $user->getUserParameters()->setNotif22Mail($value);
+            } elseif ($nb == 23) {
+                $user->getUserParameters()->setNotif23Mail($value);
+            } elseif ($nb == 24) {
+                $user->getUserParameters()->setNotif24Mail($value);
+            } elseif ($nb == 25) {
+                $user->getUserParameters()->setNotif25Mail($value);
             }
         } else {
             if ($nb == 1) {
@@ -173,6 +189,18 @@ class UserParameterController extends AbstractController
                 $user->getUserParameters()->setNotif18Web($value);
             } elseif ($nb == 19) {
                 $user->getUserParameters()->setNotif19Web($value);
+            } elseif ($nb == 20) {
+                $user->getUserParameters()->setNotif20Web($value);
+            } elseif ($nb == 21) {
+                $user->getUserParameters()->setNotif21Web($value);
+            } elseif ($nb == 22) {
+                $user->getUserParameters()->setNotif22Web($value);
+            } elseif ($nb == 23) {
+                $user->getUserParameters()->setNotif23Web($value);
+            } elseif ($nb == 24) {
+                $user->getUserParameters()->setNotif24Web($value);
+            } elseif ($nb == 25) {
+                $user->getUserParameters()->setNotif25Web($value);
             }
         }
         // On récupère la valeur de l'attribut

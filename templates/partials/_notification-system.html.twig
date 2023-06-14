@@ -190,7 +190,7 @@
 		<span>
 			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
 			vient de vous mentionner dans sa réponse au sujet du forum «
-			<a href="{{path("app_forum_topic_read", {slug:item.assignForumMessage.topic.category.slug,id:item.assignForumMessage.topic.id,slugTopic:item.assignForumMessage.topic.slug})}}">{{item.assignForumMessage.topic.title}}</a>
+			<a href="{{path("app_forum_topic_read", {slug:item.assignForumMessage.topic.category.slug,id:item.assignForumMessage.topic.id,slugTopic:item.assignForumMessage.topic.slug,idCom:item.assignForumMessage.id})}}">{{item.assignForumMessage.topic.title}}</a>
 			»
 			<p>il y a
 				{{item.createdAt|since}}
@@ -294,5 +294,99 @@
 			</p>
 		</span>
 	{% endif %}
+	{# Nouveau commentaire sous un challenge #}
+	{% if item.type == 20 %}
+		<i class="fa-regular fa-book-user"></i>
+		<span>
+			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+			vient de commenter votre exercice «
+			<a href="{{path("app_challenge_read", {slug:item.challengeMessage.challenge.slug,id:item.challengeMessage.challenge.id,idCom:item.challengeMessage.id})}}">
+				{{item.challengeMessage.challenge.title}}
+			</a>
+			»
+			<p>il y a
+				{{item.createdAt|since}}
+			</p>
+		</span>
+	{% endif %}
+	{# * 21 : Proposition de réponse à un challenge #}
+	{% if item.type == 21 %}
+		<i class="fa-regular fa-book-user"></i>
+		<span>
+			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+			vient de proposer une réponse à votre exercice «
+			<a href="{{path("app_challenge_read", {slug:item.challengeResponse.challenge.slug,id:item.challengeResponse.challenge.id})}}">
+				{{item.challengeResponse.challenge.title}}
+			</a>
+			» avec son récit «
+			<a href="{{path("app_publication_show_one", {id:item.challengeResponse.id, slug:item.challengeResponse.slug})}}">
+				{{item.challengeResponse.title}}
+			</a>
+			»
+			<p>il y a
+				{{item.createdAt|since}}
+			</p>
+		</span>
+	{% endif %}
+	{# * 22 : Mention dans un énoncé de challenge #}
+	{% if item.type == 22 %}
+		<i class="fa-regular fa-at"></i>
+		<span>
+			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+			vous a mentionné dans l'énoncé de son exercice «
+			<a href="{{path("app_challenge_read", {slug:item.assignChallenge.slug,id:item.assignChallenge.id})}}">
+				{{item.assignChallenge.title}}
+			</a>
+			»
+			<p>il y a
+				{{item.createdAt|since}}
+			</p>
+		</span>
+	{% endif %}
+	{# * 23 : Mention dans une réponse à un challenge #}
+	{% if item.type == 23 %}
+		<i class="fa-regular fa-at"></i>
+		<span>
+			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+			vous a mentionné dans un commentaire de l'exercice «
+			<a href="{{path("app_challenge_read", {slug:item.assignChallengeMessage.challenge.slug,id:item.assignChallengeMessage.challenge.id, idCom:item.assignChallengeMessage.id})}}">
+				{{item.assignChallengeMessage.challenge.title}}
+			</a>
+			»
+			<p>il y a
+				{{item.createdAt|since}}
+			</p>
+		</span>
+	{% endif %}
+	{# * 24 : Nouveau « J'aime » dans une réponse à un challenge #}
+	{% if item.type == 24 %}
+		<i class="fa-regular fa-at"></i>
+		<span>
+			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+			a aimé votre commentaire sur l'exercice «
+			<a href="{{path("app_challenge_read", {slug:item.likeChallenge.challenge.slug,id:item.likeChallenge.challenge.id, idCom:item.likeChallenge.id})}}">
+				{{item.likeChallenge.challenge.title}}
+			</a>
+			»
+			<p>il y a
+				{{item.createdAt|since}}
+			</p>
+		</span>
+	{% endif %}
 
+	{# * 25 : Nouvelle réponse sur l'une de vos réponses challenge #}
+	{% if item.type == 25 %}
+		<i class="fa-regular fa-at"></i>
+		<span>
+			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+			a répondu à votre commentaire sur l'exercice «
+			<a href="{{path("app_challenge_read", {slug:item.challengeMessageReply.challenge.slug,id:item.challengeMessageReply.challenge.id, idCom:item.challengeMessageReply.id})}}">
+				{{item.challengeMessageReply.challenge.title}}
+			</a>
+			»
+			<p>il y a
+				{{item.createdAt|since}}
+			</p>
+		</span>
+	{% endif %}
 </div>

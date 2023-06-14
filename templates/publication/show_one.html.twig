@@ -31,7 +31,7 @@
 	Récit |
 	{{ pubShow.title }}
 	({{ pubShow.user.nickname }})
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																									-
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																		-
 	{{ parent() }}
 {% endblock %}
 
@@ -294,7 +294,7 @@
 		<div class="absolute bg-white dark:bg-slate-800 w-full min-h-[100%] left-0 right-0 -z-10  border-t-[1px] border-slate-200 dark:border-slate-900">&nbsp;</div>
 		{% if orderChap %}
 			<div class="w-full lg:w-7/12 pt-10 z-40 order-2 lg:order-1 ">
-				<div class="flex justify-between  gap-x-5 -mt-5 mb-10">
+				<div class="flex justify-between  gap-x-5 -mt-5 mb-5">
 					{% if pubShow.finished == true %}
 						<div class="w-full text-center bg-emerald-50 p-3 gap-y-2 rounded cursor-default grid grid-flow-row  dark:bg-transparent text-emerald-700 dark:text-emerald-300 ">
 							<button class="font-medium cursor-default flex-row flex gap-x-3 justify-center items-center">
@@ -507,6 +507,53 @@
 				</div>
 			</div>
 			<div class="w-full opacity-100 dark:opacity-100  text-xs  z-50 mt-0 pt-5 px-2 lg:w-4/12  order-1 lg:order-2  shadow-slate-300 text-slate-900 border-slate-200 border-t-[1px] border-t-slate-200 dark:border-slate-900 dark:border-t-slate-900 lg:border-l-[1px] lg:border-t-0 ">
+				{% if pubShow.challenge %}
+					<div class="mb-3 p-5 rounded bg-green-100 dark:bg-green-900">
+						<h6 class="text-center font-semibold">
+							<span class=" text-green-800 dark:text-green-100">
+								Il s'agit d'une réponse à un
+								<a href="{{path("app_challenge")}}" class="hover:underline">exercice</a>
+							</span>
+						</h6>
+						<hr class="my-3 border-green-300 dark:border-green-500 mb-4">
+						<p class="text-center">
+							<span class=" text-green-800 dark:text-green-100">
+								<i class="fa-duotone fa-hand-holding-seedling"></i>&nbsp;&nbsp;<a href="{{path("app_challenge_read", {slug:pubShow.challenge.slug,id:pubShow.challenge.id})}}" class="hover:underline">{{pubShow.challenge.title}}</a>
+							</span>
+						</p>
+					</div>
+				{% endif %}
+				{% if pubShow.publicationSupports|length > 0 %}
+					<div class="mb-3 p-5 rounded bg-slate-100 dark:bg-slate-900">
+						<h6 class="text-center font-semibold">Remerciements</h6>
+						<hr class="my-3 border-slate-300 dark:border-slate-500">
+						<div class="flex flex-col gap-y-3">
+							<ul>
+								{% for item in pubShow.publicationSupports %}
+									<a href="{{path("app_user", {username:item.user.username})}}" data-turbo-frame="_self" class="flex flex-row  gap-x-2 items-center justify-between px-2 rounded dark:text-slate-200 w-full py-2 hover:bg-slate-50 dark:hover:bg-slate-600">
+										<div class="flex flex-row gap-x-2 items-center">
+											<div class=" self-baseline w-7 h-7 relative flex-shrink-0">
+												{% if item.user.profilPicture %}
+													<img class="w-full h-full object-cover rounded-full lozad myImage" src="{{item.user.profilPicture}}" alt="Avatar de {{item.user.nickname}}">
+												{% else %}
+													<div class="w-full h-full object-cover rounded-full bg-slate-500  cursor-default">
+														<div class=" h-full flex mx-auto items-center justify-center text-xs text-slate-200">
+															{{ item.user.nickname|slice(0,1)|upper }}
+														</div>
+													</div>
+												{% endif %}
+											</div>
+											{{item.user.nickname}}
+										</div>
+										<div>
+											<small class="opacity-60">@{{item.user.username}}</small>
+										</div>
+									</a>
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
+				{% endif %}
 				<ul class="flex flex-col space-y-4 text-sm pb-5">
 					{% if pubShow.status > 1 %}
 						{# Partage sur Twitter #}

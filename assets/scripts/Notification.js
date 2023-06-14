@@ -59,7 +59,8 @@ function refreshNotif(titled) {
       let notyInstance = new Noty({
         text:
           '<i class="fa-duotone fa-bells"></i><br>' +
-          document.querySelector("#last-notif>div>span>div").textContent,
+          document.querySelector("#last-notif>div>span>div").textContent +
+          " — <strong>Voir</strong>",
         theme: "semanticui",
         progressBar: true,
         timeout: 3000,

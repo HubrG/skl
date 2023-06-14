@@ -54,10 +54,15 @@ class ForumController extends AbstractController
         }
 
 
-        $topics = $ftRepo->findBy(
-            ['category' => $category],
-            ['permanent' => 'DESC', 'createdAt' => 'DESC']
-        );
+        $qb = $ftRepo->createQueryBuilder('t'); // 't' est un alias pour 'topic'
+        $qb->join('t.forumMessages', 'm') // 'm' est un alias pour 'message'
+            ->where('t.category = :category')
+            ->setParameter('category', $category)
+            ->orderBy('t.permanent', 'DESC')
+            ->addOrderBy('m.published_at', 'DESC')
+            ->addOrderBy('t.createdAt', 'DESC'); // Tri par date de publication du dernier message
+
+        $topics = $qb->getQuery()->getResult();
 
         // * On récupère le nombre de derniers messages depuis la dernière visite de l'utilisateur
         // Récupérer l'utilisateur connecté

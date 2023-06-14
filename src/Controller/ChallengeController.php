@@ -279,6 +279,13 @@ class ChallengeController extends AbstractController
             // redirection vers la route app_forum
             return $this->redirectToRoute('app_challenge');
         }
+        // Si le challenge a une dateEnd et que cette date est dépassée, on ne peut pas répondre
+        if ($challenge->getDateEnd() != null and $challenge->getDateEnd() < new DateTime("now")) {
+            $this->addFlash("error", "La date limite pour répondre à cet exercice est dépassée.");
+            return $this->redirectToRoute("app_challenge_read", [
+                "id" => $id
+            ]);
+        }
         // * If user is connected
         if ($this->getUser()) {
             // * We get our last draft, if it exists

@@ -339,4 +339,8 @@ class Challenge
 
         return $this;
     }
+    public function getTimestamp(): int
+    {
+        return $this->createdAt->getTimestamp();
+    }
 }

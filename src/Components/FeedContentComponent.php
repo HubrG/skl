@@ -3,6 +3,7 @@
 namespace App\Components;
 
 use App\Repository\UserRepository;
+use App\Repository\ChallengeRepository;
 use App\Repository\ForumTopicRepository;
 use App\Repository\UserFollowRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -47,7 +48,8 @@ class FeedContentComponent extends AbstractController
         private PublicationDownloadRepository $pdRepo,
         private PublicationChapterLikeRepository $pchlRepo,
         private EntityManagerInterface $em,
-        private UserFollowRepository $ufRepo
+        private UserFollowRepository $ufRepo,
+        private ChallengeRepository $cRepo
     ) {
     }
     public function getComments(): array
@@ -62,6 +64,10 @@ class FeedContentComponent extends AbstractController
     public function getForumMessages(): array
     {
         return $this->fmsgRepo->findBy(["replyTo" => null], ["published_at" => "DESC"], 10);
+    }
+    public function getChallenges(): array
+    {
+        return $this->cRepo->findBy([], ["createdAt" => "DESC"], 10);
     }
     public function getForumTopics(): array
     {
@@ -81,6 +87,7 @@ class FeedContentComponent extends AbstractController
         return $qb->getQuery()->getResult();
         // return $this->pubRepo->findBy(["status" => 2, "hideSearch" => 0], ["created" => "DESC"], 10);
     }
+
     public function getPublicationChapters(): array
     {
         $qb = $this->pchRepo->createQueryBuilder('pc')
@@ -139,9 +146,6 @@ class FeedContentComponent extends AbstractController
 
         return $uniqueReads;
     }
-
-
-
     public function getPublicationFollows(): array
     {
         return $this->pfRepo->findBy([], ["CreatedAt" => "DESC"], 10);
@@ -177,6 +181,7 @@ class FeedContentComponent extends AbstractController
             array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationFollow:' . $e->getId()], $this->getPublicationFollows()),
             array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationDownload:' . $e->getId()], $this->getPublicationDownloads()),
             array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationRead:' . $e->getId()], $this->getPublicationReads()),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'Challenge:' . $e->getId()], $this->getChallenges()),
             array_map(fn ($e) => ['entity' => $e, 'key' => 'User:' . $e->getId()], $this->getUsers())
         );
 
@@ -248,6 +253,7 @@ class FeedContentComponent extends AbstractController
             array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationFollow:' . $e->getId()], $this->getPublicationFollowsFu($followedUserIds)),
             array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationDownload:' . $e->getId()], $this->getPublicationDownloadsFu($followedUserIds)),
             array_map(fn ($e) => ['entity' => $e, 'key' => 'PublicationRead:' . $e->getId()], $this->getPublicationReadsFu($followedUserIds)),
+            array_map(fn ($e) => ['entity' => $e, 'key' => 'Challenge:' . $e->getId()], $this->getChallengesFu($followedUserIds)),
             array_map(fn ($e) => ['entity' => $e, 'key' => 'User:' . $e->getId()], $this->getUsersFu($followedUserIds))
         );
 
@@ -272,6 +278,16 @@ class FeedContentComponent extends AbstractController
             ->where($qb->expr()->in('c.User', $followedUserIds))
             ->andWhere("p.hideSearch = FALSE")
             ->orderBy('c.published_at', 'DESC')
+            ->setMaxResults(10);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getChallengesFu($followedUserIds): array
+    {
+        $qb = $this->cRepo->createQueryBuilder('c');
+        $qb->where($qb->expr()->in('c.user', $followedUserIds))
+            ->orderBy('c.createdAt', 'DESC')
             ->setMaxResults(10);
 
         return $qb->getQuery()->getResult();

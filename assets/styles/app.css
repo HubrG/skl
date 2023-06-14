@@ -1546,7 +1546,7 @@ nav.breadcrumb ol li a:hover.not-underline {
 
 /* ! CHRONO CONTENT  */
 #chrono-content {
-	@apply   -mt-14 md:-mt-5  md:gap-10 sm:gap-7 gap-7 !important;
+	@apply    md:gap-10 sm:gap-7 gap-7 !important;
 }
 #chrono-content h4 {
 	@apply text-base font-semibold

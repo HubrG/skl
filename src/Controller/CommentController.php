@@ -144,7 +144,7 @@ class CommentController extends AbstractController
             } else {
                 // Envoi d'une notification
                 if ($forum) {
-                    $this->notificationSystem->addNotification(16, $like->getMessage()->getUser(), $this->getUser(), $like);
+                    $this->notificationSystem->addNotification(16, $like->getMessage()->getUser(), $this->getUser(), $comment);
                 } else {
                     // challenge
                     $this->notificationSystem->addNotification(24, $like->getMessage()->getUser(), $this->getUser(), $comment);

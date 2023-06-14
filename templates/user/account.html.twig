@@ -108,7 +108,7 @@
 		<div class="hidden p-4 rounded-lg dark:bg-slate-800 -mt-4" id="notif-account" role="tabpanel" aria-labelledby="notification-tab">
 			<div class="flex flex-col gap-y-4 text-xs lg:text-sm">
 				<div class="flex flex-row text-base pb-5">
-					<div class="w-10/12 font-semibold dark:text-slate-100">Type de notification</div>
+					<h4 class="w-10/12 font-semibold dark:text-slate-100">Type de notification</h4>
 					<div class="w-1/12">
 						<i data-tippy-content="Notifications par email" class="fa-duotone fa-envelope dark:text-slate-100"></i>
 					</div>
@@ -116,20 +116,21 @@
 						<i data-tippy-content="Notificatios web" class="fa-duotone fa-bell dark:text-slate-100"></i>
 					</div>
 				</div>
-				<hr class="mb-5 -mt-5">
 
+
+				<h5 class="font-semibold">Vos récits</h5>
 				<div class="flex flex-row notif-row">
 					<div>
 						<i class="fa-regular fa-comment-quote"></i>
-						<span>Nouveau commentaire sur l'un de vos récits</span>
+						<span>Quelqu'un a commenté votre récit</span>
 					</div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="1" type="checkbox" {{app.user.userParameters.notif1Mail is null or app.user.userParameters.notif1Mail == 1 ? "checked"}}></div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="1" type="checkbox" {{app.user.userParameters.notif1Web is null or app.user.userParameters.notif1Web == 1 ? "checked"}}></div>
 				</div>
 				<div class="flex flex-row notif-row">
 					<div>
-						<i class="fa-regular fa-comment-quote"></i>
-						<span>Nouveau commentaire sur l'une de vos feuilles</span>
+						<i class="fa-regular fa-message-middle-top"></i>
+						<span>Quelqu'un a commenté votre feuille</span>
 					</div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="2" type="checkbox" {{app.user.userParameters.notif2Mail is null or app.user.userParameters.notif2Mail == 1 ? "checked"}}></div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="2" type="checkbox" {{app.user.userParameters.notif2Web is null or app.user.userParameters.notif2Web == 1 ? "checked"}}></div>
@@ -137,42 +138,40 @@
 				<div class="flex flex-row notif-row">
 					<div>
 						<i class="fa-regular fa-highlighter-line"></i>
-						<span>Nouveau commentaire de révision sur l'une de vos feuilles</span>
+						<span>Une observation de révision a été faite sur votre feuille</span>
 					</div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="10" type="checkbox" {{app.user.userParameters.notif10Mail is null or app.user.userParameters.notif10Mail == 1 ? "checked"}}></div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="10" type="checkbox" {{app.user.userParameters.notif10Web is null or app.user.userParameters.notif10Web == 1 ? "checked"}}></div>
 				</div>
-				<hr class="mb-5">
-
 				<div class="flex flex-row notif-row">
 					<div>
-						<i class="fa-regular fa-comment-heart"></i>
-						<span>Nouveau « J'aime » sur l'un de vos commentaires</span>
+						<i class="fa-regular fa-book-bookmark"></i>
+						<span>Quelqu'un a ajouté votre récit sa collection</span>
 					</div>
-					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="3" type="checkbox" {{app.user.userParameters.notif3Mail is null or app.user.userParameters.notif3Mail == 1 ? "checked"}}></div>
-					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="3" type="checkbox" {{app.user.userParameters.notif3Web is null or app.user.userParameters.notif3Web == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="26" type="checkbox" {{app.user.userParameters.notif26Mail is null or app.user.userParameters.notif26Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="26" type="checkbox" {{app.user.userParameters.notif26Web is null or app.user.userParameters.notif26Web == 1 ? "checked"}}></div>
 				</div>
 				<div class="flex flex-row notif-row">
 					<div>
-						<i class="fa-regular fa-comments"></i>
-						<span>Nouvelle réponse sous l'un de vos commentaires</span>
+						<i class="fa-regular fa-square-rss"></i>
+						<span>Quelqu'un s'est abonné à votre récit</span>
 					</div>
-					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="9" type="checkbox" {{app.user.userParameters.notif9Mail is null or app.user.userParameters.notif9Mail == 1 ? "checked"}}></div>
-					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="9" type="checkbox" {{app.user.userParameters.notif9Web is null or app.user.userParameters.notif9Web == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="8" type="checkbox" {{app.user.userParameters.notif8Mail is null or app.user.userParameters.notif8Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="8" type="checkbox" {{app.user.userParameters.notif8Web is null or app.user.userParameters.notif8Web == 1 ? "checked"}}></div>
 				</div>
-				<hr class="mb-5">
 				<div class="flex flex-row notif-row">
 					<div>
-						<i class="fa-regular fa-folder-bookmark"></i>
-						<span>Nouvel ajout à une collection de l'une de vos feuilles</span>
+						<i class="fa-regular fa-bookmark"></i>
+						<span>Quelqu'un a posé un marque-page sur votre feuille</span>
 					</div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="4" type="checkbox" {{app.user.userParameters.notif4Mail is null or app.user.userParameters.notif4Mail == 1 ? "checked"}}></div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="4" type="checkbox" {{app.user.userParameters.notif4Web is null or app.user.userParameters.notif4Web == 1 ? "checked"}}></div>
 				</div>
+
 				<div class="flex flex-row notif-row">
 					<div>
 						<i class="fa-regular fa-download"></i>
-						<span>Nouveau téléchargement d'une publication</span>
+						<span>Votre récit a été téléchargé</span>
 					</div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="5" type="checkbox" {{app.user.userParameters.notif5Mail is null or app.user.userParameters.notif5Mail == 1 ? "checked"}}></div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="5" type="checkbox" {{app.user.userParameters.notif5Web is null or app.user.userParameters.notif5Web == 1 ? "checked"}}></div>
@@ -180,32 +179,69 @@
 				<div class="flex flex-row notif-row">
 					<div>
 						<i class="fa-regular fa-thumbs-up"></i>
-						<span>Nouveau « j'aime » sur l'une de vos feuilles</span>
+						<span>Quelqu'un a apprécié votre feuille</span>
 					</div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="6" type="checkbox" {{app.user.userParameters.notif6Mail is null or app.user.userParameters.notif6Mail == 1 ? "checked"}}></div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="6" type="checkbox" {{app.user.userParameters.notif6Web is null or app.user.userParameters.notif6Web == 1 ? "checked"}}></div>
 				</div>
+				<hr class="mb-0 mt-0">
+				<h5 class="font-semibold">Commentaires de récit</h5>
 				<div class="flex flex-row notif-row">
 					<div>
-						<i class="fa-regular fa-file"></i>
-						<span>Nouvelle feuille sur une publication que vous suivez</span>
+						<i class="fa-regular fa-comment-heart"></i>
+						<span>Quelqu'un a apprécié votre commentaire</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="3" type="checkbox" {{app.user.userParameters.notif3Mail is null or app.user.userParameters.notif3Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="3" type="checkbox" {{app.user.userParameters.notif3Web is null or app.user.userParameters.notif3Web == 1 ? "checked"}}></div>
+				</div>
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-comments"></i>
+						<span>Une réponse a été postée sous votre commentaire</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="9" type="checkbox" {{app.user.userParameters.notif9Mail is null or app.user.userParameters.notif9Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="9" type="checkbox" {{app.user.userParameters.notif9Web is null or app.user.userParameters.notif9Web == 1 ? "checked"}}></div>
+				</div>
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-at"></i>
+						<span>Vous avez été mentionné dans un commentaire</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="14" type="checkbox" {{app.user.userParameters.notif14Mail is null or app.user.userParameters.notif14Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="14" type="checkbox" {{app.user.userParameters.notif14Web is null or app.user.userParameters.notif14Web == 1 ? "checked"}}></div>
+				</div>
+				<hr class="mb-0 mt-0">
+				<h5 class="font-semibold">Vos abonnements</h5>
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-user-group"></i>
+						<span>Vous avez un nouvel abonné</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="18" type="checkbox" {{app.user.userParameters.notif18Mail is null or app.user.userParameters.notif18Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="18" type="checkbox" {{app.user.userParameters.notif18Web is null or app.user.userParameters.notif18Web == 1 ? "checked"}}></div>
+				</div>
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-file-plus"></i>
+						<span>Une nouvelle feuille a été ajoutée au récit auquel vous êtes abonné(e)</span>
 					</div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="7" type="checkbox" {{app.user.userParameters.notif7Mail is null or app.user.userParameters.notif7Mail == 1 ? "checked"}}></div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="7" type="checkbox" {{app.user.userParameters.notif7Web is null or app.user.userParameters.notif7Web == 1 ? "checked"}}></div>
 				</div>
 				<div class="flex flex-row notif-row">
 					<div>
-						<i class="fa-regular fa-square-rss"></i>
-						<span>Nouvel abonnement à votre publication</span>
+						<i class="fa-regular fa-book-user"></i>
+						<span>Un récit a été publié par quelqu'un que vous suivez</span>
 					</div>
-					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="8" type="checkbox" {{app.user.userParameters.notif8Mail is null or app.user.userParameters.notif8Mail == 1 ? "checked"}}></div>
-					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="8" type="checkbox" {{app.user.userParameters.notif8Web is null or app.user.userParameters.notif8Web == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="19" type="checkbox" {{app.user.userParameters.notif19Mail is null or app.user.userParameters.notif19Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="19" type="checkbox" {{app.user.userParameters.notif19Web is null or app.user.userParameters.notif19Web == 1 ? "checked"}}></div>
 				</div>
-				<hr class="mb-5">
+				<hr class="mb-0 mt-0">
+				<h5 class="font-semibold">Discussions</h5>
 				<div class="flex flex-row notif-row">
 					<div>
 						<i class="fa-regular fa-comment-alt"></i>
-						<span>Nouvelle réponse à vos sujets de forum</span>
+						<span>Quelqu'un a répondu à votre sujet de discussion</span>
 					</div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="11" type="checkbox" {{app.user.userParameters.notif11Mail is null or app.user.userParameters.notif11Mail == 1 ? "checked"}}></div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="11" type="checkbox" {{app.user.userParameters.notif11Web is null or app.user.userParameters.notif11Web == 1 ? "checked"}}></div>
@@ -213,7 +249,7 @@
 				<div class="flex flex-row notif-row">
 					<div>
 						<i class="fa-regular fa-messages"></i>
-						<span>Nouvelle réponse sous l'une de vos réponses du forum</span>
+						<span>Une réponse a été postée sous votre intervention dans une discussion</span>
 					</div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="15" type="checkbox" {{app.user.userParameters.notif15Mail is null or app.user.userParameters.notif15Mail == 1 ? "checked"}}></div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="15" type="checkbox" {{app.user.userParameters.notif15Web is null or app.user.userParameters.notif15Web == 1 ? "checked"}}></div>
@@ -221,16 +257,15 @@
 				<div class="flex flex-row notif-row">
 					<div>
 						<i class="fa-regular fa-message-heart"></i>
-						<span>Nouveau « j'aime » sur l'une de vos réponses du forum</span>
+						<span>Quelqu'un a apprécié l'une de vos réponses à une discussion</span>
 					</div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="16" type="checkbox" {{app.user.userParameters.notif16Mail is null or app.user.userParameters.notif16Mail == 1 ? "checked"}}></div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="16" type="checkbox" {{app.user.userParameters.notif16Web is null or app.user.userParameters.notif16Web == 1 ? "checked"}}></div>
 				</div>
-				<hr class="mb-5">
 				<div class="flex flex-row notif-row">
 					<div>
 						<i class="fa-regular fa-at"></i>
-						<span>Nouvelle mention sur un sujet du forum</span>
+						<span>Vous avez été mentionné(e) dans un sujet de discussion</span>
 					</div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="13" type="checkbox" {{app.user.userParameters.notif13Mail is null or app.user.userParameters.notif13Mail == 1 ? "checked"}}></div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="13" type="checkbox" {{app.user.userParameters.notif13Web is null or app.user.userParameters.notif13Web == 1 ? "checked"}}></div>
@@ -238,23 +273,34 @@
 				<div class="flex flex-row notif-row">
 					<div>
 						<i class="fa-regular fa-at"></i>
-						<span>Nouvelle mention sur une réponse du forum</span>
+						<span>Vous avez été mentionné(e) dans une réponse à une discussion</span>
 					</div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="17" type="checkbox" {{app.user.userParameters.notif17Mail is null or app.user.userParameters.notif17Mail == 1 ? "checked"}}></div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="17" type="checkbox" {{app.user.userParameters.notif17Web is null or app.user.userParameters.notif17Web == 1 ? "checked"}}></div>
 				</div>
+				<hr class="mb-0 mt-0">
+				<h5 class="font-semibold">Exercices</h5>
+
 				<div class="flex flex-row notif-row">
 					<div>
-						<i class="fa-regular fa-at"></i>
-						<span>Nouvelle mention sur un commentaire</span>
+						<i class="fa-regular fa-book-medical"></i>
+						<span>Une réponse a été proposée à l'un de vos exercices</span>
 					</div>
-					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="14" type="checkbox" {{app.user.userParameters.notif14Mail is null or app.user.userParameters.notif14Mail == 1 ? "checked"}}></div>
-					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="14" type="checkbox" {{app.user.userParameters.notif14Web is null or app.user.userParameters.notif14Web == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="21" type="checkbox" {{app.user.userParameters.notif21Mail is null or app.user.userParameters.notif21Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="21" type="checkbox" {{app.user.userParameters.notif21Web is null or app.user.userParameters.notif21Web == 1 ? "checked"}}></div>
+				</div>
+				<div class="flex flex-row notif-row">
+					<div>
+						<i class="fa-regular fa-comment-question"></i>
+						<span>Un commentaire a été posté sous l'un de vos exercices</span>
+					</div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="20" type="checkbox" {{app.user.userParameters.notif20Mail is null or app.user.userParameters.notif20Mail == 1 ? "checked"}}></div>
+					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="20" type="checkbox" {{app.user.userParameters.notif20Web is null or app.user.userParameters.notif20Web == 1 ? "checked"}}></div>
 				</div>
 				<div class="flex flex-row notif-row">
 					<div>
 						<i class="fa-regular fa-at"></i>
-						<span>Nouvelle mention dans un énoncé d'exercice</span>
+						<span>Vous avez été mentionné(e) dans un énoncé d'exercice</span>
 					</div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="22" type="checkbox" {{app.user.userParameters.notif22Mail is null or app.user.userParameters.notif22Mail == 1 ? "checked"}}></div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="22" type="checkbox" {{app.user.userParameters.notif22Web is null or app.user.userParameters.notif22Web == 1 ? "checked"}}></div>
@@ -262,58 +308,23 @@
 				<div class="flex flex-row notif-row">
 					<div>
 						<i class="fa-regular fa-at"></i>
-						<span>Nouvelle mention dans un commentaire d'exercice</span>
+						<span>Vous avez été mentionné(e) dans un commentaire d'exercice</span>
 					</div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="23" type="checkbox" {{app.user.userParameters.notif23Mail is null or app.user.userParameters.notif23Mail == 1 ? "checked"}}></div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="23" type="checkbox" {{app.user.userParameters.notif23Web is null or app.user.userParameters.notif23Web == 1 ? "checked"}}></div>
 				</div>
-
-				<hr class="mb-5">
 				<div class="flex flex-row notif-row">
 					<div>
-						<i class="fa-regular fa-user-group"></i>
-						<span>Nouvel abonné</span>
-					</div>
-					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="18" type="checkbox" {{app.user.userParameters.notif18Mail is null or app.user.userParameters.notif18Mail == 1 ? "checked"}}></div>
-					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="18" type="checkbox" {{app.user.userParameters.notif18Web is null or app.user.userParameters.notif18Web == 1 ? "checked"}}></div>
-				</div>
-				<div class="flex flex-row notif-row">
-					<div>
-						<i class="fa-regular fa-book-user"></i>
-						<span>Nouveau récit publié par l'un de vos abonnements</span>
-					</div>
-					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="19" type="checkbox" {{app.user.userParameters.notif19Mail is null or app.user.userParameters.notif19Mail == 1 ? "checked"}}></div>
-					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="19" type="checkbox" {{app.user.userParameters.notif19Web is null or app.user.userParameters.notif19Web == 1 ? "checked"}}></div>
-				</div>
-				<hr class="mb-5">
-				<div class="flex flex-row notif-row">
-					<div>
-						<i class="fa-regular fa-book-user"></i>
-						<span>Nouveau commentaire sous l'un de vos exercices</span>
-					</div>
-					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="20" type="checkbox" {{app.user.userParameters.notif20Mail is null or app.user.userParameters.notif20Mail == 1 ? "checked"}}></div>
-					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="20" type="checkbox" {{app.user.userParameters.notif20Web is null or app.user.userParameters.notif20Web == 1 ? "checked"}}></div>
-				</div>
-				<div class="flex flex-row notif-row">
-					<div>
-						<i class="fa-regular fa-book-user"></i>
-						<span>Proposition de réponse à l'un de vos exercices</span>
-					</div>
-					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="21" type="checkbox" {{app.user.userParameters.notif21Mail is null or app.user.userParameters.notif21Mail == 1 ? "checked"}}></div>
-					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="21" type="checkbox" {{app.user.userParameters.notif21Web is null or app.user.userParameters.notif21Web == 1 ? "checked"}}></div>
-				</div>
-				<div class="flex flex-row notif-row">
-					<div>
-						<i class="fa-regular fa-book-user"></i>
-						<span>Nouveau « J'aime » sur l'un de vos commentaires d'exercice</span>
+						<i class="fa-regular fa-message-heart fa-flip-vertical"></i>
+						<span>Quelqu'un a apprécié l'un de vos commentaires d'exercice</span>
 					</div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="24" type="checkbox" {{app.user.userParameters.notif24Mail is null or app.user.userParameters.notif24Mail == 1 ? "checked"}}></div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="24" type="checkbox" {{app.user.userParameters.notif24Web is null or app.user.userParameters.notif24Web == 1 ? "checked"}}></div>
 				</div>
 				<div class="flex flex-row notif-row">
 					<div>
-						<i class="fa-regular fa-book-user"></i>
-						<span>Nouvelle réponse sous l'un de vos commentaires d'exercice</span>
+						<i class="fa-regular fa-comments-question-check"></i>
+						<span>Une réponse a été postée sous votre commentaire d'exercice</span>
 					</div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="mail" data-notif-nb="25" type="checkbox" {{app.user.userParameters.notif25Mail is null or app.user.userParameters.notif25Mail == 1 ? "checked"}}></div>
 					<div class="w-1/12"><input class="notif-checkbox" data-notif-type="web" data-notif-nb="25" type="checkbox" {{app.user.userParameters.notif25Web is null or app.user.userParameters.notif25Web == 1 ? "checked"}}></div>

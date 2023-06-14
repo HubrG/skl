@@ -141,9 +141,14 @@ class PublicationDownloadPDF extends AbstractController
                 );
             }
         }
+        if (!$publication->getCategory()) {
+            $cat = "Aucune catégorie";
+        } else {
+            $cat = $publication->getCategory()->getName();
+        }
         $pdf->SetAuthor($publication->getUser()->getNickname());
         $pdf->SetTitle($publication->getTitle());
-        $pdf->SetSubject($publication->getCategory()->getName() . " - " . $publication->getSummary());
+        $pdf->SetSubject($cat . " - " . $publication->getSummary());
         // On récupère tous les keuwords de la publication
         $keywords = array();
         $pubKw = $publication->getPublicationKeywords();

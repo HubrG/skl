@@ -193,7 +193,7 @@
 
 					{% set likeTooltip = app.user.id is not defined ? "Connectez-vous pour aimer cette feuille !" : (infoPub is not null and infoPub.user.id == app.user.id) ? 'Vous ne pouvez pas aimer votre feuille.' : (liked ? "Je n'aime plus cette feuille" : "J'aime cette feuille") %}
 					{% set dislikeTooltip = app.user.id is not defined ? "Connectez-vous pour dévaloriser  cette feuille !" : (infoPub is not null and infoPub.user.id == app.user.id) ? 'Vous ne pouvez pas dévaloriser votre feuille.' : (liked ? "Je ne dévalorise plus cette feuille" : "Je n'aime pas cette feuille") %}
-					{% set bmTooltip = app.user.id is not defined ? "Connectez-vous pour marquer cette feuille !" : infoPub.user.id == app.user.id ? 'Vous ne pouvez pas marquer votre feuille.' : bm ? "Retirer cette feuille de ma collection" : "Ajouter cette feuille à ma collection" %}
+					{% set bmTooltip = app.user.id is not defined ? "Connectez-vous pour marquer cette feuille !" : infoPub.user.id == app.user.id ? 'Vous ne pouvez pas marquer votre feuille.' : bm ? "Retirer le marque-page" : "Ajouter un marque-page" %}
 
 					<div class="{% if userLikesChapter %}hover:text-blue-600 cursor-pointer{% endif %} {% if app.user.id is not defined %}cursor-pointer{% endif %}" id="likeThisChapter" data-tippy-content="{{ likeTooltip }}" {% if app.user.id is not defined %} data-micromodal-trigger="popup-login" {% endif %} data-id="{{ infoChap.id }}">
 						<span id="nbrLike">{{ infoChap.publicationChapterLikes|length }}</span>&nbsp;

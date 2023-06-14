@@ -457,7 +457,7 @@ class PublicationShowController extends AbstractController
 			], 403);
 		}
 		// * Ajout d'une notification
-		$this->notificationSystem->addNotification(4, $pub->getUser(), $this->getUser(), $collection);
+		$this->notificationSystem->addNotification(26, $pub->getUser(), $this->getUser(), $collection);
 		//
 		return $this->json([
 			'code' => 200,

@@ -43,7 +43,7 @@ class NotificationSystem extends AbstractController
      * 
      * 3 : Nouveau like sur l'un de vos commentaires
      * 
-     * 4 : Nouveau bookmark sur un chapitre
+     * 4 : Nouveau bookmark sur un chapitre  ( ! MAUVAIS TITRE = chapitre)
      * 
      * 5 : Noueau téléchargement d'une publication
      * 
@@ -86,6 +86,8 @@ class NotificationSystem extends AbstractController
      * 24 : Nouveau « J'aime » dans une réponse à un challenge
      *   
      * 25 : Nouvelle réponse sur l'une de vos réponses challenge
+     *  
+     * 26 : Nouveau bookmark sur un récit (MAUVAIS TITRE = publication)
      * @param $user type
      * @param $message string
      * @param $fromUser type
@@ -221,19 +223,36 @@ class NotificationSystem extends AbstractController
             }
             // Envoi d'email
             if (is_null($userRepo->getUserParameters()->isNotif4Mail()) or $userRepo->getUserParameters()->isNotif4Mail() == 1) {
-                if ($notification->getPublicationBookmark()->getChapter()) {
-                    $pathChapter = $this->generateUrl('app_chapter_show', ['slugPub' => $notification->getPublicationBookmark()->getChapter()->getPublication()->getSlug(), "user" => $notification->getPublicationBookmark()->getUser()->getUsername(), "idChap" => $notification->getPublicationBookmark()->getChapter()->getId(), "slug" => $notification->getPublicationBookmark()->getChapter()->getSlug()]);
-                    $textChapter = " la feuille <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getPublicationBookmark()->getChapter()->getTitle() . "</a>";
-                    $textSubject = "L'une de vos feuilles a été ajoutée à une collection.";
-                    $pathPublication = $this->generateUrl('app_publication_show_one', ['slug' => $notification->getPublicationBookmark()->getChapter()->getPublication()->getSlug(), "id" => $notification->getPublicationBookmark()->getChapter()->getPublication()->getId()]);
-                    $textPublication = " le récit <a href='https://scrilab.com" . $pathPublication . "' style='font-weight:600;'>" . $notification->getPublicationBookmark()->getChapter()->getPublication()->getTitle() . "</a>";
-                } else {
-                    $pathChapter = "";
-                    $textChapter = "";
-                    $textSubject = "L'un de vos récits a été ajouté à une collection.";
-                    $pathPublication = $this->generateUrl('app_publication_show_one', ['slug' => $notification->getPublicationBookmark()->getPublication()->getSlug(), "id" => $notification->getPublicationBookmark()->getPublication()->getId()]);
-                    $textPublication = " le récit <a href='https://scrilab.com" . $pathPublication . "' style='font-weight:600;'>" . $notification->getPublicationBookmark()->getPublication()->getTitle() . "</a>";
-                }
+                $pathChapter = $this->generateUrl('app_chapter_show', ['slugPub' => $notification->getPublicationBookmark()->getChapter()->getPublication()->getSlug(), "user" => $notification->getPublicationBookmark()->getUser()->getUsername(), "idChap" => $notification->getPublicationBookmark()->getChapter()->getId(), "slug" => $notification->getPublicationBookmark()->getChapter()->getSlug()]);
+                $textChapter = " la feuille <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getPublicationBookmark()->getChapter()->getTitle() . "</a>";
+                $textSubject = "Un marque-page a été posé sur votre feuille";
+                $pathPublication = $this->generateUrl('app_publication_show_one', ['slug' => $notification->getPublicationBookmark()->getChapter()->getPublication()->getSlug(), "id" => $notification->getPublicationBookmark()->getChapter()->getPublication()->getId()]);
+                $textPublication = "sur le récit <a href='https://scrilab.com" . $pathPublication . "' style='font-weight:600;'>" . $notification->getPublicationBookmark()->getChapter()->getPublication()->getTitle() . "</a>";
+                $email->subject($textSubject)
+                    ->context([
+                        'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
+                    vient d'ajouter un marque-page à " . $textChapter . $textPublication . " <br/>",
+                        'subject' => $textSubject,
+                    ]);
+                //
+                $this->mailer->send($email);
+            }
+        }
+        if ($type === 26) {
+            if (is_null($userRepo->getUserParameters()->isNotif26Web()) or $userRepo->getUserParameters()->isNotif26Web() == 1) {
+                $notification->setPublicationChapterBookmark($idLink);
+                $this->em->persist($notification);
+                $this->em->flush();
+            } else {
+                $notification->setPublicationChapterBookmark($idLink);
+            }
+            // Envoi d'email
+            if (is_null($userRepo->getUserParameters()->isNotif26Mail()) or $userRepo->getUserParameters()->isNotif26Mail() == 1) {
+                $pathChapter = "";
+                $textChapter = "";
+                $textSubject = "L'un de vos récits a été ajouté à une collection.";
+                $pathPublication = $this->generateUrl('app_publication_show_one', ['slug' => $notification->getPublicationChapterBookmark()->getPublication()->getSlug(), "id" => $notification->getPublicationChapterBookmark()->getPublication()->getId()]);
+                $textPublication = " le récit <a href='https://scrilab.com" . $pathPublication . "' style='font-weight:600;'>" . $notification->getPublicationChapterBookmark()->getPublication()->getTitle() . "</a>";
                 $email->subject($textSubject)
                     ->context([
                         'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
@@ -245,8 +264,26 @@ class NotificationSystem extends AbstractController
             }
         }
         if ($type === 5) {
-            $notification->setDownload($idLink);
-            // $email->text('Vous avez reçu un nouveau téléchargement sur l\'une de vos publications')->subject('Nouveau téléchargement');
+            if (is_null($userRepo->getUserParameters()->isNotif5Web()) or $userRepo->getUserParameters()->isNotif5Web() == 1) {
+                $notification->setDownload($idLink);
+                $this->em->persist($notification);
+                $this->em->flush();
+            } else {
+                $notification->setDownload($idLink);
+            }
+            // Envoi d'email
+            if (is_null($userRepo->getUserParameters()->isNotif5Mail()) or $userRepo->getUserParameters()->isNotif5Mail() == 1) {
+                $pathPublication = $this->generateUrl('app_publication_show_one', ['slug' => $notification->getDownload()->getPublication()->getSlug(), "id" => $notification->getDownload()->getPublication()->getId()]);
+                $textPublication = " <a href='https://scrilab.com" . $pathPublication . "' style='font-weight:600;'>" . $notification->getDownload()->getPublication()->getTitle() . "</a>";
+                $email->subject("Nouveau téléchargement de l'un de vos récits.")
+                    ->context([
+                        'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
+                    vient de télécharger votre récit " . $textPublication . "<br/>",
+                        'subject' => "Nouveau téléchargement de l'un de vos récits.",
+                    ]);
+                //
+                $this->mailer->send($email);
+            }
         }
         if ($type === 6) {
             if (is_null($userRepo->getUserParameters()->isNotif6Web()) or $userRepo->getUserParameters()->isNotif6Web() == 1) {

@@ -630,7 +630,7 @@ class ChapterShowController extends AbstractController
                 'code' => 200,
                 'resp' => false,
                 'nbrBm' => $pbRepo->count(['chapter' => $pch]),
-                'message' => 'Le chapitre a bien été supprimée des bookmarks.',
+                'message' => 'Le chapitre a bien été supprimée des marques-pages.',
             ], 200);
         }
 
@@ -644,12 +644,13 @@ class ChapterShowController extends AbstractController
         $this->publicationPopularity->PublicationPopularity($pch->getPublication());
         // * Envoi d'une notification
         $this->notificationSystem->addNotification(4, $pch->getPublication()->getUser(), $this->getUser(), $bm);
+
         //
         return $this->json([
             'code' => 200,
             'resp' => true,
             'nbrBm' => $pbRepo->count(['chapter' => $pch]),
-            'message' => 'Le chapitre a bien été ajouté aux bookmarks',
+            'message' => 'Le chapitre a bien été ajouté aux marques-pages',
         ], 200);
     }
 

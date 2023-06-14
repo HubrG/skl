@@ -56,12 +56,35 @@ function refreshNotif(titled) {
         .getAttribute("data-nbr") || 0
     );
     if (!firstLoad && nbrNotif > nbrNotifold) {
-      NotyDisplay(
-        '<i class="fa-duotone fa-bells"></i><br>' +
-          document.getElementById("last-notif").textContent,
-        "warning",
-        3000
-      );
+      let notyInstance = new Noty({
+        text:
+          '<i class="fa-duotone fa-bells"></i><br>' +
+          document.querySelector("#last-notif>div>span>div").textContent,
+        theme: "semanticui",
+        progressBar: true,
+        timeout: 3000,
+        layout: "bottomCenter",
+        type: "warning",
+        closeWith: ["click", "button"],
+        animation: {
+          open: "animate__animated animate__fadeInUp", // Animate.css class names
+          close: "animate__animated animate__fadeOutDown", // Animate.css class names
+        },
+        callbacks: {
+          onClick: function () {
+            // AU clic, on envoie sur la page des notifications
+            let links = document.querySelectorAll(
+              "#last-notif>div>span>div>a[data-notif-clic]"
+            );
+            links.forEach((link) => {
+              var linked = link.getAttribute("href");
+              window.top.location.href = linked;
+            });
+          },
+        },
+      });
+
+      notyInstance.show();
     }
     firstLoad = false;
 

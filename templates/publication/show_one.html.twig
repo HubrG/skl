@@ -31,7 +31,7 @@
 	Récit |
 	{{ pubShow.title }}
 	({{ pubShow.user.nickname }})
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						-
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																									-
 	{{ parent() }}
 {% endblock %}
 
@@ -294,7 +294,7 @@
 		<div class="absolute bg-white dark:bg-slate-800 w-full min-h-[100%] left-0 right-0 -z-10  border-t-[1px] border-slate-200 dark:border-slate-900">&nbsp;</div>
 		{% if orderChap %}
 			<div class="w-full lg:w-7/12 pt-10 z-40 order-2 lg:order-1 ">
-				<div class="flex justify-between  gap-x-5 -mt-5 mb-5">
+				<div class="flex justify-between  gap-x-5 -mt-5 mb-10">
 					{% if pubShow.finished == true %}
 						<div class="w-full text-center bg-emerald-50 p-3 gap-y-2 rounded cursor-default grid grid-flow-row  dark:bg-transparent text-emerald-700 dark:text-emerald-300 ">
 							<button class="font-medium cursor-default flex-row flex gap-x-3 justify-center items-center">
@@ -343,7 +343,7 @@
 						{% endfor %}
 						<div id="btnCollection" data-href="{{path("app_publication_add_collection", {id:pubShow.id})}}" class="{{classCollectionBtn}}">
 							<button class="font-medium  flex flex-row gap-x-3 justify-center items-center">
-								<i id="iconCollection" class="{{classCollectionBtn == 'follow-collection-buttons-ok' ? "fa-kit fa-regular-book-bookmark-slash" : "fa-duotone fa-book-bookmark" }}"></i>
+								<i id="iconCollection" class="{{classCollectionBtn == 'follow-collection-buttons-ok' ? "fa-duotone fa-book-bookmark" : "fa-duotone fa-book-bookmark" }}"></i>
 								<span id="titleCollection">
 									{{classCollectionBtn == "follow-collection-buttons-ok" ? "Retirer de ma collection" : "Ajouter à ma collection" }}
 								</span>

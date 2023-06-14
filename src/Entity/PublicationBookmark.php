@@ -33,9 +33,13 @@ class PublicationBookmark
     #[ORM\OneToMany(mappedBy: 'publication_bookmark', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $notifications;
 
+    #[ORM\OneToMany(mappedBy: 'publicationChapterBookmark', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $notifcationPublicationChapterBookmark;
+
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
+        $this->notifcationPublicationChapterBookmark = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -135,5 +139,35 @@ class PublicationBookmark
     public function getTimestamp(): int
     {
         return $this->createdAt->getTimestamp();
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifcationPublicationChapterBookmark(): Collection
+    {
+        return $this->notifcationPublicationChapterBookmark;
+    }
+
+    public function addNotifcationPublicationChapterBookmark(Notification $notifcationPublicationChapterBookmark): self
+    {
+        if (!$this->notifcationPublicationChapterBookmark->contains($notifcationPublicationChapterBookmark)) {
+            $this->notifcationPublicationChapterBookmark->add($notifcationPublicationChapterBookmark);
+            $notifcationPublicationChapterBookmark->setPublicationChapterBookmark($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotifcationPublicationChapterBookmark(Notification $notifcationPublicationChapterBookmark): self
+    {
+        if ($this->notifcationPublicationChapterBookmark->removeElement($notifcationPublicationChapterBookmark)) {
+            // set the owning side to null (unless already changed)
+            if ($notifcationPublicationChapterBookmark->getPublicationChapterBookmark() === $this) {
+                $notifcationPublicationChapterBookmark->setPublicationChapterBookmark(null);
+            }
+        }
+
+        return $this;
     }
 }

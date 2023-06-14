@@ -1,30 +1,38 @@
 {# Nouveau commentaire sur l'une de vos publications #}
 <div class="one-notification  p-3 text-sm text-left flex flex-row items-baseline gap-3">
 	{% if item.type == 1 %}
-		<i class="fa-regular fa-comment"></i>
+		<i class="fa-regular fa-comment-quote"></i>
 		<span>
-			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			vient de rédiger un commentaire sur votre publication
-			<a href="{{path("app_publication_show_one", {id:item.comment.publication.id, slug:item.comment.publication.slug,idCom:item.comment.id})}}">
-				{{item.comment.publication.title}}
-			</a>
-			<p>il y a
+			<div>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vient de rédiger un commentaire sur votre publication
+				<a data-notif-clic href="{{path("app_publication_show_one", {id:item.comment.publication.id, slug:item.comment.publication.slug,idCom:item.comment.id})}}">
+					{{item.comment.publication.title}}
+				</a>
+			</div>
+			<p>
+
+				il y a
 				{{item.createdAt|since}}
 			</p>
 		</span>
 	{% endif %}
 	{# Nouveau commentaire sur l'un de vos chapitres #}
 	{% if item.type == 2 %}
-		<i class="fa-kit fa-regular-comment-quote-circle-bolt"></i>
+		<i class="fa-regular fa-message-middle-top"></i>
 		<span>
-			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			vient de rédiger un commentaire sur la feuille
-			<a href="{{path("app_chapter_show", {slugPub:item.comment.publication.slug,user:item.user.username,idChap:item.comment.chapter.id,slug:item.comment.chapter.slug,idCom:item.comment.id})}}">
-				{{item.comment.chapter.title}}
-			</a>
-			de votre récit
-			<a href="{{path("app_publication_show_one", {id:item.comment.publication.id, slug:item.comment.publication.slug})}}">{{item.comment.publication.title}}</a>
-			<p>il y a
+			<div>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vient de rédiger un commentaire sur la feuille
+				<a data-notif-clic href="{{path("app_chapter_show", {slugPub:item.comment.publication.slug,user:item.user.username,idChap:item.comment.chapter.id,slug:item.comment.chapter.slug,idCom:item.comment.id})}}">
+					{{item.comment.chapter.title}}
+				</a>
+				de votre récit
+				<a href="{{path("app_publication_show_one", {id:item.comment.publication.id, slug:item.comment.publication.slug})}}">{{item.comment.publication.title}}</a>
+			</div>
+
+			<p>
+				il y a
 				{{item.createdAt|since}}
 			</p>
 		</span>
@@ -33,35 +41,42 @@
 	{% if item.type == 3 %}
 		<i class="fa-regular fa-comment-heart"></i>
 		<span>
-			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			vient d'aimer votre commentaire
-			{# la publication #}
-			{% if item.likeComment.comment.chapter %}
-				sur la feuille
-				<a href="{{path("app_chapter_show", {slugPub:item.likeComment.comment.chapter.slug,user:item.user.username,idChap:item.likeComment.comment.chapter.id,slug:item.likeComment.comment.chapter.slug,idCom:item.likeComment.comment.id})}}">{{item.likeComment.comment.chapter.title}}</a>
-				du récit
-				<a href="{{path("app_publication_show_one", {id:item.likeComment.comment.publication.id, slug:item.likeComment.comment.publication.slug})}}">{{item.likeComment.comment.publication.title}}</a>
-			{% else %}
-				sur le récit
-				<a href="{{path("app_publication_show_one", {id:item.likeComment.comment.publication.id, slug:item.likeComment.comment.publication.slug,idCom:item.likeComment.comment.id})}}">{{item.likeComment.comment.publication.title}}</a>
-			{% endif %}
-			<p>il y a
+			<div>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vient d'aimer votre commentaire
+				{# la publication #}
+				{% if item.likeComment.comment.chapter %}
+					sur la feuille
+					<a data-notif-clic href="{{path("app_chapter_show", {slugPub:item.likeComment.comment.chapter.slug,user:item.user.username,idChap:item.likeComment.comment.chapter.id,slug:item.likeComment.comment.chapter.slug,idCom:item.likeComment.comment.id})}}">{{item.likeComment.comment.chapter.title}}</a>
+					du récit
+					<a href="{{path("app_publication_show_one", {id:item.likeComment.comment.publication.id, slug:item.likeComment.comment.publication.slug})}}">{{item.likeComment.comment.publication.title}}</a>
+				{% else %}
+					sur le récit
+					<a href="{{path("app_publication_show_one", {id:item.likeComment.comment.publication.id, slug:item.likeComment.comment.publication.slug,idCom:item.likeComment.comment.id})}}">{{item.likeComment.comment.publication.title}}</a>
+				{% endif %}
+			</div>
+			<p>
+				il y a
 				{{item.createdAt|since}}
 			</p>
+
 		</span>
 	{% endif %}
-	{# Nouveau bookmark s #}
+	{# Nouveau bookmark CHAPITRE #}
 	{% if item.type == 4 %}
 		{# Si le bookmark concerne une publication propre #}
 		{% if item.publicationBookmark.chapter != null %}
 			<i class="fa-regular fa-bookmark"></i>
 			<span>
-				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-				vient d'ajouter à sa collection la feuille
-				<a href="{{path("app_chapter_show", {slugPub:item.publicationBookmark.chapter.publication.slug,user:item.user.username,idChap:item.publicationBookmark.chapter.id,slug:item.publicationBookmark.chapter.slug})}}">{{item.publicationBookmark.chapter.title}}</a>
-				de votre récit
-				<a href="{{path("app_publication_show_one", {id:item.publicationBookmark.chapter.publication.id, slug:item.publicationBookmark.chapter.publication.slug})}}">{{item.publicationBookmark.chapter.publication.title}}</a>
-				<p>il y a
+				<div>
+					<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+					vient d'ajouter à sa collection la feuille
+					<a data-notif-clic href="{{path("app_chapter_show", {slugPub:item.publicationBookmark.chapter.publication.slug,user:item.user.username,idChap:item.publicationBookmark.chapter.id,slug:item.publicationBookmark.chapter.slug})}}">{{item.publicationBookmark.chapter.title}}</a>
+					de votre récit
+					<a href="{{path("app_publication_show_one", {id:item.publicationBookmark.chapter.publication.id, slug:item.publicationBookmark.chapter.publication.slug})}}">{{item.publicationBookmark.chapter.publication.title}}</a>
+				</div>
+				<p>
+					il y a
 					{{item.createdAt|since}}
 				</p>
 			</span>
@@ -69,23 +84,45 @@
 			{# Si le bookmark concerne un chapitre #}
 			<i class="fa-regular fa-book-bookmark"></i>
 			<span>
-				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-				vient d'ajouter à sa collection votre récit
-				<a href="{{path("app_publication_show_one", {id:item.publicationBookmark.publication.id, slug:item.publicationBookmark.publication.slug})}}">{{item.publicationBookmark.publication.title}}</a>
-				<p>il y a
+				<div>
+					<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+					vient d'ajouter à sa collection votre récit
+					<a data-notif-clic href="{{path("app_publication_show_one", {id:item.publicationBookmark.publication.id, slug:item.publicationBookmark.publication.slug})}}">{{item.publicationBookmark.publication.title}}</a>
+				</div>
+				<p>
+					il y a
 					{{item.createdAt|since}}
 				</p>
 			</span>
 		{% endif %}
 	{% endif %}
+	{# Nouveau bookmark PUBLICATION #}
+	{% if item.type == 26 %}
+		{# Si le bookmark concerne un chapitre #}
+		<i class="fa-regular fa-book-bookmark"></i>
+		<span>
+			<div>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vient d'ajouter à sa collection votre récit
+				<a data-notif-clic href="{{path("app_publication_show_one", {id:item.publicationChapterBookmark.publication.id, slug:item.publicationChapterBookmark.publication.slug})}}">{{item.publicationChapterBookmark.publication.title}}</a>
+			</div>
+			<p>
+				il y a
+				{{item.createdAt|since}}
+			</p>
+		</span>
+	{% endif %}
 	{# Nouveau téléchargement #}
 	{% if item.type == 5 %}
 		<i class="fa-regular fa-download"></i>
 		<span>
-			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			vient de télécharger la version PDF de votre récit
-			<a href="{{path("app_publication_show_one", {id:item.download.publication.id, slug:item.download.publication.slug})}}">{{item.download.publication.title}}</a>
-			<p>il y a
+			<div>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vient de télécharger la version PDF de votre récit
+				<a data-notif-clic href="{{path("app_publication_show_one", {id:item.download.publication.id, slug:item.download.publication.slug})}}">{{item.download.publication.title}}</a>
+			</div>
+			<p>
+				il y a
 				{{item.createdAt|since}}
 			</p>
 		</span>
@@ -94,38 +131,47 @@
 	{% if item.type == 6 %}
 		<i class="fa-regular fa-thumbs-up"></i>
 		<span>
-			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			vient d'aimer votre feuille
-			<a href="{{path("app_chapter_show", {slugPub:item.chapterLike.chapter.publication.slug,user:item.user.username,idChap:item.chapterLike.chapter.id,slug:item.chapterLike.chapter.slug})}}">{{item.chapterLike.chapter.title}}</a>
-			de votre récit
-			<a href="{{path("app_publication_show_one", {id:item.chapterLike.chapter.publication.id, slug:item.chapterLike.chapter.publication.slug})}}">{{item.chapterLike.chapter.publication.title}}</a>
-			<p>il y a
+			<div>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vient d'aimer votre feuille
+				<a data-notif-clic href="{{path("app_chapter_show", {slugPub:item.chapterLike.chapter.publication.slug,user:item.user.username,idChap:item.chapterLike.chapter.id,slug:item.chapterLike.chapter.slug})}}">{{item.chapterLike.chapter.title}}</a>
+				de votre récit
+				<a href="{{path("app_publication_show_one", {id:item.chapterLike.chapter.publication.id, slug:item.chapterLike.chapter.publication.slug})}}">{{item.chapterLike.chapter.publication.title}}</a>
+			</div>
+			<p>
+				il y a
 				{{item.createdAt|since}}
 			</p>
 		</span>
 	{% endif %}
 	{# Nouvelle feuille publiée sur une suivie de publication #}
 	{% if item.type == 7 %}
-		<i class="fa-sharp fa-regular fa-newspaper"></i>
+		<i class="fa-regular fa-file-plus"></i>
 		<span>
-			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			vient de publier une nouvelle feuille sur le récit que vous suivez
-			<a href="{{path("app_publication_show_one", {id:item.publicationFollow.publication.id, slug:item.publicationFollow.publication.slug})}}">{{item.publicationFollow.publication.title}}</a>
-			—
-			<a href="{{path("app_chapter_show", {slugPub:item.publicationFollow.publication.slug,user:item.publicationFollow.publication.user.username,idChap:item.publicationFollow.id,slug:item.publicationFollow.slug})}}">{{item.publicationFollow.title}}</a>
-			<p>il y a
+			<div>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vient de publier une nouvelle feuille sur le récit que vous suivez
+				<a href="{{path("app_publication_show_one", {id:item.publicationFollow.publication.id, slug:item.publicationFollow.publication.slug})}}">{{item.publicationFollow.publication.title}}</a>
+				—
+				<a data-notif-clic href="{{path("app_chapter_show", {slugPub:item.publicationFollow.publication.slug,user:item.publicationFollow.publication.user.username,idChap:item.publicationFollow.id,slug:item.publicationFollow.slug})}}">{{item.publicationFollow.title}}</a>
+			</div>
+			<p>
+				il y a
 				{{item.createdAt|since}}
 			</p>
 		</span>
 	{% endif %}
 	{# Nouvel abonnement à une de vos publications #}
 	{% if item.type == 8 %}
-		<i class="fa-regular fa-bell-plus"></i>
+		<i class="fa-regular fa-square-rss"></i>
 		<span>
-			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			vient de s'abonner à votre récit
-			<a href="{{path("app_publication_show_one", {id:item.publicationFollowAdd.id, slug:item.publicationFollowAdd.slug})}}">{{item.publicationFollowAdd.title}}</a>
-			<p>il y a
+			<div>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vient de s'abonner à votre récit
+				<a data-notif-clic href="{{path("app_publication_show_one", {id:item.publicationFollowAdd.id, slug:item.publicationFollowAdd.slug})}}">{{item.publicationFollowAdd.title}}</a>
+			</div>
+			<p>
+				il y a
 				{{item.createdAt|since}}
 			</p>
 		</span>
@@ -134,23 +180,26 @@
 	{% if item.type == 9 %}
 		<i class="fa-regular fa-comments"></i>
 		<span>
-			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			vient de répondre à votre commentaire sur la publication
-			{% if item.replyComment.chapter %}
-				<a href="{{path("app_publication_show_one", {id:item.replyComment.publication.id, slug:item.replyComment.publication.slug})}}">
-					{{item.replyComment.publication.title}}
-				</a>
-			{% else %}
-				<a href="{{path("app_publication_show_one", {id:item.replyComment.publication.id, slug:item.replyComment.publication.slug,idCom:item.replyComment.id})}}">
-					{{item.replyComment.publication.title}}
-				</a>
-			{% endif %}
-			{% if item.replyComment.chapter %}
-				sur la feuille «
-				<a href="{{path("app_chapter_show", {slugPub:item.replyComment.publication.slug,user:item.user.username,idChap:item.replyComment.chapter.id,slug:item.replyComment.chapter.slug,idCom:item.replyComment.id})}}">{{item.replyComment.chapter.title}}</a>
-				»
-			{% endif %}
-			<p>il y a
+			<div>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vient de répondre à votre commentaire sur la publication
+				{% if item.replyComment.chapter %}
+					<a href="{{path("app_publication_show_one", {id:item.replyComment.publication.id, slug:item.replyComment.publication.slug})}}">
+						{{item.replyComment.publication.title}}
+					</a>
+				{% else %}
+					<a href="{{path("app_publication_show_one", {id:item.replyComment.publication.id, slug:item.replyComment.publication.slug,idCom:item.replyComment.id})}}">
+						{{item.replyComment.publication.title}}
+					</a>
+				{% endif %}
+				{% if item.replyComment.chapter %}
+					sur la feuille «
+					<a data-notif-clic href="{{path("app_chapter_show", {slugPub:item.replyComment.publication.slug,user:item.user.username,idChap:item.replyComment.chapter.id,slug:item.replyComment.chapter.slug,idCom:item.replyComment.id})}}">{{item.replyComment.chapter.title}}</a>
+					»
+				{% endif %}
+			</div>
+			<p>
+				il y a
 				{{item.createdAt|since}}
 			</p>
 		</span>
@@ -159,14 +208,17 @@
 	{% if item.type == 10 %}
 		<i class="fa-regular fa-highlighter-line"></i>
 		<span>
-			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			vient de vous suggérer une modification pour améliorer le texte de votre feuille «
-			<a href="{{path("app_chapter_revision", {slugPub:item.revisionComment.chapter.publication.slug,user:item.user.username,idChap:item.revisionComment.chapter.id,slug:item.revisionComment.chapter.slug})}}">{{item.revisionComment.chapter.title}}</a>
-			» pour le récit
-			<a href="{{path("app_publication_show_one", {id:item.revisionComment.chapter.publication.id, slug:item.revisionComment.chapter.publication.slug})}}">
-				{{item.revisionComment.chapter.publication.title}}
-			</a>
-			<p>il y a
+			<div>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vient de vous suggérer une modification pour améliorer le texte de votre feuille «
+				<a data-notif-clic href="{{path("app_chapter_revision", {slugPub:item.revisionComment.chapter.publication.slug,user:item.user.username,idChap:item.revisionComment.chapter.id,slug:item.revisionComment.chapter.slug})}}">{{item.revisionComment.chapter.title}}</a>
+				» pour le récit
+				<a href="{{path("app_publication_show_one", {id:item.revisionComment.chapter.publication.id, slug:item.revisionComment.chapter.publication.slug})}}">
+					{{item.revisionComment.chapter.publication.title}}
+				</a>
+			</div>
+			<p>
+				il y a
 				{{item.createdAt|since}}
 			</p>
 		</span>
@@ -175,11 +227,14 @@
 	{% if item.type == 11 %}
 		<i class="fa-regular fa-comment-alt"></i>
 		<span>
-			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			vient de répondre à votre sujet de forum «
-			<a href="{{path("app_forum_topic_read", {slug:item.forumMessage.topic.category.slug,id:item.forumMessage.topic.id,slugTopic:item.forumMessage.topic.slug,idCom:item.forumMessage.id})}}">{{item.forumMessage.topic.title}}</a>
-			»
-			<p>il y a
+			<div>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vient de répondre à votre sujet de forum «
+				<a data-notif-clic href="{{path("app_forum_topic_read", {slug:item.forumMessage.topic.category.slug,id:item.forumMessage.topic.id,slugTopic:item.forumMessage.topic.slug,idCom:item.forumMessage.id})}}">{{item.forumMessage.topic.title}}</a>
+				»
+			</div>
+			<p>
+				il y a
 				{{item.createdAt|since}}
 			</p>
 		</span>
@@ -188,43 +243,52 @@
 	{% if item.type == 12 %}
 		<i class="fa-regular fa-at"></i>
 		<span>
-			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			vient de vous mentionner dans sa réponse au sujet du forum «
-			<a href="{{path("app_forum_topic_read", {slug:item.assignForumMessage.topic.category.slug,id:item.assignForumMessage.topic.id,slugTopic:item.assignForumMessage.topic.slug,idCom:item.assignForumMessage.id})}}">{{item.assignForumMessage.topic.title}}</a>
-			»
-			<p>il y a
+			<div>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vient de vous mentionner dans sa réponse au sujet du forum «
+				<a data-notif-clic href="{{path("app_forum_topic_read", {slug:item.assignForumMessage.topic.category.slug,id:item.assignForumMessage.topic.id,slugTopic:item.assignForumMessage.topic.slug,idCom:item.assignForumMessage.id})}}">{{item.assignForumMessage.topic.title}}</a>
+				»
+			</div>
+			<p>
+				il y a
 				{{item.createdAt|since}}
 			</p>
 		</span>
 	{% endif %}
 	{# Nouvelle réponse sur l'un de vos sujets de forum #}
 	{% if item.type == 13 %}
-		<i class="fa-kit fa-regular-at-circle-bolt"></i>
+		<i class="fa-regular fa-at"></i>
 		<span>
-			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			vient de vous mentionner son sujet de forum «
-			<a href="{{path("app_forum_topic_read", {slug:item.assignForumTopic.category.slug,id:item.assignForumTopic.id,slugTopic:item.assignForumTopic.slug})}}">{{item.assignForumTopic.title}}</a>
-			»
-			<p>il y a
+			<div>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vient de vous mentionner son sujet de forum «
+				<a data-notif-clic href="{{path("app_forum_topic_read", {slug:item.assignForumTopic.category.slug,id:item.assignForumTopic.id,slugTopic:item.assignForumTopic.slug})}}">{{item.assignForumTopic.title}}</a>
+				»
+			</div>
+			<p>
+				il y a
 				{{item.createdAt|since}}
 			</p>
 		</span>
 	{% endif %}
 	{# Nouvelle réponse sur l'un de vos sujets de forum #}
 	{% if item.type == 14 %}
-		<i class="fa-regular fa-at fa-flip-horizontal"></i>
+		<i class="fa-regular fa-at"></i>
 		<span>
-			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			vient de vous citer dans un commentaire sur la publication
-			<a href="{{path("app_publication_show_one", {id:item.assignComment.publication.id, slug:item.assignComment.publication.slug})}}">
-				{{item.assignComment.publication.title}}
-			</a>
-			{% if item.assignComment.chapter %}
-				sur la feuille «
-				<a href="{{path("app_chapter_show", {slugPub:item.assignComment.publication.slug,user:item.user.username,idChap:item.assignComment.chapter.id,slug:item.assignComment.chapter.slug,idCom:item.assignComment.id})}}">{{item.assignComment.chapter.title}}</a>
-				»
-			{% endif %}
-			<p>il y a
+			<div>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vient de vous citer dans un commentaire sur le récit
+				<a {% if item.assignComment.chapter %} {% else %} data-notif-clic {% endif %} href="{{path("app_publication_show_one", {id:item.assignComment.publication.id, slug:item.assignComment.publication.slug,idCom:item.assignComment.id})}}">
+					{{item.assignComment.publication.title}}
+				</a>
+				{% if item.assignComment.chapter %}
+					sur la feuille «
+					<a data-notif-clic href="{{path("app_chapter_show", {slugPub:item.assignComment.publication.slug,user:item.user.username,idChap:item.assignComment.chapter.id,slug:item.assignComment.chapter.slug,idCom:item.assignComment.id})}}">{{item.assignComment.chapter.title}}</a>
+					»
+				{% endif %}
+			</div>
+			<p>
+				il y a
 				{{item.createdAt|since}}
 			</p>
 		</span>
@@ -233,11 +297,14 @@
 	{% if item.type == 15 %}
 		<i class="fa-regular fa-messages"></i>
 		<span>
-			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			vient de répondre à votre réponse sur le sujet de forum «
-			<a href="{{path("app_forum_topic_read", {id:item.replyForum.topic.id, slug:item.replyForum.topic.category.slug,slugTopic:item.replyForum.topic.slug,idCom:item.replyForum.id})}}">{{item.replyForum.topic.title}}</a>
-			»
-			<p>il y a
+			<div>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vient de répondre à votre réponse sur le sujet de forum «
+				<a data-notif-clic href="{{path("app_forum_topic_read", {id:item.replyForum.topic.id, slug:item.replyForum.topic.category.slug,slugTopic:item.replyForum.topic.slug,idCom:item.replyForum.id})}}">{{item.replyForum.topic.title}}</a>
+				»
+			</div>
+			<p>
+				il y a
 				{{item.createdAt|since}}
 			</p>
 		</span>
@@ -246,11 +313,14 @@
 	{% if item.type == 16 %}
 		<i class="fa-regular fa-message-heart"></i>
 		<span>
-			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			vient d'aimer votre réponse sur le sujet de forum «
-			<a href="{{path("app_forum_topic_read", {id:item.likeForum.topic.id, slug:item.likeForum.topic.category.slug,slugTopic:item.likeForum.topic.slug,idCom:item.likeForum.id})}}">{{item.likeForum.topic.title}}</a>
-			»
-			<p>il y a
+			<div>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vient d'aimer votre réponse sur le sujet de forum «
+				<a data-notif-clic href="{{path("app_forum_topic_read", {id:item.likeForum.topic.id, slug:item.likeForum.topic.category.slug,slugTopic:item.likeForum.topic.slug,idCom:item.likeForum.id})}}">{{item.likeForum.topic.title}}</a>
+				»
+			</div>
+			<p>
+				il y a
 				{{item.createdAt|since}}
 			</p>
 		</span>
@@ -259,11 +329,14 @@
 	{% if item.type == 17 %}
 		<i class="fa-regular fa-at"></i>
 		<span>
-			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			vient de vous mentionner dans sa réponse au sujet du forum «
-			<a href="{{path("app_forum_topic_read", {slug:item.assignForumReply.topic.category.slug,id:item.assignForumReply.topic.id,slugTopic:item.assignForumReply.topic.slug,idCom:item.assignForumReply.id})}}">{{item.assignForumReply.topic.title}}</a>
-			»
-			<p>il y a
+			<div>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vient de vous mentionner dans sa réponse au sujet du forum «
+				<a data-notif-clic href="{{path("app_forum_topic_read", {slug:item.assignForumReply.topic.category.slug,id:item.assignForumReply.topic.id,slugTopic:item.assignForumReply.topic.slug,idCom:item.assignForumReply.id})}}">{{item.assignForumReply.topic.title}}</a>
+				»
+			</div>
+			<p>
+				il y a
 				{{item.createdAt|since}}
 			</p>
 		</span>
@@ -272,9 +345,12 @@
 	{% if item.type == 18 %}
 		<i class="fa-regular fa-user-group"></i>
 		<span>
-			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			vient de s'abonner à votre profil.
-			<p>il y a
+			<div>
+				<a data-notif-clic href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vient de s'abonner à votre profil.
+			</div>
+			<p>
+				il y a
 				{{item.createdAt|since}}
 			</p>
 		</span>
@@ -283,47 +359,56 @@
 	{% if item.type == 19 %}
 		<i class="fa-regular fa-book-user"></i>
 		<span>
-			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			vient de publier un nouveau récit «
-			<a href="{{path("app_publication_show_one", {id:item.friendNewPub.id, slug:item.friendNewPub.slug})}}">
-				{{item.friendNewPub.title}}
-			</a>
-			»
-			<p>il y a
+			<div>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vient de publier un nouveau récit «
+				<a data-notif-clic href="{{path("app_publication_show_one", {id:item.friendNewPub.id, slug:item.friendNewPub.slug})}}">
+					{{item.friendNewPub.title}}
+				</a>
+				»
+			</div>
+			<p>
+				il y a
 				{{item.createdAt|since}}
 			</p>
 		</span>
 	{% endif %}
 	{# Nouveau commentaire sous un challenge #}
 	{% if item.type == 20 %}
-		<i class="fa-regular fa-book-user"></i>
+		<i class="fa-regular fa-comment-question"></i>
 		<span>
-			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			vient de commenter votre exercice «
-			<a href="{{path("app_challenge_read", {slug:item.challengeMessage.challenge.slug,id:item.challengeMessage.challenge.id,idCom:item.challengeMessage.id})}}">
-				{{item.challengeMessage.challenge.title}}
-			</a>
-			»
-			<p>il y a
+			<div>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vient de commenter votre exercice «
+				<a data-notif-clic href="{{path("app_challenge_read", {slug:item.challengeMessage.challenge.slug,id:item.challengeMessage.challenge.id,idCom:item.challengeMessage.id})}}">
+					{{item.challengeMessage.challenge.title}}
+				</a>
+				»
+			</div>
+			<p>
+				il y a
 				{{item.createdAt|since}}
 			</p>
 		</span>
 	{% endif %}
 	{# * 21 : Proposition de réponse à un challenge #}
 	{% if item.type == 21 %}
-		<i class="fa-regular fa-book-user"></i>
+		<i class="fa-regular fa-book-medical"></i>
 		<span>
-			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			vient de proposer une réponse à votre exercice «
-			<a href="{{path("app_challenge_read", {slug:item.challengeResponse.challenge.slug,id:item.challengeResponse.challenge.id})}}">
-				{{item.challengeResponse.challenge.title}}
-			</a>
-			» avec son récit «
-			<a href="{{path("app_publication_show_one", {id:item.challengeResponse.id, slug:item.challengeResponse.slug})}}">
-				{{item.challengeResponse.title}}
-			</a>
-			»
-			<p>il y a
+			<div>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vient de proposer une réponse à votre exercice «
+				<a href="{{path("app_challenge_read", {slug:item.challengeResponse.challenge.slug,id:item.challengeResponse.challenge.id})}}">
+					{{item.challengeResponse.challenge.title}}
+				</a>
+				» avec son récit «
+				<a data-notif-clic href="{{path("app_publication_show_one", {id:item.challengeResponse.id, slug:item.challengeResponse.slug})}}">
+					{{item.challengeResponse.title}}
+				</a>
+				»
+			</div>
+			<p>
+				il y a
 				{{item.createdAt|since}}
 			</p>
 		</span>
@@ -332,13 +417,16 @@
 	{% if item.type == 22 %}
 		<i class="fa-regular fa-at"></i>
 		<span>
-			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			vous a mentionné dans l'énoncé de son exercice «
-			<a href="{{path("app_challenge_read", {slug:item.assignChallenge.slug,id:item.assignChallenge.id})}}">
-				{{item.assignChallenge.title}}
-			</a>
-			»
-			<p>il y a
+			<div>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vous a mentionné dans l'énoncé de son exercice «
+				<a data-notif-clic href="{{path("app_challenge_read", {slug:item.assignChallenge.slug,id:item.assignChallenge.id})}}">
+					{{item.assignChallenge.title}}
+				</a>
+				»
+			</div>
+			<p>
+				il y a
 				{{item.createdAt|since}}
 			</p>
 		</span>
@@ -347,28 +435,34 @@
 	{% if item.type == 23 %}
 		<i class="fa-regular fa-at"></i>
 		<span>
-			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			vous a mentionné dans un commentaire de l'exercice «
-			<a href="{{path("app_challenge_read", {slug:item.assignChallengeMessage.challenge.slug,id:item.assignChallengeMessage.challenge.id, idCom:item.assignChallengeMessage.id})}}">
-				{{item.assignChallengeMessage.challenge.title}}
-			</a>
-			»
-			<p>il y a
+			<div>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vous a mentionné dans un commentaire de l'exercice «
+				<a data-notif-clic href="{{path("app_challenge_read", {slug:item.assignChallengeMessage.challenge.slug,id:item.assignChallengeMessage.challenge.id, idCom:item.assignChallengeMessage.id})}}">
+					{{item.assignChallengeMessage.challenge.title}}
+				</a>
+				»
+			</div>
+			<p>
+				il y a
 				{{item.createdAt|since}}
 			</p>
 		</span>
 	{% endif %}
 	{# * 24 : Nouveau « J'aime » dans une réponse à un challenge #}
 	{% if item.type == 24 %}
-		<i class="fa-regular fa-at"></i>
+		<i class="fa-regular fa-message-heart fa-flip-vertical"></i>
 		<span>
-			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			a aimé votre commentaire sur l'exercice «
-			<a href="{{path("app_challenge_read", {slug:item.likeChallenge.challenge.slug,id:item.likeChallenge.challenge.id, idCom:item.likeChallenge.id})}}">
-				{{item.likeChallenge.challenge.title}}
-			</a>
-			»
-			<p>il y a
+			<div>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				a aimé votre commentaire sur l'exercice «
+				<a data-notif-clic href="{{path("app_challenge_read", {slug:item.likeChallenge.challenge.slug,id:item.likeChallenge.challenge.id, idCom:item.likeChallenge.id})}}">
+					{{item.likeChallenge.challenge.title}}
+				</a>
+				»
+			</div>
+			<p>
+				il y a
 				{{item.createdAt|since}}
 			</p>
 		</span>
@@ -376,15 +470,18 @@
 
 	{# * 25 : Nouvelle réponse sur l'une de vos réponses challenge #}
 	{% if item.type == 25 %}
-		<i class="fa-regular fa-at"></i>
+		<i class="fa-regular fa-comments-question-check"></i>
 		<span>
-			<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-			a répondu à votre commentaire sur l'exercice «
-			<a href="{{path("app_challenge_read", {slug:item.challengeMessageReply.challenge.slug,id:item.challengeMessageReply.challenge.id, idCom:item.challengeMessageReply.id})}}">
-				{{item.challengeMessageReply.challenge.title}}
-			</a>
-			»
-			<p>il y a
+			<div>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				a répondu à votre commentaire sur l'exercice «
+				<a data-notif-clic href="{{path("app_challenge_read", {slug:item.challengeMessageReply.challenge.slug,id:item.challengeMessageReply.challenge.id, idCom:item.challengeMessageReply.id})}}">
+					{{item.challengeMessageReply.challenge.title}}
+				</a>
+				»
+			</div>
+			<p>
+				il y a
 				{{item.createdAt|since}}
 			</p>
 		</span>

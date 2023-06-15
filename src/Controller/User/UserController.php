@@ -509,8 +509,8 @@ class UserController extends AbstractController
 	public function userNavContact(UserFollowRepository $ufRepo, UserRepository $uRepo, $username = null): Response
 	{
 		$userInfo = $uRepo->findOneBy(["username" => $username]);
-		$following = $ufRepo->findBy(["fromUser" => $userInfo], ["addedAt" => "DESC"]);
-		$followed = $ufRepo->findBy(["toUser" => $userInfo], ["addedAt" => "DESC"]);
+		$following = $ufRepo->findBy(["toUser" => $userInfo], ["addedAt" => "DESC"]);
+		$followed = $ufRepo->findBy(["fromUser" => $userInfo], ["addedAt" => "DESC"]);
 
 		return $this->render('user/user-nav/contact.html.twig', [
 			'userInfo' => $userInfo,

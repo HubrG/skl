@@ -10,19 +10,19 @@
 			<ul class="dark:text-slate-300">
 				{% for item in followed %}
 					<li class="rounded">
-						<a href="{{path("app_user", {username:item.fromUser.username})}}" data-turbo-frame="_top" class="flex flex-row gap-x-2 items-center justify-start px-2 rounded w-full py-2 hover:bg-slate-50 dark:hover:bg-slate-600">
+						<a href="{{path("app_user", {username:item.toUser.username})}}" data-turbo-frame="_top" class="flex flex-row gap-x-2 items-center justify-start px-2 rounded w-full py-2 hover:bg-slate-50 dark:hover:bg-slate-600">
 							<div class=" self-baseline w-7 h-7 relative flex-shrink-0">
-								{% if item.fromUser.profilPicture %}
-									<img class="w-full h-full object-cover rounded-full lozad myImage" src="{{item.fromUser.profilPicture}}" alt="Avatar de {{item.fromUser.nickname}}">
+								{% if item.toUser.profilPicture %}
+									<img class="w-full h-full object-cover rounded-full lozad myImage" src="{{item.toUser.profilPicture}}" alt="Avatar de {{item.toUser.nickname}}">
 								{% else %}
 									<div class="w-full h-full object-cover rounded-full bg-slate-500  cursor-default">
 										<div class=" h-full flex mx-auto items-center justify-center text-xs text-slate-200">
-											{{ item.fromUser.nickname|slice(0,1)|upper }}
+											{{ item.toUser.nickname|slice(0,1)|upper }}
 										</div>
 									</div>
 								{% endif %}
 							</div>
-							{{item.fromUser.nickname}}
+							{{item.toUser.nickname}}
 						</a>
 					</li>
 				{% endfor %}
@@ -37,19 +37,19 @@
 			<ul class="dark:text-slate-300">
 				{% for item in following %}
 					<li class="rounded">
-						<a href="{{path("app_user", {username:item.toUser.username})}}" data-turbo-frame="_top" class="flex flex-row gap-x-2 items-center justify-start px-2 rounded w-full py-2 hover:bg-slate-50 dark:hover:bg-slate-600">
+						<a href="{{path("app_user", {username:item.fromUser.username})}}" data-turbo-frame="_top" class="flex flex-row gap-x-2 items-center justify-start px-2 rounded w-full py-2 hover:bg-slate-50 dark:hover:bg-slate-600">
 							<div class=" self-baseline w-7 h-7 relative flex-shrink-0">
-								{% if item.toUser.profilPicture %}
-									<img class="w-full h-full object-cover rounded-full lozad myImage" src="{{item.toUser.profilPicture}}" alt="Avatar de {{item.toUser.nickname}}">
+								{% if item.fromUser.profilPicture %}
+									<img class="w-full h-full object-cover rounded-full lozad myImage" src="{{item.fromUser.profilPicture}}" alt="Avatar de {{item.fromUser.nickname}}">
 								{% else %}
 									<div class="w-full h-full object-cover rounded-full bg-slate-500  cursor-default">
 										<div class=" h-full flex mx-auto items-center justify-center text-xs text-slate-200">
-											{{ item.toUser.nickname|slice(0,1)|upper }}
+											{{ item.fromUser.nickname|slice(0,1)|upper }}
 										</div>
 									</div>
 								{% endif %}
 							</div>
-							{{item.toUser.nickname}}
+							{{item.fromUser.nickname}}
 						</a>
 					</li>
 				{% endfor %}

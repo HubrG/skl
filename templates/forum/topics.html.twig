@@ -79,79 +79,10 @@
 			{% else %}
 				<div class="flex flex-col  gap-y-5  mt-7">
 					{% for item in topics %}
-						<div class="flex flex-row  gap-x-3 pl-2  items-center justify-between">
-							<div class="flex-shrink-0 w-12 h-12">
-								{% if item.user.profilPicture %}
-									<img src="{{item.user.profilPicture}}" class="h-full w-full rounded-full self-start" alt="Photo de profil de {{item.user.nickname}}">
-								{% else %}
-									<div class="rounded-full bg-slate-300 h-full w-full dark:bg-slate-700 flex justify-center items-center text-slate-500 dark:text-slate-300 text-2xl font-semibold">
-										{{item.user.nickname|first}}
-									</div>
-								{% endif %}
-							</div>
-							<div class="flex flex-col gap-y-0 w-9/12">
-								<span>
-									{% if item.permanent > 0 %}
-										<span class="catColor-{{category.color}} text-[0.75rem] font-medium px-2 py-1 pb-0 inline-flex -mt-1 self-center rounded" data-tippy-content="Sujet épinglé">
-											<i class="fa-regular fa-thumbtack"></i>
-										</span>
-										&nbsp;&nbsp;
-									{% endif %}
-									<a href="{{path("app_forum_topic_read", {slug:item.category.slug, slugTopic:item.slug, id:item.id})}}" class="hover:underline text-base font-semibold dark:text-slate-300">
-										{{item.title}}
-									</a>
-								</span>
-								<p class="flex flex-col items-baseline justify-start gap-x-2">
-									<a href="{{path("app_user", {username:item.user.username})}}" class="hover:underline dark:text-slate-500 text-slate-500">
-										{{item.user.nickname}}
-									</a>
-									<span class="text-[0.75rem] text-slate-500 flex md:flex-row flex-col md:justify-between justify-start text-left items-center w-full">
-										<span class="self-start order-1">
-											Crée il y a
-											{{item.createdAt|since}}
-										</span>
-										<span class="md:self-end self-start order-3  {{item.forumMessages|length == 0 ? " hidden" }}">
-											Dernière réponse il y a
-											{% set lastMessage = item.forumMessages|last %}
-											{{lastMessage ? lastMessage.publishedAt|since : item.createdAt|since }}
-										</span>
-										{% if item.updatedAt %}
-											<span class="md:self-center order-2 self-start">
-												Modifié il y a
-												{{item.updatedAt|since}}
-											</span>
-										{% endif %}
-									</p>
-								</p>
-							</span>
-						</p>
-					</div>
-					<div class="grid grid-cols-3  text-sm items-center gap-x-5">
-						<div class="flex flex-col items-center">
-							<span class="dark:text-slate-500 text-slate-500">
-								<i class="fa-duotone  fa-comment-alt" data-tippy-content="Nombre de réponses"></i>
-							</span>
-							<span class="dark:text-slate-500 text-slate-500 ">{{item.forumMessages|length}}</span>
-						</div>
-						<div class="flex flex-col items-center">
-							<span class="dark:text-slate-500 text-slate-500">
-								<i class="fa-duotone fa-eye" data-tippy-content="Nombre de vues"></i>
-							</span>
-							<span class="dark:text-slate-500 text-slate-500 ">{{item.forumTopicViews|length}}</span>
-						</div>
-						{% if app.user %}
-							<div class="flex flex-col items-center {{unreadMessageCounts[item.id] > 0 ? " dark:text-green-500 text-green-500 " : " dark:text-slate-500 text-slate-500 opacity-30"}}">
-								<span>
-									<i class="fa-duotone fa-comment-dots" data-tippy-content="Nouveaux messages depuis votre dernière visite"></i>
-								</span>
-								<span>{{ unreadMessageCounts[item.id] }}</span>
-							</div>
-						{% endif %}
-
-					</div>
+						{% include "/forum/_partials/topic-card.html.twig" with {item:item} %}
+					{% endfor %}
 				</div>
-				<hr class="my-2">
-			{% endfor %}
+			{% endif %}
 		</div>
-	{% endif %}
-</div></div>{% endblock %}
+	</div>
+{% endblock %}

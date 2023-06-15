@@ -12,10 +12,13 @@ use App\Repository\UserRepository;
 use Symfony\Component\Mime\Address;
 use App\Form\UserChangePasswordType;
 use App\Services\NotificationSystem;
+use App\Repository\ChallengeRepository;
+use App\Repository\ForumTopicRepository;
 use App\Repository\UserFollowRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
 use App\Form\UserChangePasswordGoogleType;
+use App\Repository\ForumMessageRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,7 +44,7 @@ class UserController extends AbstractController
 	) {
 	}
 	#[Route('user/{username?}', requirements: ["username" => "[^/]+"], name: 'app_user')]
-	public function index(UserRepository $userRepo, UserFollowRepository $ufRepo,  PublicationRepository $pRepo, $username): Response
+	public function index(UserRepository $userRepo, UserFollowRepository $ufRepo, PublicationRepository $pRepo, $username): Response
 	{
 		/// Conditions d'affichage
 		// Si le username n'est pas renseigné et que l'utilisateur est connecté, alors on affiche la page du membre connecté
@@ -142,7 +145,7 @@ class UserController extends AbstractController
 				->orderBy("p." . $sort, $order)
 				->addOrderBy("p.published_date", "desc")
 				->getQuery()->getResult();
-		} elseif ($sort == "views" ||  $sort == "likes") {
+		} elseif ($sort == "views" || $sort == "likes") {
 			$relation = "publicationChapterViews";
 			if ($sort == "comments") {
 				$relation = "publicationComments";
@@ -446,5 +449,73 @@ class UserController extends AbstractController
 				'follow' => true
 			], 200);
 		}
+	}
+	#[Route('/user_nav/forum/{username}', name: 'app_user_nav_forum')]
+	public function userNavForum(ForumTopicRepository $ftRepo, ForumMessageRepository $fmRepo, UserRepository $uRepo, $username = null): Response
+	{
+		$userInfo = $uRepo->findOneBy(["username" => $username]);
+		// On récupère tous les topics du forum créés par l'utilisateur
+		$qb = $ftRepo->createQueryBuilder('t'); // 't' est un alias pour 'topic'
+		$qb->join('t.forumMessages', 'm') // 'm' est un alias pour 'message'
+			->where('t.user = :user')
+			->setParameter('user', $userInfo)
+			->orderBy('t.permanent', 'DESC')
+			->addOrderBy('m.published_at', 'DESC')
+			->addOrderBy('t.createdAt', 'DESC'); // Tri par date de publication du dernier message
+
+		$topics = $qb->getQuery()->getResult();
+		// On récupère tous les messages du forum créés par l'utilisateur
+		$messages = $fmRepo->findBy(["user" => $userInfo], ["published_at" => "DESC"]);
+
+		// * On récupère le nombre de derniers messages depuis la dernière visite de l'utilisateur
+		// Récupérer l'utilisateur connecté
+		$user = $this->getUser();
+
+		if ($user) {
+			// Récupérer le nombre de messages non lus pour chaque topic
+			$unreadMessageCounts = [];
+			foreach ($topics as $topic) {
+				$unreadMessageCounts[$topic->getId()] = $fmRepo->getUnreadMessageCountForUser($user, $topic);
+			}
+		} else {
+
+			$unreadMessageCounts = 0;
+		}
+
+		return $this->render('user/user-nav/forum.html.twig', [
+			'userInfo' => $userInfo,
+			'topics' => $topics,
+			'messages' => $messages,
+			'unreadMessageCounts' => $unreadMessageCounts
+		]);
+	}
+	#[Route('/user_nav/challenge/{username}', name: 'app_user_nav_challenge')]
+	public function userNavChallenge(ChallengeRepository $cRepo, UserRepository $uRepo, $username = null): Response
+	{
+		$userInfo = $uRepo->findOneBy(["username" => $username]);
+		// On récupère tous les topics du forum créés par l'utilisateur
+		$challenges = $cRepo->findBy(
+			["user" => $userInfo],
+
+			['createdAt' => 'DESC']
+		);
+
+		return $this->render('user/user-nav/challenge.html.twig', [
+			'userInfo' => $userInfo,
+			'challenges' => $challenges
+		]);
+	}
+	#[Route('/user_nav/contact/{username}', name: 'app_user_nav_contact')]
+	public function userNavContact(UserFollowRepository $ufRepo, UserRepository $uRepo, $username = null): Response
+	{
+		$userInfo = $uRepo->findOneBy(["username" => $username]);
+		$following = $ufRepo->findBy(["fromUser" => $userInfo], ["addedAt" => "DESC"]);
+		$followed = $ufRepo->findBy(["toUser" => $userInfo], ["addedAt" => "DESC"]);
+
+		return $this->render('user/user-nav/contact.html.twig', [
+			'userInfo' => $userInfo,
+			'following' => $following,
+			'followed' => $followed
+		]);
 	}
 }

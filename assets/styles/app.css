@@ -1647,3 +1647,12 @@ nav.breadcrumb ol li a:hover.not-underline {
 .constrain-table tbody tr td {
 	@apply px-2 dark:text-slate-300 align-top  !important;
 }
+#userNav li.li-user-menu {
+	@apply flex-1 text-sm cursor-default md:mt-[0.05rem] -mt-10  rounded-lg;
+}
+#userNav li a.item-user-menu {
+	@apply w-full gap-x-2    items-center  shadow-inner  dark:hover:shadow-inner dark:shadow-slate-700  border-0    font-normal p-5 h-10 bg-slate-100 text-slate-900 dark:text-slate-300 hover:bg-slate-200 hover:text-slate-900  dark:bg-slate-700 dark:hover:bg-slate-800  flex justify-center;
+}
+#userNav li a.item-user-menu-selected {
+	@apply bg-white hover:bg-transparent dark:bg-slate-800 shadow-none  dark:shadow-inner;
+}

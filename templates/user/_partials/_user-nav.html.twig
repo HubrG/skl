@@ -1,0 +1,32 @@
+<ul id="userNav" class="flex-row  justify-center items-center left-0 flex w-full">
+	<li class="li-user-menu ">
+		<a href="{{ path("app_user", { username : userInfo.username}) }}" data-turbo-frame="_self" class="item-user-menu {{  app.request.attributes.get('_route') == 'app_user' ? " item-user-menu-selected"}}">
+			<i class="{{ app.request.attributes.get('_route') == 'app_user' ? "fa-duotone" : "fa-regular" }} fa-book-copy"></i>
+			<span class="hidden   md:inline">Récits</span>
+		</a>
+	</li>
+	<li class="li-user-menu ">
+		<a href="{{ path("app_user_nav_forum", { username : userInfo.username}) }}" data-turbo-frame="_self" class="item-user-menu {{ app.request.attributes.get('_route') == 'app_user_nav_forum' ? " item-user-menu-selected"}}">
+			<i class="{{ app.request.attributes.get('_route') == 'app_user_nav_forum' ? "fa-duotone" : "fa-regular" }} fa-comments"></i>
+			<span class="hidden   md:inline">Discussions</span>
+		</a>
+	</li>
+	<li class="li-user-menu ">
+		<a href="{{ path("app_user_nav_challenge", { username : userInfo.username}) }}" data-turbo-frame="_self" class="item-user-menu {{ app.request.attributes.get('_route') == 'app_user_nav_challenge' ? " item-user-menu-selected"}}">
+			<i class="{{ app.request.attributes.get('_route') == 'app_user_nav_challenge' ? "fa-duotone" : "fa-regular" }} fa-hand-holding-seedling"></i>
+			<span class="hidden   md:inline">Exercices</span>
+		</a>
+	</li>
+	<li class="li-user-menu ">
+		<a href="{{ path("app_user_nav_contact", { username : userInfo.username}) }}" data-turbo-frame="_self" class="item-user-menu {{ app.request.attributes.get('_route') == 'app_user_nav_contact' ? " item-user-menu-selected"}}">
+			<i class="{{ app.request.attributes.get('_route') == 'app_user_nav_contact' ? "fa-duotone" : "fa-regular" }} fa-address-book"></i>
+			<span class="hidden   md:inline">Contacts</span>
+		</a>
+	</li>
+	<li class="li-user-menu hidden ">
+		<a href="{{ path("app_user_nav_challenge", { username : userInfo.username}) }}" data-turbo-frame="_self" class="item-user-menu {{ app.request.attributes.get('_route') == 'app_user_nav_challenge' ? " item-user-menu-selected"}}">
+			<i class="{{ app.request.attributes.get('_route') == 'app_user_nav_challenge' ? "fa-duotone" : "fa-regular" }} fa-feed"></i>
+			<span class="hidden   md:inline">Actualité</span>
+		</a>
+	</li>
+</ul>

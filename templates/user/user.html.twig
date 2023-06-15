@@ -87,16 +87,19 @@
 			{% endif %}
 		</div>
 		<div class="w-full parent border-l-0 md:ml-10 ml-0 mt-10 md:-mt-20 dark:border-slate-700 p-0  {% if app.user and app.user.id == userInfo.id  or is_granted('ROLE_ADMIN') %}-mt-10{% endif %}">
-			<div class="my-special-hr ">
-				<hr>
-				<span>{{pubInfo|length > 1 ? pubInfo|length ~ " récits" : pubInfo|length == 0 ? "Aucun récit" : pubInfo|length ~ " récit"}}</span>
-				<hr class="mb-5">
-			</div>
-			<div class="display_publications twoMax  profil">
-				{% for item in pubInfo %}
-					{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'all', 'queryPage':1, 'sortBy':'pop', 'querySortby':'pop', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
-				{% endfor %}
-			</div>
+			<turbo-frame id="user-nav">
+				{% include "/user/_partials/_user-nav.html.twig" with {username:userInfo.username} %}
+				<div class="my-special-hr ">
+					<hr>
+					<span>{{pubInfo|length > 1 ? pubInfo|length ~ " récits" : pubInfo|length == 0 ? "Aucun récit" : pubInfo|length ~ " récit"}}</span>
+					<hr class="mb-5">
+				</div>
+				<div class="display_publications twoMax  profil">
+					{% for item in pubInfo %}
+						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'all', 'queryPage':1, 'sortBy':'pop', 'querySortby':'pop', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
+					{% endfor %}
+				</div>
+			</turbo-frame>
 		</div>
 	</turbo-frame>
 	<input type="file" class="hidden" id="pp" name="pp">

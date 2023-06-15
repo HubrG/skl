@@ -1,0 +1,13 @@
+<turbo-frame id="user-nav">
+	{% include "/user/_partials/_user-nav.html.twig" with {username:userInfo.username} %}
+	<div class="my-special-hr ">
+		<hr>
+		<span>{{topics|length > 1 ? topics|length ~ " sujets créés" : topics|length == 0 ? "Aucun sujet créé" : topics|length ~ " sujet créé"}}</span>
+		<hr class="mb-5">
+	</div>
+	<div class="flex flex-col  gap-y-5  mt-7">
+		{% for item in topics %}
+			{% include "/forum/_partials/topic-card.html.twig" with {item:item} %}
+		{% endfor %}
+	</div>
+</turbo-frame>

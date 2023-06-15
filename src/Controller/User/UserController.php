@@ -460,8 +460,8 @@ class UserController extends AbstractController
 			->where('t.user = :user')
 			->setParameter('user', $userInfo)
 			->orderBy('t.permanent', 'DESC')
-			->addOrderBy('m.published_at', 'DESC')
-			->addOrderBy('t.createdAt', 'DESC'); // Tri par date de publication du dernier message
+			->addOrderBy('t.createdAt', 'DESC')
+			->addOrderBy('m.published_at', 'DESC');
 
 		$topics = $qb->getQuery()->getResult();
 		// On récupère tous les messages du forum créés par l'utilisateur

@@ -55,7 +55,7 @@ class ForumController extends AbstractController
 
 
         $qb = $ftRepo->createQueryBuilder('t'); // 't' est un alias pour 'topic'
-        $qb->join('t.forumMessages', 'm') // 'm' est un alias pour 'message'
+        $qb->leftJoin('t.forumMessages', 'm') // 'm' est un alias pour 'message'
             ->where('t.category = :category')
             ->setParameter('category', $category)
             ->orderBy('t.permanent', 'DESC')

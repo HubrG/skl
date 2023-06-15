@@ -456,7 +456,7 @@ class UserController extends AbstractController
 		$userInfo = $uRepo->findOneBy(["username" => $username]);
 		// On récupère tous les topics du forum créés par l'utilisateur
 		$qb = $ftRepo->createQueryBuilder('t'); // 't' est un alias pour 'topic'
-		$qb->join('t.forumMessages', 'm') // 'm' est un alias pour 'message'
+		$qb->leftJoin('t.forumMessages', 'm') // 'm' est un alias pour 'message'
 			->where('t.user = :user')
 			->setParameter('user', $userInfo)
 			->orderBy('t.permanent', 'DESC')

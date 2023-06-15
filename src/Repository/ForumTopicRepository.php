@@ -45,9 +45,11 @@ class ForumTopicRepository extends ServiceEntityRepository
             return [];
         }
         return $this->createQueryBuilder('t')
+            ->leftJoin('t.forumMessages', 'm')
             ->andWhere('t.title LIKE :query')
             ->setParameter('query', '%' . $query . '%')
             ->orderBy('t.title', 'ASC')
+            ->addOrderBy('m.published_at', 'DESC')
             ->getQuery()
             ->getResult();
     }

@@ -17,5 +17,7 @@
   "build/fonts/fa-brands-400.ttf": "/build/fonts/fa-brands-400.176a65f4.ttf",
   "build/fonts/fa-brands-400.woff2": "/build/fonts/fa-brands-400.71509c34.woff2",
   "build/fonts/fa-v4compatibility.ttf": "/build/fonts/fa-v4compatibility.32ccbdff.ttf",
-  "build/fonts/fa-v4compatibility.woff2": "/build/fonts/fa-v4compatibility.0c36d6c2.woff2"
+  "build/fonts/fa-v4compatibility.woff2": "/build/fonts/fa-v4compatibility.0c36d6c2.woff2",
+  "build/vendors-node_modules_hotwired_turbo_dist_turbo_es2017-esm_js-node_modules_symfony_stimulus-br-c1bef5.css": "/build/vendors-node_modules_hotwired_turbo_dist_turbo_es2017-esm_js-node_modules_symfony_stimulus-br-c1bef5.css",
+  "build/vendors-node_modules_hotwired_turbo_dist_turbo_es2017-esm_js-node_modules_symfony_stimulus-br-c1bef5.js": "/build/vendors-node_modules_hotwired_turbo_dist_turbo_es2017-esm_js-node_modules_symfony_stimulus-br-c1bef5.js"
 }

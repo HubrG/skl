@@ -230,8 +230,6 @@ class UserController extends AbstractController
 		return $qb;
 	}
 
-
-
 	#[Route('update/user/update_picture', name: 'app_user_update_picture')]
 	public function update_picture(Request $request, UserRepository $userRepo): Response
 	{
@@ -516,6 +514,15 @@ class UserController extends AbstractController
 			'userInfo' => $userInfo,
 			'following' => $following,
 			'followed' => $followed
+		]);
+	}
+	#[Route('/user_nav/social/{username}', name: 'app_user_nav_social')]
+	public function userNavSocial(UserRepository $uRepo, $username = null): Response
+	{
+		$userInfo = $uRepo->findOneBy(["username" => $username]);
+		return $this->render('user/user-nav/social.html.twig', [
+			'userInfo' => $userInfo,
+
 		]);
 	}
 }

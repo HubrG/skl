@@ -33,6 +33,7 @@ import { LazyLoad } from "../scripts/LazyLoad";
 import { TippyC } from "../scripts/Tippy";
 import { PublicationShow } from "../scripts/Publication/PublicationShow";
 import { User } from "../scripts/User/User";
+import { UserFeed } from "../scripts/User/UserFeed";
 import { Dropdown } from "../scripts/Dropdown";
 import { Assign } from "../scripts/Assign";
 import { Dropdown as FlowbiteDropdown } from "flowbite";
@@ -158,7 +159,7 @@ const TurboHelper = class {
       Inbox();
       ForumTopicRead();
       AxiosSavePublication();
-
+      UserFeed();
       // commentaires
       Comment();
       CommentReply();

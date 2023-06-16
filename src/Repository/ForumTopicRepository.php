@@ -45,11 +45,12 @@ class ForumTopicRepository extends ServiceEntityRepository
             return [];
         }
         return $this->createQueryBuilder('t')
+            ->addSelect('(SELECT MAX(m2.published_at) FROM App\Entity\ForumMessage m2 WHERE m2.topic = t) AS HIDDEN last_message_date')
             ->leftJoin('t.forumMessages', 'm')
             ->andWhere('t.title LIKE :query')
             ->setParameter('query', '%' . $query . '%')
-            ->orderBy('t.title', 'ASC')
-            ->addOrderBy('m.published_at', 'DESC')
+            ->orderBy('last_message_date', 'DESC')
+            ->addOrderBy('t.title', 'ASC')
             ->getQuery()
             ->getResult();
     }

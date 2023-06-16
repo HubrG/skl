@@ -211,7 +211,7 @@
 			<div>
 				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
 				vient de vous suggérer une modification pour améliorer le texte de votre feuille «
-				<a data-notif-clic href="{{path("app_chapter_revision", {slugPub:item.revisionComment.chapter.publication.slug,user:item.user.username,idChap:item.revisionComment.chapter.id,slug:item.revisionComment.chapter.slug})}}">{{item.revisionComment.chapter.title}}</a>
+				<a data-notif-clic href="{{path("app_chapter_revision", {slugPub:item.revisionComment.chapter.publication.slug,user:item.user.username,idChap:item.revisionComment.chapter.id,slug:item.revisionComment.chapter.slug,version:item.annotationReply.annotation.version.id})}}">{{item.revisionComment.chapter.title}}</a>
 				» pour le récit
 				<a href="{{path("app_publication_show_one", {id:item.revisionComment.chapter.publication.id, slug:item.revisionComment.chapter.publication.slug})}}">
 					{{item.revisionComment.chapter.publication.title}}
@@ -494,7 +494,7 @@
 			<div>
 				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
 				vient de répondre à vos commentaire de révision sur sa feuille «
-				<a data-notif-clic href="{{path("app_chapter_revision", {slugPub:item.annotationReply.annotation.chapter.publication.slug,user:item.annotationReply.annotation.chapter.publication.user.username,idChap:item.annotationReply.annotation.chapter.id,slug:item.annotationReply.annotation.chapter.slug})}}">{{item.annotationReply.annotation.chapter.title}}</a>
+				<a data-notif-clic href="{{path("app_chapter_revision", {slugPub:item.annotationReply.annotation.chapter.publication.slug,user:item.annotationReply.annotation.chapter.publication.user.username,idChap:item.annotationReply.annotation.chapter.id,slug:item.annotationReply.annotation.chapter.slug,version:item.annotationReply.annotation.version.id})}}">{{item.annotationReply.annotation.chapter.title}}</a>
 				» pour le récit
 				<a href="{{path("app_publication_show_one", {id:item.annotationReply.annotation.chapter.publication.id, slug:item.annotationReply.annotation.chapter.publication.slug})}}">
 					{{item.annotationReply.annotation.chapter.publication.title}}

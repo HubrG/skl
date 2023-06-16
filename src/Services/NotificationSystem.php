@@ -407,7 +407,7 @@ class NotificationSystem extends AbstractController
             // Envoi email
             if (is_null($userRepo->getUserParameters()->isNotif10Mail()) or $userRepo->getUserParameters()->isNotif10Mail() == 1) {
                 if ($notification->getRevisionComment()->getChapter()) {
-                    $pathChapter = $this->generateUrl('app_chapter_revision', ['slug' => $notification->getRevisionComment()->getChapter()->getSlug(), "user" => $notification->getRevisionComment()->getChapter()->getPublication()->getUser()->getId(), "slugPub" => $notification->getRevisionComment()->getChapter()->getPublication()->getSlug(), "idChap" => $notification->getRevisionComment()->getChapter()->getId()]);
+                    $pathChapter = $this->generateUrl('app_chapter_revision', ['slug' => $notification->getRevisionComment()->getChapter()->getSlug(), "user" => $notification->getRevisionComment()->getChapter()->getPublication()->getUser()->getId(), "slugPub" => $notification->getRevisionComment()->getChapter()->getPublication()->getSlug(), "idChap" => $notification->getRevisionComment()->getChapter()->getId(), "version" => $notification->getRevisionComment()->getVersion()->getId()]);
                     $textChapter = "de votre feuille <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getRevisionComment()->getChapter()->getTitle() . "</a>";
                 } else {
                     $pathChapter = "";
@@ -800,7 +800,7 @@ class NotificationSystem extends AbstractController
             // Envoi email
             if (is_null($userRepo->getUserParameters()->isNotif27Mail()) or $userRepo->getUserParameters()->isNotif27Mail() == 1) {
                 if ($notification->getAnnotationReply()->getAnnotation()->getChapter()) {
-                    $pathChapter = $this->generateUrl('app_chapter_revision', ['slug' => $notification->getAnnotationReply()->getAnnotation()->getChapter()->getSlug(), "user" => $notification->getAnnotationReply()->getAnnotation()->getChapter()->getPublication()->getUser()->getId(), "slugPub" => $notification->getAnnotationReply()->getAnnotation()->getChapter()->getPublication()->getSlug(), "idChap" => $notification->getAnnotationReply()->getAnnotation()->getChapter()->getId()]);
+                    $pathChapter = $this->generateUrl('app_chapter_revision', ['slug' => $notification->getAnnotationReply()->getAnnotation()->getChapter()->getSlug(), "user" => $notification->getAnnotationReply()->getAnnotation()->getChapter()->getPublication()->getUser()->getId(), "slugPub" => $notification->getAnnotationReply()->getAnnotation()->getChapter()->getPublication()->getSlug(), "idChap" => $notification->getAnnotationReply()->getAnnotation()->getChapter()->getId(), "version" => $notification->getAnnotationReply()->getAnnotation()->getVersion()->getId()]);
                     $textChapter = "de la feuille <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getAnnotationReply()->getAnnotation()->getChapter()->getTitle() . "</a>";
                 } else {
                     $pathChapter = "";

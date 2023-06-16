@@ -122,8 +122,8 @@
 					<div id="content-forum" class="-mt-5 pb-10">
 						<hr class="mb-0 dark:border-slate-600">
 						{{challenge.content|assign|smiley_to_emoji|markdown|raw}}
-						<hr class="mb-0 mt-0 dark:border-slate-600">
 						{% if challenge.constrainCategory or challenge.constrainMinTime or challenge.constrainMaxWords  or challenge.constrainMinWords or challenge.constrainMaxLetters or challenge.constrainMinLetters or challenge.constrainMinTime or challenge.constrainMaxTime %}
+							<hr class="mb-0 mt-0 dark:border-slate-600">
 							<h6 class="font-semibold flex flex-row gap-x-2 text-center w-full items-center mt-8">
 								<i class="fa-regular fa-bullseye-arrow fa-beat-fade"></i>
 								<span>Contraintes</span>
@@ -282,7 +282,7 @@
 			{% endif %}
 			<div class="display_publications big  twoMax  ">
 				{% for item in challenges %}
-					{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':'published', 'querySortby':'published', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
+					{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':'published', 'querySortby':'published', 'queryOrder':'desc','queryKeystring':null, type:"challenges", 'querySlug':item.slug} %}
 				{% endfor %}
 			</div>
 			{% if challenges_draft|length > 0 %}

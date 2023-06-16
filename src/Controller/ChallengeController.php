@@ -41,10 +41,22 @@ class ChallengeController extends AbstractController
     #[Route('/training', name: 'app_challenge')]
     public function index(ChallengeRepository $cRepo): Response
     {
-        $challenges = $cRepo->findBy(
-            [],
-            ['createdAt' => 'DESC']
-        );
+        $dateActuelle = new DateTime();
+
+        $challenges = $cRepo->createQueryBuilder("c")
+            ->addSelect('CASE 
+                WHEN c.dateEnd IS NULL THEN 0 
+                WHEN c.dateEnd > :dateActuelle THEN 0 
+                ELSE 1 
+            END AS HIDDEN ORD')
+            ->setParameter('dateActuelle', $dateActuelle)
+            ->orderBy('ORD', 'ASC')
+            ->addOrderBy("c.dateEnd", "ASC")
+            ->addOrderBy("c.createdAt", "DESC")
+            ->getQuery()
+            ->getResult();
+
+
         return $this->render('challenge/index.html.twig', [
             "challenges" => $challenges
         ]);
@@ -150,15 +162,24 @@ class ChallengeController extends AbstractController
         $nbrComReal = count($cmRepo->findBy(['challenge' => $id, 'replyTo' => null]));
         // * On récupère les exercices réalisés qui ont au moins un chapitre publié
         // * DERNIÈRES PUBLICATIONS
+        $user = $challenge->getUser();
+
         $qb = $pRepo->createQueryBuilder("p")
             ->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
             ->where("p.status = 2")
             ->andWhere("p.challenge = :challenge")
-            ->orderBy("p.published_date", "DESC")
+            ->addSelect('CASE 
+        WHEN p.user = :user THEN 0
+        ELSE 1 
+    END AS HIDDEN ORD')
+            ->orderBy('ORD', 'ASC')
+            ->addOrderBy("p.published_date", "DESC")
             ->groupBy('p.id')
-            ->setParameter('challenge', $challenge)
-            ->orderBy('MAX(p.published_date)', 'DESC');
+            ->setParameter('user', $user)
+            ->setParameter('challenge', $challenge);
+
         $challenges = $qb->getQuery()->getResult();
+
         // * DERNIÈRES PUBLICATIONS DRAFTED
         // Sous-requête pour obtenir les id des publications qui ont au moins un chapitre publié
         // Sous-requête pour obtenir les id des publications qui ont au moins un chapitre publié

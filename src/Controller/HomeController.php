@@ -4,19 +4,24 @@ namespace App\Controller;
 
 use Cloudinary\Cloudinary;
 use App\Services\WordCount;
+use App\Form\SendNotificationForm;
 use App\Services\NotificationSystem;
 use App\Repository\ForumTopicRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
 use App\Repository\ForumMessageRepository;
 use App\Repository\NotificationRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
 use App\Repository\PublicationCommentRepository;
+use Symfony\Component\Notifier\ChatterInterface;
 use Symfony\Component\Notifier\NotifierInterface;
 use App\Repository\PublicationAnnotationRepository;
+use Symfony\Component\Notifier\Message\ChatMessage;
 use Symfony\Component\Notifier\Notification\Notification;
+use Symfony\Component\Notifier\Bridge\Mercure\MercureOptions;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
@@ -158,17 +163,32 @@ class HomeController extends AbstractController
         ]);
     }
     #[Route('/test', name: 'app_test')]
-    public function test(PublicationAnnotationRepository $paRepo, NotifierInterface $notifier): Response
+    public function test(Request $request, ChatterInterface $chatter, PublicationAnnotationRepository $paRepo, NotifierInterface $notifier): Response
     {
 
+        $form = $this->createForm(SendNotificationForm::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $message = SendNotificationForm::getTextChoices()[$form->getData()['message']];
+
+            // custom_mercure_chatter_transport is configured in config/packages/notifier.yaml
+            $message = (new ChatMessage(
+                $message,
+                new MercureOptions(['/demo/notifier'])
+            ))->transport('custom_mercure_chatter_transport');
+            $chatter->send($message);
+
+            return $this->redirectToRoute('app_notify');
+        }
 
 
-        $notification = new Notification("coucou", ['chat/custom_mercure_chatter_transport']);
-        $notifier->send($notification);
 
         return $this->render('home/test.html.twig', [
             'controller_name' => "d",
-            "article" => "dd"
+            "article" => "dd",
+            'form' => $form,
 
         ]);
     }

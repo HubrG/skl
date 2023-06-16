@@ -75,7 +75,7 @@
         "symfony/ux-chartjs": "^2.7",
         "symfony/ux-lazy-image": "^2.6",
         "symfony/ux-live-component": "^2.8",
-        "symfony/ux-notify": "^2.8",
+        "symfony/ux-notify": "^2.9",
         "symfony/ux-turbo": "^2.6",
         "symfony/ux-twig-component": "^2.8",
         "symfony/validator": "6.2.*",

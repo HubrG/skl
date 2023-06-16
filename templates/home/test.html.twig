@@ -8,8 +8,12 @@
 {% block javascripts %}{% endblock %}
 {% block body %}
 
-	<textarea class="assign-user"></textarea>
-	<div class="assign-user-dropdown" style="display: none;"></div>
-	<canvas id="canvas-image-blending"></canvas>
+	{{ stream_notifications(['/demo/notifier']) }}
+
+	{{ form_start(form) }}
+	{{ form_widget(form) }}
+
+	<button type="submit" class="btn btn-primary">Send Notification</button>
+	{{ form_end(form) }}
 
 {% endblock %}

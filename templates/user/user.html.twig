@@ -99,6 +99,16 @@
 						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'all', 'queryPage':1, 'sortBy':'pop', 'querySortby':'pop', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
 					{% endfor %}
 				</div>
+				<div class="my-special-hr ">
+					<hr>
+					<span>{{challengeInfo|length > 1 ? challengeInfo|length ~ " réponses d'exercice" : challengeInfo|length == 0 ? "Aucune réponse d'exercice" : challengeInfo|length ~ " réponse d'exercice"}}</span>
+					<hr class="mb-5">
+				</div>
+				<div class="display_publications twoMax  profil">
+					{% for item in challengeInfo %}
+						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'all', 'queryPage':1, 'sortBy':'pop', 'querySortby':'pop', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
+					{% endfor %}
+				</div>
 			</turbo-frame>
 		</div>
 	</turbo-frame>

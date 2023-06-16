@@ -2,6 +2,7 @@
 
 namespace App\Controller\User;
 
+use DateTime;
 use DateTimeImmutable;
 use App\Entity\UserFollow;
 use App\Form\UserInfoType;
@@ -79,13 +80,24 @@ class UserController extends AbstractController
 			->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
 			->where("p.status = 2")
 			->andWhere("p.hideSearch = FALSE")
+			->andWhere("p.challenge IS NULL")
 			->andWhere("p.user = :user")
 			->setParameter("user", $userInfo);
 		$pubInfo = $qb->getQuery()->getResult();
+		// 
+		$qb = $pRepo->createQueryBuilder("p")
+			->innerJoin("p.publicationChapters", "pch", "WITH", "pch.status = 2")
+			->where("p.status = 2")
+			->andWhere("p.challenge IS NOT NULL")
+			->andWhere("p.hideSearch = FALSE")
+			->andWhere("p.user = :user")
+			->setParameter("user", $userInfo);
+		$challengeInfo = $qb->getQuery()->getResult();
 		return $this->render('user/user.html.twig', [
 			'userInfo' => $userInfo,
 			'pubInfo' => $pubInfo,
-			'follow' => $follow
+			'follow' => $follow,
+			'challengeInfo' => $challengeInfo
 		]);
 	}
 	#[Route('user/edit/{username}', name: 'app_user_edit')]
@@ -492,11 +504,22 @@ class UserController extends AbstractController
 	{
 		$userInfo = $uRepo->findOneBy(["username" => $username]);
 		// On récupère tous les topics du forum créés par l'utilisateur
-		$challenges = $cRepo->findBy(
-			["user" => $userInfo],
+		$dateActuelle = new DateTime();
 
-			['createdAt' => 'DESC']
-		);
+		$challenges = $cRepo->createQueryBuilder("c")
+			->addSelect('CASE 
+                WHEN c.dateEnd IS NULL THEN 0 
+                WHEN c.dateEnd > :dateActuelle THEN 0 
+                ELSE 1 
+            END AS HIDDEN ORD')
+			->where("c.user = :user")
+			->setParameter('user', $userInfo)
+			->setParameter('dateActuelle', $dateActuelle)
+			->orderBy('ORD', 'ASC')
+			->addOrderBy("c.dateEnd", "ASC")
+			->addOrderBy("c.createdAt", "DESC")
+			->getQuery()
+			->getResult();
 
 		return $this->render('user/user-nav/challenge.html.twig', [
 			'userInfo' => $userInfo,

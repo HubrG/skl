@@ -25,8 +25,11 @@
 		{% set sortBy = queryStortby %}
 	{% endif %}
 	{# END #}
-	<div class="card catColorBorder-{{cat_color}}">
+	<div class='card  {{type is defined and type == "challenges" and item.user.id == item.challenge.user.id ? "  border-4 bg-white rounded-lg border-slate-500 shadow-md" : "catColorBorder-" ~ cat_color}}  '>
 		<i class="summary-small fa-duotone fa-memo-circle-info catColorText-{{cat_color}}" data-tippy-content="{{chap_content}}"></i>
+		{% if type is defined and type == "challenges" and item.user.id == item.challenge.user.id %}
+			<p class="font-semibold italic text-center border-b-[1px] -mt-2 pb-1.5 opacity-60">Proposition de l'auteur de l'exercice</p>
+		{% endif %}
 		{% if item.cover  %}
 			{% set itemCover = item.cover|replace({'h_793,w_529': 'h_190,w_329,c_fill'}) %}
 			<div class="img-header-big flex-shrink-0">
@@ -71,18 +74,18 @@
 			{{chap_content|striptags|raw|length > 300 ? chap_content|striptags|raw|slice(0,300) ~ "..." : chap_content|striptags|raw}}
 		</p>
 		{% if sortBy == "sheet" %}
-			<span class="px-2 my-1 dark:bg-slate-800 bg-slate-100 border-[1px] border-slate-300 dark:border-slate-700 rounded py-2 text-slate-500 text-xs  dark:text-slate-400 w-full flex flex-row justify-between items-center gap-x-1">
+			<div class="px-2 my-1 dark:bg-slate-800  flex-shrink-0 bg-slate-100 border-[1px] border-slate-300 dark:border-slate-700 rounded py-2 text-slate-500 text-xs  dark:text-slate-400 w-full flex flex-row justify-between items-center gap-x-1">
 				{% set filteredChapters = item.publicationChapters|filter(chapter => chapter.status == 2) %}
 				{% set sortedChapters = filteredChapters|sort((a, b) => b.orderDisplay <=> a.orderDisplay) %}
 				{% set lastChapter = sortedChapters|first %}
-				<span class="flex flex-row gap-x-2 items-center ">
-					<i class="fa-duotone fa-star-christmas catColorText-{{cat_color}}"></i>
+				<div class="flex flex-row gap-x-2  items-baseline">
+					<i class="fa-duotone fa-file-plus catColorText-{{cat_color}}"></i>
 					<a {{ user_in_url ? " data-turbo-frame='_top'" }} href="{{ path("app_chapter_show", {idChap:lastChapter.id, user:item.user.username, slugPub:item.slug, slug:lastChapter.slug}) }}" class="hover:underline font-semibold">{{lastChapter.title}}</a>
-				</span>
-				<small class="text-slate-400 dark:text-slate-500">il y a
+				</div>
+				<div class="text-slate-400 dark:text-slate-500 flex flex-shrink-0 text-[0.65rem]">il y a
 					{{lastChapter.published|since}}
-				</small>
-			</span>
+				</div>
+			</div>
 		{% endif %}
 
 		<div class="flex flex-row justify-between text-xs">

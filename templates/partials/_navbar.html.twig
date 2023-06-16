@@ -26,19 +26,13 @@
 							<i class="fa-duotone  fa-book-open-reader"></i>
 						</button>
 					</li>
-					{% if app.user %}
-						<li>
-							<a href="{{ path("app_publication_add")}}" aria-label="Écrire" class="navbar-button" data-tippy-content="Écrire">
-								<i class="fa-duotone fa-pen-to-square"></i>
-							</a>
-						</li>
-					{% else %}
-						<li>
-							<button data-micromodal-trigger="popup-register" aria-label="Écrire" class="navbar-button" data-tippy-content="Écrire">
-								<i class="fa-duotone fa-pen-to-square"></i>
-							</button>
-						</li>
-					{% endif %}
+
+					<li>
+						<a href="{{ path("app_publication_add")}}" aria-label="Écrire" class="navbar-button" data-tippy-content="Écrire">
+							<i class="fa-duotone fa-pen-to-square"></i>
+						</a>
+					</li>
+
 					<li class="w-full">
 						<a href="{{path("app_challenge")}}" aria-label="Forums" class="navbar-button" data-tippy-content="S'exercer">
 							<i class="fa-duotone fa-hand-holding-seedling"></i>
@@ -53,6 +47,27 @@
 					<li class="w-full">
 						<button data-tippy-content="Recherche rapide" id="nav-search-menu-dropdown-button" aria-label="Rechercher" data-dropdown-toggle="nav-search-menu-dropdown" type="button" class="navbar-button">
 							<i class="py-1 fa-duotone fa-microscope"></i>
+						</button>
+					</li>
+				</ul>
+			{% else %}
+				<ul class="lg:hidden flex flex-row items-baseline">
+					<li>
+						<button data-micromodal-trigger="popup-login" data-tippy-content="Connexion" class="navbar-button">
+							<i class="fa-duotone fa-right-to-bracket"></i>
+
+						</button>
+					</li>
+					<li>
+						<button data-micromodal-trigger="popup-register" data-tippy-content="Inscription" class="navbar-button">
+							<i class="fa-duotone fa-user-plus"></i>
+
+						</button>
+					</li>
+
+					<li>
+						<button id="darkButtonSession" aria-label="Basculer en mode clair ou sombre" data-tippy-content="Mode sombre / mode clair" class="navbar-button">
+							<i class="fa-duotone  text-lg	{{ app.session.get('darkmode') and app.session.get('darkmode') == true ? " fa-sun" : " fa-moon-stars" }}" id="darkModeSession"></i>
 						</button>
 					</li>
 				</ul>

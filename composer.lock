@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7e4ccd027443315c6cbaa80f0010fc5c",
+    "content-hash": "fdd899aca9fd87f8e97082f009932223",
     "packages": [
         {
             "name": "api-platform/core",
@@ -10743,6 +10743,74 @@
             "time": "2023-03-01T10:32:47+00:00"
         },
         {
+            "name": "symfony/stimulus-bundle",
+            "version": "v2.9.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/stimulus-bundle.git",
+                "reference": "5261003352f52d9e1bcd0a04f099784ada2c3829"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/stimulus-bundle/zipball/5261003352f52d9e1bcd0a04f099784ada2c3829",
+                "reference": "5261003352f52d9e1bcd0a04f099784ada2c3829",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1",
+                "symfony/config": "^5.4|^6.0",
+                "symfony/dependency-injection": "^5.4|^6.0",
+                "symfony/finder": "^5.4|^6.0",
+                "symfony/http-kernel": "^5.4|^6.0",
+                "twig/twig": "^2.15.3|^3.4.3"
+            },
+            "require-dev": {
+                "symfony/asset-mapper": "6.3.x-dev",
+                "symfony/framework-bundle": "^5.4|^6.0",
+                "symfony/phpunit-bridge": "^5.4|^6.0",
+                "symfony/twig-bundle": "^5.4|^6.0",
+                "zenstruck/browser": "^1.4"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\UX\\StimulusBundle\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Integration with your Symfony app & Stimulus!",
+            "keywords": [
+                "symfony-ux"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/stimulus-bundle/tree/v2.9.1"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2023-05-30T15:13:12+00:00"
+        },
+        {
             "name": "symfony/stopwatch",
             "version": "v6.2.7",
             "source": {
@@ -11688,16 +11756,16 @@
         },
         {
             "name": "symfony/ux-notify",
-            "version": "v2.8.1",
+            "version": "v2.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-notify.git",
-                "reference": "ade3313c9bbd2a03f46dd2396124c4765a52df59"
+                "reference": "17c2d6ba4dc421ef0245542c0150b7410e54751f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-notify/zipball/ade3313c9bbd2a03f46dd2396124c4765a52df59",
-                "reference": "ade3313c9bbd2a03f46dd2396124c4765a52df59",
+                "url": "https://api.github.com/repos/symfony/ux-notify/zipball/17c2d6ba4dc421ef0245542c0150b7410e54751f",
+                "reference": "17c2d6ba4dc421ef0245542c0150b7410e54751f",
                 "shasum": ""
             },
             "require": {
@@ -11707,8 +11775,8 @@
                 "symfony/http-kernel": "^5.4|^6.0",
                 "symfony/mercure-bundle": "^0.3.4",
                 "symfony/mercure-notifier": "^5.4|^6.0",
-                "symfony/twig-bundle": "^5.4|^6.0",
-                "symfony/webpack-encore-bundle": "^1.11"
+                "symfony/stimulus-bundle": "^2.9.1",
+                "symfony/twig-bundle": "^5.4|^6.0"
             },
             "conflict": {
                 "symfony/config": "<5.4.0"
@@ -11750,7 +11818,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-notify/tree/v2.8.1"
+                "source": "https://github.com/symfony/ux-notify/tree/v2.9.1"
             },
             "funding": [
                 {
@@ -11766,7 +11834,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-04-11T13:24:35+00:00"
+            "time": "2023-05-30T14:40:50+00:00"
         },
         {
             "name": "symfony/ux-turbo",

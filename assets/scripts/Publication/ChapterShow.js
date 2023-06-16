@@ -280,6 +280,11 @@ function likeChapterData(likeChapterId) {
     if (response.data.resp) {
       likeChapter.classList.remove("fa-regular");
       likeChapter.classList.add("fa-duotone", "text-rose-400");
+      NotyDisplay(
+        '<i class="fa-regular  fa-circle-check"></i><br><big>Vous appréciez cette feuille</big><br>N\'hésitez pas à partager votre avis en commentaire !',
+        "info",
+        5000
+      );
       nbrLike.innerHTML = response.data.nbrLike;
     } else {
       likeChapter.classList.add("fa-regular");

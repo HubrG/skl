@@ -384,7 +384,7 @@
 				{% endif %}
 				{% set n = 0 %}
 				{% for item in pCom %}
-					{% include "publication/_partials/_comment.html.twig" with { item:item, n:n, first:pCom|first, pcom:nbrCom} %}
+					{% include "publication/_partials/_comment.html.twig" with { item:item, n:n, first:pCom|first, pcom:nbrCom, type:"chapter"} %}
 					{% set n = n + 1  %}
 				{% endfor %}
 				{% if nbrShowCom < nbrCom %}

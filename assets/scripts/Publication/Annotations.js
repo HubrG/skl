@@ -281,6 +281,7 @@ export function Annotation(stop = null) {
   // Initialiser la variable pour stocker l'annotation actuelle
 
   document.addEventListener("click", function (event) {
+    concatenatedAnnotationText = "";
     // Si l'élément sur lequel l'utilisateur a cliqué a la classe "annotation"
     if (event.target.matches(".annotation")) {
       // Obtenir la position de l'élément d'annotation

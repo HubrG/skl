@@ -1469,9 +1469,13 @@ nav.breadcrumb ol li a:hover.not-underline {
 #content-forum {
 	@apply text-base !important
 }
+#content-forum img {
+	@apply mx-auto shadow-xl  rounded-lg !important;
+}
 .one-comment-content ol,  .one-topic-response ol, #content-forum ol {
 	@apply list-decimal ml-2  my-2 md:text-sm text-xs  !important;
 }
+
 .one-comment-content ol li,  .one-topic-response ol li, #content-forum ol li {
 	@apply ml-2 list-decimal  !important;
 }
@@ -1509,6 +1513,12 @@ nav.breadcrumb ol li a:hover.not-underline {
 #content-forum {
 	@apply -mt-0  px-5 !important;
 }
+.one-comment-content h1, .one-comment-content h2, .one-comment-content h3, .one-comment-content h4, .one-comment-content h5, .one-comment-content h6,
+.one-topic-response h1, .one-topic-response h2, .one-topic-response h3, .one-topic-response h4, .one-topic-response h5, .one-topic-response h6,
+#content-forum h1, #content-forum h2, #content-forum h3, #content-forum h4, #content-forum h5, #content-forum h6 {
+    @apply py-2;
+}
+
 /* ! FEED AND CHRONOCONTENT */
 #feed-content {
 	@apply lg:columns-1 md:columns-1 columns-1  -mt-14 md:-mt-0  md:gap-10 sm:gap-7 gap-7 !important;

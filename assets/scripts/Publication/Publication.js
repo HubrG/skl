@@ -212,6 +212,7 @@ function AxiosPublication() {
   var title = document.getElementById("publication_title").value;
   var summary = document.getElementById("publication_summary").value;
   var category = document.getElementById("publication_category").value;
+  var mature = document.getElementById("publication_mature").checked;
   if (document.getElementById("publication_finished")) {
     var finished = document.getElementById("publication_finished").checked;
   } else {
@@ -227,16 +228,24 @@ function AxiosPublication() {
     var salePaper = document.getElementById("publication_sale_paper").value;
   }
   //!
-  var mature = document.getElementById("publication_mature").checked;
-  var access = document.getElementById("publication_access").checked;
-  var support = document.getElementById("publication_support").checked;
-  var showOldVersions = document.getElementById(
-    "publication_show_old_versions"
-  ).checked;
-  var hideSearch = document.getElementById("publication_hide_search").checked;
-  var allowRevision = document.getElementById(
-    "publication_allow_revision"
-  ).checked;
+  if (document.getElementById("publication_access")) {
+    var access = document.getElementById("publication_access").checked;
+    var access = document.getElementById("publication_access").checked;
+    var support = document.getElementById("publication_support").checked;
+    var showOldVersions = document.getElementById(
+      "publication_show_old_versions"
+    ).checked;
+    var hideSearch = document.getElementById("publication_hide_search").checked;
+    var allowRevision = document.getElementById(
+      "publication_allow_revision"
+    ).checked;
+  } else {
+    var access = 0;
+    var support = 0;
+    var showOldVersions = true;
+    var hideSearch = 0;
+    var allowRevision = true;
+  }
   var hideIdPub = document.getElementById("hideIdPub").value;
   // * Gestion de la photo (si changement de photo)
   var spinCover = document.getElementById("spinCover").classList;

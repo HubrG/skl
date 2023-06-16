@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use App\Repository\PublicationAnnotationReplyRepository;
 
 #[ORM\Entity(repositoryClass: PublicationAnnotationReplyRepository::class)]
@@ -27,7 +27,7 @@ class PublicationAnnotationReply
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'annotationReply', targetEntity: Notification::class)]
+    #[ORM\OneToMany(mappedBy: 'annotationReply', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $notifications;
 
     public function __construct()

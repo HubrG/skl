@@ -754,6 +754,177 @@ export function Annotation(stop = null) {
     });
   });
 
+  // ! Répondre à une annotation
+  const replyAn = document.querySelectorAll(".replyAn");
+  replyAn.forEach((reply) => {
+    reply.addEventListener("click", function () {
+      var anId = reply.getAttribute("data-id");
+      var txtD = document.getElementById("textareaDivR-" + anId);
+      //
+      txtD.classList.remove("hidden");
+    });
+  });
+  const cancelRAn = document.querySelectorAll(".cancelReplyAnnotation");
+  cancelRAn.forEach((cancel) => {
+    cancel.addEventListener("click", function () {
+      var anId = cancel.getAttribute("data-id");
+      var txtD = document.getElementById("textareaDivR-" + anId);
+      //
+      txtD.classList.add("hidden");
+    });
+  });
+  const validRAn = document.querySelectorAll(".validReplyAnnotation");
+  validRAn.forEach((valid) => {
+    valid.addEventListener("click", function () {
+      var anId = valid.getAttribute("data-id");
+      var txtD = document.getElementById("textareaDivR-" + anId);
+      var txtC = document.getElementById("textareaCR-" + anId);
+      //
+      txtD.classList.add("hidden");
+      //
+      var url = "/chap/save_reply_annotation";
+      const annotationData = {
+        id: anId,
+        comment: txtC.value,
+      };
+      axios
+        .post(url, annotationData, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          console.log(response.data.message);
+          // Si erreur 403
+          if (response.data.code === 403) {
+            NotyDisplay(
+              "Votre réponse n'a pas été prise en compte en raison d'une erreur",
+              "error",
+              5000
+            );
+          } else {
+            NotyDisplay(
+              "Votre réponse a bien été prise en compte",
+              "info",
+              5000
+            );
+            txtD.classList.add("hidden");
+            txtC.value = "";
+            document.getElementById("comment-reload").click();
+          }
+        });
+    });
+  });
+  // ! suppression d'une réponse d'annotation
+  const delReplyAn = document.querySelectorAll(".delReplyAn");
+  delReplyAn.forEach((del) => {
+    del.addEventListener("click", function () {
+      var anId = del.getAttribute("data-id");
+      var elToDel = document.getElementById("replyItem-" + anId);
+      var url = "/chap/delete_reply_annotation";
+      const annotationData = {
+        id: anId,
+      };
+      axios
+        .post(url, annotationData, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          console.log(response.data.message);
+          // Si erreur 403
+          if (response.data.code === 403) {
+            NotyDisplay(
+              "Votre suppression n'a pas été prise en compte en raison d'une erreur",
+              "error",
+              5000
+            );
+          } else {
+            NotyDisplay("Votre réponse a bien été supprimée", "info", 5000);
+            elToDel.classList.add("animate__animated", "animate__fadeOut");
+            setTimeout(() => {
+              elToDel.remove();
+              document.getElementById("comment-reload").click();
+            }, 1000);
+          }
+        });
+    });
+  });
+  // ! Modifier une annotation
+  const upAn = document.querySelectorAll(".updateButton");
+  upAn.forEach((up) => {
+    up.addEventListener("click", function () {
+      var anId = up.getAttribute("data-id");
+      var aP = document.getElementById("annotationP-" + anId);
+      var aC = document.getElementById("annotationC-" + anId);
+      var txtC = document.getElementById("textareaC-" + anId);
+      var txtD = document.getElementById("textareaDiv-" + anId);
+      //
+      txtD.classList.remove("hidden");
+      aP.classList.add("hidden");
+    });
+  });
+  const cancelUpAn = document.querySelectorAll(".cancelUpdateAnnotation");
+  cancelUpAn.forEach((cancel) => {
+    cancel.addEventListener("click", function () {
+      var anId = cancel.getAttribute("data-id");
+      var aP = document.getElementById("annotationP-" + anId);
+      var aC = document.getElementById("annotationC-" + anId);
+      var txtC = document.getElementById("textareaC-" + anId);
+      var txtD = document.getElementById("textareaDiv-" + anId);
+      //
+      txtD.classList.add("hidden");
+      aP.classList.remove("hidden");
+    });
+  });
+  const validUpAn = document.querySelectorAll(".validUpdateAnnotation");
+  validUpAn.forEach((valid) => {
+    valid.addEventListener("click", function () {
+      var anId = valid.getAttribute("data-id");
+      console.log(anId);
+      var aP = document.getElementById("annotationP-" + anId);
+      var aC = document.getElementById("annotationC-" + anId);
+      var txtC = document.getElementById("textareaC-" + anId);
+      var txtD = document.getElementById("textareaDiv-" + anId);
+      //
+      txtD.classList.add("hidden");
+      aP.classList.remove("hidden");
+      //
+      var url = "/chap/update_annotation";
+      const annotationData = {
+        id: anId,
+        comment: txtC.value,
+      };
+      axios
+        .post(url, annotationData, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          console.log(response.data.message);
+          // Si erreur 403
+          if (response.data.code === 403) {
+            NotyDisplay(
+              "Votre modification n'a pas été prise en compte en raison d'une erreur",
+              "error",
+              5000
+            );
+          } else {
+            NotyDisplay(
+              "Votre modification a bien été prise en compte",
+              "info",
+              5000
+            );
+            txtD.classList.add("hidden");
+            aP.classList.remove("hidden");
+            aC.innerHTML = txtC.value;
+          }
+        });
+    });
+  });
+
   function shareNw(nw, selectedText) {
     // !
     let url = window.location.href;

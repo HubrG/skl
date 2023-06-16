@@ -98,7 +98,6 @@ class ChapterShowController extends AbstractController
             return $this->redirectToRoute("app_home");
         }
         // * Si le chapitre n'est pas publié, on redirige vers la page d'acceuil — Uniquement si l'utilisateur n'est pas l'auteur de la publication
-
         elseif ($chapter->getStatus() != 2 && $publication->getUser() != $this->getUser()) {
             // On redirige vers la page précédente 
             return $this->redirectToRoute("app_home");
@@ -191,7 +190,7 @@ class ChapterShowController extends AbstractController
             // S'il y a des annotations
             $annotation = $this->annotation->getAnnotation($chapter, "mark-for-me", $version);
             if ($annotation) {
-                $chapterContent =  $this->formatChapter($annotation);
+                $chapterContent = $this->formatChapter($annotation);
             } else {
 
                 $chapterContent = $this->formatChapter($chapterContent->getContent());
@@ -241,7 +240,7 @@ class ChapterShowController extends AbstractController
             'formQuote' => $form,
             "pCom" => $comments,
             "nbrShowCom" => $nbrShowCom,
-            "nbrComReal" =>  $nbrComReal,
+            "nbrComReal" => $nbrComReal,
             "nbrCom" => $nbrCom,
             "version" => $version,
             "versions" => $versions,
@@ -300,7 +299,6 @@ class ChapterShowController extends AbstractController
             return $this->redirectToRoute("app_home");
         }
         // * Si le chapitre n'est pas publié, on redirige vers la page d'acceuil — Uniquement si l'utilisateur n'est pas l'auteur de la publication
-
         elseif ($chapter->getStatus() != 2 && $publication->getUser() != $this->getUser()) {
             // On redirige vers la page précédente 
             return $this->redirectToRoute("app_home");
@@ -375,7 +373,7 @@ class ChapterShowController extends AbstractController
             // S'il y a des annotations
             $annotation = $this->annotation->getAnnotation($chapter, "mark-for-all", $version);
             if ($annotation) {
-                $chapterContent =  $this->formatChapter($annotation);
+                $chapterContent = $this->formatChapter($annotation);
             } else {
 
                 $chapterContent = $this->formatChapter($chapterContent->getContent());

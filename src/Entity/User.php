@@ -181,26 +181,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: InboxGroupMember::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $inboxGroupMembers;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ForumMessageLike::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ForumMessageLike::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $forumMessageLikes;
 
-    #[ORM\OneToMany(mappedBy: 'fromUser', targetEntity: UserFollow::class)]
+    #[ORM\OneToMany(mappedBy: 'fromUser', targetEntity: UserFollow::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $userFollows;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationAccess::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationAccess::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationAccesses;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Challenge::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Challenge::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $challenges;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationSupport::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationSupport::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $publicationSupports;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ChallengeMessage::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ChallengeMessage::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $challengeMessages;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ChallengeMessageLike::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ChallengeMessageLike::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $challengeMessageLikes;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PublicationAnnotationReply::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $publicationAnnotationReplies;
     public function __construct()
     {
         $this->publications = new ArrayCollection();
@@ -231,6 +234,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->publicationSupports = new ArrayCollection();
         $this->challengeMessages = new ArrayCollection();
         $this->challengeMessageLikes = new ArrayCollection();
+        $this->publicationAnnotationReplies = new ArrayCollection();
     }
 
 
@@ -1434,6 +1438,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($challengeMessageLike->getUser() === $this) {
                 $challengeMessageLike->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PublicationAnnotationReply>
+     */
+    public function getPublicationAnnotationReplies(): Collection
+    {
+        return $this->publicationAnnotationReplies;
+    }
+
+    public function addPublicationAnnotationReply(PublicationAnnotationReply $publicationAnnotationReply): self
+    {
+        if (!$this->publicationAnnotationReplies->contains($publicationAnnotationReply)) {
+            $this->publicationAnnotationReplies->add($publicationAnnotationReply);
+            $publicationAnnotationReply->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationAnnotationReply(PublicationAnnotationReply $publicationAnnotationReply): self
+    {
+        if ($this->publicationAnnotationReplies->removeElement($publicationAnnotationReply)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationAnnotationReply->getUser() === $this) {
+                $publicationAnnotationReply->setUser(null);
             }
         }
 

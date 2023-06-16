@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-x-2 justify-start text-left p-2 rounded one-revision-comment comment-{{item.annotationClass}}" data-annotation-class="{{item.annotationClass}}">
-	<div class="flex flex-row items-center justify-start gap-x-2 dark:opacity-80">
+	<div class="flex flex-row items-start justify-start gap-x-2 dark:opacity-80 border-b-[1px] border-dashed pb-2">
 		{% if item.user.profilPicture %}
 			<div class="annotation-comment-pp w-6 h-5 self-baseline rounded-full">
 				<img class="rounded-full w-5 h-5 mt-1 " src="{{item.user.profilPicture}}"/>
@@ -18,20 +18,85 @@
 					</span>
 				</div>
 			</div>
-			<p class="flex flex-col items-start gap-x-1 dark:text-slate-300">
-				<span class="bg-slate-100  dark:bg-slate-700  text-slate-500 dark:text-slate-400 rounded px-2">{{item.contentPlain|trim}}</span>
-				<span class="pl-2 annotation-comment-content">{{item.comment|nl2br}}</span>
+			<div class="bg-slate-100 flex items-start flex-row dark:bg-slate-700  text-slate-500 dark:text-slate-400 rounded px-2">{{item.contentPlain|trim}}</div>
+			<p class="flex flex-col items-start gap-x-1 dark:text-slate-300" id="annotationP-{{item.id}}">
+				<span class="pl-2 annotation-comment-content" id="annotationC-{{item.id}}">{{item.comment|nl2br}}</span>
 			</p>
+			{% if app.user and item.user.id == app.user.id  %}
+				<div class=" hidden" id="textareaDiv-{{item.id}}">
+					<textarea class=" rounded text-sm  w-full dark:bg-slate-700 dark:text-slate-200" id="textareaC-{{item.id}}">{{item.comment|nl2br}}</textarea>
+					<div class="flex flex-row justify-between items-center">
+						<button type="button" id="validC-{{item.id}}" class="validUpdateAnnotation text-green-500 hover:underline" data-id="{{item.id}}">Valider la modification</button>
+						<button type="button" id="cancelC-{{item.id}}" data-id="{{item.id}}" class="cancelUpdateAnnotation text-red-500 hover:underline">Annuler</button>
+					</div>
+				</div>
+			{% endif %}
+			{% if item.publicationAnnotationReplies|length > 0 %}
+				<div class="opacity-70 ml-2 mt-2 bg-blue-50 dark:bg-slate-700 p-2 flex flex-col gap-y-2 rounded border-2 border-blue-200">
+					{% for reply in item.publicationAnnotationReplies %}
+						<div class="{{loop.last ? "" :"border-b-[1px] border-blue-300 dark:border-slate-500" }} relative pb-2" id="replyItem-{{reply.id}}">
+							<div class="flex flex-row  gap-x-2 items-center justify-between">
+								<div class="annotation-comment-user flex flex-row gap-x-2 items-start">
+									<span class="text-blue-500 dark:text-slate-400 {{reply.user.id == infoPub.user.id ? " " : " hidden"}}">Auteur |</span>
+									<div class="flex flex-row gap-x-0 items-baseline mt-0.5">
+										<div class=" self-baseline w-4 h-4 ml-2 relative flex-shrink-0">
+											{% if reply.user.profilPicture %}
+												<div class="imageContainer  mr-2 -ml-2">
+													<div class="flex animate-pulse items-center z-50 justify-center w-full rounded-full bg-gray-300  dark:bg-gray-700">
+														<svg class="w-full h-full object-cover text-gray-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewbox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z"/></svg>
+													</div>
+													<img class="w-full h-full object-cover rounded-full lozad myImage" src="/images/dot.png" data-src="{{reply.user.profilPicture}}" alt="Avatar de {{reply.user.nickname}}">
+												</div>
+											{% else %}
+												<div class="w-full h-full object-cover rounded-full bg-slate-500   mr-2 -ml-2 cursor-default">
+													<div class=" h-full flex mx-auto items-center justify-center text-xs text-slate-200">
+														{{ reply.user.username|slice(0,1)|upper }}
+													</div>
+												</div>
+											{% endif %}
+										</div>
+										<a href="{{path("app_user", {username:reply.user.username})}}" class="hover:underline dark:text-slate-300 self-start -mt-0.5 font-semibold text-xs" data-turbo-frame="_top">{{reply.user.nickname}}</a>
+									</div>
+								</div>
+							</div>
+							<span class="text-slate-500 text-[0.75rem]">
+								Il y a
+								{{reply.createdAt|since}}
+							</span>
+							<p class="flex flex-col items-start gap-x-1 dark:text-slate-300" id="annotationRP-{{reply.id}}">
+								<span class="pl-2 annotation-comment-content" id="annotationRC-{{reply.id}}">{{reply.content|nl2br}}</span>
+							</p>
+							{% if app.user and reply.user.id == app.user.id %}
+								<i class="fa-regular fa-trash absolute -right-1 bottom-0 text-[0.65rem] mb-2  text-red-500 hover:text-red-800 dark:hover:text-red-300 cursor-pointer delReplyAn" data-id="{{reply.id}}" data-tippy-content="Supprimer cette réponse" id="delReplyAn-{{reply.id}}"></i>
+							{% endif %}
+						</div>
+					{% endfor %}
+				</div>
+			{% endif %}
+			{% if app.user %}
+				<button id="replyAn-{{item.id}}" data-id="{{item.id}}" type="button" class="replyAn self-end hover:underline dark:text-slate-200 flex flex-row gap-x-2 items-center">
+					<i class="fa-regular fa-reply"></i>
+					Répondre
+				</button>
+				<div class=" hidden" id="textareaDivR-{{item.id}}">
+					<textarea class=" rounded text-xs  w-full dark:bg-slate-700 dark:text-slate-200" id="textareaCR-{{item.id}}"></textarea>
+					<div class="flex flex-row justify-between items-center">
+						<button type="button" id="validCR-{{item.id}}" class="validReplyAnnotation text-green-500 hover:underline" data-id="{{item.id}}">Envoyer</button>
+						<button type="button" id="cancelCR-{{item.id}}" data-id="{{item.id}}" class="cancelReplyAnnotation text-red-500 hover:underline">Annuler</button>
+					</div>
+				</div>
+			{% endif %}
+
 		</div>
 		<div class="dropdown">
-			<button aria-label="Afficher les options du commentaire de {{item.user.nickname}} — numéro {{item.id}}" class="text-gray-600 hover:text-gray-900   focus:outline-none focus:text-gray-900">
+			<button aria-label="Afficher les options du commentaire de {{item.user.nickname}} — numéro {{item.id}}" class="text-gray-600 hover:text-gray-900 mt-8  focus:outline-none focus:text-gray-900">
 				<i class="fa-regular fa-chevron-down text-[0.65rem] cursor-pointer  text-slate-500 -mt-10 dropdown-button" id="ddb-{{ item.id }}"></i>
 			</button>
 			<div id="ddm-{{ item.id }}" style="z-index:99999999" class="z-50 -mt-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dropdown-content">
 				<ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
 					{% if app.user and item.user.id == app.user.id %}
-						<li class="hidden">
-							<button type="button" data-update-path="{{path("app_comment_update")}}" id="updateButton-{{ item.id }}" class="updateButton w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+						<li>
+							<button type="button" data-id="{{item.id}}" id="updateButton-{{ item.id }}" class="updateButton w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
 								<i class="fa-solid fa-pen-to-square"></i>
 								&nbsp;Modifier
 							</button>

@@ -241,7 +241,7 @@
 					{% if infoPub.allowRevision %}
 						<span class="dark:text-slate-500">|</span>
 						<div data-tippy-content="<strong>Passer en mode « Révision »</strong><br/>pour aider l'auteur-ice à améliorer son texte" data-id="{{ infoChap.id }}">
-							<a href="{{path("app_chapter_revision", {slugPub:infoPub.slug, user:infoPub.user.username, idChap:infoChap.id, slug:infoChap.slug, version:version})}}" data-turbo-frame="_top">
+							<a href="{{path("app_chapter_revision", {slugPub:infoPub.slug, user:infoPub.user.username, idChap:infoChap.id, slug:infoChap.slug, version:version})}}" target="_top">
 								<i class="fa-duotone fa-highlighter-line text-blue-700 dark:text-blue-400"></i>
 								{{nbrRevision}}
 							</a>

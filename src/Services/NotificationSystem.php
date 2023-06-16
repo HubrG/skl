@@ -88,6 +88,8 @@ class NotificationSystem extends AbstractController
      * 25 : Nouvelle réponse sur l'une de vos réponses challenge
      *  
      * 26 : Nouveau bookmark sur un récit (MAUVAIS TITRE = publication)
+     *  
+     * 27 : Réponse à une annotation
      * @param $user type
      * @param $message string
      * @param $fromUser type
@@ -782,6 +784,36 @@ class NotificationSystem extends AbstractController
                         'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
                         a répondu à votre commentaire sur l'exercice « " . $textPublication . " » ",
                         'subject' => $notification->getFromUser()->getNickname() . " a répondu à votre commentaire sur un exercice",
+                    ]);
+                //
+                $this->mailer->send($email);
+            }
+        }
+        if ($type === 27) {
+            if (is_null($userRepo->getUserParameters()->isNotif27Web()) or $userRepo->getUserParameters()->isNotif27Web() == 1) {
+                $notification->setAnnotationReply($idLink);
+                $this->em->persist($notification);
+                $this->em->flush();
+            } else {
+                $notification->setAnnotationReply($idLink);
+            }
+            // Envoi email
+            if (is_null($userRepo->getUserParameters()->isNotif27Mail()) or $userRepo->getUserParameters()->isNotif27Mail() == 1) {
+                if ($notification->getAnnotationReply()->getAnnotation()->getChapter()) {
+                    $pathChapter = $this->generateUrl('app_chapter_revision', ['slug' => $notification->getAnnotationReply()->getAnnotation()->getChapter()->getSlug(), "user" => $notification->getAnnotationReply()->getAnnotation()->getChapter()->getPublication()->getUser()->getId(), "slugPub" => $notification->getAnnotationReply()->getAnnotation()->getChapter()->getPublication()->getSlug(), "idChap" => $notification->getAnnotationReply()->getAnnotation()->getChapter()->getId()]);
+                    $textChapter = "de la feuille <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getAnnotationReply()->getAnnotation()->getChapter()->getTitle() . "</a>";
+                } else {
+                    $pathChapter = "";
+                    $textChapter = "";
+                }
+                $textSubject = "Nouvelle réponse sur votre commentaire de révision";
+                $pathPublication = $this->generateUrl('app_publication_show_one', ['slug' => $notification->getAnnotationReply()->getAnnotation()->getChapter()->getPublication()->getSlug(), "id" => $notification->getAnnotationReply()->getAnnotation()->getChapter()->getPublication()->getId()]);
+                $textPublication = ", pour le récit <a href='https://scrilab.com" . $pathPublication . "' style='font-weight:600;'>" . $notification->getAnnotationReply()->getAnnotation()->getChapter()->getPublication()->getTitle() . "</a>";
+                $email->subject($textSubject)
+                    ->context([
+                        'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
+                        vient de répondre à votre commentaire de révision " . $textChapter . $textPublication,
+                        'subject' => "Nouvelle réponse sur votre commentaire de révision",
                     ]);
                 //
                 $this->mailer->send($email);

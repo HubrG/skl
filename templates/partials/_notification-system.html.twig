@@ -486,4 +486,25 @@
 			</p>
 		</span>
 	{% endif %}
+	{# Nouvelle révision sur un chapitre de votre publication  #}
+	{% if item.type == 27 %}
+
+		<i class="fa-regular fa-highlighter"></i>
+		<span>
+			<div>
+				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
+				vient de répondre à vos commentaire de révision sur sa feuille «
+				<a data-notif-clic href="{{path("app_chapter_revision", {slugPub:item.annotationReply.annotation.chapter.publication.slug,user:item.annotationReply.annotation.chapter.publication.user.username,idChap:item.annotationReply.annotation.chapter.id,slug:item.annotationReply.annotation.chapter.slug})}}">{{item.annotationReply.annotation.chapter.title}}</a>
+				» pour le récit
+				<a href="{{path("app_publication_show_one", {id:item.annotationReply.annotation.chapter.publication.id, slug:item.annotationReply.annotation.chapter.publication.slug})}}">
+					{{item.annotationReply.annotation.chapter.publication.title}}
+				</a>
+			</div>
+			<p>
+				il y a
+				{{item.createdAt|since}}
+			</p>
+		</span>
+	{% endif %}
+
 </div>

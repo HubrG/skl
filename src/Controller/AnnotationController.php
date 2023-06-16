@@ -3,15 +3,18 @@
 namespace App\Controller;
 
 use DateTimeImmutable;
+use App\Repository\UserRepository;
 use App\Services\NotificationSystem;
 use App\Entity\PublicationAnnotation;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\PublicationAnnotationReply;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PublicationChapterRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Repository\PublicationAnnotationRepository;
+use App\Repository\PublicationAnnotationReplyRepository;
 use App\Repository\PublicationChapterVersioningRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -292,6 +295,85 @@ class AnnotationController extends AbstractController
             'compar' => trim($data['article']),
             'chapter' => $data['chapter'],
             'version' => $data['version'],
+        ], 200);
+    }
+    #[Route('/chap/update_annotation', name: 'app_chapter_update_annotation', methods: ['POST'])]
+    public function updateAnnotation(Request $request, EntityManagerInterface $em, PublicationAnnotationRepository $paRepo)
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $idAn = $data['id'];
+        $comment = $data['comment'];
+        // 
+        $annotation = $paRepo->find($idAn);
+        if (!$annotation || !$this->getUser() || $annotation->getUser() != $this->getUser()) {
+            return $this->json([
+                'code' => 403,
+                'message' => 'Erreur',
+            ], 403);
+        }
+        $annotation->setComment($comment);
+        $em->persist($annotation);
+        $em->flush();
+        return $this->json([
+            'code' => 200,
+            'message' => $annotation->getComment(),
+        ], 200);
+    }
+    #[Route('/chap/save_reply_annotation', name: 'app_chapter_save_reply_annotation', methods: ['POST'])]
+    public function saveReplyAnnotation(Request $request, UserRepository $uRepo, EntityManagerInterface $em, PublicationAnnotationRepository $paRepo)
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $idAn = $data['id'];
+        $comment = $data['comment'];
+        // 
+        $user = $uRepo->find($this->getUser());
+        $replyAnnotation = $paRepo->find($idAn);
+        if (!$replyAnnotation || !$this->getUser()) {
+            return $this->json([
+                'code' => 403,
+                'message' => 'Erreur',
+            ], 403);
+        }
+        // On ajoute le commentaire dans PublicationAnnotationReply
+        $reply = new PublicationAnnotationReply();
+        $reply->setContent($comment);
+        $reply->setUser($user);
+        $reply->setAnnotation($replyAnnotation);
+        $reply->setCreatedAt(new DateTimeImmutable());
+        $em->persist($reply);
+        $em->flush();
+        // 
+        $this->notificationSystem->addNotification(27, $reply->getAnnotation()->getUser(), $this->getUser(), $reply);
+        //  
+        return $this->json([
+            'code' => 200,
+            'message' => $replyAnnotation->getComment(),
+            "date" => $replyAnnotation->getCreatedAt()->format('d/m/Y à H:i'),
+            "user" => $user->getUsername(),
+        ], 200);
+    }
+    #[Route('/chap/delete_reply_annotation', name: 'app_chapter_delete_reply_annotation', methods: ['POST'])]
+    public function deleteReplyAnnotation(Request $request, PublicationAnnotationReplyRepository $parRepo, UserRepository $uRepo, EntityManagerInterface $em, PublicationAnnotationRepository $paRepo)
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $idAn = $data['id'];
+        // On supprime la réponse si l'utilisateur est le propriétaire
+        $replyAnnotation = $parRepo->find($idAn);
+        if (!$replyAnnotation || !$this->getUser() || $replyAnnotation->getUser() != $this->getUser()) {
+            return $this->json([
+                'code' => 403,
+                'message' => 'Erreur',
+            ], 403);
+        }
+        $em->remove($replyAnnotation);
+        $em->flush();
+        //
+        return $this->json([
+            'code' => 200,
+            'message' => 'Réponse supprimée',
         ], 200);
     }
 }

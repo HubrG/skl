@@ -53,9 +53,13 @@ class PublicationAnnotation
     #[ORM\OneToMany(mappedBy: 'revisionComment', targetEntity: Notification::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $notifications;
 
+    #[ORM\OneToMany(mappedBy: 'annotation', targetEntity: PublicationAnnotationReply::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $publicationAnnotationReplies;
+
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
+        $this->publicationAnnotationReplies = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -229,5 +233,35 @@ class PublicationAnnotation
     public function getTimestamp(): int
     {
         return $this->createdAt->getTimestamp();
+    }
+
+    /**
+     * @return Collection<int, PublicationAnnotationReply>
+     */
+    public function getPublicationAnnotationReplies(): Collection
+    {
+        return $this->publicationAnnotationReplies;
+    }
+
+    public function addPublicationAnnotationReply(PublicationAnnotationReply $publicationAnnotationReply): self
+    {
+        if (!$this->publicationAnnotationReplies->contains($publicationAnnotationReply)) {
+            $this->publicationAnnotationReplies->add($publicationAnnotationReply);
+            $publicationAnnotationReply->setAnnotation($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicationAnnotationReply(PublicationAnnotationReply $publicationAnnotationReply): self
+    {
+        if ($this->publicationAnnotationReplies->removeElement($publicationAnnotationReply)) {
+            // set the owning side to null (unless already changed)
+            if ($publicationAnnotationReply->getAnnotation() === $this) {
+                $publicationAnnotationReply->setAnnotation(null);
+            }
+        }
+
+        return $this;
     }
 }

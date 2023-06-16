@@ -176,6 +176,12 @@ class UserParameters
     #[ORM\Column(nullable: true, options: ['default' => true])]
     private ?bool $notif_26_mail = true;
 
+    #[ORM\Column(nullable: true, options: ['default' => true])]
+    private ?bool $notif_27_web = true;
+
+    #[ORM\Column(nullable: true, options: ['default' => true])]
+    private ?bool $notif_27_mail = true;
+
 
     public function getId(): ?int
     {
@@ -839,6 +845,31 @@ class UserParameters
     public function setNotif26Web(?bool $notif_26_web): self
     {
         $this->notif_26_web = $notif_26_web;
+
+        return $this;
+    }
+    // 
+
+    public function isNotif27Mail(): ?bool
+    {
+        return $this->notif_27_mail;
+    }
+
+    public function setNotif27Mail(?bool $notif_27_mail): self
+    {
+        $this->notif_27_mail = $notif_27_mail;
+
+        return $this;
+    }
+
+    public function isNotif27Web(): ?bool
+    {
+        return $this->notif_27_web;
+    }
+
+    public function setNotif27Web(?bool $notif_27_web): self
+    {
+        $this->notif_27_web = $notif_27_web;
 
         return $this;
     }

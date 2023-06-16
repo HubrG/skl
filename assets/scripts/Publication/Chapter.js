@@ -15,6 +15,7 @@ export function axiosSaveChapter() {
   const title = document.getElementById("title");
   const editor = document.getElementById("editor");
   const saveChapter = document.getElementById("saveChapter");
+  const showInWebsite = document.getElementById("showInWebsite");
   const axiosChapterAS = document.querySelectorAll(".axiosChapterAS");
   const togglePublish = document.getElementById("togglePublish");
   const spinAS = document.getElementById("spinAS");
@@ -29,6 +30,7 @@ export function axiosSaveChapter() {
   toggleAS.addEventListener("change", toggleASfunc);
   selectChapVersion.addEventListener("change", handleVersionChange);
   saveChapter.addEventListener("click", handleChapterSave);
+  showInWebsite.addEventListener("click", handleChapterSave);
   togglePublish.addEventListener("change", handleChapterPublish);
 
   // Autosave

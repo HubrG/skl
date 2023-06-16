@@ -182,6 +182,9 @@
 							<i class="fa-regular fa-cloud-arrow-up"></i>&nbsp;Publier les modifications
 						{% endif %}
 					</button>
+					<a href="{{path("app_chapter_show", {slugPub:infoPub.slug,slug:infoChap.slug,idChap:infoChap.id,user:infoPub.user.username})}}" target="_blank" id="showInWebsite" class="button-classic button-sky ml-2" data-tippy-content="Voir un aperçu">
+						<i class="fa-regular fa-eye mx-2"></i>
+					</a>
 					<button class="button-classic button-slate ml-2 font-bold" id="ddChapterOptionsButton" data-dropdown-toggle="ddChapterOptions" data-dropdown-delay="1500">
 						<i class="fa-regular fa-ellipsis-vertical mx-2"></i>
 					</button>

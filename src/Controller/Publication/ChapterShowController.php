@@ -84,7 +84,9 @@ class ChapterShowController extends AbstractController
         }
         // ! Test des conditions pour afficher le chapitre
         // * Si le chapitre existe, qu'il est publié, on récupère la publication
-        if ($chapter && $chapter->getStatus() == 2) {
+        if ($chapter && $chapter->getStatus() < 2 && $this->getUser() == $chapter->getPublication()->getUser()) {
+            $publication = $pRepo->find($chapter->getPublication());
+        } elseif ($chapter && $chapter->getStatus() == 2) {
             $publication = $pRepo->find($chapter->getPublication());
         } else {
             // * Sinon on redirige vers la page d'acceuil

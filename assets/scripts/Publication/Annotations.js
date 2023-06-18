@@ -1024,7 +1024,7 @@ function startInterval(articleNew = false, stop = false) {
           } else {
             if (!document.querySelector(".noty_type__info")) {
               NotyDisplay(
-                "Un utilisateur vient d'ajouter ou de supprimer une annotation sur cette feuille, la page va se recharger automatiquement.",
+                "Un utilisateur vient d'ajouter ou de supprimer une annotation sur ce chapitre, la page va se recharger automatiquement.",
                 "info",
                 4000
               );

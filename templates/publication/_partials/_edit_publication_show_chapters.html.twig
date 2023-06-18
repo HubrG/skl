@@ -12,7 +12,7 @@
 	<div class="relative bg-gray-50 border-[1] border-gray-200 dark:border-2 border-[1px] rounded-lg  dark:shadow-xl dark:bg-gray-700 dark:border-slate-700  mt-5 list-group-item " chap="{{ items.id }}" id="{{ items.orderDisplay }}">
 		<span data-chapter-status="{{items.status}}" id="chapter-sort-{{items.id}}" class="absolute {{ items.status < 2 ? " hidden" }} left-[0.0rem] -bottom-[0.02rem] inline-flex items-center justify-center w-5 h-5 text-xs font-semibold text-slate-50 bg-slate-700 dark:bg-slate-900 rounded-lg rounded-tl-none rounded-br-none chapter-number z-0">
 			{{items.orderDisplay + 1}}</span>
-		<i data-tippy-content="Déplacer cette feuille" class="fa-regular fa-up-down-left-right item text-sm mr-2 mt-2 absolute right-0 top-1 font-bold cursor-grab dark:text-slate-50"></i>
+		<i data-tippy-content="Déplacer ce chapitre" class="fa-regular fa-up-down-left-right item text-sm mr-2 mt-2 absolute right-0 top-1 font-bold cursor-grab dark:text-slate-50"></i>
 		<div id="defaultTabContent{{ chapId }}">
 			<div class=" p-4 pt-3 md:p-8 md:pb-5 md:pt-3 " id="about{{ chapId }}" role="tabpanel" aria-labelledby="about-tab{{ chapId }}">
 				<h2 class="mb-3 ml-0 md:-ml-5 flex items-baseline text-base  leading-5  gap-1 text-large font-extrabold tracking-tight text-slate-700 dark:text-white">
@@ -26,7 +26,7 @@
 						{% if items.title  %}
 							{{ items.title|capitalize }}
 						{% else %}
-							Feuille n°{{ items.orderDisplay + 1 }}
+							chapitre n°{{ items.orderDisplay + 1 }}
 						{% endif %}
 					</span>
 				</h2>

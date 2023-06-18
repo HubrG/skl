@@ -500,7 +500,7 @@ function publishPublication(ev) {
       .catch(function (error) {
         if (error.response) {
           var notyText =
-            "<span class='text-base font-medium'>Erreur</span><br />Une erreur est survenue lors de la sauvegarde de votre feuille";
+            "<span class='text-base font-medium'>Erreur</span><br />Une erreur est survenue lors de la sauvegarde de votre chapitre";
           var notyTimeout = 4500;
           var notyType = "error";
           NotyDisplay(notyText, notyType, notyTimeout);

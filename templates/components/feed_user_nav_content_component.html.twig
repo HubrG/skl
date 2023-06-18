@@ -88,7 +88,7 @@
 												<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-yellow-500 dark:text-yellow-200">
 													{{item.getUser().getNickname()}}
 												</a>
-												a commenté la feuille
+												a commenté le chapitre
 												<a href="{{path("app_chapter_show", {slugPub:item.getPublication().getSlug(),user:item.getUser().getUsername(),idChap:item.getChapter().getId(),slug:item.getChapter().getSlug(),idCom:item.getId})}}" class="font-semibold">
 													{{item.getChapter().getTitle()|length > 30 ? item.getChapter().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getTitle()}}
 												</a>
@@ -202,7 +202,7 @@
 									{{item.getCreated()|since}}
 								</li>
 							{% elseif type == 'PublicationChapter' %}
-								{# ! Dernières feuilles #}
+								{# ! Dernières chapitres #}
 								<li class="f6 bg-indigo-50 border-indigo-300 dark:bg-slate-700">
 									<div>
 										{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getPublication().getUser().getNickname(),pic:item.getPublication().getUser().getProfilPicture() } %}
@@ -210,7 +210,7 @@
 											<a href="{{path("app_user", {username:item.getPublication().getUser().getUsername()})}}" class="self-baseline text-indigo-500 dark:text-indigo-200">
 												{{item.getPublication().getUser().getNickname()}}
 											</a>
-											vient de publier la feuille
+											vient de publier le chapitre
 
 											<a href="{{ path("app_chapter_show", {idChap:item.getId(), user:item.getPublication().getUser().getUsername(), slugPub:item.getPublication().getSlug(), slug:item.getSlug()}) }}" class="hover:underline font-semibold">{{item.getTitle()|length > 30 ? item.getTitle()|slice(0, 30) ~ "..." : item.getTitle() }}</a>
 
@@ -223,7 +223,7 @@
 									<div class="info-text text-indigo-800 dark:text-indigo-200">
 										<span>
 											<i class="fa-duotone fa-file"></i>
-											<span>Nouvelle feuille</span>
+											<span>Nouveau chapitre</span>
 										</span>
 										Il y a
 										{{item.getCreated()|since}}
@@ -241,7 +241,7 @@
 											</a>
 											vient de collectionner
 											{% if item.getChapter() %}
-												la feuille
+												le chapitre
 												<a href="{{path("app_chapter_show", {slugPub:item.getChapter().getPublication().getSlug(),user:item.getUser().getUsername(),idChap:item.getChapter().getId(),slug:item.getChapter().getSlug()})}}" class="font-semibold">
 													{{item.getChapter().getTitle()|length > 30 ? item.getChapter().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getTitle()}}
 												</a>
@@ -275,7 +275,7 @@
 											<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-amber-500 dark:text-amber-200">
 												{{item.getUser().getNickname()}}
 											</a>
-											vient d'annoter la feuille
+											vient d'annoter le chapitre
 
 											<a href="{{ path("app_chapter_revision", {idChap:item.getChapter().getId(), user:item.getUser().getUsername(), slugPub:item.getChapter().getPublication().getSlug(), slug:item.getChapter().getSlug(), version:item.getVersion().getId()}) }}" class="hover:underline font-semibold">
 												{{item.getChapter().getTitle()|length > 30 ? item.getChapter().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getTitle() }}
@@ -362,7 +362,7 @@
 											<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-indigo-500 dark:text-indigo-200">
 												{{item.getUser().getNickname()}}
 											</a>
-											vient de lire la feuille
+											vient de lire le chapitre
 
 											<a href="{{ path("app_chapter_show", {idChap:item.getChapter().getId(), user:item.getChapter().getPublication().getUser().getUsername(), slugPub:item.getChapter().getPublication().getSlug(), slug:item.getChapter().getSlug()}) }}" class="hover:underline font-semibold">
 												{{item.getChapter().getTitle()|length > 30 ? item.getChapter().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getTitle() }}
@@ -391,7 +391,7 @@
 											<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-rose-500 dark:text-rose-200">
 												{{item.getUser().getNickname()}}
 											</a>
-											vient d'aimer la feuille
+											vient d'aimer le chapitre
 											<a href="{{path("app_chapter_show", {slugPub:item.getChapter().getPublication().getSlug(),user:item.getUser().getUsername(),idChap:item.getChapter().getId(),slug:item.getChapter().getSlug()})}}" class="font-semibold">
 												{{item.getChapter().getTitle()|length > 30 ? item.getChapter().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getTitle()}}
 											</a>

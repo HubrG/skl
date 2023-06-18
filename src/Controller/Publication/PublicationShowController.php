@@ -383,7 +383,7 @@ class PublicationShowController extends AbstractController
 					'message' => '
 					<i class="fa-regular fa-tag"></i>
 					<strong>Vous ne suivez plus ce récit</strong><br>
-					Vous ne recevrez plus de notification à chaque nouvelle feuille publiée'
+					Vous ne recevrez plus de notification à chaque nouveau chapitre publié'
 				], 200);
 			}
 			// * Sinon, on ajoute le follower

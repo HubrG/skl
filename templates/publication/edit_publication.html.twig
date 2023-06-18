@@ -336,7 +336,7 @@
 					<li role="presentation">
 						<button class="p-4 border-b-2 rounded-t-lg tab-button" id="sheets-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">
 							<i class="fa-light fa-list-ol"></i>
-							<span>Feuilles</span>
+							<span>chapitres</span>
 						</button>
 					</li>
 					<li role="presentation">
@@ -415,7 +415,7 @@
 							<li class="text-center">
 								<a href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}" class=" w-full button-classic  button-gray flex flex-row gap-x-5 justify-center items-center">
 									<i class="fa-regular text-base fa-file-circle-plus"></i>
-									<span class=" text-base">Ajouter une nouvelle feuille</span>
+									<span class=" text-base">Ajouter un nouveau chapitre</span>
 								</a>
 							</li>
 						</ul>
@@ -426,7 +426,7 @@
 							<button type="button" class="flex items-center  justify-between w-full py-2 font-medium text-left text-base  dark:border-gray-700 dark:text-gray-400" data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
 								<span class="flex-row-custom-gapx-3">
 									<i class="fa-regular fa-eye"></i>
-									<span>Feuilles publiées (<span id="nbrPublished">{{chaptersWithStatus2|length}}</span>)</span>
+									<span>chapitres publiés (<span id="nbrPublished">{{chaptersWithStatus2|length}}</span>)</span>
 								</span>
 								<svg data-accordion-icon class="w-6 h-6 rotate-180 shrink-0" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 									<path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
@@ -437,7 +437,7 @@
 							{% if chaptersWithStatus2|length > 0 %}
 								<p class="text-center text-xs text-slate-500 -mt-2 flex flex-row gap-x-2 justify-center items-center">
 									<i class="fa-light fa-lightbulb"></i>
-									<span>Organisez l'ordre de lecture en déplaçant les feuilles</span>
+									<span>Organisez l'ordre de lecture en déplaçant les chapitres</span>
 								</p>
 							{% endif %}
 							<div id="itemsChap" class=" flex-col grid-cols-1 md:grid-cols-2 grid justify-center gap-x-5">
@@ -446,13 +446,13 @@
 										<p class="w-full h-full flex-row grid-cols-1 grid items-center justify-items-center place-items-center font-medium leading-5">
 											<a class="h-full px-5 pt-8 sm:pt-5 space-y-5 py-0 grid-rows-2 grid-cols-1 grid items-center justify-items-center place-items-center font-medium leading-5 pb-10" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}#first">
 												<span class="flex -mt-5 md:mt-0 flex-col justify-items-end text-slate-900 dark:text-slate-100 text-sm sm:text-md md:text-lg leading-7 self-center">
-													Cliquez ici pour éditer votre première feuille !
+													Cliquez ici pour éditer votre premier chapitre !
 												</span>
 												<span class="text-4xl flex justify-items-start items-center">
 													<i class="fa-duotone fa-file-circle-plus -mt-5"></i>
 												</span>
 												<span class=" self-center -mt-5">
-													<small>chapitre, page de texte, billet de blog...</small>
+													<small>chapitre, page de texte...</small>
 												</span>
 											</a>
 										</p>
@@ -461,13 +461,13 @@
 										<p class="text-sm flex font-normal gap-x-2  items-start">
 											<i class="fa-regular fa-lightbulb-exclamation-on mt-1 text-yellow-400 dark:text-amber-400"></i>
 											<span class="font-medium">
-												Vous avez la possibilité de créer un nombre illimité de feuilles et de les organiser selon vos préférences.
+												Vous avez la possibilité de créer un nombre illimité de chapitres et de les organiser selon vos préférences.
 											</span>
 										</p>
 										<p class="text-md flex font-normal gap-x-4 opacity-70">
 											<i class="fa-regular fa-file-lines mt-1"></i>
 											<span class="text-[0.8rem]">
-												Chaque feuille peut être considérée comme une simple page de texte, une copie intégrale d'un document PDF (tel qu'un récit entier) ou comme un épisode, un chapitre de votre récit.
+												Chaque chapitre peut être considéré comme une simple page de texte, une copie intégrale d'un document PDF (tel qu'un récit entier)...
 											</span>
 										</p>
 										<p class="text-sm flex font-normal gap-x-4 opacity-70">
@@ -487,14 +487,14 @@
 											<p class="w-full h-full px-5 pt-5 grid-rows-1 grid-cols-1 grid pb-5 items-center justify-items-center place-items-center font-medium leading-5">
 												<span class="text-emerald-50 dark:text-amber-900 text-base  px-5 pt-5 grid-rows-2 grid-cols-1 grid pb-5 items-center justify-items-center place-items-center font-medium leading-5" href="{{path('app_publication_edit_chapter', {'idPub' : infoPub.id})}}#first" target="_top">
 													<span class="flex -mt-5 md:mt-0 flex-col justify-items-end text-sm sm:text-md md:text-lg leading-7 self-center">
-														Vous venez de créer votre première feuille !
+														Vous venez de créer votre premier chapitre !
 
 													</span>
 													<span class="text-4xl">
 														<i class="fa-duotone fa-hands-clapping"></i>
 													</span>
 													<span class=" self-center ">
-														<small>Elle se trouve dans vos brouillons, glissez-la ici pour la publier.</small>
+														<small>Il se trouve dans vos brouillons, glissez-le ici pour le publier.</small>
 													</span>
 												</span>
 											</p>
@@ -503,13 +503,13 @@
 											<p class="text-sm flex font-normal gap-x-2  items-start">
 												<i class="fa-regular fa-lightbulb-exclamation-on mt-1 text-yellow-400 dark:text-amber-400"></i>
 												<span class="font-medium">
-													Votre première feuille est dépubliée et se trouve dans la section ci-dessous (brouillons).
+													Votre premier chapitre est dépublié et se trouve dans la section ci-dessous (brouillons).
 												</span>
 											</p>
 											<p class="text-md flex font-normal gap-x-3 opacity-70">
 												<i class="fa-regular fa-up-down-left-right mt-1"></i>
 												<span class="text-[0.8rem]">
-													Vous pouvez la publier en la glissant dans cet espace
+													Vous pouvez le publier en le glissant dans cet espace
 												</span>
 											</p>
 											<p class="text-md flex font-normal gap-x-3 opacity-70">
@@ -570,8 +570,8 @@
 									<i class="fa-regular fa-trash-check"></i>Vider la corbeille</a>
 								<div class="w-full text-justify rounded px-3">
 									<span class="text-slate-500 dark:text-slate-200 text-xs">
-										Sans action de votre part, les feuilles présentes dans cette section seront
-										<strong>individuellement, automatiquement et définitivement supprimées 48h après leur mise à la corbeille</strong>.<br>
+										Sans action de votre part, les chapitres présents dans cette section seront
+										<strong>individuellement, automatiquement et définitivement supprimés 48h après leur mise à la corbeille</strong>.<br>
 									</span>
 								</div>
 							</div>
@@ -585,7 +585,7 @@
 									{% include "publication/_partials/_edit_publication_show_chapters.html.twig" with {withStatus:0} %}
 									{% if noChapTrash == true %}
 										<div id="noChapTrash" class="rounded p-5 text-center border-dashed dark:border-2 dark:border-slate-800  mt-5 dark:opacity-100 opacity-50 dark:text-slate-600 text-slate-700">
-											Aucune feuille supprimée
+											Aucun chapitre supprimé
 										</div>
 									{% endif %}
 								</div>
@@ -627,7 +627,7 @@
 							<div>
 								<strong>Si vous
 									<u>désactivez</u>
-									cette option</strong>, vos lecteurs pourront s'abonner à votre récit et recevront des notifications si de nouvelles feuilles sont publiées.
+									cette option</strong>, vos lecteurs pourront s'abonner à votre récit et recevront des notifications si de nouveaux chapitres sont publiés.
 							</div>
 						</div>
 					</div>
@@ -659,7 +659,7 @@
 								<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
 								<div class="toggle-dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition-all duration-300 ease-linear"></div>
 								<div class="ml-3 self-center flex -mt-1 dark:text-gray-300 font-semibold">
-									Afficher publiquement les anciennes versions de vos feuilles
+									Afficher publiquement les anciennes versions de vos chapitres
 								</div>
 							</div>
 						</label>
@@ -667,7 +667,7 @@
 							<div>
 								<strong>Si vous
 									<u>activez</u>
-									cette option</strong>, vous autorisez les autres utilisateurs à lire aussi les anciennes versions de vos feuilles (chapitres).
+									cette option</strong>, vous autorisez les autres utilisateurs à lire aussi les anciennes versions de vos chapitres.
 							</div>
 						</div>
 					</div>
@@ -915,7 +915,7 @@
 							</li>
 							<li class="mt-3 flex  items-center gap-x-2 animate__animated  {{chaptersWithStatus2|length > 0 ? " hidden" : " " }}" id="taskPublish">
 								<i class="fa-regular fa-eye"></i>
-								Publier au moins une feuille
+								Publier au moins un chapitre
 							</li>
 							<li>
 								<hr class="mb-2 mt-4 border-slate-400 bg-slate-400 opacity-30"></li>
@@ -1033,7 +1033,7 @@
 								<i class="fa-solid fa-arrow-right-to-arc"></i>
 								<span>
 									<strong>Publier au moins un chapitre</strong>
-									en en glissant un dans la section « Feuilles publiées »</span>
+									en en glissant un dans la section « chapitres publiés »</span>
 							</li>
 						</ul>
 						{% if infoPub.category == null or infoPub.publicationChapters|filter(c => c.status == 2)|length == 0 %}

@@ -48,7 +48,7 @@
 				<div id="ddt">
 					<div class="flex items-center">
 						<div id="dropdownDatabase" data-dropdown-toggle="dropdown-database" class="text-slate-500 dark:text-slate-400 cursor-pointer">
-							Édition d'une feuille
+							Édition d'un chapitre
 							<svg class="w-5 h-5 ml-1" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 								<path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
 							</svg>
@@ -58,7 +58,7 @@
 								<li class="dark:bg-slate-900 bg-slate-50 shadow  sticky top-0">
 									<span class="flex flex-row items-center gap-x-2 w-full px-4 py-2 font-semibold dark:text-red-500 text-md ">
 										<i class="fa-duotone fa-eye"></i>
-										<span class="header-nav-chap">Feuilles publiées</span>
+										<span class="header-nav-chap">chapitres publiés</span>
 									</span>
 								</li>
 								<ul>
@@ -97,7 +97,7 @@
 								</ul>
 								{% if n == 0 %}
 									<li class="flex justify-center items-center my-5 italic opacity-70 text-xs">
-										<span>Aucune feuille publiée</span>
+										<span>Aucun chapitre publié</span>
 									</li>
 								{% endif %}
 								<li class=" sticky top-0 dark:bg-slate-900 bg-slate-50 shadow border-t-[1px] dark:border-t-slate-700 border-t-slate-100 text-left">
@@ -172,7 +172,7 @@
 		{# end #}
 		<div class="relative mb-12 md:mb-0">
 			<div class="items-baseline -mb-14 md:mb-10 relative grid grid-cols-12 auto-rows-auto">
-				<input type="text" id="title" name="title" class="dark:bg-transparent dark:text-slate-200 col-span-12 lg:col-span-8  order-2 lg:order-1 active:caret-none focus:ring-0  font-normal text-slate-600 text-4xl overflow-hidden  [font-family:'Merriweather'] mt-0 lg:mt-10 border-0  mb-0 pb-0 border-b-2 border-b-slate-600 dark:border-b-slate-600 {% if (infoPub.status < 2 or infoChap.status < 2) %}axiosChapterAS{% endif %} axiosSpy" value="{{ infoChap.title }}" placeholder="Titre de la feuille">
+				<input type="text" id="title" name="title" class="dark:bg-transparent dark:text-slate-200 col-span-12 lg:col-span-8  order-2 lg:order-1 active:caret-none focus:ring-0  font-normal text-slate-600 text-4xl overflow-hidden  [font-family:'Merriweather'] mt-0 lg:mt-10 border-0  mb-0 pb-0 border-b-2 border-b-slate-600 dark:border-b-slate-600 {% if (infoPub.status < 2 or infoChap.status < 2) %}axiosChapterAS{% endif %} axiosSpy" value="{{ infoChap.title }}" placeholder="Titre du chapitre">
 				<div class=" col-span-12 lg:col-span-4 order-1 lg:order-2 pt-5 lg:pt-0 mb-5 lg:mb-0 sm:mt-5 justify-center lg:justify-end  flex">
 					<button type="button" class="button-classic button-emerald" id="saveChapter">
 						{% if (infoPub.status < 2 or infoChap.status < 2) %}
@@ -248,8 +248,8 @@
 					<input id="togglePublish" type="checkbox" class="sr-only peer" {% if infoChap.status > 1 %} checked {% endif %}/>
 					<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
 					<span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-						{% if infoChap.status > 1 %}Dépublier la feuille
-							{% else %}Publier la feuille
+						{% if infoChap.status > 1 %}Dépublier le chapitre
+							{% else %}Publier le chapitre
 						{% endif %}
 					</span>
 				</label>
@@ -266,7 +266,7 @@
 					<span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300 ">
 						Enregistrement automatique
 					</span>
-					{{ checked_or_disable == "disabled" ? '&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-duotone fa-comment-question" data-tippy-content="La sauvegarde automatique est désactivée. Votre récit est pulié, et cette feuille aussi ! Vous pouvez cependant cliquer sur le bouton vert « Publier les modification » pour mettre à jour cette feuille."></i>' }}
+					{{ checked_or_disable == "disabled" ? '&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-duotone fa-comment-question" data-tippy-content="La sauvegarde automatique est désactivée. Votre récit est pulié, et ce chapitre aussi ! Vous pouvez cependant cliquer sur le bouton vert « Publier les modification » pour mettre à jour ce chapitre."></i>' }}
 				</label>
 
 			</div>

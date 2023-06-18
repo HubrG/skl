@@ -36,7 +36,7 @@ export function PublicationShowOne() {
               followIcon.classList.remove("fa-bell-slash");
               followTitle.innerHTML = "Suivre ce récit";
               followInfo.innerHTML =
-                "Vous recevrez une notification à chaque nouvelle feuille publiée.";
+                "Vous recevrez une notification à chaque nouveau chapitre publié.";
             } else {
               followBtn.classList.remove("follow-collection-buttons");
               followBtn.classList.add("follow-collection-buttons-ok");
@@ -45,7 +45,7 @@ export function PublicationShowOne() {
               followIcon.classList.add("fa-bell-slash");
               followTitle.innerHTML = "Ne plus suivre ce récit";
               followInfo.innerHTML =
-                "Vous ne recevrez plus de notification à chaque nouvelle feuille publiée.";
+                "Vous ne recevrez plus de notification à chaque nouveau chapitre publié.";
             }
           }
         })

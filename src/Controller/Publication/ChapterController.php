@@ -54,10 +54,10 @@ class ChapterController extends AbstractController
                     // * si le chapitre n'existe pas en brouillon, on le crée
                     if (!$pcExists) {
                         // ! on l'ajoute aux chapitres
-                        // ! On récupère le nombre de chapitres liés à cette publication afin de donner un nouveau titre (Feuille X)
+                        // ! On récupère le nombre de chapitres liés à cette publication afin de donner un nouveau titre (Chapitre X)
                         $nbrChap = $pcRepo->findBy(['publication' => $idPub]);
                         $nbrChap = count($nbrChap) + 1;
-                        $chapTitleExist = $pcRepo->findBy(['publication' => $idPub, 'title' => 'Feuille n°' . $nbrChap]);
+                        $chapTitleExist = $pcRepo->findBy(['publication' => $idPub, 'title' => 'Chapitre n°' . $nbrChap]);
                         $countSameTitle = count($chapTitleExist);
                         if ($chapTitleExist) {
                             $chapAdd = " (" . $countSameTitle . ")";
@@ -68,8 +68,8 @@ class ChapterController extends AbstractController
                         $publicationChapter = $pc->setCreated(new \DateTime('now'))
                             ->setStatus(-1) // 0 = brouillon / 1 = en cours de rédaction
                             ->setPublication($infoPublication)
-                            ->setTitle("Feuille n°" . $nbrChap . $chapAdd)
-                            ->setSlug("feuille-n0" . $nbrChap . $chapAdd)
+                            ->setTitle("Chapitre n°" . $nbrChap . $chapAdd)
+                            ->setSlug("chapitre-n0" . $nbrChap . $chapAdd)
                             ->setPop(0)
                             ->setWordCount(0)
                             ->setOrderDisplay($nbrChap);
@@ -77,7 +77,7 @@ class ChapterController extends AbstractController
                         // ! on l'ajoute au versioning
                         $pcv = new PublicationChapterVersioning;
                         $publicationChapterVersioning = $pcv->setCreated(new \DateTime('now'))
-                            ->setTitle("Feuille n°" . $nbrChap)
+                            ->setTitle("Chapitre n°" . $nbrChap)
                             ->setChapter($publicationChapter);
                         $em->persist($publicationChapterVersioning);
                         $em->flush();
@@ -158,7 +158,7 @@ class ChapterController extends AbstractController
                 $this->funcDeleteChapter($infoChapitre);
             }
 
-            $this->addFlash('success', '&nbsp;&nbsp;Les feuilles ont bien été supprimées !');
+            $this->addFlash('success', '&nbsp;&nbsp;Les chapitres ont bien été supprimés !');
             return $this->redirectToRoute('app_publication_edit', ['id' => $idPub]);
         }
 
@@ -185,7 +185,7 @@ class ChapterController extends AbstractController
             }
             $this->em->remove($picture);
             $this->em->flush();
-            $this->addFlash('success', 'La feuille a bien été supprimée !');
+            $this->addFlash('success', 'Le chapitre a bien été supprimé !');
         }
         $this->cloudinary->uploadApi()->destroy("chapter/" . $idChap, ['invalidate' => true,]);
         $this->em->remove($infoChapitre);
@@ -207,8 +207,8 @@ class ChapterController extends AbstractController
         //
         if ($publication->getId() == $chapter->getPublication()->getId() && ($this->getUser() == $publication->getUser() or $this->isGranted('ROLE_ADMIN'))) {
             if ($dtTitle == "") {
-                // * S'il n'y a pas de titre, on lui attribue un titre par défaut qui représente "Feuille n°X", dont le x est son numéro de feuille (orderDisplay)
-                $dtTitle = "Feuille n°" . $chapter->getOrderDisplay() + 1;
+                // * S'il n'y a pas de titre, on lui attribue un titre par défaut qui représente "Chaputre n°X", dont le x est son numéro de chapitre (orderDisplay)
+                $dtTitle = "Chapitre n°" . $chapter->getOrderDisplay() + 1;
             }
             $chapter->setTitle(trim($dtTitle))
                 ->setSlug($slugger->slug(strtolower($dtTitle)))

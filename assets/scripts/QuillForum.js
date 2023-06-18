@@ -17,7 +17,7 @@ export function quillEditorForum() {
     ["clean"], // remove formatting button
   ];
   var options = {
-    placeholder: "Contenu de votre feuille...",
+    placeholder: "Contenu de votre message...",
     theme: "bubble",
     modules: {
       toolbar: toolbarOptions,

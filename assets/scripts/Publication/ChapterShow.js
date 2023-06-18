@@ -281,7 +281,7 @@ function likeChapterData(likeChapterId) {
       likeChapter.classList.remove("fa-regular");
       likeChapter.classList.add("fa-duotone", "text-rose-400");
       NotyDisplay(
-        '<i class="fa-regular  fa-circle-check"></i><br><big>Vous appréciez cette feuille</big><br>N\'hésitez pas à partager votre avis en commentaire !',
+        '<i class="fa-regular  fa-circle-check"></i><br><big>Vous appréciez ce chapitre</big><br>N\'hésitez pas à partager votre avis en commentaire !',
         "info",
         5000
       );
@@ -307,7 +307,7 @@ function bmChapterData(bmChapterId) {
       bmChapter.classList.add("fa-duotone", "text-purple-400");
       nbrBm.innerHTML = response.data.nbrBm;
       NotyDisplay(
-        '<i class="fa-sharp fa-regular fa-circle-check"></i> &nbsp;&nbsp;Feuille ajoutée à votre collection',
+        '<i class="fa-sharp fa-regular fa-circle-check"></i> &nbsp;&nbsp;Chapitre ajouté à votre collection',
         "success",
         2500
       );
@@ -317,7 +317,7 @@ function bmChapterData(bmChapterId) {
       nbrBm.innerHTML = response.data.nbrBm;
       if (response.data.message != "Non autorisé.") {
         NotyDisplay(
-          '<i class="fa-sharp fa-regular fa-circle-check"></i> &nbsp;&nbsp;Feuille retirée de votre collection',
+          '<i class="fa-sharp fa-regular fa-circle-check"></i> &nbsp;&nbsp;Chapitre retiré de votre collection',
           "info",
           2500
         );

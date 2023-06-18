@@ -49,7 +49,7 @@ class NotificationSystem extends AbstractController
      * 
      * 6 : Nouveau like sur un chapitre
      * 
-     * 7 : Nouvelle feuille sur une publication que vous suivez
+     * 7 : Nouveau chapitre sur une publication que vous suivez
      * 
      * 8 : Nouvel abonnement à votre publication
      * 
@@ -129,8 +129,8 @@ class NotificationSystem extends AbstractController
             if (is_null($userRepo->getUserParameters()->isNotif1Mail()) or $userRepo->getUserParameters()->isNotif1Mail() == 1) {
                 if ($notification->getComment()->getChapter()) {
                     $pathChapter = $this->generateUrl('app_chapter_show', ['slugPub' => $notification->getComment()->getPublication()->getSlug(), "user" => $notification->getComment()->getUser()->getUsername(), "idChap" => $notification->getComment()->getChapter()->getId(), "slug" => $notification->getComment()->getChapter()->getSlug()]);
-                    $textChapter = "sur la feuille <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getComment()->getChapter()->getTitle() . "</a>";
-                    $textSubject = "Nouveau commentaire sur l'une de vos feuilles.";
+                    $textChapter = "sur le chapitre <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getComment()->getChapter()->getTitle() . "</a>";
+                    $textSubject = "Nouveau commentaire sur l'un de vos chapitres.";
                 } else {
                     $pathChapter = "";
                     $textChapter = "";
@@ -160,8 +160,8 @@ class NotificationSystem extends AbstractController
             if (is_null($userRepo->getUserParameters()->isNotif2Mail()) or $userRepo->getUserParameters()->isNotif2Mail() == 1) {
                 if ($notification->getComment()->getChapter()) {
                     $pathChapter = $this->generateUrl('app_chapter_show', ['slugPub' => $notification->getComment()->getPublication()->getSlug(), "user" => $notification->getComment()->getUser()->getUsername(), "idChap" => $notification->getComment()->getChapter()->getId(), "slug" => $notification->getComment()->getChapter()->getSlug(), "idCom" => $notification->getComment()->getId()]);
-                    $textChapter = "sur la feuille <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getComment()->getChapter()->getTitle() . "</a>";
-                    $textSubject = "Nouveau commentaire sur l'une de vos feuilles.";
+                    $textChapter = "sur le chapitre <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getComment()->getChapter()->getTitle() . "</a>";
+                    $textSubject = "Nouveau commentaire sur l'un de vos chapitres.";
                 } else {
                     $pathChapter = "";
                     $textChapter = "";
@@ -191,7 +191,7 @@ class NotificationSystem extends AbstractController
                 // Envoi d'email
                 if ($notification->getLikeComment()->getComment()->getChapter()) {
                     $pathChapter = $this->generateUrl('app_chapter_show', ['slugPub' => $notification->getLikeComment()->getComment()->getPublication()->getSlug(), "user" => $notification->getLikeComment()->getUser()->getUsername(), "idChap" => $notification->getLikeComment()->getComment()->getChapter()->getId(), "slug" => $notification->getLikeComment()->getComment()->getChapter()->getSlug(), "idCom" => $notification->getLikeComment()->getComment()->getId()]);
-                    $textChapter = "sur la feuille <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getLikeComment()->getComment()->getChapter()->getTitle() . "</a>";
+                    $textChapter = "sur le chapitre <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getLikeComment()->getComment()->getChapter()->getTitle() . "</a>";
                     $showCom = false;
                 } else {
                     $pathChapter = "";
@@ -226,8 +226,8 @@ class NotificationSystem extends AbstractController
             // Envoi d'email
             if (is_null($userRepo->getUserParameters()->isNotif4Mail()) or $userRepo->getUserParameters()->isNotif4Mail() == 1) {
                 $pathChapter = $this->generateUrl('app_chapter_show', ['slugPub' => $notification->getPublicationBookmark()->getChapter()->getPublication()->getSlug(), "user" => $notification->getPublicationBookmark()->getUser()->getUsername(), "idChap" => $notification->getPublicationBookmark()->getChapter()->getId(), "slug" => $notification->getPublicationBookmark()->getChapter()->getSlug()]);
-                $textChapter = " la feuille <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getPublicationBookmark()->getChapter()->getTitle() . "</a>";
-                $textSubject = "Un marque-page a été posé sur votre feuille";
+                $textChapter = " le chapitre <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getPublicationBookmark()->getChapter()->getTitle() . "</a>";
+                $textSubject = "Un marque-page a été posé sur votre chapitre";
                 $pathPublication = $this->generateUrl('app_publication_show_one', ['slug' => $notification->getPublicationBookmark()->getChapter()->getPublication()->getSlug(), "id" => $notification->getPublicationBookmark()->getChapter()->getPublication()->getId()]);
                 $textPublication = "sur le récit <a href='https://scrilab.com" . $pathPublication . "' style='font-weight:600;'>" . $notification->getPublicationBookmark()->getChapter()->getPublication()->getTitle() . "</a>";
                 $email->subject($textSubject)
@@ -298,14 +298,14 @@ class NotificationSystem extends AbstractController
             // Envoi d'email
             if (is_null($userRepo->getUserParameters()->isNotif6Mail()) or $userRepo->getUserParameters()->isNotif6Mail() == 1) {
                 $pathChapter = $this->generateUrl('app_chapter_show', ['slugPub' => $notification->getChapterLike()->getChapter()->getPublication()->getSlug(), "user" => $notification->getChapterLike()->getChapter()->getPublication()->getUser()->getUsername(), "idChap" => $notification->getChapterLike()->getChapter()->getId(), "slug" => $notification->getChapterLike()->getChapter()->getSlug()]);
-                $textChapter = " la feuille <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getChapterLike()->getChapter()->getTitle() . "</a>";
+                $textChapter = " la chapitre <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getChapterLike()->getChapter()->getTitle() . "</a>";
                 $pathPublication = $this->generateUrl('app_publication_show_one', ['slug' => $notification->getChapterLike()->getChapter()->getPublication()->getSlug(), "id" => $notification->getChapterLike()->getChapter()->getPublication()->getId()]);
                 $textPublication = " du récit <a href='https://scrilab.com" . $pathPublication . "' style='font-weight:600;'>" . $notification->getChapterLike()->getChapter()->getPublication()->getTitle() . "</a>";
-                $email->subject("Nouveau « J'aime » sur l'une de vos feuilles.")
+                $email->subject("Nouveau « J'aime » sur l'un de vos chapitres.")
                     ->context([
                         'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
                     vient d'aimer " . $textChapter . $textPublication . "<br/>",
-                        'subject' => "Nouveau « J'aime » sur l'une de vos feuilles.",
+                        'subject' => "Nouveau « J'aime » sur l'un de vos chapitres.",
                     ]);
                 //
                 $this->mailer->send($email);
@@ -323,14 +323,14 @@ class NotificationSystem extends AbstractController
             if (is_null($userRepo->getUserParameters()->isNotif7Mail()) or $userRepo->getUserParameters()->isNotif7Mail() == 1) {
                 $pathChapter = $this->generateUrl('app_chapter_show', ['slugPub' => $notification->getPublicationFollow()->getPublication()->getSlug(), "user" => $notification->getPublicationFollow()->getPublication()->getUser()->getUsername(), "idChap" => $notification->getPublicationFollow()->getId(), "slug" => $notification->getPublicationFollow()->getSlug()]);
                 $textChapter = " <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getPublicationFollow()->getTitle() . "</a>";
-                $textSubject = "Nouvelle feuille publiée !";
+                $textSubject = "Nouveau chapitre publié !";
                 $pathPublication = $this->generateUrl('app_publication_show_one', ['slug' => $notification->getPublicationFollow()->getPublication()->getSlug(), "id" => $notification->getPublicationFollow()->getPublication()->getId()]);
                 $textPublication = " <a href='https://scrilab.com" . $pathPublication . "' style='font-weight:600;'>" . $notification->getPublicationFollow()->getPublication()->getTitle() . "</a>";
                 $email->subject($textSubject)
                     ->context([
                         'content' => "<a href='https://scrilab.com" . $pathUserFrom . "' style='font-weight:600;'>" . $notification->getFromUser()->getNickname() . "</a>
-                     vient d'ajouter une nouvelle feuille à son récit " . $textPublication . " : <br/><br/><big>" . $textChapter . "</big>",
-                        'subject' => "Nouvelle feuille publiée !",
+                     vient d'ajouter un nouveau chapitre à son récit " . $textPublication . " : <br/><br/><big>" . $textChapter . "</big>",
+                        'subject' => "Nouveau chapitre publié !",
                     ]);
                 //
                 $this->mailer->send($email);
@@ -370,7 +370,7 @@ class NotificationSystem extends AbstractController
             if (is_null($userRepo->getUserParameters()->isNotif9Mail()) or $userRepo->getUserParameters()->isNotif9Mail() == 1) {
                 if ($notification->getReplyComment()->getChapter()) {
                     $pathChapter = $this->generateUrl('app_chapter_show', ['slugPub' => $notification->getReplyComment()->getPublication()->getSlug(), "user" => $notification->getReplyComment()->getUser()->getUsername(), "idChap" => $notification->getReplyComment()->getChapter()->getId(), "slug" => $notification->getReplyComment()->getChapter()->getSlug(), "idCom" => $notification->getReplyComment()->getId()]);
-                    $textChapter = "sur la feuille <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getReplyComment()->getChapter()->getTitle() . "</a>";
+                    $textChapter = "sur le chapitre <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getReplyComment()->getChapter()->getTitle() . "</a>";
                     $showCom = false;
                 } else {
                     $pathChapter = "";
@@ -408,7 +408,7 @@ class NotificationSystem extends AbstractController
             if (is_null($userRepo->getUserParameters()->isNotif10Mail()) or $userRepo->getUserParameters()->isNotif10Mail() == 1) {
                 if ($notification->getRevisionComment()->getChapter()) {
                     $pathChapter = $this->generateUrl('app_chapter_revision', ['slug' => $notification->getRevisionComment()->getChapter()->getSlug(), "user" => $notification->getRevisionComment()->getChapter()->getPublication()->getUser()->getId(), "slugPub" => $notification->getRevisionComment()->getChapter()->getPublication()->getSlug(), "idChap" => $notification->getRevisionComment()->getChapter()->getId(), "version" => $notification->getRevisionComment()->getVersion()->getId()]);
-                    $textChapter = "de votre feuille <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getRevisionComment()->getChapter()->getTitle() . "</a>";
+                    $textChapter = "de votre chapitre <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getRevisionComment()->getChapter()->getTitle() . "</a>";
                 } else {
                     $pathChapter = "";
                     $textChapter = "";
@@ -504,7 +504,7 @@ class NotificationSystem extends AbstractController
             if (is_null($userRepo->getUserParameters()->isNotif14Mail()) or $userRepo->getUserParameters()->isNotif14Mail() == 1) {
                 if ($notification->getAssignComment()->getChapter()) {
                     $pathChapter = $this->generateUrl('app_chapter_show', ['slugPub' => $notification->getAssignComment()->getPublication()->getSlug(), "user" => $notification->getAssignComment()->getUser()->getUsername(), "idChap" => $notification->getAssignComment()->getChapter()->getSlug(), "idCom" => $notification->getAssignComment()->getId()]);
-                    $textChapter = "sur la feuille <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getAssignComment()->getChapter()->getTitle() . "</a>";
+                    $textChapter = "sur le chapitre <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getAssignComment()->getChapter()->getTitle() . "</a>";
                     $showCom = false;
                 } else {
                     $pathChapter = "";
@@ -801,7 +801,7 @@ class NotificationSystem extends AbstractController
             if (is_null($userRepo->getUserParameters()->isNotif27Mail()) or $userRepo->getUserParameters()->isNotif27Mail() == 1) {
                 if ($notification->getAnnotationReply()->getAnnotation()->getChapter()) {
                     $pathChapter = $this->generateUrl('app_chapter_revision', ['slug' => $notification->getAnnotationReply()->getAnnotation()->getChapter()->getSlug(), "user" => $notification->getAnnotationReply()->getAnnotation()->getChapter()->getPublication()->getUser()->getId(), "slugPub" => $notification->getAnnotationReply()->getAnnotation()->getChapter()->getPublication()->getSlug(), "idChap" => $notification->getAnnotationReply()->getAnnotation()->getChapter()->getId(), "version" => $notification->getAnnotationReply()->getAnnotation()->getVersion()->getId()]);
-                    $textChapter = "de la feuille <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getAnnotationReply()->getAnnotation()->getChapter()->getTitle() . "</a>";
+                    $textChapter = "du chapitre <a href='https://scrilab.com" . $pathChapter . "' style='font-weight:600;'>" . $notification->getAnnotationReply()->getAnnotation()->getChapter()->getTitle() . "</a>";
                 } else {
                     $pathChapter = "";
                     $textChapter = "";

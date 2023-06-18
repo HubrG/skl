@@ -23,7 +23,7 @@
 		<span>
 			<div>
 				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-				vient de rédiger un commentaire sur la feuille
+				vient de rédiger un commentaire sur le chapitre
 				<a data-notif-clic href="{{path("app_chapter_show", {slugPub:item.comment.publication.slug,user:item.user.username,idChap:item.comment.chapter.id,slug:item.comment.chapter.slug,idCom:item.comment.id})}}">
 					{{item.comment.chapter.title}}
 				</a>
@@ -46,7 +46,7 @@
 				vient d'aimer votre commentaire
 				{# la publication #}
 				{% if item.likeComment.comment.chapter %}
-					sur la feuille
+					sur le chapitre
 					<a data-notif-clic href="{{path("app_chapter_show", {slugPub:item.likeComment.comment.chapter.slug,user:item.user.username,idChap:item.likeComment.comment.chapter.id,slug:item.likeComment.comment.chapter.slug,idCom:item.likeComment.comment.id})}}">{{item.likeComment.comment.chapter.title}}</a>
 					du récit
 					<a href="{{path("app_publication_show_one", {id:item.likeComment.comment.publication.id, slug:item.likeComment.comment.publication.slug})}}">{{item.likeComment.comment.publication.title}}</a>
@@ -70,7 +70,7 @@
 			<span>
 				<div>
 					<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-					vient d'ajouter à sa collection la feuille
+					vient d'ajouter à sa collection le chapitre
 					<a data-notif-clic href="{{path("app_chapter_show", {slugPub:item.publicationBookmark.chapter.publication.slug,user:item.user.username,idChap:item.publicationBookmark.chapter.id,slug:item.publicationBookmark.chapter.slug})}}">{{item.publicationBookmark.chapter.title}}</a>
 					de votre récit
 					<a href="{{path("app_publication_show_one", {id:item.publicationBookmark.chapter.publication.id, slug:item.publicationBookmark.chapter.publication.slug})}}">{{item.publicationBookmark.chapter.publication.title}}</a>
@@ -133,7 +133,7 @@
 		<span>
 			<div>
 				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-				vient d'aimer votre feuille
+				vient d'aimer votre chapitre
 				<a data-notif-clic href="{{path("app_chapter_show", {slugPub:item.chapterLike.chapter.publication.slug,user:item.user.username,idChap:item.chapterLike.chapter.id,slug:item.chapterLike.chapter.slug})}}">{{item.chapterLike.chapter.title}}</a>
 				de votre récit
 				<a href="{{path("app_publication_show_one", {id:item.chapterLike.chapter.publication.id, slug:item.chapterLike.chapter.publication.slug})}}">{{item.chapterLike.chapter.publication.title}}</a>
@@ -144,13 +144,13 @@
 			</p>
 		</span>
 	{% endif %}
-	{# Nouvelle feuille publiée sur une suivie de publication #}
+	{# nouveau chapitre publiée sur une suivie de publication #}
 	{% if item.type == 7 %}
 		<i class="fa-regular fa-file-plus"></i>
 		<span>
 			<div>
 				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-				vient de publier une nouvelle feuille sur le récit que vous suivez
+				vient de publier une nouveau chapitre sur le récit que vous suivez
 				<a href="{{path("app_publication_show_one", {id:item.publicationFollow.publication.id, slug:item.publicationFollow.publication.slug})}}">{{item.publicationFollow.publication.title}}</a>
 				—
 				<a data-notif-clic href="{{path("app_chapter_show", {slugPub:item.publicationFollow.publication.slug,user:item.publicationFollow.publication.user.username,idChap:item.publicationFollow.id,slug:item.publicationFollow.slug})}}">{{item.publicationFollow.title}}</a>
@@ -193,7 +193,7 @@
 					</a>
 				{% endif %}
 				{% if item.replyComment.chapter %}
-					sur la feuille «
+					sur le chapitre «
 					<a data-notif-clic href="{{path("app_chapter_show", {slugPub:item.replyComment.publication.slug,user:item.user.username,idChap:item.replyComment.chapter.id,slug:item.replyComment.chapter.slug,idCom:item.replyComment.id})}}">{{item.replyComment.chapter.title}}</a>
 					»
 				{% endif %}
@@ -210,7 +210,7 @@
 		<span>
 			<div>
 				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-				vient de vous suggérer une modification pour améliorer le texte de votre feuille «
+				vient de vous suggérer une modification pour améliorer le texte de votre chapitre «
 				<a data-notif-clic href="{{path("app_chapter_revision", {slugPub:item.revisionComment.chapter.publication.slug,user:item.user.username,idChap:item.revisionComment.chapter.id,slug:item.revisionComment.chapter.slug,version:item.annotationReply.annotation.version.id})}}">{{item.revisionComment.chapter.title}}</a>
 				» pour le récit
 				<a href="{{path("app_publication_show_one", {id:item.revisionComment.chapter.publication.id, slug:item.revisionComment.chapter.publication.slug})}}">
@@ -282,7 +282,7 @@
 					{{item.assignComment.publication.title}}
 				</a>
 				{% if item.assignComment.chapter %}
-					sur la feuille «
+					sur le chapitre «
 					<a data-notif-clic href="{{path("app_chapter_show", {slugPub:item.assignComment.publication.slug,user:item.user.username,idChap:item.assignComment.chapter.id,slug:item.assignComment.chapter.slug,idCom:item.assignComment.id})}}">{{item.assignComment.chapter.title}}</a>
 					»
 				{% endif %}
@@ -493,7 +493,7 @@
 		<span>
 			<div>
 				<a href="{{path("app_user", {username:item.fromUser.username})}}">{{item.fromUser.nickname}}</a>
-				vient de répondre à vos commentaire de révision sur sa feuille «
+				vient de répondre à votre commentaire de révision sur son chapitre «
 				<a data-notif-clic href="{{path("app_chapter_revision", {slugPub:item.annotationReply.annotation.chapter.publication.slug,user:item.annotationReply.annotation.chapter.publication.user.username,idChap:item.annotationReply.annotation.chapter.id,slug:item.annotationReply.annotation.chapter.slug,version:item.annotationReply.annotation.version.id})}}">{{item.annotationReply.annotation.chapter.title}}</a>
 				» pour le récit
 				<a href="{{path("app_publication_show_one", {id:item.annotationReply.annotation.chapter.publication.id, slug:item.annotationReply.annotation.chapter.publication.slug})}}">

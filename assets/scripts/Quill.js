@@ -17,7 +17,7 @@ export function quillEditor() {
     ["clean"], // remove formatting button
   ];
   var options = {
-    placeholder: "Contenu de votre feuille...",
+    placeholder: "Contenu de votre chapitre...",
     theme: "bubble",
     modules: {
       toolbar: toolbarOptions,

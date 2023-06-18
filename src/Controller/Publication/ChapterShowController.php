@@ -60,7 +60,7 @@ class ChapterShowController extends AbstractController
             $nbrShowCom = 50;
         }
         if (!$slug) {
-            $slug = "feuille-sans-titre";
+            $slug = "chapitre-sans-titre";
         }
         // * On recherche le chapitre
         $chapter = $pchRepo->find($idChap);
@@ -258,7 +258,7 @@ class ChapterShowController extends AbstractController
             $nbrShowCom = 10;
         }
         if (!$slug) {
-            $slug = "feuille-sans-titre";
+            $slug = "chapitre-sans-titre";
         }
         // * On recherche le chapitre
         $chapter = $pchRepo->find($idChap);

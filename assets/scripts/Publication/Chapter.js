@@ -137,7 +137,7 @@ function axiosChapter() {
       console.log(response.data.code);
       if (response.data.code == 200) {
         var notyText =
-          "<span class='text-base font-medium'>Feuille enregistrée</span><br />Votre feuille est à jour d'après cette version";
+          "<span class='text-base font-medium'>Chapitre enregistré</span><br />Votre chapitre est à jour d'après cette version";
         var notyTimeout = 4500;
         var notyType = "success";
         if (!document.querySelector(".noty_type__success")) {
@@ -145,7 +145,7 @@ function axiosChapter() {
         }
       } else {
         var notyText =
-          "<span class='text-base font-medium'>Erreur</span><br />Une erreur est survenue lors de la sauvegarde de votre feuille";
+          "<span class='text-base font-medium'>Erreur</span><br />Une erreur est survenue lors de la sauvegarde de votre chapitre";
         var notyTimeout = 4500;
         var notyType = "error";
         NotyDisplay(notyText, notyType, notyTimeout);
@@ -174,12 +174,12 @@ function publishChapter(publish) {
     .then(function (response) {
       if (response.data.code == "true") {
         var notyText =
-          "<span class='text-base font-medium'>Feuille publiée</span><br />Votre feuille est désormais visible par vos lecteurs";
+          "<span class='text-base font-medium'>Chapitre publié</span><br />Votre chapitre est désormais visible par vos lecteurs";
         hideChapStatus.value = 2;
         axiosChapter();
       } else {
         var notyText =
-          "<span class='text-base font-medium'>Feuille dépubliée</span><br />Votre feuille n'est plus visible par vos lecteurs";
+          "<span class='text-base font-medium'>Chapitre dépublié</span><br />Votre chapitre n'est plus visible par vos lecteurs";
         hideChapStatus.value = 1;
       }
       var notyTimeout = 4500;

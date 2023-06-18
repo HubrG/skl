@@ -31,7 +31,7 @@
 	Récit |
 	{{ pubShow.title }}
 	({{ pubShow.user.nickname }})
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																		-
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																								-
 	{{ parent() }}
 {% endblock %}
 
@@ -179,7 +179,7 @@
 								<hr class=" dark:border-slate-500 border-slate-400 border-2 opacity-50 mb-5">
 								<p class="text-xl py-2 text-center w-full text-slate-500 flex flex-row items-center gap-x-2 justify-center">
 									<i class="fa-kit fa-regular-file-slash"></i>
-									Récit en cours de rédaction, aucune feuille pour le moment...
+									Récit en cours de rédaction, aucun chapitre pour le moment...
 								</p>
 								<hr class=" dark:border-slate-500 border-slate-400 border-2 opacity-50">
 							</div>
@@ -302,7 +302,7 @@
 								Récit terminé
 							</button>
 							<span class="opacity-60 text-xs">
-								Ce récit est terminé, aucune nouvelle feuille n'est prévue.
+								Ce récit est terminé, aucun nouveau chapitre n'est prévu.
 							</span>
 						</div>
 					{% elseif pubShow.finished == false and app.user and app.user.id != pubShow.user.id %}
@@ -320,7 +320,7 @@
 								</span>
 							</button>
 							<span id="followInfo" class="opacity-60 text-xs">
-								{{classFollowBtn == "follow-collection-buttons-ok" ? "Vous ne recevrez plus de notification à chaque nouvelle feuille publiée." : "Vous recevrez une notification à chaque nouvelle feuille publiée." }}
+								{{classFollowBtn == "follow-collection-buttons-ok" ? "Vous ne recevrez plus de notification à chaque nouveau chapitre publié." : "Vous recevrez une notification à chaque nouveau chapitre publié." }}
 							</span>
 						</div>
 					{% elseif not app.user %}
@@ -330,7 +330,7 @@
 								Suivre ce récit
 							</button>
 							<span class="opacity-60 text-xs">
-								Vous recevrez une notification à chaque nouvelle feuille publiée.
+								Vous recevrez une notification à chaque nouveau chapitre publié.
 							</span>
 						</div>
 					{% endif %}
@@ -376,7 +376,7 @@
 								{% set count = count + 1 %}
 							{% endif %}
 						{% endfor %}
-						{{ count > 1 ? count ~ " feuilles" : count ~ " feuille"}}
+						{{ count > 1 ? count ~ " chapitres" : count ~ " chapitre"}}
 					</span>
 				</h3>
 				<ol class="flex flex-col list-none">
@@ -384,7 +384,7 @@
 					{% set chapterStats = {'likes': 0, 'bookmarks': 0, 'views': 0, 'comments': 0, 'pages': 0} %}
 					{% for chapter in chapShow %}
 						{% if chapter.status > 1 %}
-							{% set chapterSlug = chapter.slug ?: "feuille-n0" ~ (chapter.orderDisplay + 1) %}
+							{% set chapterSlug = chapter.slug ?: "chapitre-n0" ~ (chapter.orderDisplay + 1) %}
 							<li class="items-center  dark:border-slate-700 py-1 gap-x-2  px-2 font-medium text-slate-900 -mt-px dark:bg-inherit dark:text-white">
 								<div class="flex justify-start flex-col md:flex-row items-center w-full gap-x-1">
 									<div class="flex flex-row md:w-10/12 w-full justify-start">
@@ -393,7 +393,7 @@
 										</span>
 										<div class="w-11/12">
 											<a href="{{ path("app_chapter_show", {idChap:chapter.id, slugPub:pubShow.slug, user:pubShow.user.username, slug:chapterSlug}) }}" class="h-full w-4/6 dark:text-slate-200  text-lg hover:underline">
-												{{ chapter.title|default("Feuille n°" ~ (chapter.orderDisplay + 1))|capitalize }}
+												{{ chapter.title|default("chapitre n°" ~ (chapter.orderDisplay + 1))|capitalize }}
 											</a>
 											{% set chapterIdToCheck = chapter.id %}
 											{% if app.user and app.user.hasReadChapter(chapterIdToCheck) %}

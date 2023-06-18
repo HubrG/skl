@@ -20,7 +20,7 @@
 
 {% block metatags %}
 	<link rel="canonical" href="https://scrilab.com{{ canonicalUrl }}"/>
-	<meta name="description" content="Lecture de la feuille « {{infoChap.title}} » du récit « {{infoPub.title}} » | Par {{infoPub.user.nickname}}">
+	<meta name="description" content="Lecture du chapitre « {{infoChap.title}} » du récit « {{infoPub.title}} » | Par {{infoPub.user.nickname}}">
 	<meta name="author" content="{{infoPub.user.nickname}}">
 	<meta name="twitter:image" content="{{pic}}">
 	<meta property="og:title" content="{{infoPub.title}} ({{infoChap.title}})">
@@ -62,7 +62,7 @@
 						<p class="text-center p-2 font-medium text-xs flex justify-between px-5">
 							<span>
 								<i class="fa-duotone fa-eye"></i>
-								— Aperçu de votre feuille &nbsp;&nbsp;[
+								— Aperçu de votre chapitre &nbsp;&nbsp;[
 								{% if infoChap.trashAt is null %}
 									<i class="fa-duotone fa-circle text-red-500"></i>
 									&nbsp;<span class="font-semibold">dépubliée</span>
@@ -126,11 +126,11 @@
 						</a>
 						{% if app.user and infoChap.Publication.status == 2 and (app.user.id == infoPub.user.id or is_granted('ROLE_ADMIN')) %}
 							{% if is_granted('ROLE_ADMIN') and app.user.id != infoPub.user.id %}
-								<a data-tippy-content="Éditer la feuille | Mode admin" href="{{ path("app_publication_edit_chapter", { idPub:infoPub.id, idChap:infoChap.id }) }}" class=" h-6 md:h-auto md:rounded rounded  bg-opacity-50 hover:bg-opacity-100 bg-yellow-300 dark:bg-yellow-700 dark:text-slate-300 dark:bg-opacity-50 dark:hover:bg-opacity-100 justify-center flex flex-row md:px-3 px-2 gap-x-2 items-center">
+								<a data-tippy-content="Éditer le chapitre | Mode admin" href="{{ path("app_publication_edit_chapter", { idPub:infoPub.id, idChap:infoChap.id }) }}" class=" h-6 md:h-auto md:rounded rounded  bg-opacity-50 hover:bg-opacity-100 bg-yellow-300 dark:bg-yellow-700 dark:text-slate-300 dark:bg-opacity-50 dark:hover:bg-opacity-100 justify-center flex flex-row md:px-3 px-2 gap-x-2 items-center">
 									<i class="fa-duotone fa-screwdriver-wrench"></i>
 								</a>
 							{% else %}
-								<a data-tippy-content="Éditer votre feuille" href="{{ path("app_publication_edit_chapter", { idPub:infoPub.id, idChap:infoChap.id }) }}" class=" h-6 md:h-auto md:rounded rounded  bg-opacity-50 hover:bg-opacity-100 bg-slate-300 dark:bg-slate-900 dark:text-slate-300 dark:bg-opacity-50 dark:hover:bg-opacity-100 justify-center flex flex-row md:px-3 px-2 gap-x-2 items-center">
+								<a data-tippy-content="Éditer votre chapitre" href="{{ path("app_publication_edit_chapter", { idPub:infoPub.id, idChap:infoChap.id }) }}" class=" h-6 md:h-auto md:rounded rounded  bg-opacity-50 hover:bg-opacity-100 bg-slate-300 dark:bg-slate-900 dark:text-slate-300 dark:bg-opacity-50 dark:hover:bg-opacity-100 justify-center flex flex-row md:px-3 px-2 gap-x-2 items-center">
 									<i class="fa-duotone fa-pen-to-square text-sm md:text-xl"></i>
 								</a>
 							{% endif %}
@@ -220,9 +220,9 @@
 					{% set liked = userLikesChapter ? infoChap.publicationChapterLikes|map(item => item.user.id)|contains(app.user.id) : false %}
 					{% set bm = userCanBookmark ? infoChap.publicationBookmarks|map(item => item.user.id)|contains(app.user.id) : false %}
 
-					{% set likeTooltip = app.user.id is not defined ? "Connectez-vous pour aimer cette feuille !" : (infoPub is not null and infoPub.user.id == app.user.id) ? 'Vous ne pouvez pas aimer votre feuille.' : (liked ? "Je n'aime plus cette feuille" : "J'aime cette feuille") %}
-					{% set dislikeTooltip = app.user.id is not defined ? "Connectez-vous pour dévaloriser  cette feuille !" : (infoPub is not null and infoPub.user.id == app.user.id) ? 'Vous ne pouvez pas dévaloriser votre feuille.' : (liked ? "Je ne dévalorise plus cette feuille" : "Je n'aime pas cette feuille") %}
-					{% set bmTooltip = app.user.id is not defined ? "Connectez-vous pour marquer cette feuille !" : infoPub.user.id == app.user.id ? 'Vous ne pouvez pas marquer votre feuille.' : bm ? "Retirer le marque-page" : "Ajouter un marque-page" %}
+					{% set likeTooltip = app.user.id is not defined ? "Connectez-vous pour aimer ce chapitre !" : (infoPub is not null and infoPub.user.id == app.user.id) ? 'Vous ne pouvez pas aimer votre chapitre.' : (liked ? "Je n'aime plus ce chapitre" : "J'aime ce chapitre") %}
+					{% set dislikeTooltip = app.user.id is not defined ? "Connectez-vous pour dévaloriser  ce chapitre !" : (infoPub is not null and infoPub.user.id == app.user.id) ? 'Vous ne pouvez pas dévaloriser votre chapitre.' : (liked ? "Je ne dévalorise plus ce chapitre" : "Je n'aime pas ce chapitre") %}
+					{% set bmTooltip = app.user.id is not defined ? "Connectez-vous pour marquer ce chapitre !" : infoPub.user.id == app.user.id ? 'Vous ne pouvez pas marquer votre chapitre.' : bm ? "Retirer le marque-page" : "Ajouter un marque-page" %}
 
 					<div class="{% if userLikesChapter %}hover:text-blue-600 cursor-pointer{% endif %} {% if app.user.id is not defined %}cursor-pointer{% endif %}" id="likeThisChapter" data-tippy-content="{{ likeTooltip }}" {% if app.user.id is not defined %} data-micromodal-trigger="popup-login" {% endif %} data-id="{{ infoChap.id }}">
 						<span id="nbrLike">{{ infoChap.publicationChapterLikes|length }}</span>&nbsp;
@@ -391,7 +391,7 @@
 					{% if infoPub.slug %}
 						{% set chapterSlug = infoPub.slug %}
 					{% else %}
-						{% set chapterSlug = "feuille-n0" ~ (chapter.orderDisplay + 1) %}
+						{% set chapterSlug = "chapitre-n0" ~ (chapter.orderDisplay + 1) %}
 					{% endif %}
 					<p class="justify-center font-semibold mt-5 text-base  flex flex-row gap-x-2 items-center dark:text-slate-300 text-slate-600">
 						<span>

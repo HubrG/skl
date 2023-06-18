@@ -64,7 +64,7 @@
 									{% endif %}
 								</a>
 							</th>
-							<th data-tippy-content="Nombre de feuilles publiées" scope="col" class="py-3 pl-2 text-center">
+							<th data-tippy-content="Nombre de chapitres publiés" scope="col" class="py-3 pl-2 text-center">
 								<a class="flex justify-center items-center gap-x-2" data-turbo-frame="_top" href="{{path("app_user_show_publications", {sort:"chapters", order:order})}}">
 									<i class="fa-{{sort == 'chapters' ? 'solid' : 'regular'}} fa-list-ol"></i>
 									{% if sort == "chapters" %}

@@ -141,7 +141,7 @@ function moveToTrash(item) {
   handleNoChapTrashRemoval();
   if (!document.querySelector(".noty_type__info")) {
     NotyDisplay(
-      "<big>Feuille supprimée !</big><br>Vous pouvez encore la retrouver dans la section « Corbeille » durant 48h",
+      "<big>Chaitre supprimé !</big><br>Vous pouvez encore la retrouver dans la section « Corbeille » durant 48h",
       "info",
       5000
     );

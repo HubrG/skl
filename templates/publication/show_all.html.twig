@@ -107,7 +107,7 @@
 							{% set sortText = newIcon|raw ~ " &nbsp;&nbsp;Les nouveautés" %}
 						{% endif %}
 						{% if querySortby == 'sheet' %}
-							{% set sortText = lastChapterIcon|raw ~ " &nbsp;&nbsp;Les dernières feuilles" %}
+							{% set sortText = lastChapterIcon|raw ~ " &nbsp;&nbsp;Les derniers chapitres" %}
 						{% endif %}
 						{% if querySortby == 'challenge' %}
 							{% set sortText = challengeIcon|raw ~ " &nbsp;&nbsp;Les réponses aux exercices" %}
@@ -135,7 +135,7 @@
 								'icon': newIcon
 							},
 							{
-								'text': 'Les dernières feuilles publiées',
+								'text': 'Les derniers chapitres publiés',
 								'order': 'desc',
 								'sortby': 'sheet',
 								'class': '',

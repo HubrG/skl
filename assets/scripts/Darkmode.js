@@ -47,6 +47,7 @@ export function darkMode() {
     document
       .getElementById("darkButtonSession")
       .addEventListener("click", function () {
+        console.log("dd");
         let html = document.getElementById("html");
         html.classList.toggle("dark");
         let dm = document.getElementById("darkModeSession");

@@ -38,7 +38,7 @@ class ChallengeController extends AbstractController
     ) {
     }
 
-    #[Route('/training', name: 'app_challenge')]
+    #[Route('/exercice', name: 'app_challenge')]
     public function index(ChallengeRepository $cRepo): Response
     {
         $dateActuelle = new DateTime();
@@ -61,7 +61,7 @@ class ChallengeController extends AbstractController
             "challenges" => $challenges
         ]);
     }
-    #[Route('/training/create/{slug}', name: 'app_challenge_create')]
+    #[Route('/exercice/creer/{slug}', name: 'app_challenge_create')]
     public function createChallenge(Request $request, ChallengeRepository $chRepo, SluggerInterface $slugger, EntityManagerInterface $em, $slug = null): Response
     {
         if ($this->getUser() == null) {
@@ -114,7 +114,7 @@ class ChallengeController extends AbstractController
             'form' => $form,
         ]);
     }
-    #[Route('/training/read/{id}/{slug}', name: 'app_challenge_read')]
+    #[Route('/exercice/lire/{id}/{slug}', name: 'app_challenge_read')]
     public function readChallenge(Request $request, PublicationRepository $pRepo, ChallengeRepository $cRepo, ChallengeMessageRepository $cmRepo, EntityManagerInterface $em, $id = null, $slug = null): Response
     {
         $nbrShowCom = 50000;
@@ -215,7 +215,7 @@ class ChallengeController extends AbstractController
             "challenges_draft" => $challenges_draft,
         ]);
     }
-    #[Route('/challenge/update/{id}/{slug}', name: 'app_challenge_update')]
+    #[Route('/exercice/modifier/{id}/{slug}', name: 'app_challenge_update')]
     public function updateChallenge(Request $request, PublicationRepository $pRepo, ChallengeRepository $cRepo, SluggerInterface $slugger, EntityManagerInterface $em, ForumCategoryRepository $fcRepo, $slug = null, $id = null): Response
     {
 

@@ -153,7 +153,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/privacy', name: 'app_privacy')]
+    #[Route('/confidentialite', name: 'app_privacy')]
     public function privacy(): Response
     {
         // On récupère les publications qui ont le status 2 (publié) et un chapitre publié

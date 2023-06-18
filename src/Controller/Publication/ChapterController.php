@@ -38,7 +38,7 @@ class ChapterController extends AbstractController
     ) {
     }
 
-    #[Route('/story/edit/{idPub}/chapter/{idChap?}', name: 'app_publication_edit_chapter')]
+    #[Route('/ecrire/edition/{idPub}/chapitre/{idChap?}', name: 'app_publication_edit_chapter')]
     public function EditChapter(PublicationRepository $pubRepo, PublicationChapterRepository $pcRepo, EntityManagerInterface $em, $idPub = null, $idChap = null): response
     {
         // * Si l'utilisateur est connecté, que la publication existe

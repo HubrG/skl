@@ -35,7 +35,7 @@ class ForumController extends AbstractController
         private SmileyMessage $smiley
     ) {
     }
-    #[Route('/forum', name: 'app_forum')]
+    #[Route('/discuter', name: 'app_forum')]
     public function index(ForumCategoryRepository $fcRepo): Response
     {
         $categories = $fcRepo->findAll();
@@ -44,7 +44,7 @@ class ForumController extends AbstractController
             'category' => $categories,
         ]);
     }
-    #[Route('/forum/{slug}', name: 'app_forum_topic')]
+    #[Route('/discuter/{slug}', name: 'app_forum_topic')]
     public function topic(ForumMessageRepository $forumMessageRepository, ForumTopicRepository $ftRepo, ForumCategoryRepository $fcRepo, ForumTopicReadRepository $topicReadRepo, ForumMessageRepository $messageRepo, $slug = null): Response
     {
         $category = $fcRepo->findOneBy(['slug' => $slug]);
@@ -85,7 +85,7 @@ class ForumController extends AbstractController
             'unreadMessageCounts' => $unreadMessageCounts,
         ]);
     }
-    #[Route('/forum/create/{slug}', name: 'app_forum_topic_create')]
+    #[Route('/discuter/creer_un_sujet/{slug}', name: 'app_forum_topic_create')]
     public function createTopic(Request $request, ForumTopicRepository $ftRepo, SluggerInterface $slugger, EntityManagerInterface $em, ForumCategoryRepository $fcRepo, $slug = null): Response
     {
         $category = $fcRepo->findOneBy(['slug' => $slug]);
@@ -147,7 +147,7 @@ class ForumController extends AbstractController
             'form' => $form,
         ]);
     }
-    #[Route('/forum/read/{slug}/{id}/{slugTopic}', name: 'app_forum_topic_read')]
+    #[Route('/discuter/lire_un_sujet/{slug}/{id}/{slugTopic}', name: 'app_forum_topic_read')]
     public function readTopic(Request $request, ForumMessageRepository $fmRepo, ForumTopicRepository $ftRepo, SluggerInterface $slugger, EntityManagerInterface $em, ForumCategoryRepository $fcRepo, $id = null, $slugTopic = null, $slug = null): Response
     {
         $category = $fcRepo->findOneBy(['slug' => $slug]);
@@ -211,7 +211,7 @@ class ForumController extends AbstractController
             "nbrCom" => $nbrCom
         ]);
     }
-    #[Route('/forum/update/{id}/{slug}', name: 'app_forum_topic_update')]
+    #[Route('/discuter/modifier_un_sujet/{id}/{slug}', name: 'app_forum_topic_update')]
     public function updateTopic(Request $request, ForumTopicRepository $ftRepo, SluggerInterface $slugger, EntityManagerInterface $em, ForumCategoryRepository $fcRepo, $slug = null, $id = null): Response
     {
 

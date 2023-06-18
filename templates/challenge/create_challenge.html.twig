@@ -17,7 +17,7 @@
 				<li aria-current="page">
 					<div>
 						<i class="fa-duotone fa-angle-right"></i>
-						{% if 'update' in current_url %}
+						{% if 'modifier' in current_url %}
 							<span>Modification :
 								<a href="{{path("app_challenge_read")}}" class="font-semibold hover:underline">
 									{{challenge.title|length < 16 ? challenge.title : challenge.title|slice(0,15) ~ "..." }}
@@ -31,7 +31,7 @@
 			</ol>
 		</nav>
 		<div>
-			{% if 'update' in current_url %}
+			{% if 'modifier' in current_url %}
 				<div class="flex flex-row gap-x-2 items-center w-full justify-end font-semibold dark:text-slate-400">
 					<i class="fa-duotone fa-times"></i>
 					<a href="{{path("app_challenge_read", {slug:challenge.slug, id:challenge.id})}}" class="hover:underline">Annuler</a>
@@ -91,7 +91,7 @@
 				</div>
 			</div>
 			<button type="submit" class="button-classic button-blue w-full">
-				{% if 'update' in current_url %}
+				{% if 'modifier' in current_url %}
 					Modifier l'exercice
 				{% else %}
 					Créer l'exercice

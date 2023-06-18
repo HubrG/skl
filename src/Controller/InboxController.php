@@ -32,13 +32,13 @@ class InboxController extends AbstractController
     ) {
     }
 
-    #[Route('/inbox', name: 'app_inbox')]
+    #[Route('/messagerie', name: 'app_inbox')]
     public function index(): Response
     {
         // On redirige vers la page de création de room
         return $this->redirectToRoute('app_inbox_create');
     }
-    #[Route('/inbox/create', name: 'app_inbox_create')]
+    #[Route('/messagerie/creer', name: 'app_inbox_create')]
     public function create(InboxGroupMemberRepository $igmRepo, InboxGroupRepository $inboxGRepo, Request $request, UserRepository $urepo, EntityManagerInterface $em): Response
     {
 
@@ -130,7 +130,7 @@ class InboxController extends AbstractController
 
         ]);
     }
-    #[Route('/inbox/{groupId}', name: 'app_inbox_message', requirements: ['groupId' => '\d+'])]
+    #[Route('/messagerie/{groupId}', name: 'app_inbox_message', requirements: ['groupId' => '\d+'])]
     public function message(Request $request, $groupId = null): Response
     {
 

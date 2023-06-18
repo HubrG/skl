@@ -100,7 +100,7 @@ class UserController extends AbstractController
 			'challengeInfo' => $challengeInfo
 		]);
 	}
-	#[Route('user/edit/{username}', name: 'app_user_edit')]
+	#[Route('user/edition/{username}', name: 'app_user_edit')]
 	public function edit(Request $request, UserRepository $userRepo, EntityManagerInterface $em, $id = null): Response
 	{
 		$user = $userRepo->find($this->getUser());
@@ -128,7 +128,7 @@ class UserController extends AbstractController
 
 		]);
 	}
-	#[Route('user/publications/show/{sort?}/{order?}/{username?}', name: 'app_user_show_publications')]
+	#[Route('user/publications/afficher/{sort?}/{order?}/{username?}', name: 'app_user_show_publications')]
 	public function showpublication(Request $request, PublicationRepository $pubRepo, UserRepository $userRepo, EntityManagerInterface $em, $sort = null, $order = null, $username = null): Response
 	{
 		if (!$this->getUser()) {
@@ -255,7 +255,7 @@ class UserController extends AbstractController
 			return $this->redirectToRoute("app_home");
 		}
 	}
-	#[Route('update/user/account', name: 'app_user_account')]
+	#[Route('modification/user/compte', name: 'app_user_account')]
 	public function account(Request $request, EntityManagerInterface $em, UserRepository $userRepo, UserPasswordHasherInterface $userPasswordHasher, $success = null): Response
 	{
 		if (!$this->getUser()) {

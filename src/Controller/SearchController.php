@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SearchController extends AbstractController
 {
-    #[Route('/search', name: 'app_search')]
+    #[Route('/recherche', name: 'app_search')]
     public function searchIndex(Request $request, PublicationRepository $pRepo, PublicationKeywordRepository $pkwRepo, PublicationCategoryRepository $pcatRepo, UserRepository $userRepo): Response
     {
 

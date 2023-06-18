@@ -41,7 +41,7 @@ class PublicationController extends AbstractController
     ) {
     }
 
-    #[Route('/story/add', name: 'app_publication_add')]
+    #[Route('/ecrire', name: 'app_publication_add')]
     public function Draft(Request $request, PublicationRepository $pubRepo, SluggerInterface $slugger, EntityManagerInterface $em): Response
     {
         // * If user is connected
@@ -97,7 +97,7 @@ class PublicationController extends AbstractController
             'pub' => $brouillon
         ]);
     }
-    #[Route('/story/edit/{id}', name: 'app_publication_edit')]
+    #[Route('/ecrire/edition/{id}', name: 'app_publication_edit')]
     public function EditPublication(EntityManagerInterface $em, Request $request, PublicationAccessRepository $pacRepo, PublicationSupportRepository $psRepo, UserRepository $uRepo, PublicationRepository $pubRepo, PublicationChapterRepository $pchRepo, $id = null): Response
     {
 

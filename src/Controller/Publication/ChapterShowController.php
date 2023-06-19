@@ -203,6 +203,8 @@ class ChapterShowController extends AbstractController
         // On recherche les versions qui ont été annotées
         $chapterId = $chapter->getId();
 
+
+
         // Requête pour récupérer les versions avec des annotations
         $versionsWithAnnotations = $this->pchvRepo->createQueryBuilder('v1')
             ->select('v1')
@@ -228,6 +230,7 @@ class ChapterShowController extends AbstractController
 
         // Combiner les résultats et supprimer les doublons
         $versions = array_unique(array_merge($versionsWithAnnotations, [$lastVersion]), SORT_REGULAR);
+
 
 
         // * La vue

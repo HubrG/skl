@@ -282,7 +282,7 @@
 			{% endif %}
 			<div class="display_publications big  twoMax  ">
 				{% for item in challenges %}
-					{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':'published', 'querySortby':'published', 'queryOrder':'desc','queryKeystring':null, type:"challenges", 'querySlug':item.slug} %}
+					{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, no:true, 'slugCat':'', 'queryPage':1, 'sortBy':'published', 'querySortby':'published', 'queryOrder':'desc','queryKeystring':null, type:"challenges", 'querySlug':item.slug} %}
 				{% endfor %}
 			</div>
 			{% if challenges_draft|length > 0 %}

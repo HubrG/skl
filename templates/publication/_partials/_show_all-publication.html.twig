@@ -58,6 +58,12 @@
 				</div>
 			{% endif %}
 			<div class="header-info">
+				{% if (type is defined and type == "challenges" and no is not defined) or (item.challenge is not null and no is not defined)  %}
+					<a href="{{path("app_challenge_read", {id:item.challenge.id, slug:item.challenge.slug})}}" data-turbo-frame="_top">
+						<span class="bg-green-100 text-green-800 hover:underline text-xs font-medium mr-2 px-2.5 py-0.5 -mt-0.5 rounded dark:bg-green-900 dark:text-green-300">Réponse à un exercice :
+							{{item.challenge.title|length > 20 ? item.challenge.title|slice(0,20) : item.challenge.title}}</span>
+					</a>
+				{% endif %}
 				<h2 class="font-semibold text-base md:text-xl leading-6 flex flex-row items-center gap-x-2  cursor-text">
 					<a {{ user_in_url ? "data-turbo-frame='_top'" }} href="{{ path("app_publication_show_one", {id:item.id, slug:item.slug}) }}" {% if title|length > 58 %} data-tippy-content="{{item.title}}" {% endif %} class="hover:underline" aria-label="Lire {{item.title}}, par {{item.user.nickname}}">
 						{{title}}

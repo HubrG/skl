@@ -260,7 +260,7 @@
 				</div>
 				<div class="display_publications">
 					{% for item in pub_challenge %}
-						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':'pop', 'querySortby':'pop', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
+						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'', 'queryPage':1, 'sortBy':'pop', 'querySortby':'pop', 'queryOrder':'desc','queryKeystring':null,type:"challenges", 'querySlug':item.slug} %}
 					{% endfor %}
 				</div>
 				<div class="mt-10 text-right">

@@ -106,7 +106,7 @@
 				</div>
 				<div class="display_publications twoMax  profil">
 					{% for item in challengeInfo %}
-						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'all', 'queryPage':1, 'sortBy':'pop', 'querySortby':'pop', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
+						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, type:"challenges", 'slugCat':'all', 'queryPage':1, 'sortBy':'pop', 'querySortby':'pop', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
 					{% endfor %}
 				</div>
 			</turbo-frame>

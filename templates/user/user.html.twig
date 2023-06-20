@@ -85,6 +85,11 @@
 					Modifier mon profil
 				</a>
 			{% endif %}
+			{% if is_granted('ROLE_ADMIN') %}
+				<div class="order-last mt-5">
+					<a href="{{path("app_user_delete_account", {idUser:userInfo.id})}}" class="button-classic button-rose" onclick="confirm('Voulez-vous vraiment supprimer cet utilisateur ?')">Supprimer l'utilisateur</a>
+				</div>
+			{% endif %}
 		</div>
 		<div class="w-full parent border-l-0 md:ml-10 ml-0 mt-10 md:-mt-20 dark:border-slate-700 p-0  {% if app.user and app.user.id == userInfo.id  or is_granted('ROLE_ADMIN') %}-mt-10{% endif %}">
 			<turbo-frame id="user-nav">

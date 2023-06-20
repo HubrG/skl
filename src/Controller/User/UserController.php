@@ -409,11 +409,22 @@ class UserController extends AbstractController
 
 		]);
 	}
-	#[Route('/delete-account', name: 'app_user_delete_account')]
-	public function deleteAccount(UserRepository $userRepo, ResetPasswordRequestRepository $rprRepo, EntityManagerInterface $em, PublicationCommentRepository $pcRepo): Response
+	#[Route('/delete-account/{idUser}', name: 'app_user_delete_account')]
+	public function deleteAccount(UserRepository $userRepo, ResetPasswordRequestRepository $rprRepo, EntityManagerInterface $em, PublicationCommentRepository $pcRepo, $idUser = null): Response
 	{
 		// On supprime le compte de l'utilisateur connecté
-		$user = $userRepo->find($this->getUser());
+
+		if (!$idUser) {
+			$user = $userRepo->find($this->getUser());
+		} else {
+			$user = $userRepo->find($idUser);
+		}
+		if (!$user) {
+			return $this->redirectToRoute("app_home");
+		}
+		if ($user != $this->getUser() && !$this->isGranted("ROLE_ADMIN")) {
+			return $this->redirectToRoute("app_home");
+		}
 		// On supprime les enregistrement ResetPassword si existants pour cet utilisateur
 		$rpr = $rprRepo->findBy(['user' => $user]);
 		if ($rpr) {
@@ -421,13 +432,21 @@ class UserController extends AbstractController
 				$em->remove($r);
 			}
 		}
-		// On déconnecte l'utilisateur
-		$this->tokenStorage->setToken(null);
+		if ($this->getUser() == $user) {
+			// On déconnecte l'utilisateur
+			$this->tokenStorage->setToken(null);
+		}
+		if ($this->getUser() == $user) {
+			$this->addFlash('success', "&nbsp;&nbsp;Votre compte a bien été supprimé. N'hésitez pas à nous rejoindre à nouveau !");
+		}
 		$em->remove($user);
 		$em->flush();
-
-		$this->addFlash('success', "&nbsp;&nbsp;Votre compte a bien été supprimé. N'hésitez pas à nous rejoindre à nouveau !");
-		return $this->redirectToRoute("app_logout");
+		if ($this->getUser() == $user) {
+			return $this->redirectToRoute("app_logout");
+		} else {
+			$this->addFlash('success', "L'utilisateur a bien été supprimé");
+			return $this->redirectToRoute("app_home");
+		}
 	}
 	#[Route('/follow/user', name: 'app_user_follow', methods: ['POST'])]
 	public function followUser(Request $request, UserFollowRepository $ufRepo, UserRepository $uRepo, EntityManagerInterface $em): Response

@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use Cloudinary\Cloudinary;
 use App\Services\WordCount;
+use App\Services\HubspotAPI;
 use App\Form\SendNotificationForm;
+use App\Repository\UserRepository;
 use App\Services\NotificationSystem;
 use App\Repository\ForumTopicRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -163,32 +165,23 @@ class HomeController extends AbstractController
         ]);
     }
     #[Route('/test', name: 'app_test')]
-    public function test(Request $request, ChatterInterface $chatter, PublicationAnnotationRepository $paRepo, NotifierInterface $notifier): Response
+    public function test(Request $request, HubspotAPI $hapi, UserRepository $uRepo): Response
     {
 
-        $form = $this->createForm(SendNotificationForm::class);
 
-        $form->handleRequest($request);
+        // On récupère tous les utilisateurs
+        $users = $uRepo->findAll();
+        // Token Bearer
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $message = SendNotificationForm::getTextChoices()[$form->getData()['message']];
-
-            // custom_mercure_chatter_transport is configured in config/packages/notifier.yaml
-            $message = (new ChatMessage(
-                $message,
-                new MercureOptions(['/demo/notifier'])
-            ))->transport('custom_mercure_chatter_transport');
-            $chatter->send($message);
-
-            return $this->redirectToRoute('app_notify');
+        // On ajoute chacun des utilisateur
+        foreach ($users as $user) {
+            $hapi->addUser($user);
         }
-
-
 
         return $this->render('home/test.html.twig', [
             'controller_name' => "d",
             "article" => "dd",
-            'form' => $form,
+
 
         ]);
     }

@@ -165,6 +165,7 @@ class ChapterShowController extends AbstractController
         } else {
             $alreadyRead = null;
         }
+        
         // * On ajoute un view pour le chapitre (si l'utilisateur n'est pas l'auteur de la publication)
         $this->viewChapter($chapter);
         // * On formate les notes du chapitre de l'utilisateur connecté
@@ -196,6 +197,8 @@ class ChapterShowController extends AbstractController
                 $chapterContent = $this->formatChapter($chapterContent->getContent());
             }
         }
+
+
 
         // On compte le nombre de révisions pour cette version du chapitre
         $nbrRevision = count($this->paRepo->findBy(['chapter' => $chapter, "version" => $version, 'mode' => 1]));

@@ -99,6 +99,49 @@
 					<span>{{pubInfo|length > 1 ? pubInfo|length ~ " récits" : pubInfo|length == 0 ? "Aucun récit" : pubInfo|length ~ " récit"}}</span>
 					<hr class="mb-5">
 				</div>
+				{% if pubInfo|length > 0 %}
+					<div
+						class="text-center p-2  md:mb-5 mb-20 -mt-16 md:-mt-8  flex gap-x-5 flex-row justify-center items-center  border-slate-100 dark:border-slate-700 dark:text-white">
+						{# On compte le nombre de like de l'utilisateur #}
+						{% set nbLike = 0 %}
+						{% set nbView = 0 %}
+						{% set nbCom = 0 %}
+						{% set nbComChap = 0 %}
+						{% set nbChapter = 0 %}
+						{% for item in pubInfo %}
+							{% for itemed in item.publicationChapters %}
+								{% set nbLike = nbLike + itemed.publicationChapterLikes|length %}
+							{% endfor %}
+							{% for itemed in item.publicationChapters %}
+								{% set nbView = nbView + itemed.publicationChapterViews|length %}
+							{% endfor %}
+							{% set nbCom = nbCom + item.publicationComments|length %}
+							{% if item.status == 2 %}
+								{% for itemed in item.publicationChapters %}
+									{% if itemed.status == 2 %}
+										{% set nbChapter = nbChapter + 1 %}
+									{% endif %}
+								{% endfor %}
+							{% endif %}
+						{% endfor %}
+						<div class="flex flex-row gap-x-1 items-center" data-tippy-content="Nombre de « j'aime »">
+							<span>{{nbLike}}</span>
+							<i class="fa-duotone fa-thumbs-up"></i>
+						</div>
+						<div class="flex flex-row gap-x-1 items-center" data-tippy-content="Nombre de vues">
+							<span>{{nbView}}</span>
+							<i class="fa-duotone fa-eye"></i>
+						</div>
+						<div class="flex flex-row gap-x-1 items-center" data-tippy-content="Nombre de commentaires">
+							<span>{{nbCom}}</span>
+							<i class="fa-duotone fa-comments"></i>
+						</div>
+						<div class="flex flex-row gap-x-1 items-center" data-tippy-content="Nombre de chapitres">
+							<span>{{nbChapter}}</span>
+							<i class="fa-duotone fa-files"></i>
+						</div>
+					</div>
+				{% endif %}
 				<div class="display_publications twoMax  profil">
 					{% for item in pubInfo %}
 						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, 'slugCat':'all', 'queryPage':1, 'sortBy':'pop', 'querySortby':'pop', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}
@@ -109,6 +152,50 @@
 					<span>{{challengeInfo|length > 1 ? challengeInfo|length ~ " réponses d'exercice" : challengeInfo|length == 0 ? "Aucune réponse d'exercice" : challengeInfo|length ~ " réponse d'exercice"}}</span>
 					<hr class="mb-5">
 				</div>
+				{% if challengeInfo|length > 0 %}
+					<div
+						class="text-center p-2  mb-5 -mt-8 z-[999999] flex gap-x-5 flex-row justify-center items-center  border-slate-100 dark:border-slate-700 dark:text-white">
+						{# On compte le nombre de like de l'utilisateur #}
+						{% set nbLike = 0 %}
+						{% set nbView = 0 %}
+						{% set nbCom = 0 %}
+						{% set nbComChap = 0 %}
+						{% set nbChapter = 0 %}
+						{% for item in challengeInfo %}
+							{% for itemed in item.publicationChapters %}
+								{% set nbLike = nbLike + itemed.publicationChapterLikes|length %}
+							{% endfor %}
+							{% for itemed in item.publicationChapters %}
+								{% set nbView = nbView + itemed.publicationChapterViews|length %}
+							{% endfor %}
+							{% set nbCom = nbCom + item.publicationComments|length %}
+							{% if item.status == 2 %}
+								{% for itemed in item.publicationChapters %}
+									{% if itemed.status == 2 %}
+										{% set nbChapter = nbChapter + 1 %}
+									{% endif %}
+								{% endfor %}
+							{% endif %}
+						{% endfor %}
+
+						<div class="flex flex-row gap-x-1 items-center" data-tippy-content="Nombre de « j'aime »">
+							<span>{{nbLike}}</span>
+							<i class="fa-duotone fa-thumbs-up"></i>
+						</div>
+						<div class="flex flex-row gap-x-1 items-center" data-tippy-content="Nombre de vues">
+							<span>{{nbView}}</span>
+							<i class="fa-duotone fa-eye"></i>
+						</div>
+						<div class="flex flex-row gap-x-1 items-center" data-tippy-content="Nombre de commentaires">
+							<span>{{nbCom}}</span>
+							<i class="fa-duotone fa-comments"></i>
+						</div>
+						<div class="flex flex-row gap-x-1 items-center" data-tippy-content="Nombre de chapitres">
+							<span>{{nbChapter}}</span>
+							<i class="fa-duotone fa-files"></i>
+						</div>
+					</div>
+				{% endif %}
 				<div class="display_publications twoMax  profil">
 					{% for item in challengeInfo %}
 						{% include "publication/_partials/_show_all-publication.html.twig" with {'item': item, type:"challenges", 'slugCat':'all', 'queryPage':1, 'sortBy':'pop', 'querySortby':'pop', 'queryOrder':'desc','queryKeystring':null, 'querySlug':item.slug} %}

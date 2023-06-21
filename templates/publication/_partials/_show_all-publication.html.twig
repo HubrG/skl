@@ -128,7 +128,7 @@
 					</a>
 				</li>
 				<ul class="flex flex-row flex-wrap w-full items-center text-[0.75rem] justify-end text-opacity-70 gap-x-2 text-slate-700 dark:text-slate-500">
-					<li class="flex flex-row gap-x-1 items-center">
+					<li class="flex flex-row gap-x-1 items-center" data-tippy-content="Nombre de chapitres">
 						{% set filteredChapters = item.publicationChapters|filter(chapter => chapter.status == 2) %}
 						<i class="fa-regular fa-files"></i>
 						<span>
@@ -136,7 +136,7 @@
 						</span>
 					</li>
 					|
-					<li class="flex flex-row gap-x-1 items-center">
+					<li class="flex flex-row gap-x-1 items-center" data-tippy-content="Nombre de vues">
 						{% set totalViews = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterViews|length, 0) %}
 						<i class="fa-regular fa-eye"></i>
 						<span>
@@ -144,26 +144,26 @@
 						</span>
 					</li>
 					|
-					<li class="flex flex-row gap-x-1 items-center">
+					<li class="flex flex-row gap-x-1 items-center" data-tippy-content="Nombre de commentaires">
 						{% set totalComments = item.publicationComments|length %}
 						<i class="fa-regular fa-comments"></i>
 						<span>
 							{{totalComments}}
 						</span>
 					</li>
-					{% if sortBy == "like" %}
-						|
-						<li class="flex flex-row gap-x-1 items-center">
-							{% set totalLikes = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterLikes|length, 0) %}
-							<i class="fa-regular fa-thumbs-up"></i>
-							<span>
-								{{totalLikes}}
-							</span>
-						</li>
-					{% endif %}
+
+					|
+					<li class="flex flex-row gap-x-1 items-center" data-tippy-content="Nombre de j'aime">
+						{% set totalLikes = item.publicationChapters|reduce((accumulator, chapter) => accumulator + chapter.publicationChapterLikes|length, 0) %}
+						<i class="fa-regular fa-thumbs-up"></i>
+						<span>
+							{{totalLikes}}
+						</span>
+					</li>
+
 					{% if sortBy == "comment" %}
 						|
-						<li class="flex flex-row gap-x-1 items-center">
+						<li class="flex flex-row gap-x-1 items-center" data-tippy-content="Nombre de commentaires">
 							{% set totalComments = item.publicationComments|reduce((accumulator, chapter) => accumulator + chapter.publicationComments|length, 0) %}
 							<i class="fa-regular fa-comments"></i>
 							<span>

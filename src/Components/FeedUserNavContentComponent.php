@@ -128,7 +128,7 @@ class FeedUserNavContentComponent extends AbstractController
         $qb->select('p')
             ->innerJoin('p.chapter', 'pc')
             ->innerJoin('pc.publication', 'pub')
-            ->where($qb->expr()->isNotNull('p.user'))
+            ->where('p.user = ' . $this->userId)
             ->andWhere("pub.hideSearch = FALSE")
             ->orderBy('p.view_date', 'ASC'); // Fetch readings from oldest to newest
 

@@ -12,11 +12,11 @@
 									<div>
 										{% include "/partials/little/_feedCard-avatar.html.twig" with  {type:"chrono",user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
 										<div>
-											<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-fuchsia-500 dark:text-fuchsia-200">
+											<a data-turbo-frame="_top" href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-fuchsia-500 dark:text-fuchsia-200">
 												{{item.getUser().getNickname()}}
 											</a>
 											vient de créer un exercice
-											<a href="{{path("app_challenge_read", {slug:item.getSlug(),id:item.getId()})}}" class="font-semibold">
+											<a data-turbo-frame="_top" href="{{path("app_challenge_read", {slug:item.getSlug(),id:item.getId()})}}" class="font-semibold">
 												{{item.getTitle()|length > 30 ? item.getTitle()|slice(0, 30) ~ "..." : item.getTitle()}}
 											</a>
 										</div>
@@ -36,11 +36,11 @@
 									<div>
 										{% include "/partials/little/_feedCard-avatar.html.twig" with  {type:"chrono",user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
 										<div>
-											<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-sky-500 dark:text-sky-200">
+											<a data-turbo-frame="_top" href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-sky-500 dark:text-sky-200">
 												{{item.getUser().getNickname()}}
 											</a>
 											vient de répondre au sujet
-											<a href="{{path("app_forum_topic_read", {slug:item.getTopic().getCategory().getSlug(),slugTopic:item.getTopic().getSlug(),id:item.getTopic().getId()})}}" class="font-semibold">
+											<a data-turbo-frame="_top" href="{{path("app_forum_topic_read", {slug:item.getTopic().getCategory().getSlug(),slugTopic:item.getTopic().getSlug(),id:item.getTopic().getId()})}}" class="font-semibold">
 												{{item.getTopic().getTitle()|length > 30 ? item.getTopic().getTitle()|slice(0, 30) ~ "..." : item.getTopic().getTitle()}}
 											</a>
 										</div>
@@ -60,11 +60,11 @@
 									<div>
 										{% include "/partials/little/_feedCard-avatar.html.twig" with  {type:"chrono",user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
 										<div>
-											<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-sky-500 dark:text-sky-200">
+											<a data-turbo-frame="_top" href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-sky-500 dark:text-sky-200">
 												{{item.getUser().getNickname()}}
 											</a>
 											vient de commenter l'exercice
-											<a href="{{path("app_challenge_read", {slug:item.getChallenge().getSlug(),id:item.getChallenge().getId(), idCom:item.getId()})}}" class="font-semibold">
+											<a data-turbo-frame="_top" href="{{path("app_challenge_read", {slug:item.getChallenge().getSlug(),id:item.getChallenge().getId(), idCom:item.getId()})}}" class="font-semibold">
 												{{item.getChallenge().getTitle()|length > 30 ? item.getChallenge().getTitle()|slice(0, 30) ~ "..." : item.getChallenge().getTitle()}}
 											</a>
 										</div>
@@ -85,26 +85,26 @@
 										{% if item.chapter %}
 											{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
 											<div>
-												<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-yellow-500 dark:text-yellow-200">
+												<a data-turbo-frame="_top" href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-yellow-500 dark:text-yellow-200">
 													{{item.getUser().getNickname()}}
 												</a>
 												a commenté le chapitre
-												<a href="{{path("app_chapter_show", {slugPub:item.getPublication().getSlug(),user:item.getUser().getUsername(),idChap:item.getChapter().getId(),slug:item.getChapter().getSlug(),idCom:item.getId})}}" class="font-semibold">
+												<a data-turbo-frame="_top" href="{{path("app_chapter_show", {slugPub:item.getPublication().getSlug(),user:item.getUser().getUsername(),idChap:item.getChapter().getId(),slug:item.getChapter().getSlug(),idCom:item.getId})}}" class="font-semibold">
 													{{item.getChapter().getTitle()|length > 30 ? item.getChapter().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getTitle()}}
 												</a>
 												du récit
-												<a href="{{path("app_publication_show_one", {id:item.getPublication().getId(), slug:item.getPublication().getSlug()})}}" class="italic">
+												<a data-turbo-frame="_top" href="{{path("app_publication_show_one", {id:item.getPublication().getId(), slug:item.getPublication().getSlug()})}}" class="italic">
 													{{item.getPublication().getTitle()|length > 30 ? item.getPublication().getTitle()|slice(0, 30) ~ "..." : item.getPublication().getTitle()}}
 												</a>
 											</div>
 										{% else %}
 											{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture()} %}
 											<div>
-												<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-yellow-500 dark:text-yellow-200">
+												<a data-turbo-frame="_top" href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-yellow-500 dark:text-yellow-200">
 													{{item.getUser().getNickname()}}
 												</a>
 												a commenté le récit
-												<a href="{{path("app_publication_show_one", {id:item.getPublication().getId(), slug:item.getPublication().getSlug(),idCom:item.getId()})}}" class="italic">
+												<a data-turbo-frame="_top" href="{{path("app_publication_show_one", {id:item.getPublication().getId(), slug:item.getPublication().getSlug(),idCom:item.getId()})}}" class="italic">
 													{{item.getPublication().getTitle()|length > 30 ? item.getPublication().getTitle()|slice(0, 30) ~ "..." : item.getPublication().getTitle()}}
 												</a>
 											</div>
@@ -125,7 +125,7 @@
 									<div>
 										{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getNickname(),pic:item.getProfilPicture() } %}
 										<div>
-											<a href="{{path("app_user", {username:item.getUsername()})}}" class="self-baseline text-orange-500 dark:text-orange-200">
+											<a data-turbo-frame="_top" href="{{path("app_user", {username:item.getUsername()})}}" class="self-baseline text-orange-500 dark:text-orange-200">
 												{{item.getNickname()}}
 											</a>
 											vient de nous rejoindre.
@@ -146,11 +146,11 @@
 									<div>
 										{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
 										<div>
-											<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-emerald-500 dark:text-emerald-200">
+											<a data-turbo-frame="_top" href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-emerald-500 dark:text-emerald-200">
 												{{item.getUser().getNickname()}}
 											</a>
 											vient de créer le sujet
-											<a href="{{path("app_forum_topic_read", {slug:item.getCategory().getSlug(),slugTopic:item.getSlug(),id:item.getId()})}}" class="font-semibold">
+											<a data-turbo-frame="_top" href="{{path("app_forum_topic_read", {slug:item.getCategory().getSlug(),slugTopic:item.getSlug(),id:item.getId()})}}" class="font-semibold">
 												{{item.getTitle()|length > 30 ? item.getTitle()|slice(0, 30) ~ "..." : item.getTitle()}}
 											</a>
 										</div>
@@ -170,19 +170,19 @@
 									<div>
 										{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
 										<div>
-											<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-teal-500 dark:text-teal-200">
+											<a data-turbo-frame="_top" href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-teal-500 dark:text-teal-200">
 												{{item.getUser().getNickname()}}
 											</a>
 											{% if item.getChallenge() %}
 												vient de répondre à l'exercice
-												<a href="{{path("app_challenge_read", {slug:item.getChallenge().getSlug(),id:item.getChallenge().getId()})}}" class="font-semibold">
+												<a data-turbo-frame="_top" href="{{path("app_challenge_read", {slug:item.getChallenge().getSlug(),id:item.getChallenge().getId()})}}" class="font-semibold">
 													{{item.getChallenge().getTitle()|length > 30 ? item.getChallenge().getTitle()|slice(0, 30) ~ "..." : item.getChallenge().getTitle()}}
 												</a>
 											{% else %}
 												vient de publier le récit
 											{% endif %}
 											avec le récit
-											<a href="{{path("app_publication_show_one", {slug:item.getSlug(),id:item.getId()})}}" class="font-semibold">
+											<a data-turbo-frame="_top" href="{{path("app_publication_show_one", {slug:item.getSlug(),id:item.getId()})}}" class="font-semibold">
 												{{item.getTitle()|length > 30 ? item.getTitle()|slice(0, 30) ~ "..." : item.getTitle()}}
 											</a>
 										</div>
@@ -207,15 +207,15 @@
 									<div>
 										{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getPublication().getUser().getNickname(),pic:item.getPublication().getUser().getProfilPicture() } %}
 										<div>
-											<a href="{{path("app_user", {username:item.getPublication().getUser().getUsername()})}}" class="self-baseline text-indigo-500 dark:text-indigo-200">
+											<a data-turbo-frame="_top" href="{{path("app_user", {username:item.getPublication().getUser().getUsername()})}}" class="self-baseline text-indigo-500 dark:text-indigo-200">
 												{{item.getPublication().getUser().getNickname()}}
 											</a>
 											vient de publier le chapitre
 
-											<a href="{{ path("app_chapter_show", {idChap:item.getId(), user:item.getPublication().getUser().getUsername(), slugPub:item.getPublication().getSlug(), slug:item.getSlug()}) }}" class="hover:underline font-semibold">{{item.getTitle()|length > 30 ? item.getTitle()|slice(0, 30) ~ "..." : item.getTitle() }}</a>
+											<a data-turbo-frame="_top" href="{{ path("app_chapter_show", {idChap:item.getId(), user:item.getPublication().getUser().getUsername(), slugPub:item.getPublication().getSlug(), slug:item.getSlug()}) }}" class="hover:underline font-semibold">{{item.getTitle()|length > 30 ? item.getTitle()|slice(0, 30) ~ "..." : item.getTitle() }}</a>
 
 											pour son récit
-											<a href="{{path("app_publication_show_one", {id:item.getPublication().getId(), slug:item.getPublication().getSlug()})}}" class="italic">
+											<a data-turbo-frame="_top" href="{{path("app_publication_show_one", {id:item.getPublication().getId(), slug:item.getPublication().getSlug()})}}" class="italic">
 												{{item.getPublication().getTitle()|length > 30 ? item.getPublication().getTitle()|slice(0, 30) ~ "..." : item.getPublication().getTitle()}}
 											</a>
 										</div>
@@ -236,22 +236,22 @@
 									<div>
 										{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
 										<div>
-											<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-lime-500 dark:text-lime-200">
+											<a data-turbo-frame="_top" href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-lime-500 dark:text-lime-200">
 												{{item.getUser().getNickname()}}
 											</a>
 											vient de collectionner
 											{% if item.getChapter() %}
 												le chapitre
-												<a href="{{path("app_chapter_show", {slugPub:item.getChapter().getPublication().getSlug(),user:item.getUser().getUsername(),idChap:item.getChapter().getId(),slug:item.getChapter().getSlug()})}}" class="font-semibold">
+												<a data-turbo-frame="_top" href="{{path("app_chapter_show", {slugPub:item.getChapter().getPublication().getSlug(),user:item.getUser().getUsername(),idChap:item.getChapter().getId(),slug:item.getChapter().getSlug()})}}" class="font-semibold">
 													{{item.getChapter().getTitle()|length > 30 ? item.getChapter().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getTitle()}}
 												</a>
 												du récit
-												<a href="{{path("app_publication_show_one", {id:item.getChapter().getPublication().getId(), slug:item.getChapter().getPublication().getSlug()})}}" class="italic">
+												<a data-turbo-frame="_top" href="{{path("app_publication_show_one", {id:item.getChapter().getPublication().getId(), slug:item.getChapter().getPublication().getSlug()})}}" class="italic">
 													{{item.getChapter().getPublication().getTitle()|length > 30 ? item.getChapter().getPublication().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getPublication().getTitle()}}
 												</a>
 											{% else %}
 												le récit
-												<a href="{{path("app_publication_show_one", {id:item.getPublication().getId(), slug:item.getPublication().getSlug()})}}" class="font-semibold">
+												<a data-turbo-frame="_top" href="{{path("app_publication_show_one", {id:item.getPublication().getId(), slug:item.getPublication().getSlug()})}}" class="font-semibold">
 													{{item.getPublication().getTitle()|length > 30 ? item.getPublication().getTitle()|slice(0, 30) ~ "..." : item.getPublication().getTitle()}}
 												</a>
 											{% endif %}
@@ -272,16 +272,16 @@
 									<div>
 										{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
 										<div>
-											<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-amber-500 dark:text-amber-200">
+											<a data-turbo-frame="_top" href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-amber-500 dark:text-amber-200">
 												{{item.getUser().getNickname()}}
 											</a>
 											vient d'annoter le chapitre
 
-											<a href="{{ path("app_chapter_revision", {idChap:item.getChapter().getId(), user:item.getUser().getUsername(), slugPub:item.getChapter().getPublication().getSlug(), slug:item.getChapter().getSlug(), version:item.getVersion().getId()}) }}" class="hover:underline font-semibold">
+											<a data-turbo-frame="_top" href="{{ path("app_chapter_revision", {idChap:item.getChapter().getId(), user:item.getUser().getUsername(), slugPub:item.getChapter().getPublication().getSlug(), slug:item.getChapter().getSlug(), version:item.getVersion().getId()}) }}" class="hover:underline font-semibold">
 												{{item.getChapter().getTitle()|length > 30 ? item.getChapter().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getTitle() }}
 											</a>
 											du récit
-											<a href="{{path("app_publication_show_one", {id:item.getChapter().getPublication().getId(), slug:item.getChapter().getPublication().getSlug()})}}" class="italic">
+											<a data-turbo-frame="_top" href="{{path("app_publication_show_one", {id:item.getChapter().getPublication().getId(), slug:item.getChapter().getPublication().getSlug()})}}" class="italic">
 												{{item.getChapter().getPublication().getTitle()|length > 30 ? item.getChapter().getPublication().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getPublication().getTitle()}}
 											</a>
 										</div>
@@ -301,11 +301,11 @@
 									<div>
 										{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
 										<div>
-											<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-green-500 dark:text-green-200">
+											<a data-turbo-frame="_top" href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-green-500 dark:text-green-200">
 												{{item.getUser().getNickname()}}
 											</a>
 											vient de s'abonner au récit
-											<a href="{{path("app_publication_show_one", {id:item.getPublication().getId(), slug:item.getPublication().getSlug()})}}" class="italic">
+											<a data-turbo-frame="_top" href="{{path("app_publication_show_one", {id:item.getPublication().getId(), slug:item.getPublication().getSlug()})}}" class="italic">
 												{{item.getPublication().getTitle()|length > 30 ? item.getPublication().getTitle()|slice(0, 30) ~ "..." : item.getPublication().getTitle()}}
 											</a>
 										</div>
@@ -330,7 +330,7 @@
 										{% endif %}
 										<div>
 											{% if item.getUser() %}
-												<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-slate-500 dark:text-slate-200">
+												<a data-turbo-frame="_top" href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-slate-500 dark:text-slate-200">
 													{{item.getUser().getNickname()}}
 												</a>
 											{% else %}
@@ -339,7 +339,7 @@
 												</span>
 											{% endif %}
 											vient de télécharger le récit
-											<a href="{{path("app_publication_show_one", {id:item.getPublication().getId(), slug:item.getPublication().getSlug()})}}" class="italic">
+											<a data-turbo-frame="_top" href="{{path("app_publication_show_one", {id:item.getPublication().getId(), slug:item.getPublication().getSlug()})}}" class="italic">
 												{{item.getPublication().getTitle()|length > 30 ? item.getPublication().getTitle()|slice(0, 30) ~ "..." : item.getPublication().getTitle()}}
 											</a>
 										</div>
@@ -359,16 +359,16 @@
 									<div>
 										{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
 										<div>
-											<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-indigo-500 dark:text-indigo-200">
+											<a data-turbo-frame="_top" href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-indigo-500 dark:text-indigo-200">
 												{{item.getUser().getNickname()}}
 											</a>
 											vient de lire le chapitre
 
-											<a href="{{ path("app_chapter_show", {idChap:item.getChapter().getId(), user:item.getChapter().getPublication().getUser().getUsername(), slugPub:item.getChapter().getPublication().getSlug(), slug:item.getChapter().getSlug()}) }}" class="hover:underline font-semibold">
+											<a data-turbo-frame="_top" href="{{ path("app_chapter_show", {idChap:item.getChapter().getId(), user:item.getChapter().getPublication().getUser().getUsername(), slugPub:item.getChapter().getPublication().getSlug(), slug:item.getChapter().getSlug()}) }}" class="hover:underline font-semibold">
 												{{item.getChapter().getTitle()|length > 30 ? item.getChapter().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getTitle() }}
 											</a>
 											du récit
-											<a href="{{path("app_publication_show_one", {id:item.getChapter().getPublication().getId(), slug:item.getChapter().getPublication().getSlug()})}}" class="italic">
+											<a data-turbo-frame="_top" href="{{path("app_publication_show_one", {id:item.getChapter().getPublication().getId(), slug:item.getChapter().getPublication().getSlug()})}}" class="italic">
 												{{item.getChapter().getPublication().getTitle()|length > 30 ? item.getChapter().getPublication().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getPublication().getTitle()}}
 											</a>
 										</div>
@@ -388,15 +388,15 @@
 									<div>
 										{% include "/partials/little/_feedCard-avatar.html.twig" with  {user:item.getUser().getNickname(),pic:item.getUser().getProfilPicture() } %}
 										<div>
-											<a href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-rose-500 dark:text-rose-200">
+											<a data-turbo-frame="_top" href="{{path("app_user", {username:item.getUser().getUsername()})}}" class="text-rose-500 dark:text-rose-200">
 												{{item.getUser().getNickname()}}
 											</a>
 											vient d'aimer le chapitre
-											<a href="{{path("app_chapter_show", {slugPub:item.getChapter().getPublication().getSlug(),user:item.getUser().getUsername(),idChap:item.getChapter().getId(),slug:item.getChapter().getSlug()})}}" class="font-semibold">
+											<a data-turbo-frame="_top" href="{{path("app_chapter_show", {slugPub:item.getChapter().getPublication().getSlug(),user:item.getUser().getUsername(),idChap:item.getChapter().getId(),slug:item.getChapter().getSlug()})}}" class="font-semibold">
 												{{item.getChapter().getTitle()|length > 30 ? item.getChapter().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getTitle()}}
 											</a>
 											du récit
-											<a href="{{path("app_publication_show_one", {id:item.getChapter().getPublication().getId(), slug:item.getChapter().getPublication().getSlug(), idCom:item.getId()})}}" class="italic">
+											<a data-turbo-frame="_top" href="{{path("app_publication_show_one", {id:item.getChapter().getPublication().getId(), slug:item.getChapter().getPublication().getSlug(), idCom:item.getId()})}}" class="italic">
 												{{item.getChapter().getPublication().getTitle()|length > 30 ? item.getChapter().getPublication().getTitle()|slice(0, 30) ~ "..." : item.getChapter().getPublication().getTitle()}}</a>
 										</div>
 									</div>

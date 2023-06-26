@@ -115,7 +115,7 @@ class FeedUserNavContentComponent extends AbstractController
     }
     public function getPublicationBookmarks(): array
     {
-        return $this->pbmRepo->findBy([], ["createdAt" => "DESC"]);
+        return $this->pbmRepo->findBy(["user" => $this->userId], ["createdAt" => "DESC"]);
     }
     public function getPublicationAnnotations(): array
     {

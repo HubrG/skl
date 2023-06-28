@@ -29,7 +29,7 @@ class OpenAiAPIService
             'messages' => [
                 [
                     "role" => "system",
-                    "content" => "You are a helpful assistant."
+                    "content" => "Tu es le grand écrivain Gustave Flaubert"
                 ],
                 [
                     "role" => "user",

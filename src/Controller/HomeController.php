@@ -165,37 +165,37 @@ class HomeController extends AbstractController
             "canonicalUrl" => $this->generateUrl('app_privacy', array(), true)
         ]);
     }
-    // #[Route('/test', name: 'app_test')]
-    // public function test(Request $request, HubspotAPI $hapi, UserRepository $uRepo): Response
-    // {
+    #[Route('/test', name: 'app_test')]
+    public function test(Request $request, HubspotAPI $hapi, UserRepository $uRepo): Response
+    {
 
 
-    //     // On récupère tous les utilisateurs
-    //     $users = $uRepo->findAll();
-    //     // Token Bearer
+        // On récupère tous les utilisateurs
+        $users = $uRepo->findAll();
+        // Token Bearer
 
-    //     // On ajoute chacun des utilisateur
-    //     foreach ($users as $user) {
-    //         $hapi->addUser($user);
-    //     }
+        // On ajoute chacun des utilisateur
+        foreach ($users as $user) {
+            $hapi->addUser($user);
+        }
 
-    //     return $this->render('home/test.html.twig', [
-    //         'controller_name' => "d",
-    //         "article" => "dd",
+        return $this->render('home/test.html.twig', [
+            'controller_name' => "d",
+            "article" => "dd",
 
 
-    //     ]);
-    // }
-    // #[Route('/test2', name: 'app_test2')]
-    // public function test2(Request $request, OpenAiAPIService $openAi, UserRepository $uRepo): Response
-    // {
+        ]);
+    }
+    #[Route('/test2', name: 'app_test2')]
+    public function test2(Request $request, OpenAiAPIService $openAi, UserRepository $uRepo): Response
+    {
 
-    //     $json = $openAi->getHistory("Coucou");
+        $json = $openAi->getHistory("Coucou");
 
-    //     dd($json);
-    //     return $this->render('home/test2.html.twig', [
-    //         'controller_name' => "d",
-    //         "article" => "dd",
-    //     ]);
-    // }
+        dd($json);
+        return $this->render('home/test2.html.twig', [
+            'controller_name' => "d",
+            "article" => "dd",
+        ]);
+    }
 }

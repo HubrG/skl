@@ -31,7 +31,7 @@ jobs:
       - name: deploy
         run: |
           sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }} \
-          "cd public_html/public && \
+          "cd public_html/ && \
           git config --local url.\"https://${{ secrets.GIT_ACCESS_TOKEN }}:@github.com/\".insteadOf \"https://github.com/\" && \
           git fetch && \
           git reset --hard origin/main && \

@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 18 # ou la version de votre choix
-          cache: 'npm'
+          cache: "npm"
 
       - name: Clear npm cache
         run: npm cache clean --force
@@ -31,7 +31,7 @@ jobs:
       - name: deploy
         run: |
           sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }} \
-          "cd public_html/ && \
+          "cd public_html/public && \
           git config --local url.\"https://${{ secrets.GIT_ACCESS_TOKEN }}:@github.com/\".insteadOf \"https://github.com/\" && \
           git fetch && \
           git reset --hard origin/main && \
@@ -49,4 +49,3 @@ jobs:
           npm run-script build && \
           php bin/console cache:clear && \
           php bin/console doctrine:migrations:migrate -n;"
-

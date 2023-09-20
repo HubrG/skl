@@ -414,7 +414,7 @@ class ForumController extends AbstractController
                 ->setNbrMessage($topic->getForumMessages()->count());
             $this->em->persist($read);
             $this->em->flush();
-            // fdfd
+            // fdfd dfdfdf
             if ($this->getUser() != $topic->getUser()) {
                 // ! AJOUT D'UNE VIEW
                 // * On récupère les views liés au topic

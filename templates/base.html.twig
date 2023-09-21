@@ -10,9 +10,9 @@
 		{# <meta name="turbo-visit-control" content="reload"> #}
 		<script src="https://apis.google.com/js/platform.js" async defer></script>
 		{% block metatags %}
-			<meta name="description" content="L'univers où l'écriture et la lecture se rencontrent. Que vous soyez un lecteur passionné à la recherche de nouvelles œuvres à découvrir, un écrivain souhaitant partager ses créations, ou un auteur en quête d'amélioration grâce à notre atelier d'écriture, Scrilab est l'espace qui vous permet d'exprimer votre passion pour les mots et les histoires. Publiez vos textes sur Scrilab ! Vous avez le sens de la formule, nous créons l'alchimie !">
+			<meta name="description" content="Scrilab est votre espace dédié à l'écriture et la lecture. Que vous soyez lecteur, écrivain ou en recherche d'atelier d'écriture, découvrez et partagez des œuvres passionnantes. Publiez et améliorez vos textes chez nous. Exprimez votre passion pour les mots !">
 			<meta property="og:title" content="Scrilab">
-			<meta property="og:description" content="L'univers où l'écriture et la lecture se rencontrent. Que vous soyez un lecteur passionné à la recherche de nouvelles œuvres à découvrir, un écrivain souhaitant partager ses créations, ou un auteur en quête d'amélioration grâce à notre atelier d'écriture, Scrilab est l'espace qui vous permet d'exprimer votre passion pour les mots et les histoires. Publiez vos textes sur Scrilab ! Vous avez le sens de la formule, nous créons l'alchimie !">
+			<meta property="og:description" content="Scrilab est votre espace dédié à l'écriture et la lecture. Que vous soyez lecteur, écrivain ou en recherche d'atelier d'écriture, découvrez et partagez des œuvres passionnantes. Publiez et améliorez vos textes chez nous. Exprimez votre passion pour les mots !">
 		{% endblock %}
 		<title>
 			{% block title %}Scrilab
@@ -30,6 +30,19 @@
 		<!-- Google tag (gtag.js) -->
 		<script async src="https://www.googletagmanager.com/gtag/js?id=G-2DX7NLM4HX"></script>
 		{% include "/partials/_google-analytics.html.twig" %}
+		<script type="application/ld+json">
+			{
+									  "@context": "http://schema.org",
+									  "@type": "Course",
+									  "name": "Atelier d'écriture créative",
+									  "description": "Un atelier d'écriture pour aider les écrivains en herbe à améliorer leur style et leur technique.",
+									  "provider": {
+									    "@type": "Organization",
+									    "name": "Scrilab",
+									    "sameAs": "https://www.scrilab.com"
+									  }
+									}
+		</script>
 	</head>
 	<body>
 		<div class="flex flex-col min-h-screen relative">

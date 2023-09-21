@@ -9,6 +9,15 @@ name: app
 # to find the supported versions for the 'php' type.
 type: "php:8.2"
 
+dependencies:
+  php:
+    composer/composer: "^2"
+
+# .platform.app.yaml
+runtime:
+  extensions:
+    - sodium
+
 # The following block defines a single writable directory, 'web/uploads'
 # The 'source' specifies where the writable mount is. The 'local' source
 # indicates that the mount point will point to a local directory on the

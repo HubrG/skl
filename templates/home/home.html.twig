@@ -52,7 +52,7 @@
 				<hr>
 			</div>
 			<div class="h-[34rem] -mt-20 md:-mt-5  overflow-hidden">
-				<div class="opacity-80 grayscale-[30%]">
+				<div class="opacity-80 grayscale-[30%] w-full">
 					{{  component('feed_component')}}
 				</div>
 				<div class="fadeout"></div>
@@ -88,7 +88,18 @@
 												Communauté littéraire
 											</h5>
 											<p>
-												Rejoignez un cercle d'écrivains passionnés et développez votre talent avec notre communauté. Publiez, échangez sur nos forums de discussion et améliorez-vous grâce à notre module de révision.
+												Rejoignez un cercle d'écrivains passionnés et développez votre talent avec notre communauté.
+												{% if app.user %}
+													<a href="{{path("app_publication_add")}}" class="font-bold hover:underline ">Publiez</a>
+												{% else %}
+
+
+													<span data-micromodal-trigger="popup-register" class="font-bold hover:underline cursor-pointer">Publiez</span>
+
+												{% endif %}
+												, échangez sur nos
+												<a href="{{path("app_forum")}}" class="font-bold hover:underline">forums de discussion</a>
+												et améliorez-vous grâce à notre module de révision participatif.
 											</p>
 										</div>
 										<div class="slide-card">

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html {% block html_attr %} {% endblock %} id="html" lang="fr" class="scroll-smooth {{app.user ? app.user.userParameters is defined ? app.user.userParameters.darkmode == true ? " dark"}}{{ app.session.get('darkmode') and not app.user ? app.session.get('darkmode') == true ? " dark"}}">
+<html {% block html_attr %} {% endblock %} id="html" lang="fr" class="scroll-smooth {{app.user ? app.user.userParameters is defined ? app.user.userParameters.darkmode == true ? " dark"}}{{ app.session.get('darkmode') and not app.user ? app.session.get('darkmode') == true ? " dark" }}">
 	<head>
 		<meta name="theme-color" content="#5f2bef"/>
 		<meta charset="UTF-8">
@@ -32,16 +32,16 @@
 		{% include "/partials/_google-analytics.html.twig" %}
 		<script type="application/ld+json">
 			{
-												  "@context": "http://schema.org",
-												  "@type": "Course",
-												  "name": "Atelier d'écriture créative",
-												  "description": "Un atelier d'écriture pour aider les écrivains en herbe à améliorer leur style et leur technique.",
-												  "provider": {
-												    "@type": "Organization",
-												    "name": "Scrilab",
-												    "sameAs": "https://www.scrilab.com"
-												  }
-												}
+																																										  "@context": "http://schema.org",
+																																										  "@type": "Course",
+																																										  "name": "Atelier d'écriture créative",
+																																										  "description": "Un atelier d'écriture pour aider les écrivains en herbe à améliorer leur style et leur technique.",
+																																										  "provider": {
+																																										    "@type": "Organization",
+																																										    "name": "Scrilab",
+																																										    "sameAs": "https://www.scrilab.com"
+																																										  }
+																																										}
 		</script>
 	</head>
 	<body>

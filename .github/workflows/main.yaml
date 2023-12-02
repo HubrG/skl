@@ -12,7 +12,7 @@ jobs:
       SSHPASS: ${{ secrets.APP_PASS }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
         with:
           token: ${{ secrets.GIT_ACCESS_TOKEN }}
 

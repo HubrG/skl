@@ -27,7 +27,7 @@ jobs:
           cache: "npm"
 
       - name: Clear npm cache
-        run: npm cache clean --force
+        run: npm cache clean --force # Supprimez le cache npm existant
 
       - name: deploy
         run: |

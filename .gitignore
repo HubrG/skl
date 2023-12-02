@@ -12,7 +12,7 @@
 /public/images/uploads/story/
 /public/images/uploads/profil_pictures/
 ###< symfony/framework-bundle ###
-
+.env
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache

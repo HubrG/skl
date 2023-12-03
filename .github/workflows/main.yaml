@@ -43,10 +43,10 @@ jobs:
           sed -i 's/^CLOUDINARY_API_SECRET=.*/CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}/' .env.local
           composer install --no-scripts && \
           mkdir -p /tmp/npm-cache && \ # Créez un répertoire temporaire pour le cache npm
-          yarn config set "@fortawesome:registry" https://npm.fontawesome.com/ && \
-          yarn config set "//npm.fontawesome.com/:_authToken" ${{ secrets.FONTAWESOME_TOKEN }} && \
-          yarn install --cache /tmp/npm-cache && \ # Utilisez le nouveau répertoire temporaire pour le cache npm
+          npm config set "@fortawesome:registry" https://npm.fontawesome.com/ && \
+          npm config set "//npm.fontawesome.com/:_authToken" ${{ secrets.FONTAWESOME_TOKEN }} && \
+          npm install --cache /tmp/npm-cache && \ # Utilisez le nouveau répertoire temporaire pour le cache npm
+          npm run-script build && \
           export PATH=./node_modules/.bin:$PATH && \
           php bin/console cache:clear && \
-          yarn run-script build && \
           php bin/console doctrine:migrations:migrate -n;"

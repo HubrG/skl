@@ -20,14 +20,17 @@ jobs:
       - name: APT_UPDATE and INSTALL SSHPASS
         run: sudo apt update && sudo apt install sshpass
 
-      - name: Set up Node.js and Yarn
-        uses: actions/setup-node@v2
-        with:
-          node-version: 18 # ou la version de votre choix
-          cache: "npm"
+      - name: Install PNPM
+        run: npm install -g pnpm
 
-      - name: Clear npm cache
-        run: npm cache clean --force # Supprimez le cache npm existant
+      - name: Clear PNPM cache
+        run: pnpm store prune
+
+      - name: Install Dependencies with PNPM
+        run: pnpm install
+
+      - name: Build
+        run: pnpm run build
 
       - name: deploy
         run: |
@@ -42,11 +45,8 @@ jobs:
           sed -i 's/^CLOUDINARY_API_KEY=.*/CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}/' .env.local
           sed -i 's/^CLOUDINARY_API_SECRET=.*/CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}/' .env.local
           composer install --no-scripts && \
-          mkdir -p /tmp/npm-cache && \ # Créez un répertoire temporaire pour le cache npm
-          npm config set "@fortawesome:registry" https://npm.fontawesome.com/ && \
-          npm config set "//npm.fontawesome.com/:_authToken" ${{ secrets.FONTAWESOME_TOKEN }} && \
-          npm install --cache /tmp/npm-cache && \ # Utilisez le nouveau répertoire temporaire pour le cache npm
+          pnpm install && \ # Installation des dépendances avec PNPM
           export PATH=./node_modules/.bin:$PATH && \
           php bin/console cache:clear && \
-          npm run build && \
-          php bin/console doctrine:migrations:migrate -n;"
+          pnpm build && \ # Construction avec PNPM
+          php bin/console doctrine:migrations:migrate -n;

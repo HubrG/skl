@@ -12,7 +12,7 @@ jobs:
       SSHPASS: ${{ secrets.APP_PASS }}
 
     steps:
-      - uses: actions/checkout@v2.3.4
+      - uses: actions/checkout
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: false
@@ -46,7 +46,6 @@ jobs:
           npm config set "@fortawesome:registry" https://npm.fontawesome.com/ && \
           npm config set "//npm.fontawesome.com/:_authToken" ${{ secrets.FONTAWESOME_TOKEN }} && \
           npm install --cache /tmp/npm-cache && \ # Utilisez le nouveau répertoire temporaire pour le cache npm
-          npm run-script build && \
-          export PATH=./node_modules/.bin:$PATH && \
+          npm run build && \
           php bin/console cache:clear && \
           php bin/console doctrine:migrations:migrate -n;"

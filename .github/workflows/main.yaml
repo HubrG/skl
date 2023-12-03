@@ -45,8 +45,11 @@ jobs:
           sed -i 's/^CLOUDINARY_API_KEY=.*/CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}/' .env.local
           sed -i 's/^CLOUDINARY_API_SECRET=.*/CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}/' .env.local
           composer install --no-scripts && \
+          mkdir -p /tmp/npm-cache && \ # Créez un répertoire temporaire pour le cache npm
+          pnpm config set "@fortawesome:registry" https://npm.fontawesome.com/ && \
+          pnpm config set "//npm.fontawesome.com/:_authToken" ${{ secrets.FONTAWESOME_TOKEN }} && \
           pnpm install && \ # Installation des dépendances avec PNPM
           export PATH=./node_modules/.bin:$PATH && \
-          php bin/console cache:clear && \
           pnpm build && \ # Construction avec PNPM
+          php bin/console cache:clear && \
           php bin/console doctrine:migrations:migrate -n;

@@ -16,6 +16,9 @@ jobs:
       - name: APT UPDATE and INSTALL SSHPASS
         run: sudo apt update && sudo apt install sshpass
 
+      - name: Cloudways API Git Pull
+        uses: roelmagdaleno/cloudways-api-git-pull-action@v1.2.1
+
       - name: deploy
         run: |
           sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }} \

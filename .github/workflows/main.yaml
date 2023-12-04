@@ -47,4 +47,6 @@ jobs:
           npm config set "//npm.fontawesome.com/:_authToken" ${{ secrets.FONTAWESOME_TOKEN }} && \
           npm install --cache /tmp/npm-cache && \ # Utilisez le nouveau répertoire temporaire pour le cache npm
           export PATH=./node_modules/.bin:$PATH && \
-          npm run build;"
+          # npm run-script build && \
+          php bin/console cache:clear && \
+          php bin/console doctrine:migrations:migrate -n;"

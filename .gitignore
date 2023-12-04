@@ -13,6 +13,8 @@
 /public/images/uploads/profil_pictures/
 ###< symfony/framework-bundle ###
 .env
+.env.test
+README.local.md
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache

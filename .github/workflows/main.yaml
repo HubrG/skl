@@ -1,8 +1,7 @@
 name: CD
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   deploy:
@@ -12,22 +11,10 @@ jobs:
       SSHPASS: ${{ secrets.APP_PASS }}
 
     steps:
-      - uses: actions/checkout@v2.3.4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          persist-credentials: false
+      - uses: actions/checkout@v2
 
-      - name: APT_UPDATE and INSTALL SSHPASS
+      - name: APT UPDATE and INSTALL SSHPASS
         run: sudo apt update && sudo apt install sshpass
-
-      - name: Set up Node.js and Yarn
-        uses: actions/setup-node@v2
-        with:
-          node-version: 19 # ou la version de votre choix
-          cache: "npm"
-
-      - name: Clear npm cache
-        run: npm cache clean --force # Supprimez le cache npm existant
 
       - name: deploy
         run: |

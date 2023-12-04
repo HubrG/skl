@@ -34,7 +34,7 @@ jobs:
           "cd applications/xfbbjgzbvt/public_html/ && \
           git config --local url.\"https://${{ secrets.GITHUB_TOKEN }}:@github.com/\".insteadOf \"https://github.com/\" && \
           git fetch && \
-          git reset --hard origin/main && \
+          git reset --hard origin main && \
           sed -i 's/^GOOGLE_CLIENT_ID=.*/GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}/' .env.local
           sed -i 's/^GOOGLE_CLIENT_SECRET=.*/GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}/' .env.local
           sed -i 's/^CLOUDINARY_CLOUD_NAME=.*/CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}/' .env.local

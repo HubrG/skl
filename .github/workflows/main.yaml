@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          token: ${{ secrets.GIT_ACCESS_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: APT_UPDATE and INSTALL SSHPASS
         run: sudo apt update && sudo apt install sshpass
@@ -32,7 +32,7 @@ jobs:
         run: |
           sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }} \
           "cd public_html/ && \
-          git config --local url.\"https://${{ secrets.GIT_ACCESS_TOKEN }}:@github.com/\".insteadOf \"https://github.com/\" && \
+          git config --local url.\"https://${{ secrets.GITHUB_TOKEN }}:@github.com/\".insteadOf \"https://github.com/\" && \
           git fetch && \
           git reset --hard origin/main && \
           sed -i 's/^GOOGLE_CLIENT_ID=.*/GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}/' .env.local

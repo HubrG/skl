@@ -20,7 +20,7 @@ jobs:
         run: |
           sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }} \
           "cd public_html/ && \
-          sudo chown -R 1005:33 /home/1177078.cloudwaysapps.com/xfbbjgzbvt/.npm && \ # Correction des permissions NPM
+          # sudo chown -R 1005:33 /home/1177078.cloudwaysapps.com/xfbbjgzbvt/.npm && \ # Correction des permissions NPM
           git config --local url.\"https://${{ secrets.GITHUB_TOKEN }}:@github.com/\".insteadOf \"https://github.com/\" && \
           git fetch && \
           git reset --hard origin/main && \

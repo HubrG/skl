@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Exercice littéraire :
+{% block title %}atelier littéraire :
 	{{challenge.title}}
 {% endblock %}
 {% block body %}
@@ -17,7 +17,7 @@
 					<i class="fa-duotone fa-angle-right"></i>
 					<div>
 						<span>
-							<strong>Exercice :</strong>
+							<strong>atelier :</strong>
 							{{challenge.title|length < 16 ? challenge.title : challenge.title|slice(0,15) ~ "..." }}</span>
 					</div>
 				</li>
@@ -33,12 +33,12 @@
 						<div class="flex md:flex-row  flex-col border-t-2  border-slate-600 dark:border-slate-900 justify-evenly md:divide-x-2  divide-white dark:divide-slate-900 dark:text-slate-300">
 							<div class="md:w-1/2 w-full  sm:rounded-b-lg md:rounded-bl-lg bg-slate-50 dark:bg-slate-700 py-3 flex flex-row gap-x-2 md:pl-0 pl-2 items-center  md:justify-center">
 								<i class="fa-regular fa-calendar  text-green-500"></i>
-								<span class="font-semibold">Début de l'exercice :</span>
+								<span class="font-semibold">Début de l'atelier :</span>
 								<span>{{challenge.dateStart ? challenge.dateStart|date("d/m/Y") : "<em class='opacity-50'>Date non définie</em>"|raw}}</span>
 							</div>
 							<div class="md:w-1/2 w-full rounded-b-none md:rounded-bl-lg bg-slate-200  dark:bg-slate-900 py-3 flex flex-row gap-x-2  md:pl-0 pl-2 items-center  text-right md:justify-center">
 								<i class="fa-regular fa-calendar-xmark text-red-500"></i>
-								<span class="font-semibold">Fin de l'exercice :</span>
+								<span class="font-semibold">Fin de l'atelier :</span>
 								<span>
 									{{challenge.dateEnd ? challenge.dateEnd|date("d/m/Y") ~ " — dans " ~ challenge.dateEnd|since : "<em class='opacity-50'>Date non définie</em>"|raw}}</span>
 							</div>
@@ -46,7 +46,7 @@
 					{% else %}
 						<div class="flex md:flex-row border-b-2 border-t-2 border-red-300 dark:border-red-900 flex-col justify-evenly md:divide-x-2 text-red-800  dark:text-red-300">
 							<div class="w-full bg-rose-50 dark:bg-rose-800 py-3 flex flex-row gap-x-2 md:pl-0 pl-2 items-center  md:justify-center">
-								<span class="font-semibold">L'exercice s'est terminé il y a
+								<span class="font-semibold">L'atelier s'est terminé il y a
 									{{challenge.dateEnd|since}}
 								</span>
 							</div>
@@ -57,12 +57,12 @@
 					<div class="flex md:flex-row border-t-2 border-slate-600 dark:border-slate-900 flex-col justify-evenly md:divide-x-2 divide-white dark:divide-slate-900  dark:text-slate-300">
 						<div class="md:w-1/2 w-full  rounded-bl-lg bg-slate-50 dark:bg-slate-700 py-3 flex flex-row gap-x-2 md:pl-0 pl-2 items-center  md:justify-center">
 							<i class="fa-regular fa-calendar  text-green-500"></i>
-							<span class="font-semibold">Début de l'exercice :</span>
+							<span class="font-semibold">Début de l'atelier :</span>
 							<span>{{challenge.dateStart ? challenge.dateStart|date("d/m/Y") : "<em class='opacity-50'>Date non définie</em>"|raw}}</span>
 						</div>
 						<div class="md:w-1/2 w-full rounded-bl-lg md:rounded-bl-lg bg-slate-200  dark:bg-slate-900 py-3 flex flex-row gap-x-2  md:pl-0 pl-2 items-center  text-right md:justify-center">
 							<i class="fa-regular fa-calendar-xmark text-red-500"></i>
-							<span class="font-semibold">Fin de l'exercice :</span>
+							<span class="font-semibold">Fin de l'atelier :</span>
 							<span>
 								{{challenge.dateEnd ? challenge.dateEnd|date("d/m/Y") ~ " — dans " ~ challenge.dateEnd|since : "<em class='opacity-50'>Date non définie</em>"|raw}}</span>
 						</div>
@@ -105,13 +105,13 @@
 										<li>
 											<a href="{{path("app_challenge_update", {id:challenge.id})}}" class=" flex w-full flex-row gap-x-2 items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
 												<i class="fa-regular fa-edit"></i>
-												Modifier l'exercice
+												Modifier l'atelier
 											</a>
 										</li>
 										<li>
 											<button data-micromodal-trigger="popup-confirm-delete-challenge" class="flex  w-full text-left justify-start flex-row gap-x-2 items-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
 												<i class="fa-regular fa-trash"></i>
-												Supprimer l'exercice
+												Supprimer l'atelier
 											</button>
 										</li>
 									</ul>
@@ -259,26 +259,26 @@
 					{% if app.user %}
 						<a href="{{path("app_challenge_reply", {id:challenge.id})}}" class="bg-green-200 hover:bg-green-300 dark:bg-green-500 dark:text-green-100 dark:hover:bg-green-600  button-classic opacity-100  button-create-challenge sticky md:top-16 top-14">
 							<span>
-								<i class="fa-regular fa-reply-all"></i>&nbsp;&nbsp;Proposer une réponse à cet exercice
+								<i class="fa-regular fa-reply-all"></i>&nbsp;&nbsp;Proposer une réponse à cet atelier
 							</span>
 						</a>
 					{% else %}
 						<button class="w-full bg-green-200 hover:bg-green-300 dark:bg-green-500 dark:text-green-100 dark:hover:bg-green-600  button-classic opacity-100  button-create-challenge sticky md:top-16 top-14" data-micromodal-trigger="popup-login">
 							<span>
-								<i class="fa-regular fa-reply-all"></i>&nbsp;&nbsp;Proposer une réponse à cet exercice
+								<i class="fa-regular fa-reply-all"></i>&nbsp;&nbsp;Proposer une réponse à cet atelier
 							</span>
 						</button>
 					{% endif %}
 				{% else %}
-					<button data-tippy-content="Vous ne pouvez pas faire cet exercice, car il est terminé" class="w-full bg-green-200 grayscale cursor-not-allowed  dark:bg-green-500 dark:text-green-100  button-classic opacity-100  button-create-challenge sticky md:top-16 top-14">
+					<button data-tippy-content="Vous ne pouvez pas faire cet atelier, car il est terminé" class="w-full bg-green-200 grayscale cursor-not-allowed  dark:bg-green-500 dark:text-green-100  button-classic opacity-100  button-create-challenge sticky md:top-16 top-14">
 						<span>
-							<i class="fa-regular fa-reply-all"></i>&nbsp;&nbsp;Proposer une réponse à cet exercice
+							<i class="fa-regular fa-reply-all"></i>&nbsp;&nbsp;Proposer une réponse à cet atelier
 						</span>
 					</button>
 				{% endif %}
 			</div>
 			{% if challenges|length == 0 %}
-				<h5 class="text-center">Aucune réponse à l'exercice</h5>
+				<h5 class="text-center">Aucune réponse à l'atelier</h5>
 			{% endif %}
 			<div class="display_publications big  twoMax  ">
 				{% for item in challenges %}
@@ -288,7 +288,7 @@
 			{% if challenges_draft|length > 0 %}
 				<hr class="mt-0 mb-0">
 				<h6 class="font-semibold">{{challenges_draft|length > 1 ? "Vos brouillons" : "Votre brouillon"}}
-					pour cet exercice</h6>
+					pour cet atelier</h6>
 				<div class="-mt-5 dark:text-slate-400">
 					{% for item in challenges_draft %}
 						<div>

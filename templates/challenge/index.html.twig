@@ -12,20 +12,20 @@
 		{% if app.user %}
 			<a href="{{path("app_challenge_create")}}" class="bg-green-200 hover:bg-green-300 dark:bg-green-500 dark:text-green-100 dark:hover:bg-green-600 button-classic opacity-100  button-create-topic sticky md:top-16 top-14">
 				<span>
-					<i class="fa-regular fa-plus-square"></i>&nbsp;&nbsp;Proposer un nouvel exercice
+					<i class="fa-regular fa-plus-square"></i>&nbsp;&nbsp;Proposer un nouvel atelier
 				</span>
 			</a>
 		{% else %}
 			<button class="w-full bg-green-200 hover:bg-green-300 dark:bg-green-500 dark:text-green-100 dark:hover:bg-green-600  button-classic opacity-100  button-create-topic sticky md:top-16 top-14" data-micromodal-trigger="popup-login">
 				<span>
-					<i class="fa-regular  fa-plus-square"></i>&nbsp;&nbsp;Proposer un nouvel exercice
+					<i class="fa-regular  fa-plus-square"></i>&nbsp;&nbsp;Proposer un nouvel atelier
 				</span>
 			</button>
 		{% endif %}
 		{% if challenges|length == 0 %}
 			<h2 class="p-10 text-center text-lg md:w-4/6 w-full mx-auto dark:text-slate-400 text-slate-500 flex flex-col gap-y-2">
 				<i class="fa-regular fa-hand-holding-seedling fa-slash"></i>
-				Aucun exercice n'a encore été créé ! Vous avez l'occasion unique d'être la première personne à proposer un exercice à la communauté.
+				Aucun atelier n'a encore été créé ! Vous avez l'occasion unique d'être la première personne à proposer un atelier à la communauté.
 			</h2>
 			<hr class="my-5">
 

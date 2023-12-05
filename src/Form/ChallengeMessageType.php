@@ -16,7 +16,7 @@ class ChallengeMessageType extends AbstractType
         $builder
             ->add('content', TextareaType::class, [
                 'required' => true,
-                'label' => 'Commentaire sur l\'exercice',
+                'label' => 'Commentaire sur l\'atelier',
                 'attr' => [
                     'rows' => 10,
                 ],

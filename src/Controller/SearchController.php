@@ -157,10 +157,10 @@ class SearchController extends AbstractController
                             $likes += count($chapter->getPublicationChapterLikes());
                         }
                     }
-                    // Ajoutez cette donnée aux résultats de la recherche
+
                     $resultsWithLikes[] = ['result' => $result, 'likes' => $likes];
                 }
-                // Triez les résultats
+
                 if ($orderBy == 'ASC') {
                     usort($resultsWithLikes, function ($a, $b) {
                         if ($a['likes'] == $b['likes']) {
